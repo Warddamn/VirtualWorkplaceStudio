@@ -24,14 +24,22 @@ test("full job lifecycle against the mock engine", async () => {
     assert.equal(styleList.styles[0]?.id, "kids-choir");
     for (const s of styleList.styles) assert.ok(s.stylePrompt.length <= 300);
 
-    // Register the device.
+    // Register the device — v0.2 device shape: tier + monthly quota, no raw credits.
     const reg = await app.inject({
       method: "POST",
       url: "/devices",
       payload: { deviceId: "dev-lifecycle" },
     });
     assert.equal(reg.statusCode, 200);
-    assert.deepEqual(reg.json(), { device: { deviceId: "dev-lifecycle", credits: 10 } });
+    assert.deepEqual(reg.json(), {
+      device: {
+        deviceId: "dev-lifecycle",
+        tier: "free",
+        monthlyQuota: 3,
+        usedThisMonth: 0,
+        remaining: 3,
+      },
+    });
 
     // Submit a multipart cover job.
     const { payload, headers } = buildMultipart(
@@ -46,22 +54,32 @@ test("full job lifecycle against the mock engine", async () => {
     assert.equal(job["styleId"], "kids-choir");
     assert.equal(job["engine"], "mock");
     assert.ok(["queued", "processing"].includes(job["status"] as string));
+    // v0.2 job shape: takes + refine linkage fields.
+    assert.equal(job["takesRequested"], 1); // free tier max = 1 (the default)
+    assert.equal(job["selectedTake"], 0);
+    assert.equal(job["instrumental"], false);
+    assert.equal(job["parentJobId"], null);
+    assert.equal(job["refineNote"], null);
+    assert.deepEqual(job["takes"], [{ idx: 0, status: "pending" }]);
     // Local filesystem paths must never leak into the API shape.
     assert.ok(!("inputPath" in job) && !("input_path" in job));
     assert.ok(!("outputPath" in job) && !("output_path" in job));
     const jobId = job["id"] as string;
 
     // Poll until the mock engine finishes.
-    let status = "";
+    let finished: Record<string, unknown> = {};
     const deadline = Date.now() + 10_000;
     while (Date.now() < deadline) {
       const poll = await app.inject({ method: "GET", url: `/covers/${jobId}` });
       assert.equal(poll.statusCode, 200);
-      status = (poll.json() as { job: { status: string } }).job.status;
+      finished = (poll.json() as { job: Record<string, unknown> }).job;
+      const status = finished["status"] as string;
       if (status === "succeeded" || status === "failed") break;
       await sleep(50);
     }
-    assert.equal(status, "succeeded");
+    assert.equal(finished["status"], "succeeded");
+    assert.deepEqual(finished["takes"], [{ idx: 0, status: "succeeded" }]);
+    assert.equal(finished["selectedTake"], 0);
 
     // The output audio streams as a valid ~8s 16-bit PCM WAV.
     const audio = await app.inject({ method: "GET", url: `/covers/${jobId}/audio` });
@@ -77,10 +95,18 @@ test("full job lifecycle against the mock engine", async () => {
     const durationSeconds = dataLen / 2 / sampleRate;
     assert.ok(durationSeconds > 6 && durationSeconds < 10, `duration was ${durationSeconds}s`);
 
-    // Credits decremented on success only — 10 -> 9.
+    // Quota consumed: 1 non-failed job this month -> remaining 2 of 3 (free tier).
     const dev = await app.inject({ method: "GET", url: "/devices/dev-lifecycle" });
     assert.equal(dev.statusCode, 200);
-    assert.deepEqual(dev.json(), { device: { deviceId: "dev-lifecycle", credits: 9 } });
+    assert.deepEqual(dev.json(), {
+      device: {
+        deviceId: "dev-lifecycle",
+        tier: "free",
+        monthlyQuota: 3,
+        usedThisMonth: 1,
+        remaining: 2,
+      },
+    });
 
     // Job list for the device, newest first.
     const list = await app.inject({ method: "GET", url: "/covers?deviceId=dev-lifecycle" });

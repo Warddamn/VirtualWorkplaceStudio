@@ -12,7 +12,7 @@
     "build": "tsc",
     "start": "node dist/src/index.js",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test test/lifecycle.test.ts test/style-prompts.test.ts test/credits.test.ts"
+    "test": "node --import tsx --test test/lifecycle.test.ts test/style-prompts.test.ts test/quota.test.ts test/takes.test.ts test/refine.test.ts test/custom-styles.test.ts test/peaks.test.ts test/song-metadata.test.ts test/migration.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.65.0",

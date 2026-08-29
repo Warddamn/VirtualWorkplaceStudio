@@ -22,9 +22,17 @@ export class MockEngine implements CoverEngine {
   async generateCover(req: {
     inputAudioPath: string;
     stylePrompt: string;
+    takeIndex?: number;
   }): Promise<{ outputAudioPath: string }> {
     if (!fs.existsSync(req.inputAudioPath)) {
       throw new Error(`Input audio file not found: ${path.basename(req.inputAudioPath)}`);
+    }
+
+    // Test knob: MOCK_ENGINE_FAIL_TAKES is a comma list of take indexes that
+    // must fail (e.g. "1" or "0,2"), so tests can exercise partial-failure
+    // multi-take jobs. Read at call time so tests can flip it per request.
+    if (req.takeIndex !== undefined && parseFailTakes().has(req.takeIndex)) {
+      throw new Error(`Mock engine failed take ${req.takeIndex} (MOCK_ENGINE_FAIL_TAKES)`);
     }
 
     await sleep(this.delayMs);
@@ -35,6 +43,17 @@ export class MockEngine implements CoverEngine {
     await fs.promises.writeFile(outputAudioPath, wav);
     return { outputAudioPath };
   }
+}
+
+/** Parse MOCK_ENGINE_FAIL_TAKES ("0,2") into a set of take indexes to fail. */
+function parseFailTakes(): Set<number> {
+  const raw = process.env.MOCK_ENGINE_FAIL_TAKES ?? "";
+  const out = new Set<number>();
+  for (const part of raw.split(",")) {
+    const n = Number(part.trim());
+    if (part.trim() !== "" && Number.isInteger(n) && n >= 0) out.add(n);
+  }
+  return out;
 }
 
 function sleep(ms: number): Promise<void> {

@@ -1,16 +1,18 @@
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { AccentButton } from "../../components/AccentButton";
-import { getDevice, getHealth } from "../../lib/api";
+import { getDevice, getHealth, type DeviceInfo } from "../../lib/api";
 import { DEFAULT_API_URL, getApiUrl, normalizeApiUrl, setApiUrl } from "../../lib/config";
 import { ensureBootstrapped, reregisterDevice } from "../../lib/device";
+import { planForTier } from "../../lib/tiers";
 import { colors, radius, spacing } from "../../lib/theme";
 
 export default function SettingsScreen() {
+  const router = useRouter();
   const [deviceId, setDeviceId] = useState<string | null>(null);
-  const [credits, setCredits] = useState<number | null>(null);
+  const [device, setDevice] = useState<DeviceInfo | null>(null);
   const [urlInput, setUrlInput] = useState(getApiUrl());
   const [message, setMessage] = useState<string | null>(null);
   const [messageIsError, setMessageIsError] = useState(false);
@@ -21,10 +23,9 @@ export default function SettingsScreen() {
     setDeviceId(idValue);
     setUrlInput(getApiUrl());
     try {
-      const device = await getDevice(idValue);
-      setCredits(device.credits);
+      setDevice(await getDevice(idValue));
     } catch {
-      setCredits(null);
+      setDevice(null);
     }
   }, []);
 
@@ -40,14 +41,14 @@ export default function SettingsScreen() {
     try {
       const effective = await setApiUrl(urlInput);
       setUrlInput(effective);
-      // Re-register against the (possibly different) backend and pull credits.
-      const device = await reregisterDevice();
-      if (device) {
-        setCredits(device.credits);
+      // Re-register against the (possibly different) backend and pull the tier.
+      const registered = await reregisterDevice();
+      if (registered) {
+        setDevice(registered);
         setMessage(`Saved — connected to ${effective}`);
         setMessageIsError(false);
       } else {
-        setCredits(null);
+        setDevice(null);
         setMessage(`Saved, but ${effective} didn't answer. Check the URL / backend.`);
         setMessageIsError(true);
       }
@@ -111,15 +112,32 @@ export default function SettingsScreen() {
         </Text>
       )}
 
+      <Text style={styles.sectionLabel}>Plan</Text>
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>Tier</Text>
+        <Text style={styles.cardValue}>
+          {device === null
+            ? "unknown (backend unreachable)"
+            : `${planForTier(device.tier).emoji} ${planForTier(device.tier).name}`}
+        </Text>
+        <Text style={styles.cardLabel}>This month</Text>
+        <Text style={styles.cardValue}>
+          {device === null
+            ? "unknown (backend unreachable)"
+            : `${device.usedThisMonth} of ${device.monthlyQuota} covers used · ${device.remaining} left`}
+        </Text>
+      </View>
+      <AccentButton
+        title="Plans & upgrade ⭐"
+        onPress={() => router.push("/upgrade")}
+        variant="secondary"
+      />
+
       <Text style={styles.sectionLabel}>Device</Text>
       <View style={styles.card}>
         <Text style={styles.cardLabel}>Device ID</Text>
         <Text style={styles.cardValue} selectable>
           {deviceId ?? "…"}
-        </Text>
-        <Text style={styles.cardLabel}>Credits</Text>
-        <Text style={styles.cardValue}>
-          {credits === null ? "unknown (backend unreachable)" : `${credits} 🎟️`}
         </Text>
       </View>
     </ScrollView>

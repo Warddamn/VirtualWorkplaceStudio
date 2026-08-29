@@ -1,6 +1,8 @@
 /**
  * Typed API client — the ONLY module that talks to the backend.
- * Endpoint shapes mirror docs/ARCHITECTURE.md ("Endpoints" section) exactly.
+ * Endpoint shapes mirror docs/ARCHITECTURE.md ("Endpoints") exactly, as amended
+ * by docs/ARCHITECTURE-V2.md (tiers/quota, takes, refine, custom styles,
+ * song metadata, peaks).
  */
 import { getApiUrl } from "./config";
 
@@ -9,6 +11,16 @@ import { getApiUrl } from "./config";
 // ---------------------------------------------------------------------------
 
 export type JobStatus = "queued" | "processing" | "succeeded" | "failed";
+
+export type Tier = "free" | "plus" | "studio";
+
+export type TakeStatus = "pending" | "succeeded" | "failed";
+
+/** One generated candidate of a job ("Take A/B/C/D" in the player). */
+export interface TakeInfo {
+  idx: number;
+  status: TakeStatus;
+}
 
 /** Jobs row, camelCased, without local filesystem paths. */
 export interface Job {
@@ -22,6 +34,13 @@ export interface Job {
   error: string | null;
   createdAt: string;
   updatedAt: string;
+  // v0.2 additions:
+  takes: TakeInfo[];
+  selectedTake: number;
+  takesRequested: number;
+  instrumental: boolean;
+  parentJobId: string | null;
+  refineNote: string | null;
 }
 
 export interface StylePreset {
@@ -32,15 +51,35 @@ export interface StylePreset {
   stylePrompt: string;
 }
 
+/** A saved personal style ("My Styles" rail on Create). */
+export interface CustomStyle {
+  id: string;
+  deviceId: string;
+  name: string;
+  emoji: string;
+  stylePrompt: string;
+  createdAt: string;
+}
+
+/** v0.2 device shape: tier + monthly quota (raw `credits` is gone). */
 export interface DeviceInfo {
   deviceId: string;
-  credits: number;
+  tier: Tier;
+  monthlyQuota: number;
+  usedThisMonth: number;
+  remaining: number;
 }
 
 export interface StylePromptPreview {
   stylePrompt: string;
   source: "llm" | "fallback";
   metadata?: { title: string; author: string };
+}
+
+/** POST /song-metadata result — METADATA ONLY, never audio. */
+export interface SongMetadata {
+  title: string;
+  author: string;
 }
 
 export interface Health {
@@ -130,15 +169,28 @@ export function previewStylePrompt(reference: string): Promise<StylePromptPrevie
 }
 
 /**
+ * POST /song-metadata — resolve a YouTube link to `{ title, author }` via
+ * oEmbed, server-side. Metadata only: the app NEVER downloads audio from
+ * YouTube; the user still picks their own audio file of the song.
+ */
+export function identifySong(url: string): Promise<SongMetadata> {
+  return request<SongMetadata>("/song-metadata", jsonInit("POST", { url }));
+}
+
+/**
  * POST /covers — multipart upload starting a cover job.
- * Exactly one of `styleId` / `customStylePrompt` should be set.
- * Throws ApiError(402) when the device is out of credits.
+ * Exactly one of `styleId` / `customStylePrompt` / `customStyleId` should be
+ * set. `takes` is clamped server-side to the tier max (default = tier max).
+ * Throws ApiError(402) when the device's monthly quota is used up.
  */
 export async function createCover(params: {
   deviceId: string;
   songName: string;
   styleId?: string;
   customStylePrompt?: string;
+  customStyleId?: string;
+  takes?: number;
+  instrumental?: boolean;
   audio: PickedAudio;
 }): Promise<Job> {
   const form = new FormData();
@@ -157,6 +209,11 @@ export async function createCover(params: {
   form.append("songName", params.songName);
   if (params.styleId) form.append("styleId", params.styleId);
   if (params.customStylePrompt) form.append("customStylePrompt", params.customStylePrompt);
+  if (params.customStyleId) form.append("customStyleId", params.customStyleId);
+  if (params.takes !== undefined) form.append("takes", String(params.takes));
+  if (params.instrumental !== undefined) {
+    form.append("instrumental", params.instrumental ? "true" : "false");
+  }
 
   // No Content-Type header: fetch sets the multipart boundary itself.
   const { job } = await request<{ job: Job }>("/covers", {
@@ -180,10 +237,81 @@ export async function listCovers(deviceId: string): Promise<Job[]> {
   return jobs;
 }
 
-/** URL of the streamed output audio (GET /covers/:id/audio) for expo-audio. */
-export function coverAudioUrl(id: string): string {
-  return `${getApiUrl()}/covers/${encodeURIComponent(id)}/audio`;
+/**
+ * URL of the streamed output audio (GET /covers/:id/audio) for expo-audio.
+ * Pass `take` to stream a specific take; omitted → the job's selectedTake.
+ */
+export function coverAudioUrl(id: string, take?: number): string {
+  const base = `${getApiUrl()}/covers/${encodeURIComponent(id)}/audio`;
+  return take === undefined ? base : `${base}?take=${take}`;
 }
+
+/** POST /covers/:id/pick — set the keeper take (must be a succeeded take). */
+export async function pickTake(id: string, take: number): Promise<Job> {
+  const { job } = await request<{ job: Job }>(
+    `/covers/${encodeURIComponent(id)}/pick`,
+    jsonInit("POST", { take }),
+  );
+  return job;
+}
+
+/**
+ * POST /covers/:id/refine — "more choir, less piano" → a new child job linked
+ * via parentJobId. Consumes quota like any generation (402 when empty).
+ */
+export async function refineCover(id: string, note: string): Promise<Job> {
+  const { job } = await request<{ job: Job }>(
+    `/covers/${encodeURIComponent(id)}/refine`,
+    jsonInit("POST", { note }),
+  );
+  return job;
+}
+
+/**
+ * GET /covers/:id/peaks?take=N — ~120 buckets of 0..1 RMS for the waveform
+ * scrubber. Empty array (non-WAV output) → caller falls back to a plain bar.
+ */
+export async function fetchPeaks(id: string, take?: number): Promise<number[]> {
+  const query = take === undefined ? "" : `?take=${take}`;
+  const { peaks } = await request<{ peaks: number[] }>(
+    `/covers/${encodeURIComponent(id)}/peaks${query}`,
+  );
+  return peaks;
+}
+
+// --- Custom styles ---------------------------------------------------------
+
+/** GET /custom-styles?deviceId= — newest first. */
+export async function listCustomStyles(deviceId: string): Promise<CustomStyle[]> {
+  const { styles } = await request<{ styles: CustomStyle[] }>(
+    `/custom-styles?deviceId=${encodeURIComponent(deviceId)}`,
+  );
+  return styles;
+}
+
+/** POST /custom-styles — save a style to "My Styles" (cap 50 per device). */
+export async function createCustomStyle(params: {
+  deviceId: string;
+  name: string;
+  emoji?: string;
+  stylePrompt: string;
+}): Promise<CustomStyle> {
+  const { style } = await request<{ style: CustomStyle }>(
+    "/custom-styles",
+    jsonInit("POST", params),
+  );
+  return style;
+}
+
+/** DELETE /custom-styles/:id?deviceId= */
+export async function deleteCustomStyle(id: string, deviceId: string): Promise<void> {
+  await request<{ ok: true }>(
+    `/custom-styles/${encodeURIComponent(id)}?deviceId=${encodeURIComponent(deviceId)}`,
+    { method: "DELETE" },
+  );
+}
+
+// --- Devices ---------------------------------------------------------------
 
 /** POST /devices — upsert; registers the push token when provided. */
 export async function registerDevice(
@@ -197,10 +325,22 @@ export async function registerDevice(
   return device;
 }
 
-/** GET /devices/:deviceId — used for the credits display. */
+/** GET /devices/:deviceId — used for the tier + quota display. */
 export async function getDevice(deviceId: string): Promise<DeviceInfo> {
   const { device } = await request<{ device: DeviceInfo }>(
     `/devices/${encodeURIComponent(deviceId)}`,
+  );
+  return device;
+}
+
+/**
+ * POST /devices/:deviceId/tier — DEV STUB for the future App Store purchase
+ * (see the Paywall screen's visible note). Real billing is out of scope.
+ */
+export async function setDeviceTier(deviceId: string, tier: Tier): Promise<DeviceInfo> {
+  const { device } = await request<{ device: DeviceInfo }>(
+    `/devices/${encodeURIComponent(deviceId)}/tier`,
+    jsonInit("POST", { tier }),
   );
   return device;
 }

@@ -43,8 +43,11 @@ export function extractYouTubeUrl(reference: string): string | null {
   return m ? (m[0] ?? null) : null;
 }
 
-/** Resolve a YouTube link to metadata only (title + channel) via public oEmbed. */
-async function fetchYouTubeMetadata(
+/**
+ * Resolve a YouTube link to metadata only (title + channel) via public oEmbed.
+ * Also backs POST /song-metadata — the audio itself is NEVER fetched (hard rule).
+ */
+export async function fetchYouTubeMetadata(
   url: string,
 ): Promise<{ title: string; author: string } | null> {
   const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`;
@@ -161,4 +164,76 @@ export async function buildStylePrompt(
   };
   if (metadata) result.metadata = metadata;
   return result;
+}
+
+const REFINE_SYSTEM_PROMPT =
+  "You revise style prompts for an AI song-cover engine. Given the CURRENT style prompt and a " +
+  "producer note from the user (e.g. 'more choir, less piano', 'slower and sadder'), reply with " +
+  "ONE merged style prompt of at most 300 characters that keeps the current direction and applies " +
+  "the note. Describe genre, instrumentation, arrangement, vibe and vocal delivery style. " +
+  "HARD CONSTRAINTS: never imitate or name a specific artist's voice — no 'in the voice of', " +
+  "'sounds like <artist>' or artist names as vocal targets; describe the SOUND instead. " +
+  "Reply with the style prompt only: no quotes, no preamble, no explanation.";
+
+export interface RefinedPromptResult {
+  stylePrompt: string;
+  source: "llm" | "fallback";
+}
+
+/**
+ * Deterministic refine merge: `"<source prompt>, <note>"` capped at 300 chars.
+ * The note is what the user is paying quota for, so when the combination is too
+ * long the SOURCE side is trimmed to make room — never the note.
+ */
+export function fallbackRefinePrompt(sourcePrompt: string, note: string): string {
+  const merged = `${sourcePrompt}, ${note}`;
+  if (merged.length <= MAX_PROMPT_CHARS) return merged;
+  const room = MAX_PROMPT_CHARS - note.length - 2;
+  if (room <= 0) return clip(note);
+  return `${sourcePrompt.slice(0, room).replace(/[\s,]+$/, "")}, ${note}`;
+}
+
+/**
+ * Merge a producer note into a source job's style prompt (POST /covers/:id/refine).
+ * Uses Anthropic (same model/constraints as buildStylePrompt) when a key is set,
+ * else the deterministic fallback. Result is always <=300 chars; the caller
+ * denylist-checks it and drops to the fallback on a violation.
+ */
+export async function mergeRefineNote(
+  sourcePrompt: string,
+  note: string,
+  anthropicApiKey: string | undefined,
+  log: (msg: string) => void = () => undefined,
+): Promise<RefinedPromptResult> {
+  if (anthropicApiKey) {
+    try {
+      const client = new Anthropic({ apiKey: anthropicApiKey });
+      const response = await client.messages.create({
+        model: HAIKU_MODEL_ID,
+        max_tokens: 256,
+        system: REFINE_SYSTEM_PROMPT,
+        messages: [
+          {
+            role: "user",
+            content:
+              `Current style prompt: ${sourcePrompt}\n` +
+              `Producer note: ${note}\n\n` +
+              "Write the merged style prompt.",
+          },
+        ],
+      });
+      const text = response.content
+        .filter((block): block is Anthropic.TextBlock => block.type === "text")
+        .map((block) => block.text)
+        .join(" ")
+        .trim();
+      if (text.length > 0) return { stylePrompt: clip(text), source: "llm" };
+      log("Anthropic returned no text for refine; using fallback merge");
+    } catch (err) {
+      log(
+        `Anthropic refine call failed (${err instanceof Error ? err.message : String(err)}); using fallback merge`,
+      );
+    }
+  }
+  return { stylePrompt: fallbackRefinePrompt(sourcePrompt, note), source: "fallback" };
 }

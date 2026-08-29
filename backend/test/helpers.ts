@@ -2,19 +2,23 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance, LightMyRequestResponse } from "fastify";
 import { createApp } from "../src/app.js";
+import type { AppConfig } from "../src/config.js";
 
 process.env.NODE_ENV = "test";
 
 /** Build an app against a throwaway data dir with a fast mock engine. */
-export async function createTestApp(): Promise<{ app: FastifyInstance; dataDir: string }> {
+export async function createTestApp(
+  overrides: Partial<AppConfig> = {},
+): Promise<{ app: FastifyInstance; dataDir: string }> {
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), "cover-backend-test-"));
   const app = await createApp({
     dataDir,
     engine: "mock",
     mockDelayMs: 100,
     anthropicApiKey: undefined, // tests never call the live API
+    ...overrides,
   });
   return { app, dataDir };
 }
@@ -84,4 +88,35 @@ export function tinyWavBuffer(): Buffer {
 
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Submit a cover job via POST /covers with a tiny WAV upload; returns the response. */
+export async function submitCover(
+  app: FastifyInstance,
+  fields: Record<string, string>,
+): Promise<LightMyRequestResponse> {
+  const { payload, headers } = buildMultipart(fields, {
+    field: "audio",
+    filename: "song.wav",
+    contentType: "audio/wav",
+    data: tinyWavBuffer(),
+  });
+  return app.inject({ method: "POST", url: "/covers", payload, headers });
+}
+
+/** Poll GET /covers/:id until the job reaches a terminal status; returns the job. */
+export async function waitForJob(
+  app: FastifyInstance,
+  jobId: string,
+  timeoutMs = 10_000,
+): Promise<Record<string, unknown>> {
+  const deadline = Date.now() + timeoutMs;
+  for (;;) {
+    const poll = await app.inject({ method: "GET", url: `/covers/${jobId}` });
+    const { job } = poll.json() as { job: Record<string, unknown> };
+    const status = job["status"] as string;
+    if (status === "succeeded" || status === "failed") return job;
+    if (Date.now() > deadline) throw new Error(`job ${jobId} still ${status} after ${timeoutMs}ms`);
+    await sleep(50);
+  }
 }

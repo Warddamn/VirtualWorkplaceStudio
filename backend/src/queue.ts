@@ -7,10 +7,14 @@ import { sendCoverReadyPush } from "./push.js";
  * In-process FIFO job queue drained by N concurrent workers (no Redis).
  *
  * - Jobs survive restarts: `requeueUnfinished()` re-enqueues `queued` and
- *   interrupted `processing` rows on boot.
- * - Credits are decremented ONLY on success.
- * - Engine failures mark the job `failed` with a human-readable error and never
- *   crash the queue.
+ *   interrupted `processing` rows on boot; already-succeeded takes are kept and
+ *   only still-pending ones re-run.
+ * - A job's takes run SEQUENTIALLY in its one queue slot: the job is `succeeded`
+ *   when >=1 take succeeded (failed takes are tolerated and recorded), `failed`
+ *   only when all takes fail. Quota consumption is derived from job status
+ *   (failed jobs don't count), so nothing is decremented here.
+ * - Engine failures mark the take/job `failed` with a human-readable error and
+ *   never crash the queue.
  * - On success, an Expo push is sent when the device registered a token.
  */
 export class JobQueue {
@@ -83,31 +87,66 @@ export class JobQueue {
     this.store.setJobStatus(jobId, "processing");
     this.log(`job ${jobId}: processing with engine '${this.engine.name}'`);
 
-    try {
-      const { outputAudioPath } = await this.engine.generateCover({
-        inputAudioPath: job.input_path,
-        stylePrompt: job.style_prompt,
-      });
-      this.store.setJobStatus(jobId, "succeeded", { outputPath: outputAudioPath });
-      // Credits decrement on success only.
-      this.store.decrementCredits(job.device_id);
-      this.log(`job ${jobId}: succeeded`);
+    // Pending take rows normally exist from job creation; ensure them anyway so
+    // pre-v0.2 rows re-queued after an upgrade still run (as a single take).
+    this.store.ensureTakes(jobId, Math.max(1, job.takes_requested));
 
-      const device = this.store.getDevice(job.device_id);
-      const styleName = job.style_id
-        ? (getStylePreset(job.style_id)?.name ?? job.style_id)
-        : "custom style";
-      await sendCoverReadyPush({
-        expoPushToken: device?.expo_push_token ?? null,
-        styleName,
-        songName: job.song_name,
-        jobId,
-        log: this.log,
-      });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
+    // Run the takes sequentially in this one queue slot. Succeeded takes from an
+    // interrupted previous run are kept; only pending ones run now.
+    const takeErrors: string[] = [];
+    for (const take of this.store.listTakes(jobId)) {
+      if (take.status !== "pending") {
+        if (take.status === "failed" && take.error) takeErrors.push(take.error);
+        continue;
+      }
+      try {
+        const { outputAudioPath } = await this.engine.generateCover({
+          inputAudioPath: job.input_path,
+          stylePrompt: job.style_prompt,
+          takeIndex: take.idx,
+        });
+        this.store.setTakeStatus(jobId, take.idx, "succeeded", {
+          outputPath: outputAudioPath,
+        });
+        this.log(`job ${jobId}: take ${take.idx} succeeded`);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        this.store.setTakeStatus(jobId, take.idx, "failed", { error: message });
+        takeErrors.push(message);
+        this.log(`job ${jobId}: take ${take.idx} failed — ${message}`);
+      }
+    }
+
+    // >=1 succeeded take -> job succeeded; all failed -> job failed.
+    const takes = this.store.listTakes(jobId);
+    const firstSucceeded = takes.find((t) => t.status === "succeeded");
+    if (!firstSucceeded) {
+      const message =
+        takes.length > 1
+          ? `All ${takes.length} takes failed — ${takeErrors[0] ?? "unknown error"}`
+          : (takeErrors[0] ?? "unknown error");
       this.store.setJobStatus(jobId, "failed", { error: message });
       this.log(`job ${jobId}: failed — ${message}`);
+      return;
     }
+
+    this.store.setJobStatus(jobId, "succeeded", {
+      outputPath: firstSucceeded.output_path ?? undefined,
+    });
+    // Default keeper: the first succeeded take (POST /covers/:id/pick can change it).
+    this.store.setSelectedTake(jobId, firstSucceeded.idx, firstSucceeded.output_path);
+    this.log(`job ${jobId}: succeeded (${takes.filter((t) => t.status === "succeeded").length}/${takes.length} takes)`);
+
+    const device = this.store.getDevice(job.device_id);
+    const styleName = job.style_id
+      ? (getStylePreset(job.style_id)?.name ?? job.style_id)
+      : "custom style";
+    await sendCoverReadyPush({
+      expoPushToken: device?.expo_push_token ?? null,
+      styleName,
+      songName: job.song_name,
+      jobId,
+      log: this.log,
+    });
   }
 }

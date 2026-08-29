@@ -9,5 +9,7 @@ export interface CoverEngine {
   generateCover(req: {
     inputAudioPath: string; // local file path of user's song
     stylePrompt: string; // <=300 chars
+    /** 0-based index of the take being generated (multi-take jobs, v0.2). */
+    takeIndex?: number;
   }): Promise<{ outputAudioPath: string }>; // local file path of result
 }

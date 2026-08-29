@@ -22,8 +22,10 @@ refinements DO count — they are generations).
 - Device API shape becomes `{ deviceId, tier, monthlyQuota, usedThisMonth, remaining }`
   (drop `credits` from responses; keep the column for migration compat, unused).
   Update existing tests accordingly — the full MVP suite must still pass otherwise.
-- `POST /covers` returns **402** `{ error }` when `remaining <= activeJobs` (the
-  reservation logic from v1, now against quota).
+- `POST /covers` returns **402** `{ error }` when `remaining <= 0`. Because
+  `usedThisMonth` counts non-failed jobs — queued/processing included — an
+  in-flight job already holds a quota slot (released only by failing), which is
+  the v1 reservation-against-active-jobs semantics carried over.
 - `POST /devices/:deviceId/tier` body `{ tier }` → updated device. Dev-stub for the
   future app-store purchase; a comment must say so.
 
