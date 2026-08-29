@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+.expo/
+backend/data/
+test-kit/outputs/
+test-kit/songs/*
+!test-kit/songs/.gitkeep
+__pycache__/
+*.pyc
+.env
+.env.*
+*.log
+.DS_Store
