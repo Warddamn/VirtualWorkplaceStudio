@@ -1,0 +1,60 @@
+{
+  "styles": [
+    {
+      "id": "kids-choir",
+      "name": "Kids Choir",
+      "emoji": "🎒",
+      "description": "A school-assembly children's choir with piano — the PS22 vibe.",
+      "stylePrompt": "children's choir, school assembly performance, piano accompaniment, joyful and earnest, live room ambience, group of young voices singing in unison and simple two-part harmony, handclaps, innocent uplifting energy"
+    },
+    {
+      "id": "bossa-nova",
+      "name": "Bossa Nova",
+      "emoji": "🌴",
+      "description": "Soft Brazilian swing, nylon guitar, warm and intimate.",
+      "stylePrompt": "bossa nova, nylon-string guitar, soft brushed drums, gentle upright bass, warm intimate close-mic vocals, relaxed Rio cafe atmosphere, subtle shaker, laid-back romantic sway"
+    },
+    {
+      "id": "synthwave-80s",
+      "name": "80s Synthwave",
+      "emoji": "🌆",
+      "description": "Neon retro-futurism: analog synths and gated reverb drums.",
+      "stylePrompt": "80s synthwave, analog polysynths, gated reverb drums, punchy drum machine, driving synth bass arpeggios, glossy reverb-drenched vocals, neon retro-futuristic mood, nostalgic night-drive energy"
+    },
+    {
+      "id": "swing-trio",
+      "name": "Swing Jazz Trio",
+      "emoji": "🎷",
+      "description": "Late-night supper club: upright bass, brushes, jazz piano.",
+      "stylePrompt": "swing jazz trio, walking upright bass, brushed drum kit, sparkling jazz piano comping, smooth crooner-style vocal delivery, late-night supper-club warmth, light swing feel"
+    },
+    {
+      "id": "campfire-folk",
+      "name": "Campfire Folk",
+      "emoji": "🔥",
+      "description": "Fingerpicked acoustic guitar and cozy group harmonies.",
+      "stylePrompt": "acoustic folk, fingerpicked steel-string guitar, warm group harmonies on the chorus, soft stomps and claps, intimate campfire feel, close and cozy, honest unpolished vocals"
+    },
+    {
+      "id": "gospel-choir",
+      "name": "Gospel Choir",
+      "emoji": "🙌",
+      "description": "Massed voices, Hammond organ, and uplifting church energy.",
+      "stylePrompt": "gospel choir, hammond organ, piano, handclaps on the backbeat, powerful massed voices with call-and-response, soaring lead vocal, uplifting church energy, joyful crescendos"
+    },
+    {
+      "id": "heavy-metal",
+      "name": "Heavy Metal",
+      "emoji": "🤘",
+      "description": "Distorted guitars, double-kick drums, arena-sized intensity.",
+      "stylePrompt": "heavy metal, down-tuned distorted electric guitars, double-kick drums, thunderous bass, aggressive powerful vocals, driving palm-muted riffs, arena-sized intensity"
+    },
+    {
+      "id": "lofi-chill",
+      "name": "Lo-fi Chill",
+      "emoji": "🌙",
+      "description": "Dusty drums, mellow keys, hazy bedroom-producer haze.",
+      "stylePrompt": "lo-fi chillhop, dusty vinyl drums, mellow electric piano keys, warm tape saturation, relaxed hazy vocals, soft vinyl crackle, bedroom-producer intimacy, unhurried head-nod groove"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Engine validation kit — Python 3.10+
+replicate>=1.0.0
+requests>=2.31.0
+
+# Optional: only needed for `--engine acestep` / `--engine both` (fal.ai).
+# run_test.py imports it lazily, so leaving it uninstalled is fine otherwise.
+fal-client>=0.5.0
