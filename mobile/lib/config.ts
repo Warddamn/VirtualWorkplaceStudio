@@ -38,7 +38,7 @@ export async function loadApiUrl(): Promise<string> {
  * to the default. Returns the now-effective URL.
  */
 export async function setApiUrl(url: string): Promise<string> {
-  const trimmed = url.trim().replace(/\/+$/, "");
+  const trimmed = normalizeApiUrl(url);
   try {
     if (trimmed.length === 0) {
       currentApiUrl = DEFAULT_API_URL;
@@ -51,4 +51,14 @@ export async function setApiUrl(url: string): Promise<string> {
     // Persisting failed; the in-memory value still applies for this session.
   }
   return currentApiUrl;
+}
+
+/**
+ * Trim, drop trailing slashes, and default to http:// when no scheme is given —
+ * the README's example is a bare LAN address like 192.168.1.23:3000.
+ */
+export function normalizeApiUrl(url: string): string {
+  const trimmed = url.trim().replace(/\/+$/, "");
+  if (trimmed.length === 0 || /^https?:\/\//i.test(trimmed)) return trimmed;
+  return `http://${trimmed}`;
 }

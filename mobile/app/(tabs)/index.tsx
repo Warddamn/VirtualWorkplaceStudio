@@ -44,15 +44,19 @@ export default function CreateScreen() {
   const [error, setError] = useState<string | null>(null);
 
   // Style gallery: backend is authoritative, bundled list is the fallback.
+  // Wait for bootstrap first — it loads the Settings URL override, and fetching
+  // before that resolves would hit the bundle-time default URL on real devices.
   useEffect(() => {
     let cancelled = false;
-    fetchStyles()
-      .then((list) => {
+    void (async () => {
+      try {
+        await ensureBootstrapped();
+        const list = await fetchStyles();
         if (!cancelled && list.length > 0) setStyles(list);
-      })
-      .catch(() => {
+      } catch {
         // Keep the bundled fallback.
-      });
+      }
+    })();
     return () => {
       cancelled = true;
     };
@@ -100,6 +104,12 @@ export default function CreateScreen() {
     // A card selection replaces any custom described style.
     setPreview(null);
     setError(null);
+  }, []);
+
+  const onReferenceChange = useCallback((text: string) => {
+    setReference(text);
+    // The preview belongs to the text it was generated from — editing invalidates it.
+    setPreview(null);
   }, []);
 
   const runPreview = useCallback(async () => {
@@ -198,7 +208,7 @@ export default function CreateScreen() {
       <TextInput
         style={styles.input}
         value={reference}
-        onChangeText={setReference}
+        onChangeText={onReferenceChange}
         placeholder='e.g. "dreamy 60s surf rock" or a YouTube link'
         placeholderTextColor={colors.textDim}
         autoCapitalize="none"

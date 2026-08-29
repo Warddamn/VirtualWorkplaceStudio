@@ -94,6 +94,8 @@ export interface Store {
   getDevice(deviceId: string): DeviceRow | undefined;
   /** Ensure a device row exists (10 default credits) and return it. */
   ensureDevice(deviceId: string): DeviceRow;
+  /** Jobs currently queued or processing for a device — each will consume a credit on success. */
+  countActiveJobsByDevice(deviceId: string): number;
   decrementCredits(deviceId: string): void;
   close(): void;
 }
@@ -137,6 +139,9 @@ export function openStore(dataDir: string): Store {
   const decrementStmt = db.prepare(
     "UPDATE devices SET credits = credits - 1 WHERE device_id = ? AND credits > 0",
   );
+  const countActiveStmt = db.prepare(
+    "SELECT COUNT(*) AS n FROM jobs WHERE device_id = ? AND status IN ('queued','processing')",
+  );
 
   return {
     db,
@@ -176,6 +181,9 @@ export function openStore(dataDir: string): Store {
       const existing = getDeviceStmt.get(deviceId) as DeviceRow | undefined;
       if (existing) return existing;
       return this.upsertDevice(deviceId, null);
+    },
+    countActiveJobsByDevice(deviceId) {
+      return (countActiveStmt.get(deviceId) as { n: number }).n;
     },
     decrementCredits(deviceId) {
       decrementStmt.run(deviceId);

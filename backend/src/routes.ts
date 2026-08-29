@@ -171,8 +171,11 @@ export function registerRoutes(app: FastifyInstance): void {
 
       // Credits: 402 when the device has none left. Unknown devices get a row
       // with the default 10 credits (mobile normally registers via POST /devices).
+      // Queued/processing jobs each consume a credit on success, so they count
+      // against the balance now — otherwise rapid submissions overdraw it.
       const device = app.store.ensureDevice(deviceId);
-      if (device.credits <= 0) {
+      const reserved = app.store.countActiveJobsByDevice(deviceId);
+      if (device.credits - reserved <= 0) {
         return reply.status(402).send({ error: "No credits remaining" });
       }
 
@@ -235,11 +238,32 @@ export function registerRoutes(app: FastifyInstance): void {
     } catch {
       return reply.status(404).send({ error: "Output file missing on server" });
     }
-    const contentType = job.output_path.toLowerCase().endsWith(".wav")
-      ? "audio/wav"
-      : "audio/mpeg";
+    const isWav = job.output_path.toLowerCase().endsWith(".wav");
+    const contentType = isWav ? "audio/wav" : "audio/mpeg";
+    // Tell clients the real format/filename so share sheets don't have to guess.
+    const downloadName = `${job.song_name.replace(/[^\w\- ]+/g, "").trim() || "cover"}${isWav ? ".wav" : ".mp3"}`;
+    void reply.header("Content-Disposition", `inline; filename="${downloadName}"`);
+
+    // Honor single-range requests — iOS AVPlayer needs 206 responses for seeking.
+    const range = parseByteRange(req.headers.range, stat.size);
+    if (range === "invalid") {
+      return reply
+        .status(416)
+        .header("Content-Range", `bytes */${stat.size}`)
+        .send({ error: "Requested range not satisfiable" });
+    }
+    if (range) {
+      return reply
+        .status(206)
+        .header("Content-Type", contentType)
+        .header("Accept-Ranges", "bytes")
+        .header("Content-Range", `bytes ${range.start}-${range.end}/${stat.size}`)
+        .header("Content-Length", range.end - range.start + 1)
+        .send(fs.createReadStream(job.output_path, { start: range.start, end: range.end }));
+    }
     return reply
       .header("Content-Type", contentType)
+      .header("Accept-Ranges", "bytes")
       .header("Content-Length", stat.size)
       .send(fs.createReadStream(job.output_path));
   });
@@ -250,4 +274,29 @@ function resolveAudioExtension(filename: string, mimetype: string): string | nul
   const ext = path.extname(filename).toLowerCase();
   if (ALLOWED_AUDIO_EXTENSIONS.has(ext)) return ext;
   return MIME_TO_EXTENSION[mimetype.toLowerCase()] ?? null;
+}
+
+/**
+ * Parse a `Range: bytes=start-end` header against a file of `size` bytes.
+ * Returns the inclusive range, null when absent/multi-range (serve the full file),
+ * or "invalid" when the range cannot be satisfied.
+ */
+function parseByteRange(
+  header: string | undefined,
+  size: number,
+): { start: number; end: number } | null | "invalid" {
+  if (!header) return null;
+  const match = /^bytes=(\d*)-(\d*)$/.exec(header.trim());
+  if (!match) return null; // multi-range or malformed: fall back to the full file
+  const [, rawStart, rawEnd] = match;
+  if (rawStart === "" && rawEnd === "") return null;
+  if (rawStart === "") {
+    // Suffix range: last N bytes.
+    const suffix = Math.min(Number(rawEnd), size);
+    return suffix === 0 ? "invalid" : { start: size - suffix, end: size - 1 };
+  }
+  const start = Number(rawStart);
+  const end = rawEnd === "" ? size - 1 : Math.min(Number(rawEnd), size - 1);
+  if (start >= size || start > end) return "invalid";
+  return { start, end };
 }

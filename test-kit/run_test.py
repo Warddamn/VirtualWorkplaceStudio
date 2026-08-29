@@ -177,27 +177,36 @@ def download_url(url: str) -> bytes:
     return response.content
 
 
-def find_audio_url(value: object) -> str | None:
-    """Best-effort search for an audio URL inside an engine's response object."""
+def _collect_urls(value: object, urls: list[str]) -> None:
     if isinstance(value, str):
-        return value if value.startswith(("http://", "https://")) else None
-    if isinstance(value, dict):
-        # Prefer conventional keys, then search everything.
+        if value.startswith(("http://", "https://")):
+            urls.append(value)
+    elif isinstance(value, dict):
+        # Conventional keys first so they rank ahead of incidental URLs.
         for key in ("audio", "audio_url", "audio_file", "url", "output"):
             if key in value:
-                found = find_audio_url(value[key])
-                if found:
-                    return found
-        for nested in value.values():
-            found = find_audio_url(nested)
-            if found:
-                return found
-    if isinstance(value, (list, tuple)):
+                _collect_urls(value[key], urls)
+        for key, nested in value.items():
+            if key not in ("audio", "audio_url", "audio_file", "url", "output"):
+                _collect_urls(nested, urls)
+    elif isinstance(value, (list, tuple)):
         for item in value:
-            found = find_audio_url(item)
-            if found:
-                return found
-    return None
+            _collect_urls(item, urls)
+
+
+def find_audio_url(value: object) -> str | None:
+    """Best-effort search for an audio URL inside an engine's response object.
+
+    A URL whose path has an audio extension always wins over one without —
+    otherwise a schema mismatch could silently hand us a status/request URL
+    and we'd save an HTML page as a plausible-looking "cover".
+    """
+    urls: list[str] = []
+    _collect_urls(value, urls)
+    for url in urls:
+        if Path(url.split("?", 1)[0]).suffix.lower() in AUDIO_EXTENSIONS:
+            return url
+    return urls[0] if urls else None
 
 
 def resolve_output_bytes(output: object) -> bytes:
@@ -332,6 +341,23 @@ def preflight(engines: list[str], songs: list[Path]) -> list[str]:
             "FAL_KEY is not set (needed for --engine acestep/both). "
             "Create a key at fal.ai -> dashboard -> keys, then:\n"
             "      export FAL_KEY=..."
+        )
+
+    # Catch missing packages here rather than as N identical failures after
+    # the user has already confirmed the spend.
+    import importlib.util
+
+    needed_packages = {"requests": "downloading engine output"}
+    if "minimax" in engines:
+        needed_packages["replicate"] = "--engine minimax/both"
+    if "acestep" in engines:
+        needed_packages["fal_client"] = "--engine acestep/both"
+    missing = [name for name in needed_packages if importlib.util.find_spec(name) is None]
+    if missing:
+        problems.append(
+            "Missing Python package(s): "
+            + ", ".join(f"'{name}' ({needed_packages[name]})" for name in missing)
+            + " — run: pip install -r requirements.txt"
         )
     return problems
 
@@ -495,7 +521,27 @@ def run_plan(plan: list[dict]) -> tuple[int, int]:
         )
         append_csv_row(GRADING_PATH, GRADING_COLUMNS, {"id": output_id})
 
+    shuffle_grading_rows()
     return succeeded, failed
+
+
+def shuffle_grading_rows() -> None:
+    """Rewrite grading.csv ordered by random id, not generation order.
+
+    The plan order is deterministic (songs × styles × engines), so rows appended
+    in run order would let a grader reconstruct each item's style from its row
+    position alone. Sorting by the random hex id breaks that correlation; graders
+    should also open files by id, not by file creation time.
+    """
+    if not GRADING_PATH.exists():
+        return
+    with GRADING_PATH.open(newline="") as fh:
+        rows = list(csv.DictReader(fh))
+    rows.sort(key=lambda row: row.get("id", ""))
+    with GRADING_PATH.open("w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=GRADING_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def main(argv: list[str] | None = None) -> int:

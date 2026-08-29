@@ -20,12 +20,40 @@ const ARTIST_VOICE_PATTERNS: { pattern: RegExp; label: string }[] = [
 ];
 
 /**
+ * Well-known artist names matched case-insensitively as whole words/phrases.
+ * The capitalized-name patterns above miss lowercase phrasings ("sounds like
+ * drake"), so any appearance of these names in a style prompt is refused —
+ * a cover engine generates vocals, and naming an artist steers vocal timbre.
+ * Starter list; expand from moderation logs.
+ */
+const KNOWN_ARTIST_NAMES = [
+  "drake", "beyonce", "beyoncé", "adele", "rihanna", "taylor swift", "ariana grande",
+  "billie eilish", "ed sheeran", "justin bieber", "the weeknd", "kanye", "kendrick lamar",
+  "bruno mars", "lady gaga", "katy perry", "dua lipa", "olivia rodrigo", "harry styles",
+  "post malone", "travis scott", "nicki minaj", "cardi b", "doja cat", "sza",
+  "frank sinatra", "elvis presley", "michael jackson", "whitney houston", "freddie mercury",
+  "john lennon", "paul mccartney", "bob dylan", "david bowie", "prince", "madonna",
+  "eminem", "jay-z", "snoop dogg", "morgan wallen", "bad bunny", "shakira", "celine dion",
+  "mariah carey", "frank ocean", "tyler the creator", "lana del rey", "sabrina carpenter",
+  "chappell roan",
+] as const;
+
+const KNOWN_ARTIST_REGEXES = KNOWN_ARTIST_NAMES.map((name) => ({
+  name,
+  // Whole-word match, case-insensitive; escape regex metacharacters in names.
+  pattern: new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i"),
+}));
+
+/**
  * Returns a human-readable description of the matched artist-voice pattern,
  * or null when the text is clean.
  */
 export function findArtistVoiceViolation(text: string): string | null {
   for (const { pattern, label } of ARTIST_VOICE_PATTERNS) {
     if (pattern.test(text)) return label;
+  }
+  for (const { name, pattern } of KNOWN_ARTIST_REGEXES) {
+    if (pattern.test(text)) return `the artist name "${name}"`;
   }
   return null;
 }

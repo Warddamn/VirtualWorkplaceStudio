@@ -107,9 +107,12 @@ function jsonInit(method: string, payload: unknown): RequestInit {
 // Endpoints
 // ---------------------------------------------------------------------------
 
-/** GET /health */
-export function getHealth(): Promise<Health> {
-  return request<Health>("/health");
+/** GET /health — pass baseUrl to probe a URL other than the saved one (Settings "Test connection"). */
+export async function getHealth(baseUrl?: string): Promise<Health> {
+  if (baseUrl === undefined) return request<Health>("/health");
+  const res = await fetch(`${baseUrl}/health`);
+  if (!res.ok) throw new Error(`Backend answered HTTP ${res.status}`);
+  return (await res.json()) as Health;
 }
 
 /** GET /styles — callers fall back to the bundled list on failure. */

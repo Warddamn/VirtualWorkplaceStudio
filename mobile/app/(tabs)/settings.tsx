@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { AccentButton } from "../../components/AccentButton";
 import { getDevice, getHealth } from "../../lib/api";
-import { DEFAULT_API_URL, getApiUrl, setApiUrl } from "../../lib/config";
+import { DEFAULT_API_URL, getApiUrl, normalizeApiUrl, setApiUrl } from "../../lib/config";
 import { ensureBootstrapped, reregisterDevice } from "../../lib/device";
 import { colors, radius, spacing } from "../../lib/theme";
 
@@ -60,8 +60,11 @@ export default function SettingsScreen() {
     setBusy(true);
     setMessage(null);
     try {
-      const health = await getHealth();
-      setMessage(`Backend OK — engine: ${health.engine}`);
+      // Probe what's typed in the field, not the previously-saved URL —
+      // otherwise "Test connection" green-lights the old backend.
+      const target = normalizeApiUrl(urlInput) || DEFAULT_API_URL;
+      const health = await getHealth(target);
+      setMessage(`Backend OK at ${target} — engine: ${health.engine}`);
       setMessageIsError(false);
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Backend unreachable");
@@ -69,7 +72,7 @@ export default function SettingsScreen() {
     } finally {
       setBusy(false);
     }
-  }, []);
+  }, [urlInput]);
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
