@@ -1,6 +1,9 @@
+import fs from "node:fs";
+import path from "node:path";
 import Fastify, { type FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
 import multipart from "@fastify/multipart";
+import fastifyStatic from "@fastify/static";
 import { loadConfig, type AppConfig } from "./config.js";
 import { openStore, type Store } from "./db.js";
 import { createEngine, type CoverEngine } from "./engines/index.js";
@@ -47,7 +50,24 @@ export async function createApp(overrides: Partial<AppConfig> = {}): Promise<Fas
     if (statusCode >= 500) app.log.error(err);
     void reply.status(statusCode).send({ error: err.message || "Internal server error" });
   });
-  app.setNotFoundHandler((_req, reply) => {
+  // Site preview mode: serve an Expo web export (STATIC_DIR) as the site root,
+  // with the API routes above it on the same origin/port.
+  if (config.staticDir && fs.existsSync(config.staticDir)) {
+    await app.register(fastifyStatic, { root: config.staticDir, wildcard: false });
+    app.log.info(`serving web app from ${config.staticDir}`);
+  }
+
+  app.setNotFoundHandler((req, reply) => {
+    // SPA fallback: unknown GET pages (deep links like /library) get index.html;
+    // API-style requests keep their JSON 404.
+    if (
+      config.staticDir &&
+      req.method === "GET" &&
+      (req.headers.accept ?? "").includes("text/html") &&
+      fs.existsSync(path.join(config.staticDir, "index.html"))
+    ) {
+      return reply.type("text/html").send(fs.createReadStream(path.join(config.staticDir, "index.html")));
+    }
     void reply.status(404).send({ error: "Not found" });
   });
 

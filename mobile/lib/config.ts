@@ -12,8 +12,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_URL_KEY = "vws.apiUrl";
 
+/**
+ * On web the app is usually served BY the backend (site preview mode), so the
+ * page's own origin is the API. Native falls back to localhost:3000.
+ */
+const sameOriginDefault =
+  typeof window !== "undefined" && window.location?.origin?.startsWith("http")
+    ? window.location.origin
+    : undefined;
+
 export const DEFAULT_API_URL: string =
-  process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000";
+  process.env.EXPO_PUBLIC_API_URL ?? sameOriginDefault ?? "http://localhost:3000";
 
 let currentApiUrl: string = DEFAULT_API_URL;
 

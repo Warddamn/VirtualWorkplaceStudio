@@ -14,6 +14,8 @@ export interface AppConfig {
   mockDelayMs: number;
   /** Number of concurrent queue workers. */
   workers: number;
+  /** When set, serve this directory (an Expo web export) as the site root. */
+  staticDir: string | undefined;
   /** Optional API credentials, read from env. */
   replicateApiToken: string | undefined;
   falKey: string | undefined;
@@ -49,6 +51,7 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     dataDir: process.env.DATA_DIR ?? path.join(packageRoot(), "data"),
     mockDelayMs: Number(process.env.MOCK_ENGINE_DELAY_MS ?? 5000),
     workers: 2,
+    staticDir: process.env.STATIC_DIR ? path.resolve(process.env.STATIC_DIR) : undefined,
     replicateApiToken: process.env.REPLICATE_API_TOKEN,
     falKey: process.env.FAL_KEY,
     anthropicApiKey: process.env.ANTHROPIC_API_KEY,
