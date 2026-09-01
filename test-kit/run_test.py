@@ -50,8 +50,10 @@ from pathlib import Path
 # ============================================================================
 
 MINIMAX_MODEL = "minimax/music-cover"
-MINIMAX_FIELD_AUDIO = "song_file"     # the user's source song (file upload)
-MINIMAX_FIELD_PROMPT = "prompt"       # text style prompt, 10-300 chars
+MINIMAX_FIELD_AUDIO = "audio_url"     # the user's source song (public MP3/WAV URL; must contain vocals)
+MINIMAX_FIELD_PROMPT = "prompt"       # text style prompt (model allows up to 2,000 chars)
+# ^ cross-checked 2026-08-30 against replicate.com/minimax/music-cover, runware.ai
+#   and aimlapi.com docs (all agree) — still glance at the live model page first.
 
 ACESTEP_ENDPOINT = "fal-ai/ace-step/audio-to-audio"
 ACESTEP_FIELD_AUDIO_URL = "audio_url"          # URL of the uploaded source song

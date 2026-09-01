@@ -4,34 +4,33 @@ import path from "node:path";
 import type { CoverEngine } from "./types.js";
 
 /* ============================================================================
- * !!! VERIFY ME BEFORE FIRST REAL RUN !!!
- *
- * replicate.com was UNREACHABLE from the environment this code was written in,
- * so the model input field names below are BEST-EFFORT guesses based on
- * docs/FEASIBILITY.md ("reference audio + text style prompt, 10-300 chars").
- * They are isolated here so a mismatch is a one-line fix.
- *
- * Before spending money: open https://replicate.com/minimax/music-cover ->
- * "API" tab -> input schema, and correct `INPUT_FIELDS` (and, if needed, the
- * output shape handling in `extractOutputUrl`). See backend/README.md.
+ * Input schema cross-checked 2026-08-30 against search-indexed model docs
+ * (replicate.com/minimax/music-cover, runware.ai, aimlapi.com — all agree):
+ *   audio_url (required) — publicly accessible MP3/WAV URL of the song, must
+ *                          contain vocals
+ *   prompt    (required) — target-style description, up to 2,000 chars
+ *   optional: sample_rate, bitrate, audio_format (mp3 default)
+ * Still eyeball the live model page's API tab before the first paid run —
+ * schemas drift, and this environment could not fetch the page directly.
  * ==========================================================================*/
+/** Overridable for integration tests against a local Replicate-compatible fake. */
+const REPLICATE_API_BASE = (process.env.REPLICATE_BASE_URL ?? "https://api.replicate.com").replace(/\/+$/, "");
 const REPLICATE_MINIMAX = {
   /** Model slug on Replicate. */
   model: "minimax/music-cover",
   /** Create a prediction directly against the model (no version pin). */
-  predictionsUrl: "https://api.replicate.com/v1/models/minimax/music-cover/predictions",
+  predictionsUrl: `${REPLICATE_API_BASE}/v1/models/minimax/music-cover/predictions`,
   /** Replicate Files API (multipart upload -> serving URL). */
-  filesUrl: "https://api.replicate.com/v1/files",
-  /** BEST-EFFORT input field names — verify against the live model page. */
+  filesUrl: `${REPLICATE_API_BASE}/v1/files`,
   INPUT_FIELDS: {
-    /** URL (or data URI) of the user's song to cover. */
-    referenceAudio: "song_file",
-    /** Text style prompt, 10-300 chars. */
+    /** URL of the user's song to cover (Replicate Files API serving URL). */
+    referenceAudio: "audio_url",
+    /** Text style prompt (we cap at 300 chars; the model allows 2,000). */
     stylePrompt: "prompt",
   },
 } as const;
 
-const POLL_INTERVAL_MS = 3000;
+const POLL_INTERVAL_MS = Number(process.env.REPLICATE_POLL_MS ?? 3000);
 const MAX_WAIT_MS = 10 * 60 * 1000; // generation takes minutes; cap at 10.
 
 interface ReplicatePrediction {
@@ -93,7 +92,7 @@ export class MinimaxReplicateEngine implements CoverEngine {
       }
       await sleep(POLL_INTERVAL_MS);
       const pollUrl =
-        prediction.urls?.get ?? `https://api.replicate.com/v1/predictions/${prediction.id}`;
+        prediction.urls?.get ?? `${REPLICATE_API_BASE}/v1/predictions/${prediction.id}`;
       const pollRes = await fetch(pollUrl, {
         headers: { Authorization: `Bearer ${this.apiToken}` },
       });
