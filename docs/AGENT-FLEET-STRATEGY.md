@@ -329,6 +329,13 @@ Bottom-up, one continuously working agent at 2026-09-10 list prices:
 | Claude Fable 5.1 | $10 / $50 | **$6.64** |
 | GPT-6 Astra | $10 / $50 | ≈ $6.64 |
 
+> **Read the next table as a reality check on the phrase "hundreds of bots," not as a plan.**
+> It prices **16,000 agent-hours a month** — 100 agents running flat out, eight hours a day,
+> twenty days. Nobody working alone should run that, and you do not need to. For what a
+> sane fleet actually costs, and for the open-weight tier that is 10–50× cheaper than
+> anything in this table, see **[CHEAP-FLEET-BUDGET.md](CHEAP-FLEET-BUDGET.md)**. A serious
+> solo setup lands near **$270 a month**, not the figures below.
+
 A **100-agent fleet for one 8-hour day**:
 
 | Fleet composition | Per day | Per month (20 days) |
@@ -337,6 +344,14 @@ A **100-agent fleet for one 8-hour day**:
 | All Sonnet 5 | ~$1,280 | ~$26,000 |
 | All Haiku 4.5 | ~$640 | ~$13,000 |
 | **Mixed: 1 Opus lead + 20 Sonnet + 79 Haiku** | **~$790** | **~$16,000** |
+
+Two corrections to those per-agent-hour rates, found by auditing the arithmetic afterwards.
+The three rates above are exactly proportional to the models' price ratios, which assumes
+identical token consumption across all three — that is wrong. The Haiku figure is right only
+because Claude Code applies prompt caching automatically, which was never stated. And the
+Opus figure is understated by 1.6–3×: the Opus 5 generation's tokenizer produces about 30%
+more tokens for the same text than Haiku 4.5, and extended thinking bills as output at $25
+per million. **A cached Opus 5 agent-hour is closer to $6.54, or ~$13 with heavy thinking.**
 
 Rate limits are not the wall — Build tier sustains roughly 330 hard-working Opus 5 agents
 before output-tokens-per-minute saturates. **The tier spend cap is the wall.** The default
@@ -375,6 +390,15 @@ against ~10,000 for a single agent (about 3×), and scaling to 32 agents produce
 **6.21× throughput gain for an 8× agent increase**. Combined with Google's finding that
 returns saturate at 3–4 agents, the conclusion is consistent from three independent
 directions: **spend on better model assignment and better verifiers, not on more agents.**
+
+**And fan-out itself carries a measured tax.** Subagent fan-outs in Claude Code cost
+**2.6–5.9× the tokens of doing the same work sequentially, and were never faster**, because
+a subagent starts a fresh context with no share of the parent's cached prefix and re-pays for
+its system prompt and tools every turn. Pinning subagents to Haiku recovered only 37% of it.
+Anthropic's own measured guidance agrees: an orchestrator pays off only when there is genuine
+bulk to hand off, and on a single dependent chain that fits one context, **the coordinator's
+model alone at lower effort won every case they measured**. Default to one session at lower
+effort; fan out when you have a real list, not because parallel feels faster.
 
 *(One widely circulated anecdote — 49 parallel subagents for 2.5 hours estimated at
 $8,000–15,000 — does not reconcile with 2026 list prices. Treat it as an upper-bound story,
