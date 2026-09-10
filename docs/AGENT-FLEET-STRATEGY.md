@@ -32,13 +32,20 @@ playbook, the most widely copied DIY fleet pattern, states the asymmetry outrigh
 > Complex reasoning: Opus subagents when debugging.
 > — [Ralph playbook](https://github.com/ClaytonFarr/ralph-playbook)
 
-Cognition reached the same conclusion and published a public reversal. Their June 2025
-essay *Don't Build Multi-Agents* became the April 2026 **single-writer principle**:
-multi-agent works when writes stay single-threaded and the extra agents contribute
-*intelligence* rather than *actions*. Their canonical failure is still the best
-illustration: two sub-agents building one game produced a Super Mario background and a
-bird that didn't look like a game asset, because each got the explicit objective but not
-the implicit context.
+Cognition reached the same conclusion and published a follow-up that **narrows rather than
+retracts** its June 2025 essay *Don't Build Multi-Agents*. Walden Yan is explicit about
+which half still stands:
+
+> Our original observations still hold today for parallel-writer swarms: most of the sexy
+> ideas in that space still don't see meaningful adoption. But we've found a narrower class
+> of patterns that do.
+
+That narrower class is defined by **writes staying single-threaded** while the extra agents
+contribute *intelligence* rather than *actions*. (The phrase "single-writer principle" is a
+useful shorthand for it, but it is the industry's coinage, not Cognition's own wording.)
+Their canonical failure is still the best illustration: two sub-agents building one game
+produced a Super Mario background and a bird that didn't look like a game asset, because
+each got the explicit objective but not the implicit context.
 
 Google Research quantified it across 180 agent configurations, three model families, and
 five architectures, holding prompts and token budgets constant:
@@ -81,22 +88,38 @@ bottleneck**. Worktrees make it cheap to start ten agents; reading ten diffs is 
 expensive. The industry-wide symptom: developers use AI for about 60% of their work but
 report being able to fully delegate only 0–20% of tasks.
 
-### Correction 3: Astra is a strong model, not a bot-army platform, and the AGI claim was one person's opinion
+### Correction 3: Astra is a strong model, not a bot-army platform, and the AGI claim was spoken, not written
 
-GPT-6 Astra is real — OpenAI unveiled it 2026-09-03. But the AGI line came from OpenAI
-president Greg Brockman at a press briefing:
+GPT-6 Astra is real — OpenAI unveiled it 2026-09-03. The AGI line came from co-founder and
+president Greg Brockman, as the closing remark of OpenAI's own launch press briefing, and
+OpenAI has not disavowed it. So this is not merely one employee freelancing; it is a company
+officer speaking in a company venue, which is why most outlets attributed it to the
+institution. But he hedged it in the same breath:
 
 > I think it's not unreasonable to feel that we are now in the AGI era... I do leave it up
 > to the reader to decide for themselves if this qualifies for them.
 
-OpenAI's own launch page never claims AGI; it calls Astra *"our most capable model."* Sam
-Altman told TIME OpenAI is *"not quite yet"* there. The headline **99.9% on ARC-AGI-3** came
-from OpenAI's own provider-adapter harness; on the standard provider-neutral harness Astra
-scores **62.7%**, and ARC Prize explicitly does not claim it is AGI. Artificial Analysis
-scores it **61** on its aggregate index — level with GPT-5.6 Sol, behind Claude Fable 5.1
-at 66. The Microsoft contract's AGI clause was removed in April 2026, so the declaration
-carries no legal weight either. Nvidia's Jensen Huang separately declared "AGI has arrived"
-three days later — a hardware supplier's claim, not independent verification.
+And OpenAI's **written** launch material never makes the claim — it calls Astra *"our most
+capable model."* Sam Altman told TIME OpenAI is *"not quite yet"* there. On the benchmark
+that generated the headline, ARC Prize is unambiguous:
+
+> When we launched ARC-AGI-3, we made it clear that saturating the benchmark would not
+> represent "proof of achieving AGI." Therefore, while we believe Astra represents
+> meaningful progress towards generalization, we are not claiming that it is AGI.
+
+The **99.9%** figure and the **62.7%** figure are the same model under two different harness
+conditions, not one result and its debunking — the higher number comes from a provider-adapter
+harness that preserves reasoning state between requests, the lower from ARC's standard
+harness. Quote either, but say which. The Microsoft contract's AGI clause was removed in
+April 2026, so the declaration carries no legal weight. Nvidia's Jensen Huang separately
+declared "AGI has arrived" three days later — a hardware supplier's claim, not independent
+verification.
+
+*(An earlier draft cited Artificial Analysis aggregate index scores here. Adversarial
+verification found conflicting figures for Astra across that source's own pages, so the
+numbers are withdrawn rather than repeated. The directional read — Astra roughly level with
+GPT-5.6 Sol and not clearly ahead of the Claude frontier — appears in secondary coverage but
+is not verified.)*
 
 Astra is genuinely excellent at computer use and long-horizon autonomous work, and
 developers are already running it as an orchestrator over cheaper GPT-5.6 workers. But
@@ -134,9 +157,12 @@ docs alone, cut that to **under 1,000 conflicts and 9,908 lines** for the same t
 better output from a *better-coordinated* fleet, not a bigger one.
 
 **3–5 agents — the case Anthropic ships.** Claude's Research feature is an
-orchestrator-worker with a lead spawning **3–5 specialized subagents** and a separate
-citation pass. It beat single-agent Opus by **90.2%** on research tasks at roughly **15×
-the tokens of chat**. Anthropic's own stated boundary condition:
+orchestrator-worker where the lead spawns **3–5 specialized subagents** in parallel, plus a
+separate citation pass. Read that as the typical case rather than a ceiling: the same
+write-up scales the count to the question, from *"1 agent with 3-10 tool calls"* for simple
+fact-finding to *"more than 10 subagents"* for complex research. It beat single-agent Opus
+by **90.2%** on research tasks at roughly **15× the tokens of chat**. Anthropic's own stated
+boundary condition:
 
 > Multi-agent systems excel at problems that can be divided into parallel strands of
 > research, but are less effective for tightly interdependent tasks such as coding.
@@ -171,7 +197,10 @@ never your consent.** Claude Code documents it plainly:
 > action can't relay it to another teammate to bypass the check.
 
 Subagents inherit a *narrowed* tool pool — the mechanism only subtracts. A subagent runs in
-`bypassPermissions` only when the parent already does. Cloud child sessions cannot exceed
+`bypassPermissions` only when the parent already does — **though that specific guarantee
+requires Claude Code v2.1.267 or later**; on older builds a subagent declaring
+`permissionMode: bypassPermissions` under a weaker parent did receive it. Check your version
+before relying on it. Cloud child sessions cannot exceed
 the calling session's mode, and pre-approved tools the parent lacks are silently dropped.
 In auto mode a classifier treats an approval claim relayed from another agent as untrusted
 input. **Caveat worth knowing:** this is a designed invariant with at least one open issue
@@ -373,7 +402,8 @@ Layer 3   WORKERS — short-lived, read-mostly, cheap model, spawned per task
           Fan out to 20+ freely. They read and report; they do not write.
 ```
 
-The discipline that makes this work is the single-writer principle applied literally:
+The discipline that makes this work is Cognition's rule applied literally, that writes stay
+single-threaded:
 **Layer 1 never edits files, and each project has exactly one writer at Layer 2.**
 Everything at Layer 3 is a reader. The moment your chief of staff starts writing code, its
 context fills with implementation detail and it stops being able to hold your day.
@@ -520,7 +550,6 @@ will make your chat feel slower. Plan for it.
 **Astra and the AGI claim** — [OpenAI launch](https://openai.com/index/gpt-6-astra/) ·
 [Axios](https://www.axios.com/2026/09/03/openai-astra-gpt-6-agi-brockman) ·
 [ARC Prize](https://arcprize.org/blog/astra) ·
-[Artificial Analysis](https://artificialanalysis.ai/models/gpt-6-astra) ·
 [Latent Space preview](https://www.latent.space/p/astra) ·
 [Kilo preview](https://blog.kilo.ai/p/gpt-6-astra-what-we-learned-previewing) ·
 [Microsoft/OpenAI AGI clause](https://simonwillison.net/2026/Apr/27/now-deceased-agi-clause/)
