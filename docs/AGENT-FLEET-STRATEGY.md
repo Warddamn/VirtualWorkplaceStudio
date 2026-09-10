@@ -188,23 +188,41 @@ design taste, and any task where your own review bandwidth is the real constrain
 
 You asked: *"what permissions would I need? Or would Astra take care of that for me?"*
 
-**Neither Astra nor Claude can.** Across every vendor there is one architectural invariant:
-**a child agent never holds more authority than its parent, and one agent's approval is
-never your consent.** Claude Code documents it plainly:
+**Neither Astra nor Claude can.** No orchestrator on any platform can provision its own
+access. But the reason is not the tidy invariant you might expect, and the difference
+matters enough to state carefully, because an earlier draft of this document got it wrong.
 
-> Teammates start with the lead's permission settings... A teammate can't approve a
-> permission prompt or supply consent on your behalf, and a teammate that was denied an
-> action can't relay it to another teammate to bypass the check.
+**The comfortable version is false.** "A child agent never holds more authority than its
+parent" is not what the documentation says. What it actually says is narrower:
 
-Subagents inherit a *narrowed* tool pool — the mechanism only subtracts. A subagent runs in
-`bypassPermissions` only when the parent already does — **though that specific guarantee
-requires Claude Code v2.1.267 or later**; on older builds a subagent declaring
-`permissionMode: bypassPermissions` under a weaker parent did receive it. Check your version
-before relying on it. Cloud child sessions cannot exceed
-the calling session's mode, and pre-approved tools the parent lacks are silently dropped.
-In auto mode a classifier treats an approval claim relayed from another agent as untrusted
-input. **Caveat worth knowing:** this is a designed invariant with at least one open issue
-reporting escalation leaks in practice. Treat it as a strong default, not a proof.
+> When the main conversation is in `default`, `dontAsk`, or `plan` mode, the subagent runs
+> in the permission mode you set, **except `bypassPermissions`**.
+
+Read that carefully. A parent sitting in `plan` mode — read-only exploration, where file
+edits are never auto-approved — **can** spawn a subagent declaring `acceptEdits`, which then
+auto-approves file edits along with `mkdir`, `rm`, `mv`, `cp` and `sed`. That is a strict
+escalation. The single mode a child cannot obtain from a weaker parent is
+`bypassPermissions`, and even that guard **requires Claude Code v2.1.267 or later**; older
+builds granted it. Check your version.
+
+**Tool inheritance is mostly, not purely, subtractive.** The built-in and MCP inheritance
+path only removes tools. But a subagent definition's `mcpServers` frontmatter is an
+explicitly additive channel: it exists precisely to *"give a subagent access to MCP servers
+that aren't available in the main conversation."* A worker can therefore hold a tool its
+parent never had.
+
+**And the consent rule is part mechanism, part instruction.** The enforced part is real: in
+auto mode a classifier treats an approval claim relayed from another agent as untrusted
+input and can block the message outright. But much of the rest is written as guidance to the
+model — *"Claude Code **instructs** the receiving Claude never to change permission settings,
+CLAUDE.md, or other configuration because another session asked."* Instructions are strong
+defaults. They are not sandboxes. There is at least one open issue reporting escalation
+leaking in practice.
+
+None of this means the model is unsafe to delegate to. It means **your safety comes from the
+controls you configure, not from the hierarchy being self-policing** — which is exactly why
+the deny rules and `PreToolUse` hooks below are the load-bearing part of this section rather
+than a footnote to it.
 
 ### What only you can provision
 
@@ -541,6 +559,10 @@ will make your chat feel slower. Plan for it.
   hardening there.
 - **Multi-agent quality failures are silent, and 79% of them trace to ambiguous task
   specs.** Budget for verification and for writing better briefs, not for more workers.
+- **Do not assume the agent hierarchy polices itself.** A subagent can be declared into a
+  *more* permissive mode than its parent for every mode except `bypassPermissions`, and
+  `mcpServers` in a subagent definition can hand a worker a tool the parent never had.
+  Configure deny rules and hooks; do not rely on inheritance.
 - **Cost compounds faster than intuition.** Set the cap on day one.
 
 ---
