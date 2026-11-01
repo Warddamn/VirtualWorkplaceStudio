@@ -21,7 +21,7 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 
 ## Agent-logged assumptions
 
-761 assumptions logged by 47 agents, merged from `research/assumptions/*.md` by `research/tools/merge_assumptions.py`. IDs are `A-<agent>-<n>`. Where a later phase revised an earlier assumption, the later entry notes it, and the canonical numbers live in the models (`models/dram_cost_stack.py` `ddr5_reference()`).
+1013 assumptions logged by 62 agents, merged from `research/assumptions/*.md` by `research/tools/merge_assumptions.py`. IDs are `A-<agent>-<n>`. Where a later phase revised an earlier assumption, the later entry notes it, and the canonical numbers live in the models (`models/dram_cost_stack.py` `ddr5_reference()`).
 
 ### Phase 1 — landscape
 
@@ -748,6 +748,40 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 
 ### Phase 4 — deep dives
 
+<details><summary><b>p4-legacy-dram-diebank</b> (29)</summary>
+
+- **A-p4-legacy-dram-diebank-1** [p4-legacy-dram-diebank] Month 1 of every model = 2026-11; m15 = 2028-01 (start of the A-05 glut); m36 = 2029-10; the 10-year view runs to m120 = 2036-10 — basis: task spec and ASSUMPTIONS A-05.
+- **A-p4-legacy-dram-diebank-2** [p4-legacy-dram-diebank] Legacy DDR4/DDR3 packaged price tracks the DDR5 contract deck at parity ($20.37/GB in Q4-2026) — basis: 01_LANDSCAPE §10.4 #4 keeps parity in the cost model; DDR4 spot ($46/GB, 2026-10-20) is never used as a base case.
+- **A-p4-legacy-dram-diebank-3** [p4-legacy-dram-diebank] BASE legacy price: flat to m14, then −35% linear to m26 ($13.24/GB), flat to m36 — basis: house call "turn 2028"; DDR4 collapses first and hardest (01_LANDSCAPE §3.3); BofA −10% blended ASP is a floor on the decline, not the legacy number.
+- **A-p4-legacy-dram-diebank-4** [p4-legacy-dram-diebank] GLUT: legacy price falls to $8.15/GB (−60%) over m15–m17; SEVERE: to $2.04/GB over m15–m20 — basis: ddr5_reference() glut/severe decks applied to legacy at parity.
+- **A-p4-legacy-dram-diebank-5** [p4-legacy-dram-diebank] Long-run legacy price (all scenarios) moves linearly from the m36 level to $3.00/GB by m60 and holds — basis: ~2.3× the 2023 DDR4 trough ($1.30/GB) and ~2.3× depreciated DDR4 cost ($1.284/GB, models/dram_cost_stack.py), i.e. a ~57% cycle-average gross margin for the maker. No source gives a long-run legacy price; this is the most consequential judgment in the 10-year view.
+- **A-p4-legacy-dram-diebank-6** [p4-legacy-dram-diebank] Bank die cost (wafer purchase) = 0.75 × packaged $/GB per good die; market KGD = 0.85 × packaged $/GB — basis: wafer < KGD < packaged; no OCM quote obtained (kill-experiment item).
+- **A-p4-legacy-dram-diebank-7** [p4-legacy-dram-diebank] Bank = 10 × 300 mm DDR4 8Gb wafers, 1,251 good die/wafer (45 mm², 85% yield) — basis: research/phase1/us_backend.md §4.2 table.
+- **A-p4-legacy-dram-diebank-8** [p4-legacy-dram-diebank] U.S. low-volume pull cost per die: re-probe $1.50 + package $6.00 + memory test $4.00, pull yield 95% — basis: no OSAT quote found (QP Technologies publishes none); Asian volume packaging is <$1, U.S. quick-turn hi-rel is far higher; ±30% in sensitivity.
+- **A-p4-legacy-dram-diebank-9** [p4-legacy-dram-diebank] Aftermarket price = 2.5× the part's packaged price at EOL (bank purchase), compressed ×0.9 in GLUT and ×0.8 in SEVERE — basis: 1.5–5× authorized-aftermarket range (research/phase1/us_backend.md §5.3, itself an estimate); centre-low because JEDEC DRAM is substitutable (DSPO 2024: 2,809 simple substitutes vs 1,268 life-of-need buys).
+- **A-p4-legacy-dram-diebank-10** [p4-legacy-dram-diebank] Bank sell-through starts 18 months after purchase and runs 15%/yr of the initial bank (BASE), 11% (GLUT), 8% (SEVERE) — basis: E-07 base case (90% over years 3–8, research/phase2/E_notes.md §5); cheaper substitutes in a glut shrink the locked-buyer pool.
+- **A-p4-legacy-dram-diebank-11** [p4-legacy-dram-diebank] Bank storage = max(3%/yr of remaining basis, $5k/yr) at a Micross-type consignment vault — basis: Micross publishes an annual carrying-fee model but no rates; E-07 used 1.5%/yr; doubled for small-customer pricing.
+- **A-p4-legacy-dram-diebank-12** [p4-legacy-dram-diebank] Managed die-bank program (consignment, OEM owns die): $4,000 LTB study, $750/month program fee, 4% agency fee on LTB die value, $1.00/unit pull-coordination margin on 80 units/program/month, $60/program/month direct cost, 1%/month program churn — basis: DD2 priced LTB studies at $3,500 and software at $249/month; Micross sells the vault directly, so the founder's fee must sit below the OEM's in-house cost; no buyer quote.
+- **A-p4-legacy-dram-diebank-13** [p4-legacy-dram-diebank] Funnel: 4 qualified DMSMS/OEM conversations per month part-time (15 h prospecting at ~4 h each), ×2.5 full-time; 10% buy a study; 35% of studies become programs (one-month lag) — basis: DD2's 12% trial conversion was attacked as optimistic (RT-VC-DD2-06); held lower.
+- **A-p4-legacy-dram-diebank-14** [p4-legacy-dram-diebank] New-business demand multiplier: BASE 1.0 (0.9 from m27), GLUT 0.75 and SEVERE 0.60 from m15 — basis: fewer LTBs when supply is abundant, partly offset by more EOL notices in a downturn (Z2Data 2026: record EOL rates).
+- **A-p4-legacy-dram-diebank-15** [p4-legacy-dram-diebank] Channel (rep) agreement with a long-lifecycle DRAM OCM signed at m9; 0.3 new accounts/month part-time (×2.5 FT); $40k/yr purchases per account at 2026 prices, scaling with legacy price; 5% commission paid 2 months in arrears; 1.5%/month account churn — basis: Intelligent Memory signed Sourceability and Flip as partners in 2026 (Evertiq 2026-10-06), so OCMs are adding channels; commission rate is a typical rep rate, unsourced.
+- **A-p4-legacy-dram-diebank-16** [p4-legacy-dram-diebank] Founder capacity 65 h/month part-time, 170 h full-time; service load 2 h/program/month, 10 h/study, 0.5 h/account/month; ops hire adds 80 h after Stage-1 — basis: ASSUMPTIONS A-03 (~15 h/week).
+- **A-p4-legacy-dram-diebank-17** [p4-legacy-dram-diebank] Part-time fixed costs $680/month (CRM/Sales Navigator, E&O ~$110, accounting, web, travel accrual) plus $2,500 per DMSMS-conference trip at m10/m22/m34 and $8,500 one-off in m1 (kill experiment $6,000, LLC and rep-agreement legal $2,500) — basis: E&O per sources/p5r-memory-efficiency.jsonl (Insureon ~$67–110/month); others estimates.
+- **A-p4-legacy-dram-diebank-18** [p4-legacy-dram-diebank] Plan A full-time trigger: trailing-3-month contribution ≥ $10,000/month and cash ≥ $30,000; salary $10,000 + 10% burden — basis: consistent with round-1 models.
+- **A-p4-legacy-dram-diebank-19** [p4-legacy-dram-diebank] Plan B Stage-1 raise $1.5M at m18 and Stage-2 raise $4.0M at m30, both conditional on gates (OCM letter + ≥3 locked-die LOIs; ≥1 MCM evaluation LOI); bridges are injected automatically to keep $50k cash and are reported as extra external capital — basis: judgment; no investor conversation.
+- **A-p4-legacy-dram-diebank-20** [p4-legacy-dram-diebank] Plan B staff: founder FT from m18 ($11k loaded), quality/ops manager m19+ ($11k), test-engineering contractor m19–m30 ($6k), 2 MCM engineers m30+ ($36k), BD m31+ ($16k), ops tech m38+ ($8k), second BD and production/quality engineer m60+ ($30k); overhead $4k/month from m18, insurance $1.5k/month from m20, ITAR registration $250/month from m30, AS9120B certification $35k (m21–m25) plus $8k/yr surveillance — basis: estimates; ITAR fee from prior knowledge, not verified this session.
+- **A-p4-legacy-dram-diebank-21** [p4-legacy-dram-diebank] Bank package/test NRE $120k for the first family (FBGA package qualification, memory-ATE test program, JEDEC qual lot), $40k for each later bank — basis: no OSAT quote; kill-experiment item.
+- **A-p4-legacy-dram-diebank-22** [p4-legacy-dram-diebank] Hi-rel x72 ECC DDR4 MCM: NRE $1.4M over 18 months from m30; 100 evaluation units at $1,200 in m48; design-ins from m60 at 2/yr (×0.85 GLUT, ×0.70 SEVERE), each 300 units/yr for 8 years with 0.5%/month attrition; ASP $900; unit cost = (9 die + $60 substrate + $80 assembly + $150 screening/burn-in/test) ÷ 0.91 module yield — basis: C-65 card (~$457 unit cost, $800–3,000 ASP), scorers' view that an entrant sits at the ~$800 end, veteran_3 compounded yield (99% KGD → ~91% module).
+- **A-p4-legacy-dram-diebank-23** [p4-legacy-dram-diebank] Tax: 30% on positive taxable income with loss carry-forward; inventory capitalised and expensed on sale; unsold bank die written off at m120 — basis: red-team RT-VC-DD1-07.
+- **A-p4-legacy-dram-diebank-24** [p4-legacy-dram-diebank] Collections: services net-30 (1-month lag); commissions 2-month lag; hardware net-45 (2-month lag) — basis: red-team RT-VC-DD1-04 cash-cycle finding.
+- **A-p4-legacy-dram-diebank-25** [p4-legacy-dram-diebank] Year-10 enterprise value = 1.5× year-10 revenue — basis: judgment for a sub-scale hi-rel component business; no transaction multiple was found this session.
+- **A-p4-legacy-dram-diebank-26** [p4-legacy-dram-diebank] Acquisition variant: target like Resurgent (≈30 staff) at ~$200k revenue/employee → $6.0M revenue, 15% EBITDA (10% GLUT, 6% SEVERE), 5.0× EBITDA price, 80% SBA 7(a) at 10.5% over 10 years, 10% seller note, 10% equity — basis: Resurgent headcount (Business Wire 2023-02-21); revenue/employee, margin, multiple and SBA terms are estimates (SBA 7(a) $5M cap from prior knowledge, not verified this session).
+- **A-p4-legacy-dram-diebank-27** [p4-legacy-dram-diebank] DMSMS memory share: ~10% of DSPO-tracked cases are memory — basis: judgment; used only for the ceiling sanity check.
+- **A-p4-legacy-dram-diebank-28** [p4-legacy-dram-diebank] Judgment: the DFARS moat is real but does not bind for commodity JEDEC DRAM, because most DMSMS DRAM cases resolve as simple substitutes; the die bank only has value where the die is locked (hi-rel MCM, DO-254 avionics, FDA-validated devices).
+- **A-p4-legacy-dram-diebank-29** [p4-legacy-dram-diebank] Judgment: Taiwanese specialty makers (Winbond, ESMT, Etron, Nanya) are beneficiaries of the 2026–27 legacy shortage, not exiters (Winbond sold out through 2027; customers seek LTAs to 2030), so no EOL-driven authorization opportunity from them is expected before the glut; the near-term EOL wave comes from Samsung, SK hynix and Micron, which have not authorized startups.
+
+</details>
+
 <details><summary><b>p4-lifecycle-intel</b> (19)</summary>
 
 - **A-p4-lifecycle-intel-1** [p4-lifecycle-intel] Model month 1 = 2026-12; the kill experiment runs in Nov 2026 — basis: today is 2026-11-01; experiment is <30 days.
@@ -849,6 +883,35 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 
 </details>
 
+<details><summary><b>p4-private-moe-appliance</b> (24)</summary>
+
+- **A-p4-private-moe-appliance-1** [p4-private-moe-appliance] Two SKUs only: L "Team-1T" (1S EPYC 9005 48C, 768 GB = 12 x 64GB RDIMM, 1x RTX PRO 6000 96GB) and S "Team-S" (1S EPYC 9005 32C, 384 GB = 12 x 32GB, 1x RTX 5090 32GB); 50/50 order mix — basis: Kimi-K2.5 needs >=600 GB RAM + 48 GB VRAM and DeepSeek-V4-Flash >=200 GB + one RTX 5090 (KTransformers docs, HEAD 2026-10-28); 12-channel SP5 with 1 DIMM per channel gives 768 GB with 64GB RDIMMs.
+- **A-p4-private-moe-appliance-2** [p4-private-moe-appliance] Platform is single-socket EPYC 9005, not dual-socket and not Xeon 6 6700P — basis: KTransformers keeps a weight copy per NUMA node and the measured dual-socket decode gain is only 29% (8.73 -> 11.26 tok/s); Xeon 6 6700P parts are 8-channel (technical.city snippet: 6767P "8 of 12 channels"); 12-channel Xeon 6 needs a 6900P part [UNVERIFIED price]; KTransformers now prefills long prompts layerwise on the GPU, so AMX matters less (Native-Precision tutorial; AVX2 path supports Kimi-K2.5 RAWINT4).
+- **A-p4-private-moe-appliance-3** [p4-private-moe-appliance] EPYC 9455 ~$5.5k and EPYC 9355 ~$3.7k — basis: 1k-unit list prices recalled from training [UNVERIFIED]; no search budget left to confirm; Xeon 6747P MSRP $6,497 / Newegg $8,731 (snippet) used as cross-check.
+- **A-p4-private-moe-appliance-4** [p4-private-moe-appliance] DRAM cost = ddr5_reference() 64GB RDIMM contract per user-GB ($25.78) x 1.15 small-buyer premium — basis: an integrator buying through distribution pays between contract and the ~$32/GB street price (ServNet tracker, Aug-2026, via C-48 card).
+- **A-p4-private-moe-appliance-5** [p4-private-moe-appliance] GPU prices: RTX PRO 6000 $16,000 and RTX 5090 $5,000 today — basis: tech-insider (NVIDIA US store $16,000, Sep-2026) and GPUPrix ($17,987 low, 2026-10-22); RTX 5090 Micro Center $4,299-5,300 (online $8.5-10k). Chose the low end of the observed range.
+- **A-p4-private-moe-appliance-6** [p4-private-moe-appliance] BASE price path: DRAM and GPU hold to Dec-2027, then -30% linear across 2028; GLUT: DRAM -60% (ddr5_reference glut deck) and GPU to 55% from Jan-2028; SEVERE: DRAM component $2.04/GB and GPU to 50% from Jan-2028 — basis: ASSUMPTIONS A-05, task spec, DD4's BASE shape; GPU glut factor = return to the $8,565 launch MSRP.
+- **A-p4-private-moe-appliance-7** [p4-private-moe-appliance] Hardware priced cost-plus at a 22% gross-margin target (19% after 2% warranty reserve and shipping) — basis: C-48 card's own BOM model; Supermicro FY26 GAAP GM 10.8% (FQ4 17.5%) is the scale floor.
+- **A-p4-private-moe-appliance-8** [p4-private-moe-appliance] Subscription $1,250/month (L) and $650/month (S), billed annually in advance, mandatory in year 1, 20% annual churn — basis: Lemony $499/month for 5 users (TechCrunch snippet), MSP AI add-on $25-75/user/month, managed private AI $12-20/user/month; churn is a judgment that small orgs drop support and self-maintain the open-source stack (DD4 red-team pattern).
+- **A-p4-private-moe-appliance-9** [p4-private-moe-appliance] Business-hours, next-business-day SLA only; no 24/7 on-call in BASE — basis: DD4 was killed partly by $2.5-3k/month on-call cost; a 24/7 retainer is run as a sensitivity (it delays full-time to m35).
+- **A-p4-private-moe-appliance-10** [p4-private-moe-appliance] Conversion 8% of qualified conversations, 4-month sales cycle, 5 qualified conversations/month part-time and 14 full-time, 3/month from an MSP/RPO channel from m13 — basis: judgment; C-48 verify_corrections (3-6 month security reviews). The kill experiment measures conversion directly.
+- **A-p4-private-moe-appliance-11** [p4-private-moe-appliance] Single-stream decode 17 tok/s (L, Kimi-K2.5 INT4) and 25 tok/s (S, MiniMax-M2.x FP8) — basis: scaled from KTransformers DeepSeek-R1 8.73 tok/s (1S Xeon 6454S, 8ch DDR5-4800) x2.0 bandwidth x37/32 active params, derated 0.85; S from MiniMax-M2.1 32.1 tok/s on 2S EPYC 9355 + 1x RTX 5090 / 1.29.
+- **A-p4-private-moe-appliance-12** [p4-private-moe-appliance] Concurrency curve aggregate = single x min(c^0.62, 2.4) — basis: KTransformers balance_serve +130% at 4-way; Xeon 6 + MRDIMM-8800 aggregate 17 -> 40 tok/s.
+- **A-p4-private-moe-appliance-13** [p4-private-moe-appliance] Acceptable per-user speed 10 tok/s; 15% of named users generating at peak — basis: judgment; yields 27 named users (L) and 40 (S).
+- **A-p4-private-moe-appliance-14** [p4-private-moe-appliance] L-box prefill = 2x the measured 1x 48GB-GPU PCIe 4.0 Kimi numbers (53/184 tok/s at 2k/8k) because PCIe 5.0 doubles layerwise weight-streaming bandwidth — basis: judgment; gives ~19-22 s time-to-first-token for 2-8k-token prompts.
+- **A-p4-private-moe-appliance-15** [p4-private-moe-appliance] Substitute capacities: Mac Studio M5 Ultra 512GB ~5 named users; DGX Station GB300 ~80 named users — basis: judgment from M3 Ultra Kimi-K2.5 5-15 tok/s (snippet) and GB300 memory layout (288 GB HBM3e + 496 GB LPDDR5X).
+- **A-p4-private-moe-appliance-16** [p4-private-moe-appliance] M365 Copilot GCC High ~$35/user/month — basis: [UNVERIFIED-training] commercial Copilot ~$30/user/month; GCC High GA Dec-2025 confirmed by snippet, price not found.
+- **A-p4-private-moe-appliance-17** [p4-private-moe-appliance] CMMC Level 2 does NOT require on-prem AI; cloud AI for CUI needs FedRAMP Moderate or equivalent (DFARS 252.204-7012), and M365 Copilot GCC High and Claude on Bedrock GovCloud qualify — basis: Secureframe, Coalfire Federal, Daymark, Anthropic/AWS snippets. So the defense segment is narrowed to orgs with on-prem/air-gapped CUI enclaves or ITAR engineering networks.
+- **A-p4-private-moe-appliance-18** [p4-private-moe-appliance] Defense buyers will want U.S.-origin weights; the L box is sized so Inkling 975B-A41B (Apache 2.0, Jul-2026) and Nemotron 3 Ultra 550B-A55B (Jun-2026) fit at 4-bit — basis: open-weights index snippets; KTransformers documents neither (llama.cpp GGUF exists for Nemotron 3 Ultra), so support is a dependency.
+- **A-p4-private-moe-appliance-19** [p4-private-moe-appliance] Parts are bought in the order month; 50% deposit at order, balance + setup fee + first-year subscription at delivery (order + 1) — basis: C-48 card (50% deposits). Expected-value cash hides lumpiness; the model prints a whole-box check (two simultaneous L orders need a ~$25k bridge).
+- **A-p4-private-moe-appliance-20** [p4-private-moe-appliance] Demo capacity is rented ($1,200/month) until an S-class demo box can be bought while keeping $15k cash — basis: judgment; rental availability of 768GB+/GPU hosts not confirmed (open gap).
+- **A-p4-private-moe-appliance-21** [p4-private-moe-appliance] ESP compliance set-up $8k (m9) + $400/month — basis: judgment; remote support into a customer's CUI enclave can put the vendor in the customer's CMMC scope, so support is designed as customer-escorted sessions and offline signed update bundles.
+- **A-p4-private-moe-appliance-22** [p4-private-moe-appliance] 30% tax on positive cumulative taxable income with loss carry-forward — basis: 05_REDTEAM.md RT-VC-DD1-07 (applied to all round-2 models).
+- **A-p4-private-moe-appliance-23** [p4-private-moe-appliance] Founder full-time trigger: trailing 3-month (GP - recurring opex) >= $10k and post-tax cash >= $30k — basis: A-03 salary; buffer judgment.
+- **A-p4-private-moe-appliance-24** [p4-private-moe-appliance] Buy only from OCMs/authorized distributors (no gray-market GPUs during the shortage) and only Samsung/SK hynix/Micron DRAM — basis: DFARS 252.246-7008 counterfeit-avoidance preference and NDAA §5949 (2027-12-23) CXMT/YMTC/SMIC exclusion for federal buyers (01_LANDSCAPE §0 item 8).
+
+</details>
+
 <details><summary><b>p4-provenance-recert</b> (26)</summary>
 
 - **A-p4-provenance-recert-1** [p4-provenance-recert] I used all 30 WebSearch calls. My single WebFetch (govinfo.gov) failed DNS, and per the tool's instruction I stopped trying more hosts. Every external fact here is therefore a search snippet, and nothing is [VERIFIED] — basis: tool limits.
@@ -877,6 +940,24 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 - **A-p4-provenance-recert-24** [p4-provenance-recert] **R2v3 is not required** to buy tested, working RDIMMs for reuse from R2 ITADs. The ITAD's downstream due diligence covers it. R2v3 would be needed only to take untested or scrap circuit-board lots, which are Focus Materials — basis: [UNVERIFIED-training] reading of R2v3; SERI license is $2k/facility/yr plus CB audit if ever needed.
 - **A-p4-provenance-recert-25** [p4-provenance-recert] Recovered DIMMs are never sold into DoD deliverables, and every module is labeled "used/recertified" — basis: DFARS 252.246-7007/-7008 and FAR 52.246-26 [UNVERIFIED-training]; 18 U.S.C. §2320 (C_notes §6).
 - **A-p4-provenance-recert-26** [p4-provenance-recert] Founder time is imputed at $75/h, used only for CAC, never as cash. A CleanBOM sales conversation takes 3 hours — basis: estimate.
+
+</details>
+
+<details><summary><b>p4w-legacy-dram-diebank</b> (13)</summary>
+
+- **A-p4w-legacy-dram-diebank-1** [p4w-legacy-dram-diebank] No new web research: WebSearch quota 0 and no WebFetch used. Every URL in 04_DEEPDIVES/legacy-dram-diebank.md was already logged in research/sources/*.jsonl (checked by script, 50/50 present) and is carried into research/sources/p4w-legacy-dram-diebank.jsonl with its original log named — basis: task instruction; CONVENTIONS source-logging rule.
+- **A-p4w-legacy-dram-diebank-2** [p4w-legacy-dram-diebank] All economics are taken unchanged from models/legacy-dram-diebank.py (re-run 2026-11-01, exit 0; figures match research/phase4/legacy-dram-diebank_model_output.md) — basis: Rule 8.
+- **A-p4w-legacy-dram-diebank-3** [p4w-legacy-dram-diebank] Bank break-even aftermarket multiples (1.5x bought m20 BASE, 2.3x GLUT, 4.8x long-run) = model §3 cost/unit divided by the packaged $/GB at purchase ($25.37/$16.80, $18.54/$8.15, $14.47/$3.00) — basis: arithmetic on model output.
+- **A-p4w-legacy-dram-diebank-4** [p4w-legacy-dram-diebank] A bank bought at the 2026 peak would need ~$311k (12,510 die x 0.75 x $20.37/GB + $120k set-up) — basis: arithmetic on model inputs bank_wafers, good_die_per_wafer, wafer_factor, bank_nre_first.
+- **A-p4w-legacy-dram-diebank-5** [p4w-legacy-dram-diebank] "4 design-ins x 1,000 units is 6.7x the modelled volume" = 4,000 / (2 x 300) units per year — basis: model §6 grid inputs.
+- **A-p4w-legacy-dram-diebank-6** [p4w-legacy-dram-diebank] Later Plan A gates sit at ~75% of the model's BASE path: m12 recurring ARR >= $9.5k (model $12.6k); m18 >= $16.5k (model $22.0k); m5 >= 1 paid study (model ~$4.4k cumulative one-off revenue); m9 >= 1 program contracted (model 0.8) — basis: same convention as the round-1 DD2 author (p4w-lifecycle-intel), so the expected case passes.
+- **A-p4w-legacy-dram-diebank-7** [p4w-legacy-dram-diebank] Cash floor kill: stop below $20,000 of cash in any month — basis: model cash low is $30.2k at m3; a ~$10k cushion before the founder's $40k is exhausted. Judgment.
+- **A-p4w-legacy-dram-diebank-8** [p4w-legacy-dram-diebank] Kill experiment runs 2026-11-02 to a 2026-12-01 decision; OCM written answers may run to 2026-12-15, with fewer than 3 of 6 answers counting as a track-A fail — basis: <30-day rule; OCM response times unknown.
+- **A-p4w-legacy-dram-diebank-9** [p4w-legacy-dram-diebank] Added kill track C3 (Micross or an equal vault must quote white-label consignment for a third-party program manager, else kill L1) — basis: Plan A's L1 product depends on it; notes §1.1 say Micross publishes no rates and sells the vault direct.
+- **A-p4w-legacy-dram-diebank-10** [p4w-legacy-dram-diebank] Added gate: no Stage-1 raise without a signed hi-rel hardware co-founder by 2028-04-30, even if the m15 OCM/LOI gate passes — basis: all three scorers gave founder fit 1; C-65 card says doable_by_founder "no - hardware team"; the founder is not a chip engineer.
+- **A-p4w-legacy-dram-diebank-11** [p4w-legacy-dram-diebank] DMSMS advisor at 0.25–0.5% equity; hi-rel co-founder paid in equity until Stage 1 — basis: common early-stage practice; unsourced judgment. Post-government employment rules for ex-DoD advisors not checked.
+- **A-p4w-legacy-dram-diebank-12** [p4w-legacy-dram-diebank] Status recommended into the round-2 red team: SIDE LINE, not MOONSHOT — basis: model §6 EV/capital 0.46x BASE (0.36x GLUT, 0.28x SEVERE); Plan A never pays the founder; venture returns need ~4 design-ins/yr x ~1,000 units against Teledyne/Mercury/Frontgrade heritage.
+- **A-p4w-legacy-dram-diebank-13** [p4w-legacy-dram-diebank] Kill criterion 13 threshold ("fewer than 4 design-ins a year at ~1,000 units" by ~m72 = 2032-10) — basis: notes §12 #4; model §6 grid shows <=2.42x capital below that point.
 
 </details>
 
@@ -954,6 +1035,26 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 
 </details>
 
+<details><summary><b>p4w-private-moe-appliance</b> (15)</summary>
+
+- **A-p4w-private-moe-appliance-1** [p4w-private-moe-appliance] Added kill gate K0 (written employer carve-out before any build or outreach) — basis: the founder's employer is customer candidate #1 and the round-1 red team made the same gate mandatory for DD2 (05_REDTEAM.md RT-VC-DD2-05).
+- **A-p4w-private-moe-appliance-2** [p4w-private-moe-appliance] Added kill gate K7 (>=20 qualified conversations held within 28 days of part-time outreach) — basis: the model assumes 5 qualified conversations/month sustained; a founder who cannot hold 20 in a one-month sprint is unlikely to sustain 5/month for 18 months (same logic as DD2's K6).
+- **A-p4w-private-moe-appliance-3** [p4w-private-moe-appliance] Roadmap and kill gates are set at ~75% of the model's BASE path (rounded) — basis: the convention used by the round-1 DD2 revision; expected-value boxes are fractional, so gates use whole-box floors.
+- **A-p4w-private-moe-appliance-4** [p4w-private-moe-appliance] Subscription renewal kill threshold 70% at first anniversaries (model assumes 80%, i.e. 20% annual churn) — basis: judgment; a 10-point miss is the earliest measurable sign the recurring line is weaker than modelled.
+- **A-p4w-private-moe-appliance-5** [p4w-private-moe-appliance] GPU supply kill threshold: authorized-channel lead time >12 weeks for two consecutive quarters suspends the L SKU — basis: judgment; RTX PRO 6000 showed out of stock at NVIDIA's US store (notes §15 gap 9) and the model buys parts in the order month with delivery the next month.
+- **A-p4w-private-moe-appliance-6** [p4w-private-moe-appliance] Substitute kill threshold: a <=$25k desktop running a 1T-class model at INT4 at >=15 tok/s for 4 concurrent users removes the L box's reason to exist — basis: judgment; Mac Studio M5 Ultra 512GB is $22,299 and cannot hold 1T at INT4 today (LLM Configurator snippet).
+- **A-p4w-private-moe-appliance-7** [p4w-private-moe-appliance] Roofline sanity check: 12-channel DDR5-6400 = 614 GB/s theoretical; Kimi-K2.5 ~32B active parameters at INT4 = ~16 GB read per token, so ~38 tok/s ceiling; the model's 17 tok/s is ~45% of it — basis: arithmetic (12 x 6,400 MT/s x 8 B); used only to show the model figure is not above physics.
+- **A-p4w-private-moe-appliance-8** [p4w-private-moe-appliance] The workload that most needs 1T-class quality (agentic coding, long multi-step legal reasoning) is the one that strains a CPU-decode box most, because agent loops make many long-context calls that each pay the ~20 s TTFT floor — basis: judgment from model §2 TTFT and concurrency rows.
+- **A-p4w-private-moe-appliance-9** [p4w-private-moe-appliance] Recurring share of revenue computed by summing the model's monthly rows (BASE 18.4% of 36-month revenue; GLUT 23.1%; SEVERE 27.8%; 25.7% of m36 BASE revenue) — basis: `simulate()` in models/private-moe-appliance.py, scratch probe, no model change.
+- **A-p4w-private-moe-appliance-10** [p4w-private-moe-appliance] Recurring share of m36 gross profit ~43% — basis: m36 BASE fleet 22.3 boxes x blended subscription cost ~$286/box-month (L $317, S $255) gives ~$6.4k cost against $21.1k subscription revenue, so ~$14.7k of $33.5k GP; ignores partner commission.
+- **A-p4w-private-moe-appliance-11** [p4w-private-moe-appliance] A later T1 raise is sized at ~$0.5M — basis: a seller plus a field tech for ~2 years at the model's $10k and $7.5k/month loaded costs (~$420k) plus buffer; only after >=3 MSP/RPO partners each close a box a month (notes §9).
+- **A-p4w-private-moe-appliance-12** [p4w-private-moe-appliance] Third-party equipment leasing offered to buyers as a GTM option, not modelled — basis: HPE sells its Private Cloud AI bundle on a 36-month FMV lease (HPE snippet); the model books cash sales only.
+- **A-p4w-private-moe-appliance-13** [p4w-private-moe-appliance] Licence status of SGLang (Apache 2.0), llama.cpp (MIT), DeepSeek weights (MIT), Kimi K2.x weights (modified MIT with attribution threshold) and Nemotron (NVIDIA Open Model License) is from training data [UNVERIFIED-training]; only KTransformers (Apache 2.0) was opened, and Inkling's Apache 2.0 is snippet-grade.
+- **A-p4w-private-moe-appliance-14** [p4w-private-moe-appliance] Vendor staff who touch a customer's ITAR technical data during support must be U.S. persons, so any contractor must be a U.S. person — basis: standard ITAR practice [UNVERIFIED-training]; consistent with AWS GovCloud restricting ITAR inference to U.S. persons (AWS ML blog snippet).
+- **A-p4w-private-moe-appliance-15** [p4w-private-moe-appliance] Business-hours support during the founder's day job needs a named backup contractor before the first delivery (m8), even though the model uses only 24 contractor hours in BASE — basis: judgment; the model treats founder hours as a monthly budget, not as availability during the working day.
+
+</details>
+
 <details><summary><b>p4w-provenance-recert</b> (11)</summary>
 
 - **A-p4w-provenance-recert-1** [p4w-provenance-recert] Verdicts are POSSIBLE yes / PROFITABLE marginal / DOABLE yes — basis: m§3–m§6. 85% of BASE revenue is 15%-GM recert, ARR at m36 is $434–446k across decks, and CleanBOM close rate, churn and the ITAD buy fraction are all unmeasured.
@@ -967,6 +1068,236 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 - **A-p4w-provenance-recert-9** [p4w-provenance-recert] A US8468422 FTO read costs ~$1–2k — basis: judgment for a single-patent attorney read; not sourced.
 - **A-p4w-provenance-recert-10** [p4w-provenance-recert] The federal channel advisor is commission-only, so the model carries no fixed cost for the role — basis: keeps the T0 budget intact; not sourced.
 - **A-p4w-provenance-recert-11** [p4w-provenance-recert] The CleanBOM glut-demand sign is treated as ambiguous. Cheaper Korean and U.S. bits could pull OEMs off CXMT and shrink demand; cheaper CXMT bits could gain share and grow it. The model holds demand flat — basis: Phase 3 scorers argued only the "raises demand" side.
+
+</details>
+
+### Phase 5 — red team
+
+<details><summary><b>p5-PHY</b> (8)</summary>
+
+- **A-p5-PHY-1** [p5-PHY] Shop-floor permanent magnets (dial-indicator bases, magnetic chucks, NdFeB trays) reach ~0.1-1 T (80-800 kA/m) at contact — basis: typical ferrite/NdFeB surface fields; not measured; compared with Everspin 16Mb parallel Hmax_write 8,000 A/m (AN 02049, via snippet).
+- **A-p5-PHY-2** [p5-PHY] 2026-27 U.S. ITAD RDIMM flow contains essentially no CXMT die — basis: 2018-22 server vintage, OEM DIMM qualification lists, CXMT server-grade parts arriving 2024-26; to be falsified by kill-track B.
+- **A-p5-PHY-3** [p5-PHY] Step-crossing probability for a 10% reclaim ≈ 22-33% for homogeneous fleets — basis: P ≈ r/(1−r) × S_k/(S_{k+1}−S_k) with 1.33-1.5× channel-balanced DIMM steps, uniform requirement within a step.
+- **A-p5-PHY-4** [p5-PHY] ~1-2 agent-attributable panics/yr on a 2,157-node book — basis: Schroeder et al. 2009 ~1.3% machines/yr with UEs × ~5% of RAM in the zswap pool (10% reclaim at 2:1).
+- **A-p5-PHY-5** [p5-PHY] Swap writeback 100-200 GB/day/node and ~1 DWPD boot M.2 — basis: 51 GB reclaimed × 2-4 cold-set turnovers/day; typical boot-class SSD rating (verify per SKU).
+- **A-p5-PHY-6** [p5-PHY] Heavy-ion SEE campaign ~$10-30k — basis: beam time at TAMU/LBNL plus boards and travel; order of magnitude only.
+- **A-p5-PHY-7** [p5-PHY] 32 KB macro at 99% yield needs per-bit failure <~4e-8 (~5.4σ) — basis: 1−0.99^(1/262,144).
+- **A-p5-PHY-8** [p5-PHY] Llama-3-70B KV ≈ 0.33 MB/token — basis: 80 layers × 8 KV heads × 128 dim × 2 (K,V) × 2 B (fp16).
+
+</details>
+
+<details><summary><b>p5-VC</b> (7)</summary>
+
+- **A-p5-VC-1** [p5-VC] DD1 CleanBOM addressable buyers that cannot rely on an upstream certification ≈ 20–40 compatible-module/white-box builders plus a few hundred SEWP/GSA resellers; 40 × $30k + 300 × $9k ≈ $3.9M at 100% share — basis: DD1 §3 buyer list and $750/$2,500 tiers; no census of these firms exists in the repo.
+- **A-p5-VC-2** [p5-VC] DD1 working-capital gap at m10 ≈ $40k B2B receivables (net-30 on ~55% B2B share of $82.3k recert revenue) + $20–30k held eBay payouts — basis: models/provenance-recert.py BASE m10 row; eBay new-seller hold ~14–30 days and ~10 item/$500 limits (snippets logged in p5-VC.jsonl).
+- **A-p5-VC-3** [p5-VC] Combined income + self-employment tax on pass-through EBITDA ≈ 25–35% — basis: general U.S. pass-through rates; none of the five models provisions tax.
+- **A-p5-VC-4** [p5-VC] DD2 price-driven module removal would cut BASE m36 ARR toward ~$250k — basis: 39% price-driven share of m36 revenue in models/lifecycle-intel.py §6 applied to $421,548.
+- **A-p5-VC-5** [p5-VC] DD3 i-series Fanuc controls (0i/16i/18i/21i) accept CF-in-PCMCIA for SRAM backup; pre-i controls are the ones needing true SRAM cards — basis: IMD 0i-Mate CF backup procedure and Memex 16/18-B/C manual (snippets); not confirmed against a Fanuc maintenance manual.
+- **A-p5-VC-6** [p5-VC] DD4 credible 1-hour-response kernel on-call costs "several thousand $/month" — basis: judgment; $750/month buys ~4 h at the model's $175/h.
+- **A-p5-VC-7** [p5-VC] DD5: 204 of 298 funnel projects rest on estimates (150 pure ESTIMATE rows + 54 from an estimated second wafer.space run/yr) — basis: models/open-memory-ip.py INPUTS.
+
+</details>
+
+<details><summary><b>p5-VET</b> (7)</summary>
+
+- **A-p5-VET-1** [p5-VET] Stress variants for DD1 (fail_rate 0.08 / return_rate 0.05; mix_ddr5_64 0; buy_frac 0.70; b2b_price_factor 0.75; lab_cost $1,200) are plausible downside values, not point estimates — basis: decommissioned-DIMM CE-driven retirement, absence of ECC-corrected reporting in memtest86+ on Xeon Scalable, DDR5 platform age (2022-23 launch), B2B buyers' own lot+test cost.
+- **A-p5-VET-2** [p5-VET] Pre-i Fanuc share of the installed base ≈ 0.15 (vs DD3's 0.35 incl. i-series) — basis: i-series (16i/18i/21i/0i) accept CF-in-PCMCIA for boot-menu SRAM backup (IMD, snippet); rough split, not sourced.
+- **A-p5-VET-3** [p5-VET] Credible 24/7 kernel on-call with 1–2 h SLA ≈ $3k/month — basis: ~15 reserved hours at $175/h plus availability premium; judgment.
+- **A-p5-VET-4** [p5-VET] Outside-lab ESD/temperature/insertion qualification for a PC Card ≈ $5–10k — basis: typical small-lot qual-lab pricing; judgment, unsourced.
+- **A-p5-VET-5** [p5-VET] FM18W08 cycle time ≈ 130 ns vs 70 ns access, address latched on /CE falling — basis: recollection of Infineon/Cypress datasheet; flagged "verify" in the objection.
+- **A-p5-VET-6** [p5-VET] GF180MCU open-PDK wafers likely run in Singapore — basis: wafer.space Singapore-based (Crowd Supply snippet) and 01_LANDSCAPE §6 listing no GF180MCU at GF's U.S. fabs; UNVERIFIED.
+- **A-p5-VET-7** [p5-VET] Flip Feng Shui (Razavi et al., USENIX Security 2016) cited from training knowledge; URL not opened, so not logged as a source.
+
+</details>
+
+<details><summary><b>p5r-legacy-dram-diebank</b> (22)</summary>
+
+- **A-p5r-legacy-dram-diebank-1** [p5r-legacy-dram-diebank] L1 managed die-bank programs are switched off (l1_enabled 1 -> 0) because the OEM's all-in cost of banking die ($186k-347k) is 2.9-5.4x a packaged LTB plus dry storage (~$64k) — basis: model §10b on Phase 4 inputs; RT-HYP/VC/VET-DD7-01.
+- **A-p5r-legacy-dram-diebank-2** [p5r-legacy-dram-diebank] Packaged-part LTB plus dry or N2 storage at the CM costs the part price plus ~$3,000 over the program life — basis: reviewer VET "a few thousand dollars"; GEIA-STD-0003B practice; no quote.
+- **A-p5r-legacy-dram-diebank-3** [p5r-legacy-dram-diebank] U.S. package and test for an L1 pull is $10-12.11/die — basis: Phase 4 pull_margin_unit note ($10 OSAT) and the L3 stack ($11.50 / 0.95).
+- **A-p5r-legacy-dram-diebank-4** [p5r-legacy-dram-diebank] Study-to-program conversion 0.35 -> 0.10, because Micross sells LTB procurement, N2 storage and pulls direct (EDSP) — basis: Micross EDSP pages via search 2026-11-01; RT-VC-DD7-02.
+- **A-p5r-legacy-dram-diebank-5** [p5r-legacy-dram-diebank] Burn-in plus hot/cold at-speed insertions add $10/die to the L3 pull stack (low end of the reviewer's $10-20) — basis: RT-VET-DD7-03; Mercury 100% burn-in datasheet.
+- **A-p5r-legacy-dram-diebank-6** [p5r-legacy-dram-diebank] Pull yield of bare die stored 10+ years in N2 is 0.90 (was 0.95) — basis: no published bondability/yield data; Infineon 36-month wafer limit; RT-PHY-DD7-03.
+- **A-p5r-legacy-dram-diebank-7** [p5r-legacy-dram-diebank] Storage surveillance (annual sample assembly, test, bond pull/shear) costs $5,000 per bank per year — basis: judgment, ~one small OSAT lot plus lab work a year.
+- **A-p5r-legacy-dram-diebank-8** [p5r-legacy-dram-diebank] Opened wafers are packaged whole and stored as packaged parts — basis: thinning and saw are whole-wafer steps; Rochester's 17-year data covers packaged parts; RT-PHY-DD7-04.
+- **A-p5r-legacy-dram-diebank-9** [p5r-legacy-dram-diebank] Blended aftermarket multiple 2.0x = 50/50 of 2.5x (DFARS-bound buyers) and ~1.5x (non-DFARS buyers capped by recovered hyperscaler DDR4 in 2028-30) — basis: RT-HYP-DD7-04; the 50/50 split follows 5 of the 10 named customers being non-DFARS.
+- **A-p5r-legacy-dram-diebank-10** [p5r-legacy-dram-diebank] A legacy-OCM 8Gb DDR4 die is ~75 mm2 (range 60-90), giving 736 good die per 300 mm wafer at 85% yield; a 12,500-die bank is 17 wafers — basis: RT-PHY-DD7-05; gross-die formula in model §10f.
+- **A-p5r-legacy-dram-diebank-11** [p5r-legacy-dram-diebank] A stacked/RDL 8 GB x72 build costs $90 substrate + $160 assembly — basis: RT-PHY-DD7-01 estimate; no OSAT quote.
+- **A-p5r-legacy-dram-diebank-12** [p5r-legacy-dram-diebank] MCM module yield 0.76 (3% per-die fallout at a 125 C screen/bin on unburned distributor KGD, 0.97^9) — basis: RT-VET-DD7-04 lower bound, combined with RT-PHY-DD7-02.
+- **A-p5r-legacy-dram-diebank-13** [p5r-legacy-dram-diebank] Building at a QML-38534 line adds $200k to MCM NRE ($1.4M -> $1.6M) — basis: judgment for line audit and qualification plus competitor margin; RT-VET-DD7-06.
+- **A-p5r-legacy-dram-diebank-14** [p5r-legacy-dram-diebank] Per-lot TID/SEL/hot-retention requalification costs $75k/yr from the evaluation lot — basis: judgment (one heavy-ion + Co-60 campaign a year with test boards and analysis); RT-VET-DD7-04.
+- **A-p5r-legacy-dram-diebank-15** [p5r-legacy-dram-diebank] Probability that a DRAM OCM grants a new U.S. entity authorized-aftermarket rights within 15 months is <=5% — basis: likely OCMs are extending lines (Winbond LTAs to 2030, ISSI to 2038); Micron placed continuity with e2v/ATP/Alliance; judgment.
+- **A-p5r-legacy-dram-diebank-16** [p5r-legacy-dram-diebank] Probability of a written rep offer to a part-time solo rep is 0.25 — basis: Intelligent Memory filled its 2026 EOL channel with Sourceability and Flip; judgment.
+- **A-p5r-legacy-dram-diebank-17** [p5r-legacy-dram-diebank] The 5% L2 commission is kept but unverified; search found only generic 5-15% rep ranges (technology/manufacturing) — basis: smallbiztrends via search 2026-11-01.
+- **A-p5r-legacy-dram-diebank-18** [p5r-legacy-dram-diebank] NIST SP 800-171 / CUI compliance for DoD-facing study work costs ~$35k one-off + ~$500/month (reviewer figure from DoD's regulatory cost model via Secureframe); the reported 2026-07-13 CMMC Phase-2 suspension was not verified — basis: RT-HYP-DD7-02.
+- **A-p5r-legacy-dram-diebank-19** [p5r-legacy-dram-diebank] AS9120B in year 1 costs $35k over m2-m6 plus $8k/yr surveillance — basis: Phase 4 Plan B inputs moved earlier; RT-HYP-DD7-03.
+- **A-p5r-legacy-dram-diebank-20** [p5r-legacy-dram-diebank] Residual Plan A keeps the Phase 4 fixed cost base ($680/month + $2,500/yr conference); a lean $300/month variant is shown separately — basis: no objection asked for lower costs; avoids tuning the residual upward.
+- **A-p5r-legacy-dram-diebank-21** [p5r-legacy-dram-diebank] The month-1 one-off becomes $3,900 ($500 employer review + $900 rep-agreement review + $2,500 LLC/legal); the $6,000 kill test is not run — basis: concept killed; RT-HYP-DD7-06, RT-VC-DD7-03.
+- **A-p5r-legacy-dram-diebank-22** [p5r-legacy-dram-diebank] Automotive-grade DRAM above 95 C exists with derated refresh, so 125 C is a bin-and-derate problem, not an impossibility — basis: prior knowledge [UNVERIFIED-training]; did not change the disposition.
+
+</details>
+
+<details><summary><b>p5r-lifecycle-intel</b> (14)</summary>
+
+- **A-p5r-lifecycle-intel-1** [p5r-lifecycle-intel] contributor_share 0.40 -> 0.25: only line-item memory buyers (not EMS-turnkey) whose legal function signs off despite supplier-confidentiality terms contribute PO prices — basis: RT-VET-DD2-04, RT-HYP-DD2-02; no survey data exists.
+- **A-p5r-lifecycle-intel-2** [p5r-lifecycle-intel] seed_contributors = 5 from m3: the revised K4 pass bar is >=10 signed non-subscriber agreements; assume half deliver usable 24-month line-item history — basis: judgment; RT-VC-DD2-01.
+- **A-p5r-lifecycle-intel-3** [p5r-lifecycle-intel] panel_min_contributors = 15: minimum for >=3 grade-homogeneous cells with >=5 independent buyers per quarter, allowing cross-cell overlap — basis: RT-VET-DD2-01, RT-PHY-DD2-02; not statistically derived; the VET bootstrapped-noise test is the real gate.
+- **A-p5r-lifecycle-intel-4** [p5r-lifecycle-intel] index_rate 0.60 -> 0.40 licences/month at full volatility: TrendForce contract prints and open-book pass-through are the default; scope narrowed to SMB OEM->customer surcharges — basis: TrendForce 2018-11-05 (8GB module contract base), TrendForce 2025-12-05 (Dell/Lenovo list-price hikes), via snippet.
+- **A-p5r-lifecycle-intel-5** [p5r-lifecycle-intel] vol_down_weight = 0: a falling price adds no index demand beyond the floor — basis: no index-linked down-adjustment found for 2018-19 or 2023 (one search, 2026-11-01); Unipi surcharge "reduced once memory prices normalize".
+- **A-p5r-lifecycle-intel-6** [p5r-lifecycle-intel] index_churn_falling = 3%/month while the 3-month move is below -5% — basis: judgment; surcharges withdrawn in a falling market (RT-VET-DD2-03).
+- **A-p5r-lifecycle-intel-7** [p5r-lifecycle-intel] trial_conversion 0.12 -> 0.10 — basis: free Octopart BOM tool and distributor PDN e-mails substitute for plain EOL alerts (RT-HYP-DD2-04); HYP's 0.08 run as a variant.
+- **A-p5r-lifecycle-intel-8** [p5r-lifecycle-intel] trials_cap_pt 25 -> 20 qualified trials/month — basis: 15 h/week ~ 65 h/month; 20 demo hours leaves ~45 h for product, crawler, panel, content (RT-VC-DD2-06).
+- **A-p5r-lifecycle-intel-9** [p5r-lifecycle-intel] trials_at_launch 6 -> 4 and saas_launch_month 5 -> 6 — basis: no day-job-peer trials without a written carve-out; carve-out before code and PCN parsing in MVP (RT-VC-DD2-05, RT-PHY-DD2-05).
+- **A-p5r-lifecycle-intel-10** [p5r-lifecycle-intel] Nexar Standard $600/mo, Pro $2,000/mo, display licence $2,000/mo — basis: prices unpublished (Nexar compare-plans, 2026-11-01, via snippet); midpoint of Phase 4 guesses and HYP stress values.
+- **A-p5r-lifecycle-intel-11** [p5r-lifecycle-intel] Antitrust: $5,000 written opinion at m2 plus $400/month compliance retainer from index publication — basis: judgment on boutique-counsel rates; DOJ/FTC 2023 withdrawal of information-exchange safety zones and DOJ 2024 RealPage complaint [UNVERIFIED-training].
+- **A-p5r-lifecycle-intel-12** [p5r-lifecycle-intel] LTB study COGS 30% -> 35% of price and ltb_attach 1.5% -> 1.25%/month — basis: storage/attrition/solderability section per study (J-STD-033, GEIA-STD-0003); 2026 LTBs filled subject to allocation (RT-PHY-DD2-04, RT-VET-DD2-06).
+- **A-p5r-lifecycle-intel-13** [p5r-lifecycle-intel] U.S. SMB OEM TAM 6,000 -> 3,000 (range 2,000-4,500) — basis: NAICS 334 = 9,698 firms all sizes (Mewayz aggregator, via snippet, not Census-verified) x ~35% with 20-499 staff + ~600 electronic medical-device firms, x ~70% buying memory line-item = ~2,400; the share assumptions are judgment.
+- **A-p5r-lifecycle-intel-14** [p5r-lifecycle-intel] Kill-test budget +$500 for the founder's own attorney to review the employment agreement before requesting the carve-out (K0) — basis: judgment.
+
+</details>
+
+<details><summary><b>p5r-memory-efficiency</b> (15)</summary>
+
+- **A-p5r-memory-efficiency-1** [p5r-memory-efficiency] Incremental reclaim over a stock Proxmox baseline (KSM on via ksmtuned, ballooning on) is 6% of installed RAM, not 10% — basis: KSM default-on on Proxmox (forum snippets); Google fleet zswap ~5%; HYP's 6% run; zswap-only on boot media and ~0 on hugepage/SEV/TDX hosts.
+- **A-p5r-memory-efficiency-2** [p5r-memory-efficiency] Savings share negotiated to 20% (from 30%) — basis: on-prem "DIMMs not bought" is a counterfactual, not an invoice line; procurement benchmarks against Ubuntu Pro/RHEL support (RT-HYP-DD4-01).
+- **A-p5r-memory-efficiency-3** [p5r-memory-efficiency] Value realization 0.75 of linear GB x $/GB — basis: rental-equivalent of 36 months of freed capacity = P0 - PV(40% residual of 3-yr-old DIMMs at P36) at 8%/yr = 68% (flat prices) to 78% (BASE -30% turn). VC's pure-deferral P0 - PV(P36) = 44% in BASE ignores the extra life of later-bought DIMMs.
+- **A-p5r-memory-efficiency-4** [p5r-memory-efficiency] DIMM-step quantization is mean-neutral across buyers: with requirements uniform between steps, E[saving] = P(cross) x step = (r x S/dS) x dS = r x S. It is modeled as a conversion loss (pilot_to_sub 0.60 -> 0.40), not as a value cut.
+- **A-p5r-memory-efficiency-5** [p5r-memory-efficiency] DDR5 share of node-GB at target fleets 0.40 (from 0.60) — basis: SMB MSP fleets on 4-6-yr refresh still mostly DDR4 in late 2026; DDR5 is ~40-65% of server DRAM *revenue* (higher $/GB), so installed GB share is lower; reviewers proposed 0.30.
+- **A-p5r-memory-efficiency-6** [p5r-memory-efficiency] Credible on-call (named rotation, 1-2 h SLA) costs $2,500/mo at 1-5 customers and $3,000/mo at 6+ — basis: midpoint of HYP $2,000 and VET ~$3,000; no quote obtained.
+- **A-p5r-memory-efficiency-7** [p5r-memory-efficiency] Tech E&O covering production-impact claims $400/mo — basis: Insureon $67-110/mo average, Vouch startup median $308/mo, x1.3 for higher limits; HYP's $600 treated as an upper bound.
+- **A-p5r-memory-efficiency-8** [p5r-memory-efficiency] scan_to_pilot 0.30 (from 0.40) — basis: DIY admin with free upstream features is the competitor; no SOC 2; HPC segment removed (RT-VC-DD4-05, RT-PHY-DD4-03, RT-VET-DD4-03).
+- **A-p5r-memory-efficiency-9** [p5r-memory-efficiency] SOC 2 Type I is asked for at 2 customers, not 5 (RT-VC-DD4-05).
+- **A-p5r-memory-efficiency-10** [p5r-memory-efficiency] Kill criterion 9 (stop new C-74 acquisition below 60% of peak DDR5 price before 8 customers) is wired into the model; it fires at M22 in GLUT and M20 in SEVERE, never in BASE (-30% turn).
+- **A-p5r-memory-efficiency-11** [p5r-memory-efficiency] C-75 is off in the revised headline because the DD's own recommendation drops it; shown as a sensitivity only.
+- **A-p5r-memory-efficiency-12** [p5r-memory-efficiency] C-73 audits at 0.17/month part-time (~2/yr) from a manufacturing (not SaaS) network (RT-VC-DD4-06).
+- **A-p5r-memory-efficiency-13** [p5r-memory-efficiency] Channel threshold: a partner would need ~4,500 (10% reclaim) to ~7,900 (6% reclaim) pure-DDR5 VM-host nodes at a 25% revenue share to carry one $10k/mo salary plus fixed ops at BASE peak prices — computed in models/memory-efficiency.py §7. An operator that large has its own kernel staff, so the condition contradicts the target buyer.
+- **A-p5r-memory-efficiency-14** [p5r-memory-efficiency] Uncorrectable-error panics attributable to zswap: rate ~ nodes x 1.3%/yr (Schroeder 2009, per PHY) x pool share (3% of RAM at 6% reclaim, 2:1) = ~0.18/yr at the revised M36 book of ~456 nodes; ~1.4/yr at PHY's 2,157-node, 5% pool case.
+- **A-p5r-memory-efficiency-15** [p5r-memory-efficiency] DD4 final status KILLED: the 29-day ~$6k experiment is cancelled because no PASS outcome changes the ceiling (revised model: kill-test best case BASE ARR M36 $14.8k, cash -$85.4k).
+
+</details>
+
+<details><summary><b>p5r-nv-continuity-modules</b> (21)</summary>
+
+- **A-p5r-nv-continuity-modules-1** [p5r-nv-continuity-modules] Pre-i Fanuc controls (15, 16/18-A/B/C, 20/21-B; RJ-2 robots) are 15% of 5M cumulative Fanuc CNCs, and 40% are still running. — basis: VET's ~0.15 estimate; these controls are 26–38 years old. Series 0-C may have no card slot [UNVERIFIED], which would push the share lower.
+- **A-p5r-nv-continuity-modules-2** [p5r-nv-continuity-modules] i-series residual demand = 20% share (i-A, early i-B, 0i-A/B) × 60% still running × 20% residual SRAM-card need. — basis: boot-menu backup works on CF (IMD), but an 18i-T needs SRAM for normal-mode I/O and a 16iA user hit an NMI when formatting a CF card (CNCzone). There is no OEM manual excerpt either way.
+- **A-p5r-nv-continuity-modules-3** [p5r-nv-continuity-modules] The other-families multiplier is 1.35, down from 1.5. — basis: Mitsubishi FA-A-0184 points High-speed Universal QCPU users to SD cards.
+- **A-p5r-nv-continuity-modules-4** [p5r-nv-continuity-modules] The addressable market is U.S. × 1.10 (Canada) plus 15% of non-U.S. demand. — basis: a plain memory card with no cryptography is very likely EAR99 [ESTIMATE, unconfirmed], so eBay and a web store can reach some foreign buyers. Every named reseller is North American.
+- **A-p5r-nv-continuity-modules-5** [p5r-nv-continuity-modules] BASE volume is 16 cards/month steady state (7% of SAM, 14% of U.S. demand). — basis: a part-time new entrant's share; Phase 4's 40/month would be 36% of revised U.S. demand.
+- **A-p5r-nv-continuity-modules-6** [p5r-nv-continuity-modules] Card demand decays 10%/yr after launch. — basis: ~6%/yr pre-i retirement plus ~4%/yr self-depletion, since each battery-free card removes an 8-year replacement.
+- **A-p5r-nv-continuity-modules-7** [p5r-nv-continuity-modules] Logic rises to $9 (2MB) / $10 (4MB), up from $5/$6. — basis: dual-supply 74LVC16T245-class translators (~$1 each), a small CPLD (~$2–3), a supervisor and a hold-up cap.
+- **A-p5r-nv-continuity-modules-8** [p5r-nv-continuity-modules] A magnetic shield costs $3 per card. — basis: Ni-Fe/mu-metal foil die-cut to the MRAM footprint, or a ferritic-steel cover. Whether it fits inside the Type I envelope must be bench-checked.
+- **A-p5r-nv-continuity-modules-9** [p5r-nv-continuity-modules] Connector and frame cost $15, and a 350-set lifetime buy is made at m9. — basis: no current-production card-side quote found; 350 = 288 modeled cards m11–m36 × 1.2.
+- **A-p5r-nv-continuity-modules-10** [p5r-nv-continuity-modules] Outside-lab qualification costs $7.5k. — basis: midpoint of VET's $5–10k (IEC 61000-4-2 ESD, temperature, insertion life).
+- **A-p5r-nv-continuity-modules-11** [p5r-nv-continuity-modules] Bench time on two more control families costs $3k. — basis: rental at CNC repair houses instead of buying two more controls.
+- **A-p5r-nv-continuity-modules-12** [p5r-nv-continuity-modules] Product liability with a $1–2M COI costs ~$250/month. — basis: small-business general and product-liability policy [ESTIMATE].
+- **A-p5r-nv-continuity-modules-13** [p5r-nv-continuity-modules] No ISO 9001 certification is budgeted. — basis: $5–10k plus audits is unjustified at this volume; resellers that require it are treated as unreachable.
+- **A-p5r-nv-continuity-modules-14** [p5r-nv-continuity-modules] A CNC field-service technician is retained at $150/month from launch, and returns are 6%. — basis: VC-06; the founder has no Fanuc service knowledge.
+- **A-p5r-nv-continuity-modules-15** [p5r-nv-continuity-modules] Card launch moves from m9 to m11. — basis: pre-i bench, three-family qualification, outside lab and rev-B respin before the first 100-card lot.
+- **A-p5r-nv-continuity-modules-16** [p5r-nv-continuity-modules] Only ~$4 of the $12 PLP capacitor BOM is removable with an MRAM journal. — basis: PHY-07 paired-page hold-up requirement; the founder owns no FTL.
+- **A-p5r-nv-continuity-modules-17** [p5r-nv-continuity-modules] Disposition rule: ACCEPTED-DOWNGRADE when an accepted objection alone lowers 36-month net by ≥$5k or narrows scope; ACCEPTED-MITIGATED otherwise. — basis: the marginal-impact runs (revert each revision group from the revised model).
+- **A-p5r-nv-continuity-modules-18** [p5r-nv-continuity-modules] FINAL STATUS is KILLED, not DOWNGRADED. — basis: revised BASE 36-month net −$29.8k, peak cash $49.2k > $40k, founder never paid, recurring ARR $2.7k. Breakeven needs 33 cards/month with no supporting evidence. The reviewers rated it "side business at best"; the re-run model is harsher than they were.
+- **A-p5r-nv-continuity-modules-19** [p5r-nv-continuity-modules] A $1.2k demand-only reopen probe is kept, at ≥30 full-list deposits plus a ≥100-card/yr reseller LOI, or a ≥200-card/yr white-label commitment. — basis: 36-month breakeven needs ~33 cards/month. A probe costs little against the TAM chain's wide uncertainty (one reported anchor × eight estimates).
+- **A-p5r-nv-continuity-modules-20** [p5r-nv-continuity-modules] The reprice-to-$299 supply-failure path is dropped. — basis: price ×1.2 still loses $16.9k in revised BASE.
+- **A-p5r-nv-continuity-modules-21** [p5r-nv-continuity-modules] Four of five WebSearch calls were used (connector supply, Fanuc pre-i cards, battery-free competitor, DLA/NSN demand). — basis: shared budget of 5.
+
+</details>
+
+<details><summary><b>p5r-open-memory-ip</b> (19)</summary>
+
+- **A-p5r-open-memory-ip-1** [p5r-open-memory-ip] ChipFoundry sky130 full-chip projects ~30/yr (was 60) — basis: the Phase 4 input note's own "2-3 shuttles/yr at >=50% fill ~20-30 paid slots"; Efabless chipIgnite peak ~43/yr (RT-VC-DD5-01).
+- **A-p5r-open-memory-ip-2** [p5r-open-memory-ip] Cadence SKY130 MPW ~20 projects/yr (was 30) — basis: only one 2026 run documented (RT-VC-DD5-01).
+- **A-p5r-open-memory-ip-3** [p5r-open-memory-ip] MOSIS 2.0 / Commons / other open-PDK full-chip projects ~30/yr (was 60) — basis: no published count; halved (RT-VC-DD5-01).
+- **A-p5r-open-memory-ip-4** [p5r-open-memory-ip] Academic share of accounts 0.70 (was 0.60); 0.80 run as sensitivity — basis: named commercial targets are microfirms; SBIR teams going to production move to S130 NDA + bundled compiler (RT-HYP-DD5-03, RT-VC-DD5-05).
+- **A-p5r-open-memory-ip-5** [p5r-open-memory-ip] Characterized licence restated as "nominal MPW lot measured at V/T, corners simulated, yield on >=50 die, warranty = re-delivery or refund of fees", priced $12k (was $20k, 1.2x the commercial service fee) and bought at 0.15/commercial account/yr (was 0.25) — basis: MPW slots carry no skew-corner wafers (RT-HYP-DD5-02, RT-PHY-DD5-01, RT-VET-DD5-02, RT-VC-DD5-06).
+- **A-p5r-open-memory-ip-6** [p5r-open-memory-ip] DoD/SBIR licence channel 0.04/month (was 0.08) — basis: no SEE/TID data will be funded; U.S.-fab axis covers sky130 only (RT-PHY-DD5-07, RT-VET-DD5-04, RT-HYP-DD5-05).
+- **A-p5r-open-memory-ip-7** [p5r-open-memory-ip] Contract VLSI rate $150/h (was $125) — basis: ~20% retainer premium for a 12-month exclusivity / non-compete on free large sky130 macros (RT-VC-DD5-03).
+- **A-p5r-open-memory-ip-8** [p5r-open-memory-ip] GF180 characterized m11 (was m10); sky130 characterized m16 before the cash gate (was m13) — basis: TTSKY25b on ChipFoundry CI2511 took ~8 months from submission close (2025-11-10) to expected chips (Jul-2026) (RT-VET-DD5-06, RT-VC-DD5-04).
+- **A-p5r-open-memory-ip-9** [p5r-open-memory-ip] Outbound contacts capped at distinct new teams = full-chip projects/yr / 12 (~19/month) — basis: the 120-name list is spent in the m0 kill test; re-contacting the same names does not create new buyers (RT-HYP-DD5-01).
+- **A-p5r-open-memory-ip-10** [p5r-open-memory-ip] Academic procurement lag 2 months; academic offer sold as a per-term course pack at $1.2k/term — basis: university vendor registration and POs (RT-HYP-DD5-06; DD4 s7).
+- **A-p5r-open-memory-ip-11** [p5r-open-memory-ip] P(free silicon-characterized >=16 KB GF180 macros by m24) = 0.6; expected-value haircut weight = GF180 share of projects (0.65) x 0.6 = 0.39, applied from m24 to close, churn, sub price and licences in every scenario — basis: OCD and Chips4Makers already have GF180 SRAM silicon; DD s5 already conceded GF180 within ~12 months (RT-HYP-DD5-04, RT-VC-DD5-01).
+- **A-p5r-open-memory-ip-12** [p5r-open-memory-ip] Large sky130 macro array efficiency 30% (was 60%), context only — basis: OpenRAM 1 KB -> 2 KB adds ~11.5 um2 per added bit, ~6x the bitcell (RT-PHY-DD5-06).
+- **A-p5r-open-memory-ip-13** [p5r-open-memory-ip] On-chip BIST + programmable delay-line timing structures: 20 contract h per test chip (GF180 m3, sky130 m6) — basis: ns access time cannot be measured through pins (RT-PHY-DD5-02).
+- **A-p5r-open-memory-ip-14** [p5r-open-memory-ip] Thermal-forcing rental ~$2.5k per characterization campaign (ThermoStream-class, ~1 week) — basis: [ESTIMATE] typical rental $2-4k/week; not quoted (RT-PHY-DD5-02, RT-VET-DD5-02).
+- **A-p5r-open-memory-ip-15** [p5r-open-memory-ip] Kill test budget ~$9.1k (40 h extracted-SPICE + 1,000-pt Monte Carlo review at $150 = $6.0k; compute $0.3k; web $0.2k; outreach $0.1k; template $1.0k; event $1.5k); $8.1k of it added to the model at m1 — basis: RT-VET-DD5-01.
+- **A-p5r-open-memory-ip-16** [p5r-open-memory-ip] Cash gate: deferrable one-time spends wait until cash after the spend stays >= $2.5k — basis: the Phase 4 schedule plus the added spends drives BASE cash to -$8.2k at m11, beyond the $40k deployable (A-03).
+- **A-p5r-open-memory-ip-17** [p5r-open-memory-ip] A logic-rule (no SRAM waivers) NMOS-only 3T sky130 gain cell is ~2.0-2.5 um2 before refresh periphery, i.e. no denser than the 1.896 um2 pushed-rule 6T — basis: rough count of ~3 contacted poly pitches x two diffusion rows on sky130 logic rules [ESTIMATE, not a layout]; RT-PHY-DD5-03, RT-VET-DD5-03.
+- **A-p5r-open-memory-ip-18** [p5r-open-memory-ip] T2 (C-32 gain cell, C-22 ReRAM chiplet) killed; ReRAM qualification line would be ~$1.0M (was $0.4M) if ever revived — basis: JESD47 on 3 lots (RT-VET-DD5-05).
+- **A-p5r-open-memory-ip-19** [p5r-open-memory-ip] P(the strengthened day-30 kill test passes) ~15-25% — basis: judgment; (iv) now needs written no-release statements from UCSC VLSIDA and OCD, (iii) needs extracted-SPICE corners + Monte Carlo, (ii) needs 2 commercial/SBIR LOIs >= $10k that confirm staying on the open PDK.
+
+</details>
+
+<details><summary><b>p5r-private-moe-appliance</b> (27)</summary>
+
+- **A-p5r-private-moe-appliance-1** [p5r-private-moe-appliance] Small-buyer authorized RDIMM price pre-turn = contract $25.78 x 1.65 = $42.5 per user-GB ($2,722 per 64 GB) — basis: DD6's own street $32/GB (Servnet, Aug-26) x reviewer-cited ServerMonkey +35% Aug-Oct = $43; Origin Storage 64GB-6400 GBP 2,516 special (~$52/GB, avoira.com snippet); Fusion $46-58/GB reviewer-cited but not confirmed by me (price not visible in snippet).
+- **A-p5r-private-moe-appliance-2** [p5r-private-moe-appliance] The small-buyer premium is a shortage premium; it unwinds to 1.15 across 2028 in BASE and is 1.15 from the 2028 turn in GLUT/SEVERE — basis: judgment; distribution loosens in a glut.
+- **A-p5r-private-moe-appliance-3** [p5r-private-moe-appliance] S-SKU GPU = RTX PRO 5000 Blackwell 48GB at $8,216 (SHI listing, MSRP $8,999) — basis: search snippet, undated listing; replaces a $5,000 GeForce RTX 5090 from Micro Center retail.
+- **A-p5r-private-moe-appliance-4** [p5r-private-moe-appliance] Decode capacity model: step time = t_fix + distinct-expert multiple x routed GB/token / (peak GB/s x efficiency), uniform independent routing — basis: RT-VET-DD6-01 and RT-PHY-DD6-01 arithmetic; routing skew would lower the distinct-expert multiple slightly (upside not modelled).
+- **A-p5r-private-moe-appliance-5** [p5r-private-moe-appliance] Peak bandwidth 576 GB/s (12 x DDR5-6000) — basis: AMD 58462 platform max as cited by RT-VET-DD6-01 [REPORTED via red team]; a 6400-validated board (614 GB/s) is shown as a variant.
+- **A-p5r-private-moe-appliance-6** [p5r-private-moe-appliance] Engine bandwidth efficiency 0.50 (0.55 bracket) — basis: P1 (8.73 tok/s on 307 GB/s with ~12.2 GB routed) implies 0.35-0.47 depending on fixed time; newer kt-kernel assumed better; STREAM-class ~0.8 not reachable while syncing a GPU per layer.
+- **A-p5r-private-moe-appliance-7** [p5r-private-moe-appliance] Fixed per-step time 20 ms (L, Kimi 61 layers) and 18 ms (S, MiniMax 62 layers) — basis: S value calibrated to reproduce P2 (2S EPYC 9355 + 5090, 32.1 tok/s) at ~0.5 x 1,152 GB/s; L set slightly higher for MLA attention.
+- **A-p5r-private-moe-appliance-8** [p5r-private-moe-appliance] Routed bytes per token: Kimi-K2.5 11.9 GB (21.1B routed params at ~4.5 bits), MiniMax-M2.x 7.0 GB (7.0B at FP8) — basis: RT-PHY-DD6-01 config arithmetic.
+- **A-p5r-private-moe-appliance-9** [p5r-private-moe-appliance] U.S.-origin models on L scaled by active-parameter ratio on routed bytes (Inkling x41/32, Nemotron 3 Ultra x55/32) — basis: no expert configs found; crude [ESTIMATE].
+- **A-p5r-private-moe-appliance-10** [p5r-private-moe-appliance] 2S L variant: 1,152 GB/s at efficiency 0.45 and t_fix 22 ms, +$6.5k BOM for a second CPU and board — basis: RT-PHY-DD6-02 (+~$8.3k quote); LMSYS 'up to 63%' NUMA-aware gain has an unstated baseline.
+- **A-p5r-private-moe-appliance-11** [p5r-private-moe-appliance] GPU KV memory: S on 48 GB has 34.8 GB free after 13.2 GB fixed; 124 KB/token FP8 KV; 32k-token design context -> 8 users — basis: RT-PHY-DD6-03 method.
+- **A-p5r-private-moe-appliance-12** [p5r-private-moe-appliance] Subscription capped at $50 per named user per month — basis: Phase-4's own anchor (~25 users x $50 = $1,250).
+- **A-p5r-private-moe-appliance-13** [p5r-private-moe-appliance] L SKU mix 0 in BASE (not quoted until a socket-pinned measurement passes); re-admission tested at mix 0.25 with efficiency 0.55 — basis: RT-VET-DD6-01 plus the Mac-cluster and U.S.-origin objections.
+- **A-p5r-private-moe-appliance-14** [p5r-private-moe-appliance] Close rate 6% (from 8%) — basis: unmeasured; new single-member LLC faces supplier onboarding; CMMC Phase 2 suspended 2026-07-13 (Jenner, McGuireWoods, HSToday snippets).
+- **A-p5r-private-moe-appliance-15** [p5r-private-moe-appliance] Sales cycle 7 months (from 4) — basis: section 4's own motion: discovery, 60-day paid pilot, 3-6 month security review, PO.
+- **A-p5r-private-moe-appliance-16** [p5r-private-moe-appliance] 50% of founder-sourced orders go on a VAR/MSP contract vehicle at a 5% fee — basis: RT-HYP-DD6-01; judgment on regulated-buyer procurement.
+- **A-p5r-private-moe-appliance-17** [p5r-private-moe-appliance] Insurance $900/month (from $500) for $1-2M cyber/E&O + GL + product liability — basis: judgment; cf. RT-HYP-DD1-08 response ($600 for E&O alone).
+- **A-p5r-private-moe-appliance-18** [p5r-private-moe-appliance] Channel partners take 15% of hardware and 20% of subscription and bring 2 conversations a month from m13 — basis: RT-VC-DD6-06 (MSP incentive vs building its own box).
+- **A-p5r-private-moe-appliance-19** [p5r-private-moe-appliance] Annual subscription churn 30% (from 20%) — basis: RT-VC-DD6-04; air-gapped patches/model refreshes are work the buyer's MSP can do.
+- **A-p5r-private-moe-appliance-20** [p5r-private-moe-appliance] Business-hours backup technician retainer $500/month from first delivery — basis: RT-VC-DD6-03 sensitivity range ($500-1,000).
+- **A-p5r-private-moe-appliance-21** [p5r-private-moe-appliance] 4 founder hours per qualified conversation (from 3) — basis: adds security questionnaires, SSP inserts, pilot support.
+- **A-p5r-private-moe-appliance-22** [p5r-private-moe-appliance] Spare pool: one spare RDIMM per 5 boxes plus one 48 GB loaner GPU at 5 boxes, held as inventory; parts reserve 4%/yr — basis: RT-VET-DD6-06, RT-HYP-DD6-06.
+- **A-p5r-private-moe-appliance-23** [p5r-private-moe-appliance] Demand elasticity to price rises 0.5 against the Phase-4 card ($62,525 L / $30,622 S) — basis: low end of RT-VC-DD6-01's -0.5..-1.0 range because OEM servers inflate with the same DRAM; copy-cat integrators would make it higher.
+- **A-p5r-private-moe-appliance-24** [p5r-private-moe-appliance] 3% of BOM drift absorbed between approved quote and purchase, with a DRAM/GPU index clause covering the rest — basis: RT-HYP-DD6-07.
+- **A-p5r-private-moe-appliance-25** [p5r-private-moe-appliance] Install 12 h per box (from 8) for electrical/thermal survey and closet/colo placement — basis: RT-PHY-DD6-04.
+- **A-p5r-private-moe-appliance-26** [p5r-private-moe-appliance] Founder economic profit = 36-month net after tax minus unpaid part-time hours x $85, treating a full-time salary as equal to the day-job wage forgone — basis: RT-VC-DD6-05 method.
+- **A-p5r-private-moe-appliance-27** [p5r-private-moe-appliance] 'Kill-test pass' case = close rate 8%, 6-month cycle, 3 channel conversations a month — basis: what K1/K3 passing with cash would plausibly show.
+
+</details>
+
+<details><summary><b>p5r-provenance-recert</b> (16)</summary>
+
+- **A-p5r-provenance-recert-1** [p5r-provenance-recert] Central buy fraction moved 0.65 -> 0.70 of realized resale — basis: no published ITAD lot price (re-searched 2026-11-01, none found); open-market lots list near 1.0x resale (PCSP); Iron Mountain keeps the spread; hyperscalers redeploy DDR4 (RT-HYP-DD1-04). 0.70 is the reviewers' own test value; nothing found points below 0.65.
+- **A-p5r-provenance-recert-2** [p5r-provenance-recert] B2B price 0.88 -> 0.80 of eBay realized — basis: B2B accounts buy the same lots and test in-house; their ceiling is their landed cost (~0.75-0.80, RT-HYP-DD1-05). Top of the range because per-serial test records add some value.
+- **A-p5r-provenance-recert-3** [p5r-provenance-recert] eBay share at m12 0.40 -> 0.50 — basis: with B2B at 0.80 the operator keeps more volume on eBay; capped at 0.50 for single-seller absorption.
+- **A-p5r-provenance-recert-4** [p5r-provenance-recert] CE-reject protocol fallout 7%, returns 3%, 15 min/module, +$500 soak box — basis: between C_notes (3%/2%) and VET's 8%/5% (which applied to the old memtest-only protocol, where escapes become returns).
+- **A-p5r-provenance-recert-5** [p5r-provenance-recert] DDR5 share of lots 3% — basis: DDR5 servers shipped from Nov-22/Jan-23; 5-6-year lives; residual = excess/new-pull stock.
+- **A-p5r-provenance-recert-6** [p5r-provenance-recert] Monthly unit caps 300 part-time / 450 full-time — basis: HYP-04 supply retention; still above HYP's 200/month test threshold.
+- **A-p5r-provenance-recert-7** [p5r-provenance-recert] eBay new-seller caps 20/50/100 units in the first three selling months, eBay payout held one month in those months, B2B net-30 — basis: VC-04 snippets (nifty.ai, closo, auctionnudge).
+- **A-p5r-provenance-recert-8** [p5r-provenance-recert] Tax provision 30% on positive taxable income (EBITDA after salary, capex expensed, loss carry-forward), paid monthly — basis: VC-07; pass-through LLC with federal + state + SE tax.
+- **A-p5r-provenance-recert-9** [p5r-provenance-recert] PMem fallout 10%, returns 5% — basis: PHY-05/VET-07 (passphrase-locked modules, platform mismatch); no data.
+- **A-p5r-provenance-recert-10** [p5r-provenance-recert] Library samples must be NEW third-party DDR5 RDIMMs at ~$600 each (16-32GB at ~$25/GB contract), 1 sample/month m4-18 then 0.5 — basis: recert flow is OEM DDR4 with ~zero CXMT (PHY-01, HYP-02, VC-02); library re-keyed on package marking (PHY-02, VET-02).
+- **A-p5r-provenance-recert-11** [p5r-provenance-recert] Lab $600/sample all-in — basis: VET-06 minimum-lot and report charges; plan at the track-B ceiling until written quotes exist.
+- **A-p5r-provenance-recert-12** [p5r-provenance-recert] CleanBOM close 5% (both bundle and standalone), high tier 10%, packs 10% — basis: the three FATAL objections are accepted: the module-maker buyer already holds die source and may self-certify, so the remaining buyers are refurb/odd-lot resellers and white-box builders; no library lift remains.
+- **A-p5r-provenance-recert-13** [p5r-provenance-recert] E&O $600/month — basis: published tech E&O range ~$500-9,000+/yr (Insureon snippet); premium for government-reliance exposure without a regulatory exclusion is unquoted.
+- **A-p5r-provenance-recert-14** [p5r-provenance-recert] "Track C passes" variant restores the Phase 4 CleanBOM demand inputs (close 10%, high tier 35%, packs 15%); "track A passes" uses buy 0.62, the 8%-contribution line at revised inputs.
+- **A-p5r-provenance-recert-15** [p5r-provenance-recert] FINAL STATUS = KILLED as a venture candidate: at post-red-team central inputs recert earns -1%/module and CleanBOM reaches 5.3 subscribers ($58k ARR) by m36 with the founder never full-time; even if both kill tracks pass, BASE reaches $227k ARR with full-time only at m32, and GLUT/SEVERE never pay the founder.
+- **A-p5r-provenance-recert-16** [p5r-provenance-recert] X-ray die outline is triage only — basis: CXMT G4 16Gb DDR5 die ~67-68 mm2 vs current Samsung ~49 mm2, but 2021 first-generation big-3 16Gb DDR5 dies were ~66-72 mm2 (3DNews citing TechInsights, snippet).
+
+</details>
+
+### Phase 6 — decision
+
+<details><summary><b>p6-first90</b> (15)</summary>
+
+- **A-p6-first90-1** [p6-first90] Each 30-minute qualified call costs 0.67 founder-hours including prep and notes — basis: LI §10 says 30-minute calls; 10 min notes/follow-up added.
+- **A-p6-first90-2** [p6-first90] No prospect outreach, domain or Sales Navigator before K0 is signed; the K6 21-day clock starts at the first outreach message (no later than 2026-11-09, so the window closes no later than 2026-11-29) — basis: J-INT/J-EV Monday actions ("no code, domain or Sales Navigator until K0"); LI §10 K6 wording.
+- **A-p6-first90-3** [p6-first90] Building the 60-name list from public sources in week 1 (before K0) is allowed on personal time/equipment — basis: it is not code and contacts nobody; judges bar code, domain, Sales Navigator and contact only.
+- **A-p6-first90-4** [p6-first90] The $1,000 government-contracts consult is deferred until K3+K4 pass, so planned November spend is $1,950 of the ~$2,950 LI §10 budget — basis: DEC MOONSHOT.spend.
+- **A-p6-first90-5** [p6-first90] Call distribution 2/8/10/5 across weeks 2–5 (25 total, $50 each) — basis: scan ready end of week 3; Surcharge Reference v0 written in week 4 before index-prospect calls.
+- **A-p6-first90-6** [p6-first90] Pace marker of ~17 calls booked by 2026-11-22 (day 14 of a 21-day window) — basis: linear pace of 25/21 days; a warning only, not a threshold.
+- **A-p6-first90-7** [p6-first90] DD5 no-release reply requested by 2026-11-20 (day 19, inside OM §10's days 7–20); final cut-off 2026-12-01 — basis: DEC "silence = fail"; J-INT (day 14) and J-EV/J-CEIL (12-01) differ.
+- **A-p6-first90-8** [p6-first90] Holiday weeks (2026-12-21, 2026-12-28) carry ~8 h (Branch A) or ~5 h (Branch B) — basis: Christmas and New Year.
+- **A-p6-first90-9** [p6-first90] Branch A: deposits credited to the first invoice at the m6 paid launch; K1 re-test (if K5 fails) by 2027-01-08 — basis: LI §11 #4 gives no re-test date.
+- **A-p6-first90-10** [p6-first90] Branch A monthly opex $650 in Dec and Jan (tools $250, marketing $300, accounting $100) — basis: LI.py §4 rows m1–m2 and inputs.
+- **A-p6-first90-11** [p6-first90] Branch B: separate written DD5 carve-out requested 2026-12-02, required by 2026-12-18 — basis: J-CEIL ("first get a separate written carve-out for DD5").
+- **A-p6-first90-12** [p6-first90] Branch B tranches: $1.6k (compute, web/Stripe, outreach, licence template) → $6.0k contractor only after test (ii) passes, cut-off 2027-01-29 → ≤$1.5k hub event; decision 2027-02-10 — basis: OM §10 line items; J-EV sequencing; J-INT window 2027-01-11 → 02-10.
+- **A-p6-first90-13** [p6-first90] Branch B, if (ii) fails, recommend Branch C rather than OM §10's academic-only GF180 pivot — basis: GF180MCU is Singapore-fabbed (OM §1) and free GF180 macros are expected (P = 0.6 by m24, OM §5).
+- **A-p6-first90-14** [p6-first90] Branches B/C refund all DD2 deposits by 2026-12-04 — basis: deposits are refundable (LI §10).
+- **A-p6-first90-15** [p6-first90] Branch A cash-low estimates subtract the November test spend from LI.py's cash low because LI.py starts m1 at $40,000 excluding the test — basis: LI.py §4 (m1 cash $39,350 = $40,000 − $650 opex).
 
 </details>
 

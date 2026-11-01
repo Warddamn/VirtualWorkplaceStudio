@@ -15,7 +15,8 @@
   "gate": "K0 written employer carve-out by 2026-11-09 (else stop); K6 25 qualified cold calls booked in 21 days and K1 >=5 of 25 refundable $500 deposits/paid LOIs at >=$200/mo by 2026-12-01; K5 data-terms by 2026-12-15",
   "spend": "<=$500 before K0; ~$1,950 planned for the 29-day test (~$2,950 if the $1,000 government-contracts consult is not deferred \u2014 it is deferred until K3+K4 pass); <=$5,000 hard cap; <=$34k ever; $5k cash floor",
   "confidence": "0.2-0.45 across judges",
-  "embedded_tests": "C-72 (legacy-DRAM buying co-op) is killed as a standalone concept under Rule 1 at the Phase 7 gate; its three supplier calls ride along inside DD2's kill test at $0."
+  "embedded_tests": "C-72 (legacy-DRAM buying co-op) is killed as a standalone concept under Rule 1 at the Phase 7 gate; its three supplier calls ride along inside DD2's kill test at $0.",
+  "post_pass_gates": "Per 04_DEEPDIVES/lifecycle-intel.md \u00a711: >=2 paying accounts by 2027-08-31 (m9) else stop; by 2027-11-30 (m12) >=5 paying accounts AND MRR >=$1,700 \u2014 missing either stops the build (code to maintenance); stop if cash falls below $5k; by m18 >=13 accounts or open exit talks (Lytica, Z2Data, Accuris, Luminovo)."
  },
  "FALLBACK": {
   "dd": "DD5",
@@ -62,6 +63,10 @@
   {
    "id": "C-65",
    "trigger": "A hi-rel cofounder arrives with an existing x72 design-in and >=3 evaluation LOIs at >=$1,200/unit"
+  },
+  {
+   "id": "C-72",
+   "trigger": "Any of Winbond, Nanya, Micron (Manassas DDR4) or a franchised distributor agrees in writing to honor a pooled multi-year allocation agreement with a no-title buying co-op (one of DD2's three $0 supplier calls)"
   }
  ],
  "biggest_unknown": "Whether any memory-adjacent buyer will pay this part-time, non-chip founder recurring cash at all: the study contains no deposit, PO or paid pilot, and every red-team round cut demand inputs that were estimates.",
