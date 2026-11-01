@@ -13,7 +13,7 @@
   "label": "Memory Lifecycle & Cost Intelligence SaaS for small U.S. hardware OEMs (EOL/PCN alerts, NVM cross-reference, last-time-buy sizer & studies) \u2014 run as a gated side business, not a venture",
   "economics": "BASE ARR ~$69.9k at m18 / ~$149.6k at m36 (GLUT $104.1k, SEVERE $83.0k at m36); breakeven m17 with founder unpaid; never pays a $10k/month salary within 36 months unless trial conversion >=14.7% (models/lifecycle-intel.py; 04_DEEPDIVES/lifecycle-intel.md \u00a714)",
   "gate": "K0 written employer carve-out by 2026-11-09 (else stop); K6 25 qualified cold calls booked in 21 days and K1 >=5 of 25 refundable $500 deposits/paid LOIs at >=$200/mo by 2026-12-01; K5 data-terms by 2026-12-15",
-  "spend": "<=$500 before K0; <=$5,000 hard cap for the whole test (~$2,950 planned); <=$34k ever, $5k cash floor",
+  "spend": "<=$500 before K0; ~$1,950 planned for the 29-day test (~$2,950 if the $1,000 government-contracts consult is not deferred \u2014 it is deferred until K3+K4 pass); <=$5,000 hard cap; <=$34k ever; $5k cash floor",
   "confidence": "0.2-0.45 across judges",
   "embedded_tests": "C-72 (legacy-DRAM buying co-op) is killed as a standalone concept under Rule 1 at the Phase 7 gate; its three supplier calls ride along inside DD2's kill test at $0."
  },
@@ -27,7 +27,8 @@
   "economics": "BASE ARR ~$41.2k at m18 / ~$65.7k at m36 (GLUT $54.9k, SEVERE $49.3k); breakeven m12 founder unpaid; never pays a salary (models/open-memory-ip.py; 04_DEEPDIVES/open-memory-ip.md \u00a714)",
   "gate": "$0 written no-release statements from UCSC VLSIDA and Open Circuit Design first (silence = fail); then >=2 buyers at >=$10k; then contractor-signed 16 KB corner + Monte Carlo; >=3 paid deposits or >=$15k LOIs",
   "spend": "$0 in Nov 2026 (letters only); <=$9.1k only if DD2 fails on 2026-12-01 and both no-release statements arrive",
-  "confidence": "0.2-0.3 across judges"
+  "confidence": "0.2-0.3 across judges",
+  "timing_note": "DD5's model and \u00a710 dates assume a November 2026 start; as FALLBACK it runs only after DD2 fails on 2026-12-01, so its paid steps shift ~2 months (Jan-Feb 2027) \u2014 see FIRST_90_DAYS.md branch B. Its $0 written questions (test iv) still go out in week 1."
  },
  "MOONSHOT": {
   "dd": "DD2",
@@ -39,7 +40,7 @@
   "economics": "Only credible >$2M path in the study (03_SCORING.md \u00a76: $2-10M ARR upside if it becomes the reference index cited in contracts); ceiling judge puts odds at ~3%",
   "gate": "K3 >=2 signed LOIs naming a live contract/surcharge schedule that would cite the index (and why TrendForce/open-book doesn't serve it) + K4 >=10 signed PO-price contribution agreements, inside the DD2 test window",
   "spend": "$0 marginal (asks ride on DD2 calls); defer the $1k gov-contracts and $5k antitrust opinions until K3+K4 pass",
-  "confidence": "0.03-0.8 that 'none qualifies' is the right call (judges agree it is an option, not a venture)"
+  "confidence": "All three judges agree no MOONSHOT honestly qualifies (judge confidence in that call: 0.7-0.8; the ceiling judge's 0.03 is the odds that the C-86 option itself succeeds)"
  },
  "watch_list": [
   {
@@ -48,7 +49,7 @@
   },
   {
    "id": "C-48",
-   "trigger": "A VAR/MSP commits in writing to >=6 boxes/yr on its own paper AND a measured >=10 tok/s per user at 2 concurrent users on the L box"
+   "trigger": "Both needed (04_DEEPDIVES/private-moe-appliance.md \u00a714.4): (a) a VAR/MSP commits in writing to >=6 boxes/yr on its own paper at <=15%/20%; and (b) a published or socket-pinned single-socket run showing >=10 tok/s per user at 4 concurrent users on a 1T-class MoE in a box quoting <=$65k (or the alternative proof listed there)"
   },
   {
    "id": "C-91",

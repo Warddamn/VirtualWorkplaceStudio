@@ -63,7 +63,7 @@ def main():
     if summary.exists():
         lines += [summary.read_text(encoding="utf-8").strip(), ""]
     lines += ["## Method", "",
-              f"Four adversarial reviewers each attacked all five deep dives independently: "
+              f"Four adversarial reviewers attacked every deep dive independently, in two rounds (round 1: DD1–DD5, `rt_*.json`; round 2: DD6–DD7, `rt2_*.json`): "
               + ", ".join(f"**{p['persona']}** — {p.get('persona_name', '')}" for p in personas) + ". "
               "Every objection is reproduced **verbatim** below with the deep-dive owner's response, a disposition "
               "(REFUTED / ACCEPTED-MITIGATED / ACCEPTED-DOWNGRADE / ACCEPTED-KILL) and the action taken. "
