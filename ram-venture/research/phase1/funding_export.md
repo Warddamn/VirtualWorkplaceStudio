@@ -474,6 +474,8 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 - **What it creates [ESTIMATE: judgment]:**
   - Every federal contractor shipping servers, PCs, networking or embedded systems needs **component-level proof of no CXMT/YMTC die** by end-2027.
   - Chinese dies are often sold inside third-party-branded modules and SSDs, so proof needs **die-level provenance** (supplier attestations, plus X-ray/decap or marking analysis on samples).
+  - **Phase 1b correction:** the proposed rule's "reasonable inquiry" standard does **not** require independent third-party audits. Contractors may rely on supplier and subcontractor certifications [REPORTED: Wiley 2026-02; LexBlog 2026]. Paid demand is therefore mostly **certification and BOM-traceability workflow** (software). Lab screening is an exception-driven add-on, not a blanket requirement [ESTIMATE: judgment].
+  - **Funded competitor:** **OBSIDIA Semiconductors** holds a CHIPS R&D LOI for up to **$34M** for "counterfeit and malicious component identification" (2026-07-29) [REPORTED-P: [NIST](https://nist.gov/news-events/news/2026/07/department-commerce-announces-letters-intent-7-companies-874-million)].
   - **This is a paid compliance need with a hard date. It is the most concrete "U.S. policy creates a buyer" signal for a small memory venture**, and it fits a software/test/provenance concept (T0–T1) far better than a fab concept.
   - It **rewards "verified non-Chinese," not "U.S.-made"**: Korean and Taiwanese memory satisfies it.
 
@@ -492,7 +494,11 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 
 - **Federal civilian and commercial buyers:** no general premium. TAA/BAA do not distinguish U.S. from allied memory, and Section 232 phase 1 does not tariff memory [REPORTED via p1-micron].
 - **DoD (trusted, rad-hard, DMSMS):** **yes, but narrow.** Premiums are paid for rad-hard parts and for guaranteed long-lifecycle supply. Micron Manassas (DDR4/LP4 for auto, defense and industrial) is positioning for this [REPORTED via p1-backend].
-- **Policy optionality:** a future Section 232 phase 2 or a "tariff offset" regime (Taiwan's deal gives duty-free import quota for U.S. capacity [REPORTED via p1-micron]) could create a U.S.-origin premium. Lutnick's ~100% memory-tariff threat (2026-01-16) is **not implemented** [REPORTED via p1-micron]. **Price it at zero today.**
+- **Policy optionality:** a future Section 232 Phase 2 or a "tariff offset" regime could create a U.S.-origin premium. Taiwan's deal (Jan 2026) trades ≥$250B of U.S. investment for preferential 232 treatment [REPORTED: [Polsinelli, 2026-01](https://www.polsinelli.com/publications/trump-adopts-dual-track-approach-restore-semiconductor-leadership)]. Korea has a promise of comparable treatment but **no specific exemption** as of 2026-09-15 [REPORTED: [Korea Times, 2026-09-15](https://www.koreatimes.co.kr/opinion/20260915/what-washingtons-tariff-push-means-for-koreas-semiconductor-industry)].
+  - **Phase 1** (Proclamation 11002, 25%, effective 2026-01-15) covers only advanced computing chips above TPP and DRAM-bandwidth thresholds. Memory ICs and modules are not named [REPORTED-P: [White House, 2026-01-14](https://www.whitehouse.gov/fact-sheets/2026/01/fact-sheet-president-donald-j.-trump-takes-action-on-certain-advanced-computing-chips-to-protect-americas-economic-and-national-security/); [CBP CSMS](https://content.govdelivery.com/accounts/USDHSCBP/bulletins/4047318)].
+  - The 2026-07-01 data-center review outcome was not found, and **no Phase 2 proclamation was found as of 2026-11-01**.
+  - Lutnick's ~100% memory-tariff threat (Jan 2026) is **not implemented** [REPORTED: [TrendForce, 2026-01-19](https://www.trendforce.com/news/2026/01/19/news-lutnick-reportedly-signals-100-memory-tariff-on-non-u-s-output-pressuring-samsung-and-sk-hynix/)].
+  - **Price it at zero today.**
 
 ---
 
@@ -508,9 +514,9 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 | **2024-12-02** (FR 2024-12-05, 89 FR 96790) | FDP rule additions; SME and HBM controls | **HBM controlled** (new **3A090.c**: memory-bandwidth density >2 GB/s/mm²; HBM2E and above effectively licensed to China). **24 SME types + 3 software tools.** DRAM "advanced-node" test redefined as **cell area <0.0019 µm² or density >0.288 Gb/mm²** (replacing ≤18nm half-pitch). ~140 Entity List additions. **CXMT left off** | Rule [UNVERIFIED-M]; CXMT omission [REPORTED via p1-micron] |
 | 2025-01 | AI Diffusion rule (rescinded May 2025); foundry due-diligence rule | Logic/AI focus. Not memory-specific | [UNVERIFIED-M] |
 | **2025-08-29** | **VEU revocation** for Samsung China, SK hynix China and Intel Dalian (now SK hynix), effective **2025-12-31** | Chinese DRAM/NAND fabs of Korean firms need licences. BIS signalled licences for status-quo operation but **not capacity expansion or tech upgrades**. Reportedly annual licences granted for 2026 [UNVERIFIED-L] | [UNVERIFIED-M] |
-| **2025-09-29** | **Affiliates ("50%") rule** | Entity List / MEU restrictions extend to ≥50%-owned affiliates. **Reportedly suspended for one year from ~2025-11-10** under the U.S.–China truce (Busan, 2025-10-30). **May resume ~2026-11-10** absent extension | Rule [REPORTED via p1-micron: Simpson Thacher]; suspension [UNVERIFIED-M] |
-| **2026-01** | 232 proclamation and a BIS rule on advanced-chip exports to China (H200-class case-by-case) | Not memory directly. HBM counted only via accelerator thresholds | [REPORTED via p1-micron (Covington; CRS)] |
-| **2026 (to mid-year)** | **CXMT status** | **Not on the Entity List** as of mid-2026 (reports conflict). On the DoD **1260H** list (re-added ~June 2026). Considered for listing again in 2025 | [REPORTED via p1-micron] |
+| **2025-09-29** | **Affiliates ("50%") rule** | Entity List / MEU restrictions extend to ≥50%-owned affiliates. **Suspended 2025-11-10 → 2026-11-09** (BIS final rule, FR 2025-11-12) under the U.S.–China truce (Busan, 2025-10-30). The truce was extended to **2027-01-10** (Xi visit, 2026-09-23..25), and Bessent said the suspension would follow. **No BIS implementing notice as of ~mid-Oct 2026**, so the rule returns 2026-11-10 unless one is published | Rule [REPORTED via p1-micron: Simpson Thacher]; suspension [REPORTED-P] ([FR 2025-19846](https://public-inspection.federalregister.gov/2025-19846.pdf); [Blank Rome](https://www.blankrome.com/publications/bis-suspends-affiliates-rule-one-year-effective-november-10)); extension [REPORTED] ([NatLawReview, 2026-10](https://natlawreview.com/article/bis-affiliates-rule-suspension-extended-uncertainty-remains); [Crowell, 2026-10](https://www.crowell.com/en/insights/client-alerts/the-month-in-international-trade-september-2026)) |
+| **2026-01** | 232 Proclamation 11002 (25% on TPP/DRAM-bandwidth-threshold chips, effective 2026-01-15) and a BIS rule on advanced-chip exports to China (case-by-case for TPP <21,000 and DRAM bandwidth <6,500 GB/s, e.g., H200/MI325X). Annual 2026 equipment licences for Samsung/SK hynix China fabs | Not memory directly. HBM counted only via accelerator thresholds. **No 2026 DRAM/HBM/SME-specific BIS rule found** | [REPORTED via p1-micron (Covington; CRS)]; [REPORTED] ([Introl, 2026-01](https://introl.com/blog/bis-export-policy-h200-mi325x-china-case-by-case-2026)) |
+| **2026 (to 2026-08-31)** | **CXMT status** | **Not on the Entity List** (no BIS screening-list match on 2026-08-31). On the DoD **1260H** list: removed 2026-02-13, reinstated **2026-06-08**. CXMT **sued DoD on 2026-08-28** (D.D.C.) | [REPORTED] ([XenoSpectrum, 2026-09](https://xenospectrum.com/cxmt-pentagon-military-company-lawsuit/); [Evertiq, 2026-08-31](https://evertiq.com/news/2026-08-31-cxmt-sues-pentagon-over-chinese-military-company-designation)) |
 
 ### 11.2 What they restrict, and who they help
 
@@ -600,8 +606,10 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
    - A **§48D extension** (BASIC Act).
    - A **Section 232 phase 2** that tariffs memory and creates a U.S.-origin premium.
    - **CXMT Entity-Listing** (would sharpen §5949 demand and possibly cut CXMT's tool access).
-   - Resumption of the **affiliates rule** (~2026-11-10).
-   - **SBIR reauthorization terms.**
+   - Resumption of the **affiliates rule**: 2026-11-10, or 2027-01-10 if BIS publishes the announced extension.
+   - ~~SBIR reauthorization terms~~ **Resolved:** reauthorized through 2031-09-30. Watch the **FY2027 per-agency proposal caps**.
+   - The **§5949 final FAR rule**: whether it keeps the reasonable-inquiry and supplier-certification approach, and whether it adds a 2028 commercial-item phase-in.
+   - **OBSIDIA** (CHIPS $34M LOI): competitor or partner for provenance.
    - A published **NSTC 2026 operating model**.
 
 ---
@@ -609,6 +617,11 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 ## 14. Verification queue (priority order; where to check)
 
 Each item names the primary place to check. All of these were blocked or search-budget-limited this session.
+
+> **Phase 1b status (v1-policy, 2026-11-01):** see `verify_v1-policy.md` for item-by-item results.
+> - **Mostly done via snippets:** items 1, 2, 3, 4, 5 and 8.
+> - **Partly done:** item 7 (Micross confirmed; Micron unknown).
+> - **Still open:** the P.L. number; the §5949 final rule and DFARS counterpart; NAPMP Arizona status; the 232 Phase 2 outcome; the DMEA list PDF.
 
 1. **SBIR/STTR reauthorization:** public law number, date, length, changed caps and PI rules (sbir.gov news; congress.gov). Also current Phase I/II ceilings (SBA Policy Directive).
 2. **CHIPS Program Office / U.S. Investment Accelerator 2026 status:** any open NOFOs; list of renegotiated awards; equity deals (nist.gov/chips; commerce.gov press releases).
