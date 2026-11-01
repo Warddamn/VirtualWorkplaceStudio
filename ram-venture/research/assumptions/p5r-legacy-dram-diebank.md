@@ -1,0 +1,24 @@
+# Assumptions — p5r-legacy-dram-diebank (Phase 5 round-2 red-team responses, DD7)
+
+- [p5r-legacy-dram-diebank] L1 managed die-bank programs are switched off (l1_enabled 1 -> 0) because the OEM's all-in cost of banking die ($186k-347k) is 2.9-5.4x a packaged LTB plus dry storage (~$64k) — basis: model §10b on Phase 4 inputs; RT-HYP/VC/VET-DD7-01.
+- [p5r-legacy-dram-diebank] Packaged-part LTB plus dry or N2 storage at the CM costs the part price plus ~$3,000 over the program life — basis: reviewer VET "a few thousand dollars"; GEIA-STD-0003B practice; no quote.
+- [p5r-legacy-dram-diebank] U.S. package and test for an L1 pull is $10-12.11/die — basis: Phase 4 pull_margin_unit note ($10 OSAT) and the L3 stack ($11.50 / 0.95).
+- [p5r-legacy-dram-diebank] Study-to-program conversion 0.35 -> 0.10, because Micross sells LTB procurement, N2 storage and pulls direct (EDSP) — basis: Micross EDSP pages via search 2026-11-01; RT-VC-DD7-02.
+- [p5r-legacy-dram-diebank] Burn-in plus hot/cold at-speed insertions add $10/die to the L3 pull stack (low end of the reviewer's $10-20) — basis: RT-VET-DD7-03; Mercury 100% burn-in datasheet.
+- [p5r-legacy-dram-diebank] Pull yield of bare die stored 10+ years in N2 is 0.90 (was 0.95) — basis: no published bondability/yield data; Infineon 36-month wafer limit; RT-PHY-DD7-03.
+- [p5r-legacy-dram-diebank] Storage surveillance (annual sample assembly, test, bond pull/shear) costs $5,000 per bank per year — basis: judgment, ~one small OSAT lot plus lab work a year.
+- [p5r-legacy-dram-diebank] Opened wafers are packaged whole and stored as packaged parts — basis: thinning and saw are whole-wafer steps; Rochester's 17-year data covers packaged parts; RT-PHY-DD7-04.
+- [p5r-legacy-dram-diebank] Blended aftermarket multiple 2.0x = 50/50 of 2.5x (DFARS-bound buyers) and ~1.5x (non-DFARS buyers capped by recovered hyperscaler DDR4 in 2028-30) — basis: RT-HYP-DD7-04; the 50/50 split follows 5 of the 10 named customers being non-DFARS.
+- [p5r-legacy-dram-diebank] A legacy-OCM 8Gb DDR4 die is ~75 mm2 (range 60-90), giving 736 good die per 300 mm wafer at 85% yield; a 12,500-die bank is 17 wafers — basis: RT-PHY-DD7-05; gross-die formula in model §10f.
+- [p5r-legacy-dram-diebank] A stacked/RDL 8 GB x72 build costs $90 substrate + $160 assembly — basis: RT-PHY-DD7-01 estimate; no OSAT quote.
+- [p5r-legacy-dram-diebank] MCM module yield 0.76 (3% per-die fallout at a 125 C screen/bin on unburned distributor KGD, 0.97^9) — basis: RT-VET-DD7-04 lower bound, combined with RT-PHY-DD7-02.
+- [p5r-legacy-dram-diebank] Building at a QML-38534 line adds $200k to MCM NRE ($1.4M -> $1.6M) — basis: judgment for line audit and qualification plus competitor margin; RT-VET-DD7-06.
+- [p5r-legacy-dram-diebank] Per-lot TID/SEL/hot-retention requalification costs $75k/yr from the evaluation lot — basis: judgment (one heavy-ion + Co-60 campaign a year with test boards and analysis); RT-VET-DD7-04.
+- [p5r-legacy-dram-diebank] Probability that a DRAM OCM grants a new U.S. entity authorized-aftermarket rights within 15 months is <=5% — basis: likely OCMs are extending lines (Winbond LTAs to 2030, ISSI to 2038); Micron placed continuity with e2v/ATP/Alliance; judgment.
+- [p5r-legacy-dram-diebank] Probability of a written rep offer to a part-time solo rep is 0.25 — basis: Intelligent Memory filled its 2026 EOL channel with Sourceability and Flip; judgment.
+- [p5r-legacy-dram-diebank] The 5% L2 commission is kept but unverified; search found only generic 5-15% rep ranges (technology/manufacturing) — basis: smallbiztrends via search 2026-11-01.
+- [p5r-legacy-dram-diebank] NIST SP 800-171 / CUI compliance for DoD-facing study work costs ~$35k one-off + ~$500/month (reviewer figure from DoD's regulatory cost model via Secureframe); the reported 2026-07-13 CMMC Phase-2 suspension was not verified — basis: RT-HYP-DD7-02.
+- [p5r-legacy-dram-diebank] AS9120B in year 1 costs $35k over m2-m6 plus $8k/yr surveillance — basis: Phase 4 Plan B inputs moved earlier; RT-HYP-DD7-03.
+- [p5r-legacy-dram-diebank] Residual Plan A keeps the Phase 4 fixed cost base ($680/month + $2,500/yr conference); a lean $300/month variant is shown separately — basis: no objection asked for lower costs; avoids tuning the residual upward.
+- [p5r-legacy-dram-diebank] The month-1 one-off becomes $3,900 ($500 employer review + $900 rep-agreement review + $2,500 LLC/legal); the $6,000 kill test is not run — basis: concept killed; RT-HYP-DD7-06, RT-VC-DD7-03.
+- [p5r-legacy-dram-diebank] Automotive-grade DRAM above 95 C exists with derated refresh, so 125 C is a bin-and-derate problem, not an impossibility — basis: prior knowledge [UNVERIFIED-training]; did not change the disposition.

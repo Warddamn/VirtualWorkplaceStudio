@@ -10,7 +10,8 @@ from pathlib import Path
 RV = Path(__file__).resolve().parents[2]
 m = json.loads((RV / "research/phase2/concepts_master.json").read_text(encoding="utf-8"))
 sel = json.loads((RV / "research/phase3/selection.json").read_text(encoding="utf-8"))
-dd_title = {d["dd"]: d["title"] for d in sel["deep_dives"]}
+all_dds = sel["deep_dives"] + sel.get("round2", {}).get("deep_dives", [])
+dd_title = {d["dd"]: d["title"] for d in all_dds}
 rt = {}
 for f in (RV / "research/phase5").glob("responses_*.json"):
     d = json.loads(f.read_text(encoding="utf-8"))
@@ -43,7 +44,7 @@ for c in alive:
     dd_cell = f"{dd} {dd_title.get(dd, '')}" if dd else "— (not selected)"
     status = rt.get(dd, "") if dd else ""
     r = role.get(dd, "") if dd else ""
-    if dd and r and not any(c["id"] == (sel_dd["anchor"]) for sel_dd in sel["deep_dives"] if sel_dd["dd"] == dd):
+    if dd and r and not any(c["id"] == (sel_dd["anchor"]) for sel_dd in all_dds if sel_dd["dd"] == dd):
         r = f"({r} bundle)"
     lines.append(
         f"| {c['id']} | {c['name']} | {c.get('capital_tier', '')} | {c.get('score_default', '')} ({c.get('rank_default', '')}) | "

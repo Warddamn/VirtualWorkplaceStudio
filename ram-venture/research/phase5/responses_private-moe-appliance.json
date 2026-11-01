@@ -1,0 +1,215 @@
+{
+ "dd": "DD6",
+ "slug": "private-moe-appliance",
+ "title": "Private MoE Inference Appliance (DRAM instead of HBM)",
+ "final_status": "KILLED",
+ "status_reason": "The FATAL objection holds. Four concurrent users touch 3.88x one user's expert bytes, so the 1-socket L box serves 1-2 users at >=10 tok/s (6.7-13.3 named), not 4 (27). At authorized-channel RDIMM prices the L box quotes $78,708. A $44.6k two-node Mac Studio cluster matches its single-stream speed with a ~10x faster first token, and U.S.-origin 1T models make it a one-user box for defense. So the L SKU, which carried the Phase 4 profit, leaves BASE. Without it, even on every other Phase 4 assumption, m36 ARR is $109,172 and the founder is never full-time. The accepted commercial corrections are a 6% close rate, a 7-month cycle, VAR paper, channel terms of 15%/20%, 30% churn, a $500 retainer, $900 insurance and $42.5/GB DRAM with a demand response to price. With them, BASE ARR is $15,814 at m18 and $63,873 at m36, the 36-month net is -$29,411 with a $25k external draw, and the founder never goes full-time. GLUT ($66,969) and SEVERE ($68,675) are no better. Even a passed kill test (8% close, 6-month cycle, channel at 3 a month) gives $86,763 of ARR and +$6,446 of net, with no full-time switch. Full-time by m36 needs a 21% close rate. The concept fails the brief's 36-month ceiling for a PRIMARY and pays the founder nothing.",
+ "revised_verdicts": {
+  "possible": "Yes for one user; no for a team. The software is TRL 8-9. The bandwidth model (576 GB/s platform peak, 50% sustained, routed bytes only) gives the L box (Kimi-K2.5 INT4) 16.3 tok/s single-stream and 9.8 / 7.1 / 5.5 tok/s per user at 2 / 3 / 4 concurrent. That is 1-2 users at >=10 tok/s and 6.7-13.3 named users, with ~22 s to the first token at 8k and ~178 s at 64k. U.S.-origin 1T models (Inkling, Nemotron 3 Ultra) run at 11-14 tok/s on L, so one user. The S box (MiniMax-M2.x FP8, RTX PRO 5000 48GB) gives 23.6 tok/s single, 3 users and ~20 named users. None of this has been measured on the exact box.",
+  "profitable": "No. BASE ARR is $15,814 at m18 and $63,873 at m36. The founder never goes full-time and salary-inclusive breakeven never comes; breakeven as run is m28, with the founder unpaid. The 36-month net is -$29,411, BASE draws $25k of external capital, and founder economic profit is -$228,311. GLUT gives $66,969 and SEVERE $68,675. A passed kill test gives $86,763 and +$6,446. Full-time by m36 needs a 21% close rate; $1M ARR is unreachable.",
+  "doable": "Build: yes; Linux, inference engines and RAG suit this founder. Sell and support part-time: no. Regulated buyers need supplier onboarding that a part-time single-member LLC struggles to pass, and the cycle runs ~7 months. Delivery and support hours cut selling to ~4.8 conversations a month by m36, and a business-hours SLA needs a paid U.S.-person backup technician."
+ },
+ "revised_economics": {
+  "arr_m18_base": 15814,
+  "arr_m36_base": 63873,
+  "arr_m36_glut": 66969,
+  "arr_m36_severe": 68675,
+  "founder_fulltime_month_base": "never",
+  "breakeven_month_base": "m28 (2029-02) as run with the founder unpaid; never at a $10k/month founder salary"
+ },
+ "ev_note": "For this founder, pursuing DD6 now has negative expected value. On the revised BASE they would put in ~2,340 unpaid hours and finish 36 months with a -$29k net and a $25k bridge to repay. If the ~$7k kill test passed, the best case is still ~$6k of net over three years and no salary. Role: DROP. It is not PRIMARY: no tested case short of a 21% close rate reaches a full-time switch inside the 36-month ceiling. It is not FALLBACK: it loses money and needs a bridge before the first order. It is not a MOONSHOT candidate: $1M ARR is unreachable at <=6x the close rate, and m60 ARR is ~$87k. Cancel the November kill test and give its ~$7k and ~55-80 hours to the next pick. The only residue is occasional fee-for-service installs of open-source hybrid inference on hardware the customer buys itself (no inventory, no SLA), taken only when inbound. That is worth perhaps a few thousand dollars a year. Reopen only if two things arrive unsolicited and at no cost. (a) A VAR or MSP commits in writing to take >=6 boxes a year on its own paper at <=15%/20%. AND (b) either a published or socket-pinned single-socket run shows >=10 tok/s per user at 4 concurrent on a 1T-class MoE in a box quoting <=$65k (e.g. a next-generation MRDIMM platform [UNVERIFIED-training]), or a blind evaluation shows regulated buyers clearly prefer 200B-1T models over single-GPU 30-120B ones.",
+ "responses": [
+  {
+   "id": "RT-VET-DD6-01",
+   "response": "Valid, and my own re-derivation confirms it. Four independent users touch 384 x [1-(376/384)^4] = 31.0 distinct experts per layer, 3.88x one token's 8. On the routed-only bytes (~11.9 GB/token: 21.1B routed params at ~4.5 bits), 4 users at 10 tok/s need 10 steps/s x 3.88 x 11.9 GB = ~461 GB/s, which is 80% of the 576 GB/s DDR5-6000 platform maximum. That is STREAM-class efficiency, not what an engine that syncs a GPU every layer sustains. The conc_saturation 2.4 was measured on an ~845 GB/s Xeon 6 MRDIMM socket. I replaced the fitted concurrency curve with a bandwidth model: step = t_fix (20 ms) + distinct-expert multiple x routed GB / (576 GB/s x 0.50). It gives 16.3 tok/s single-stream (so the single-stream claim survives) and 9.8 / 7.1 / 5.5 tok/s per user at 2 / 3 / 4 concurrent. That is 1 user at >=10 tok/s and 6.7 named users. At 0.55 efficiency or on a DDR5-6400-validated board it is 2 users and 13.3 named. Cost per named user rises from $116 to $222-395 a month, worse than CoCounsel ($104) and Mac Studio ($124). At 4 concurrent the box sits at or below K4's 6 tok/s drop-L line. A 2-socket L would restore only 3 users (20 named) at a ~$87k quote. I also accept that the error never reached the P&L. simulate() now reads capacity through a $50-per-named-user cap on the subscription, which takes the L subscription from $1,250 to $333. One partial rebuttal: the 8.73 -> 11.26 2S figure the reviewer cites came from weight duplication, not a bandwidth limit (see RT-PHY-DD6-02). It does not change the conclusion.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Model: capacity_model phase4 -> bandwidth (new bw_peak_gbs 576, bw_eff 0.50, routed GB, experts, t_fix, VRAM/KV term); sub_user_cap off -> $50/named user; mix_L 0.50 -> 0.00 in BASE (L is not quoted). Deep dive section 0, section 2.3 and section 1 corrected. K4-L re-admission bar: >=10 tok/s per user at 4 concurrent on a socket-pinned exact BOM. Kill criterion 5 is fired by default. Leg killed: the L 'Team-1T' box for a 10-40-person team."
+  },
+  {
+   "id": "RT-VET-DD6-02",
+   "response": "Valid on direction; the size is partly verified. My searches (2026-11-01, snippets) found three things. SHI lists a 64 GB DDR5-6400 RDIMM at $7,862.50 MSRP (an undated list price). Origin Storage's 64 GB-6400 is GBP 2,516 on special, ~$52/GB. Used 64 GB DDR5 sold for $890-1,200 to Aug-2026. I could not see Fusion's prices, so the $2,972-3,700 Greensheet figure stays reviewer-cited. I set the authorized small-buyer price to $42.5/GB (contract $25.78 x 1.65), which is $2,722 per 64 GB, against $1,898. That is the doc's own $32 street price plus the cited +35%. The premium unwinds to 1.15 across 2028. The L box now quotes $78,708 (with 13 RDIMMs) and the S box $41,091, so win condition #1 ('1T-class under $65k') fails. I also accept the hidden-reward flaw. With the new demand response to price rises (RT-VC-DD6-01), dearer RDIMMs now hurt: BASE net is -$23,755 at premium 1.15, -$29,411 at 1.65 and -$36,496 at 2.0 ($52/GB). Authorized supply with no purchase history is a real lead-time risk, and DRAM is the larger half of the BOM.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: dram_small_buyer_premium 1.15 -> 1.65 pre-turn; new dram_premium_post_turn 1.15 (unwinds across 2028); elasticity on rises (see RT-VC-DD6-01). Kill criterion 13 now covers RDIMM lead time >8 weeks and a missing >=14-day price hold. K1b shows buyers the $41k/$79k card. Three written authorized quotes are required before any price card is shown."
+  },
+  {
+   "id": "RT-VET-DD6-03",
+   "response": "Valid. A Micro Center GeForce card breaks DD6's own authorized-source rule, carries a consumer warranty, and invites a licence challenge over 'no datacenter deployment'. I re-specced the S box on an RTX PRO 5000 Blackwell 48GB (PNY), listed at $8,216 by SHI (MSRP $8,999; search snippet, undated). It has ECC, a professional driver licence and an authorized channel. Its 48 GB also fixes the KV ceiling in RT-PHY-DD6-03. The S quote rises from $30,622 to $41,091 together with the DRAM change, so the reviewer's '<=$33k' condition is not met. On its own the GPU swap costs ~$5.6k of 36-month net and $1.6k of m36 ARR (leave-one-out run: -$23,840 and $65,503 vs BASE -$29,411 and $63,873). It is a required compliance fix and small next to the L and close-rate changes.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: S_gpu $5,000 -> $8,216; S_vram_gb 32 -> 48. Deep dive section 2.1 updated; supply rules now forbid GeForce parts."
+  },
+  {
+   "id": "RT-VET-DD6-04",
+   "response": "Valid. K4 passed at 8 tok/s per user, while capacity() counted a user only at >=10. Track B also allowed a Xeon 6 MRDIMM host, which is the 845 GB/s machine behind conc_saturation, and no CPU SKU was named. Fixes: K4 now uses the model's own 10 tok/s floor. Track B must run on the exact EPYC 9005 1S SKU priced in the BOM (a 48-core 9455/9455P-class part, with CCD/GMI width logged [UNVERIFIED-training on CCD count]) and 12 DIMMs at a logged MT/s. NPS mode and STREAM triad are recorded beside tok/s, and the run is pinned with numactl. A Xeon 6 MRDIMM result is not accepted as evidence for the EPYC box.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Deep dive section 10: K4-S and K4-L rewritten (exact SKU, pinning, STREAM, >=10 tok/s per user). Kill criterion 5 references K4-L. No model change beyond the bandwidth model (RT-VET-DD6-01)."
+  },
+  {
+   "id": "RT-VET-DD6-05",
+   "response": "Valid. A major-brand RDIMM is not proof of non-PRC content. SK hynix fabs DRAM at Wuxi, and Montage (Shanghai) is one of three RCD suppliers [UNVERIFIED-training]. A small buyer cannot get per-lot fab-site declarations. What it can get is each module's SPD record, which names the DRAM, RCD, PMIC and SPD-hub manufacturers [UNVERIFIED-training: JEDEC SPD field layout]. The provenance sheet will record those IDs plus lot and date codes, buy only through authorized channels, and reject modules with a Montage RCD where that is visible. It will state that the fab site is not disclosed at small-buyer volume. The 'U.S.-origin curation' pitch never claimed non-PRC hardware; it now says so explicitly. This changes paperwork, not economics.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Deep dive section 4 supply rules: SPD-decoded component vendor IDs on the provenance sheet, a no-Montage-RCD rule, and no non-PRC claim. No model change."
+  },
+  {
+   "id": "RT-VET-DD6-06",
+   "response": "Valid. A 48-hour room-temperature memtest is a soak, not a burn-in, and the subscription had no correctable-error telemetry, no PPR runbook and no spares. Fixes: rename it to a 48-hour soak. Add rasdaemon/EDAC correctable-error monitoring with a replace threshold, plus a DDR5 post-package-repair runbook. Hold a spare pool as inventory: one spare RDIMM per 5 boxes under subscription and one 48 GB loaner GPU once 5 boxes are fielded. The parts reserve rises from 3% to 4% a year. At revised BASE m36 the pool holds $7,777. Every swap inside a CUI enclave is an escorted visit priced inside the existing 2 h/month. Spares and the higher reserve cost ~$4.1k of 36-month net (leave-one-out run: -$25,357 vs BASE -$29,411) and leave ARR unchanged.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: new spare_kit_boxes 0 -> 5 and loaner_gpu_trigger 0 -> 5 (inventory cash); parts_reserve_pct_yr 0.03 -> 0.04. Deep dive section 1 now says 48-hour soak with CE logging."
+  },
+  {
+   "id": "RT-HYP-DD6-01",
+   "response": "Valid. A single-member LLC run part-time faces SIG/CAIQ questionnaires, COI limits, financials and key-person questions, and most hardware moves on an existing vehicle (CDW-G, SHI, Carahsoft, GSA, NASPO). Universities on federal awards must compete the buy under 2 CFR 200.320, against a Dell/HPE quote for the same configuration running the free open-source stack. I did not take the reviewer's extreme (zero direct closes); I took a middle path. The founder-direct close rate goes from 8% to 6%. Half of founder-sourced orders go on a VAR/MSP's paper at a 5% fee. Insurance rises from $500 to $900 a month for $1-2M cyber/E&O + GL + product limits. Universities are demoted to benchmark partners. Revised BASE: first order m10, m36 ARR $63,873, never full-time. With no channel at all it is $52,843 and net -$42,858. I did not model SOC 2 Type II (~$20-30k); a buyer that demands it is unreachable at this scale.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: conversion 0.08 -> 0.06; new paper_share 0 -> 0.5 and paper_fee 0 -> 0.05; insurance_month $500 -> $900. K1 now requires cash plus a supplier-onboarding packet started (section 10). Kill criterion 3 treats universities as benchmark partners."
+  },
+  {
+   "id": "RT-HYP-DD6-02",
+   "response": "Valid: section 4's own motion (discovery, 60-day paid pilot, 3-6-month security review, PO) is 5-8+ months, not 4. With sales_cycle_m = 7, the first order moves from m7 to m10 (2027-08), and expected-value cash falls to $3,450 at m9, which draws a $25k tranche. A 9-month cycle gives ARR $62,686 and net -$46,954. Kill criterion 8 (deposit by m9) was calibrated on the 4-month lag and would have fired on a healthy funnel. It now sits at m12.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: sales_cycle_m 4 -> 7. Kill criterion 8 moved from m9 to m12 after reopening; criteria 9 and 11 re-based on the revised path. The bridge is treated as required, not optional (section 0)."
+  },
+  {
+   "id": "RT-HYP-DD6-03",
+   "response": "Valid and verified by search. macOS 26.2 RDMA over Thunderbolt 5 with exo ran Kimi K2 Thinking at 28.3 tok/s on four M3 Ultras (Geerling), ~25 tok/s with ~2 s TTFT on a ~$40k cluster (Creative Strategies), and ~15 tok/s on two M3 Ultras (Awni Hannun, per Hardware Corner). Two M5 Ultra 512GB give 1 TB of unified memory for $44,598. That is 57% of the revised $78,708 L box. It roughly matches the L box's 16-17 tok/s single-stream with ~10x faster first token at under a third of the power. Multi-user behaviour on exo is unmeasured, but the L box is a 1-2-user box anyway (RT-VET-DD6-01). The L box's remaining edge (ECC, BMC, a Linux/FIPS image inside a CMMC boundary) protects only the DIB segment. For law firms and IP boutiques (#7, #8) the L box has no reason to exist, and the reviewer's condition (beat the cluster on TTFT(8k)) is physically out of reach: PCIe weight streaming sets a ~22 s floor.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Model section 4 adds a 2x M5 Ultra cluster row ($185/named user). Deep dive section 5 adds a Mac-cluster row. Kill criterion 14 is rewritten to 'any configuration at or below the L price' and fires today. K4-M head-to-head is required before L is re-admitted. Leg killed: the L SKU for non-DIB buyers."
+  },
+  {
+   "id": "RT-HYP-DD6-04",
+   "response": "Valid, and worse under the bandwidth model. Scaling routed bytes by active parameters, Inkling 975B-A41B runs at 13.7 tok/s single and 8.0 per user at 2. Nemotron 3 Ultra 550B-A55B runs at 11.0 single and 6.2 at 2. Both are 1 user at >=10 tok/s and 6.7 named users, ~$395 per named user per month against Copilot GCC High at ~$35 and CoCounsel at $104. The segment that needs U.S.-origin weights is the defense segment section 5 leads with, and KTransformers documents neither model. K5 passed at '>=8 tok/s single', which describes a one-user box. Defense can be served only on the S box with <=400B U.S.-origin models (gpt-oss-120b, Llama-class [UNVERIFIED-training for Maverick fit]). Those run on a single GPU workstation too, which removes the DRAM thesis for that segment.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "K5 raised to >=10 tok/s per user at 2 concurrent. Kill criterion 6 is fired for L. Defense moves to S with smaller U.S.-origin models. Model section 2 prints the U.S.-origin rows. Leg killed: the U.S.-origin 1T defense box."
+  },
+  {
+   "id": "RT-HYP-DD6-05",
+   "response": "Valid. capacity() counted only decode concurrency, and its TTFT was for an idle box. At the L box's 368 tok/s 8k prefill rate, a 32k prompt waits ~89 s and a 64k prompt ~178 s before the first token. The single GPU is busy for that whole time, so concurrent arrivals queue toward 2x. The flagship 'draft this memo from these 40 documents' use (50-150k tokens) is therefore not served by the L box at all, and the reviewer's 64k <=90 s bar cannot be met at that prefill rate. The S box is materially better: MiniMax-M2.1 prefilled 32k at 2,540 tok/s on the 2-socket benchmark (P2), ~13 s, and S prefill is GPU-bound so one socket should be similar [ESTIMATE]. The S named-user count is now computed at a 32k-token design context (20 users).",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: new design_ctx_tokens 32,000 with a KV-memory cap; section 2 prints 32k/64k TTFT. K4-S requires TTFT(32k) <=30 s with 2 other streams at >=8 tok/s; K4-L requires TTFT(8k) <=40 s with 4 arrivals and 64k <=90 s (expected to fail)."
+  },
+  {
+   "id": "RT-HYP-DD6-06",
+   "response": "Valid. Buyers will compare the subscription with Dell ProSupport and HPE Foundation Care, and a founder with a day job cannot give business-hours response. Note that the Llama 3 failure counts are under training load, and the reviewer flagged them [UNVERIFIED-training]. Inference duty cycles are lighter, so I use about a third of that rate (~3%/yr). Changes: a named U.S.-person backup technician on a $500/month business-hours retainer from first delivery. Next-business-day service covers DIMMs, NVMe and PSUs from the spare pool. A GPU failure is answered by installing a 48 GB loaner (RTX PRO 5000, bought at 5 boxes) within 2 business days. It runs either SKU degraded (Kimi-K2.5 needs >=48 GB of VRAM) while PNY handles the RMA. The parts reserve goes from 3% to 4%. The retainer alone costs ~$14.6k over 36 months: BASE net is -$29,411 with it and -$14,800 without. A 24/7 retainer gives -$70,990.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: oncall_month $0 -> $500; parts_reserve_pct_yr 0.03 -> 0.04; new loaner_gpu_trigger 5. The SLA text now promises NBD on DIMM/NVMe/PSU and a 2-business-day loaner GPU, and is no longer equated with Dell ProSupport."
+  },
+  {
+   "id": "RT-HYP-DD6-07",
+   "response": "Valid. Regulated buyers approve a specific quote, and the PO arrives after a 3-6-month review. A 14-day quote therefore either forces re-approval or makes the founder hold price through a rising DRAM market. Quotes are now valid 30 days with a price-adjustment clause applied at PO, indexed to a published DRAM contract index and the distributor GPU price. The integrator is modelled as absorbing a 3% expected drift. Buyers who refuse indexation (often universities) need a firm 60-90-day quote with a ~10% hold premium, which the new demand response charges for. A 30% COGS spike after quoting now gives BASE net -$95,730 and a second $25k draw.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: new quote_drift 0 -> 0.03 on BOM at purchase. Section 4 pricing terms changed. K1b asks each buyer to accept the index clause; if >=50% refuse, price in a hold premium and re-run."
+  },
+  {
+   "id": "RT-HYP-DD6-08",
+   "response": "Valid and verified by search (2026-11-01, snippets). The Department of War suspended CMMC Phase 2 on 2026-07-13 and paused later milestones pending a 60-day review due mid-September (Jenner, McGuireWoods 2026-07-14, HSToday, Redspin). I found no resumption. DFARS 7012 and NIST 800-171 duties remain, so the reason to keep CUI on-prem is unchanged, but the urgency and the MSP/RPO rush behind the channel plan are gone. This is part of why I cut the close rate (8% -> 6%) and channel conversations (3 -> 2 a month).",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Deep dive sections 3 (#5) and 7 re-dated with sources; the roadmap's 'Phase 3 2027-11-10' gate is superseded. Model effects come through conversion and channel_conv_month (RT-HYP-DD6-01, RT-VC-DD6-06)."
+  },
+  {
+   "id": "RT-HYP-DD6-09",
+   "response": "Valid; same fix as RT-VET-DD6-03. The S box now uses an RTX PRO 5000 Blackwell 48GB at $8,216 (SHI listing; MSRP $8,999), not a GeForce RTX 5090. The reviewer's point that cost-plus pricing keeps ARR flat no longer holds, because orders now respond to price (RT-VC-DD6-01). The swap alone costs ~$5.6k of 36-month net (leave-one-out: -$23,840 vs -$29,411), which is small next to the other changes.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: S_gpu $5,000 -> $8,216; S_vram_gb 32 -> 48. Supply rules: no GeForce parts in any SKU."
+  },
+  {
+   "id": "RT-HYP-DD6-10",
+   "response": "Valid as stated by the reviewer. I did not verify it with my own search: I spent my quota on DRAM, CMMC, GPU, Mac-cluster and NUMA facts, so it is tagged [REPORTED via red team]. Google Distributed Cloud air-gapped is a managed, rack-scale deployment, so it competes for 50-300-attorney firms and university enclaves, not 20-40-person teams. The 'only open weights give you frontier quality on-prem' line is withdrawn.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Deep dive section 5 adds a GDC air-gapped row; the target range is capped at small enclaves and firms under ~300 staff. No model change."
+  },
+  {
+   "id": "RT-PHY-DD6-01",
+   "response": "Valid on all three counts. (1) Knife-edge: 17.0 tok/s cleared 4 users by 0.4%, and S at 25.0 sat exactly on the 6-user line. (2) The 37/32 active-parameter factor credited bytes the CPU never reads; routed bytes are ~21.1B (Kimi) vs ~20.4B (R1) params. (3) The MiniMax cross-check ratio is 7.0/11.9 = 0.59, not 0.8. The new bandwidth model works from routed bytes directly. It gives L 16.3 tok/s single (17.0-17.4 at 0.55 efficiency or a 6400 board) and S 23.6 (24.9 at 0.55). Knife-edge results are now printed as a bracket: L serves 1 user at 0.50 efficiency and 2 at 0.55 (6.7-13.3 named, not 27); S serves 3 users (20 named, $95 a user, not 40 and $40). Both are below the reviewer's 13-20 for L because concurrency now pays for distinct-expert bytes (RT-VET-DD6-01).",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: L_single_tps / S_single_tps superseded by bandwidth-computed values (new L_routed_gb 11.9, S_routed_gb 7.0, experts 384/256); section 2 prints efficiency variants. Deep dive section 2.3 rewritten."
+  },
+  {
+   "id": "RT-PHY-DD6-02",
+   "response": "Valid. The LMSYS post (2025-10-22, snippet) says NUMA-aware tensor parallelism gives up to 63% more decode on dual-socket systems; its baseline is not stated in the snippet. The 1.29x came from a build that duplicated weights on each socket. (a) I modelled a 2S L box (24 x 32 GB, 1,152 GB/s at 0.45 efficiency, 22 ms fixed time). It gives 22.2 tok/s single and 3 users at >=10 tok/s (20 named). That still falls short of 27, and at ~$87,041 it is DGX Station GB300 money ($87-95k) with far worse TTFT. So 2S is rejected on price, not on the 1.29 figure. (b) The S box's 1S speed is now calibrated from P2 through the bandwidth model: 23.6 tok/s, equivalent to dividing by ~1.36. On the reviewer's 1.63 reading it would be 19.7 tok/s and 2 users (13 named). The bracket is stated. (c) Accepted: rented 768 GB hosts are usually 2S, so Track B must pin one socket.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model section 2 prints the 2S L variant and section 1 its quote. Deep dive section 1 annotated. K4-S and K4-L require numactl --cpunodebind=0 --membind=0 with NPS mode and CCD count logged, and a 1S-vs-2S run on the same host."
+  },
+  {
+   "id": "RT-PHY-DD6-03",
+   "response": "Valid. On the 32 GB RTX 5090 the new kv_max_users() gives 4 users at 32k-token FP8 KV (the reviewer says 2-4), below Phase 4's 6. The re-spec to a 48 GB RTX PRO 5000 (RT-VET-DD6-03) leaves ~34.8 GB free after ~13.2 GB of fixed weights, buffers and workspace. That is ~280k tokens of FP8 KV, or 8 users at 32k. Decode bandwidth (3 users) now binds before VRAM does. The L box is unaffected (96 GB, MLA ~70 KB per token).",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: capacity() gains a VRAM/KV cap (new *_vram_gb, *_vram_fixed_gb, *_kv_kb_per_tok, design_ctx_tokens); S_vram_gb 32 -> 48. Track B logs peak VRAM and sustained sessions at 8k and 32k."
+  },
+  {
+   "id": "RT-PHY-DD6-04",
+   "response": "Valid. An L box draws a sustained ~1.1-1.3 kW, which leaves no headroom on a 120 V/15 A circuit (1.44 kW continuous) and puts ~4,000 BTU/h into a room. A quiet fan curve risks DIMMs above 85 C, where refresh doubles and bandwidth falls; the JEDEC figures are the reviewer's [UNVERIFIED-training]. The 'quiet office appliance' claim is withdrawn. Both SKUs are server-closet or colo devices. The install checklist adds an electrical and thermal survey, a dedicated 20 A (or 208 V) circuit billed at cost, and SPD-hub DIMM temperatures logged during the soak with a throttle check. A 300 W Max-Q RTX PRO 6000 is specified if L is ever re-admitted. Install time rises from 8 h to 12 h. The law-firm segment loses its quiet-tower option, so colo only.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: install_h_per_box 8 -> 12. Deep dive section 3 (#7) and the pitch no longer promise a quiet office tower; K4-L includes the DIMM-temperature and dBA test."
+  },
+  {
+   "id": "RT-PHY-DD6-05",
+   "response": "Valid. With 12 x 64 GB, one failed RDIMM leaves either an unbalanced 11-DIMM population or 640 GB, below the 650 GB Kimi floor. So the L box had no degraded operating point. Fix: the L SKU buys 13 RDIMMs (832 GB), one kept on-site as a cold spare, so an L swap needs no NBD shipment. The S box (384 GB for a ~230 GB FP8 model) can run on 10 DIMMs (320 GB) in a balanced population at ~17% less bandwidth [ESTIMATE], so it has a degraded mode. Correctable-error telemetry with a replace threshold (RT-VET-DD6-06) gives the early warning. The extra RDIMM adds ~$2.7k to the L BOM. That does not matter in BASE because L is not quoted.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: L_dram_gb 768 -> 832 (12 installed + 1 on-site spare); the spare pool covers S. A pull-one-DIMM test is added to K4-L."
+  },
+  {
+   "id": "RT-VC-DD6-01",
+   "response": "Valid; this was a model bug. elast = 1 + e x max(0, 1 - p/p0) responded only to falling prices, so a pre-quote component spike passed through cost-plus raised profit. The model now measures every box price against the fixed Phase-4 price card ($62,525 L / $30,622 S), the price the close rate was assumed at. Orders fall 0.5% per 1% above it. I chose 0.5, the low end of the reviewer's -0.5 to -1.0, because Dell/HPE/Supermicro inflate with the same DRAM while Apple, NVIDIA and cloud seats do not. Results: the S box sits 34% above its card, cutting orders ~17%. 'Price +30%' now gives ARR $80,831 and net +$16,470, still never full-time. Elasticity 1.0 gives net -$43,966. One caution against reading 'price +30%' as upside: copy-cat integrators (RT-VC-DD6-06) would make real elasticity much higher than 0.5.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: new elast_up 0 -> 0.5 and ref_mode 0 -> 1 (fixed Phase-4 card as reference); the sensitivity 'price +/-30%' rows now include the demand response. Phase 4 numbers still reproduce exactly via run_with(P_PHASE4)."
+  },
+  {
+   "id": "RT-VC-DD6-02",
+   "response": "Valid. The 8% came from the concept card's own correction note, not from an observed funnel, and K1 could pass on non-binding LOIs. I cut the central close rate to 6% (see RT-HYP-DD6-01) and replaced K1 with the reviewer's cash bar: >=1 deposit or >=2 paid $2,500 pilots with written conversion terms, plus a supplier-onboarding packet started. The decisive finding is what happens when K1 does pass. At 8% with a 6-month cycle and 3 channel conversations a month, m36 ARR is $86,763, net is +$6,446, and the founder is never full-time. Full-time by m36 needs a 21.0% close rate; a non-negative 36-month net needs 8.0%. The kill test therefore cannot confirm a viable business; at most it confirms a hobby.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: conversion 0.08 -> 0.06. Section 10: K1 is cash-based. The November kill test is cancelled because even a pass is not viable (status KILLED). New kill criterion 15: exit if the trailing close rate is below 12% after 30 conversations."
+  },
+  {
+   "id": "RT-VC-DD6-03",
+   "response": "Valid, and the Phase 4 BASE was more fragile than the reviewer showed. In my decomposition, adding only the $400/month insurance change moves full-time from m23 to m28 and ARR from $253,693 to $201,730. The 65-hour budget was used exactly, with only 24.5 contractor hours in 36 months. Changes: a $500/month business-hours retainer from first delivery, and 4 hours per qualified conversation (security questionnaires, SSP inserts, pilot support) instead of 3. Under the revised inputs, delivery and support crowd out selling. Conversations fall from 7 a month (m13-m22) to ~4.8 by m36, and the model's 20% minimum sales share binds. At 55 h a month: ARR $56,202, net -$42,909. At 45 h: $45,291, -$57,263.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: oncall_month $0 -> $500; h_per_conversation 3 -> 4. K7 now requires a time log showing <=4 h per conversation including security-review work. Written employer approval for daytime installs is folded into K0."
+  },
+  {
+   "id": "RT-VC-DD6-04",
+   "response": "Valid. I added a 'renewal-tested ARR' metric: the ARR from boxes delivered by m24 that have already faced a renewal decision. In Phase 4 it was $75,334 of $253,693 (30%). In revised BASE it is $22,645 of $63,873 (35%). The rest is mandatory first-year support sold with the box. An air-gapped box's subscription buys signed offline patches and model refreshes, which the customer's own MSP can do, so I raised churn from 20% to 30%. Churn barely moves m36 (+/-30%: $60,863-66,947) precisely because the window cannot test it. 'A real recurring line' is therefore no longer counted as a PRIMARY gate that DD6 clears.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: sub_churn_annual 0.20 -> 0.30; new renewal-tested ARR row in section 5. Kill criterion 12: the first three customers must renew at >=70% or take a non-cancellable 3-year prepay. Section 0 withdraws the 'real recurring line' claim."
+  },
+  {
+   "id": "RT-VC-DD6-05",
+   "response": "Valid. I added the reviewer's metric to the model: 36-month net minus unpaid part-time hours x $85, with a full-time salary treated as equal to the forgone day-job wage. Phase 4 BASE gives +$7,891, matching the reviewer's ~$8k. Revised BASE gives -$228,311 (2,340 unpaid hours, net -$29,411). Customers' money (prepaid subscriptions plus deposits on undelivered boxes) was $163,592 of Phase 4's $286,019 m36 cash, and is $35,709 of revised BASE's $53,934. The subscription share of labor-valued gross profit in m13-m24 was 43% in Phase 4 and is 15% revised, against the reviewer's >50% bar. At 1-2x recurring gross profit the m36 fleet would sell for roughly $30-60k [ESTIMATE]. On the reviewer's own measure, the business never repaid the founder's time even before the other corrections.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model section 5 adds economic profit, customers' money in cash, and subscription share of GP rows. Section 2.4 reports them. This finding is part of the KILLED status reason."
+  },
+  {
+   "id": "RT-VC-DD6-06",
+   "response": "Valid. The load-bearing channel is made of firms that can build the same Apache-2.0 box in a week. At a 10% hardware share, an MSP keeps less margin by reselling than by building it, so its incentive runs the wrong way. I raised partner terms to 15% of hardware and 20% of subscription and cut channel-sourced conversations from 3 to 2 a month, since the partners compete and the CMMC rush has paused. Petronella is reclassified as a rival, not a channel. With no channel, revised BASE gives ARR $52,843 and net -$42,858. In Phase 4 a K3 failure meant 'side line only'. Now it means kill, because without the channel the side line loses money.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: partner_hw_commission 0.10 -> 0.15; partner_sub_commission 0.15 -> 0.20; channel_conv_month 3 -> 2. K3 requires a written co-sell at <=15%/20% with a 12-month undertaking not to build a DRAM-resident SKU. Kill criterion 4 changed from 'side line' to 'kill'."
+  },
+  {
+   "id": "RT-VC-DD6-07",
+   "response": "Valid; the same finding as RT-HYP-DD6-04, now under the bandwidth model. Nemotron 3 Ultra runs at 11.0 tok/s single, 6.2 per user at 2 concurrent and 3.4 at 4, which is below K4's 6 tok/s fail line. Inkling runs at 13.7 / 8.0 / 4.4. Both are 1 user and 6.7 named users, ~$395 a named user per month, about 11x Copilot GCC High (~$35) and ~4x CoCounsel. K5's '>=8 tok/s single' would have passed a one-user box. I have no evidence that >=40% of DIB prospects accept PRC-origin weights inside an enclave, and section 5's own policy evidence points the other way.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "K5 raised to >=10 tok/s per user at 2 concurrent; kill criterion 6 fired for L. Defense is addressed only on S with <=400B U.S.-origin models, which a single GPU workstation also runs. Leg killed: the U.S.-origin 1T defense box."
+  },
+  {
+   "id": "RT-VC-DD6-08",
+   "response": "Valid on the trend. I did not re-verify K3's size with my own search; DD6's notes already list Kimi K3 (2.8T) as the top open-weight model [REPORTED]. At ~104B active parameters, routed bytes scale ~3.25x Kimi-K2.5's. On the L platform the bandwidth model then gives ~6.5 tok/s single-stream: one user, before the ~1.5 TB of RDIMMs (~$65k at $42.5/GB) that holding it at MXFP4 would need. So the L box serves last year's frontier on the day it ships, the 'quarterly model refresh' promise holds only for models that fit, and Gemma 4 31B and gpt-oss-120b close in from below on one GPU. This also weakens the S box's premise. Its 200-300B models must beat single-GPU 30-120B models on the buyer's own documents, or the DRAM is wasted.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "New K8: a blind evaluation on the buyers' RAG set must show a clear preference for the 200B-1T model over Gemma 4 31B / gpt-oss-120b, else kill. Kill criterion 14 also fires on frontier drift. The subscription promise is narrowed to 'refreshes within the installed memory envelope'."
+  },
+  {
+   "id": "RT-VC-DD6-09",
+   "response": "Valid; the same finding as RT-HYP-DD6-03, verified by search. Two M5 Ultra 512GB cost $44,598 for 1 TB of unified memory, 43% below the revised $78,708 L box. Two M3 Ultras already ran Kimi K2 Thinking at ~15 tok/s and four at 28.3 tok/s, with ~2 s to first token, against the L box's ~16 tok/s and ~22 s. Kill criterion 14 watched only a <=$25k desktop, so it could never fire on a cluster. I agree with the reviewer that concurrency on exo is unproven. But the bandwidth model now says the L box is also a 1-2-user machine, so concurrency is not the L box's remaining argument. Its only remaining edge is ECC/BMC/Linux in a CMMC boundary.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Kill criterion 14 rewritten to 'any configuration at or below the L price ... at or above the L box's measured per-user rate'; it fires today, so L is out of BASE. Mac-cluster rows added to model section 4 and deep dive section 5. Leg killed: the L SKU outside the DIB."
+  },
+  {
+   "id": "RT-VC-DD6-10",
+   "response": "Valid. K7 needed 20 conversations at 3 h each, 60 h, inside a ~55-hour test that shared its November dates with DD7's (~50 h) and DD2's (~55 h) tests, against ~65 founder hours a month. Paying $50 per call selects for people who take paid calls, not budget holders. Because the revised economics fail even when the test passes (RT-VC-DD6-02), the DD6 November test is cancelled outright, which removes the conflict. If a reopen trigger fires, the test runs alone over 6 weeks and ~80 hours with a time log, and K7 becomes >=10 unpaid qualified conversations with >=3 budget holders.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Section 10 rewritten: test cancelled; a reopen-only version with K7 restated (>=10 unpaid, >=3 budget holders, 6 weeks, run alone, time-logged). No model change."
+  },
+  {
+   "id": "RT-VC-DD6-11",
+   "response": "Valid; the same mechanism as RT-HYP-DD6-05. At the L box's 368 tok/s prefill rate, the first token takes ~89 s at 32k, ~178 s at 64k and ~272 s at 100k, and the single GPU is busy for that whole time, so other users queue. Named users are now derived at a 32k-token design context, with a GPU KV-memory cap. L falls to 6.7-13.3 named users, ~$222-395 per user per month, inside the reviewer's $233-462 range. S keeps 20 named users with ~13 s TTFT at 32k (the P2 measurement). A measured RAG trace remains the right test.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: design_ctx_tokens 32,000 and a KV cap in capacity(); section 2 prints 32k/64k TTFT. K4-S and K4-L add 32k/64k TTFT tests under concurrent load."
+  }
+ ]
+}

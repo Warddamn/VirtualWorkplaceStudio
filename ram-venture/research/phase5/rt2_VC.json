@@ -1,0 +1,162 @@
+{
+  "persona": "VC",
+  "persona_name": "Semiconductor VC who lost money on Z-RAM, T-RAM, Nantero, Crossbar and an Optane-adjacent bet, and on hardware-integrator and picks-and-shovels businesses that capped out",
+  "objections": [
+    {
+      "id": "RT-VC-DD6-01",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§2.5 'price +30%' and 'COGS' rows / §12 / model simulate(): elast = 1 + glut_elasticity x max(0, 1 - box_price_now/base_box_price)",
+      "objection": "The model has no demand response to a price rise. Orders respond to the box price only when it falls (the max(0, .) term), so a component spike passed through cost-plus before quoting makes the business better, not worse. My re-run with DRAM x1.25 and GPUs at $20,000 (L) / $6,250 (S), same 22% GM target, gives m36 ARR $275,105 and full-time at m21, against BASE $253,693 and m23. The 'price +30%' row ($382,745 ARR, full-time m19) likewise assumes the same 8% close rate on an ~$81k L box; with an elasticity near -1 (price +30%, conversion -30%) the run gives $245,881 and m22, so the upside disappears. This is not academic: 01_LANDSCAPE §2.3 has contract DRAM still rising (+10-15% in 4Q26) with the peak called for 4Q26-2Q27, so the first quotes (m7 = 2027-05) land above the Nov-2026 deck the model prices from. §2.5's 'the COGS row is the GPU shortage in numbers' covers only a spike after the quote, which the 14-day quote validity already handles; the likelier pre-quote spike is scored as upside.",
+      "would_change_my_mind": "A re-run with a symmetric price elasticity (-0.5 to -1.0 on box price versus the Nov-2026 quote) that still reaches full-time by m30, or K1 evidence that the same prospects sign at the card price +20%."
+    },
+    {
+      "id": "RT-VC-DD6-02",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§2.6 / §10 K1 and K7 / INPUTS conversion 0.08 ('C-48 verify_corrections')",
+      "objection": "The 8% qualified-conversation-to-order rate carries the verdict and nothing in the plan measures it. Its basis is the concept card's own correction note, not an observed funnel for $30-63k on-prem AI hardware. K1 passes on '>=3 LOIs at card price' from 20 conversations bought with $50 thank-you payments; a non-binding LOI costs an IT director nothing and says nothing about surviving a 3-6-month security review and a PO. On the model, a 6% close rate puts full-time at m36 (ARR $124,409) and 4% means never (ARR $91,287; 9.1 boxes in 36 months). K1 can therefore pass at a true close rate that leaves the founder never full-time. Round 1 hit the same pattern in DD1 (buy_frac) and DD2 (trial_conversion): an unmeasured conversion input deciding the call.",
+      "would_change_my_mind": "K1 tightened to cash: >=1 deposit or >=2 paid $2,500 pilots with written conversion terms by 2026-12-31; or a disclosed close rate >=8% from a comparable on-prem AI appliance seller (Lemony, Iternal, Petronella)."
+    },
+    {
+      "id": "RT-VC-DD6-03",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§9 backup technician / §10 effort / INPUTS founder_hours_pt 65, h_per_conversation 3, oncall_month 0; simulate() pays a contractor only for overflow hours",
+      "objection": "The BASE path sits exactly on the founder's 65 hours a month, and the model hides what it costs to be available while they keep a day job. Support hours go to the founder first and a contractor is paid only for overflow (24.5 hours in 36 months, no retainer). Yet the product is sold with a business-hours, next-business-day SLA, 8-hour on-site installs and 3-6-month security reviews, all of which happen during the day job. Re-runs: founder_hours_pt 55 -> full-time m33 (ARR $145,428); 45 -> never ($122,847). A business-hours backup retainer of $500/month -> m29 ($191,337); $1,000/month -> m31 ($170,552). h_per_conversation is 3 hours for research, discovery, follow-up and proposal, with nothing for security questionnaires, SSP inserts or pilot support: 6 hours -> m35 ($131,361); 10 hours -> never ($112,990). A technician used 24.5 hours in three years will not be on call for regulated buyers.",
+      "would_change_my_mind": "A named U.S.-person technician signing business-hours availability for <=$300/month; a kill-test time log showing <=3 founder hours per qualified conversation including security-review work; written employer approval for daytime installs and meetings."
+    },
+    {
+      "id": "RT-VC-DD6-04",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§0 'a real recurring line' / §2.4 recurring ARR / §11 #12 / INPUTS sub_churn_annual 0.20 with a mandatory, prepaid year-1 subscription",
+      "objection": "Most of the 'recurring' ARR is the compulsory first-year support sold with the box, so the PRIMARY gate 'a real recurring line' is not tested inside the model's window. In BASE, 15.6 of the 22.3 boxes under subscription at m36 (70%) were delivered in m25-m36 and are still inside their mandatory, prepaid first year; only 8.7 boxes delivered by m24 could have faced a renewal decision by m36. That is why churn +/-30% barely moves m36 ARR ($247,030-260,519). Subscriptions are 18.4% of 36-month revenue. For an air-gapped box the subscription buys patches and model refreshes through signed offline bundles, which is work the customer's own MSP can do, and the plan needs that same MSP as a channel partner taking 15%. Round 1 (DD4) found that buyers cancel once the purchase decision has passed.",
+      "would_change_my_mind": "Two comparable appliance vendors showing >=70% year-2 renewal, or the first three customers signing non-cancellable 3-year subscriptions at card price."
+    },
+    {
+      "id": "RT-VC-DD6-05",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§0 PROFITABLE / §2.4 / §11 #11 / model §5 (36-mo net, founder salary, cash m36, shadow_rate $85)",
+      "objection": "Valued at the model's own rates, 36 months of founder work buy roughly their own wage and no enterprise value. Before full-time the founder works 22 months x 65 h = 1,430 unpaid hours, $121,550 at the model's $85 shadow_rate; then 14 months at $10k loaded = $140,000. Founder labor is therefore ~$261.5k against a founder take of $140,000 salary + $129,441 retained after tax = ~$269k: an economic profit of ~$8k over three years. The $286,019 'cash at m36' exceeds the $40k capital plus $129,441 cumulative net by ~$117k, which is customers' money (annual subscriptions billed in advance and deposits on undelivered boxes). The exit is the one §11 #11 already names, 'offer the fleet to an MSP partner': at 1-2x recurring gross profit (~$14.1k/month at m36 per §2.4) that is ~$170-340k. The m60 ceiling is $559,144 ARR and $1M needs a 24.5% close rate. I have lost money on picks-and-shovels businesses that capped at $2M ARR; this one caps far below that, and asks the founder to leave a day job for a ~$120k loaded salary.",
+      "would_change_my_mind": "A comparable sale of a small on-prem AI integrator at >=3x ARR, or a revised model in which subscription gross profit exceeds 50% of total gross profit by m24 at unchanged conversion."
+    },
+    {
+      "id": "RT-VC-DD6-06",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§4 channels ('load-bearing') / §3 #2 and #6 / §5 Petronella and DIY rows / INPUTS partner_hw_commission 0.10, partner_sub_commission 0.15",
+      "objection": "The channel is load-bearing (without it m36 ARR falls 44% to $142,861 and full-time slips to m30) and it is made of the competitors. §3 #2 names Petronella as reseller and 'also a competitor'; §5 calls it the 'closest direct rival; already owns the CMMC buyer', with private LLM servers from $8-12k. KTransformers is Apache 2.0, and the veteran scorer called the SKU 'copyable by any integrator in a week'. The model has an MSP that owns the client, the assessment boundary and the Microsoft account taking 10% of hardware and 15% of subscription, leaving a part-time founder 85% of the recurring margin; the incentive runs the other way, toward the MSP building the box itself. At 10%, a channel L box keeps $5,853 of hardware gross profit (9.4% of $62,525), below Supermicro's 10.8%. With partner_hw_commission 0.20 full-time slips to m30 (ARR $180,944); with no channel and a 6% close rate the founder is never full-time ($96,602).",
+      "would_change_my_mind": "One named MSP/RPO (Petronella, Daymark, CyberSheath, Summit 7 or Corsica) signing a co-sell at <=10%/15% with a 12-month undertaking not to build its own DRAM-resident SKU."
+    },
+    {
+      "id": "RT-VC-DD6-07",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§5 win condition 3 / §10 K4-K5 / model §2 U.S.-origin note / capacity(), per_user_tps(), conc_exponent 0.62",
+      "objection": "For the lead segment (defense: 8 of the 20 kill-test calls, with CMMC Phase 2 as the 'why now'), the L box serves one or two users, not 27. Model §2 prints ~13 tok/s single-stream for Inkling 975B and ~10 tok/s for Nemotron 3 Ultra. Fed through the model's own per_user_tps, Nemotron gives 5.9 tok/s per user at 4 concurrent (below K4's 6 tok/s fail line) and 7.7 at 2; Inkling gives 7.7 at 4 and 10.0 at 2. capacity() returns 1 concurrent user at >=10 tok/s and ~6.7 named users for both. The L box then costs $462 per named user per month ($233 even at 13.3 users) against the $116 claimed, M365 Copilot in GCC High at ~$35 and CoCounsel from $104. K5 passes at '>=8 tok/s single', which is a one-user box, so the test can pass while the defense economics fail. KTransformers documents neither model (repo grep 2026-10-28).",
+      "would_change_my_mind": "Track B measures a U.S.-origin 500B+ MoE at >=8 tok/s per user at 4 concurrent on the L box, or >=40% of DIB prospects confirm in writing that PRC-origin weights (Kimi) are acceptable inside their enclave."
+    },
+    {
+      "id": "RT-VC-DD6-08",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§1 'what the customer buys' / §5 'where you lose' / §11 #14 / INPUTS L_dram_gb 768; subscription 'quarterly model refreshes'",
+      "objection": "The product is pinned to a model generation that was superseded before the deep dive was written. Kimi K3 (2.8T parameters, ~104B active; open weights 2026-07-27) needs ~1.4-1.56 TB at MXFP4 (Tom's Hardware; Yotta Labs, 2026-07-31; SemiAnalysis via Implicator: it does not fit one DGX B200), and the DD6 notes (§2) list it as the top open-weight model. The L box's 768 GB (12 x 64 GB at 1 DPC) can hold it only as a ~594 GB, ~1.7-bit dynamic quant. Going to 1.5 TB (128 GB RDIMMs) roughly doubles DRAM to ~$45.5k (L box ~$92k at 22% GM), and at 104B versus 32B active parameters the model's own bandwidth scaling gives ~5 tok/s single-stream: one user. So 'native 1T-class quality' is last year's frontier on the day it ships, while Gemma 4 31B and gpt-oss-120b close in from below on one GPU (§5). The subscription promises quarterly model refreshes it cannot deliver at the frontier, and kill criterion 14 watches only a <=$25k desktop, not frontier drift.",
+      "would_change_my_mind": "A Track B blind evaluation on the legal and engineering RAG set showing Kimi-K2.5/Inkling-class output materially beats Gemma 4 31B and is not materially behind K3, so a 768 GB box keeps its quality premium for a 3-year subscription; or a 1.5 TB configuration that passes K4."
+    },
+    {
+      "id": "RT-VC-DD6-09",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§5 Mac Studio row / §2.3 cost per user / §11 #14",
+      "objection": "A cheaper, faster 1T substitute already exists, and the kill criterion is drawn so that it misses it. Since macOS Tahoe 26.2 (Dec-2025), RDMA over Thunderbolt 5 lets Mac Studios pool memory. Jeff Geerling ran Kimi K2 Thinking on four M3 Ultras at 28.3 tok/s in exo, and Creative Strategies reported ~25 tok/s, ~2 s to first token and <450 W on a '$40K Mac Studio cluster'. With the M5 Ultra 512 GB at $22,299 (§5), two units give 1 TB of unified memory for ~$44.6k. That is 29% below the $62,525 L box and holds 1T at INT4 (~600 GB) with room for KV cache, against the L box's estimated 17 tok/s and ~20 s first token. §5 and §2.3 treat the Mac only as a single 512 GB box (1T at ~3-bit, 5 users). Kill criterion 14 fires only for 'a desktop at $25k or less', which excludes the existing ~$40-45k cluster. Multi-user concurrency on exo is unproven, and that is the L box's one remaining argument, but concurrency is unmeasured for the L box too.",
+      "would_change_my_mind": "Track B benchmarks a 2x M5 Ultra RDMA cluster beside the L box and the cluster fails K4 (per-user rate at 4 concurrent, or 8k TTFT); or criterion 14 is rewritten to 'any configuration <=$50k' and is not triggered."
+    },
+    {
+      "id": "RT-VC-DD6-10",
+      "dd": "DD6",
+      "severity": "MINOR",
+      "section": "§10 effort and K7 / DD7 §10 and DD2 §10 dates",
+      "objection": "The kill test is under-budgeted and triple-booked. K7 requires 20 qualified conversations in 28 days, 4x the model's conv_target_pt of 5 a month. At the model's own 3 hours each that is 60 hours, more than the ~55 hours budgeted for the whole test before K0, Track B and Track C. DD7 §10 schedules a ~50-hour test on the same dates (2026-11-02 -> 11-30) and DD2 §10 a ~55-hour test (2026-11-02 -> 12-01), against ~65 founder hours a month. Paying $50 per call also selects people who take paid calls over budget holders. Either the 5-a-month funnel is too conservative or K7 cannot be met; both cannot be right.",
+      "would_change_my_mind": "A dated calendar that runs DD6's test alone in November with a time log, and K7 restated against the model's funnel (for example >=10 unpaid qualified conversations, >=3 with budget holders)."
+    },
+    {
+      "id": "RT-VC-DD6-11",
+      "dd": "DD6",
+      "severity": "MINOR",
+      "section": "§1 'what it is bad at' / §2.3 named users / §10 K4 / INPUTS L_prefill_8k 368, peak_active_share 0.15",
+      "objection": "Capacity is measured on chat-length prompts, but the stated use case is long-context. The ~27 named users rest on 4 concurrent streams at a 15% peak-active share, with TTFT checked at 2k and 8k tokens only. §1's own fit, 'draft this memo from these 40 documents', is a 30-100k-token prompt. At the model's 8k prefill rate (368 tok/s) that is ~89 s at 32k, ~178 s at 64k and ~272 s at 100k before the first token, with the single GPU busy prefilling while other users queue. K4 tests only 2k and 8k, so it cannot catch this. Fewer effective users push the L box's cost per user toward the $233-462 range in RT-VC-DD6-07.",
+      "would_change_my_mind": "Track B adds TTFT at 32k and 64k with 2 concurrent users and shows <=60 s at 32k, or the named-user count is re-derived from a measured RAG trace."
+    },
+    {
+      "id": "RT-VC-DD7-01",
+      "dd": "DD7",
+      "severity": "FATAL",
+      "section": "§2.1 L1 row / §1 'the die bank' / §6 FTO #1-2 / INPUTS ltb_die_per_program 4000, gb_per_die_l1 0.75, kgd_factor 0.85, program_fee 750, program_churn 0.01, pull_margin_unit 1; L3 inputs storage_pct_yr 0.03, storage_min_yr 5000, reprobe/pack/test, bank_nre_first 120k",
+      "objection": "L1 bills the OEM more than the die it manages are worth, and the model leaves out the pull costs it charges L3. One program is 4,000 die x 0.75 GB x 0.85 x $20.37 = $51.9k of die at the 2026 peak (hence the $2,077 4% agency fee) and ~$7.7k at the $3/GB long-run price. Over the modelled 100-month life the founder bills $75,000 of program fees, ~$4k of pull margin, $2.1k of agency fee and the $4,000 study: ~$85k, more than the die are worth at peak and ~11x their long-run value. The OEM also pays the vault (on the model's own L3 terms, 3%/yr with a $5k/yr minimum, ~$40k over 8 years) and the pull costs the model applies only to L3: $12.11 per good die (~$48k for 4,000) plus the $120k first-family test set-up (bank_nre_first), where L1 books '$1/unit on ~$10 OSAT'. That is ~$170-290k to manage ~$52k of die. Worse, §6 FTO #1-2 say re-packaged die cannot carry the OCM part number without authorization and the test program belongs to the OCM. A board OEM (§3 #6-8: Trenton, CP Technologies, WINSYSTEMS, all on packaged FBGA parts) would therefore pull a different part number, which is the requalification the LTB was meant to avoid. The rational default is the one in the DSPO data: buy packaged parts at the last order date and dry-store them. L1 is ~$34k of Plan A's $42.6k m36 ARR.",
+      "would_change_my_mind": "Three OEMs with die-level (not packaged-part) LTB needs, each holding >=$500k of die so the fee is <=2%/yr of inventory, signing LOIs at $750/month; or a re-specified L1 that stores packaged parts and still clears C3 with written Micross or Rochester terms."
+    },
+    {
+      "id": "RT-VC-DD7-02",
+      "dd": "DD7",
+      "severity": "MAJOR",
+      "section": "§5 'Micross sells the vault direct' / §4 sales motion / §10 C3 / INPUTS p_program 0.35, program_churn 0.01",
+      "objection": "The vault owner already sells the whole L1 bundle, not just storage. Micross's Program Sustainment Management covers BOM monitoring with EOL/PCN notifications, long-term die and wafer storage, and supplier-managed inventory. Its EOL Die Sustainment Program (EDSP) procures the LTB of die and wafers, charges an annual storage fee under a long-term agreement, holds die for 20+ years and ships fully processed die on demand (micross.com PSM and EDSP pages; EDSP flyer). That is the LTB study, procurement, vault and pulls end to end, from an IBAS-funded incumbent ($134.3M ceiling, §5). The model still books 35% study-to-program conversion and 1%/month program churn (100-month life) for a part-time intermediary adding a $750/month layer that §5 itself says 'the OEM can remove'. The exiting OCM routes EOL demand to established houses: Micron used ATP (2015, 2018), Alliance Memory and EDX Electronics' LTB program; Intelligent Memory chose Rochester (2024) and Sourceability and Flip (2026).",
+      "would_change_my_mind": "Micross (or Rochester) written terms under C3 that let a third-party program manager keep >=$500/month per program on customers it introduces, plus >=2 OEMs stating they would contract through the program manager rather than EDSP directly."
+    },
+    {
+      "id": "RT-VC-DD7-03",
+      "dd": "DD7",
+      "severity": "MAJOR",
+      "section": "§0 recommendation ('optional SKU of DD2's LTB study line'; 'run the 29-day kill test only alongside DD2') / §10 dates / DD6 model founder_hours_pt",
+      "objection": "Keeping DD7 alive as a side line breaks the PRIMARY. DD7 Plan A uses ~20-30 founder hours a month (prospect_hours_pt 15, study_hours 10 per study, program_hours 2 per program, acct_hours 0.5 per account), and DD6's BASE uses all 65. Re-running DD6 with 10 hours diverted (founder_hours_pt 55) moves full-time from m23 to m33 (ARR $145,428); with 20 diverted (45 h) the founder is never full-time ($122,847). DD7's ~50-hour kill test (2026-11-02 -> 11-30) collides with DD6's ~55 hours on the same dates and DD2's ~55 hours to 12-01. The host it is to be attached to, DD2, was DOWNGRADED in round 1 ('a $249 feature distributors give away'). In return, Plan A never pays the founder ($42.6k ARR at m36).",
+      "would_change_my_mind": "DD6's model re-run with DD7's hours carved out still reaching full-time by m30, or an explicit decision to run DD7's test only after DD6's K1 result is in and DD6 has failed."
+    },
+    {
+      "id": "RT-VC-DD7-04",
+      "dd": "DD7",
+      "severity": "MAJOR",
+      "section": "§10 Track A pass test / §1 'who is allowed to sell to DoD' / §7 DFARS 252.246-7008",
+      "objection": "Track A can pass without the moat. Its pass bar is '>=1 of 6 offers a rep or distribution agreement and >=1 quotes wafer or KGD terms'. A commission rep line (L2) or a KGD price list is not authorized-aftermarket status under DFARS 252.246-7008, which requires the OCM's permission to make or sell the part after EOL using transferred wafers, tooling or test data (§1, ERAI). So the only scored moat (C-91, moat 4) is not tested by the experiment meant to kill it. The OCMs most likely to reply are extending lines, not exiting: Winbond is sold out through 2027 with customers seeking LTAs to 2030, and ISSI supports DDR4/LPDDR4 to 2038. They have no EOL to authorize. The exiting OCM, Micron, has given its EOL continuity to ATP, Alliance Memory and EDX Electronics.",
+      "would_change_my_mind": "Track A's pass bar rewritten to require a written OCM statement of willingness to grant authorized-aftermarket (or authorized-distributor-for-EOL) status on a named part, and one of the six OCMs meeting it."
+    },
+    {
+      "id": "RT-VC-DD7-05",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§3 'sanity ceiling' / model §6 DMSMS sanity check",
+      "objection": "The demand ceiling is stated in die value, not in the founder's fee pool, and its memory share is unsourced. The $6.3-25.4M a year assumes ~10% of DSPO's 1,268 life-of-need cases are memory ('if ~10% are memory'), and the DSPO case mix covers all commodities, not DRAM. Even granting it, the founder earns $750/month plus 4%: winning every one of the ~127 memory life-of-need cases a year would add ~$1.14M of program ARR (127 x $9,000) plus $0.25-1.0M of agency fees. A realistic 3-5% share is ~$35-60k of new ARR a year, which is the model's own answer. L1 + L2 is capped near $1-2M a year even at 100% national share.",
+      "would_change_my_mind": "A DSPO or GIDEP breakdown showing memory life-of-need cases >=3x the assumed ~127 a year, or evidence that program fees scale with program size."
+    },
+    {
+      "id": "RT-VC-DD7-06",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§0 'revisit the MCM' / §2.3 BULL / §5 MCM rows / INPUTS ev_rev_multiple 1.5, mcm_asp 900",
+      "objection": "The door left open for the MCM leads to a sub-venture return even in the BULL case. BULL needs a $1,500 ASP (base $900), 4 design-ins a year of 1,000 units from m54 and a 4.0x aftermarket multiple to reach 7.31x, undiscounted, at 1.5x year-10 revenue, ten years out. That is ~22% a year gross if all capital went in at t0; staging helps, but dilution, an option pool and a hi-rel co-founder's equity hurt, and ten years runs past a normal fund life. Year-10 EBITDA is negative in every non-BULL case, so 1.5x revenue is generous. The competitor list is short: 3D Plus appears in §6 FTO but not in §5. Micron Manassas (1-alpha DDR4 for defense) and ISSI (DDR4/LPDDR4 to 2038) give a 2028 NewSpace designer a supported part, which removes the locked-die premise for new designs.",
+      "would_change_my_mind": ">=3 named NewSpace or rugged buyers issuing evaluation LOIs at >=$1,200 for an unflown x72 ECC MCM, or a hi-rel co-founder who brings an existing design-in."
+    },
+    {
+      "id": "RT-VC-DD7-07",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§2.5 Plan C / model §7 / INPUTS sba_share 0.8, acq_multiple 5, equity_share 0.1",
+      "objection": "Plan C cannot be executed by this founder. It needs the founder full-time (the day job ends), a personal guarantee on a $3.6M SBA loan from someone with under $50k of capital, $410k of outside equity nobody has been asked for, and a target nobody has named. Resurgent, the model's template, was bought by Flip in 2023, and Lansdale makes no DRAM. The only asset that matters, the OCM licence, may carry change-of-control clauses (notes gap 8, unchecked). DSCR is 0.85 in GLUT and 0.45 in SEVERE, and the $5M SBA cap is marked 'prior knowledge, not verified'.",
+      "would_change_my_mind": "A named for-sale licensed manufacturer whose DRAM OCM licences survive a change of control, and a lender term sheet that accepts this founder."
+    },
+    {
+      "id": "RT-VC-DD7-08",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§2.1 L2 row / §4 channel / INPUTS commission 0.05 ('unsourced'), acct_rate_pt 0.3",
+      "objection": "The rep line's own evidence points the other way. The only channel news cited is Intelligent Memory signing Sourceability as a global distributor and Flip as a partner (Evertiq, 2026-10-06). The maker filled its EOL channel with scaled distributors, which lowers, not raises, the odds of a solo part-time rep. The 5% commission is unsourced, accounts arrive at 0.3 a month, and commission scales with the DRAM price: $2,000/yr per account at 2026 prices, $295 at $3/GB, and $928/yr in total in SEVERE at m36.",
+      "would_change_my_mind": "A written rep offer from Intelligent Memory, Alliance Memory or ISSI at >=5%, including house accounts in a named territory."
+    }
+  ],
+  "overall": {
+    "DD6": "A moatless ~19%-GM integrator whose PRIMARY case rests on four unmeasured knife-edges (an 8% close rate, exactly 65 founder hours, a 10%/15% channel made of competitors, renewals the model never exercises) and on a model that scores component inflation as upside. Lifestyle side business at best; K1 must demand cash, not LOIs, before it is called PRIMARY.",
+    "DD7": "Kill it outright, side line included: L1 bills the OEM more than the die it manages are worth, Micross already sells the same bundle direct, and running its November test beside DD6 starves the PRIMARY of the hours it needs."
+  }
+}

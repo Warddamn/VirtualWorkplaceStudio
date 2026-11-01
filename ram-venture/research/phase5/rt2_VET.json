@@ -1,0 +1,114 @@
+{
+ "persona": "VET",
+ "persona_name": "30-year DRAM process veteran: ex-Micron/Qimonda process integration and yield engineering, qualified memory for automotive and defense customers, ran fab test floors (KGD, burn-in, AS6081, module qual)",
+ "objections": [
+  {
+   "id": "RT-VET-DD6-01",
+   "dd": "DD6",
+   "severity": "FATAL",
+   "section": "§0 POSSIBLE (4 concurrent users, ~27 named users) / §1 'The CPU reads only the picked experts' / §2.3 $116 per user / INPUTS L_single_tps, conc_exponent, conc_saturation / §10 K4",
+   "objection": "The L box's multi-user capacity breaks the memory-bandwidth arithmetic that §1 itself sets up. Kimi-K2.5 routes 8 of 384 experts per layer. Four independent users touch on average 384 x [1 - (376/384)^4] = 31.0 distinct experts per layer, 3.88x one token's 8. With the doc's own ~16 GB read per token, one batch-4 decode step therefore reads ~62 GB. Four users at 10 tok/s each means 10 steps/s, or ~620 GB/s. That is above the 614 GB/s theoretical peak of 12 x DDR5-6400, and AMD's 9005 architecture guide (58462) lists 6000 MT/s as the platform maximum (576 GB/s), with 6400 validated only on some customer boards. Using the more accurate routed-only bytes (~21B routed params x ~0.53 B = ~11.3 GB; attention and shared expert sit on the GPU), a step still reads ~44 GB, so 10 tok/s per user needs ~440 GB/s: ~71% of theoretical, or STREAM-class efficiency, against the 45% the doc assumes for one stream. conc_saturation = 2.4 comes from KTransformers balance-serve (17 -> 40 tok/s), measured on a Xeon 6 with 12-channel MRDIMM-8800. That is ~845 GB/s per socket, at least 1.38x the L box, and the doc says that run was GPU-bound; the L box would be DRAM-bound. L_single_tps also assumes a x2.0 gain from bandwidth, yet §1 reports that doubling bandwidth with a second socket gave only 1.29x (8.73 -> 11.26 tok/s). I re-ran capacity() with concurrency scaled by bandwidth (saturation 2.4 x 614/845 = 1.74). L max concurrency at >=10 tok/s falls from 4 to 2, named users from 27 to 13, and cost from $116 to $232 per user per month. Also scaling single-stream (17 -> 12.4 tok/s) gives 1 user at a time, 7 named users and $465. Both are worse than CoCounsel ($104) and Mac Studio ($124) in §2.3. The error never reaches §2.4, because simulate() never reads capacity(): ARR stays at $253,693 whatever the box can serve. K4's pass line (>=8 tok/s per user at 4 concurrent) needs ~350 GB/s (57% of peak) on routed bytes alone, so kill criterion 5 (drop L) is the likely outcome. That leaves the S box against the $22k Mac Studio and the $7k DGX Spark.",
+   "would_change_my_mind": "A Track B measurement on the exact BOM configuration (one EPYC 9005 socket, 12 x 64 GB at the stated speed, RTX PRO 6000; CCD count and NPS mode logged) showing >=10 tok/s per user at 4 concurrent on Kimi-K2.5 INT4 with 8k-token contexts. Alternatively, a published KTransformers single-socket, 12-channel DDR5 concurrency curve showing >=2.3x aggregate at 4 users. And simulate() made to cap subscription seats and orders by measured capacity."
+  },
+  {
+   "id": "RT-VET-DD6-02",
+   "dd": "DD6",
+   "severity": "MAJOR",
+   "section": "§2.1 BOM (DRAM $22,770, 47% of L BOM) / §4 supply rules / §2.5 COGS row / §11 #13 / INPUTS dram_small_buyer_premium=1.15, glut_elasticity",
+   "objection": "The DRAM line is priced at contract x 1.15 = $29.65 per GB, or $1,898 per 64 GB RDIMM, citing 'street ~$32/GB' from Aug-2026. The channel has moved well past that. Fusion Worldwide's July 2026 Greensheet reports 64 GB DDR5 RDIMMs trading at $3,000-3,700, with a June average of ~$2,972 for 64 GB 6400 ($46-58/GB). It also reports new RDIMM bookings averaging over 54 weeks, with allocations capped. ServerMonkey's October update has enterprise RDIMM spot up 35% in two months, with quotes expiring in as little as two hours. These sources are brokers with an interest, but even the doc's own $32/GB plus 35% is ~$43/GB. I re-ran the model at $2,972-3,700 per 64 GB. The L box quotes at $79,056-90,256 (not $62,525) and the S box at $38,887-44,487. That puts L inside the DGX Station GB300 band ($87-95k), which §5 credits with ~3x the users, so win condition #1 ('1T-class under $65k') fails. The model hides this. BASE conversion does not respond to price (glut_elasticity applies only after the turn), so a dearer RDIMM simply raises the cost-plus box price and the profit with it. 36-month net rises from $129k to $164-180k, and full-time comes earlier (m21). The model rewards the shortage. On supply, DD6's own DFARS 252.246-7008 rule rules out brokers, which leaves authorized allocation for an integrator with no purchase history. That cannot support 'parts bought in the order month, delivered month+1' or 14-day customer quotes when supplier quotes last hours. Kill criterion 13 watches GPU lead time only, although DRAM is the larger half of the BOM.",
+   "would_change_my_mind": "Three written authorized-channel quotes (franchised distributor or a Supermicro/ASRock Rack channel partner) for 12 x 64 GB DDR5-6400 RDIMMs from Samsung, SK hynix or Micron at <=$32/GB, with <=6-week delivery and a >=14-day price hold. Plus a BASE re-run in which conversion falls with box price, and an RDIMM lead-time trigger added to §11 #13."
+  },
+  {
+   "id": "RT-VET-DD6-03",
+   "dd": "DD6",
+   "severity": "MINOR",
+   "section": "§1 S SKU (RTX 5090) / §2.1 GPU prices / §4 supply rules (DFARS 252.246-7008, 'no gray-market GPUs') / INPUTS S_gpu",
+   "objection": "The S box's $5,000 GPU is the retail Micro Center price for an RTX 5090. The model's own source gives the online price as $8.5-10k. A retail store is not an OCM or authorized distributor, which DD6's own supply rule requires. NVIDIA's GeForce software licence also carries a 'No Datacenter Deployment' clause, which NVIDIA enforced against a Japanese GPU host in 2017. A rack server in a client's server room, or in the colo cage §3 #7 offers, is the kind of deployment a regulated buyer's legal review will flag. GeForce board-partner warranties are consumer warranties. The S box is the fallback if L fails (§11 #5), so its BOM needs a PRO-class card (RTX PRO Blackwell, with ECC) or the authorized $8.5-10k price. That adds ~$3.5-5k of BOM, or $4.5-6.4k of quote at 22% GM.",
+   "would_change_my_mind": "Current NVIDIA licence text, or written NVIDIA/partner confirmation, that excludes customer-premises enterprise servers from 'datacenter deployment'. Or the S SKU re-priced with an authorized-channel PRO card and still quoting at <=$33k."
+  },
+  {
+   "id": "RT-VET-DD6-04",
+   "dd": "DD6",
+   "severity": "MINOR",
+   "section": "§10 Track B and K4 thresholds / §11 #5 / INPUTS L_cpu ('9455-class' [UNVERIFIED]), min_user_tps=10",
+   "objection": "The gate does not test the machine the model prices. (1) K4 passes L at >=8 tok/s per user at 4 concurrent, but capacity() counts a user only at >=10 tok/s. A box that just passes K4 serves at most 3 at a time: ~20 named users and ~$155 per user per month, not 27 and $116. (2) Track B allows 'EPYC 9005 or Xeon 6'. A Xeon 6 with MRDIMM is the 845 GB/s-per-socket machine behind conc_saturation, so measuring on it would validate the wrong box. (3) On EPYC, socket bandwidth depends on the CCD count and on whether the part is a 'wide' GMI OPN. AMD's 58462 guide gives each CCD one dedicated GMI link, or two on wide parts. The BOM names no SKU, only a recalled $5,500 '9455-class' price, so the ~614 GB/s the throughput rests on is assumed, not specified.",
+   "would_change_my_mind": "K4's pass line raised to min_user_tps (10 tok/s per user at 4 concurrent), and Track B pinned to the exact BOM CPU SKU, DIMM population and speed, with STREAM triad recorded alongside tok/s."
+  },
+  {
+   "id": "RT-VET-DD6-05",
+   "dd": "DD6",
+   "severity": "MINOR",
+   "section": "§4 supply rules ('Samsung, SK hynix or Micron RDIMMs, with a provenance sheet') / §5 win condition 3 (U.S.-origin curation) / §7 procurement",
+   "objection": "'Major-brand RDIMM' is not the same as non-PRC content. SK hynix makes a large share of its DRAM at Wuxi, China (~40% in 2022-23 reporting [UNVERIFIED-training]). DDR5 RDIMM register (RCD) and SPD-hub chips come from three suppliers, one of which is Montage Technology of Shanghai. None of this is prohibited: §5949 names CXMT, YMTC and SMIC. But the buyer DD6 courts with 'U.S.-origin model curation' will ask where the memory was made. Module makers do not publish die fab site or RCD vendor per lot to a small buyer, so the provenance sheet can show brand and lot, not origin. Selling a U.S.-origin model on possibly Wuxi-fabbed DRAM with a Shanghai RCD is an awkward discovery in a CMMC security review.",
+   "would_change_my_mind": "Written per-lot declarations from the module maker (DRAM fab site plus RCD/PMIC vendor) obtained at small-buyer volume. Or a SKU rule that restricts L/S to module part numbers with a declared non-PRC fab and non-PRC RCD."
+  },
+  {
+   "id": "RT-VET-DD6-06",
+   "dd": "DD6",
+   "severity": "MINOR",
+   "section": "§1 'a 48-hour burn-in' / §2.2 subscription cost (2 h/month, 3%/yr parts reserve) / INPUTS build_h_per_box, parts_reserve_pct_yr / §9 backup technician",
+   "objection": "A 48-hour unattended memtest at room temperature is a system soak, not burn-in: there is no thermal or voltage acceleration. Samsung, SK hynix and Micron already test and burn in modules. Latent DIMM faults show up in the field as growing correctable-error counts. Google's fleet study (Schroeder et al., SIGMETRICS 2009 [UNVERIFIED-training]) found more than 8% of DIMMs logging correctable errors each year. The subscription has no correctable-error telemetry, no DDR5 post-package-repair runbook and no spare-RDIMM stock. With authorized bookings over 54 weeks (DD6-02), a next-business-day SLA needs spares on the shelf: about one 64 GB and one 32 GB RDIMM per ~5 boxes, or ~$6-12k of idle capital for the BASE m36 fleet of 22.3 boxes. That money is not in the cash model, and every swap is an escorted visit to a CUI enclave.",
+   "would_change_my_mind": "The model adds spare-RDIMM inventory to working capital, and the subscription spec adds correctable-error monitoring with a replace threshold. Or a module vendor's written advance-replacement SLA of <=5 business days at small-buyer volume."
+  },
+  {
+   "id": "RT-VET-DD7-01",
+   "dd": "DD7",
+   "severity": "FATAL",
+   "section": "§0 Recommendation (keep managed die-bank programs as a DD2 SKU) / §1 L1 / §2.1 L1 row / §3 #6-8 / INPUTS ltb_die_per_program=4000, kgd_factor=0.85, program_fee=750, pull_margin_unit=1 ('~10% on ~$10 OSAT package+test'), storage_pct_yr",
+   "objection": "The one piece DD7 keeps, L1, asks the customer to bank the wrong form factor at a loss. The model's program is 4,000 die x 0.75 GB x $20.37 x 0.85 = $51,944 of KGD; the same parts packaged cost $61,110, so banking die saves the OEM $9,166. Against that, using the model's own inputs, the OEM pays over a 100-month program: $750/month ($75,000), the 4% agency fee ($2,077), the $4,000 study, the $1/unit pull margin ($4,000), ~$10/die of U.S. package and test ($40,000), and Micross storage at 3%/yr (~$13,000). That is ~$138k. It also needs a package-qual and test-program set-up per part family, which the model charges only to L3 ($40-120k: bank_nre_next/bank_nre_first), for a total of ~$178-258k to bank $52k of die. A 4,000-piece LTB of packaged parts, dry-packed in nitrogen at the contract manufacturer, costs the part price plus a few thousand dollars. The named L1 buyers (§3 #6 Trenton Systems, #7 CP Technologies, #8 WINSYSTEMS) build boards and servers that take packaged FBGA DRAM or DIMMs, never bare die. Their LTBs are module or component LTBs that the module vendor runs: Advantech's industrial DDR4 R-DIMM notice set EOL 2026-07-23 and LTB 2026-10-30. The only die consumers in §3 are NewSpace MCM makers (#9, 'no named buyer'). Without L1, Plan A is L2 commissions alone, $8.6k of the $42.6k BASE m36 ARR, so nothing founder-doable remains to keep as a DD2 SKU.",
+   "would_change_my_mind": "At least 3 of the Track B interviewees are die-consuming hybrid, SiP or MCM makers without their own vault, and they state they would pay a third-party program manager >=$750/month. Or L1 is respecified as packaged-part/module LTB management, re-modelled without the OSAT and set-up costs, and shown to beat the free LTB handling that module vendors and distributors already provide."
+  },
+  {
+   "id": "RT-VET-DD7-02",
+   "dd": "DD7",
+   "severity": "MAJOR",
+   "section": "§1 'A minority cannot swap: the die is locked' / notes §0 finding 1 / §5 'Where an entrant could win' #1 / §10 Track B questions and pass line / §11 #1, #9",
+   "objection": "'Locked die' is wrong for two of its three cases. On a DO-254 avionics board or in an FDA-validated device, what is qualified is a packaged part number: package construction, substrate, mold compound, wire, MSL rating, marking and the OCM's final test. A banked die re-packaged in a new FBGA at a U.S. OSAT is a different part. Its construction change triggers the delta qualification or change-impact review the buyer was trying to avoid, unless the aftermarket maker holds OCM-transferred package designs and test programs (Rochester's model), which §6 says come only with an OCM authorization. So without authorization a die bank cannot serve the DO-254 or FDA lock at all. Die are truly locked only inside hybrids and MCMs, and those makers (Teledyne under its Micron life-extension program since 2013, Mercury, Frontgrade, and Micross with ~15M die at Apopka) already run their own banks. Track B asks 'how many DRAM obsolescence cases had no acceptable JEDEC substitute?' Every board-level DMSMS manager with a locked packaged part will answer yes, so the track can pass on demand a re-packaged die cannot serve.",
+   "would_change_my_mind": "Track B rewritten to ask: 'Would you accept a part built by a third party from banked die in a new package, without re-qualifying the board, and what delta qualification would you require?' Then >=3 of 10 interviewees answering in writing that they would accept it with no more than a paper delta qualification."
+  },
+  {
+   "id": "RT-VET-DD7-03",
+   "dd": "DD7",
+   "severity": "MAJOR",
+   "section": "§2.1 L3 row / §2.2 bank table / §10 Track C1 pass line (<=$15/die) / §11 #3 / INPUTS reprobe_unit=1.50, pack_unit=6, test_unit=4, bank_nre_first=120000",
+   "objection": "The $11.50/die pull cost (re-probe $1.50, package $6, test $4, over 95% yield) prices a commercial re-package, not a part a DFARS buyer pays 2.5x for as authorized aftermarket. Meeting the OCM datasheet needs five things the stack leaves out. (a) Re-probe on the OCM's wafer-sort program with a product-specific probe card; DRAM test modes and fuse/repair readout are vendor-confidential. (b) Window-BGA (board-on-chip) assembly, because DDR3/DDR4 die are center-pad designs; few U.S. low-volume OSATs run that flow. (c) At-speed test at hot and cold, not a single insertion. (d) Burn-in, which the L3 stack omits although the MCM stack and Mercury's datasheet (100% burn-in) include it. (e) A JESD47 qualification (HTOL, temperature cycling, HAST, ESD and latch-up) on the new package. I put (c) and (d) at another ~$10-20/die at 2,000 units [ESTIMATE]. I re-ran bank_standalone() (BASE, bought m20) with total pull cost raised. At $15/die, exactly C1's pass line, unit GM is 30.8%, 10-year IRR -0.5% and cash multiple 0.98x. At ~$21.50 it is 14.5% GM and -7.2% IRR; at $30, -6.8% GM and -19.9% IRR. So C1 can pass a bank the model itself says loses money, and the bank-line decision rests on an incomplete cost stack.",
+   "would_change_my_mind": "Written quotes from a U.S. OSAT and test house (e.g. QP Technologies, Integra) for window-BGA assembly, 3-temperature at-speed test and burn-in of a DDR4 x16 at <=$11.50/die all-in at 2,000 units, plus an OCM letter transferring probe and test programs. And C1's pass line reset to the model's break-even (~$11-12/die all-in)."
+  },
+  {
+   "id": "RT-VET-DD7-04",
+   "dd": "DD7",
+   "severity": "MAJOR",
+   "section": "§1 'The MCM' / §2.1 L4 row / §2.3 design-in grid / §0 POSSIBLE (no radiation or -55 to 125 C data) / INPUTS mcm_yield=0.91 ('99% KGD -> ~91% module'), kgd_factor=0.85, mcm_screen=150, mcm_nre_total",
+   "objection": "A 91% module yield assumes each of 9 die is 99% good after a -55 to 125 C screen. Commercial Winbond/ESMT KGD bought from distributor stock (the Suntsu lot of 175 die in §10) are wafer-probed to commercial or industrial temperature. They are not burned in, and they are not screened at 125 C, where DDR4 already needs 2x refresh above 85 C and JEDEC specifies nothing above 95 C Tcase. The hot screen therefore happens after assembly, on a sealed 9-die module that cannot be reworked. Per-die fallout of 3-5% [ESTIMATE, typical of upscreened commercial DRAM] gives 0.97^9 = 76% to 0.95^9 = 63% module yield. I re-ran mcm_unit(). At 76% yield, unit cost is $587/$515/$412 at m1/m36/m60 (GM 34.8/42.8/54.2%). At 63% it is $708/$621/$497 (GM 21.4/31.0/44.8%), against the model's 45.6/52.2/61.8%. If KGD prices at parity with packaged parts rather than 0.85x, the m1 GM at 76% is 30.8%. The heritage bar is also per lot, not one-off. Teledyne's DDR4 qualifies up to NASA Level 1 under the EEE-INST-002 PEM section, with SEL >60 MeV.cm2/mg and 100 krad TID, on Micron die under a life-extension agreement that controls die revision. Distributor KGD carries no revision lock, so radiation and temperature data must be repeated for each die revision and wafer lot, a recurring cost the one-time $1.4M NRE does not carry.",
+   "would_change_my_mind": "A written Winbond or ESMT KGD supply agreement with die-revision change notification and wafer-lot traceability. Plus 125 C screen data on a commercial KGD lot showing <=1% per-die fallout, gathered when the MCM is revisited with the hi-rel co-founder."
+  },
+  {
+   "id": "RT-VET-DD7-05",
+   "dd": "DD7",
+   "severity": "MAJOR",
+   "section": "§10 Track A pass line / §11 #2, #4, #9 (m15 'DRAM OCM letter') / §2.7 #1 / §1 'That permission is the moat'",
+   "objection": "Track A is C-91's only test of the moat, and it can pass without anyone granting the moat. It passes if '>=1 of 6 offers a rep or distribution agreement and >=1 quotes wafer or KGD terms'. Intelligent Memory and Alliance Memory sell through reps and franchised distributors as a matter of course: IM added Sourceability and Flip in 2026 (§4). ESMT and Winbond KGD are already listed at distributors (Suntsu; 01_LANDSCAPE §0 item 10). A rep agreement makes the founder a sales agent, and a KGD quote makes them a customer. Neither is what DFARS 252.246-7008 ranks ahead of independents: an authorized aftermarket manufacturer, holding OCM permission to make and mark the part after EOL with transferred wafers and test programs (§1, §6 #1). The m15 gate's 'DRAM OCM letter' has the same ambiguity, and it is the gate that unlocks a $1.5M raise. §5 also concedes that the six named OCMs are extending their legacy lines, not exiting them, so none has a reason to appoint an aftermarket maker now.",
+   "would_change_my_mind": "Track A and the m15 gate both require a written statement from >=1 OCM that it would license EOL wafers or die, test programs and part-number marking rights to a new U.S. entity as an authorized aftermarket manufacturer, with indicative terms. A rep or distribution offer is scored only as L2."
+  },
+  {
+   "id": "RT-VET-DD7-06",
+   "dd": "DD7",
+   "severity": "MINOR",
+   "section": "§7 Quality systems ('MIL-PRF-38535 QML for hi-rel re-manufacture'; 'the model carries MCM qualification inside the $1.4M NRE') / §2.1 L4 / INPUTS mcm_assembly=80, mcm_nre_total",
+   "objection": "A 9-die x72 module sold into QML programs is a hybrid (multichip) microcircuit under MIL-PRF-38534 (Class H/K), not MIL-PRF-38535, which covers monolithic parts. Otherwise it is a plastic part screened to NASA EEE-INST-002, as Teledyne's is. 38534 certification attaches to a DLA-audited assembly line, so a fabless entrant must build at a house that already holds it. The U.S. holders largely overlap with the competitors in §5 (e.g. Micross, Teledyne, Frontgrade, DDC; check DLA's QML-38534 listing). That hands a competitor control of cost, schedule and the substrate design. The $1.4M NRE and the $80 assembly line carry no line-certification, audit or competitor-margin item.",
+   "would_change_my_mind": "A quote from an independent QML-38534 or EEE-INST-002-capable assembly house that does not sell x72 DDR4 modules, with NRE <=$2M and unit assembly plus screening <=$290."
+  },
+  {
+   "id": "RT-VET-DD7-07",
+   "dd": "DD7",
+   "severity": "MINOR",
+   "section": "§10 budget and Track C2-C4 (MCM quote; ~$2,500 KGD lot) / §0 Recommendation / §11 #10, #12",
+   "objection": "The 29-day test spends ~$2,500 of its ~$6,000 (about 42%), plus founder hours, on L4 evidence: an MCM substrate quote and a distributor KGD lot. Yet §0 shelves L4 until a hi-rel co-founder and ~$5M appear (m16 at the earliest). The KGD lot tests only distributor availability, which 01_LANDSCAPE §0 item 10 already confirmed ('legacy 4Gb DDR4 KGD can be bought from distributors in lots of a few hundred die'). It tests nothing about die quality at 125 C, because no screen is budgeted. For a part-time founder this money should buy more Track B interviews, aimed at die-consuming hybrid makers, and the re-packaging question in RT-VET-DD7-02.",
+   "would_change_my_mind": "The doc commits to revisiting L4 within 12 months with a named co-founder candidate, and budgets a 125 C screen of the KGD lot so the purchase produces yield data rather than an availability check."
+  }
+ ],
+ "overall": {
+  "DD6": "Downgrade from PRIMARY to an S-box integrator side line. The L 'Team-1T' box fails bandwidth arithmetic: 4 users at 10 tok/s needs ~620 GB/s at the doc's own 16 GB/token, against a 614 GB/s peak. At real RDIMM prices it quotes at $79-90k, DGX Station money. The model hides both, because revenue never reads capacity and conversion ignores price.",
+  "DD7": "Kill, don't park. The surviving 'managed die-bank' wedge asks board-level OEMs who buy packaged parts and modules to pay ~$138-258k of fees, OSAT and set-up to save ~$9k on 4,000 die. 'Locked die' exists only inside MCMs, whose makers bank their own die. The bank's pull cost leaves out burn-in and OCM test access, and Track A can pass without any OCM granting aftermarket authorization."
+ }
+}

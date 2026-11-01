@@ -1,0 +1,146 @@
+{
+  "persona": "HYP",
+  "persona_name": "DRAM, GPU and server procurement lead at a top-5 cloud: runs supplier qualification, ITAD/decommissioning and component-compliance programs, and sells GovCloud/GCC High AI to regulated and defense buyers",
+  "objections": [
+    {
+      "id": "RT-HYP-DD6-01",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§3 buyer / §4 channels and sales motion / §7 / INPUTS conversion 0.08, channel_start_month 13, insurance_month $500 / §10 K1",
+      "objection": "Regulated buyers do not issue a $31–63k PO to a new single-member LLC run part-time. My supplier-qualification program, and every regulated enterprise I sell GovCloud to, gates a new hardware vendor on five things: a security questionnaire (SIG/CAIQ), SOC 2 Type II or equivalent, a certificate of insurance at $1–5M cyber/E&O, financials, and a key-person/business-continuity plan. The model's $500/month insurance will not buy those limits (cf. RT-HYP-DD1-08). Hardware also normally moves on an existing vehicle: CDW-G, SHI, Carahsoft, GSA MAS, NASPO ValuePoint, E&I, or the university's own contract. The university targets (#3 VT ARC, #4 UD) buy on federal awards, so 2 CFR 200.320 requires competition above the micro-purchase threshold. That means a Dell/HPE/Supermicro quote for the same 768 GB/1-GPU configuration on their existing contract, and the open-source stack costs them nothing. DD6 books founder-direct closes from m3 at 8% and starts the channel only at m13. Model probe (run_with): if direct deals cannot close and only the MSP/RPO channel converts (conv_target_pt = conv_target_ft = 0), the first order slips to m17. m36 ARR is $53,844, 36-month net is −$54,855, and the founder is never full-time. Even with the channel signed from m4, m36 ARR is $75,202 and the founder is never full-time. K1 counts LOIs, which cost a buyer nothing and do not survive onboarding.",
+      "would_change_my_mind": "In Track A, ≥2 buyers send a supplier-onboarding packet or security questionnaire and confirm in writing that they can PO a new single-member LLC directly. Alternatively, a DIB MSP/VAR (CyberSheath, Corsica, a CDW-class reseller) agrees in writing to carry the box on its paper from m3, with its 10% modelled from m1, and BASE still reaches full-time by m30. Either way, replace K1's '≥3 LOIs' with '≥1 supplier onboarding started, or a paid pilot'."
+    },
+    {
+      "id": "RT-HYP-DD6-02",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§2.6 / §4 sales motion / INPUTS sales_cycle_m 4 / §8 gates / §11 kill criterion 8",
+      "objection": "The model's 4-month lag from qualified conversation to order (sales_cycle_m) is shorter than the motion §4 itself prescribes. That motion runs discovery → a 60-day paid pilot → a 3–6-month security review (the C-48 verify_corrections note cited in the INPUT) → PO and deposit, all before vendor onboarding. On DD6's own numbers that is 5–8+ months. Re-running BASE with longer lags:\n- 6 months: first order m9, cash low −$166, m36 ARR $206,138, full-time m25.\n- 7 months: first order m10, cash low −$3,316 (the model draws a $25,000 tranche), ARR $182,462, full-time m26.\n- 9 months: first order m12, ARR $145,458, full-time m28.\n- 7 months plus conversion −30%: never full-time.\nKill criterion 8 (no deposit by 2027-07-31, m9) is calibrated on the 4-month lag. A healthy funnel with a normal regulated-buyer cycle trips it, or the founder waives it.",
+      "would_change_my_mind": "Track A evidence from ≥3 regulated buyers that they bought comparable on-prem IT from a new vendor within 4 months, including security review and onboarding. Without that, re-run BASE with sales_cycle_m = 7, re-date the §8 gates, move kill criterion 8 to m12, and budget the bridge before m10."
+    },
+    {
+      "id": "RT-HYP-DD6-03",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§5 competitors (Mac Studio row) / §2.3 cost per user / §11 kill criterion 14 / INPUTS mac512_users",
+      "objection": "DD6 treats Apple only as one 512 GB box (5 users, 1T only at ~3-bit), and kill criterion 14 watches for 'a desktop at $25k or less'. The relevant substitute already ships and has been measured. Since macOS 26.2 (Dec 2025), Mac Studios cluster over RDMA-over-Thunderbolt-5 with exo. Four M3 Ultra nodes ran Kimi K2 Thinking (1T) at 28.3 tok/s (Jeff Geerling, Dec 2025). Creative Strategies reported ~25 tok/s, ~2 s time to first token and <450 W on a ~$40k four-node cluster. Those are measurements, and they beat the L box's estimated 17 tok/s and its estimated 19–22 s TTFT by about 10×. At DD6's own $22,299 price for the M5 Ultra 512 GB, two nodes give 1 TB of unified memory for ~$44.6k, below the $62,525 L box. KC14 can never fire on a cluster, so nothing monitors the L SKU's reason to exist. In DD6's favour: there is no ECC or BMC, and macOS as a server is awkward inside a CMMC boundary. That protects the DIB segment but not the law-firm and IP-boutique segments (#7, #8).",
+      "would_change_my_mind": "K4 run head-to-head: the L box matches or beats a 2-node M5 Ultra cluster on TTFT(8k) and on per-user tok/s at 4 concurrent, with the same model and quant. Or ≥60% of Track A legal/IP interviewees reject a Mac cluster for a stated reason (ECC, manageability, support). Either way, rewrite KC14 to 'any configuration at or below the L box price'."
+    },
+    {
+      "id": "RT-HYP-DD6-04",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§2 performance table / §2.3 / §5 win condition 3 / §10 K5 / INPUTS min_user_tps 10, peak_active_share 0.15",
+      "objection": "I ran the model's own capacity() and per_user_tps() at the U.S.-origin speeds DD6 lists for the L box: Inkling 975B at ~13 tok/s and Nemotron 3 Ultra at ~10 tok/s single-stream. Per-user speed at 2 concurrent is 9.99 and 7.68 tok/s, both below the model's own 10 tok/s floor. Maximum concurrency is therefore 1, and named users fall to 6.7. L-box cost per named user becomes $465/month, against the $116 headline. That is 4.5× CoCounsel's entry seat ($104) and ~13× Copilot GCC High (~$35). The defense/ITAR segment is exactly the one that needs U.S.-origin weights; §5 cites the No Adversarial AI Act and agency DeepSeek bans. Yet K5 passes at '≥8 tok/s single', which in the model is a one-user box. KTransformers documents neither model (§5), so even 10–13 tok/s is unmeasured.",
+      "would_change_my_mind": "A U.S.-origin 500B+ MoE measured on the L box at ≥10 tok/s per user with 2+ concurrent (≈≥17 tok/s single). Or raise K5 to that threshold, and re-price and re-model the defense L SKU on ~7 named users."
+    },
+    {
+      "id": "RT-HYP-DD6-05",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§1 'What it is bad at' / §2 capacity (TTFT columns) / §10 K4 / INPUTS L_prefill_2k 106, L_prefill_8k 368",
+      "objection": "capacity() counts only decode concurrency, and its TTFT is for an idle box (8,192 / 368 tok/s = 22 s). On the L box, long-prompt prefill is a serialized resource: every RAG request streams expert weights over PCIe through the one GPU for ~19–22 s. With 4 users active, a new prompt waits for the pass in progress, so TTFT under load approaches 2× the floor (~44 s). That matches the vendor's own 41 s TTFT at ~23 concurrent on 8 GPUs (§1), and it breaches K4's own 40 s drop-L line. DD6's flagship use, 'draft this memo from these 40 documents', implies 50–150k-token prompts. K4 stops at 8k, so the use the pitch sells is never measured. The 27-named-user and $116/user figures hold only for light, short-prompt chat.",
+      "would_change_my_mind": "K4 extended and passed on real hardware: TTFT(8k) ≤40 s with 4 prompts arriving together, and a single 64k-token prompt answered in ≤90 s while 3 other streams hold ≥8 tok/s."
+    },
+    {
+      "id": "RT-HYP-DD6-06",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§9 team (backup technician) / §2.2 subscription cost / INPUTS support_h_per_box_month 2.0, oncall_month 0, parts_reserve_pct_yr 0.03 / §2.5 24/7 row",
+      "objection": "Buyers judge the subscription against Dell ProSupport and HPE Foundation Care, which give next-business-day or 4-hour onsite parts. A founder with a day job cannot even give business-hours response, and BASE uses the U.S.-person backup technician for only ~25 hours in 36 months. GPU field failures are not rare. Meta's Llama 3 report (arXiv 2407.21783, Table 5) logged 148 faulty-GPU and 72 HBM3 interruptions in 54 days on 16,384 H100s, about 10% a year under training load [UNVERIFIED-training on exact counts]. At a third of that rate, a 22-box fleet loses ~0.7 GPUs a year. Each is a $16k part that needs either a spare on the shelf or an RMA that takes weeks. The 3%/yr parts reserve ($1,463 per L box) cannot fund one spare RTX PRO 6000 until ~11 L boxes are under subscription. The model's own sensitivity puts full-time at m35 with a 24/7 retainer. Add sales_cycle_m = 7 and full-time slips to m36, with m36 ARR at $151,284.",
+      "would_change_my_mind": "A signed field-service agreement with an MSP or technician pricing NBD onsite coverage, plus written advance-replacement terms from PNY/NVIDIA or a funded spare pool. Both go into BASE, and full-time still lands at m30 or earlier."
+    },
+    {
+      "id": "RT-HYP-DD6-07",
+      "dd": "DD6",
+      "severity": "MAJOR",
+      "section": "§2.5 COGS row / §4 pricing ('quotes valid for 14 days') / §2.1 GPU prices",
+      "objection": "DD6's answer to component risk is 14-day quotes, with parts bought in the order month. That clashes with how regulated buyers purchase. Public universities and most enterprise procurement want pricing held firm for 30–90 days, and they approve a specific quote. Here the PO comes after a 3–6-month security review, so the quote has expired and must be re-approved. Either the founder holds price through the review, or every re-quote restarts approval. The exposure is real. 4Q26 DRAM contract prices are still rising +12.5% QoQ (01_LANDSCAPE §0 item 4). DD6's own RTX 5090 evidence runs from $4,299 at Micro Center to $8.5–10k online. Model run: a 10% COGS drift after the quote moves full-time from m23 to m33 and cuts m36 ARR from $253,693 to $160,159. At 15%, full-time slips to m36.",
+      "would_change_my_mind": "Two Track A buyers (one university, one DIB firm) accept in writing a price-adjustment clause indexed to a published DRAM/GPU reference. Or the distributor grants 60–90-day price protection on RDIMMs and GPUs."
+    },
+    {
+      "id": "RT-HYP-DD6-08",
+      "dd": "DD6",
+      "severity": "MINOR",
+      "section": "§7 'Dates' / §3 #5 trigger / §8 m13–m15 'CMMC Phase 3'",
+      "objection": "DD6 dates its demand catalyst to 'Phase 2 starts 2026-11-10' (A-LIGN, Strike Graph). On 2026-07-13 the Department of War suspended Phase 2 (C3PAO Level 2 certification) pending a 60-day review (Clark Hill; McGuireWoods 2026-07-14; CSIS). My 2026-11-01 search found no published resumption. Phase 1 self-assessment and the NIST 800-171 obligations remain, so the need to keep CUI on-prem is unchanged. What is gone is the urgency, and with it the MSP/RPO pipeline rush that DD6 leans on: the 8 DIB interviews, the CMMC Con lead plan and the 'Phase 3 2027-11-10' gate. This is a factual error in a dated driver, not a change in what is mandated, so I rate it MINOR.",
+      "would_change_my_mind": "An official DoW notice resuming Phase 2 with a dated C3PAO milestone. Or Track A K2 shows ≥40% of DIB prospects budgeting for on-prem AI regardless of Phase 2 timing."
+    },
+    {
+      "id": "RT-HYP-DD6-09",
+      "dd": "DD6",
+      "severity": "MINOR",
+      "section": "§2.1 S BOM / §4 supply rules / INPUTS S_gpu $5,000",
+      "objection": "The S SKU uses a GeForce RTX 5090 priced at Micro Center retail. NVIDIA's GeForce driver licence (§2.8) says the software is 'not licensed for datacenter deployment' and does not define the term. A regulated buyer's counsel or software-asset team will flag a GeForce card in a rack server serving 40 users, and ask for an indemnity a one-person vendor cannot give. Retail quantity limits and consumer AIB warranties also sit badly with DD6's 'OCMs and authorized distributors only' rule. The fix is cheap: re-spec the S SKU on an RTX PRO-class card bought through PNY. With S_gpu at $7,500, m36 ARR stays at $253,822, because pricing is cost-plus.",
+      "would_change_my_mind": "Written confirmation from NVIDIA or PNY that a GeForce card in a server at a customer site is licensed use. Or the S SKU re-specced on an RTX PRO card, with an authorized-channel quote, before any price card is shown in Track A."
+    },
+    {
+      "id": "RT-HYP-DD6-10",
+      "dd": "DD6",
+      "severity": "MINOR",
+      "section": "§5 competitors / §0 pitch ('1T-class open-weight model entirely inside a regulated firm's own network')",
+      "objection": "Hyperscalers now run frontier closed models inside the customer's own network. Gemini on Google Distributed Cloud air-gapped went GA in Aug 2025 (SiliconANGLE). On 2026-10-30, Gemini 3.5 Flash went GA there, alongside HGX B300 systems (IT Brief). DD6's competitor table has no on-prem hyperscaler row. GDC's minimum footprint is far larger than a 20–40-person team needs. So this hits the top of DD6's range (50–300-attorney firms, university enclaves) and the 'only open weights give you frontier quality on-prem' story, not the core small-team buyer.",
+      "would_change_my_mind": "A published or quoted GDC air-gapped minimum configuration well above the L box's budget class (e.g. >$500k), confirming the overlap is limited to the largest prospects."
+    },
+    {
+      "id": "RT-HYP-DD7-01",
+      "dd": "DD7",
+      "severity": "FATAL",
+      "section": "§1 'The die bank' / §2.1 L1 row / §0 recommendation / INPUTS ltb_die_per_program 4000, kgd_factor 0.85, pull_margin_unit 1, bank_nre_first 120000",
+      "objection": "L1 is the only line the founder can run and the 'optional SKU' DD7 keeps, and it has no buyer.\n- **No pull path.** An OEM can draw banked die only through a package and at-speed test program built for that die. DD7 prices that set-up at $120k for the first family (bank_nre_first) and books it to L3. L1, by contrast, assumes the OEM pulls die through an OSAT at ~$10 a unit (the pull_margin_unit note) with no set-up at all. One L1 program's die are worth ~$51.9k (4,000 × 0.75 GB × $20.37 × 0.85; the model's $2,077 agency fee is 4% of that), so the set-up costs 2.3× the die. A rational OEM instead buys ~4,000 packaged parts (~$61k) and stores them dry or under N2 to GEIA-STD-0003B/IEC 62435, or goes to Micross direct (§5).\n- **No die supply.** Micron sells no open KGD (01_LANDSCAPE §0 item 10), so an OEM whose board carries Micron or Samsung packaged DDR4 cannot buy that die at all. Winbond/ESMT KGD is a different die that forces requalification, which is the very lock DD7 wants to monetize. The parties that can use bare DRAM die (Teledyne, Mercury, Frontgrade, Micross, DDC) are the incumbents, and they have their own vaults.\nPrograms make up ~$34k of Plan A's $42.6k m36 ARR, so without L1 only ~$8.6k of commissions remains.",
+      "would_change_my_mind": "Track B/C finds ≥3 mid-size OEMs that already own, or will fund, a qualified package-and-test flow for a bare DRAM die they can actually buy, at program sizes where die value exceeds the set-up. Or L1 is re-specified as packaged-part LTB storage management, with quotes showing that Micross, Rochester and franchised distributors do not already offer it at or below $750/month."
+    },
+    {
+      "id": "RT-HYP-DD7-02",
+      "dd": "DD7",
+      "severity": "MAJOR",
+      "section": "§3 customers #1–#3, #5 / §7 rules that matter / §10 kill test / INPUTS fixed_pt $680, oneoff_m1 $8,500",
+      "objection": "LTB studies for NAVSUP, Tobyhanna or NAWC DMSMS work, done under the awardee as prime, mean receiving weapon-system BOMs and part-level obsolescence data. That is normally Controlled Technical Information, so DFARS 252.204-7012 flows down to the founder's LLC. It brings NIST SP 800-171 (110 controls), an SPRS score under 252.204-7019/-7020, a FedRAMP-Moderate-equivalent mail and file tenant, and 72-hour incident reporting. The CMMC Phase 2 C3PAO requirement has been suspended since 2026-07-13, but Phase 1 self-assessment and the 800-171 obligations stay in force (McGuireWoods; Jenner). DoD's own regulatory cost model, as repeated by Secureframe, puts a small business's Level 2 self-assessment at $34,277 and the C3PAO path at $101,752. Plan A carries $680/month of fixed cost on a $40k bankroll whose cash low is $30.2k, and neither the model nor the kill test prices any of this. SAM/CAGE registration and a DD Form 2345 for export-controlled data are also missing.",
+      "would_change_my_mind": "A DMSMS prime or depot confirms in writing that the inputs it would share for an LTB study are not CUI/CTI. Or the model carries ~$35k one-off plus ~$500/month of enclave cost, and Plan A still stays above the $20k cash kill line (§11 #8)."
+    },
+    {
+      "id": "RT-HYP-DD7-03",
+      "dd": "DD7",
+      "severity": "MAJOR",
+      "section": "§4 sales motion / §7 quality systems / §9 team / INPUTS as9120_cert $35k (Plan B only, m21–m25)",
+      "objection": "In Plan A the founder acts as a procurement agent: they size the buy, arrange purchase of the die, store it at the vault and draw pulls through an OSAT. Defense and rugged OEMs (#6 Trenton, #7 CP Technologies, #8) flow DFARS 252.246-7007/-7008 counterfeit-prevention terms and AS5553/AS6174-style requirements to every supplier in the component chain of custody. My supplier-qualification programs, and primes', approve such an agent only with AS9120B, plus AS6081 or AS6496 depending on authorization status. DD7 puts AS9120B ($35k over ~5 months) in Plan B only, after a raise. So Plan A cannot close defense OEMs from m6 as modelled, and a $30k cash low cannot fund the certification.",
+      "would_change_my_mind": "Two of #6–#8 confirm in writing, or in contract language, that they would contract an uncertified program manager because custody sits entirely with Micross and the OSAT. Or Plan A is re-run with AS9120B in year 1 and still clears the §11 #8 cash floor."
+    },
+    {
+      "id": "RT-HYP-DD7-04",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§3 demand / §12 cycle test / INPUTS aftermarket_mult 2.5, mult_compress, sell_rate_yr, demand_mult",
+      "objection": "The model leaves out the supply swing that hyperscalers control. Round 1 established that we are keeping DDR4 now (Meta's Vistara CXL reuse, RT-HYP-DD1-04), which tightens 2026–27. But the 2019–22 Cascade Lake, Ice Lake and Milan fleets retire into ITAD in 2028–30, exactly the bank's m38+ sell window in every scenario, BASE included. Recovered packaged DDR4 caps the price for every buyer that DFARS does not bind. Those buyers are rugged, industrial-SBC, medical and rail (#6–#10): 5 of the 10 named customers, and the only ones reachable without an OCM letter (#4 is 'unreachable'). The 2.5× authorized multiple therefore lives mostly in the DoD slice DD7 cannot reach. Yet the model applies it to all sales and compresses it only ×0.9/×0.8 in a glut. I rate it MINOR because DD7 already concludes the bank fails. It also removes the BASE m20 bank: per §2.2, ~1.5× is break-even, not 39.6% GM.",
+      "would_change_my_mind": "Track B shows ≥3 non-DFARS buyers whose quality agreements exclude recovered or refurbished DRAM and who would pay ≥2.5× for authorized supply."
+    },
+    {
+      "id": "RT-HYP-DD7-05",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§10 Track A pass rule / §8 m15 Stage-1 gate ('a DRAM OCM letter') / §2.7 #1",
+      "objection": "Track A passes if ≥1 of 6 makers offers 'a rep or distribution agreement' and ≥1 quotes wafer or KGD terms. Both are easy to get, and neither says anything about the moat. Intelligent Memory and Alliance appoint distributors and reps routinely; IM added Sourceability and Flip in 2026 (§4). KGD is already listed at distributors (Suntsu, §10). DFARS priority comes only with authorized-aftermarket status, where the OCM transfers wafers, test programs and marking rights for a named EOL part (ERAI definition, §1). The m15 'OCM letter' gate is just as loose. So the test can pass while C-91 is false, and the Stage-1 file would then rest on a rep agreement.",
+      "would_change_my_mind": "Rewrite Track A and the m15 gate to require written willingness to grant aftermarket or continuity rights (die plus test-program transfer, and permission to mark) for at least one named EOL DDR3/DDR4 part."
+    },
+    {
+      "id": "RT-HYP-DD7-06",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§10 kill test / §11 kill criteria / §9 team (no employment-agreement review)",
+      "objection": "DD6 makes an employer carve-out its first gate (K0), as round 1 did for DD2 (RT-VC-DD2-05). DD7 has no such gate, although the founder's employer is a design/manufacturing company, the same OEM type as targets #6–#8. L2 earns commissions on DRAM sold to OEMs, and L1 manages their LTB buys. Under a standard invention-assignment and conflict-of-interest agreement, a rep commission on parts the employer might buy, or pitching its suppliers or competitors, is a textbook conflict.",
+      "would_change_my_mind": "A ~$500 employment-agreement review and a written carve-out covering component representation and LTB services, added as Step 0b with kill-on-refusal."
+    },
+    {
+      "id": "RT-HYP-DD7-07",
+      "dd": "DD7",
+      "severity": "MINOR",
+      "section": "§3 'sanity ceiling' / model §6 DMSMS sanity check",
+      "objection": "The $6.3–25.4M/yr of 'DoD-tracked memory life-of-need demand' rests on an unsourced '~10% of DSPO cases are memory' and an assumed $50–200k per buy. Even taken as given, those life-of-need buys are packaged parts from franchised distributors or Rochester stock, not a die-bank market. The same DSPO table also shows simple substitution resolving 2.2× as many cases as life-of-need buys (2,809 vs 1,268). The figure overstates what a die bank can address and should not anchor the C-91 ceiling.",
+      "would_change_my_mind": "A DSPO or GIDEP breakdown showing the memory share of cases, and the share of memory life-of-need buys met from die or wafers rather than packaged stock."
+    }
+  ],
+  "overall": {
+    "DD6": "Not a PRIMARY as written. It is a VAR-dependent integrator whose BASE case rests on four weak legs: founder-direct closes that regulated buyers rarely make, a 4-month cycle that the DD's own sales motion contradicts, an unmeasured box already out-run by a measured ~$40k Mac cluster, and a ~7-user box for the U.S.-origin defense segment. Run the kill test only with K1/K4/K5 tightened and an MSP's paper in place from m3.",
+    "DD7": "Kill it rather than keep it as a side line. The surviving L1 die program needs a ~$120k package/test set-up per family for ~$52k of die, and much of that die the OEM cannot buy. The only founder-doable SKU therefore collapses into packaged-part LTB storage that Micross, Rochester and distributors already sell, and DFARS 7012 and AS9120B add costs Plan A never carries."
+  }
+}

@@ -1,0 +1,29 @@
+# Assumptions — p5r-private-moe-appliance (DD6 Phase 5 red-team response, 2026-11-01)
+
+- [p5r-private-moe-appliance] Small-buyer authorized RDIMM price pre-turn = contract $25.78 x 1.65 = $42.5 per user-GB ($2,722 per 64 GB) — basis: DD6's own street $32/GB (Servnet, Aug-26) x reviewer-cited ServerMonkey +35% Aug-Oct = $43; Origin Storage 64GB-6400 GBP 2,516 special (~$52/GB, avoira.com snippet); Fusion $46-58/GB reviewer-cited but not confirmed by me (price not visible in snippet).
+- [p5r-private-moe-appliance] The small-buyer premium is a shortage premium; it unwinds to 1.15 across 2028 in BASE and is 1.15 from the 2028 turn in GLUT/SEVERE — basis: judgment; distribution loosens in a glut.
+- [p5r-private-moe-appliance] S-SKU GPU = RTX PRO 5000 Blackwell 48GB at $8,216 (SHI listing, MSRP $8,999) — basis: search snippet, undated listing; replaces a $5,000 GeForce RTX 5090 from Micro Center retail.
+- [p5r-private-moe-appliance] Decode capacity model: step time = t_fix + distinct-expert multiple x routed GB/token / (peak GB/s x efficiency), uniform independent routing — basis: RT-VET-DD6-01 and RT-PHY-DD6-01 arithmetic; routing skew would lower the distinct-expert multiple slightly (upside not modelled).
+- [p5r-private-moe-appliance] Peak bandwidth 576 GB/s (12 x DDR5-6000) — basis: AMD 58462 platform max as cited by RT-VET-DD6-01 [REPORTED via red team]; a 6400-validated board (614 GB/s) is shown as a variant.
+- [p5r-private-moe-appliance] Engine bandwidth efficiency 0.50 (0.55 bracket) — basis: P1 (8.73 tok/s on 307 GB/s with ~12.2 GB routed) implies 0.35-0.47 depending on fixed time; newer kt-kernel assumed better; STREAM-class ~0.8 not reachable while syncing a GPU per layer.
+- [p5r-private-moe-appliance] Fixed per-step time 20 ms (L, Kimi 61 layers) and 18 ms (S, MiniMax 62 layers) — basis: S value calibrated to reproduce P2 (2S EPYC 9355 + 5090, 32.1 tok/s) at ~0.5 x 1,152 GB/s; L set slightly higher for MLA attention.
+- [p5r-private-moe-appliance] Routed bytes per token: Kimi-K2.5 11.9 GB (21.1B routed params at ~4.5 bits), MiniMax-M2.x 7.0 GB (7.0B at FP8) — basis: RT-PHY-DD6-01 config arithmetic.
+- [p5r-private-moe-appliance] U.S.-origin models on L scaled by active-parameter ratio on routed bytes (Inkling x41/32, Nemotron 3 Ultra x55/32) — basis: no expert configs found; crude [ESTIMATE].
+- [p5r-private-moe-appliance] 2S L variant: 1,152 GB/s at efficiency 0.45 and t_fix 22 ms, +$6.5k BOM for a second CPU and board — basis: RT-PHY-DD6-02 (+~$8.3k quote); LMSYS 'up to 63%' NUMA-aware gain has an unstated baseline.
+- [p5r-private-moe-appliance] GPU KV memory: S on 48 GB has 34.8 GB free after 13.2 GB fixed; 124 KB/token FP8 KV; 32k-token design context -> 8 users — basis: RT-PHY-DD6-03 method.
+- [p5r-private-moe-appliance] Subscription capped at $50 per named user per month — basis: Phase-4's own anchor (~25 users x $50 = $1,250).
+- [p5r-private-moe-appliance] L SKU mix 0 in BASE (not quoted until a socket-pinned measurement passes); re-admission tested at mix 0.25 with efficiency 0.55 — basis: RT-VET-DD6-01 plus the Mac-cluster and U.S.-origin objections.
+- [p5r-private-moe-appliance] Close rate 6% (from 8%) — basis: unmeasured; new single-member LLC faces supplier onboarding; CMMC Phase 2 suspended 2026-07-13 (Jenner, McGuireWoods, HSToday snippets).
+- [p5r-private-moe-appliance] Sales cycle 7 months (from 4) — basis: section 4's own motion: discovery, 60-day paid pilot, 3-6 month security review, PO.
+- [p5r-private-moe-appliance] 50% of founder-sourced orders go on a VAR/MSP contract vehicle at a 5% fee — basis: RT-HYP-DD6-01; judgment on regulated-buyer procurement.
+- [p5r-private-moe-appliance] Insurance $900/month (from $500) for $1-2M cyber/E&O + GL + product liability — basis: judgment; cf. RT-HYP-DD1-08 response ($600 for E&O alone).
+- [p5r-private-moe-appliance] Channel partners take 15% of hardware and 20% of subscription and bring 2 conversations a month from m13 — basis: RT-VC-DD6-06 (MSP incentive vs building its own box).
+- [p5r-private-moe-appliance] Annual subscription churn 30% (from 20%) — basis: RT-VC-DD6-04; air-gapped patches/model refreshes are work the buyer's MSP can do.
+- [p5r-private-moe-appliance] Business-hours backup technician retainer $500/month from first delivery — basis: RT-VC-DD6-03 sensitivity range ($500-1,000).
+- [p5r-private-moe-appliance] 4 founder hours per qualified conversation (from 3) — basis: adds security questionnaires, SSP inserts, pilot support.
+- [p5r-private-moe-appliance] Spare pool: one spare RDIMM per 5 boxes plus one 48 GB loaner GPU at 5 boxes, held as inventory; parts reserve 4%/yr — basis: RT-VET-DD6-06, RT-HYP-DD6-06.
+- [p5r-private-moe-appliance] Demand elasticity to price rises 0.5 against the Phase-4 card ($62,525 L / $30,622 S) — basis: low end of RT-VC-DD6-01's -0.5..-1.0 range because OEM servers inflate with the same DRAM; copy-cat integrators would make it higher.
+- [p5r-private-moe-appliance] 3% of BOM drift absorbed between approved quote and purchase, with a DRAM/GPU index clause covering the rest — basis: RT-HYP-DD6-07.
+- [p5r-private-moe-appliance] Install 12 h per box (from 8) for electrical/thermal survey and closet/colo placement — basis: RT-PHY-DD6-04.
+- [p5r-private-moe-appliance] Founder economic profit = 36-month net after tax minus unpaid part-time hours x $85, treating a full-time salary as equal to the day-job wage forgone — basis: RT-VC-DD6-05 method.
+- [p5r-private-moe-appliance] 'Kill-test pass' case = close rate 8%, 6-month cycle, 3 channel conversations a month — basis: what K1/K3 passing with cash would plausibly show.
