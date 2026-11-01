@@ -333,11 +333,8 @@ Both are also the likeliest free substitutes (§5).
 - **The moat** is "a first-mover lead that takes one shuttle cycle to copy" (VC scorer).
 
 **What you license:**
-- **For C-22: the Weebit ReRAM module.**
-  - SkyWater's own licence is non-exclusive, with fees "not material" and contingent on customer use ([Weebit](https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/)) [REPORTED].
-  - A product needs its own Weebit licence. Analysts estimate existing licensees paid about $0.1M upfront (the first ever) to $0.29M (DB HiTek) and $1.8–2.6M (onsemi) (01_LANDSCAPE §9; [MST Access](https://www.weebit-nano.com/wp-content/uploads/2025/09/250901.-MST-Access-Report_WBT.AX-Not-just-play-money-090125.pdf)) [REPORTED].
-  - The fee for a fabless startup is unknown.
-- **For C-32:** STTR-generated or university IP, from UCSC VLSIDA or the Stanford OpenGCRAM group.
+- **For C-22: Weebit ReRAM.** SkyWater's licence is non-exclusive, with fees "not material" and contingent on customers ([Weebit](https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/)). A product needs its own licence. Analysts estimate past upfront fees at about $0.1M (first ever), $0.29M and $1.8–2.6M (01_LANDSCAPE §9; [MST Access](https://www.weebit-nano.com/wp-content/uploads/2025/09/250901.-MST-Access-Report_WBT.AX-Not-just-play-money-090125.pdf)) [REPORTED]. The fee for a fabless startup is unknown.
+- **For C-32:** STTR or university IP, from UCSC VLSIDA or Stanford.
 
 **What you can't own or use:** RAAAM's GCRAM (Bar-Ilan/EPFL lineage), SkyWater's NDA compilers, or Mobile Semiconductor's RH90 compilers.
 
