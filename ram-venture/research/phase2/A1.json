@@ -1,0 +1,954 @@
+{
+ "branch_key": "A1",
+ "branch": "A",
+ "scope": "Device & materials: oxide-semiconductor DRAM (IGZO/IWO/ITO/In2O3 2T0C/3T0C/1T1C, OCTRAM, display-fab IGZO), ferroelectric memory (HZO FeRAM/FeCAP, FeFET, FTJ, AlScN ferro-diode, PZT F-RAM, Micron NVDRAM, FMC DRAM+), and 3D DRAM (NEO 3D X-DRAM, IDM roadmaps, 3D NOR).",
+ "cards": [
+  {
+   "branch": "A",
+   "tmp_id": "A1-01",
+   "name": "OS-eDRAM: IGZO/IWO 2T0C gain-cell memory IP on a U.S. 200mm foundry",
+   "subbranch": "Oxide-semiconductor DRAM (embedded gain cell)",
+   "materials_sense": "mixed:a+b+c",
+   "what_it_is": "A fabless IP company co-develops a low-temperature (<400C) IGZO or W-doped In2O3 2T0C gain-cell BEOL module with SkyWater (S130 in Bloomington MN, or the ex-Infineon Fab 25 in Austin, 130-65nm, 200mm). It then licenses the memory macro and compiler to ASIC designers, giving them on-die memory with ~4-5x the bit density of 130nm SRAM and near-zero standby leakage, stacked over logic.",
+   "why_it_could_work": "IGZO off-current ~3e-19 A/um gives >400-1,000 s retention (imec IEDM 2020/2021) vs SRAM's constant leakage, so an always-on edge chip can hold weights/activations at near-zero standby power. A planar 2T0C at ~30F2 is ~0.5 um2/bit at 130nm vs ~2.0-2.5 um2 for 6T SRAM [ESTIMATE], and because it sits in BEOL it uses no extra silicon area. Arbitrage: SkyWater bought Fab 25 (~$73M + working capital, ~400k wafer starts/yr) and is converting it to a foundry, so it needs differentiated process options. Embedded-memory IP royalties carry ~85% gross margin.",
+   "evidence": [
+    {
+     "title": "imec shows capacitor-free DRAM (IEDM 2020)",
+     "url": "https://www.eenewseurope.com/news/imec-shows-capacitor-free-dram",
+     "type": "conference",
+     "date": "2020-12",
+     "shows": "IGZO 2T0C cell, retention >400 s, extracted Ioff 3e-19 A/um, 45nm gate length, 300mm wafers"
+    },
+    {
+     "title": "Capacitor-less IGZO-based DRAM cell with excellent retention, endurance and gate length scaling (IEDM 2021)",
+     "url": "https://techxplore.com/news/2021-12-capacitor-less-igzo-based-dram-cell-excellent.html",
+     "type": "conference",
+     "date": "2021-12",
+     "shows": "Fully 300mm BEOL-compatible 2T0C: >1e3 s retention, >1e11 endurance, Lg 14nm with >100 s; PBTI lifetime ~1 yr vs 5-yr target"
+    },
+    {
+     "title": "Double-gate W-doped amorphous indium oxide transistors for monolithic 3D capacitorless gain cell eDRAM",
+     "url": "https://investigadores.uandes.cl/en/publications/double-gate-w-doped-amorphous-indium-oxide-transistors-for-monoli/",
+     "type": "conference",
+     "date": "2020",
+     "shows": "IWO 2T gain-cell eDRAM, retention 1 s at 25C and 300 ms at 85C"
+    },
+    {
+     "title": "Georgia Tech 3T IWO BEOL eDRAM (ISCAS 2024)",
+     "url": "https://hg.gatech.edu/node/675050",
+     "type": "conference",
+     "date": "2024",
+     "shows": "Shimeng Yu lab: BEOL W-doped In2O3 3T eDRAM for near/in-memory compute; low leakage improves retention"
+    },
+    {
+     "title": "DATE 2026: hybrid IGZO-Si 2T gain cell",
+     "url": "https://past.date-conference.com/proceedings-archive/2026/DATA/154.pdf",
+     "type": "conference",
+     "date": "2026",
+     "shows": "IGZO-2T eDRAM suffers low operating speed from low mobility; BEOL stacking raises density"
+    },
+    {
+     "title": "US12191135 Two transistor gain cell memory with IGZO",
+     "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12191135",
+     "type": "patent",
+     "date": "2025",
+     "shows": "Granted 2T IGZO gain-cell patent (assignee not verified) -> active patenting; freedom-to-operate risk"
+    },
+    {
+     "title": "SkyWater to acquire Infineon's Austin Fab (Fab 25)",
+     "url": "https://www.businesswire.com/news/home/20250226773415/en/SkyWater-to-Acquire-Infineons-Austin-Fab-and-Establish-Strategic-Partnership-to-Expand-U.S.-Foundry-Capacity-for-Foundational-Chips",
+     "type": "company",
+     "date": "2025-02",
+     "shows": "U.S. 200mm 130-65nm fab converting to foundry; closed 2025-06-30, ~400k wafer starts/yr (LaPedus)"
+    },
+    {
+     "title": "Purdue: 3D chip platform, three layers of ALD indium-oxide transistors on 200mm",
+     "url": "https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing",
+     "type": "industry",
+     "date": "2026-09",
+     "shows": ">100,000 oxide devices on 52 dies of a 200mm wafer incl. ferroelectric FETs; BEOL-compatible; U.S. university IP"
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 42,
+   "time_to_first_revenue_text": "36-48 months: 12-18 mo module development with foundry, 12 mo test chip + reliability, then first NRE/license from an edge-AI or defense ASIC customer",
+   "gross_margin_estimate": "80-90% (IP royalties/NRE); revenue small early",
+   "gross_margin_mid_pct": 85,
+   "us_manufacturability": "SkyWater Bloomington MN (S130/S90) or SkyWater Fab 25 Austin TX (130-65nm), both 200mm; needs a new IGZO sputter or In2O3 ALD + O2 anneal module. Development could start at NY CREATES Albany (300mm) or Purdue (200mm oxide BEOL demonstrated Sep 2026).",
+   "who_is_already_doing_this": "imec (2T0C program since IEDM 2020), Kioxia, IMECAS, Macronix (3D 2T0C), Georgia Tech/Shimeng Yu (IWO eDRAM), Notre Dame/Datta (IWO 2T), Purdue/Ye & Li (ALD In2O3 3-layer 200mm), SEL (DOSRAM / OS-LSI; dominant oxide-semiconductor patent estate). Competing embedded memories already at U.S. foundries: Weebit ReRAM (SkyWater S130), MRAM at GlobalFoundries.",
+   "wins_axis": "standby power per bit (W/Mb at idle) and on-die memory density vs SRAM at mature nodes",
+   "buyer": "Always-on edge-AI ASICs (keyword spotting, vision wake-up, sensor fusion) and DoD/onshore sensor ASICs on 130-65nm U.S. nodes that are SRAM-limited",
+   "survives_glut": "yes",
+   "glut_reason": "Priced against on-die SRAM/MRAM/ReRAM, not DDR5; a DDR5 price collapse does not change an ASIC's on-die memory choice.",
+   "fatal_flaw": "No U.S. foundry offers an oxide-semiconductor module. Qualifying one costs ~$10-30M and 3+ years [ESTIMATE], and PBTI lifetime was only ~1 year vs a 5-10 year target (imec 2021). ASIC teams rarely design in a single-source, unqualified memory when SkyWater already offers qualified ReRAM. SEL's patent estate is a freedom-to-operate risk.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "IP licensing; fabless->foundry; university/lab patent license (Georgia Tech/Notre Dame IWO, Purdue In2O3); defense-first",
+   "founder_fit_note": "Not as a solo founder: needs a device/process CTO and a SkyWater JDA. The founder could own BD and the software side (memory compiler GUI, characterization data portal).",
+   "possible": "yes - cells demonstrated on 300mm, oxide BEOL demonstrated on a U.S. 200mm line (Purdue)",
+   "profitable": "marginal - royalties on low-volume 130nm ASICs are small; the real money needs a 28nm-or-better foundry partner",
+   "doable_by_founder": "no - process-module development and reliability qualification are far beyond <$50k and a day job"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-02",
+   "name": "Standalone IGZO 2T0C DRAM die on a depreciated U.S. 200mm line (commodity DRAM substitute)",
+   "subbranch": "Oxide-semiconductor DRAM (standalone)",
+   "materials_sense": "mixed:a+c",
+   "what_it_is": "Build discrete DRAM-substitute chips (DDR4/LPDDR-class interface) from four stacked IGZO 2T0C tiers over CMOS periphery on a depreciated U.S. 200mm 130nm line (SkyWater Fab 25 Austin) and sell them into the 2026 shortage. A capacitor-less, BEOL-stackable cell on cheap wafers is the whole pitch.",
+   "why_it_could_work": "No capacitor, low-temperature BEOL, and stackable tiers (IMECAS showed 4-layer 3D 2T0C with 400 s retention and 3 bits/cell at VLSI 2026), with depreciated 200mm wafers at ~$1-2.5K [ESTIMATE], while DDR5 sells for ~$27/GB. The scratch model kills it: ~0.0035 Gb/mm2 => ~7.6 GB per 200mm wafer => ~$336/GB including test and packaging, ~12x today's DDR5 price, ~31x the glut price and ~125x DDR5's estimated cost (~$2.7/GB). Even a hypothetical 300mm 28nm-class 4-tier version models at ~$11.8/GB, about the glut price and ~4x DRAM cost, and no U.S. foundry offers that line.",
+   "evidence": [
+    {
+     "title": "Capacitor-less IGZO-based DRAM cell with excellent retention, endurance and gate length scaling (IEDM 2021)",
+     "url": "https://techxplore.com/news/2021-12-capacitor-less-igzo-based-dram-cell-excellent.html",
+     "type": "conference",
+     "date": "2021-12",
+     "shows": "Fully 300mm BEOL-compatible 2T0C: >1e3 s retention, >1e11 endurance, Lg 14nm with >100 s; PBTI lifetime ~1 yr vs 5-yr target"
+    },
+    {
+     "title": "IMECAS 4-layer 3D 2T0C IGZO DRAM (VLSI 2026)",
+     "url": "https://www.ithome.com/0/966/543.htm",
+     "type": "news",
+     "date": "2026-06",
+     "shows": "4-layer 3D 2T0C, single stacking step, 400 s retention, 3 bits/cell"
+    },
+    {
+     "title": "DRAM value-per-area chart (Kurnal Insights)",
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "1b DRAM bit density ~0.436 Gb/mm2 (baseline for density comparison)"
+    },
+    {
+     "title": "CXMT DDR5 die analysis",
+     "url": "https://semiwiki.com/forum/threads/chinas-cxmts-ddr5-reveals-3-year-technology-gap.23270/latest",
+     "type": "news",
+     "date": "2025",
+     "shows": "16Gb DDR5 die 66.99 mm2 => 0.239 Gb/mm2"
+    },
+    {
+     "title": "DATE 2026: hybrid IGZO-Si 2T gain cell",
+     "url": "https://past.date-conference.com/proceedings-archive/2026/DATA/154.pdf",
+     "type": "conference",
+     "date": "2026",
+     "shows": "IGZO-2T eDRAM suffers low operating speed from low mobility; BEOL stacking raises density"
+    }
+   ],
+   "trl": 3,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 60,
+   "time_to_first_revenue_text": "60+ months (process development, multi-tier yield learning, JEDEC-interface die design, qualification)",
+   "gross_margin_estimate": "negative at any plausible price",
+   "gross_margin_mid_pct": -200,
+   "us_manufacturability": "SkyWater Fab 25 Austin (200mm, 130-65nm) technically could add IGZO tiers; 130nm litho is the binding constraint",
+   "who_is_already_doing_this": "Nobody commercially at mature nodes; imec, IMECAS, Kioxia, SK hynix, and Samsung pursue oxide DRAM at leading-edge pitches",
+   "wins_axis": "none for commodity buyers (loses on $/GB, bandwidth, latency); refresh power only",
+   "buyer": "(would be) industrial and legacy DDR4 buyers in the shortage, who will not pay ~12x DDR5 prices",
+   "survives_glut": "no",
+   "glut_reason": "Already ~12x DDR5's current price; in a glut where DDR5 falls 60% toward ~$11/GB the gap widens to ~31x.",
+   "fatal_flaw": "130nm lithography gives ~120x lower bit density than 1b DRAM (0.0035 vs 0.436 Gb/mm2 with 4 tiers); stacking recovers only linear factors.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module maker; fabless->foundry (both fail)",
+   "founder_fit_note": "No: T3 capital, process engineering, and a product that loses on cost by an order of magnitude.",
+   "possible": "yes - physics works (2T0C cells and 4-tier stacks are demonstrated)",
+   "profitable": "no - $/GB 12x DDR5 price today, ~125x DDR5 cost",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-03",
+   "name": "IGZO memory printed on idle display-fab glass",
+   "subbranch": "Oxide-semiconductor DRAM (display-fab / large-area)",
+   "materials_sense": "mixed:b+c",
+   "what_it_is": "Use a depreciated Gen 6-8.5 oxide-TFT display backplane line (the CAAC-IGZO process Sharp and SEL commercialized) to pattern 2T0C memory arrays on glass, then cut and bond them to silicon sense/IO chips as cheap bulk memory. Large-area tooling and a 4-6 mask process are the 'cheaper process/capital' bet.",
+   "why_it_could_work": "Display oxide-TFT lines are heavily depreciated and running underutilized (Omdia 2025). IGZO TFT leakage is tiny (SEL CAAC-IGZO <=200 zA), and a Gen 8.5 sheet is ~5.5 m2. Scratch model: at a ~2 um design rule a 2T0C cell is ~120 um2 => ~4e-6 Gb/mm2 => only ~2.3 GB per sheet => ~$266/GB before bonding, with microsecond access.",
+   "evidence": [
+    {
+     "title": "SEL: Embedded DRAM using CAAC-IGZO FET with 1.8V supply",
+     "url": "https://dc.engconfintl.org/ulsic_tft_vii/34",
+     "type": "conference",
+     "date": "2019",
+     "shows": "DOSRAM with CAAC-IGZO: leakage <=200 zA, 7 orders below Si; 1.8V operation"
+    },
+    {
+     "title": "That giant LCD fab touted for Wisconsin ... never mind",
+     "url": "https://www.sixteen-nine.net/?p=20827",
+     "type": "news",
+     "date": "2019",
+     "shows": "Foxconn's Wisconsin Gen 10.5 LCD fab was never built; no U.S. TFT panel fab"
+    },
+    {
+     "title": "State report: Foxconn's project can't possibly be a factory",
+     "url": "https://upnorthnewswi.com/2020/10/22/state-report-foxconns-project-cant-possibly-be-a-factory",
+     "type": "news",
+     "date": "2020-10",
+     "shows": "Wisconsin DOA: Gen 6 building shows no sign of LCD manufacturing"
+    },
+    {
+     "title": "Pragmatic opens UK's first 300mm wafer fab",
+     "url": "https://www.semiconductor-today.com/news_items/2024/mar/pragmatic-280324.shtml",
+     "type": "news",
+     "date": "2024-03",
+     "shows": "IGZO FlexIC fab is in Durham, UK -- the closest thing to a 'memory-adjacent IGZO fab' is not in the U.S."
+    },
+    {
+     "title": "Display panel industry faces utilization decline amid tariff uncertainty (Omdia)",
+     "url": "https://telecomlead.com/electronics/display-panel-industry-faces-utilization-decline-amid-tariff-uncertainty-120613",
+     "type": "news",
+     "date": "2025",
+     "shows": "Panel fab utilization falling from >80% in 2025 -> idle oxide-TFT capacity exists, but in Asia"
+    }
+   ],
+   "trl": 2,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 72,
+   "time_to_first_revenue_text": "never as RAM; 72+ months for any memory-on-glass product",
+   "gross_margin_estimate": "negative",
+   "gross_margin_mid_pct": -100,
+   "us_manufacturability": "None: the U.S. has no active-matrix TFT panel fab (Foxconn's Wisconsin Gen 10.5/Gen 6 LCD fab was never built); all oxide-TFT capacity is in Asia. Pragmatic's IGZO FlexIC fab is in the UK.",
+   "who_is_already_doing_this": "Display makers (Sharp, LG Display, BOE, JDI) for backplanes; Pragmatic (UK) for flexible IGZO logic and RFID; nobody for RAM",
+   "wins_axis": "none for RAM; large-area and flexible form factors only",
+   "buyer": "none for RAM (possible niche: flexible smart labels, which is Pragmatic's market)",
+   "survives_glut": "no",
+   "glut_reason": "Already ~10x DDR5's price with µs latency; a glut makes it irrelevant.",
+   "fatal_flaw": "Micrometer design rules => ~100,000x lower density than DRAM, plus no U.S. line exists.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module maker; display-fab partnership (none in U.S.)",
+   "founder_fit_note": "No.",
+   "possible": "marginal - TFT memory on glass is feasible but useless as RAM",
+   "profitable": "no",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-04",
+   "name": "OCTRAM-class 4F2 IGZO-on-capacitor low-refresh DRAM as a U.S. second source",
+   "subbranch": "Oxide-semiconductor DRAM (4F2 1T1C)",
+   "materials_sense": "a-material",
+   "what_it_is": "License Kioxia and Nanya's OCTRAM (a vertical cylindrical InGaZnO access transistor built on top of a high-aspect-ratio DRAM capacitor, 4F2) and have it produced for U.S. low-power DRAM buyers. The product would be a low-refresh LPDDR-class part for defense and IoT.",
+   "why_it_could_work": "Ioff <1 aA/cell and Ion >15 uA (2024), >30 uA in Kioxia's 8-layer stack (IEDM 2025); a 275 Mbit array works at 54/63nm pitches. Scratch model at demo pitches on a DRAM-class line: ~0.16 Gb/mm2, ~$8.4/GB (below DDR5's ~$27 price but ~3x DDR5's estimated ~$2.7/GB cost at today's demo pitch).",
+   "evidence": [
+    {
+     "title": "Kioxia develops OCTRAM (with Nanya), IEDM 2024",
+     "url": "https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology",
+     "type": "company",
+     "date": "2024-12",
+     "shows": "4F2 DRAM: vertical InGaZnO transistor on high-aspect-ratio capacitor; Ion >15 uA/cell, Ioff <1 aA/cell"
+    },
+    {
+     "title": "Kioxia developing new DRAM, SCM and NAND tech",
+     "url": "https://blocksandfiles.com/2024/10/22/kioxia-developing-new-dram-scm-and-nand-tech/",
+     "type": "news",
+     "date": "2024-10",
+     "shows": "275 Mbit OCTRAM array, WL 54nm / BL 63nm pitch, operates in design voltage range"
+    },
+    {
+     "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025)",
+     "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+     "type": "company",
+     "date": "2025-12",
+     "shows": "8-layer horizontally stacked InGaZnO transistors (SiN replaced by IGZO); Ion >30 uA, Ioff <1 aA"
+    },
+    {
+     "title": "Samsung reportedly produces 10a DRAM working die using 4F2 and VCT, targets 2028",
+     "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+     "type": "news",
+     "date": "2026-04",
+     "shows": "Samsung 4F2 VCT working die Mar 2026; channel reportedly shifted to IGZO; mass production transfer 2028"
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T4",
+   "time_to_first_revenue_months": 84,
+   "time_to_first_revenue_text": "84+ months and only inside a DRAM maker",
+   "gross_margin_estimate": "n/a for a startup",
+   "gross_margin_mid_pct": 0,
+   "us_manufacturability": "Requires a DRAM capacitor process => only Micron (Boise ID, Manassas VA) in the U.S.; Nanya (Taiwan) is Kioxia's partner. Violates rule 3 for us.",
+   "who_is_already_doing_this": "Kioxia + Nanya (OCTRAM); Samsung (4F2 VCT with reportedly IGZO channel, 2028 target); SK hynix (4F2 vertical-gate DRAM at VLSI 2026)",
+   "wins_axis": "refresh/standby power (W/GB) at DRAM density",
+   "buyer": "mobile/IoT and AI-server low-power DRAM buyers (via DRAM makers), not a startup's customers",
+   "survives_glut": "partially",
+   "glut_reason": "A low-power premium may survive for whoever owns the fab; a startup without a fab gets nothing.",
+   "fatal_flaw": "Needs a DRAM fab and Kioxia/Nanya IP, which is not offered for license; it is a T4 incumbent technology race.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "IP licensing (as licensee - not available); fabless->foundry (no DRAM foundry exists in U.S.)",
+   "founder_fit_note": "No.",
+   "possible": "yes - for DRAM makers",
+   "profitable": "no - not for a startup",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-05",
+   "name": "License NEO Semiconductor 3D X-DRAM and build it in the U.S.",
+   "subbranch": "3D DRAM (vertically stacked, IGZO variants)",
+   "materials_sense": "mixed:a+b",
+   "what_it_is": "Take a license to NEO Semiconductor's (San Jose) 3D X-DRAM (1T1C, or 3T0C with IGZO channels), built with a modified 3D-NAND flow, and stand up or partner on a U.S. 3D-NAND-class line to make it. This is the '3D NAND economics for DRAM' bet.",
+   "why_it_could_work": "NEO claims ~10x DRAM density (up to 512Gb), <10 ns, >1e14 endurance and >1 s retention at 85C (company-reported PoC, Apr 2026). At the claimed density the scratch model gives ~$1.2/GB, which would be transformative if real. The big IDMs are converging on 3D: Samsung 16-tier VS-DRAM (VLSI 2026), SK hynix 5-layer at 56.1% yield (2024, needs 32-192 layers), Kioxia 8-layer IGZO stack, IMECAS 4-layer 2T0C.",
+   "evidence": [
+    {
+     "title": "NEO Semiconductor demonstrates 3D X-DRAM proof-of-concept",
+     "url": "https://www.storagenewsletter.com/2026/05/13/neo-semiconductor-demonstrates-3d-x-dram-proof-of-concept-secures-strategic-investment-to-advance-ai-memory/",
+     "type": "company",
+     "date": "2026-04",
+     "shows": "Company-reported PoC: retention >1 s at 85C, endurance >1e14, <10 ns; test chips by NYCU, fabbed at TSRI Taiwan; next: arrays, multi-layer"
+    },
+    {
+     "title": "NEO adds IGZO to 3D DRAM designs",
+     "url": "https://www.eenewseurope.com/en/neo-semiconductor-adds-igzo-to-3d-dram-designs/",
+     "type": "news",
+     "date": "2025-05",
+     "shows": "1T1C and 3T0C IGZO variants: TCAD-simulated 10 ns and >450 s retention, not silicon; modified 3D NAND process"
+    },
+    {
+     "title": "SK hynix 5-layer 3D DRAM 56.1% yield (VLSI 2024)",
+     "url": "https://trendforce.com/news/?p=10820",
+     "type": "news",
+     "date": "2024-06",
+     "shows": "5-layer stacked 3D DRAM yield 56.1%; needs 32-192 layers for products; Samsung ~2030 target"
+    },
+    {
+     "title": "2026 VLSI Technical Tipsheet",
+     "url": "https://www.vlsisymposium.org/wp-content/uploads/2026/04/2026-VLSI-Technical-Tipsheet-REVISED-FINAL-NO-IMAGES-4.24.26.docx",
+     "type": "conference",
+     "date": "2026-04",
+     "shows": "Samsung 16-tier vertically stacked DRAM with GAA cell transistors and horizontal capacitors"
+    },
+    {
+     "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025)",
+     "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+     "type": "company",
+     "date": "2025-12",
+     "shows": "8-layer horizontally stacked InGaZnO transistors (SiN replaced by IGZO); Ion >30 uA, Ioff <1 aA"
+    }
+   ],
+   "trl": 3,
+   "capital_tier": "T4",
+   "time_to_first_revenue_months": 96,
+   "time_to_first_revenue_text": "96+ months; NEO's next steps are array-level and multi-layer test chips",
+   "gross_margin_estimate": "n/a for us; NEO's own model is licensing",
+   "gross_margin_mid_pct": 0,
+   "us_manufacturability": "Needs a 3D-NAND-class fab; no volume 3D NAND fab operates in the U.S. [UNVERIFIED - from training knowledge]. NEO's PoC was fabbed at TSRI (Taiwan) with NYCU.",
+   "who_is_already_doing_this": "NEO Semiconductor (licensor), Samsung, SK hynix, Micron, Kioxia, imec, IMECAS",
+   "wins_axis": "$/GB via density (if claims hold)",
+   "buyer": "DRAM makers (NEO's intended licensees), not end customers",
+   "survives_glut": "partially",
+   "glut_reason": "A true 10x-density cost leader survives any glut, but that leader would be Samsung, SK hynix or Micron, not us.",
+   "fatal_flaw": "Single-cell, company-reported PoC with no peer-reviewed array data; production needs a $10B-class fab. NEO pitches to memory companies, so the licensee seat is not available to a startup.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "IP licensing (wrong side of the table); fabless->foundry (no foundry)",
+   "founder_fit_note": "No. At most: track NEO's claims in a data product (see A1-14).",
+   "possible": "marginal - a PoC exists but array/multilayer feasibility is unproven",
+   "profitable": "no - not for us",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-06",
+   "name": "U.S.-made HZO FeRAM family (1-16 Mb, rad-hard option) via SkyWater + Sandia",
+   "subbranch": "Ferroelectric (HfZrO 1T1C FeRAM)",
+   "materials_sense": "mixed:a+c",
+   "what_it_is": "A fabless company designs a family of hafnium-zirconium-oxide 1T1C FeRAM chips (SPI/QSPI and parallel, 1-16 Mb, plus rad-hard variants). The HZO capacitor module would be built on SkyWater's 130nm line (Bloomington MN or Fab 25 Austin), with rad-hard variants co-developed with or licensed from Sandia, which integrated HZO FeRAM into its trusted MESA fab at 200mm (May 2026). It sells an onshore second source to Infineon's PZT F-RAM.",
+   "why_it_could_work": "HZO is ALD-deposited and CMOS-friendly (no PZT lead contamination; ~2-3 extra masks, by analogy to TI's 2-mask FRAM on 130nm) and radiation hard (heavy-ion data; Sandia program). Space/defense F-RAM is close to sole-source (Infineon QML-V 2Mb). Wafers: ~$1,400 per 200mm [ESTIMATE]. This is a supply-security play, not a $/GB play: the scratch model is ~$770/GB because these are Mb-class parts.",
+   "evidence": [
+    {
+     "title": "A highly reliable 1.8 V 1 Mb Hf0.5Zr0.5O2-based 1T1C FeRAM array with 3-D capacitors (IEDM 2023)",
+     "url": "https://fis.tu-dresden.de/portal/en/publications/a-highly-reliable-18-v-1-mb-hf05zr05o2based-1t1c-feram-array-with-3d-capacitors%28e6411421-d8d0-4f39-97d3-03a6d18e3513%29.html",
+     "type": "conference",
+     "date": "2023-12",
+     "shows": "1 Mb HZO 1T1C FeRAM: 1e11 endurance, 1-month retention at 85C"
+    },
+    {
+     "title": "Sandia: Facing radiation challenges head on",
+     "url": "https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/",
+     "type": "government",
+     "date": "2026-05",
+     "shows": "HfO2/HZO rad-hard FeRAM integrated into Sandia's trusted MESA fab; FeRAM at 200mm scale; binary and 32-state FTJs"
+    },
+    {
+     "title": "Heavy-ion irradiation of ferroelectric hafnia NVM",
+     "url": "https://publica.fraunhofer.de/handle/publica/456991",
+     "type": "peer-reviewed",
+     "date": "unknown",
+     "shows": "Ferroelectric hafnia NVM devices show excellent radiation hardness"
+    },
+    {
+     "title": "Infineon 5962R1821601VXC rad-hard 2Mb serial F-RAM (QML-V)",
+     "url": "https://infineon.com/cms/en/product/memories/radiation-hardened-high-reliability-memories/space-memories/5962r1821601vxc",
+     "type": "company",
+     "date": "2022-04",
+     "shows": "Incumbent PZT F-RAM: TID >150 krad(Si), SEL immune, 1e13 cycles, >100-yr retention at 85C"
+    },
+    {
+     "title": "Infineon EXCELON F-RAM family",
+     "url": "https://infineon.com/cms/en/product/memories/f-ram-ferroelectric-ram/excelon-f-ram",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Shipping F-RAM 1-16 Mb, SPI/QSPI 108 MHz, 1e14 endurance, AEC-Q100"
+    },
+    {
+     "title": "FRAM set to save energy in write-intensive MCU applications",
+     "url": "https://newelectronics.co.uk/content/features/fram-set-to-save-energy-in-write-intensive-mcu-applications",
+     "type": "news",
+     "date": "2010",
+     "shows": "TI embedded FRAM on 130nm adds 2 masks; cell 0.54-0.71 um2; made in-house"
+    },
+    {
+     "title": "Cypress PCN: Fab 25 Austin qualified as alternate wafer fab for 4/16/64Kb F-RAM",
+     "url": "https://community.infineon.com/gfawx74859/attachments/gfawx74859/NonVolatileRAM/1143/1/002-18474_00_V.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "F-RAM has history at Austin Fab 25 (now SkyWater); 130nm F-RAM transferred to TI Dallas 300mm"
+    }
+   ],
+   "trl": 5,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "36-60 months: Sandia CRADA/license + SkyWater module (18-24 mo), product design and samples (12 mo), first industrial sales; QML-V qualification adds 1-2 years",
+   "gross_margin_estimate": "50-65% (high-rel ASPs); low volume",
+   "gross_margin_mid_pct": 58,
+   "us_manufacturability": "SkyWater Bloomington MN (S130; DMEA-accredited trusted foundry [UNVERIFIED]) or SkyWater Fab 25 Austin (qualified by Cypress as an alternate fab for small PZT F-RAM parts, so the line has F-RAM history); Sandia MESA (Albuquerque) for rad-hard pilot.",
+   "who_is_already_doing_this": "Infineon (PZT F-RAM incl. rad-hard; 130nm F-RAM transferred to TI Dallas; Fab 25 history), RAMXEED (ex-Fujitsu, Japan), TI (embedded FRAM MCUs), Sandia (HZO R&D), FMC (HfO2, Germany), Sony/Fraunhofer/NaMLab (HZO 1T1C research)",
+   "wins_axis": "supply security (U.S.-made, trusted) + non-volatile fast writes + radiation hardness",
+   "buyer": "Space/defense primes (satellite bus controllers, munitions/flight data recorders) and industrial/automotive event-data recorders wanting an onshore second source",
+   "survives_glut": "yes",
+   "glut_reason": "Mb-class NVM priced on reliability and supply security; unrelated to DDR5 $/GB.",
+   "fatal_flaw": "HZO loses to incumbent PZT F-RAM on the specs F-RAM buyers pay for: 1e11 endurance and 1-month retention at 85C (IEDM 2023, 1Mb) vs 1e13-1e14 and >100 years. Infineon's F-RAM is already partly U.S.-fabbed (TI Dallas; Fab 25 history), so 'Made in USA' is not a moat against it. The niche is ~hundreds of $M/yr [ESTIMATE].",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry; university/lab patent license (Sandia CRADA/license); defense-first",
+   "founder_fit_note": "Not alone: needs a memory designer and a reliability engineer, plus $10-30M. The founder could run program management and the SBIR/CRADA side.",
+   "possible": "yes - 1 Mb HZO arrays exist; Sandia has 200mm FeRAM",
+   "profitable": "marginal - small, incumbent-dominated niche with a reliability gap to close",
+   "doable_by_founder": "no - T2 chip company with qualification burden"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-07",
+   "name": "AlScN ferro-diode memory for 500-600C electronics (Penn/AFRL license + STTR)",
+   "subbranch": "Ferroelectric (AlScN ferroelectric diode, extreme environment)",
+   "materials_sense": "a-material",
+   "what_it_is": "License Penn's AlScN ferroelectric-diode NVM (Jariwala/Olsson group, co-developed with AFRL) and build kB-to-Mb memory dies and high-temperature packaged modules for SiC electronics. Target uses are hypersonics, turbine-engine health monitoring, downhole geothermal/oil tools and Venus/space probes, entered through AFRL/DARPA SBIR-STTR contracts.",
+   "why_it_could_work": "Silicon DRAM and flash fail well below 300C [ESTIMATE]. Ni/Al0.68Sc0.32N/Pt diodes switched at 600C for >60 h at <15 V, which is compatible with SiC logic (Nature Electronics 2024), and scaled devices reach >100 Mbit/mm2 (arXiv 2025). The 2-terminal self-rectifying crossbar is a simple 3-4 mask BEOL. DoD keeps asking for this: AF254-D0806 (500C kB-scale NVM manufacturing scale-up) and DARPA DPA26BZ04-DV017 (-269 to +600C NVM, ~$1.2M Direct-to-Phase II, closed Aug 2026).",
+   "evidence": [
+    {
+     "title": "New memory circuit can handle the heat (Nature Electronics 2024 coverage)",
+     "url": "https://physicstoday.aip.org/news/new-memory-circuit-can-handle-the-heat",
+     "type": "news",
+     "date": "2024",
+     "shows": "Ni/Al0.68Sc0.32N(45nm)/Pt ferroelectric diodes on 4-inch Si switch at 600C for >60 h at <15 V (Penn + AFRL)"
+    },
+    {
+     "title": "Turning up the heat on data storage",
+     "url": "https://www.engineering.upenn.edu/stories/turning-up-the-heat-on-data-storage/",
+     "type": "industry",
+     "date": "2024-05",
+     "shows": "Penn (Jariwala, Olsson) + AFRL; Nature Electronics Apr 29 2024"
+    },
+    {
+     "title": "Scalable and Stable Ferroelectric Non-Volatile Memory at > 500 C",
+     "url": "https://arxiv.org/pdf/2309.04555",
+     "type": "peer-reviewed",
+     "date": "2023-09",
+     "shows": "AlScN NVM >500C; AFRL FAST program support"
+    },
+    {
+     "title": "Demonstration of highly scaled AlScN ferroelectric diode memory with storage density > 100 Mbit/mm2",
+     "url": "https://arxiv.org/pdf/2504.13283",
+     "type": "peer-reviewed",
+     "date": "2025-04",
+     "shows": "Scaled AlScN ferro-diode memory >100 Mbit/mm2 (preprint)"
+    },
+    {
+     "title": "DARPA SBIR DPA26BZ04-DV017 Non-Volatile Memory for Extreme Environments",
+     "url": "https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments",
+     "type": "government",
+     "date": "2026-07",
+     "shows": "Direct-to-Phase II (~$1.2M per BWCO) for -269C to +600C rad-tolerant NVM (NOR flash target); closed 2026-08-19"
+    },
+    {
+     "title": "SBIR topic AF254-D0806 Manufacturing Scale-up of 500C Capable, Kilo-Byte Scale, NVM",
+     "url": "https://www.sbir.gov/topics/12036",
+     "type": "government",
+     "date": "2025",
+     "shows": "USAF topic (closed) citing ferroelectric diode memory stable to 600C; recurring DoD demand signal"
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 36,
+   "time_to_first_revenue_text": "~36 months to first paid prototype/eval-part sales to primes; STTR Phase I/II money ($0.25-2M) comes earlier but is funding, not revenue (A-04)",
+   "gross_margin_estimate": "55-70% on low-volume, high-ASP qualified parts",
+   "gross_margin_mid_pct": 62,
+   "us_manufacturability": "Prototype at Penn's Singh Center for Nanotechnology, Philadelphia [external-user access UNVERIFIED]; scale on a U.S. 200mm line with AlN/AlScN sputter capability (MEMS/RF foundries or SkyWater) [UNVERIFIED which has AlScN today]; high-temperature ceramic packaging from U.S. hybrid houses.",
+   "who_is_already_doing_this": "Penn (Jariwala, Olsson), AFRL (Moore), other SBIR performers on the AF/DARPA topics; SiC high-temperature IC efforts (NASA Glenn, others) [UNVERIFIED]",
+   "wins_axis": "operating temperature / survival in extreme environments (no incumbent RAM or flash works at 500C+)",
+   "buyer": "AFRL and hypersonic/engine programs; aero-engine OEMs (health monitoring); downhole tool makers (oilfield services, geothermal); planetary-probe teams",
+   "survives_glut": "yes",
+   "glut_reason": "Completely decoupled from commodity memory pricing.",
+   "fatal_flaw": "Tiny, grant-shaped market that easily becomes an SBIR mill (the mission bars grant farming). It also needs a high-temperature periphery (SiC CMOS) that barely exists commercially, and Penn may already have licensed or spun out the IP [UNVERIFIED].",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "university/lab patent license; defense-first; fabless->foundry",
+   "founder_fit_note": "Marginal: STTR requires a research-institution partner (Penn PI) and the founder could be CEO/BD for <$50k (entity, IP option, proposal). Revenue past 36 months and a device CTO are required.",
+   "possible": "yes - devices work at 600C; arrays early",
+   "profitable": "marginal - high ASP but very low volume; depends on DoD program pull",
+   "doable_by_founder": "marginal - best founder-entry among device cards via STTR, but not an 18-month revenue path"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-08",
+   "name": "Ferroelectric 'Optane-slot' persistent memory (NVDRAM-class HZO 1T1C NVDIMM/CXL)",
+   "subbranch": "Ferroelectric (NVDRAM / storage-class memory)",
+   "materials_sense": "a-material",
+   "what_it_is": "Revive the Optane persistent-memory tier using Micron-style HfZrO 1T1C NVDRAM (32Gb dual-layer stacked, IEDM 2023) on DIMM or CXL modules for in-memory databases and AI checkpointing. This is the tempting 'DRAM is 2-3x, so a persistent tier must pay now' idea.",
+   "why_it_could_work": "NVDRAM promised near-DRAM speed with non-volatility; at DRAM-like density the scratch model gives ~$4/GB if a DRAM maker built it. High DRAM prices revive interest in cheaper tiers.",
+   "evidence": [
+    {
+     "title": "IEDM: Micron to present DRAM-like non-volatile memory for AI",
+     "url": "https://www.eenewseurope.com/en/iedm-micron-to-present-dram-like-non-volatile-memory-for-ai/",
+     "type": "news",
+     "date": "2023-11",
+     "shows": "Micron 32Gb dual-layer stacked ferroelectric 1T1C NVDRAM, 5.7nm FE capacitor (IEDM 2023 paper 15.7)"
+    },
+    {
+     "title": "Micron NVDRAM might never become a product",
+     "url": "https://blocksandfiles.com/2024/01/09/micron-nvdram-might-never-become-a-product/",
+     "type": "news",
+     "date": "2024-01",
+     "shows": "NVDRAM seen as a proving ground; no product"
+    },
+    {
+     "title": "Ferroelectric RAM looking rusty and stuck",
+     "url": "https://www.design-reuse.com/news/202501939-ferroelectric-ram-looking-rusty-and-stuck-/",
+     "type": "news",
+     "date": "2025-01",
+     "shows": "As of 2025 no Micron NVDRAM product commitment"
+    },
+    {
+     "title": "Intel to wind down Optane memory business",
+     "url": "https://www.anandtech.com/show/17515",
+     "type": "news",
+     "date": "2022-07",
+     "shows": "Optane wound down; $559M impairment Q2 2022"
+    },
+    {
+     "title": "Intel pulls the plug on Optane",
+     "url": "https://www.techtarget.com/it-infrastructure/news/252523339/Intel-pulls-the-plug-on-Optane",
+     "type": "news",
+     "date": "2022-07",
+     "shows": "Optane losses incl. $576M in 2020; needed volume to cut cost"
+    },
+    {
+     "title": "Memory chip company FMC keeps working on semiconductor plant near Magdeburg",
+     "url": "https://heise.de/-11151026",
+     "type": "news",
+     "date": "2026",
+     "shows": "FMC has no ferroelectric memory chips on the market yet; pursuing a fab near Magdeburg"
+    }
+   ],
+   "trl": 5,
+   "capital_tier": "T4",
+   "time_to_first_revenue_months": 96,
+   "time_to_first_revenue_text": "never for a startup; Micron shelved it",
+   "gross_margin_estimate": "n/a",
+   "gross_margin_mid_pct": 0,
+   "us_manufacturability": "Only a DRAM fab (Micron Boise/Manassas) could make it; rule 3 violation",
+   "who_is_already_doing_this": "Micron (shelved NVDRAM), FMC (DRAM+, no chip as of 2026), SK hynix/Samsung research",
+   "wins_axis": "non-volatility at near-DRAM latency (persistence)",
+   "buyer": "in-memory DB and AI-checkpoint operators (hyperscalers)",
+   "survives_glut": "no",
+   "glut_reason": "A persistent tier must undercut DRAM; at -60% DDR5 plus cheap NAND the value gap closes, which is exactly what killed Optane.",
+   "fatal_flaw": "Needs a DRAM fab plus a CPU/OS ecosystem. Optane lost ~$576M in 2020 alone and took a $559M impairment, and the one company able to build NVDRAM (Micron) never productized it.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance (dead); IP licensing (none available)",
+   "founder_fit_note": "No.",
+   "possible": "yes - Micron built a 32Gb die",
+   "profitable": "no - market rejected the tier at Optane's cost; startup has no fab",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-09",
+   "name": "U.S. design-in and module partner for FMC DRAM+ (HfO2 non-volatile DRAM)",
+   "subbranch": "Ferroelectric (HfO2 FeCAP DRAM, channel/module)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Become FMC's U.S. application channel: eval boards, reference designs and small-volume non-volatile memory modules (U.S.-assembled at an East Coast EMS) around FMC's DRAM+ (ferroelectric HfO2 replacing the DRAM capacitor). Customers would be U.S. industrial PLC, medical-device and automotive data-logging OEMs.",
+   "why_it_could_work": "FMC raised EUR100M (Nov 2025) with two DRAM-maker partners and an Asian logic foundry and wants global presence. U.S. OEMs value instant-on NV working memory that removes supercaps and batteries. A small partner can earn design-in services plus module margin, with capital limited to boards and inventory.",
+   "evidence": [
+    {
+     "title": "FMC raises EUR100M to set new standards for memory chips",
+     "url": "https://www.hpcwire.com/off-the-wire/fmc-raises-e100m-to-set-new-standards-for-memory-chips/",
+     "type": "company",
+     "date": "2025-11",
+     "shows": "EUR100M (EUR77M equity + EUR23M public) for DRAM+ and 3D CACHE+; works with two DRAM makers and an Asian logic foundry"
+    },
+    {
+     "title": "FMC + Neumonda DRAM+ (TrendForce)",
+     "url": "https://www.trendforce.com/news/?p=37749",
+     "type": "news",
+     "date": "2025-04",
+     "shows": "DRAM+ replaces DRAM capacitor with ferroelectric HfO2 (non-volatile), Gb-class target; Neumonda provides test platforms"
+    },
+    {
+     "title": "Memory chip company FMC keeps working on semiconductor plant near Magdeburg",
+     "url": "https://heise.de/-11151026",
+     "type": "news",
+     "date": "2026",
+     "shows": "FMC has no ferroelectric memory chips on the market yet; pursuing a fab near Magdeburg"
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 42,
+   "time_to_first_revenue_text": "30-54 months: entirely gated by FMC sampling DRAM+ (no chips as of 2026)",
+   "gross_margin_estimate": "25-35% (modules + services)",
+   "gross_margin_mid_pct": 30,
+   "us_manufacturability": "U.S.-assembled only (dies from FMC's Asian DRAM partner) => 'U.S.-assembled', not U.S.-made (A-09)",
+   "who_is_already_doing_this": "FMC (Dresden), Neumonda (Munich, test platforms); global distributors (Arrow/Avnet-type) would take this role at volume",
+   "wins_axis": "non-volatility at DRAM-like speed (instant-on, no backup power)",
+   "buyer": "industrial automation (PLC/CNC), medical devices, automotive event recorders",
+   "survives_glut": "partially",
+   "glut_reason": "The NV premium persists, but DRAM+ priced against DRAM gets squeezed by a 60% DDR5 drop.",
+   "fatal_flaw": "Zero control: FMC has no chip, its timeline is uncertain, and once it ships it will use established distributors. A one-person channel partner has no moat.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance; distribution/brokerage",
+   "founder_fit_note": "Marginal: the founder's product/ops background fits apps and BD, but revenue timing is out of his hands.",
+   "possible": "marginal - depends on FMC delivering silicon",
+   "profitable": "marginal - thin channel margins",
+   "doable_by_founder": "marginal"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-10",
+   "name": "FeFET embedded NVM licensing on GlobalFoundries 22FDX for U.S. MCU/edge SoCs",
+   "subbranch": "Ferroelectric (FeFET eNVM)",
+   "materials_sense": "mixed:a+b",
+   "what_it_is": "Act as licensing/design-services intermediary for HfO2 FeFET embedded NVM (FMC technology) on GlobalFoundries 22FDX, selling it to U.S. MCU and edge-AI SoC makers as an eFlash replacement needing only 1-3 extra masks.",
+   "why_it_could_work": "FeFET puts the ferroelectric in the HKMG gate stack (sub-5nm films, low write energy), and FMC/GF integrated it on 28nm HKMG years ago. Embedded NVM below 28nm is scarce.",
+   "evidence": [
+    {
+     "title": "Ferroelectric memory startup aims at GloFo's 22FDX",
+     "url": "https://www.eenewseurope.com/en/ferroelectric-memory-startup-aims-at-glofos-22fdx/",
+     "type": "news",
+     "date": "2016",
+     "shows": "FMC FeFET integrated on GF 28nm HKMG; licensing model"
+    },
+    {
+     "title": "Ferroelectric memory startup aims to be the Arm of memories",
+     "url": "https://www.eenewseurope.com/en/ferroelectric-memory-startup-aims-to-be-the-arm-of-memories/",
+     "type": "news",
+     "date": "2017",
+     "shows": "FMC plans licensing to foundries/IDMs plus validation/qualification services"
+    },
+    {
+     "title": "CEA-Leti and Fraunhofer IPMS validate wafer exchange for FE memory materials (FAMES)",
+     "url": "https://www.ipms.fraunhofer.de/en/press-media/press/2026/FAMES-wafer-exchange.html",
+     "type": "industry",
+     "date": "2026",
+     "shows": "HfO2 FE stacks to be evaluated embedded in upcoming GF 22nm FDX memory -- not yet qualified"
+    }
+   ],
+   "trl": 5,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 60,
+   "time_to_first_revenue_text": "60+ months; 22FDX FE memory is still 'upcoming' per FAMES 2026",
+   "gross_margin_estimate": "n/a for us (FMC/GF capture it)",
+   "gross_margin_mid_pct": 0,
+   "us_manufacturability": "22FDX runs mainly at GF Dresden, Germany [UNVERIFIED for any U.S. 22FDX FeFET flow]; GF Malta NY would need the module transferred",
+   "who_is_already_doing_this": "FMC, GlobalFoundries, Fraunhofer IPMS, CEA-Leti (FAMES pilot line)",
+   "wins_axis": "embedded NVM write energy and scalability vs eFlash (NVM, not RAM)",
+   "buyer": "MCU/edge SoC designers on 22FDX",
+   "survives_glut": "yes",
+   "glut_reason": "eNVM is unrelated to DDR5 pricing, which is also why it isn't a 'RAM' answer.",
+   "fatal_flaw": "We would own nothing: FMC and GF own the IP and the line. It is NVM not RAM, and it is not yet qualified.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "IP licensing (as intermediary - no value add); fabless->foundry",
+   "founder_fit_note": "No.",
+   "possible": "yes",
+   "profitable": "no - not for an intermediary",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-11",
+   "name": "SunRise-style 3D NOR 'quasi-volatile' memory as a DRAM substitute",
+   "subbranch": "3D DRAM alternatives (3D NOR charge-trap)",
+   "materials_sense": "b-process",
+   "what_it_is": "Thin-film 3D NOR charge-trap arrays with minutes-to-days retention, proposed by SunRise Memory (Eli Harari, San Jose) as a cheaper-than-DRAM tier refreshed rarely. A licensee would build it on NAND-class tooling.",
+   "why_it_could_work": "If 3D NOR offered DRAM-like latency at NAND-like cost per bit, it would sit under DRAM for AI/KV-cache capacity. SunRise has kept patenting into 2024-2026.",
+   "evidence": [
+    {
+     "title": "SanDisk founder has his next memory chip startup",
+     "url": "https://www.eenewseurope.com/en/sandisk-founder-has-his-next-memory-chip-startup",
+     "type": "news",
+     "date": "2018",
+     "shows": "SunRise Memory (Eli Harari) 3D NOR positioned as DRAM-alternative tier"
+    },
+    {
+     "title": "SunRise Memory profile",
+     "url": "https://www.cbinsights.com/company/sunrise-memory",
+     "type": "industry",
+     "date": "unknown",
+     "shows": "Founded 2016, San Jose; Seagate investor; no product news found 2025-26"
+    },
+    {
+     "title": "US12052867B2 3D NOR memory array with very fine pitch",
+     "url": "https://patents.google.com/patent/US12052867",
+     "type": "patent",
+     "date": "2024",
+     "shows": "SunRise still patenting; no silicon density data public"
+    }
+   ],
+   "trl": 3,
+   "capital_tier": "T4",
+   "time_to_first_revenue_months": 96,
+   "time_to_first_revenue_text": "unknown; no public silicon after ~8 years",
+   "gross_margin_estimate": "n/a",
+   "gross_margin_mid_pct": 0,
+   "us_manufacturability": "Would need a NAND-class fab (none in U.S. [UNVERIFIED])",
+   "who_is_already_doing_this": "SunRise Memory (status unclear 2025-26), Macronix (3D NOR research)",
+   "wins_axis": "$/GB below DRAM with refresh-tolerant retention (claimed)",
+   "buyer": "(claimed) AI/datacenter memory tier",
+   "survives_glut": "no",
+   "glut_reason": "A sub-DRAM tier is squeezed from both sides when DRAM and NAND both fall.",
+   "fatal_flaw": "No public silicon or peer-reviewed array data found for the DRAM-substitute claim. Patents do not show it works at scale, so it is UNSUPPORTED under rule 1.",
+   "rule1_status": "UNSUPPORTED",
+   "business_model_lenses": "IP licensing (as licensee)",
+   "founder_fit_note": "No.",
+   "possible": "marginal - unproven publicly",
+   "profitable": "no",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-12",
+   "name": "Battery-free NV-cache / NVSRAM-replacement modules from off-the-shelf F-RAM",
+   "subbranch": "Ferroelectric (PZT F-RAM, module)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Design and sell small U.S.-assembled modules and firmware drivers built on shipping Infineon EXCELON 4-16 Mb QSPI F-RAM (or RAMXEED FeRAM). They would be drop-in replacements for battery- or supercap-backed SRAM/NVSRAM write caches in industrial controllers, CNC and data loggers, including legacy-equipment repair.",
+   "why_it_could_work": "Shipping F-RAM offers 1e14 writes, zero write delay and >100-year retention, with no battery to fail, maintain or ship as hazmat. Legacy machines with battery-backed SRAM cards need maintenance-free replacements [ESTIMATE of demand]. Capital is just PCB design, contract EMS assembly and inventory. Key negative finding: F-RAM at ~$1-4/Mbit [ESTIMATE] is ~$8,000-30,000/GB, ~300-1,000x DDR5, so F-RAM cannot take DRAM sockets during the shortage, only battery-backed-SRAM sockets.",
+   "evidence": [
+    {
+     "title": "Infineon EXCELON F-RAM family",
+     "url": "https://infineon.com/cms/en/product/memories/f-ram-ferroelectric-ram/excelon-f-ram",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Shipping F-RAM 1-16 Mb, SPI/QSPI 108 MHz, 1e14 endurance, AEC-Q100"
+    },
+    {
+     "title": "Infineon 5962R1821601VXC rad-hard 2Mb serial F-RAM (QML-V)",
+     "url": "https://infineon.com/cms/en/product/memories/radiation-hardened-high-reliability-memories/space-memories/5962r1821601vxc",
+     "type": "company",
+     "date": "2022-04",
+     "shows": "Incumbent PZT F-RAM: TID >150 krad(Si), SEL immune, 1e13 cycles, >100-yr retention at 85C"
+    },
+    {
+     "title": "FRAM set to save energy in write-intensive MCU applications",
+     "url": "https://newelectronics.co.uk/content/features/fram-set-to-save-energy-in-write-intensive-mcu-applications",
+     "type": "news",
+     "date": "2010",
+     "shows": "TI embedded FRAM on 130nm adds 2 masks; cell 0.54-0.71 um2; made in-house"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 10,
+   "time_to_first_revenue_text": "6-12 months (first module SKUs sold online and to MRO buyers)",
+   "gross_margin_estimate": "40-55%",
+   "gross_margin_mid_pct": 48,
+   "us_manufacturability": "East Coast contract EMS assembly; F-RAM dies from Infineon (TI Dallas / Fab 25 history) or RAMXEED (Japan) via distribution",
+   "who_is_already_doing_this": "Infineon (also sells nvSRAM), Everspin (MRAM drop-ins), Analog Devices/Maxim legacy NVSRAM modules [UNVERIFIED current status], niche industrial-repair vendors",
+   "wins_axis": "non-volatility without batteries; lifecycle (maintenance-free)",
+   "buyer": "industrial MRO for legacy CNC/PLC with battery-backed SRAM; data-logger and metering OEMs",
+   "survives_glut": "yes",
+   "glut_reason": "Sold against batteries and NVSRAM, not DDR5.",
+   "fatal_flaw": "Small, fragmented market where each design-in is custom engineering, and chip vendors (Infineon nvSRAM, Everspin MRAM) offer chip-level drop-ins. It is not 'RAM's job' at scale.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance; e-commerce",
+   "founder_fit_note": "Yes: PCB + firmware + web storefront fits a hardware-curious software builder with <$50k.",
+   "possible": "yes - parts ship today",
+   "profitable": "marginal - a niche product line, not a venture",
+   "doable_by_founder": "yes"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-13",
+   "name": "U.S. independent emerging-memory test and qualification lab (HZO / IGZO / AlScN)",
+   "subbranch": "Ferroelectric + oxide (test/qualification services)",
+   "materials_sense": "c-capital",
+   "what_it_is": "An East Coast lab near Albany NanoTech or Philadelphia offering wafer-level ferroelectric and oxide-TFT characterization: P-E loops, wake-up/fatigue, retention bakes, PBTI/NBTI lifetime, coordination of radiation tests, and JEDEC-style qualification flows. Customers would be memory startups, university spinouts, SBIR performers and foreign memory firms entering the U.S.; it is a U.S. analogue of Neumonda's role for FMC.",
+   "why_it_could_work": "Reliability is the gating problem for every A1 device: imec IGZO PBTI ~1 yr vs a 5-yr target, HZO 1-month retention at 85C, NEO's claims company-reported only. FMC itself sold 'validation and qualification services' as part of its model and uses Neumonda's test platforms. Used parametric analyzers, probe stations and ferroelectric testers cost ~$0.3-1M [ESTIMATE].",
+   "evidence": [
+    {
+     "title": "Ferroelectric memory startup aims to be the Arm of memories",
+     "url": "https://www.eenewseurope.com/en/ferroelectric-memory-startup-aims-to-be-the-arm-of-memories/",
+     "type": "news",
+     "date": "2017",
+     "shows": "FMC plans licensing to foundries/IDMs plus validation/qualification services"
+    },
+    {
+     "title": "FMC + Neumonda DRAM+ (TrendForce)",
+     "url": "https://www.trendforce.com/news/?p=37749",
+     "type": "news",
+     "date": "2025-04",
+     "shows": "DRAM+ replaces DRAM capacitor with ferroelectric HfO2 (non-volatile), Gb-class target; Neumonda provides test platforms"
+    },
+    {
+     "title": "Capacitor-less IGZO-based DRAM cell with excellent retention, endurance and gate length scaling (IEDM 2021)",
+     "url": "https://techxplore.com/news/2021-12-capacitor-less-igzo-based-dram-cell-excellent.html",
+     "type": "conference",
+     "date": "2021-12",
+     "shows": "Fully 300mm BEOL-compatible 2T0C: >1e3 s retention, >1e11 endurance, Lg 14nm with >100 s; PBTI lifetime ~1 yr vs 5-yr target"
+    },
+    {
+     "title": "A highly reliable 1.8 V 1 Mb Hf0.5Zr0.5O2-based 1T1C FeRAM array with 3-D capacitors (IEDM 2023)",
+     "url": "https://fis.tu-dresden.de/portal/en/publications/a-highly-reliable-18-v-1-mb-hf05zr05o2based-1t1c-feram-array-with-3d-capacitors%28e6411421-d8d0-4f39-97d3-03a6d18e3513%29.html",
+     "type": "conference",
+     "date": "2023-12",
+     "shows": "1 Mb HZO 1T1C FeRAM: 1e11 endurance, 1-month retention at 85C"
+    },
+    {
+     "title": "NY CREATES and Fraunhofer IPMS JDA on memory devices at 300mm",
+     "url": "https://nachrichten.idw-online.de/2025/05/16/ny-creates-and-fraunhofer-ipms-announce-joint-development-agreement-to-advance-memory-devices-at-300mm-wafer-scale",
+     "type": "industry",
+     "date": "2025-05",
+     "shows": "Albany 300mm HfO2 ferroelectric memory co-development; East Coast access point"
+    }
+   ],
+   "trl": 8,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 15,
+   "time_to_first_revenue_text": "12-18 months (first paid characterization projects from university spinouts / SBIR teams)",
+   "gross_margin_estimate": "45-60% (services)",
+   "gross_margin_mid_pct": 52,
+   "us_manufacturability": "Lab only (no fab); located near NY CREATES Albany (300mm HfO2 memory JDA with Fraunhofer IPMS) or Penn (Philadelphia)",
+   "who_is_already_doing_this": "Neumonda (Germany), Fraunhofer IPMS (Germany), university shared facilities, Sandia (not commercial-turnaround) [ESTIMATE that no U.S. commercial specialist exists - UNVERIFIED]",
+   "wins_axis": "time-to-reliability-data and independence (enabling service, not a RAM axis)",
+   "buyer": "device startups, SBIR/STTR performers, defense primes evaluating new NVM, VCs doing tech diligence",
+   "survives_glut": "partially",
+   "glut_reason": "Startup funding shrinks in a memory glut, but defense and university demand continues.",
+   "fatal_flaw": "Small, lumpy demand: customers with money (Samsung, Micron, Infineon) test in-house. Device-physicist labor is the bottleneck and the founder is not one.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "services; defense-first; data product (test database)",
+   "founder_fit_note": "Marginal: his ops-management background fits running a lab business, but it needs a hired reliability engineer and >$50k equipment (SBA/equipment financing).",
+   "possible": "yes",
+   "profitable": "marginal - services margin, small market",
+   "doable_by_founder": "marginal"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-14",
+   "name": "MemTech Atlas: emerging-memory device-parameter and $/GB cost-model data product",
+   "subbranch": "Cross-cutting (oxide/ferroelectric/3D DRAM data product)",
+   "materials_sense": "none",
+   "what_it_is": "A subscription web app that curates published device parameters (cell area, retention, endurance, layers, mask adders, demonstrated vs simulated) for IGZO/IWO, HZO, FeFET, AlScN, MRAM, ReRAM and 3D DRAM. It pairs them with an open, auditable $/GB cost model and a 'claims vs silicon' tracker, sold to memory investors, corporate strategy teams, defense program offices and procurement.",
+   "why_it_could_work": "It plays to the founder's software skill. This branch's research shows the data is scattered across press releases, IEDM/VLSI papers and paywalled TechInsights/Yole reports. Claims diverge sharply (NEO: 450 s simulated vs >1 s measured), and simple per-area analyses go viral (Kurnal Insights, Sep 2026). A transparent, cheaper tool for non-Yole budgets gives recurring revenue at ~80%+ margin.",
+   "evidence": [
+    {
+     "title": "DRAM value-per-area chart (Kurnal Insights)",
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "1b DRAM bit density ~0.436 Gb/mm2 (baseline for density comparison)"
+    },
+    {
+     "title": "NEO adds IGZO to 3D DRAM designs",
+     "url": "https://www.eenewseurope.com/en/neo-semiconductor-adds-igzo-to-3d-dram-designs/",
+     "type": "news",
+     "date": "2025-05",
+     "shows": "1T1C and 3T0C IGZO variants: TCAD-simulated 10 ns and >450 s retention, not silicon; modified 3D NAND process"
+    },
+    {
+     "title": "NEO Semiconductor demonstrates 3D X-DRAM proof-of-concept",
+     "url": "https://www.storagenewsletter.com/2026/05/13/neo-semiconductor-demonstrates-3d-x-dram-proof-of-concept-secures-strategic-investment-to-advance-ai-memory/",
+     "type": "company",
+     "date": "2026-04",
+     "shows": "Company-reported PoC: retention >1 s at 85C, endurance >1e14, <10 ns; test chips by NYCU, fabbed at TSRI Taiwan; next: arrays, multi-layer"
+    },
+    {
+     "title": "Capacitor-less IGZO-based DRAM cell with excellent retention, endurance and gate length scaling (IEDM 2021)",
+     "url": "https://techxplore.com/news/2021-12-capacitor-less-igzo-based-dram-cell-excellent.html",
+     "type": "conference",
+     "date": "2021-12",
+     "shows": "Fully 300mm BEOL-compatible 2T0C: >1e3 s retention, >1e11 endurance, Lg 14nm with >100 s; PBTI lifetime ~1 yr vs 5-yr target"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 8,
+   "time_to_first_revenue_text": "6-9 months (MVP from this engagement's device_params + cost model; first annual subscriptions)",
+   "gross_margin_estimate": "80-90% (SaaS)",
+   "gross_margin_mid_pct": 85,
+   "us_manufacturability": "Software; no fab",
+   "who_is_already_doing_this": "TechInsights, Yole/System Plus, Objective Analysis, Coughlin Associates, Kurnal Insights, Mobius Materials (market reports)",
+   "wins_axis": "cost and transparency of technology intelligence (RAM-adjacent, not a RAM axis)",
+   "buyer": "memory-focused VCs/CVCs, DoD/DOE program managers, SBIR applicants, OEM component strategists",
+   "survives_glut": "partially",
+   "glut_reason": "Technology diligence continues in a glut, but customer budgets shrink.",
+   "fatal_flaw": "Small TAM, and incumbents with teardown access (TechInsights) own the authoritative data. It risks becoming content or consulting, which the mission treats as a bridge only.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS; data product",
+   "founder_fit_note": "Yes: pure software, T0, can run nights/weekends from day one.",
+   "possible": "yes",
+   "profitable": "marginal - real but small recurring revenue",
+   "doable_by_founder": "yes"
+  },
+  {
+   "branch": "A",
+   "tmp_id": "A1-15",
+   "name": "Onshore In-Ga-Zn oxide sputter-target and ALD-precursor supply for IGZO-channel DRAM",
+   "subbranch": "Oxide-semiconductor DRAM (materials supply chain)",
+   "materials_sense": "a-material",
+   "what_it_is": "Supply DRAM-grade IGZO/ITO/IWO sputter targets and indium/gallium/zinc ALD precursors to DRAM makers moving to oxide channels: Samsung 10a 4F2 VCT with a reportedly IGZO channel targeted for 2028, Kioxia OCTRAM, imec and IMECAS 3D 2T0C. U.S. research lines (Purdue ALD In2O3 on 200mm, NY CREATES) would be early customers, positioned as a non-Chinese indium chain.",
+   "why_it_could_work": "If oxide channels enter mainstream DRAM, every such wafer needs oxide-semiconductor deposition, and the materials play wins whichever cell architecture wins. Micron's U.S. fabs (Boise, Manassas, NY) and CHIPS-funded supply-chain localization favor onshore materials.",
+   "evidence": [
+    {
+     "title": "Samsung reportedly produces 10a DRAM working die using 4F2 and VCT, targets 2028",
+     "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+     "type": "news",
+     "date": "2026-04",
+     "shows": "Samsung 4F2 VCT working die Mar 2026; channel reportedly shifted to IGZO; mass production transfer 2028"
+    },
+    {
+     "title": "Kioxia develops OCTRAM (with Nanya), IEDM 2024",
+     "url": "https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology",
+     "type": "company",
+     "date": "2024-12",
+     "shows": "4F2 DRAM: vertical InGaZnO transistor on high-aspect-ratio capacitor; Ion >15 uA/cell, Ioff <1 aA/cell"
+    },
+    {
+     "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025)",
+     "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+     "type": "company",
+     "date": "2025-12",
+     "shows": "8-layer horizontally stacked InGaZnO transistors (SiN replaced by IGZO); Ion >30 uA, Ioff <1 aA"
+    },
+    {
+     "title": "Purdue: 3D chip platform, three layers of ALD indium-oxide transistors on 200mm",
+     "url": "https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing",
+     "type": "industry",
+     "date": "2026-09",
+     "shows": ">100,000 oxide devices on 52 dies of a 200mm wafer incl. ferroelectric FETs; BEOL-compatible; U.S. university IP"
+    }
+   ],
+   "trl": 6,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 36,
+   "time_to_first_revenue_text": "24-48 months (research-line sales first; fab qualification 2-3 years)",
+   "gross_margin_estimate": "35-50% (specialty materials)",
+   "gross_margin_mid_pct": 42,
+   "us_manufacturability": "Specialty-chemical/target plant on the East Coast; incumbents include Japanese target makers and U.S. firms such as Materion and Indium Corporation (current oxide-target/precursor product lines UNVERIFIED)",
+   "who_is_already_doing_this": "Display-grade IGZO target suppliers (Japan/Korea/China) and ALD precursor majors; DRAM-grade oxide precursors are an emerging category",
+   "wins_axis": "supply security of a critical material for next-generation DRAM",
+   "buyer": "Samsung / SK hynix / Micron fabs and U.S. research lines (Purdue, NY CREATES, Sandia)",
+   "survives_glut": "partially",
+   "glut_reason": "Volumes track DRAM capex (down in a glut) but follow the technology transition, not DDR5 price.",
+   "fatal_flaw": "DRAM makers qualify materials over 2-3 years with incumbent Japanese/Korean suppliers, and a startup without chemistry pedigree won't get qualified. Samsung's IGZO choice is only 'reported' and could revert to silicon.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "materials supplier; defense/supply-security (CHIPS supply-chain programs)",
+   "founder_fit_note": "No: chemistry/materials venture with qualification cycles.",
+   "possible": "yes",
+   "profitable": "marginal - real market if IGZO channels win, but incumbents are strong",
+   "doable_by_founder": "no"
+  }
+ ]
+}

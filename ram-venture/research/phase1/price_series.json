@@ -1,0 +1,783 @@
+{
+ "generated": "2026-11-01",
+ "agent": "p1-market",
+ "caveat": "All values via web-search snippets (primary pages unreachable from session); treat as [REPORTED] unless tagged. Spot != contract. usd_per_gb_factor converts the unit to USD/GB where applicable.",
+ "series": [
+  {
+   "name": "Conventional DRAM contract price change QoQ (TrendForce, midpoint)",
+   "unit": "% QoQ",
+   "note": "Midpoint of TrendForce range; status A=actual/retrospective, F=forecast. All via search snippets [REPORTED].",
+   "points": [
+    {
+     "date": "2024-Q1",
+     "value": 15.5,
+     "source_url": "https://www.storagenewsletter.com/2024/01/11/dram-contract-prices-projected-to-increase-13-18-in-1q24/",
+     "low": 13,
+     "high": 18,
+     "status": "F"
+    },
+    {
+     "date": "2024-Q2",
+     "value": 15.5,
+     "source_url": "https://www.storagenewsletter.com/2024/05/16/dram-contract-prices-for-2q24-adjusted-to-13-18-increase/",
+     "low": 13,
+     "high": 18,
+     "status": "F"
+    },
+    {
+     "date": "2024-Q3",
+     "value": 10.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20240815-12254.html",
+     "low": 8,
+     "high": 13,
+     "status": "F"
+    },
+    {
+     "date": "2024-Q4",
+     "value": 2.5,
+     "source_url": "https://techpowerup.com/forums/threads/329219",
+     "low": 0,
+     "high": 5,
+     "status": "F",
+     "tag": "UNVERIFIED repost"
+    },
+    {
+     "date": "2025-Q2",
+     "value": -2.5,
+     "source_url": "https://techpowerup.com/forums/threads/334591",
+     "low": -5,
+     "high": 0,
+     "status": "F"
+    },
+    {
+     "date": "2025-Q4",
+     "value": 47.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260226-12937.html",
+     "low": 45,
+     "high": 50,
+     "status": "A"
+    },
+    {
+     "date": "2026-Q1",
+     "value": 95.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260601-13070.html",
+     "low": 93,
+     "high": 98,
+     "status": "A"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 60.5,
+     "source_url": "https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-increase-csps-lock-supply-long-term-deals/",
+     "low": 58,
+     "high": 63,
+     "status": "F"
+    },
+    {
+     "date": "2026-Q3",
+     "value": 15.5,
+     "source_url": "https://www.igorslab.de/en/dram-and-nand-remain-more-expensive-trendforce-sees-slowing-but-still-rising-memory-prices-q3-2026/",
+     "low": 13,
+     "high": 18,
+     "status": "F",
+     "note2": "Aug-31 TrendForce PC DRAM update said gains exceeded forecast"
+    },
+    {
+     "date": "2026-Q4",
+     "value": 12.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+     "low": 10,
+     "high": 15,
+     "status": "F",
+     "note2": "Oct-20 '~+20%' revision UNVERIFIED"
+    }
+   ]
+  },
+  {
+   "name": "DRAM contract price change QoQ incl. HBM (TrendForce blended, midpoint)",
+   "unit": "% QoQ",
+   "points": [
+    {
+     "date": "2025-Q2",
+     "value": 5.5,
+     "source_url": "https://techpowerup.com/forums/threads/334591",
+     "low": 3,
+     "high": 8,
+     "status": "F"
+    },
+    {
+     "date": "2025-Q4",
+     "value": 52.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260226-12937.html",
+     "low": 50,
+     "high": 55,
+     "status": "A"
+    },
+    {
+     "date": "2026-Q1",
+     "value": 82.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260226-12937.html",
+     "low": 80,
+     "high": 85,
+     "status": "F"
+    },
+    {
+     "date": "2026-Q4",
+     "value": 17.5,
+     "source_url": "https://www.guru3d.com/story/dram-and-nand-contract-prices-forecast-to-rise-as-much-as-in-q4-2026/",
+     "low": 15,
+     "high": 20,
+     "status": "F"
+    }
+   ]
+  },
+  {
+   "name": "NAND Flash contract price change QoQ (TrendForce, midpoint)",
+   "unit": "% QoQ",
+   "points": [
+    {
+     "date": "2026-Q1",
+     "value": 57.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260202-12911.html",
+     "low": 55,
+     "high": 60,
+     "status": "F"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 72.5,
+     "source_url": "https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-increase-csps-lock-supply-long-term-deals/",
+     "low": 70,
+     "high": 75,
+     "status": "F"
+    },
+    {
+     "date": "2026-Q4",
+     "value": 17.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+     "low": 15,
+     "high": 20,
+     "status": "F"
+    }
+   ]
+  },
+  {
+   "name": "PC DRAM contract price change QoQ (TrendForce)",
+   "unit": "% QoQ",
+   "points": [
+    {
+     "date": "2026-Q1",
+     "value": 100,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260202-12911.html",
+     "status": "F",
+     "note2": "'more than 100%' / at least double"
+    },
+    {
+     "date": "2026-Q4",
+     "value": 15.5,
+     "source_url": "https://pcmasterinsider.com/pc-dram-contract-price-forecast-q4-2026/",
+     "low": 13,
+     "high": 18,
+     "status": "F"
+    }
+   ]
+  },
+  {
+   "name": "Mobile DRAM contract price change QoQ (TrendForce)",
+   "unit": "% QoQ",
+   "points": [
+    {
+     "date": "2026-Q1",
+     "value": 90,
+     "source_url": "https://www.eetasia.com/?p=72392",
+     "status": "F",
+     "product": "LPDDR4X and LPDDR5X ~+90%"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 80.5,
+     "source_url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+     "low": 78,
+     "high": 83,
+     "status": "F",
+     "product": "LPDDR5X"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 72.5,
+     "source_url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+     "low": 70,
+     "high": 75,
+     "status": "F",
+     "product": "LPDDR4X"
+    }
+   ]
+  },
+  {
+   "name": "Conventional DRAM contract price index (3Q25=100) [ESTIMATE: compounded TrendForce midpoints]",
+   "unit": "index",
+   "note": "Derived, not a published series. 2Q26-4Q26 use forecasts.",
+   "points": [
+    {
+     "date": "2025-Q3",
+     "value": 100,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260226-12937.html"
+    },
+    {
+     "date": "2025-Q4",
+     "value": 147.5,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260226-12937.html"
+    },
+    {
+     "date": "2026-Q1",
+     "value": 288.4,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260601-13070.html"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 462.8,
+     "source_url": "https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-increase-csps-lock-supply-long-term-deals/"
+    },
+    {
+     "date": "2026-Q3",
+     "value": 534.6,
+     "source_url": "https://www.igorslab.de/en/dram-and-nand-remain-more-expensive-trendforce-sees-slowing-but-still-rising-memory-prices-q3-2026/"
+    },
+    {
+     "date": "2026-Q4",
+     "value": 601.4,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260930-13258.html"
+    }
+   ]
+  },
+  {
+   "name": "DDR4 8Gb (1Gx8) PC DRAM average fixed (contract) price (DRAMeXchange)",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 1.0,
+   "points": [
+    {
+     "date": "2023-09",
+     "value": 1.3,
+     "source_url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "note2": "2022-23 cycle bottom"
+    },
+    {
+     "date": "2025-06",
+     "value": 2.6,
+     "source_url": "https://view.asiae.co.kr/en/article/2025070108020310879",
+     "note2": "+23.81% MoM"
+    }
+   ]
+  },
+  {
+   "name": "DDR5 16Gb (2Gx8) 4800/5600 spot session average (DRAMeXchange)",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 0.5,
+   "note": "Spot (small-lot), not contract. 16Gb = 2GB.",
+   "points": [
+    {
+     "date": "2025-06",
+     "value": 6.05,
+     "source_url": "https://www.trendforce.com/news/2025/06/24/news-historic-ddr4-spot-price-rally-reportedly-doubles-ddr5-propelling-nanya-techs-inventory-windfall/"
+    },
+    {
+     "date": "2025-09-20",
+     "value": 6.84,
+     "source_url": "https://tech-insider.org/ddr5-ram-prices-2026/"
+    },
+    {
+     "date": "2026-03-11",
+     "value": 39.567,
+     "source_url": "https://www.dramexchange.com/",
+     "low": 26.0,
+     "high": 52.0
+    },
+    {
+     "date": "2026-07",
+     "value": 45.0,
+     "source_url": "https://tech-insider.org/ddr5-ram-prices-2026/",
+     "note2": "'mid-$40s' session avg, daily high $61; approximate"
+    },
+    {
+     "date": "2026-08-31",
+     "value": 53.92,
+     "source_url": "https://www.buysellram.com/blog/ram-market-update/",
+     "low": 37.2,
+     "high": 67.5
+    },
+    {
+     "date": "2026-09",
+     "value": 57.0,
+     "source_url": "https://tech-insider.org/ca/ram-ddr5-ssd-price-shortage-canada-2026/",
+     "tag": "UNVERIFIED; attribution uncertain"
+    }
+   ]
+  },
+  {
+   "name": "DDR5 16Gb eTT spot session average (DRAMeXchange)",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 0.5,
+   "points": [
+    {
+     "date": "2026-03-11",
+     "value": 21.15,
+     "source_url": "https://www.dramexchange.com/"
+    }
+   ]
+  },
+  {
+   "name": "DDR4 16Gb (1Gx16) 3200 spot (DRAMeXchange)",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 0.5,
+   "points": [
+    {
+     "date": "2025-06",
+     "value": 12.3,
+     "source_url": "https://www.trendforce.com/news/2025/06/24/news-historic-ddr4-spot-price-rally-reportedly-doubles-ddr5-propelling-nanya-techs-inventory-windfall/",
+     "note2": "~2x DDR5 16Gb: first DDR4/DDR5 inversion"
+    }
+   ]
+  },
+  {
+   "name": "DDR4 16Gb vs DDR5 16Gb chip price (DigiTimes) - DDR4",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 0.5,
+   "points": [
+    {
+     "date": "2025-08",
+     "value": 9.17,
+     "source_url": "https://www.techradar.com/computing/memory/want-to-upgrade-the-ddr4-ram-in-your-pc-new-report-is-a-clear-signal-you-should-buy-sooner-rather-than-later"
+    }
+   ]
+  },
+  {
+   "name": "DDR4 16Gb vs DDR5 16Gb chip price (DigiTimes) - DDR5",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 0.5,
+   "points": [
+    {
+     "date": "2025-08",
+     "value": 5.99,
+     "source_url": "https://www.techradar.com/computing/memory/want-to-upgrade-the-ddr4-ram-in-your-pc-new-report-is-a-clear-signal-you-should-buy-sooner-rather-than-later"
+    }
+   ]
+  },
+  {
+   "name": "DDR4 8Gb (1Gx8) spot session average (TrendForce price board; likely eTT/generic)",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 1.0,
+   "points": [
+    {
+     "date": "2026-06-05",
+     "value": 16.0,
+     "source_url": "https://www.trendforce.com/price/dram/dram_spot"
+    },
+    {
+     "date": "2026-08-03",
+     "value": 21.0,
+     "source_url": "https://www.trendforce.com/price_dram.html",
+     "low": 19.0,
+     "high": 28.5
+    }
+   ]
+  },
+  {
+   "name": "DDR4 8Gb spot (alternate quote; likely branded 3200)",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 1.0,
+   "points": [
+    {
+     "date": "2026-03",
+     "value": 33.02,
+     "source_url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "note2": "early March, per Mobius"
+    },
+    {
+     "date": "2026-07-28",
+     "value": 42.08,
+     "source_url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "low": 20.2,
+     "high": 74.0
+    },
+    {
+     "date": "2026-08-31",
+     "value": 44.37,
+     "source_url": "https://www.buysellram.com/blog/ram-market-update/",
+     "low": 23.8,
+     "high": 76.0
+    }
+   ]
+  },
+  {
+   "name": "DDR4 8Gb spot, 2018-19 cycle",
+   "unit": "USD/chip",
+   "usd_per_gb_factor": 1.0,
+   "points": [
+    {
+     "date": "2018-11",
+     "value": 6.95,
+     "source_url": "https://evertiq.com/design/45079"
+    },
+    {
+     "date": "2019-06",
+     "value": 3.0,
+     "source_url": "https://www.digitimes.com/tag/8gb/0034884.html",
+     "note2": "'fell below $3'; value is upper bound"
+    }
+   ]
+  },
+  {
+   "name": "8GB PC DRAM module contract average (TrendForce), 2018-19 cycle",
+   "unit": "USD/module",
+   "usd_per_gb_factor": 0.125,
+   "points": [
+    {
+     "date": "2018-Q3",
+     "value": 68.0,
+     "source_url": "https://press.trendforce.com/node/view/3173.html"
+    },
+    {
+     "date": "2018-Q4",
+     "value": 61.0,
+     "source_url": "https://press.trendforce.com/node/view/3173.html"
+    },
+    {
+     "date": "2019-08",
+     "value": 25.5,
+     "source_url": "https://www.digitimes.com/tag/8gb/0034884.html"
+    }
+   ]
+  },
+  {
+   "name": "64GB DDR5 RDIMM contract price (Counterpoint)",
+   "unit": "USD/module",
+   "usd_per_gb_factor": 0.015625,
+   "points": [
+    {
+     "date": "2025-Q4",
+     "value": 450.0,
+     "source_url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/"
+    },
+    {
+     "date": "2026-Q1",
+     "value": 900.0,
+     "source_url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "note2": "'over $900'; possibly >$1,000 in 2Q26"
+    }
+   ]
+  },
+  {
+   "name": "64GB DDR5 RDIMM retail street price",
+   "unit": "USD/module",
+   "usd_per_gb_factor": 0.015625,
+   "points": [
+    {
+     "date": "2026-08",
+     "value": 2064.0,
+     "source_url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026"
+    }
+   ]
+  },
+  {
+   "name": "Mobile DRAM LTA price ceiling (reported)",
+   "unit": "USD/GB",
+   "points": [
+    {
+     "date": "2026-Q2",
+     "value": 21.0,
+     "source_url": "https://wccftech.com/mobile-dram-prices-expected-to-increase-by-100-quarter-over-quarter-as-long-term-agreements-now-getting-signed-at-prices-as-high-as-21-gb/amp/"
+    }
+   ]
+  },
+  {
+   "name": "HBM3E contract price (reported)",
+   "unit": "USD/Gb",
+   "usd_per_gb_factor": 8.0,
+   "points": [
+    {
+     "date": "2026",
+     "value": 1.5,
+     "source_url": "https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/"
+    }
+   ]
+  },
+  {
+   "name": "HBM4 2027 asking price, Samsung (reported)",
+   "unit": "USD/Gb",
+   "usd_per_gb_factor": 8.0,
+   "points": [
+    {
+     "date": "2027",
+     "value": 4.7,
+     "source_url": "https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/",
+     "low": 4.5,
+     "high": 4.9,
+     "note2": "'mid-to-high $4/Gb' asking price, not a transaction"
+    }
+   ]
+  },
+  {
+   "name": "Retail 32GB DDR5 kit (reported typical price)",
+   "unit": "USD/kit",
+   "usd_per_gb_factor": 0.03125,
+   "points": [
+    {
+     "date": "2026",
+     "value": 450.0,
+     "source_url": "https://www.digitalcitizen.life/ddr5-ram-prices-surge-in-2026-as-32gb-kits-reach-450-amid-global-memory-shortage/"
+    }
+   ]
+  },
+  {
+   "name": "Typical DDR5 retail price, Amazon US (rampricesusa)",
+   "unit": "USD/GB",
+   "points": [
+    {
+     "date": "2026-09",
+     "value": 18.04,
+     "source_url": "https://rampricesusa.com/insights/monthly/2026-09",
+     "note2": "+6.0% vs Aug 2026"
+    }
+   ]
+  },
+  {
+   "name": "DRAM industry revenue (TrendForce)",
+   "unit": "USD billion",
+   "points": [
+    {
+     "date": "2025-Q3",
+     "value": 41.4,
+     "source_url": "https://wantrich.chinatimes.com/news/20251126900578-420201"
+    },
+    {
+     "date": "2025-Q4",
+     "value": 53.58,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260226-12937.html"
+    },
+    {
+     "date": "2026-Q1",
+     "value": 96.98,
+     "source_url": "https://www.trendforce.com/presscenter/news/20260601-13070.html",
+     "tag": "ESTIMATE: 53.58 x 1.81 (reported +81% QoQ)"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 154.73,
+     "source_url": "https://evertiq.com/news/2026-09-07-dram-industry-revenue-surges-595-in-q2-as-supply-lags-demand"
+    }
+   ]
+  },
+  {
+   "name": "HBM share of DRAM wafer starts, big-3 (TrendForce)",
+   "unit": "% of wafer starts",
+   "points": [
+    {
+     "date": "2025",
+     "value": 18,
+     "source_url": "https://technews.tw/?p=1565421"
+    },
+    {
+     "date": "2026",
+     "value": 22,
+     "source_url": "https://technews.tw/?p=1565421"
+    },
+    {
+     "date": "2027",
+     "value": 30,
+     "source_url": "https://technews.tw/?p=1565421",
+     "status": "F"
+    }
+   ]
+  },
+  {
+   "name": "HBM share of DRAM bit output (TrendForce)",
+   "unit": "% of bits",
+   "points": [
+    {
+     "date": "2025",
+     "value": 8,
+     "source_url": "https://technews.tw/?p=1565421"
+    },
+    {
+     "date": "2026",
+     "value": 9,
+     "source_url": "https://technews.tw/?p=1565421"
+    },
+    {
+     "date": "2027",
+     "value": 13,
+     "source_url": "https://technews.tw/?p=1565421",
+     "status": "F"
+    }
+   ]
+  },
+  {
+   "name": "DRAM bit supply growth forecast",
+   "unit": "% YoY",
+   "points": [
+    {
+     "date": "2026",
+     "value": 25,
+     "source_url": "https://www.guru3d.com/story/micron-expects-dram-and-nand-supply-to-tighten-further-through-2028/",
+     "forecaster": "Micron (mid-20s)"
+    },
+    {
+     "date": "2027",
+     "value": 22,
+     "source_url": "https://www.guru3d.com/story/micron-expects-dram-and-nand-supply-to-tighten-further-through-2028/",
+     "forecaster": "Micron (low-20s)"
+    },
+    {
+     "date": "2028",
+     "value": 22,
+     "source_url": "https://www.guru3d.com/story/micron-expects-dram-and-nand-supply-to-tighten-further-through-2028/",
+     "forecaster": "Micron (low-20s)"
+    },
+    {
+     "date": "2027",
+     "value": 24,
+     "source_url": "https://www.trendforce.com/research/download/RP260728GY",
+     "forecaster": "TrendForce"
+    },
+    {
+     "date": "2027",
+     "value": 20,
+     "source_url": "https://www.tmgm.com/en/analysis/market-insight/micron-dram-supply-tightening",
+     "forecaster": "Baird"
+    },
+    {
+     "date": "2028",
+     "value": 30,
+     "source_url": "https://www.tmgm.com/en/analysis/market-insight/micron-dram-supply-tightening",
+     "forecaster": "Baird (>30%)"
+    }
+   ]
+  },
+  {
+   "name": "SK hynix operating margin",
+   "unit": "%",
+   "points": [
+    {
+     "date": "2025-Q2",
+     "value": 41,
+     "source_url": "https://stockhub.kr/en/insights/view_5db145620c4e48bda2aa-sk-hynix-2q26-earnings-2026-07-29",
+     "tag": "REPORTED; tracker attribution uncertain"
+    },
+    {
+     "date": "2025-Q3",
+     "value": 47,
+     "source_url": "https://stockhub.kr/en/insights/view_5db145620c4e48bda2aa-sk-hynix-2q26-earnings-2026-07-29",
+     "tag": "REPORTED; tracker attribution uncertain"
+    },
+    {
+     "date": "2025-Q4",
+     "value": 58,
+     "source_url": "https://stockhub.kr/en/insights/view_5db145620c4e48bda2aa-sk-hynix-2q26-earnings-2026-07-29",
+     "tag": "REPORTED; tracker attribution uncertain"
+    },
+    {
+     "date": "2026-Q1",
+     "value": 72,
+     "source_url": "https://stockhub.kr/en/insights/view_5db145620c4e48bda2aa-sk-hynix-2q26-earnings-2026-07-29",
+     "tag": "REPORTED; tracker attribution uncertain"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 76.3,
+     "source_url": "https://www.placera.se/pressmeddelanden/sk-hynix-announces-2q26-financial-results-20260729"
+    },
+    {
+     "date": "2026-Q3",
+     "value": 79.7,
+     "source_url": "https://www.placera.se/pressmeddelanden/sk-hynix-announces-3q26-financial-results-20261028",
+     "note2": "KRW83.3T/104.6T; preliminary"
+    },
+    {
+     "date": "2023-Q1",
+     "value": -67,
+     "source_url": "https://www.theregister.com/2023/04/27/samsung_sk_hynix_losses/",
+     "note2": "trough reference: -KRW3.4T on KRW5.1T"
+    }
+   ]
+  },
+  {
+   "name": "Samsung DS division operating margin [ESTIMATE from reported OP/revenue]",
+   "unit": "%",
+   "points": [
+    {
+     "date": "2026-Q3",
+     "value": 72.4,
+     "source_url": "https://news.samsungsemiconductor.com/global/samsung-electronics-announces-third-quarter-2026-results/",
+     "note2": "KRW106.5T/147.1T; includes foundry/LSI"
+    }
+   ]
+  },
+  {
+   "name": "Micron non-GAAP gross margin",
+   "unit": "%",
+   "points": [
+    {
+     "date": "FY2026-Q4",
+     "value": 87.0,
+     "source_url": "https://www.marketbeat.com/instant-alerts/transcript-micron-technology-q4-earnings-call-highlights-2026-09-30/",
+     "note2": "~87%; quarter ended ~2026-09-03"
+    },
+    {
+     "date": "FY2027-Q1",
+     "value": 86.25,
+     "source_url": "https://finviz.com/news/397277/micron-technology-inc-reports-record-fiscal-fourth-quarter-and-full-year-2026-results",
+     "status": "guidance"
+    }
+   ]
+  },
+  {
+   "name": "Micron revenue",
+   "unit": "USD billion",
+   "points": [
+    {
+     "date": "FY2026-Q4",
+     "value": 54.23,
+     "source_url": "https://pulse2.com/micron-reports-record-fiscal-q4-revenue-of-54-23-billion-and-fy2026-revenue-of-133-19-billion/"
+    },
+    {
+     "date": "FY2027-Q1",
+     "value": 61.5,
+     "source_url": "https://finviz.com/news/397277/micron-technology-inc-reports-record-fiscal-fourth-quarter-and-full-year-2026-results",
+     "status": "guidance +/-1.5"
+    }
+   ]
+  },
+  {
+   "name": "Nanya Technology margins",
+   "unit": "%",
+   "points": [
+    {
+     "date": "2026-Q3",
+     "value": 85.7,
+     "source_url": "https://www.trendforce.com/news/?p=65146",
+     "metric": "gross margin"
+    },
+    {
+     "date": "2026-Q3",
+     "value": 80.0,
+     "source_url": "https://www.trendforce.com/news/?p=65146",
+     "metric": "operating margin"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 79.5,
+     "source_url": "https://www.trendforce.com/news/?p=65146",
+     "metric": "gross margin",
+     "tag": "derived: 85.7-6.2pp"
+    },
+    {
+     "date": "2026-Q2",
+     "value": 73.7,
+     "source_url": "https://www.trendforce.com/news/?p=65146",
+     "metric": "operating margin",
+     "tag": "derived: 80.0-6.3pp"
+    }
+   ]
+  }
+ ]
+}

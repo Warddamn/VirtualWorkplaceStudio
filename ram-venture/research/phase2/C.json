@@ -1,0 +1,1010 @@
+{
+ "branch_key": "C",
+ "branch": "C",
+ "scope": "Manufacturing and supply chain in the U.S.: trailing-node/legacy DRAM wafer supply (licensed process, fabless-on-foundry, trusted low-density SDRAM), U.S. module assembly and domestic-origin components, bare-die/KGD supply, recovered and recertified DRAM (module recert, die harvesting), packaging-only plays (hi-rel MCM, stacked legacy capacity, rugged/CAMM modules, KGD test, HBM adjacency), long-lifecycle supply services (die bank, buying co-op), and government preference (NDAA Sec. 5949, DMEA, BAA/TAA) and export controls as moats. Research constraint: the shared WebSearch budget was exhausted and WebFetch was DNS-blocked, so most evidence URLs are CROSS-REFERENCEs to sibling agents' logs and company facts are [UNVERIFIED-training]; two GitHub repos were opened directly.",
+ "cards": [
+  {
+   "tmp_id": "C-01",
+   "name": "Legacy-DRAM fab in the U.S. on a licensed 25-46nm process (tempting, dead)",
+   "subbranch": "Trailing-node DRAM wafer fab",
+   "materials_sense": "mixed:b+c",
+   "what_it_is": "License a mature stacked-capacitor DRAM flow (Winbond's Qimonda-derived 46/38nm buried-wordline lineage, a PSMC 2x-nm DRAM-foundry flow, or Qimonda's patent/document set as CXMT did in 2019 [UNVERIFIED-training]) and install it in a U.S. 300mm shell (new building or a distressed site) to make DDR3 4Gb / DDR4 8Gb / LPDDR4 dies at ~20k wafers per month. Product: JEDEC FBGA components and KGD sold as 'U.S.-made long-lifecycle DRAM'.",
+   "why_it_could_work": "Legacy DRAM is the tightest segment: DDR4 8Gb contract $16/GB and DDR3 4Gb ~$20/GB (June 2026), DDR4 dearer than DDR5 in Oct 2026, and the majors are exiting DDR4. Second-tier legacy makers earn ~80% operating margins (Nanya 3Q26 GM 85.7%). Model (Appendix A): $2.0-3.5B capex at 20k wpm, 25nm-class 8Gb die ~73 mm2, ~714 good GB/wafer -> $5.5-7.2/GB cost vs $16/GB today.",
+   "evidence": [
+    {
+     "title": "Micron advances Made-in-America memory with manufacturing expansion in Virginia",
+     "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+     "type": "company",
+     "date": "2026-05-22",
+     "shows": "Micron Manassas Fab 6 began 1-alpha DDR4/LPDDR4 on 2026-05-22 for auto, defense, aerospace and industrial buyers, in a >$2B expansion that quadruples its DDR4 wafer supply (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Nanya 3Q26 results (TrendForce News)",
+     "url": "https://www.trendforce.com/news/?p=65146",
+     "type": "news",
+     "date": "2026-10-12",
+     "shows": "Nanya 3Q26 gross margin 85.7%, operating margin 80%; LTAs expired end-June 2026 and repriced >60% higher in July (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "China's CXMT DDR5 reveals 3-year technology gap",
+     "url": "https://semiwiki.com/forum/threads/chinas-cxmts-ddr5-reveals-3-year-technology-gap.23270/latest",
+     "type": "industry",
+     "date": "2025",
+     "shows": "CXMT 16Gb DDR5 at 0.239 Gb/mm2: the license-documents-and-hire path to DRAM took CXMT ~8 years and tens of $B (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "New DRAM value-per-area chart (Kurnal Insights)",
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "1b DRAM ~0.436 Gb/mm2, ~4x the ~0.11 Gb/mm2 a licensed 25nm-class process would give (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micron and SK hynix commit billions to memory capacity but almost nothing lands before 2028",
+     "url": "https://www.storagereview.com/news/micron-and-sk-hynix-commit-billions-to-memory-capacity-but-almost-nothing-lands-before-2028",
+     "type": "news",
+     "date": "2026",
+     "shows": "New DRAM capacity mostly arrives 2028+; any new U.S. legacy fab would land later still (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Qimonda Richmond (Sandston VA) 300mm DRAM fab closure and tool sale; CXMT acquisition of ~10,000 Qimonda technical documents and Qimonda patent licence via WiLAN/Polaris",
+     "url": "",
+     "type": "news",
+     "date": "2009 / 2019",
+     "shows": "[UNVERIFIED-training] citation from C's training data (to ~mid-2026). No URL could be opened or seen this session (WebSearch budget exhausted; WebFetch DNS-blocked). Verify agent: add a URL or downgrade. A U.S. 300mm DRAM fab was already stranded once, in good times; the Qimonda IP path was taken by CXMT, which still needed ~8 years, ex-Elpida/Hynix engineers and state money."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T4",
+   "time_to_first_revenue_months": 72,
+   "time_to_first_revenue_text": "~6 years (license + shell + tool install + yield ramp + customer qualification), i.e. ~2031, after the A-05 glut",
+   "gross_margin_estimate": "60-65% at 2026 prices; ~0% in the A-05 glut ($7.2/GB vs $5.5-7.8/GB cost); deeply negative in a 2023-like trough ($1.30/GB)",
+   "gross_margin_mid_pct": 10,
+   "us_manufacturability": "No host. No U.S. foundry has a DRAM capacitor module; the only U.S. DRAM fab is Micron Manassas Fab 6 (captive). 150/200mm distressed sites (Akoustis Canandaigua NY, Wolfspeed Durham NC, Microchip Tempe) cannot run competitive DRAM [UNVERIFIED-training site status].",
+   "who_is_already_doing_this": "Micron Manassas VA (1-alpha DDR4/LP4 since 2026-05-22, $275M CHIPS); Winbond, Nanya, PSMC (Taiwan); CXMT (China, ~320K wpm).",
+   "wins_axis": "Supply security and U.S. origin for long-lifecycle DDR3/DDR4",
+   "buyer": "Defense, automotive, industrial and medical OEMs needing DDR4 into the 2030s",
+   "survives_glut": "no",
+   "glut_reason": "Cost $5.5-7.8/GB (5-yr depreciation) vs $7.2/GB A-05 DDR4 and $1.30/GB 2023 trough; Micron's 1-alpha gets ~2.7x the bits per wafer, so the new fab is the marginal, highest-cost producer when prices fall.",
+   "fatal_flaw": "Micron is already doing exactly this at Manassas on a denser node with CHIPS money, so a licensed 25-46nm U.S. fab would be the highest-cost producer, landing around 2031, after the glut - a T4 bet with no edge.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry (inverted: own fab), IP licensing (inbound)",
+   "founder_fit_note": "No: T4, needs a DRAM process organization; violates the spirit of rule 3 even at trailing edge.",
+   "possible": "yes - Winbond/Nanya/PSMC/CXMT prove the process; no U.S. host exists",
+   "profitable": "no - high-cost producer arriving into a glut against Micron Manassas",
+   "doable_by_founder": "no - billions of capital and a fab team",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-02",
+   "name": "U.S.-HQ fabless long-lifecycle DRAM brand on Taiwanese foundry wafers",
+   "subbranch": "Fabless legacy DRAM (foundry-sourced)",
+   "materials_sense": "c-capital",
+   "what_it_is": "A U.S.-headquartered fabless DRAM brand on the Alliance Memory / Etron / Zentel model: design or license a DDR4 8Gb and LPDDR4 4Gb die, buy 300mm wafers from PSMC's DRAM-foundry service or Winbond KGD, package and test at a Taiwanese OSAT, and sell with a written 10-15-year longevity commitment. U.S. content is design, sales and optional final test only.",
+   "why_it_could_work": "Long-lifecycle buyers pay 1.2-2x for supply guarantees and are being orphaned (Micron DDR4 EOL notices June 2025; Samsung/SK hynix extensions only into 2026; Advantech steering customers off Samsung DDR4). Model: $3,000 foundry wafer -> ~$5.4/GB cost; GM ~71% at 2026 contract, ~41% at a cycle-average $8/GB, ~35% at the A-05 glut, but -135% in a 2023-like trough.",
+   "evidence": [
+    {
+     "title": "Etron Memory ICs - KGDM",
+     "url": "https://etron.com/kgdm/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Etron, a fabless Taiwanese specialty-DRAM company, sells KGD memory (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Winbond KGD (customized memory solution)",
+     "url": "https://winbond.com/hq/product/customized-memory-solution/kgd/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Winbond sells DRAM known-good die to SiP makers: an open legacy KGD source (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "DDR4 exit timeline unfolds for top memory makers",
+     "url": "https://www.trendforce.com/news/2025/07/09/news-ddr4-exit-timeline-unfolds-for-top-memory-makers-plans-for-samsung-sk-hynix-and-micron",
+     "type": "news",
+     "date": "2025-07-09",
+     "shows": "Samsung, SK hynix and Micron DDR4 EOL schedules (last orders 2025, final shipments 2025-26) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Samsung, SK hynix reportedly delay phase-out to 2026 as DDR4 becomes unexpected cash cow",
+     "url": "https://www.trendforce.com/news/2025/09/02/news-samsung-sk-hynix-reportedly-delay-phase-out-to-2026-as-ddr4-becomes-unexpected-cash-cow/",
+     "type": "news",
+     "date": "2025-09-02",
+     "shows": "Majors extended DDR4 only into 2026; Micron issued DDR4 EOL notices June 2025 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Response measures to Samsung DDR4 IC EOL announcement (Advantech)",
+     "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+     "type": "company",
+     "date": "2025",
+     "shows": "Industrial-PC maker tells customers DDR4 supply runs to ~end-2026 and to avoid Samsung DDR4 in new designs: long-lifecycle buyers are actively managing EOL (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micron reportedly joins Samsung in cutting DDR4 output, spurring opportunities for Taiwanese suppliers",
+     "url": "https://www.trendforce.com/news/2025/04/23/news-micron-reportedly-joins-samsung-in-cutting-ddr4-output-spurring-opportunities-for-taiwanese-suppliers/",
+     "type": "news",
+     "date": "2025-04-23",
+     "shows": "Legacy DDR4 demand shifts to Taiwanese suppliers (Nanya, Winbond, PSMC) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 42,
+   "time_to_first_revenue_text": "36-48 months (die design or license, foundry tape-out, JEDEC qualification, design-ins at industrial OEMs)",
+   "gross_margin_estimate": "35-70% from 2026 to the A-05 glut; negative in a 2023-like trough",
+   "gross_margin_mid_pct": 30,
+   "us_manufacturability": "Essentially none: wafers in Taiwan (PSMC Hsinchu/Tongluo [UNVERIFIED-training]), packaging and test in Asia. TAA-compliant through Taiwan wafer origin; cannot claim 'Made in USA'.",
+   "who_is_already_doing_this": "Alliance Memory (Kirkland WA), Etron, Zentel, ISSI (owned by Beijing Ingenic), Intelligent Memory, GigaDevice (CXMT-fabbed DDR4 [UNVERIFIED-training]).",
+   "wins_axis": "Lifecycle length / supply security",
+   "buyer": "Industrial-PC, networking, medical-imaging and avionics OEMs with 10-20-year product lives",
+   "survives_glut": "partially",
+   "glut_reason": "Longevity contracts are sticky, but CXMT/Nanya/Winbond backfill collapses legacy ASPs; a foundry customer is first cut in a shortage and only cheap in a glut.",
+   "fatal_flaw": "Foundry wafer allocation: in the 2026 shortage PSMC and Winbond sell every DRAM wafer under their own brands or to incumbents, so a newcomer with ~$15M of NRE gets wafers only when prices have already collapsed.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry",
+   "founder_fit_note": "No: needs DRAM design or licensing, foundry relationships in Taiwan and ~$15M before revenue.",
+   "possible": "yes - Etron/Zentel/Alliance operate this model",
+   "profitable": "marginal - margins depend on wafer allocation the newcomer will not get in a shortage",
+   "doable_by_founder": "no - T2 hardware program with Taiwan-centric operations",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-03",
+   "name": "'Assembled in USA' commodity DDR4/DDR5 module brand (tempting, dead)",
+   "subbranch": "U.S. module assembly",
+   "materials_sense": "none",
+   "what_it_is": "Buy packaged DRAM components through franchised distribution or SpecTek, SMT them onto JEDEC UDIMM/SODIMM/RDIMM boards at a U.S. EMS line, and sell a U.S.-assembled module brand into the consumer and federal gap left by Crucial's exit.",
+   "why_it_could_work": "Crucial left consumer modules (announced 2025-12-03), retail DDR5 sits near $18/GB, patriotic and federal buyers exist, and the Buy American Act gives a 20-30% (DoD 50%) price-evaluation preference on small buys under the TAA threshold [UNVERIFIED-training].",
+   "evidence": [
+    {
+     "title": "Micron announces exit from Crucial consumer business",
+     "url": "https://www.storagenewsletter.com/2025/12/05/micron-announces-exit-from-crucial-consumer-business/",
+     "type": "news",
+     "date": "2025-12-05",
+     "shows": "Micron exited consumer modules (announced 2025-12-03), leaving no U.S.-HQ first-party consumer module brand (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Memory prices surging by 90% from 4Q 2025 (Counterpoint via EE Times Asia)",
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "type": "news",
+     "date": "2026-01",
+     "shows": "64GB RDIMM contract $450 (4Q25) to >$900 (1Q26): DRAM die dominates module cost (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "DDR5 server memory price tracker 2026 (ServNet)",
+     "url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026",
+     "type": "industry",
+     "date": "2026-08",
+     "shows": "Street 64GB DDR5 RDIMM ~$2,064 (Aug 2026), ~$32/GB (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "PC DRAM 1Q26: prices to surge over 80% on server supply prioritization (TrendForce abstract)",
+     "url": "https://www.trendforce.com/research/download/RP260114IU",
+     "type": "industry",
+     "date": "2026-01-14",
+     "shows": "DRAM supply prioritized to strategic OEMs while module makers are limited (abstract only) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "What U.S. tariff push means for Korea's semiconductor industry",
+     "url": "https://www.koreatimes.co.kr/opinion/20260915/what-us-tariff-push-means-for-koreas-semiconductor-industry",
+     "type": "news",
+     "date": "2026-09-15",
+     "shows": "Korean memory excluded from Section 232 phase 1: no tariff-created U.S.-origin premium for memory today (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months if components can be bought at all (they mostly cannot at contract prices in 2026)",
+   "gross_margin_estimate": "5-15% (commodity module house norm), higher only from inventory revaluation in an upswing",
+   "gross_margin_mid_pct": 8,
+   "us_manufacturability": "Easy: Kingston (Fountain Valley CA) and Virtium (Rancho Santa Margarita CA) assemble in the U.S., and any U.S. EMS can SMT a DIMM [UNVERIFIED-training].",
+   "who_is_already_doing_this": "Kingston (dominant independent), Virtium, SMART Modular (Penguin), PNY (NJ), OWC, plus Taiwanese houses (ADATA, TeamGroup, G.Skill).",
+   "wins_axis": "None that is paid for: 'assembled in USA' is not an axis buyers reward",
+   "buyer": "Consumer upgraders and small federal buys (BAA)",
+   "survives_glut": "no",
+   "glut_reason": "Commodity module houses lose money on inventory write-downs in every glut (2019, 2022-23); a new entrant without allocation timing loses most.",
+   "fatal_flaw": "Assembly is ~0.6-1.0% of a 2026 64GB RDIMM's cost (Appendix A), TAA treats Taiwan/Korea as compliant and the FTC bars an unqualified Made-in-USA claim on foreign die, while the 93-98% that matters - die - is allocated away from small module makers; Netlist's PMIC/rank patents also read on new DDR5 RDIMM brands.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance",
+   "founder_fit_note": "Superficially yes (SMT and ops match the day job), but there is no die and no premium.",
+   "possible": "yes - trivial to assemble",
+   "profitable": "no - no die allocation, no paid premium, patent exposure",
+   "doable_by_founder": "marginal - doable operationally, pointless economically",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-04",
+   "name": "DRAM Continuity Vault: consignment last-time-buy storage plus LTB-sizing software",
+   "subbranch": "Long-lifecycle supply services (die bank / LTB)",
+   "materials_sense": "none",
+   "what_it_is": "For mid-size U.S. industrial, medical, rail and defense-supplier OEMs facing DDR3/DDR4/LPDDR4 EOL, size the last-time buy with demand-forecast software, then hold the OEM-owned (consignment) DRAM components or KGD in nitrogen dry cabinets under J-STD-033 moisture control with AS6081-style chain of custody, periodic sample re-test, and scheduled call-offs. Revenue: ~4% per year of inventory value plus ~$12k per year of software per OEM.",
+   "why_it_could_work": "EOL pain is acute and documented: Advantech is steering customers off Samsung DDR4, auto/industrial DDR4 buffers fell from 31+ weeks to 6-8 weeks, and authorized stock of a mainstream Micron DDR4 part was zero in May 2026. The OEM owns the inventory, so the venture carries no DRAM price risk. Model: loss-making below ~8 OEMs, ~27% GM at 10 OEMs ($7.5M under management), ~70% GM at 25 OEMs ($25M, $1.3M revenue).",
+   "evidence": [
+    {
+     "title": "Response measures to Samsung DDR4 IC EOL announcement (Advantech)",
+     "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+     "type": "company",
+     "date": "2025",
+     "shows": "Industrial-PC maker tells customers DDR4 supply runs to ~end-2026 and to avoid Samsung DDR4 in new designs: long-lifecycle buyers are actively managing EOL (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Memory shortage watch: DDR3L/DDR4, May 2026 (Findchips)",
+     "url": "https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/",
+     "type": "industry",
+     "date": "2026-05",
+     "shows": "Zero authorized stock of a mainstream Micron DDR4 part at Newark, Avnet and Mouser; only independent-market stock at a premium (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micron ramps US-made DDR4 production in Virginia (eeNews Europe)",
+     "url": "https://www.eenewseurope.com/en/micron-ramps-us-made-ddr4-production-in-virginia/",
+     "type": "news",
+     "date": "2026-05",
+     "shows": "DDR4 buffers at auto/industrial customers fell from 31+ weeks to 6-8 weeks (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "DDR4 exit timeline unfolds for top memory makers",
+     "url": "https://www.trendforce.com/news/2025/07/09/news-ddr4-exit-timeline-unfolds-for-top-memory-makers-plans-for-samsung-sk-hynix-and-micron",
+     "type": "news",
+     "date": "2025-07-09",
+     "shows": "Samsung, SK hynix and Micron DDR4 EOL schedules (last orders 2025, final shipments 2025-26) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Samsung, SK hynix reportedly delay phase-out to 2026 as DDR4 becomes unexpected cash cow",
+     "url": "https://www.trendforce.com/news/2025/09/02/news-samsung-sk-hynix-reportedly-delay-phase-out-to-2026-as-ddr4-becomes-unexpected-cash-cow/",
+     "type": "news",
+     "date": "2025-09-02",
+     "shows": "Majors extended DDR4 only into 2026; Micron issued DDR4 EOL notices June 2025 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 12,
+   "time_to_first_revenue_text": "9-15 months (software MVP + one pilot OEM consignment; AS6081/ISO 9001 groundwork in parallel)",
+   "gross_margin_estimate": "negative below ~8 OEMs; ~27% at 10; ~70% at 25 OEMs",
+   "gross_margin_mid_pct": 50,
+   "us_manufacturability": "A 2,000-4,000 sq ft ESD- and climate-controlled vault on the East Coast; no fab dependency; U.S.-made DDR4 from Micron Manassas can be the stored part where OEMs want domestic origin.",
+   "who_is_already_doing_this": "Rochester Electronics (die/wafer banking and licensed re-creation, Newburyport MA), Micross (die banking), distributor bonded-inventory programs (Arrow, Avnet), HTV long-term storage (Germany) [UNVERIFIED-training]; lifecycle-data tools SiliconExpert and Z2Data.",
+   "wins_axis": "Lifecycle length / supply security",
+   "buyer": "Mid-size OEMs with 10-30-year field lives (industrial PCs, rail signaling, grid-protection relays, medical imaging, avionics retrofit) too small for Rochester's re-creation programs",
+   "survives_glut": "yes",
+   "glut_reason": "Demand is EOL-driven, not price-driven; in a glut OEMs can afford bigger last-time buys, which raises inventory under management.",
+   "fatal_flaw": "Trust and scale: OEMs hand $0.5-2M of critical inventory only to a vault with a track record and insurance, incumbents (Rochester, Micross, big distributors) already bank parts, and breakeven needs ~8-10 OEMs.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS + recert/brokerage (storage service), defense-first niche optional",
+   "founder_fit_note": "Partly: the LTB-sizing software and chain-of-custody ledger are squarely in the founder's skills and can start part-time; the physical vault needs a facility, insurance and an AS6081-literate operator.",
+   "possible": "yes - component long-term storage and die banking exist",
+   "profitable": "marginal - ~70% GM at 25 OEMs, losses below ~8",
+   "doable_by_founder": "marginal - software-first start is feasible; the vault needs a partner or hire",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-05",
+   "name": "ProvenRAM: graded, serialized recovered server RDIMMs",
+   "subbranch": "Recertified / recovered DRAM (module level)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Buy decommissioned DDR4 (and first-wave DDR5) RDIMM lots from R2v3/e-Stewards ITADs (Iron Mountain/ITRenew-Sesame, Sims Lifecycle, SK tes, regional R2 firms [UNVERIFIED-training]), test each module on owned DDR4 server beds (memtest86+ plus Google stressapptest at temperature) and a bench SPD/pattern tester, grade it, laser-label a serial, and sell with a public per-serial test record through B2B channels (third-party maintenance, refurbishers, small cloud/HPC operators, labs) and eBay. 'Cheaper capital' here is silicon someone else already paid for.",
+   "why_it_could_work": "DRAM is volatile, so modules need no data destruction, and a used RDIMM sells far below new while new DDR4 chips trade at $16-44/GB. Model (Appendix A): at $4-10/GB used resale, contribution is $21-101 per 32GB module (17-32%, eBay vs B2B); $20k of inventory turned twice a month yields ~$12k/month contribution. The test stack is free and current (memtest86+ last commit 2026-10-28 with USB reports; stressapptest Apache-2.0).",
+   "evidence": [
+    {
+     "title": "memtest86plus/memtest86plus (GitHub; README, system/jedec_id.h, system/spd.c, app/reports.c)",
+     "url": "https://github.com/memtest86plus/memtest86plus",
+     "type": "industry",
+     "date": "2026-10-28",
+     "shows": "OPENED by C via git clone: GPLv2 tester, active (last commit 2026-10-28); USB/serial reports log SPD vendor, SKU, ECC and per-test results; JEP106 table includes CXMT 0x0A11, YMTC 0x091B, GigaDevice 0x0648; reads the module-maker ID (DDR4 SPD 320-321, DDR5 512-513) but not the DRAM-die manufacturer field"
+    },
+    {
+     "title": "stressapptest/stressapptest (GitHub README)",
+     "url": "https://github.com/stressapptest/stressapptest",
+     "type": "industry",
+     "date": "2024-08-05",
+     "shows": "OPENED by C via git clone: Google's Apache-2.0 memory-interface stress test, used at Google, for system-level burn-in"
+    },
+    {
+     "title": "RAM market update (BuySellRAM)",
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "type": "industry",
+     "date": "2026-08-31",
+     "shows": "DRAMeXchange 2026-08-31: DDR4 8Gb avg $44.37, DDR5 16Gb avg $53.92; BuySellRAM is itself a U.S. used-memory buyer (comparable) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "DDR4 fixed price bottoms (KED Global)",
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "type": "news",
+     "date": "2023-10-04",
+     "shows": "DDR4 8Gb fixed price bottomed at $1.30 in Sep 2023: the trough a recovered-DRAM or legacy-supply business must survive (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "DDR4 memory prices now also rise as DRAM supply shortages intensify through 2028 (Barclays)",
+     "url": "https://www.guru3d.com/story/ddr4-memory-prices-now-also-rise-as-dram-supply-shortages-intensify-through-2028/",
+     "type": "news",
+     "date": "2026-10",
+     "shows": "DDR4 contract +24% over 3 months to Oct 2026; shortage seen into 2028 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Mobius Materials raises $3M (PR Newswire)",
+     "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+     "type": "news",
+     "date": "2025-12",
+     "shows": "Richmond VA authenticated B2B secondary marketplace for components, ML-authentication patent filed: the closest venture-backed comparable (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 3,
+   "time_to_first_revenue_text": "2-4 months (first ITAD lot, test bench, eBay and two B2B accounts)",
+   "gross_margin_estimate": "17-32% now (eBay vs B2B); 13-28% in the A-05 glut only if buy prices reprice instantly; ~0% on eBay in a 2023-like trough",
+   "gross_margin_mid_pct": 22,
+   "us_manufacturability": "U.S. test-and-grade bench in East Coast flex space; the U.S. value-add is testing and documentation, not manufacturing.",
+   "who_is_already_doing_this": "ServerMonkey, Memory4Less, TechMikeNY (NYC), BuySellRAM, Curvature/Park Place, ITADs selling direct, Mobius Materials (authenticated marketplace, Richmond VA) and thousands of eBay sellers.",
+   "wins_axis": "$/GB (used at roughly 25-60% of new) plus documented test provenance",
+   "buyer": "Third-party maintenance firms keeping DDR4 fleets alive, small cloud/HPC/CPU-offload inference operators, university labs; not DoD (DFARS 252.246-7008 / FAR 52.211-5 bar used parts without contracting-officer approval [UNVERIFIED-training])",
+   "survives_glut": "partially",
+   "glut_reason": "Dollar contribution per module falls ~55-60% with resale prices and inventory loses value during the fall; the trading business shrinks to a niche unless the serialized test-record layer becomes the product (it feeds C-07).",
+   "fatal_flaw": "No moat and a closing window: hyperscalers increasingly reuse DDR4 internally behind CXL, ITADs sell direct, and the margin is a bet on DDR4 prices that peak in 2026-27.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "recert/brokerage, SaaS (test-record ledger), data product (graded-price index)",
+   "founder_fit_note": "Yes: T0, part-time, and the differentiator (serialized test records, grading software, marketplace integration) is web-app work.",
+   "possible": "yes - an existing U.S. trade",
+   "profitable": "yes now / marginal in a glut - ~20-30% contribution in 2026, thin and volume-hungry later",
+   "doable_by_founder": "yes - $20-40k start, evenings and weekends",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-06",
+   "name": "Die harvesting and module rebuild from e-waste, Shenzhen-style (tempting, dead)",
+   "subbranch": "Recovered DRAM (chip level)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Desolder DRAM packages from scrapped DIMMs, laptops and phones, clean and reball them, re-test them, and mount them on new consumer UDIMM/SODIMM boards in a U.S. shop, copying the Huaqiangbei 'recycled chip' trade.",
+   "why_it_could_work": "At 2026 prices a harvested DDR4 8Gb chip valued at 35% of new is worth ~$5.6-7.4 against ~$3.6 of rework cost (Appendix A), and high-density DDR3 is in acute shortage.",
+   "evidence": [
+    {
+     "title": "DDR4 reportedly leads legacy memory rally with Q1 prices up to 50%; DDR3 in tight supply",
+     "url": "https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/",
+     "type": "news",
+     "date": "2026-01-19",
+     "shows": "Makers preparing to exit DDR4 in 2026; high-density DDR3 in acute shortage (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "RAM market update (BuySellRAM)",
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "type": "industry",
+     "date": "2026-08-31",
+     "shows": "DRAMeXchange 2026-08-31: DDR4 8Gb avg $44.37, DDR5 16Gb avg $53.92; BuySellRAM is itself a U.S. used-memory buyer (comparable) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "DDR4 fixed price bottoms (KED Global)",
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "type": "news",
+     "date": "2023-10-04",
+     "shows": "DDR4 8Gb fixed price bottomed at $1.30 in Sep 2023: the trough a recovered-DRAM or legacy-supply business must survive (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Champion Spark Plug Co. v. Sanders, 331 U.S. 125 (1947); 18 U.S.C. 2320; SAE AS6171",
+     "url": "",
+     "type": "government",
+     "date": "1947 / 2011 / 2016",
+     "shows": "[UNVERIFIED-training] citation from C's training data (to ~mid-2026). No URL could be opened or seen this session (WebSearch budget exhausted; WebFetch DNS-blocked). Verify agent: add a URL or downgrade. Reconditioned goods may keep the original mark only if clearly disclosed as used/repaired; trafficking in counterfeit goods (incl. remarked parts sold as new) is a felony; AS6171 inspection flags reworked/reballed parts as suspect counterfeits."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 3,
+   "time_to_first_revenue_text": "2-4 months technically; commercially blocked",
+   "gross_margin_estimate": "~20-35% per chip at 2026 prices before module build cost and 5-10% reball fallout; negative in the A-05 glut",
+   "gross_margin_mid_pct": 5,
+   "us_manufacturability": "Possible with a BGA rework station and X-ray in any U.S. shop; uncompetitive on labor versus Shenzhen.",
+   "who_is_already_doing_this": "Shenzhen/Huaqiangbei refurbishers; in the U.S. only disclosed board-level repair shops.",
+   "wins_axis": "$/GB (nominal)",
+   "buyer": "Price-sensitive consumer and legacy-platform buyers",
+   "survives_glut": "no",
+   "glut_reason": "Harvested-chip value ($2.5 at the A-05 glut) falls below rework cost ($3.6).",
+   "fatal_flaw": "Geometry and law: server RDIMMs carry x4 dies that only fit other RDIMMs, an intact tested 32GB module is worth ~2.7x its harvested chips ($192 vs ~$72), reballed parts read as counterfeits under AS6171, and selling them as new is a crime under 18 U.S.C. 2320. The only surviving fragment - disclosed BGA repair of failed RDIMMs with tested donor chips - is folded into C-05.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "recert/brokerage",
+   "founder_fit_note": "No: labor arbitrage against Shenzhen plus legal and reputational exposure.",
+   "possible": "yes - done at scale in China",
+   "profitable": "no - in the U.S. at U.S. labor rates and legal standards",
+   "doable_by_founder": "no - legal exposure outweighs any margin",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-07",
+   "name": "CleanBOM-5949: memory-provenance verification for federal IT sellers",
+   "subbranch": "Government preference as moat (NDAA Sec. 5949 compliance)",
+   "materials_sense": "none",
+   "what_it_is": "A subscription service plus bootable fleet-scan tool that proves the DRAM and NAND in servers, PCs and appliances sold to federal agencies contain no CXMT/YMTC/SMIC silicon before the FY2023 NDAA Sec. 5949 ban takes effect (2027-12-23). It combines SPD scans (module and DRAM-die JEP106 IDs, part numbers, date codes), a module-part-number-to-die-source cross-reference, supplier attestations, and sampled X-ray/decap die identification at a partner AS6171 lab, packaged as a per-SKU attestation; priced $1.5k-12k per month by tier plus lab pass-through.",
+   "why_it_could_work": "Sec. 5949 pays for 'verified non-Chinese', not 'U.S.-made'. CXMT reached ~9.5% of DRAM revenue in 2Q26 and is growing (320k to 420k wpm); Apple lobbied to buy CXMT and tested its DRAM; Chinese die also ships under other brands (GigaDevice DDR4 is CXMT-fabbed [UNVERIFIED-training]), so labels do not prove origin. The scan tool can start from memtest86+ (GPLv2), whose JEP106 table already includes CXMT (0x0A11) and YMTC (0x091B) but which reads only the module-maker ID, not the DRAM-die field - a concrete gap a software founder can fill. Model: 37 customers -> ~$1.7M revenue at ~72% GM; deadline 417 days away.",
+   "evidence": [
+    {
+     "title": "Apple, China memory and the 2027 federal procurement ban (XenoSpectrum)",
+     "url": "https://xenospectrum.com/en/apple-china-memory-federal-procurement-ban-2027/",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "FY2023 NDAA Sec. 5949 bars federal procurement of products containing CXMT/YMTC/SMIC chips from Dec 2027 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Apple lobbying U.S. for approval to buy blacklisted CXMT memory chips",
+     "url": "https://thenextweb.com/news/apple-lobbying-us-approval-cxmt-blacklisted-memory-chips",
+     "type": "news",
+     "date": "2026-06-27",
+     "shows": "Apple lobbied Commerce to approve CXMT DRAM: CXMT silicon is entering U.S.-brand products (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Apple tests CXMT memory (Gigazine)",
+     "url": "https://gigazine.net/gsc_news/en/20260810-apple-tests-cxmt/",
+     "type": "news",
+     "date": "2026-08-10",
+     "shows": "Apple reportedly testing CXMT DRAM (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "memtest86plus/memtest86plus (GitHub; README, system/jedec_id.h, system/spd.c, app/reports.c)",
+     "url": "https://github.com/memtest86plus/memtest86plus",
+     "type": "industry",
+     "date": "2026-10-28",
+     "shows": "OPENED by C via git clone: GPLv2 tester, active (last commit 2026-10-28); USB/serial reports log SPD vendor, SKU, ECC and per-test results; JEP106 table includes CXMT 0x0A11, YMTC 0x091B, GigaDevice 0x0648; reads the module-maker ID (DDR4 SPD 320-321, DDR5 512-513) but not the DRAM-die manufacturer field"
+    },
+    {
+     "title": "TrendForce data: Samsung 39.4%, SK hynix 24.9% (Herald)",
+     "url": "https://biz.heraldcorp.com/article/10866656",
+     "type": "news",
+     "date": "2026-09-07",
+     "shows": "CXMT reached 9.5% of DRAM revenue in 2Q26 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Schumer demands Apple reject Chinese military-linked chips",
+     "url": "https://www.schumer.senate.gov/newsroom/press-releases/citing-core-national-security-and-economic-reasons-schumer-demands-apple-reject-chinese-military-linked-chips",
+     "type": "government",
+     "date": "2026-07-30",
+     "shows": "Senators demand Apple commit not to use CXMT/YMTC: provenance is a live political issue (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "SpecTek PT040-56B DDR5 DRAM (Micron 1a) floorplan analysis (TechInsights)",
+     "url": "https://www.techinsights.com/blog/spectek-pt040-56b-ddr5-dram-micron-1a-memory-floorplan-analysis",
+     "type": "industry",
+     "date": "2023",
+     "shows": "SpecTek parts carry current Micron 1-alpha die; die-level teardown identification is a commercial service (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 7,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months (scan-tool MVP and pilot attestations for 3-5 GSA/SEWP resellers before the Dec 2027 effective date)",
+   "gross_margin_estimate": "65-75% (software plus marked-up lab pass-through)",
+   "gross_margin_mid_pct": 70,
+   "us_manufacturability": "Software and services; physical die-ID sampling at U.S. independent counterfeit-test labs; no fab dependency (rubric: software/services).",
+   "who_is_already_doing_this": "No memory-specific Sec. 5949 product known to C [UNVERIFIED]. Adjacent: supply-chain-illumination vendors (Exiger, Interos, Govini), component-risk data (SiliconExpert/Arrow, Z2Data), teardown die-ID (TechInsights), counterfeit-test labs, OEM self-attestation (Dell, HP, Lenovo), Mobius Materials (ML authentication).",
+   "wins_axis": "Supply security / provenance assurance",
+   "buyer": "GSA MAS IT and NASA SEWP resellers, federal systems integrators and appliance OEMs selling to agencies; later critical-infrastructure buyers that copy the federal rule",
+   "survives_glut": "yes",
+   "glut_reason": "Demand is set by statute, not DRAM prices; in a glut CXMT's cheap bits gain share, which raises contamination risk and verification demand.",
+   "fatal_flaw": "The FAR implementing rule may accept a plain supplier representation (as Section 889's FAR 52.204-24/-26 does), letting OEMs self-attest and leaving little paid demand for independent verification; big compliance-data vendors can also bolt on a CXMT flag.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS, data product, defense-first",
+   "founder_fit_note": "Yes: fleet-scan tool, attestation workflow and part-number database are software; the founder's manufacturing-ops background helps with supplier attestations; lab work is outsourced.",
+   "possible": "yes - SPD reads and die-ID teardowns are routine; the integration is new",
+   "profitable": "marginal - ~70% GM, but willingness to pay hinges on the unpublished FAR rule text",
+   "doable_by_founder": "yes - T0 software-plus-partner-lab start, part-time feasible",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-08",
+   "name": "U.S. hi-rel DDR4/LPDDR4 multi-chip memory design house",
+   "subbranch": "Packaging-only: hi-rel MCM from purchased KGD",
+   "materials_sense": "c-capital",
+   "what_it_is": "Design rugged x72 ECC DDR4 (e.g. 8GB from 9 x 8Gb x8 KGD) and LPDDR4X memory MCMs in 20-30 mm BGAs for defense, space and rugged-industrial processors, buying known-good die from Winbond, ESMT or Micross (Micron silicon where SpecTek/Micross can supply) and assembling and screening at U.S. hi-rel OSATs (Micross Apopka FL / RTP NC, QP Technologies CA, Integra Wichita KS [UNVERIFIED-training sites]).",
+   "why_it_could_work": "Hi-rel memory MCMs sell at 10-100x commodity $/bit, and die is under 15% of the price. Model: ~$457 unit cost vs $800-3,000 ASP (43-85% GM); ~$1.5M NRE recovered after ~1,400 units at $1,500. DoD keeps funding memory packaging (DARPA DV017, ~$1.2M Direct-to-Phase-II, 2026).",
+   "evidence": [
+    {
+     "title": "Micross die and wafer flyer",
+     "url": "https://micross.com/uploads/05827c98-1b61-4d4d-bb3c-04dc1b207e5a/Die_and_Wafer_Flyer_Rev_1_WEB.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Micross is the largest authorized bare-die/wafer supplier, with DRAM on its die line card; also a U.S. hi-rel packager (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Winbond KGD (customized memory solution)",
+     "url": "https://winbond.com/hq/product/customized-memory-solution/kgd/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Winbond sells DRAM known-good die to SiP makers: an open legacy KGD source (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "ESMT Known Good Die",
+     "url": "https://esmt.com.tw/en/Applications/Known-Good-Die",
+     "type": "company",
+     "date": "unknown",
+     "shows": "ESMT offers DRAM KGD (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "JESD49B.01 Procurement Standard for Known Good Die",
+     "url": "https://www.jedec.org/node/8358",
+     "type": "industry",
+     "date": "2023-10",
+     "shows": "JEDEC procurement standard governing KGD quality and test claims (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Non-Volatile Memory for Extreme Environments (DARPA SBIR DPA26BZ04-DV017)",
+     "url": "https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments",
+     "type": "government",
+     "date": "2026-07",
+     "shows": "DoD funds co-packaged extreme-environment memory systems (~$1.2M Direct-to-Phase-II, opened 2026-07-22) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 30,
+   "time_to_first_revenue_text": "24-36 months (substrate design, SI/PI, environmental qualification, design-in at a prime)",
+   "gross_margin_estimate": "43-85% depending on ASP ($800-3,000)",
+   "gross_margin_mid_pct": 60,
+   "us_manufacturability": "Yes: U.S. hi-rel OSATs assemble and screen memory die today; die is imported (Taiwan) or Micron via SpecTek/Micross.",
+   "who_is_already_doing_this": "Micross, Mercury Systems (Phoenix), Data Device Corp (Bohemia NY), Frontgrade, Teledyne e2v, 3D Plus (HEICO), Intelligent Memory [UNVERIFIED-training].",
+   "wins_axis": "Lifecycle length, environmental ruggedness, traceability",
+   "buyer": "Defense primes' mission computers, NewSpace avionics, rugged industrial system-on-modules",
+   "survives_glut": "yes",
+   "glut_reason": "Priced on qualification and heritage, not bits; die cost is a small share of ASP.",
+   "fatal_flaw": "A 2-3-year qualification and design-in cycle at primes plus incumbents with flight and field heritage: a startup with no heritage sells nothing within 18 months.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance, defense-first",
+   "founder_fit_note": "No: needs package/SI engineers, defense BD and ~$2-4M before revenue.",
+   "possible": "yes - incumbents ship these",
+   "profitable": "yes - for incumbents with heritage",
+   "doable_by_founder": "no - hardware team and qualification timeline",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-09",
+   "name": "High-capacity stacked-die legacy modules (32GB DDR3 RDIMM, 32GB DDR3L SODIMM)",
+   "subbranch": "Packaging-only: stacked-die legacy capacity",
+   "materials_sense": "mixed:b+c",
+   "what_it_is": "Use wire-bonded dual-die packages of legacy 4Gb DDR3 (and 8Gb DDR4) KGD from Winbond or Nanya to build capacities the majors never made or have stopped making - e.g. 32GB DDR3 RDIMM for legacy Xeon E5 and telecom platforms, 32GB DDR3L SODIMM for industrial PCs - with DDP assembly at an Asian OSAT or Micross and module SMT at a U.S. EMS.",
+   "why_it_could_work": "High-density DDR3 is in acute shortage (TrendForce, Jan 2026) and DDR3 4Gb costs ~$20/GB (June 2026 contract) to ~$25/GB (July spot). Model: a 32GB DDR3 RDIMM costs ~$788 (die $720, DDP $43) and sells ~$985 at a 25% markup.",
+   "evidence": [
+    {
+     "title": "DDR4 reportedly leads legacy memory rally with Q1 prices up to 50%; DDR3 in tight supply",
+     "url": "https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/",
+     "type": "news",
+     "date": "2026-01-19",
+     "shows": "Makers preparing to exit DDR4 in 2026; high-density DDR3 in acute shortage (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "TrendForce price page snapshot",
+     "url": "https://www.trendforce.com/price",
+     "type": "industry",
+     "date": "2026-06-18",
+     "shows": "DDR3 4Gb $10.00 and DDR4 8Gb $16.00 (June 2026) - legacy DRAM is priced at $16-20/GB (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Memory shortages drive DDR4 prices over 50% in Q3 2026; DDR3 also impacted",
+     "url": "https://wccftech.com/memory-shortages-drive-ddr4-prices-over-50-in-q3-2026-ddr3-also-impacted-by-higher-costs/",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "Early-July 2026 spot DDR3 4Gb ~$3.19/Gb (~$25/GB), above DDR5 16Gb (~$2.94/Gb) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Winbond KGD (customized memory solution)",
+     "url": "https://winbond.com/hq/product/customized-memory-solution/kgd/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Winbond sells DRAM known-good die to SiP makers: an open legacy KGD source (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 15,
+   "time_to_first_revenue_text": "12-18 months (DDP qualification, per-platform BIOS/SI validation)",
+   "gross_margin_estimate": "15-25%",
+   "gross_margin_mid_pct": 20,
+   "us_manufacturability": "Partial: DDP stacking in the U.S. only at low-volume hi-rel houses (Micross); otherwise Asia; module SMT at any U.S. EMS.",
+   "who_is_already_doing_this": "Intelligent Memory (high-capacity DDR3/DDR4 via stacked dies [UNVERIFIED-training]), Alliance Memory, Virtium, ATP.",
+   "wins_axis": "Density (GB per legacy slot) / platform-life extension",
+   "buyer": "Telecom/network-equipment operators, industrial-PC fleets, legacy-server owners",
+   "survives_glut": "no",
+   "glut_reason": "DDR3 platforms retire and DDR3 falls back toward ~$3/GB; the module's value drops ~75% (Appendix A stress case) and the premium disappears.",
+   "fatal_flaw": "A shrinking installed base, an incumbent (Intelligent Memory), and per-platform signal-integrity/BIOS validation that a small team cannot amortize.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance",
+   "founder_fit_note": "No: needs packaging and memory-SI engineering plus die allocation.",
+   "possible": "yes - Intelligent Memory ships the category",
+   "profitable": "marginal - thin margins on a shrinking base",
+   "doable_by_founder": "no - hardware engineering and die access",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-10",
+   "name": "Rugged and new-form-factor memory modules built at a U.S. EMS (LPCAMM2/CAMM2, wide-temp coated SODIMM)",
+   "subbranch": "Packaging-only: custom module formats",
+   "materials_sense": "c-capital",
+   "what_it_is": "Design and qualify rugged memory modules - wide-temperature (-40 to 95 C) screened, conformal-coated and underfilled DDR5 SODIMMs and LPCAMM2/CAMM2 modules (JEDEC CAMM2 [UNVERIFIED-training]) - built at a U.S. EMS from authorized Micron industrial-temperature components (Manassas-made DDR4/LPDDR4 where possible) for rugged laptops, embedded SBCs and VPX mission computers.",
+   "why_it_could_work": "Rugged buyers pay 1.3-1.6x commodity; Micron is steering its U.S.-made DDR4/LPDDR4 at exactly these defense, automotive and industrial buyers; CAMM-class modules are new and supplier-thin. Model: 16GB DDR5 rugged SODIMM GM 20-35% now, 10-27% in the A-05 glut.",
+   "evidence": [
+    {
+     "title": "Micron LPDDR4 components",
+     "url": "https://micron.net/products/memory/dram-components/lpddr4",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Micron LPDDR4/4X in many packages and industrial/automotive temperature grades: authorized component supply for rugged modules (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micron advances Made-in-America memory with manufacturing expansion in Virginia",
+     "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+     "type": "company",
+     "date": "2026-05-22",
+     "shows": "Micron Manassas Fab 6 began 1-alpha DDR4/LPDDR4 on 2026-05-22 for auto, defense, aerospace and industrial buyers, in a >$2B expansion that quadruples its DDR4 wafer supply (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Response measures to Samsung DDR4 IC EOL announcement (Advantech)",
+     "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+     "type": "company",
+     "date": "2025",
+     "shows": "Industrial-PC maker tells customers DDR4 supply runs to ~end-2026 and to avoid Samsung DDR4 in new designs: long-lifecycle buyers are actively managing EOL (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 18,
+   "time_to_first_revenue_text": "12-24 months (design, environmental qualification, first design win at a rugged-computer maker)",
+   "gross_margin_estimate": "20-35% now; 10-27% in the A-05 glut",
+   "gross_margin_mid_pct": 25,
+   "us_manufacturability": "U.S. EMS lines (any IPC-A-610 Class 3 shop) plus Micron Manassas components; conformal coating and screening are routine U.S. services.",
+   "who_is_already_doing_this": "Virtium, SMART Modular (Penguin), Mercury Systems, ATP, Innodisk, Swissbit, Cervoz; Micron, Samsung and SK hynix make LPCAMM2/SOCAMM-class modules themselves [UNVERIFIED-training].",
+   "wins_axis": "Environmental reliability, lifecycle, form factor",
+   "buyer": "Rugged-computer makers (General Micro Systems, Crystal Group, Curtiss-Wright, Kontron-class) and defense primes",
+   "survives_glut": "partially",
+   "glut_reason": "The ruggedization premium persists, but the module price tracks DRAM down, so dollar margin shrinks ~55%.",
+   "fatal_flaw": "Crowded by funded specialists (Virtium, SMART, ATP, Innodisk) that need the same component allocation, while design wins take 12-24 months and memory makers ship CAMM-class modules themselves.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance, defense-first",
+   "founder_fit_note": "Marginal: the founder's product-development and manufacturing-ops day job is relevant, but it needs a hardware/SI engineer and an EMS partner, and it is not a part-time start.",
+   "possible": "yes - shipping category",
+   "profitable": "marginal - 20-35% against strong incumbents",
+   "doable_by_founder": "marginal - needs one hardware cofounder",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-11",
+   "name": "HBM-adjacent U.S. test and rework services near Amkor Peoria / SK hynix West Lafayette (dead for this founder)",
+   "subbranch": "Packaging-only: HBM adjacency",
+   "materials_sense": "c-capital",
+   "what_it_is": "Stand up known-good-stacked-die (KGSD) test, HBM-stack failure analysis and rework, or thermal-compression-bonding consumables near Amkor's Peoria AZ 2.5D campus and SK hynix's West Lafayette IN HBM packaging plant, to serve them as they ramp.",
+   "why_it_could_work": "HBM takes ~3x DDR5 wafer area per bit, its prices keep rising (HBM4 2027 ~$4-5/Gb), and U.S. HBM packaging is coming: SK hynix Indiana targets HBM4E mass production in Q3 2029; Micron's U.S. HBM packaging follows its second Idaho fab (late 2028+).",
+   "evidence": [
+    {
+     "title": "SK hynix breaks ground on $4 billion packaging facility in Indiana",
+     "url": "https://evertiq.com/news/2026-08-28-sk-hynix-breaks-ground-on-4-billion-packaging-facility-in-indiana",
+     "type": "news",
+     "date": "2026-08-28",
+     "shows": "SK hynix HBM packaging plant in West Lafayette IN; cleanroom target Oct 2028 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "SK hynix Indiana plant (Herald Business)",
+     "url": "https://mbiz.heraldcorp.com/article/10853891",
+     "type": "news",
+     "date": "2026-08",
+     "shows": "HBM4E mass production in Indiana from Q3 2029 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micron Technology Form 10-K FY2026",
+     "url": "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm",
+     "type": "company",
+     "date": "2026-10",
+     "shows": "Micron cites supply-allocation decisions that may affect some customers; plans U.S. HBM packaging (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micron says the silicon gap between HBM and DDR5 is widening",
+     "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+     "type": "news",
+     "date": "2026",
+     "shows": "HBM needs ~3x DDR5 wafer area per bit (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Lutnick memory tariff ultimatum (Taipei Times)",
+     "url": "https://www.taipeitimes.com/News/biz/archives/2026/01/19/2003850817",
+     "type": "news",
+     "date": "2026-01-19",
+     "shows": "SK hynix Indiana is packaging only; no U.S. front-end DRAM from Korean makers (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Samsung HBM4 2027 pricing set to more than double (Silicon Analysts)",
+     "url": "https://siliconanalysts.com/market/samsung-hbm4-2027-pricing-set-to-more-than-double-2026-10-07",
+     "type": "industry",
+     "date": "2026-10-07",
+     "shows": "HBM4 2027 forecast $4.00-5.00/Gb (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "~2029-30, when the captive plants ramp",
+   "gross_margin_estimate": "20-40% (test-services norm)",
+   "gross_margin_mid_pct": 30,
+   "us_manufacturability": "Arizona/Indiana from 2028-29, but both plants are captive and arrive with their own Advantest/Teradyne HBM testers ($3-5M each [ESTIMATE]) and Korean/Taiwanese supplier ecosystems.",
+   "who_is_already_doing_this": "SK hynix, Micron and Samsung in-house; Amkor, SPIL, ASE; Advantest, Teradyne, FormFactor; Hanmi, Hanwha and ASMPT for TC bonders [UNVERIFIED-training].",
+   "wins_axis": "Bandwidth supply (HBM) via local proximity",
+   "buyer": "SK hynix Indiana, Micron Idaho, Amkor Arizona",
+   "survives_glut": "partially",
+   "glut_reason": "HBM demand is structural (AI), but a 2028-29 glut would hit HBM pricing too, and captive plants insource first.",
+   "fatal_flaw": "Captive, capital-heavy and late: no outside customer exists before 2028-29, the first customers bring incumbent suppliers, and the ticket is tens of millions.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance (services), defense-first not applicable",
+   "founder_fit_note": "No: T3 capital and semiconductor-test expertise, no customers until ~2029.",
+   "possible": "yes - for SK hynix/Amkor/Advantest",
+   "profitable": "marginal - only for incumbents",
+   "doable_by_founder": "no",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-12",
+   "name": "U.S. known-good-die wafer-probe and die-processing house for legacy DRAM",
+   "subbranch": "Packaging-only: KGD test",
+   "materials_sense": "c-capital",
+   "what_it_is": "Buy used DRAM ATE (older Advantest T55xx-class [UNVERIFIED-training]) and a 300mm prober, and offer wafer-level probe, speed-binning and burn-in that turns untested or partially tested legacy DRAM wafers (SpecTek, Winbond, ESMT) into JESD49B.01-compliant known-good die for U.S. hi-rel MCM and SiP makers.",
+   "why_it_could_work": "Bare die is the U.S. back-end choke point and KGD carries a 15-40% premium over packaged $/GB. Model: ~$750k startup capex; losses below ~700 wafers per year at $600/wafer; ~$375k contribution at 1,500 wafers.",
+   "evidence": [
+    {
+     "title": "JESD49B.01 Procurement Standard for Known Good Die",
+     "url": "https://www.jedec.org/node/8358",
+     "type": "industry",
+     "date": "2023-10",
+     "shows": "JEDEC procurement standard governing KGD quality and test claims (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "SpecTek support (Micron)",
+     "url": "https://micron.net/sales-support/customer-support/spectek-support",
+     "type": "company",
+     "date": "unknown",
+     "shows": "SpecTek sells Micron DRAM/LPDRAM in BGA packages and in wafer form (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micross die and wafer flyer",
+     "url": "https://micross.com/uploads/05827c98-1b61-4d4d-bb3c-04dc1b207e5a/Die_and_Wafer_Flyer_Rev_1_WEB.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Micross is the largest authorized bare-die/wafer supplier, with DRAM on its die line card; also a U.S. hi-rel packager (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Winbond KGD (customized memory solution)",
+     "url": "https://winbond.com/hq/product/customized-memory-solution/kgd/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Winbond sells DRAM known-good die to SiP makers: an open legacy KGD source (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Etron Memory ICs - KGDM",
+     "url": "https://etron.com/kgdm/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Etron, a fabless Taiwanese specialty-DRAM company, sells KGD memory (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 18,
+   "time_to_first_revenue_text": "12-18 months (tool install, probe cards and test programs per die type)",
+   "gross_margin_estimate": "negative below ~700 wafers/yr; ~40% at 1,500",
+   "gross_margin_mid_pct": 15,
+   "us_manufacturability": "Yes in principle: any U.S. light-industrial cleanroom; probe cards and test programs cost $50-150k per die type [ESTIMATE].",
+   "who_is_already_doing_this": "Micross (die processing, Apopka FL), Rochester Electronics, ISE Labs (Fremont, ASE), Integra, Silicon Turnkey Solutions, and the die vendors' own KGD programs [UNVERIFIED-training].",
+   "wins_axis": "Supply security of tested die inside the U.S.",
+   "buyer": "Micross/Mercury/DDC-class MCM makers and SiP startups",
+   "survives_glut": "partially",
+   "glut_reason": "Defense demand is steady, but volume is tiny and vendors bundle KGD test themselves when capacity frees up in a glut.",
+   "fatal_flaw": "Demand is a few hundred wafers a year, Winbond/ESMT/Etron already ship tested KGD, and untested DRAM wafers are mostly not sold to outsiders, so the house would sit idle.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance (test services), defense-first",
+   "founder_fit_note": "No: semiconductor-test expertise and ~$750k of equipment for a tiny market.",
+   "possible": "yes",
+   "profitable": "no - below breakeven volume for the foreseeable market",
+   "doable_by_founder": "no",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-13",
+   "name": "All-domestic DRAM component: Micron Manassas wafer to U.S. package to U.S. module",
+   "subbranch": "Module assembly and test in the U.S. (domestic-origin)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Obtain Micron 1-alpha DDR4/LPDDR4 wafers or KGD made at Manassas Fab 6 (via SpecTek or a direct program), package and test them in the U.S. (Micross FL/NC, Integra KS or QP Technologies CA), and sell the only fully U.S.-origin DRAM component and module - eligible for an unqualified FTC 'Made in USA' claim and for programs that demand domestic end-to-end sourcing.",
+   "why_it_could_work": "Manassas wafers are, as far as C knows, packaged offshore today, so no fully domestic DRAM component exists [UNVERIFIED-training]; Micron took $275M of CHIPS money to onshore exactly this silicon; the BAA domestic-content threshold for non-COTS items rises to 75% in 2029 [UNVERIFIED-training]; and SpecTek already sells Micron silicon in wafer form.",
+   "evidence": [
+    {
+     "title": "Micron advances Made-in-America memory with manufacturing expansion in Virginia",
+     "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+     "type": "company",
+     "date": "2026-05-22",
+     "shows": "Micron Manassas Fab 6 began 1-alpha DDR4/LPDDR4 on 2026-05-22 for auto, defense, aerospace and industrial buyers, in a >$2B expansion that quadruples its DDR4 wafer supply (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "CHIPS: Micron Manassas preliminary memorandum of terms",
+     "url": "https://www.nist.gov/node/1869301",
+     "type": "government",
+     "date": "2024-12-10",
+     "shows": "Up to $275M CHIPS funding for Micron Manassas onshoring of 1-alpha DRAM (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "SpecTek support (Micron)",
+     "url": "https://micron.net/sales-support/customer-support/spectek-support",
+     "type": "company",
+     "date": "unknown",
+     "shows": "SpecTek sells Micron DRAM/LPDRAM in BGA packages and in wafer form (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micross die and wafer flyer",
+     "url": "https://micross.com/uploads/05827c98-1b61-4d4d-bb3c-04dc1b207e5a/Die_and_Wafer_Flyer_Rev_1_WEB.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Micross is the largest authorized bare-die/wafer supplier, with DRAM on its die line card; also a U.S. hi-rel packager (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "What U.S. tariff push means for Korea's semiconductor industry",
+     "url": "https://www.koreatimes.co.kr/opinion/20260915/what-us-tariff-push-means-for-koreas-semiconductor-industry",
+     "type": "news",
+     "date": "2026-09-15",
+     "shows": "Korean memory excluded from Section 232 phase 1: no tariff-created U.S.-origin premium for memory today (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 30,
+   "time_to_first_revenue_text": "24-36 months (Micron program agreement, U.S. FBGA package qualification, first program design-in)",
+   "gross_margin_estimate": "20-40% if a domestic-origin premium of 1.5-3x exists; ~0% if not",
+   "gross_margin_mid_pct": 30,
+   "us_manufacturability": "Fully U.S.: Manassas VA wafers, Micross/Integra packaging and test, U.S. EMS modules.",
+   "who_is_already_doing_this": "Micron (could do it itself at any time), Micross (hi-rel packaging of purchased die).",
+   "wins_axis": "Supply security / domestic origin",
+   "buyer": "DoD programs with domestic or trusted-sourcing clauses, critical-infrastructure agencies, a 'Made in USA' consumer niche",
+   "survives_glut": "partially",
+   "glut_reason": "A domestic-origin premium is policy-driven and would survive, but the volume is small and commodity alternatives get cheaper.",
+   "fatal_flaw": "Gatekeeper risk: Micron decides whether Manassas silicon reaches outsiders in wafer form, and a paid premium for U.S.-packaged COTS DRAM is unproven because TAA/BAA treat Taiwan and Korea as compliant and memory carries no Section 232 tariff.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance, defense-first",
+   "founder_fit_note": "No: needs a Micron relationship, packaging engineering and defense BD.",
+   "possible": "marginal - depends entirely on Micron releasing Manassas wafers",
+   "profitable": "marginal - premium unproven",
+   "doable_by_founder": "no",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-14",
+   "name": "Trusted low-density SDRAM (64-512Mb) on SkyWater Fab 25 with 1T1C MIM cells",
+   "subbranch": "Trailing-node DRAM on a U.S. pure-play foundry",
+   "materials_sense": "mixed:b+c",
+   "what_it_is": "Develop a 256Mb SDR/DDR SDRAM using a 1T1C high-k MIM-capacitor module on SkyWater's 65nm-class 200mm Fab 25 (Austin, ex-Infineon) or its DMEA-trusted Bloomington line, packaged in JEDEC TSOP/FBGA at a U.S. OSAT, as a trusted, U.S.-fabbed DMSMS replacement for obsolete SDRAM in avionics and weapons systems.",
+   "why_it_could_work": "DoD platforms run 30-50 years; SkyWater integrates outside memory modules (Weebit ReRAM qualified in S130) and bought Fab 25 cheaply (~400k wafer starts/yr); Infineon already keeps legacy Cypress parts in U.S. production there. Model: 116 mm2 die, ~137 good die per 200mm wafer, ~$30 per unit including package and test.",
+   "evidence": [
+    {
+     "title": "SkyWater to acquire Infineon's Austin fab",
+     "url": "https://www.businesswire.com/news/home/20250226773415/en/SkyWater-to-Acquire-Infineons-Austin-Fab-and-Establish-Strategic-Partnership-to-Expand-U.S.-Foundry-Capacity-for-Foundational-Chips",
+     "type": "company",
+     "date": "2025-02-26",
+     "shows": "SkyWater buys Infineon Fab 25 (200mm, 130-65nm) with a long-term supply agreement (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "SkyWater acquires Infineon's 200mm fab (LaPedus)",
+     "url": "https://marklapedus.substack.com/p/skywater-acquires-infineons-200mm",
+     "type": "news",
+     "date": "2025",
+     "shows": "Fab 25 ~400k wafer starts/yr; deal closed 2025-06-30 (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Infineon retains U.S. manufacturing via SkyWater supply agreement",
+     "url": "https://new-origin.infineon.com/cms/en/about-infineon/press/press-releases/2025/INFXX202502-066.html",
+     "type": "company",
+     "date": "2025-02-26",
+     "shows": "Legacy Cypress products keep U.S. wafer supply at SkyWater: precedent for U.S. legacy-part continuity on a pure-play foundry (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Weebit Nano ReRAM IP fully qualified in SkyWater S130",
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/",
+     "type": "company",
+     "date": "2023-06",
+     "shows": "SkyWater integrates and qualifies outside memory modules (256Kb ReRAM in S130) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Facing radiation challenges head on (Sandia)",
+     "url": "https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/",
+     "type": "government",
+     "date": "2026-05-13",
+     "shows": "HZO FeRAM integrated into Sandia's trusted MESA fab: trusted-fab memory is done, but by the government for itself (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Winbond launches 32-bit SDR/DDR KGD for SiP applications",
+     "url": "https://www.winbond.com/hq/about-winbond/news-and-events/news/winbond-launchs-32bit-sdr-ddr-kgd-for-SiP-application.html",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Low-density SDR/DDR DRAM is still made and sold (as KGD) by Winbond (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 3,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "36-60 months (capacitor-module development, design, qualification)",
+   "gross_margin_estimate": "~50% unit gross margin at $60, but $0.3-1.5M/yr gross profit cannot repay $10-20M NRE",
+   "gross_margin_mid_pct": 50,
+   "us_manufacturability": "SkyWater Fab 25 (Austin TX) or Bloomington MN (DMEA trusted); U.S. OSAT packaging.",
+   "who_is_already_doing_this": "Alliance Memory, ISSI and Winbond still sell commercial SDRAM at ~$2-5 [ESTIMATE]; Rochester (licensed re-creation); DMEA's ARMS foundry [UNVERIFIED-training]; rad-hard programs use SRAM/MRAM from Honeywell, BAE, Frontgrade instead.",
+   "wins_axis": "Supply security / trust / lifecycle",
+   "buyer": "DoD DMSMS offices and avionics primes",
+   "survives_glut": "yes",
+   "glut_reason": "Trusted DMSMS pricing is insensitive to commodity cycles.",
+   "fatal_flaw": "No buyer at the price: COTS SDRAM is still made at $2-5 and DoDI 5200.44 trust rules target custom ICs, not commodity memory, so the market is ~$0.3-1.5M per year of gross profit against $10-20M of NRE.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry, defense-first, university/lab patent license (capacitor module)",
+   "founder_fit_note": "No: needs DRAM circuit design, a SkyWater process-module program and defense qualification.",
+   "possible": "yes - 1T1C MIM eDRAM is production-proven elsewhere; unproven on this line",
+   "profitable": "no - NRE never paid back",
+   "doable_by_founder": "no",
+   "branch": "C"
+  },
+  {
+   "tmp_id": "C-15",
+   "name": "Legacy-DRAM buying cooperative for mid-size U.S. OEMs",
+   "subbranch": "Supply-chain arbitrage (demand aggregation)",
+   "materials_sense": "none",
+   "what_it_is": "An agency-model purchasing cooperative that pools 2027-2030 DDR3/DDR4/LPDDR4 forecasts from 30-100 mid-size U.S. OEMs and negotiates multi-year allocation agreements with Micron (Manassas DDR4), Winbond, Nanya and their franchised distributors, backed by member letters of credit, with a forecast and allocation web portal. Revenue: ~2.5% of pooled spend plus $10k per year membership.",
+   "why_it_could_work": "In the shortage, allocation goes to strategic OEMs while module makers and small buyers are cut (TrendForce, Jan 2026); Nanya's long-term agreements expired in June 2026 and repriced >60%; firm, LC-backed, aggregated demand is what suppliers reward. Model: 40 members at $1.5M each = $60M pooled spend -> ~$1.9M revenue at ~85% gross margin (agency model).",
+   "evidence": [
+    {
+     "title": "PC DRAM 1Q26: prices to surge over 80% on server supply prioritization (TrendForce abstract)",
+     "url": "https://www.trendforce.com/research/download/RP260114IU",
+     "type": "industry",
+     "date": "2026-01-14",
+     "shows": "DRAM supply prioritized to strategic OEMs while module makers are limited (abstract only) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Nanya 3Q26 results (TrendForce News)",
+     "url": "https://www.trendforce.com/news/?p=65146",
+     "type": "news",
+     "date": "2026-10-12",
+     "shows": "Nanya 3Q26 gross margin 85.7%, operating margin 80%; LTAs expired end-June 2026 and repriced >60% higher in July (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Memory shortage watch: DDR3L/DDR4, May 2026 (Findchips)",
+     "url": "https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/",
+     "type": "industry",
+     "date": "2026-05",
+     "shows": "Zero authorized stock of a mainstream Micron DDR4 part at Newark, Avnet and Mouser; only independent-market stock at a premium (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Micron ramps US-made DDR4 production in Virginia (eeNews Europe)",
+     "url": "https://www.eenewseurope.com/en/micron-ramps-us-made-ddr4-production-in-virginia/",
+     "type": "news",
+     "date": "2026-05",
+     "shows": "DDR4 buffers at auto/industrial customers fell from 31+ weeks to 6-8 weeks (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Response measures to Samsung DDR4 IC EOL announcement (Advantech)",
+     "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+     "type": "company",
+     "date": "2025",
+     "shows": "Industrial-PC maker tells customers DDR4 supply runs to ~end-2026 and to avoid Samsung DDR4 in new designs: long-lifecycle buyers are actively managing EOL (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    },
+    {
+     "title": "Mobius Materials (Y Combinator profile)",
+     "url": "https://www.ycombinator.com/companies/mobius-materials",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Mobius describes itself as the spot market for semiconductors: a funded intermediary already aggregating component demand (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months (membership fees from 5-10 founding OEMs; first pooled allocation in 9-15 months)",
+   "gross_margin_estimate": "~80-90% on fee revenue (agency model); title model is distribution-like (3-8%)",
+   "gross_margin_mid_pct": 80,
+   "us_manufacturability": "None (commercial structure); can steer pooled volume to U.S.-made Manassas DDR4.",
+   "who_is_already_doing_this": "Franchised distributors (Arrow, Avnet, WPG, Future), procurement consultancies, Mobius Materials, independent brokers; healthcare GPOs (Vizient, Premier) as the model [UNVERIFIED-training].",
+   "wins_axis": "Supply security",
+   "buyer": "Mid-size OEMs buying $0.5-5M per year of legacy DRAM",
+   "survives_glut": "partially",
+   "glut_reason": "Allocation stops being scarce; value shrinks to price negotiation (the GPO model), so fees compress but the network persists.",
+   "fatal_flaw": "Suppliers and franchised distributors may refuse an intermediary that takes neither title nor credit risk; taking title needs $8-27M of working capital (T2), and the allocation value evaporates in a glut.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "recert/brokerage (procurement), SaaS (forecast portal), data product",
+   "founder_fit_note": "Marginal: the portal and operations fit the founder; supplier credibility needs an industry veteran cofounder.",
+   "possible": "marginal - depends on suppliers recognizing the co-op",
+   "profitable": "marginal - good margins if allocation materializes",
+   "doable_by_founder": "marginal - needs a memory-sales veteran",
+   "branch": "C"
+  }
+ ]
+}

@@ -1,0 +1,896 @@
+{
+ "branch_key": "D",
+ "branch": "D",
+ "scope": "Software and 'virtual RAM' (T0/T1): memory-efficiency software (compression/reclaim, dedup, tiering, KV-cache, right-sizing, cache-engine cost-down, software-defined memory, NVMe-as-RAM), tools for the shortage itself (price intelligence, marketplaces, provenance compliance, consumer compatibility), RAM-as-a-service on depreciated hardware, and content as a bridge. No hardware appliances (branch B). Research limits: 0 WebSearch calls were available (shared budget exhausted); evidence comes from GitHub/PyPI/AWS Price List API pages opened by D, plus Phase-1/B cross-references tagged as such.",
+ "cards": [
+  {
+   "branch": "D",
+   "tmp_id": "D-01",
+   "name": "Memory FinOps Audit for Cloud SaaS",
+   "subbranch": "Cloud memory right-sizing / FinOps",
+   "materials_sense": "none",
+   "what_it_is": "A read-only web app with an AWS IAM role. It reads CUR plus CloudWatch-agent/Prometheus memory metrics across EC2 r/x/m-family, ElastiCache, RDS, K8s pods and JVM heaps. Output is a fixed-fee 'memory diet' report and a monitoring subscription, sold through AWS Marketplace to 20-500-engineer SaaS companies. The playbook levers are r->m family downsizing, K8s in-place pod resize (stable v1.35), JDK compact object headers and Redis->Valkey.",
+   "why_it_could_work": "AWS list prices put marginal RAM at $2.56-2.62/GiB-month, and RAM is 28-43% of the m7i/r7i list price (computed). Clusters leave about 18% of memory unused (Sysdig via KRR). Take a $40k/month EC2 bill with RAM at 30%, of which half the unused 18% is realizable: that saves about $1.1k/month, so a 25% share-of-savings fee is about $270/month. Reaching $20k MRR needs about 74 customers (d_calcs.py in D_notes).",
+   "evidence": [
+    {
+     "title": "AWS Price List API, EC2 us-east-1 (versions 2025-09 and 2026-10)",
+     "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/20261029175634/us-east-1/index.csv",
+     "type": "company",
+     "date": "2026-10",
+     "shows": "Primary data. All 92 compared On-Demand Linux SKUs (c7i/m7i/m8g/r6i/r7g/r7i/r7iz/r8g/x2idn/u7i) had identical prices in Sep-2025 and Oct-2026. Marginal RAM computes to $2.56-2.62/GiB-month; x2idn.16xlarge (1 TiB) costs $6.669/h."
+    },
+    {
+     "title": "AWS Price List API, EC2 us-east-1, version eff. 2025-09",
+     "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/20250930212021/us-east-1/index.csv",
+     "type": "company",
+     "date": "2025-09",
+     "shows": "The pre-spike baseline, used for the before/after diff."
+    },
+    {
+     "title": "Robusta KRR README",
+     "url": "https://github.com/robusta-dev/krr",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Free MIT tool that right-sizes K8s memory (7-day max + 15%). Quotes Sysdig: 18% of memory unused on average."
+    },
+    {
+     "title": "KEP-1287 in-place pod resize kep.yaml",
+     "url": "https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/1287-in-place-update-pod-resources/kep.yaml",
+     "type": "industry",
+     "date": "2025",
+     "shows": "In-place pod resource resize went stable in Kubernetes v1.35, so memory can be right-sized without pod restarts."
+    },
+    {
+     "title": "OpenJDK PR: JEP 450 Compact Object Headers",
+     "url": "https://github.com/openjdk/jdk/pull/20677",
+     "type": "industry",
+     "date": "2024-11",
+     "shows": "Compact object headers integrated into JDK mainline (experimental, JDK 24). No savings figure on the page; 10-20% heap reduction is [UNVERIFIED-T]."
+    },
+    {
+     "title": "CAST AI GitHub org",
+     "url": "https://github.com/castai",
+     "type": "company",
+     "date": "2026-10-31",
+     "shows": "Well-resourced automation vendor, alive and shipping (114 repos, updates to 2026-10-31)."
+    },
+    {
+     "title": "OpenCost README",
+     "url": "https://github.com/opencost/opencost",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Free Apache-2.0 K8s and cloud cost monitoring, originally from Kubecost."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 4,
+   "time_to_first_revenue_text": "3-6 months: a first fixed-fee audit ($3-8k) for a SaaS company in the founder's network, then a monitoring subscription.",
+   "gross_margin_estimate": "75-85%",
+   "gross_margin_mid_pct": 80,
+   "us_manufacturability": "Pure software built and hosted in the U.S. (AWS us-east-1) and sold via AWS Marketplace. No fab or hardware.",
+   "who_is_already_doing_this": "CAST AI, ScaleOps, StormForge (CloudBolt), Kubecost/OpenCost (IBM [UNVERIFIED-T]), PerfectScale (DoiT [UNVERIFIED-T]), Sedai, Densify, and free tools: AWS Compute Optimizer, Robusta KRR, K8s VPA, Goldilocks. Intel Granulate reportedly shut down (2025) [UNVERIFIED: repo shows no notice].",
+   "wins_axis": "$/GiB-month of rented cloud RAM (fewer GiB-months bought)",
+   "buyer": "Series A-C SaaS companies with $20k-200k/month AWS bills and no dedicated FinOps engineer",
+   "survives_glut": "yes",
+   "glut_reason": "AWS did not raise memory-instance list prices during the 2026 spike (92 SKUs unchanged), so the savings do not depend on DRAM prices and a glut changes nothing. The flip side: the shortage gives this product no new 'why now'.",
+   "fatal_flaw": "The category is crowded and the floor is free (Compute Optimizer, KRR, VPA, OpenCost). The DRAM shortage never reached cloud list prices, so buyers feel no new urgency. A report-only product churns after the first audit.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS; services (fixed-fee audit) -> SaaS",
+   "founder_fit_note": "Yes. Web app plus AWS APIs is the founder's home turf at T0, but the moat is weak.",
+   "possible": "yes - standard FinOps mechanics, shipping at many vendors",
+   "profitable": "marginal - ~$270/month ACV against free tools and funded automation vendors; churn after the savings are booked",
+   "doable_by_founder": "yes - read-only AWS integration and reports; the first revenue could come from consulting in the founder's network"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-02",
+   "name": "Fleet Memory-Reclaim Autopilot (TMO for on-prem)",
+   "subbranch": "Transparent memory compression / proactive reclaim / dedup",
+   "materials_sense": "none",
+   "what_it_is": "A per-node agent plus web control plane. It enables and tunes upstream Linux zswap (zsmalloc + zstd/lz4), Meta-Senpai-style PSI-driven proactive reclaim via cgroup2, KSM page dedup on Proxmox/KVM hosts, and Kubernetes 1.34 LimitedSwap, with per-workload SLO guardrails and a 'GB reclaimed = $ of DRAM not bought' ledger. It is sold per node to on-prem/colo operators who buy DRAM at 2026 prices.",
+   "why_it_could_work": "On-prem buyers pay DRAM directly: $14-16/GB at contract, ~$32/GB street (64GB RDIMM $900-1,000 to $2,064). Take a 200-server x 512GB fleet with 20% cold memory at ~2:1 compression: it frees ~10 TB, which defers $154k (contract) to $328k (street) of DRAM. Kubernetes container swap went stable in v1.34, removing the old 'kubelet refuses swap' blocker. Meta reported 20-32% fleet memory savings from TMO [UNVERIFIED-T: paper not opened].",
+   "evidence": [
+    {
+     "title": "Meta Senpai README",
+     "url": "https://github.com/facebookincubator/senpai",
+     "type": "industry",
+     "date": "unknown",
+     "shows": "PSI plus cgroup2 memory.high proactive reclaim (TMO building block). Example: kernel-build peak fell from 804 MB to 348 MB."
+    },
+    {
+     "title": "Linux zswap docs",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/zswap.rst",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Upstream compressed swap cache (zsmalloc) with per-cgroup writeback control and a shrinker."
+    },
+    {
+     "title": "Linux zram docs",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/blockdev/zram.rst",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Upstream compressed RAM device (lz4/zstd), with writeback and recompression; the docs expect about 2:1 compression."
+    },
+    {
+     "title": "Linux KSM docs",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/ksm.rst",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Page dedup for KVM VM density, with a general_profit metric; costs CPU and COW latency."
+    },
+    {
+     "title": "KEP-2400 node swap kep.yaml",
+     "url": "https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/2400-node-swap/kep.yaml",
+     "type": "industry",
+     "date": "2025",
+     "shows": "Kubernetes container swap (LimitedSwap) went stable in v1.34."
+    },
+    {
+     "title": "Kubernetes swap memory management docs",
+     "url": "https://github.com/kubernetes/website/blob/main/content/en/docs/concepts/cluster-administration/swap-memory-management.md",
+     "type": "industry",
+     "date": "2025",
+     "shows": "Operational caveats: encrypt swap, use fast NVMe, taint swap nodes. Swap degrades badly on throttled cloud disks, and the scheduler ignores swap."
+    },
+    {
+     "title": "EE Times Asia / Counterpoint RDIMM prices (via p1-market)",
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "type": "news",
+     "date": "2026-01",
+     "shows": "64GB RDIMM contract $450 (4Q25), above $900 (1Q26), possibly above $1,000 (2Q26)."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months: a paid pilot with a regional hosting provider, Proxmox MSP or on-prem K8s shop ($500-2k/month for 50-200 nodes).",
+   "gross_margin_estimate": "80-90%",
+   "gross_margin_mid_pct": 85,
+   "us_manufacturability": "Pure software. Target customers' fleets sit in U.S. colos (Ashburn VA, Secaucus NJ). Builds on upstream Linux mm, Proxmox VE (KSM) and Kubernetes 1.34+.",
+   "who_is_already_doing_this": "Meta (TMO/Senpai, internal), Google (zswap far memory, internal), Linux upstream (free), Red Hat/Canonical (tuned profiles), Proxmox (KSM built in). The cloud K8s optimizers (CAST AI, ScaleOps) focus on requests and instances, not swap [ESTIMATE]. MemVerge left the field.",
+   "wins_axis": "Effective $/GB (usable GB per purchased GB), which defers DRAM capex",
+   "buyer": "Regional hosting providers, MSPs running Proxmox/KVM, on-prem Kubernetes and CI/build farms, and university HPC centers that must buy DDR5 RDIMMs at 2026 prices",
+   "survives_glut": "partially",
+   "glut_reason": "The deferred-DRAM value of the reference fleet falls from ~$154k to ~$61k at -60%. Density value remains but becomes a nice-to-have, and the price story behind the sale disappears.",
+   "fatal_flaw": "It is configuration of free kernel features. Sophisticated operators already do it themselves, and conservative ones fear swap latency and OOM incidents. One production incident at an early customer ends the company.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS (per-node subscription); open-core agent",
+   "founder_fit_note": "Marginal. The control plane is easy for him; safe Linux memory-management tuning needs a kernel-savvy contractor or co-founder.",
+   "possible": "yes - production-proven at Meta/Google, and every component is upstream",
+   "profitable": "marginal - real savings while DRAM is expensive, but buyers can DIY and the pain halves in a glut",
+   "doable_by_founder": "marginal - needs a Linux-mm expert for SLO safety; the sales cycle to on-prem ops is slow"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-03",
+   "name": "KV-Cache Tier Integration & Tuning for Self-Hosted LLMs",
+   "subbranch": "LLM inference KV-cache management software",
+   "materials_sense": "none",
+   "what_it_is": "A productized integration service plus a benchmarking/monitoring dashboard. It deploys host-DRAM and NVMe KV-cache tiers (LMCache, NVIDIA Dynamo KVBM, Mooncake Store, SGLang HiCache) into mid-market vLLM/SGLang clusters and sizes the DRAM tier per workload from measured prefix-reuse rates. Recurring revenue comes from hit-rate, TTFT and $/token monitoring.",
+   "why_it_could_work": "Llama-3.1-70B needs 320 KiB of KV per token, so 1 TB of host DRAM ($15k at 2026 contract) holds ~3.1M reusable prefix tokens. Mooncake reports Kimi serving 75% more requests within SLO, and Dynamo claims 2x TTFT from KV-aware routing. The stacks churn fast (LMCache shipped 65 PyPI releases from May 2025 to Oct 2026; vLLM 0.32.0 came out 2026-10-18), and teams running 8-64 GPUs lack staff to keep up.",
+   "evidence": [
+    {
+     "title": "LMCache README",
+     "url": "https://github.com/LMCache/LMCache",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Open-source KV-cache layer (CPU/SSD/remote tiers) for vLLM, integrated into NVIDIA Dynamo (Sep 2025). Development supported by Tensormesh."
+    },
+    {
+     "title": "NVIDIA Dynamo README",
+     "url": "https://github.com/ai-dynamo/dynamo",
+     "type": "company",
+     "date": "2026",
+     "shows": "Free Apache-2.0 KVBM offloads KV GPU->CPU->SSD->remote. Claims 2x TTFT from KV-aware routing (Baseten)."
+    },
+    {
+     "title": "Mooncake README",
+     "url": "https://github.com/kvcache-ai/Mooncake",
+     "type": "industry",
+     "date": "2026",
+     "shows": "KV-centric disaggregated serving at Kimi: 75% more requests within SLO. Integrated into vLLM, SGLang, LMCache, Dynamo and TensorRT-LLM (2026-10-10)."
+    },
+    {
+     "title": "tensormesh SDK on PyPI",
+     "url": "https://pypi.org/pypi/tensormesh/json",
+     "type": "company",
+     "date": "2026-06",
+     "shows": "Tensormesh, the company around LMCache, ships a hosted serverless-inference and control-plane SDK (first release 2026-04-02)."
+    },
+    {
+     "title": "meta-llama/llama-models config (via B)",
+     "url": "https://github.com/meta-llama/llama-models",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Llama 3.1 70B: 80 layers, 8 KV heads, head_dim 128, so 320 KiB of KV per token at BF16."
+    }
+   ],
+   "trl": 8,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months: an integration engagement ($15-40k) with an enterprise AI team or small U.S. GPU cloud, then a monitoring retainer.",
+   "gross_margin_estimate": "50-70% (services-heavy)",
+   "gross_margin_mid_pct": 60,
+   "us_manufacturability": "Software and services. Customers' GPU clusters are in U.S. colos (Ashburn VA, NJ). Builds on Apache-2.0 LMCache, Dynamo and Mooncake.",
+   "who_is_already_doing_this": "Tensormesh (the LMCache creators: hosted inference plus control-plane SDK, first PyPI release 2026-04), NVIDIA (Dynamo, free), Moonshot (Mooncake), Red Hat llm-d [UNVERIFIED-T], WEKA Augmented Memory Grid, Pliops, VAST [UNVERIFIED-T], hosted inference providers (Baseten, Together, Fireworks).",
+   "wins_axis": "$/token and TTFT: host DRAM ($/GB) substitutes for re-computing prefill on HBM GPUs",
+   "buyer": "Mid-market teams self-hosting 70B-class open models on 8-64 GPUs for data-residency reasons (legal-tech, healthcare, fintech)",
+   "survives_glut": "yes",
+   "glut_reason": "A glut makes host DRAM cheaper and the KV tier more attractive. The value is GPU-hours avoided, which does not depend on DRAM prices.",
+   "fatal_flaw": "NVIDIA, the vLLM/SGLang maintainers and Tensormesh are turning this into defaults and SaaS, so the integration gap closes within 12-18 months. Buyers purchase GPU-infra credibility the founder does not have.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "services -> SaaS; open-core",
+   "founder_fit_note": "Marginal. Python/K8s skills transfer, but credibility in GPU serving must be earned and the field moves weekly.",
+   "possible": "yes - shipping open source at Moonshot/Kimi and integrated into NVIDIA Dynamo",
+   "profitable": "marginal - large market but direct competition from free NVIDIA tooling and the LMCache company itself",
+   "doable_by_founder": "marginal - needs GPU access for benchmarking and deep inference-stack knowledge"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-04",
+   "name": "Cache-Tier Cost-Down: Redis -> Valkey/Dragonfly Sizing",
+   "subbranch": "In-memory database / cache memory optimization",
+   "materials_sense": "none",
+   "what_it_is": "A sizing tool that ingests Redis INFO/MEMORY STATS, keyspace samples and ElastiCache bills, and models savings from engine migration (Redis OSS -> Valkey on ElastiCache, or self-hosted Dragonfly), encoding changes and node downsizing. It is sold as a fixed-fee migration plan plus an optional memory-drift monitor.",
+   "why_it_could_work": "Verified AWS list prices for cache.r7g.large: Redis OSS $0.219/h vs Valkey $0.1752/h (-20%). New Redis OSS Extended Support SKUs add $0.175/h (Yr1-2) or $0.35/h (Yr3). A 50-node fleet goes from ~$14.4k/month (Redis + extended support) to ~$6.4k/month on Valkey (-56%). Dragonfly's vendor test claims ~30% less memory idle and no ~3x snapshot spike.",
+   "evidence": [
+    {
+     "title": "AWS Price List API, ElastiCache us-east-1 (versions 2025-09 and 2026-10)",
+     "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonElastiCache/20261028192450/us-east-1/index.json",
+     "type": "company",
+     "date": "2026-10",
+     "shows": "cache.r7g.large: Redis OSS $0.219/h vs Valkey $0.1752/h, unchanged across both versions. New Redis OSS Extended Support SKUs: $0.175/h (Yr1-2) and $0.35/h (Yr3)."
+    },
+    {
+     "title": "AWS ElastiCache price list, version eff. 2025-09",
+     "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonElastiCache/20250915211737/us-east-1/index.json",
+     "type": "company",
+     "date": "2025-09",
+     "shows": "Pre-spike baseline: identical node prices."
+    },
+    {
+     "title": "Dragonfly README",
+     "url": "https://github.com/dragonflydb/dragonfly",
+     "type": "company",
+     "date": "2026",
+     "shows": "Vendor test: ~30% less memory than Redis idle; Redis peaks at ~3x Dragonfly memory during snapshot."
+    },
+    {
+     "title": "Dragonfly BSL 1.1 license",
+     "url": "https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md",
+     "type": "company",
+     "date": "2026",
+     "shows": "Third parties may not offer it as a managed in-memory store service until 2030-11-01."
+    },
+    {
+     "title": "Valkey releases",
+     "url": "https://github.com/valkey-io/valkey/releases",
+     "type": "industry",
+     "date": "2026-10-26",
+     "shows": "Active releases (9.1.3, 2026-10-26). 9.2.0-rc1 adds memory reductions (B+tree sorted sets, shared WATCH/pubsub keys)."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 4,
+   "time_to_first_revenue_text": "3-6 months: a fixed-fee ($5-15k) migration plan for a SaaS or e-commerce team facing extended-support fees.",
+   "gross_margin_estimate": "60-80%",
+   "gross_margin_mid_pct": 70,
+   "us_manufacturability": "Software and services. Customers are on AWS ElastiCache us-east-1 and similar; uses open Valkey (Linux Foundation) and Dragonfly (BSL).",
+   "who_is_already_doing_this": "AWS (in-place ElastiCache engine change to Valkey [UNVERIFIED-T]), Dragonfly Cloud, Redis Inc., Aiven, Percona, Momento, plus every AWS partner consultancy.",
+   "wins_axis": "$/GB-month of cache memory",
+   "buyer": "Engineering leads at SaaS/e-commerce firms with 10-200 ElastiCache Redis OSS nodes on old engine versions",
+   "survives_glut": "yes",
+   "glut_reason": "AWS cache list prices did not move in the shortage and will not move in a glut. The extended-support fees are what drive the savings.",
+   "fatal_flaw": "It is a one-time job that AWS makes a few clicks. Dragonfly's BSL forbids reselling it as a managed service, so no recurring revenue is left after the migration.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "services; SaaS (thin)",
+   "founder_fit_note": "Yes for a quick consulting wedge, but it is a feature of D-01, not a company.",
+   "possible": "yes - AWS publishes the price gap",
+   "profitable": "no - one-shot, small tickets, commoditized by AWS",
+   "doable_by_founder": "yes - straightforward tooling and docs work"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-05",
+   "name": "Software-Defined Memory Pooling / RAM-as-a-Service over CXL (tempting, dead)",
+   "subbranch": "Software-defined memory (Kove/MemVerge model)",
+   "materials_sense": "none",
+   "what_it_is": "OS/hypervisor software that pools DRAM across servers (RDMA today, CXL 2.0/3.x switches later) and leases slices to applications on demand: the Kove:SDM / MemVerge Memory Machine model. It would be sold as an on-prem license to HPC, genomics and in-memory analytics shops.",
+   "why_it_could_work": "Pooling recovers stranded memory (Azure's Pond work reported ~7-9% DRAM savings [UNVERIFIED-T]), and each stranded GB is worth 4x more in 2026. CXL switches (XConn, Astera Labs) are shipping in pilots.",
+   "evidence": [
+    {
+     "title": "MemVerge GitHub org",
+     "url": "https://github.com/MemVerge",
+     "type": "company",
+     "date": "2026-10-28",
+     "shows": "Recent work is LLM routing, LMCache/vLLM forks, the MMAI GPU cluster manager and cloud-HPC spot tools. No new memory-virtualization repos."
+    },
+    {
+     "title": "MemVerge mmai-public",
+     "url": "https://github.com/MemVerge/mmai-public",
+     "type": "company",
+     "date": "2026",
+     "shows": "Memory Machine AI is a GPU cluster manager (docs path /AI/GPU_Cluster_Manager), not a DRAM pooling product."
+    },
+    {
+     "title": "Linux CXL maturity map (via B)",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "type": "industry",
+     "date": "2026-10-31",
+     "shows": "Upstream Linux: Dynamic Capacity Device, multi-host sharing and fabrics are all scored [0] (not implemented)."
+    },
+    {
+     "title": "SK hynix HMSDK (via B)",
+     "url": "https://github.com/skhynix/hmsdk",
+     "type": "company",
+     "date": "2025-11-03",
+     "shows": "CXL tiering (weighted interleave, DAMON migration) is already upstream and free."
+    }
+   ],
+   "trl": 6,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 30,
+   "time_to_first_revenue_text": "24-36 months: needs CXL switch hardware partners, enterprise validation and a field sales team.",
+   "gross_margin_estimate": "70-85% if it sells",
+   "gross_margin_mid_pct": 75,
+   "us_manufacturability": "Software. Hardware would come from U.S. CXL switch/expander vendors (XConn, Astera Labs) in Supermicro/Dell servers; Montage (China) controllers would be avoided.",
+   "who_is_already_doing_this": "Kove (Kove:SDM, Chicago [UNVERIFIED-T status]), MemVerge (moved to AI/GPU cluster management), Liqid, GigaIO, Unifabrix, Panmnesia, plus free upstream Linux tiering (TPP, DAMON, weighted interleave).",
+   "wins_axis": "$/GB through fewer DIMMs per cluster",
+   "buyer": "HPC centers and genomics/EDA farms with bursty per-job memory peaks",
+   "survives_glut": "no",
+   "glut_reason": "Stranded-memory savings of ~10% are worth little at ~$6/GB. Pooling was a hard sell even before the shortage.",
+   "fatal_flaw": "The category's best-known startup (MemVerge) walked away from memory virtualization. Linux upstream still scores CXL Dynamic Capacity and multi-host sharing [0], and tiering is already free upstream. Enterprise hardware dependence far exceeds T0/T1.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "software licensing; fabless->OEM partnership",
+   "founder_fit_note": "No. Kernel/hypervisor engineering plus enterprise hardware sales.",
+   "possible": "marginal - RDMA far memory works at hyperscalers; CXL pooling software is immature upstream",
+   "profitable": "no - prior entrants pivoted out; savings are too small to carry the integration cost",
+   "doable_by_founder": "no - requires systems-software depth and hardware partners"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-06",
+   "name": "NVMe-as-RAM Virtual Memory Software (IMDT/ScaleMP revival, tempting, dead)",
+   "subbranch": "Software 'virtual RAM' on flash",
+   "materials_sense": "a-material",
+   "what_it_is": "A thin hypervisor or kernel layer that presents NVMe SSDs as system RAM (the Intel Memory Drive Technology / ScaleMP vSMP MemoryONE approach), so a server with 256GB DRAM plus 4TB NVMe shows 4TB of 'memory'. It would be sold as a per-server license.",
+   "why_it_could_work": "NAND $/GB is a small fraction of DRAM even after its own 2026 rise, NAND is forecast to turn to surplus in 2H27 (TrendForce via p1), and the arbitrage looks enormous on paper.",
+   "evidence": [
+    {
+     "title": "Linux zswap docs",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/zswap.rst",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Upstream compressed swap cache (zsmalloc) with per-cgroup writeback control and a shrinker."
+    },
+    {
+     "title": "Kubernetes swap memory management docs",
+     "url": "https://github.com/kubernetes/website/blob/main/content/en/docs/concepts/cluster-administration/swap-memory-management.md",
+     "type": "industry",
+     "date": "2025",
+     "shows": "Operational caveats: encrypt swap, use fast NVMe, taint swap nodes. Swap degrades badly on throttled cloud disks, and the scheduler ignores swap."
+    },
+    {
+     "title": "Intel 10-Q Q2-2022 (via A2)",
+     "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+     "type": "company",
+     "date": "2022-07",
+     "shows": "Optane wind-down with a $559M inventory impairment. The media that made NVMe/PMem-as-RAM viable is gone."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 24,
+   "time_to_first_revenue_text": "18-30 months: hypervisor development plus validation with an in-memory analytics vendor.",
+   "gross_margin_estimate": "80% (license) if any sales",
+   "gross_margin_mid_pct": 80,
+   "us_manufacturability": "Software running on commodity NVMe (Micron/Solidigm SSDs in U.S.-assembled servers).",
+   "who_is_already_doing_this": "Intel IMDT (end-of-life with Optane [UNVERIFIED-T]), ScaleMP (acquired by SAP [UNVERIFIED-T]), and free Linux swap + zswap writeback.",
+   "wins_axis": "$/GB of capacity (NAND standing in for DRAM)",
+   "buyer": "In-memory analytics users who could tolerate microsecond-to-millisecond tail latency",
+   "survives_glut": "no",
+   "glut_reason": "At $6/GB DRAM nobody accepts a 1000x latency penalty, and the buyer goes back to DIMMs.",
+   "fatal_flaw": "NAND reads take ~50-100 us vs ~100 ns for DRAM (~1000x). Without Optane-class media the trick only serves workloads that Linux swap + zswap already serve for free, and that media died with a $559M impairment.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "software licensing",
+   "founder_fit_note": "No. Hypervisor/kernel engineering, and the market was already tested and abandoned.",
+   "possible": "yes - it shipped once (IMDT 2017-2022)",
+   "profitable": "no - Optane's death removed the only media that made it competitive",
+   "doable_by_founder": "no"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-07",
+   "name": "Consumer 'Virtual RAM Booster' App (dead)",
+   "subbranch": "Consumer memory software",
+   "materials_sense": "none",
+   "what_it_is": "A Windows/macOS utility marketed to PC owners priced out of upgrades (32GB DDR5 kits ~$450) that claims to 'add RAM' through compression, page-file tuning and 'RAM cleaning'. It would be sold at $19-39 via web and app stores.",
+   "why_it_could_work": "Retail panic and search demand ('RAM prices', 'need more RAM') are high, and DIY buyers are giving up on upgrades (demand destruction).",
+   "evidence": [
+    {
+     "title": "Linux zram docs",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/blockdev/zram.rst",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Upstream compressed RAM device (lz4/zstd), with writeback and recompression; the docs expect about 2:1 compression."
+    },
+    {
+     "title": "Digital Citizen 32GB kits $450 (via p1-market)",
+     "url": "https://www.digitalcitizen.life/ddr5-ram-prices-surge-in-2026-as-32gb-kits-reach-450-amid-global-memory-shortage/",
+     "type": "news",
+     "date": "2026",
+     "shows": "32GB DDR5 kits about $450 retail."
+    },
+    {
+     "title": "TechRadar on retail demand destruction (via p1-market)",
+     "url": "https://www.techradar.com/pro/good-news-ram-prices-seem-to-have-finally-stabilized-bad-news-its-probably-because-memory-prices-are-so-high-that-its-forcing-most-of-us-to-give-up-buying-anything",
+     "type": "news",
+     "date": "2026",
+     "shows": "Retail prices stabilized because buyers stopped buying."
+    },
+    {
+     "title": "rampricesusa Sep-2026 (via p1-market)",
+     "url": "https://rampricesusa.com/insights/monthly/2026-09",
+     "type": "industry",
+     "date": "2026-09",
+     "shows": "Free consumer tracker: typical DDR5 retail $18.04/GB."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 2,
+   "time_to_first_revenue_text": "1-3 months to first sale; months 3-12 likely bring refunds and chargebacks.",
+   "gross_margin_estimate": "85-95% before refunds",
+   "gross_margin_mid_pct": 90,
+   "us_manufacturability": "Software; distributed via the web/Microsoft Store.",
+   "who_is_already_doing_this": "OS vendors do it for free (Windows memory compression, macOS compressed memory, Android/ChromeOS zram [UNVERIFIED-T for Windows/macOS]). Historic precedent: SoftRAM 1995 (FTC action [UNVERIFIED-T]) and 'RAM cleaner' scareware.",
+   "wins_axis": "None real. Any gain over the OS default is unproven.",
+   "buyer": "Consumers with 8-16GB PCs",
+   "survives_glut": "no",
+   "glut_reason": "When a 32GB kit returns to ~$100-180, the reason to buy disappears.",
+   "fatal_flaw": "Every modern OS already compresses memory, so the app can only deliver placebo. History says this ends in FTC or app-store action and reputational ruin.",
+   "rule1_status": "UNSUPPORTED",
+   "business_model_lenses": "consumer software",
+   "founder_fit_note": "Technically trivial for him, but he should not build it.",
+   "possible": "marginal - the mechanism exists, but it is already in the OS, so the product claim is unsupported",
+   "profitable": "no - refunds, chargebacks, store bans and regulatory risk",
+   "doable_by_founder": "yes technically; rejected on ethics and durability"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-08",
+   "name": "TB-RAM Bare-Metal Rental from Recovered DDR4 Servers",
+   "subbranch": "RAM-as-a-service (physical, depreciated hardware)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Buy off-lease dual-socket servers (Dell R740/R750- or HPE DL380 Gen10-class) and populate them with 1-1.5 TB of recovered DDR4 RDIMM from U.S. ITAD channels. Burn-in test them, place them in an East Coast retail colo (Ashburn VA / Secaucus NJ), and rent single-tenant high-memory boxes monthly through a self-serve web portal.",
+   "why_it_could_work": "AWS charges $6.669/h for 1 TiB (x2idn.16xlarge, unchanged since 2025) = $4,868/month, or $4.75/GiB-month. A 1.5 TB box costs $6.1k-13.8k with recovered DDR4 at $3-8/GB. Renting at $1,200/month against $250 colo pays back in 6-15 months (d_calcs.py).",
+   "evidence": [
+    {
+     "title": "AWS Price List API, EC2 us-east-1 (versions 2025-09 and 2026-10)",
+     "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/20261029175634/us-east-1/index.csv",
+     "type": "company",
+     "date": "2026-10",
+     "shows": "Primary data. All 92 compared On-Demand Linux SKUs (c7i/m7i/m8g/r6i/r7g/r7i/r7iz/r8g/x2idn/u7i) had identical prices in Sep-2025 and Oct-2026. Marginal RAM computes to $2.56-2.62/GiB-month; x2idn.16xlarge (1 TiB) costs $6.669/h."
+    },
+    {
+     "title": "BuySellRAM market update (via p1-market)",
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "type": "industry",
+     "date": "2026-08-31",
+     "shows": "A U.S. used-RAM buyer publishes DRAMeXchange-based content as lead-gen (DDR4 8Gb avg $44.37)."
+    },
+    {
+     "title": "TweakTown DDR4 +50% Q3-26 (via p1-market)",
+     "url": "https://www.tweaktown.com/news/112541/even-ddr4-ram-is-not-safe-from-the-rampocalypse-prices-rose-over-50-percent-in-q3-2026/index.html?type=News",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "DDR4 contract quoted up to +50% QoQ in Q3-2026."
+    },
+    {
+     "title": "Servnet DDR5 server memory tracker (via p1-market)",
+     "url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026",
+     "type": "industry",
+     "date": "2026-08",
+     "shows": "Street price of a 64GB DDR5 RDIMM about $2,064 (Aug 2026)."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 6,
+   "time_to_first_revenue_text": "4-8 months: the first 2-3 boxes rented to genomics/EDA users found via forums and university labs.",
+   "gross_margin_estimate": "55-70% after depreciation",
+   "gross_margin_mid_pct": 60,
+   "us_manufacturability": "Hardware sourced from U.S. ITAD/off-lease dealers and hosted in U.S. colo (Ashburn VA or Secaucus NJ). No new manufacturing. Distinct from B-06, which sells new CXL appliances.",
+   "who_is_already_doing_this": "Hetzner and OVHcloud dedicated servers, PhoenixNAP, Latitude.sh, Cherry Servers, Vultr bare metal, used-server dealers [UNVERIFIED-T for 2026 pricing].",
+   "wins_axis": "$/GB-month of rented RAM (about 4x cheaper than AWS on-demand)",
+   "buyer": "Genomics assembly labs, EDA/simulation contractors, in-memory analytics developers and academic groups that need 1 TB+ of RAM for weeks",
+   "survives_glut": "partially",
+   "glut_reason": "The AWS price umbrella ($4.75/GiB-month) did not move in the spike and will not in a glut, so the margin over cloud survives. But Hetzner-class competitors restock cheaply, and DDR4-era boxes age out on power and CPU.",
+   "fatal_flaw": "This is commodity hosting against established low-cost players, with a hardware-failure/on-call burden incompatible with a day job. While prices are high, selling the recovered DDR4 outright may beat renting it.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "recert/brokerage + hosting (RaaS); module/appliance (none)",
+   "founder_fit_note": "Marginal. The portal and billing are easy; 24/7 hardware ops and $50-150k of capex for 10 boxes exceed the founder profile.",
+   "possible": "yes - plain hosting",
+   "profitable": "marginal - real spread vs AWS, thin vs Hetzner/OVH",
+   "doable_by_founder": "marginal - capital and on-call burden"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-09",
+   "name": "DRAM Cost & Allocation Intelligence for SMB Hardware OEMs",
+   "subbranch": "DRAM price intelligence / procurement data product",
+   "materials_sense": "none",
+   "what_it_is": "A subscription web app that maps memory exposure in a small OEM's BOMs (DDR4/DDR5/LPDDR4X/eMMC part numbers). It pulls distributor price and stock via the Nexar/Octopart, DigiKey and Mouser APIs, overlays free spot indicators and TrendForce press-release forecasts, and sends buy/hold/re-qualify alerts and EOL warnings (Micron DDR4 EOL, Samsung/SK hynix DDR4 exits).",
+   "why_it_could_work": "Supply is being prioritized to strategic OEMs (TrendForce), so tier-2 buyers face allocation and 4x price moves without analyst seats. At $150-300 per account per month, 80 accounts give ~$24k MRR (d_calcs.py). The founder's day job (product development/operations at a manufacturer) is exactly this buyer.",
+   "evidence": [
+    {
+     "title": "TrendForce RP260114IU summary (via p1-micron)",
+     "url": "https://www.trendforce.com/research/download/RP260114IU",
+     "type": "industry",
+     "date": "2026-01-14",
+     "shows": "DRAM supply prioritized to strategic OEMs; module makers limited (tier-2 allocation risk)."
+    },
+    {
+     "title": "Nexar developer org",
+     "url": "https://github.com/NexarDeveloper",
+     "type": "company",
+     "date": "2026-02",
+     "shows": "GraphQL API with Octopart supply (price/stock) data; Excel and Power BI connectors."
+    },
+    {
+     "title": "GitHub search 'dram price'",
+     "url": "https://github.com/search?q=dram+price&type=repositories",
+     "type": "industry",
+     "date": "2026-11-01",
+     "shows": "37 repos, many free DRAMeXchange/TrendForce spot scrapers and dashboards updated within days."
+    },
+    {
+     "title": "nwfella/memory-price-index",
+     "url": "https://github.com/nwfella/memory-price-index",
+     "type": "industry",
+     "date": "2026-11-01",
+     "shows": "Free index of RamRadar retail asks plus TrendForce spot, with analysis dated 2026-11-01. DDR4 8Gb spot record $47.04."
+    },
+    {
+     "title": "Mobius Materials DRAM Market Report (via p1-market)",
+     "url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "type": "company",
+     "date": "2026",
+     "shows": "DRAM market report given away (gated) as lead-gen for the marketplace."
+    },
+    {
+     "title": "TrendForce 4Q26 price forecast (via p1-market)",
+     "url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+     "type": "industry",
+     "date": "2026-09-30",
+     "shows": "Conventional DRAM contract +10-15% QoQ in 4Q26; free press release."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 6,
+   "time_to_first_revenue_text": "4-8 months: an MVP on Nexar/DigiKey APIs, with 5-10 design-partner OEMs from the founder's manufacturing network converting at $150-300/month.",
+   "gross_margin_estimate": "75-85% (API fees are the main COGS)",
+   "gross_margin_mid_pct": 80,
+   "us_manufacturability": "Pure software built and hosted in the U.S.; data partners Nexar (Altium/Renesas), DigiKey and Mouser APIs.",
+   "who_is_already_doing_this": "TrendForce/DRAMeXchange, InSpectrum, Omdia, Gartner, Counterpoint (paid seats); Mobius Materials (free DRAM report as marketplace lead-gen); SiliconExpert (Arrow), Z2Data, Lytica, Supplyframe (Siemens) [UNVERIFIED-T]; free trackers (rampricesusa, RamRadar, Servnet, 37 GitHub scrapers).",
+   "wins_axis": "Supply security: price and allocation foresight (cost avoidance)",
+   "buyer": "Procurement/supply-chain leads at U.S. industrial PC, medical device, test-equipment and small system-builder OEMs with $1-50M/year memory spend",
+   "survives_glut": "partially",
+   "glut_reason": "In a glut nobody pays for shortage alerts and churn spikes. Only the EOL/lifecycle and second-source module keeps its value.",
+   "fatal_flaw": "There is no proprietary data. The free layer is fully scraped (37+ GitHub trackers; Mobius gives its report away), and the contract-price data belongs to TrendForce/InSpectrum and cannot be redistributed. SMB willingness to pay is low and falls with the cycle.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "data product; SaaS",
+   "founder_fit_note": "Yes. Web app plus APIs, and the founder is a sample of the buyer.",
+   "possible": "yes - all inputs available via APIs and free sources",
+   "profitable": "marginal - low ACV, cyclical churn, no data moat",
+   "doable_by_founder": "yes - the best founder-fit in the branch, but a weak business"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-10",
+   "name": "Secondary DRAM Marketplace for Excess Inventory",
+   "subbranch": "Procurement & brokerage marketplace",
+   "materials_sense": "c-capital",
+   "what_it_is": "A B2B web marketplace where OEMs and CMs list excess DRAM/LPDDR/eMMC reels and trays and buyers bid. It adds escrow and third-party AS6081 lab authentication and takes a 5-10% fee.",
+   "why_it_could_work": "A 4x price spike turns stranded inventory into cash, and liquidity is fragmented among phone-and-email brokers. Spot is thin and broker-driven, and DDR4 spot hit a record $47.04.",
+   "evidence": [
+    {
+     "title": "Mobius Materials $3M seed (via p1-market)",
+     "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+     "type": "news",
+     "date": "2025-12",
+     "shows": "Richmond VA YC company running an authenticated B2B excess-semiconductor marketplace (ML authentication patent filed). $3M seed in Dec 2025."
+    },
+    {
+     "title": "Mobius Materials DRAM Market Report (via p1-market)",
+     "url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "type": "company",
+     "date": "2026",
+     "shows": "DRAM market report given away (gated) as lead-gen for the marketplace."
+    },
+    {
+     "title": "nwfella/memory-price-index",
+     "url": "https://github.com/nwfella/memory-price-index",
+     "type": "industry",
+     "date": "2026-11-01",
+     "shows": "Free index of RamRadar retail asks plus TrendForce spot, with analysis dated 2026-11-01. DDR4 8Gb spot record $47.04."
+    },
+    {
+     "title": "BuySellRAM market update (via p1-market)",
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "type": "industry",
+     "date": "2026-08-31",
+     "shows": "A U.S. used-RAM buyer publishes DRAMeXchange-based content as lead-gen (DDR4 8Gb avg $44.37)."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months to first matched trade; needs escrow, authentication-lab partners and insurance.",
+   "gross_margin_estimate": "60-75% of net revenue (5-10% take of GMV)",
+   "gross_margin_mid_pct": 65,
+   "us_manufacturability": "Software marketplace; physical authentication at U.S. AS6081 test houses; logistics from U.S. CM warehouses.",
+   "who_is_already_doing_this": "Mobius Materials (Richmond VA, YC, $3M seed Dec 2025, authenticated excess-semiconductor marketplace with an ML-authentication patent filed), Sourceability/Sourcengine, Fusion Worldwide, America II, Smith, NetComponents, BrokerForum, ICsource, eBay [UNVERIFIED-T for most].",
+   "wins_axis": "Supply security / liquidity",
+   "buyer": "OEM/CM buyers under allocation, and sellers holding excess memory",
+   "survives_glut": "partially",
+   "glut_reason": "Flow reverses to sellers dumping. Prices fall 60% and take-rate revenue falls with GMV, though volume may rise.",
+   "fatal_flaw": "Counterfeit liability and a two-sided cold start against entrenched brokers. A funded East Coast YC company (Mobius Materials) already does exactly this, with an authentication patent and hundreds of OEM/CM users.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "recert/brokerage; marketplace SaaS",
+   "founder_fit_note": "No as a standalone. Marketplace software is easy; trust, authentication, liability and working capital are not.",
+   "possible": "yes - brokers do it daily",
+   "profitable": "marginal - margin exists, but counterfeit risk and incumbents squeeze it",
+   "doable_by_founder": "no - Mobius is ahead in the same region with funding and IP"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-11",
+   "name": "DIMM Provenance Scanner (Sec. 5949 CXMT/YMTC audit)",
+   "subbranch": "Supply-chain compliance software for memory",
+   "materials_sense": "none",
+   "what_it_is": "An open-core Linux/Windows agent plus web dashboard. It reads every installed DIMM's SPD EEPROM (module-manufacturer JEP106 ID, DRAM-die manufacturer ID, part/serial, date code) across a server fleet or an incoming lot, flags CXMT (JEP106 0x0A11) and YMTC (0x091B) content, and produces audit-ready inventories for federal integrators ahead of the NDAA FY2023 Sec. 5949 ban (effective Dec 2027). Physical spot-confirmation would be referred to a U.S. AS6081 test lab.",
+   "why_it_could_work": "CXMT is becoming the marginal DRAM supplier (9.5% revenue share in 2Q26, ramping), while Sec. 5949 bars federal purchases of products containing CXMT/YMTC/SMIC chips from Dec 2027. JEP106 IDs are public (memtest86+ carries JEP106BP, Sep 2026), and SPD reading is solved code (memtest86+, i2c-tools decode-dimms). Integrators need fleet-scale evidence, not one-off decaps.",
+   "evidence": [
+    {
+     "title": "memtest86+ JEP106 table",
+     "url": "https://raw.githubusercontent.com/memtest86plus/memtest86plus/main/system/jedec_id.h",
+     "type": "industry",
+     "date": "2026-09",
+     "shows": "Based on JEP106BP (Sep 2026): CXMT = 0x0A11, YMTC = 0x091B."
+    },
+    {
+     "title": "memtest86+ SPD decoder",
+     "url": "https://raw.githubusercontent.com/memtest86plus/memtest86plus/main/system/spd.c",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Reads the manufacturer JEP106 ID from SPD (DDR5 bytes 512-513, DDR4 bytes 320-321) plus date code and part number."
+    },
+    {
+     "title": "XenoSpectrum on federal China-memory ban (via p1-backend)",
+     "url": "https://xenospectrum.com/en/apple-china-memory-federal-procurement-ban-2027/",
+     "type": "news",
+     "date": "2026",
+     "shows": "NDAA FY2023 s.5949: no federal purchases of products containing SMIC/YMTC/CXMT chips from Dec 2027."
+    },
+    {
+     "title": "Herald Corp / TrendForce DRAM share (via p1-market)",
+     "url": "https://biz.heraldcorp.com/article/10866656",
+     "type": "news",
+     "date": "2026-09-07",
+     "shows": "CXMT at 9.5% of DRAM revenue in 2Q26."
+    }
+   ],
+   "trl": 7,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 12,
+   "time_to_first_revenue_text": "9-15 months: a paid pilot ($10-25k) with a GSA/defense IT integrator preparing for Dec 2027, then per-node subscriptions.",
+   "gross_margin_estimate": "80-90%",
+   "gross_margin_mid_pct": 85,
+   "us_manufacturability": "Pure software built in the U.S. Partners: memtest86+/i2c-tools SPD-decoding lineage (GPL, to be reimplemented cleanly) and U.S. AS6081 counterfeit-test labs for physical confirmation.",
+   "who_is_already_doing_this": "BOM-level risk tools (SiliconExpert, Z2Data) work on part numbers, not installed-fleet SPD [UNVERIFIED-T]. Server OEM supplier attestations (Dell, HPE), firmware supply-chain vendors (Eclypsium [UNVERIFIED-T]), and ITAD asset-inventory tools. No dedicated fleet-SPD provenance product found (search budget exhausted; unconfirmed).",
+   "wins_axis": "Supply security / provenance compliance (non-CXMT attestation)",
+   "buyer": "Federal systems integrators and GSA Schedule resellers; defense-prime IT; critical-infrastructure operators with 'no-China-memory' policies",
+   "survives_glut": "yes",
+   "glut_reason": "Demand comes from law (Dec 2027), not price. A CXMT-led glut increases CXMT content in the channel and the need to detect it.",
+   "fatal_flaw": "SPD is writable and the DRAM-manufacturer field is set by the module maker, so it can be blank or spoofed: software can triage but not prove provenance. And if the FAR rule accepts supplier attestations or excludes subcomponents, nobody pays for scanning.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS (per-node); services (audit); defense-first niche",
+   "founder_fit_note": "Yes. Agent plus dashboard is his skill set, and the domain is learnable from JEDEC docs. Federal sales need a channel partner.",
+   "possible": "yes - SPD decode is mature; mapping JEP106 to CXMT is trivial",
+   "profitable": "marginal - hinges on the FAR rule scope and on integrators paying rather than self-attesting",
+   "doable_by_founder": "yes - T0, software-only; the first customer is the hard part"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-12",
+   "name": "Consumer RAM Price Tracker + Upgrade Compatibility Advisor",
+   "subbranch": "Module compatibility/QVL tools; consumer price tracking",
+   "materials_sense": "none",
+   "what_it_is": "A consumer web app with a small system scanner, filling the gap left by the Crucial System Scanner/Advisor after Crucial's Feb-2026 exit. It identifies compatible DDR4/DDR5 modules from motherboard QVLs, tracks prices across Amazon, Newegg, B&H and eBay, and earns affiliate commissions plus price-drop alerts.",
+   "why_it_could_work": "Retail DDR5 runs $13-18/GB and 32GB kits ~$450. Confused upgraders lost the Crucial advisor, which was Micron's consumer lead-gen tool [UNVERIFIED-T whether it still runs].",
+   "evidence": [
+    {
+     "title": "Micron exits Crucial (via p1-micron)",
+     "url": "https://www.storagenewsletter.com/2025/12/05/micron-announces-exit-from-crucial-consumer-business/",
+     "type": "news",
+     "date": "2025-12-05",
+     "shows": "Crucial consumer brand ended; shipments through Feb 2026."
+    },
+    {
+     "title": "rampricesusa Sep-2026 (via p1-market)",
+     "url": "https://rampricesusa.com/insights/monthly/2026-09",
+     "type": "industry",
+     "date": "2026-09",
+     "shows": "Free consumer tracker: typical DDR5 retail $18.04/GB."
+    },
+    {
+     "title": "nwfella/memory-price-index",
+     "url": "https://github.com/nwfella/memory-price-index",
+     "type": "industry",
+     "date": "2026-11-01",
+     "shows": "Free index of RamRadar retail asks plus TrendForce spot, with analysis dated 2026-11-01. DDR4 8Gb spot record $47.04."
+    },
+    {
+     "title": "GitHub search 'dram price'",
+     "url": "https://github.com/search?q=dram+price&type=repositories",
+     "type": "industry",
+     "date": "2026-11-01",
+     "shows": "37 repos, many free DRAMeXchange/TrendForce spot scrapers and dashboards updated within days."
+    },
+    {
+     "title": "TechRadar on retail demand destruction (via p1-market)",
+     "url": "https://www.techradar.com/pro/good-news-ram-prices-seem-to-have-finally-stabilized-bad-news-its-probably-because-memory-prices-are-so-high-that-its-forcing-most-of-us-to-give-up-buying-anything",
+     "type": "news",
+     "date": "2026",
+     "shows": "Retail prices stabilized because buyers stopped buying."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 3,
+   "time_to_first_revenue_text": "2-4 months to first affiliate payouts.",
+   "gross_margin_estimate": "85-95% (affiliate)",
+   "gross_margin_mid_pct": 90,
+   "us_manufacturability": "Software; U.S. retail affiliate programs.",
+   "who_is_already_doing_this": "PCPartPicker, Kingston configurator, rampricesusa, RamRadar, camelcamelcamel, Tom's Hardware price index, Servnet tracker, capitalandcompute.net, siliconanalysts.com, and 37+ GitHub trackers.",
+   "wins_axis": "Consumer $/GB (find the cheapest compatible module)",
+   "buyer": "DIY PC builders and upgraders and small IT shops; affiliate merchants pay",
+   "survives_glut": "partially",
+   "glut_reason": "Traffic falls when panic ends, and affiliate revenue shrinks with ASP (-60%).",
+   "fatal_flaw": "Affiliate economics: ~2-4% of a ~$150 order is ~$3-6 per sale [UNVERIFIED-T rates], so a salary needs thousands of sales a month. SEO is owned by PCPartPicker and incumbent trackers, and retail demand is being destroyed.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "consumer web / affiliate; data product (weak)",
+   "founder_fit_note": "Yes to build in weeks, but no business at the end.",
+   "possible": "yes",
+   "profitable": "no - side income at best",
+   "doable_by_founder": "yes"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-13",
+   "name": "Shortage Briefing: Paid Memory-Market Newsletter (bridge only)",
+   "subbranch": "Content & education",
+   "materials_sense": "none",
+   "what_it_is": "A weekly paid newsletter and short podcast for hardware buyers and retail investors. It synthesizes TrendForce press releases, DRAMeXchange spot boards, Micron/SK hynix/Samsung/Nanya earnings and a founder-built dataset, with sponsorships from brokers and ITADs. It is explicitly a bridge and a funnel for D-09/D-11.",
+   "why_it_could_work": "The shortage is front-page news and the free content is fragmented. Lead-gen content (Mobius, BuySellRAM) proves the audience exists. 200-500 paid subscribers at $10-12/month is $2-6k MRR (d_calcs.py).",
+   "evidence": [
+    {
+     "title": "Mobius Materials DRAM Market Report (via p1-market)",
+     "url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "type": "company",
+     "date": "2026",
+     "shows": "DRAM market report given away (gated) as lead-gen for the marketplace."
+    },
+    {
+     "title": "BuySellRAM market update (via p1-market)",
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "type": "industry",
+     "date": "2026-08-31",
+     "shows": "A U.S. used-RAM buyer publishes DRAMeXchange-based content as lead-gen (DDR4 8Gb avg $44.37)."
+    },
+    {
+     "title": "nwfella/memory-price-index",
+     "url": "https://github.com/nwfella/memory-price-index",
+     "type": "industry",
+     "date": "2026-11-01",
+     "shows": "Free index of RamRadar retail asks plus TrendForce spot, with analysis dated 2026-11-01. DDR4 8Gb spot record $47.04."
+    },
+    {
+     "title": "TrendForce 4Q26 price forecast (via p1-market)",
+     "url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+     "type": "industry",
+     "date": "2026-09-30",
+     "shows": "Conventional DRAM contract +10-15% QoQ in 4Q26; free press release."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 2,
+   "time_to_first_revenue_text": "1-3 months to the first paid subscribers on Substack/Beehiiv.",
+   "gross_margin_estimate": "85-95%",
+   "gross_margin_mid_pct": 90,
+   "us_manufacturability": "Content; U.S. platforms (Substack/Beehiiv).",
+   "who_is_already_doing_this": "TrendForce (free press releases), Mobius Materials and BuySellRAM (free lead-gen reports), Tom's Hardware, Igor'sLAB, Objective Analysis (Jim Handy), SemiAnalysis and Fabricated Knowledge (paid) [UNVERIFIED-T].",
+   "wins_axis": "None on memory itself; time-to-insight for buyers",
+   "buyer": "SMB OEM procurement teams and retail semiconductor investors; brokers/ITADs as sponsors",
+   "survives_glut": "no",
+   "glut_reason": "Audience interest tracks prices. In a 2028-29 glut the topic dies, apart from a 'when to buy' bump.",
+   "fatal_flaw": "It has no proprietary data or insider expertise against SemiAnalysis-class analysts and free vendor reports, and the realistic ceiling is a few thousand dollars of MRR.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "content/data product (bridge)",
+   "founder_fit_note": "Yes, as a bridge and a customer-discovery funnel only.",
+   "possible": "yes",
+   "profitable": "marginal - side income, cyclical",
+   "doable_by_founder": "yes"
+  },
+  {
+   "branch": "D",
+   "tmp_id": "D-14",
+   "name": "Embedded RAM-Diet Profiler for Small Hardware OEMs",
+   "subbranch": "Embedded memory-footprint optimization",
+   "materials_sense": "none",
+   "what_it_is": "A CLI plus web report that profiles the real memory footprint of an embedded Linux/Yocto/Android product image under worst-case load (PSS via smem, cgroup peaks, zram headroom). It produces an engineering case for dropping one LPDDR4/DDR4 density step (e.g., 2GB->1GB) or enabling zram, priced per product line for small OEMs whose BOMs ballooned in 2026.",
+   "why_it_could_work": "LPDDR4X rose +70-75% QoQ in 2Q26, and mobile LTAs signed near $21/GB. At 20k units/year x 1GB saved x $8-21/GB, a product line saves $160k-420k/year in BOM cost. zram's expected ~2:1 compression gives headroom without new silicon.",
+   "evidence": [
+    {
+     "title": "Linux zram docs",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/blockdev/zram.rst",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Upstream compressed RAM device (lz4/zstd), with writeback and recompression; the docs expect about 2:1 compression."
+    },
+    {
+     "title": "Linux zswap docs",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/zswap.rst",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Upstream compressed swap cache (zsmalloc) with per-cgroup writeback control and a shrinker."
+    },
+    {
+     "title": "China Times / TrendForce 2Q26 mobile DRAM (via p1-market)",
+     "url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+     "type": "news",
+     "date": "2026-05-15",
+     "shows": "LPDDR4X +70-75% QoQ, LPDDR5X +78-83% QoQ in 2Q26."
+    },
+    {
+     "title": "Wccftech mobile DRAM LTAs (via p1-market)",
+     "url": "https://wccftech.com/mobile-dram-prices-expected-to-increase-by-100-quarter-over-quarter-as-long-term-agreements-now-getting-signed-at-prices-as-high-as-21-gb/amp/",
+     "type": "news",
+     "date": "2026-05",
+     "shows": "Mobile DRAM LTAs signed at up to about $21/GB."
+    },
+    {
+     "title": "TweakTown DDR4 +50% Q3-26 (via p1-market)",
+     "url": "https://www.tweaktown.com/news/112541/even-ddr4-ram-is-not-safe-from-the-rampocalypse-prices-rose-over-50-percent-in-q3-2026/index.html?type=News",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "DDR4 contract quoted up to +50% QoQ in Q3-2026."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months: paid footprint audits ($5-20k) with 2-3 industrial/IoT OEMs from the founder's manufacturing network.",
+   "gross_margin_estimate": "70-85%",
+   "gross_margin_mid_pct": 75,
+   "us_manufacturability": "Software and services; customers are U.S. industrial, IoT and medical OEMs and their SoM vendors.",
+   "who_is_already_doing_this": "Embedded consultancies (Bootlin, Witekio, Toradex services) [UNVERIFIED-T], SoM vendor application engineers, Yocto buildhistory and smem (free), device-observability SaaS (Memfault [UNVERIFIED-T]).",
+   "wins_axis": "$/unit BOM (fewer GB of DRAM per device)",
+   "buyer": "Hardware product managers at U.S. industrial, IoT and medical-device OEMs shipping 5k-200k units/year",
+   "survives_glut": "no",
+   "glut_reason": "At glut prices a 1GB step saves ~$2.5/unit, below the cost of re-spin and re-qualification, so demand evaporates.",
+   "fatal_flaw": "Dropping a density step means board re-spin, re-qualification and (for medical) regulatory re-validation that cost more than a year of savings. Embedded engineers decide, and they rarely buy SaaS from non-engineers.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "services -> SaaS",
+   "founder_fit_note": "Marginal. Day-job adjacency (product development at a manufacturer) helps with access, but credibility needs embedded-Linux expertise.",
+   "possible": "yes - standard footprint tooling",
+   "profitable": "marginal - lumpy consulting that dies in a glut",
+   "doable_by_founder": "marginal"
+  }
+ ]
+}

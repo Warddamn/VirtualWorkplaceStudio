@@ -1,0 +1,798 @@
+{
+ "branch_key": "A3",
+ "branch": "A",
+ "scope": "Device & materials: capacitor-less silicon DRAM (floating-body Z-RAM, thyristor T-RAM/VLT, Si gain-cell eDRAM, 1T1C eDRAM on depreciated fabs), SRAM-at-scale on trailing nodes (bulk SRAM, long-lifecycle SRAM, compute-in-SRAM, wafer-scale SRAM, SRAM-only inference), and exotic materials (CNT NRAM, 2D materials, printed organic ferroelectric, cryogenic memory). Research constraint: the shared WebSearch budget was exhausted and web hosts were blocked, so company-status facts are [UNVERIFIED-training] and some evidence entries carry empty URLs flagged for the verify pass.",
+ "cards": [
+  {
+   "tmp_id": "A3-01",
+   "name": "Floating-body 1T-DRAM (Z-RAM lineage) on U.S. SOI",
+   "subbranch": "Capacitor-less silicon DRAM: floating body",
+   "materials_sense": "mixed:b+c",
+   "what_it_is": "Recreate a Z-RAM/Toshiba-FBC-style floating-body 1T cell (charge held in the body of an SOI MOSFET and read as a threshold-voltage shift) on a GlobalFoundries SOI flow (45RFSOI-class at a U.S. GF fab [UNVERIFIED-training]; note 22FDX is made in Dresden, not the U.S.). Product: standalone 2-4 Gb DDR3/DDR4-interface dies for legacy-DRAM buyers, or last-level-cache macros.",
+   "why_it_could_work": "No storage capacitor, so only 1-2 extra masks on a logic SOI flow instead of a DRAM stack-capacitor module. Depreciated SOI capacity exists in the U.S. On paper an 8F2 cell at 45nm gives 0.031 Gb/mm2 and about $24/GB including test (A3_device_params A3-01), which is below today's DDR5 spot (~$27/GB). The 2026 capacitor-less revival (NEO 3D X-DRAM PoC) shows the industry still wants capacitor-less DRAM.",
+   "evidence": [
+    {
+     "title": "NEO Semiconductor demonstrates 3D X-DRAM proof of concept",
+     "url": "https://www.storagenewsletter.com/2026/05/13/neo-semiconductor-demonstrates-3d-x-dram-proof-of-concept-secures-strategic-investment-to-advance-ai-memory/",
+     "type": "news",
+     "date": "2026-04",
+     "shows": "2026 capacitor-less DRAM revival: PoC retention >1 s at 85C, >1e14 cycles, <10 ns, fabbed at TSRI (IGZO/3D-NAND-style, not Si floating body) (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "DRAM value-per-area chart (Kurnal Insights)",
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "1b DRAM bit density ~0.436 Gb/mm2, the reference against which A3 densities are compared (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Innovative Silicon Z-RAM (AMD 2006, Hynix 2007 licenses; company closed 2010; patents to Micron) and Toshiba FBC ISSCC/IEDM papers 2002-2008",
+     "url": "",
+     "type": "conference",
+     "date": "2002-2010",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade. Shows floating-body cells worked in 128Mb-class SOI test chips but never reached a qualified product."
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 60,
+   "time_to_first_revenue_text": ">60 months (needs foundry JDA, array-scale reliability, then qualification)",
+   "gross_margin_estimate": "negative in glut; ~10-20% at 2026 spot if it worked",
+   "gross_margin_mid_pct": -50,
+   "us_manufacturability": "A U.S. GlobalFoundries SOI line (Malta NY / Essex VT; which SOI flows run in the U.S. in 2026 is [UNVERIFIED-training]) under a JDA. GF offers no capacitor-less DRAM today, and A3 knows no U.S. line running one.",
+   "who_is_already_doing_this": "Nobody in Si floating-body production. Micron reportedly holds the ISi Z-RAM patents [UNVERIFIED-training]. NEO Semiconductor (3D X-DRAM, see A1-05) and Unisantis (Dynamic Flash Memory) [UNVERIFIED-training] are the capacitor-less revivals. Samsung and SK hynix publish capacitor-less 3D DRAM research.",
+   "wins_axis": "Nominal $/GB vs 2026 DDR5 spot plus process simplicity. It wins on no axis once DRAM prices normalize.",
+   "buyer": "Hypothetical legacy DDR3/DDR4 industrial buyers; SoC teams wanting dense LLC on SOI.",
+   "survives_glut": "no",
+   "glut_reason": "Computed ~$24/GB against ~$10-12/GB DDR5 in the A-05 glut and ~$2.7/GB incumbent DRAM cost. Density is 14x below 1b DRAM, so even a perfect cell loses.",
+   "fatal_flaw": "Physics at scale: body charge is a few hundred electrons at 45nm and tens in thin FD-SOI, so sense margin, retention and disturb immunity collapse with variability. AMD and Hynix both licensed Z-RAM and dropped it (2006-2010) [UNVERIFIED-training].",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "university/lab patent license (expired/expiring 2002-2008 filings); fabless->foundry; IP licensing \u2014 all fail on cost",
+   "founder_fit_note": "No. It needs device physicists, a foundry JDA and T3 money. A software founder adds nothing on the critical path.",
+   "possible": "marginal \u2014 demonstrated in test chips 15-20 years ago, never qualified; scaling makes it harder",
+   "profitable": "no \u2014 14x density gap vs 1b DRAM; ~$24/GB vs glut ~$11/GB",
+   "doable_by_founder": "no \u2014 T3 device program",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-02",
+   "name": "Thyristor RAM revival (T-RAM TCCT / Kilopass VLT)",
+   "subbranch": "Capacitor-less silicon DRAM: thyristor",
+   "materials_sense": "b-process",
+   "what_it_is": "Revive the thin capacitively-coupled thyristor (TCCT) T-RAM cell, or Kilopass's vertical-layered-thyristor (VLT) cross-point cell, as a capacitor-less SRAM/DRAM replacement on a U.S. line (a GF U.S. SOI flow or SkyWater 90nm FD-SOI [UNVERIFIED-training]). Product: cache macros, or a standalone DRAM-replacement die.",
+   "why_it_could_work": "A PNPN latch stores the bit with built-in gain, so it reads fast (1-2 ns claimed) and needs no capacitor. The VLT marketing claim (4F2, no refresh, 'DRAM cost minus 45%') computes to ~$2.8/GB, DRAM-cost parity (A3-02b). A planar TCCT at 10F2/32nm computes to ~$18/GB. The earliest Stanford NDR-cell patents (~1998) have expired, so IP is no longer the barrier [UNVERIFIED-training].",
+   "evidence": [
+    {
+     "title": "DRAM value-per-area chart (Kurnal Insights)",
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "1b DRAM bit density ~0.436 Gb/mm2, the reference against which A3 densities are compared (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "T-RAM Semiconductor TCCT (AMD license 2006, GlobalFoundries 32/22nm SOI partnership 2009; company defunct ~2010-11) and Kilopass VLT announcement (2016; Kilopass acquired by Synopsys 2018)",
+     "url": "",
+     "type": "conference",
+     "date": "1998-2018",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade. Shows TCCT SRAM test arrays on SOI; VLT never shown in an array."
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 60,
+   "time_to_first_revenue_text": ">60 months",
+   "gross_margin_estimate": "negative",
+   "gross_margin_mid_pct": -40,
+   "us_manufacturability": "A GF U.S. SOI flow or SkyWater Bloomington MN 90nm FD-SOI [UNVERIFIED-training]. Neither offers a thyristor module.",
+   "who_is_already_doing_this": "Nobody commercially. GF dropped T-RAM. Synopsys owns the Kilopass assets and has not marketed VLT [UNVERIFIED-training]. There is some academic TCAD work on 3D thyristor DRAM.",
+   "wins_axis": "Read latency (SRAM-class) and density vs SRAM. It does not win on $/GB vs DRAM except in the never-demonstrated VLT claim.",
+   "buyer": "SoC cache designers (if it worked); hypothetical DRAM buyers.",
+   "survives_glut": "no",
+   "glut_reason": "~$18/GB planar against $10-12/GB glut DDR5. The only version that beats DRAM (VLT 4F2) is UNSUPPORTED marketing.",
+   "fatal_flaw": "The ON state needs a holding current. At 1-100 pA/cell a 1 Gb array idles at ~1-110 mA, and the bistable window shrinks at 85-125C. Three serious attempts failed to productize: AMD 2006, GlobalFoundries 2009, Kilopass 2016 [UNVERIFIED-training].",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "expired-patent practice; IP licensing; fabless->foundry",
+   "founder_fit_note": "No. It is a device-physics restart with a 15-year failure record.",
+   "possible": "marginal \u2014 TCCT arrays demonstrated, temperature/standby problems unsolved",
+   "profitable": "no",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-03",
+   "name": "Si gain-cell eDRAM (GCRAM) IP for U.S. trailing-node SoCs",
+   "subbranch": "Capacitor-less silicon DRAM: 2T/3T gain-cell eDRAM in logic",
+   "materials_sense": "b-process",
+   "what_it_is": "A memory-IP company that builds and licenses a logic-compatible (zero extra masks) 2T/3T silicon gain-cell eDRAM compiler, first for SkyWater S130/S90 FD-SOI and GlobalFoundries 12LP+ (Malta NY). It replaces 6T SRAM in edge-AI activation buffers, image-sensor line buffers and FPGA block RAM. Revenue is a per-node license fee plus royalty, sold through the foundry IP catalog, as SkyWater already does for Weebit ReRAM.",
+   "why_it_could_work": "SRAM scaling has stalled, and 6T SRAM costs ~$80-120/GB of die area at every node from 28nm to N2 (A3-06). A gain cell at ~50% of 6T area computes to ~$47/GB area-equivalent at 28nm, about 40% memory-area savings with lower leakage per bit. Foundries pay for differentiated embedded memory: GF bought Renesas CBRAM, and SkyWater qualified third-party ReRAM. Si read devices are fast; oxide gain cells (A1-01) are slow (DATE 2026).",
+   "evidence": [
+    {
+     "title": "Disrupting the DRAM roadmap with capacitor-less IGZO DRAM technology",
+     "url": "https://www.imec-int.com/en/articles/disrupting-dram-roadmap-capacitor-less-igzo-dram-technology",
+     "type": "industry",
+     "date": "2023",
+     "shows": "2T0C gain-cell concept: charge stored on the read-transistor gate capacitance \u2014 the same topology as Si gain cells (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "IGZO-2T eDRAM: hybrid IGZO/Si gain cells (DATE 2026)",
+     "url": "https://past.date-conference.com/proceedings-archive/2026/DATA/154.pdf",
+     "type": "conference",
+     "date": "2026",
+     "shows": "IGZO 2T eDRAM is slow (low mobility); hybrid IGZO/Si gain cells proposed \u2014 Si read devices give speed, oxide gives retention (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Weebit Nano ReRAM IP achieves high-temperature qualification in SkyWater S130",
+     "url": "https://www.skywatertechnology.com/weebit-nano-reram-ip-achieves-high-temperature-qualification-in-skywater-s130-process/",
+     "type": "company",
+     "date": "2023-11",
+     "shows": "SkyWater's S130 PDK hosts third-party memory IP \u2014 precedent for licensing a memory macro into a U.S. 130nm foundry (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "GlobalFoundries acquires Renesas CBRAM technology",
+     "url": "https://gf.com/gf-press-release/globalfoundries-acquires-renesas-non-volatile-resistive-ram-technology-to-proliferate-iot-and-5g-applications/",
+     "type": "company",
+     "date": "2023-02",
+     "shows": "Foundries pay for differentiated embedded-memory IP (GF bought CBRAM, ~1 extra mask, qualifying on 22FDX) (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Georgia Tech (Shimeng Yu) 3T IWO eDRAM for in-memory compute",
+     "url": "https://hg.gatech.edu/node/675050",
+     "type": "industry",
+     "date": "2024",
+     "shows": "U.S. university gain-cell eDRAM work (oxide-channel 3T) for compute-in-memory (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "OpenRAM open-source SRAM compiler (GitHub README; v1.2.50 commit 2026-10-27)",
+     "url": "https://github.com/VLSIDA/OpenRAM",
+     "type": "industry",
+     "date": "2026-10",
+     "shows": "Opened via git: BSD-3 SRAM compiler, generates GDS/LEF/Liberty/SPICE for sky130 (SkyWater) and gf180mcu; actively maintained (last commit 2026-10-27)"
+    },
+    {
+     "title": "Si gain-cell eDRAM literature: Intel 2T gain cell 65nm (Somasekhar, ISSCC 2008/JSSC 2009); Teman/Giterman/Burg 28nm FD-SOI gain cells; RAAAM Memory Technologies GCRAM",
+     "url": "",
+     "type": "conference",
+     "date": "2008-2025",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade. Shows silicon-proven gain-cell macros at 65-16nm in academia and one startup."
+    }
+   ],
+   "trl": 6,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 30,
+   "time_to_first_revenue_text": "24-36 months (two MPW test chips, characterization, first evaluation license)",
+   "gross_margin_estimate": "80-90% (IP license/royalty)",
+   "gross_margin_mid_pct": 85,
+   "us_manufacturability": "SkyWater Bloomington MN (S130, 90nm FD-SOI) and Fab 25 Austin TX; GlobalFoundries Fab 8 Malta NY (12LP+). Test chips go via ChipFoundry/SkyWater MPW shuttles.",
+   "who_is_already_doing_this": "RAAAM Memory Technologies (Israel; GCRAM, claims ~2x SRAM density) [UNVERIFIED-training]; academic groups at Bar-Ilan, EPFL and Georgia Tech (oxide 3T); Synopsys/Arm SRAM compilers as incumbents. A1-01 covers oxide (IGZO) gain cells; this card is Si-only and zero-mask.",
+   "wins_axis": "On-chip memory density (bits/mm2) and standby leakage per bit vs 6T SRAM at equal process cost.",
+   "buyer": "Edge-AI and sensor SoC teams on U.S. trailing nodes; DoD trusted-foundry ASIC programs; FPGA vendors needing denser block RAM.",
+   "survives_glut": "yes",
+   "glut_reason": "Embedded memory is priced in die area inside someone else's SoC, so it is decoupled from DRAM contract prices.",
+   "fatal_flaw": "At 85-125C Si gain-cell retention is ~10-100 us, so refresh erodes the power advantage. Royalties at trailing nodes are small; the MoSys 1T-SRAM precedent saw modest royalties, then decline [UNVERIFIED-training]. RAAAM got there first.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "IP licensing; university/lab patent license (Bar-Ilan/EPFL/Georgia Tech); fabless->foundry test chips; defense-first (trusted SkyWater)",
+   "founder_fit_note": "Only with a memory-circuit cofounder. The founder can own the compiler automation, web portal and characterization-data pipeline.",
+   "possible": "yes \u2014 silicon-proven in academia and at one startup",
+   "profitable": "marginal \u2014 high-margin IP but small trailing-node royalty pool and an incumbent startup",
+   "doable_by_founder": "marginal \u2014 needs a circuit cofounder and ~$2-3M",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-04",
+   "name": "OpenRAM macro service for U.S. open-PDK tapeouts (SkyWater S130)",
+   "subbranch": "SRAM-at-scale on trailing nodes: on-chip memory supply for U.S.-fab ASICs",
+   "materials_sense": "c-capital",
+   "what_it_is": "A software-first business that generates, DRC/LVS-verifies, silicon-characterizes and supports SRAM macros (later gain-cell macros) for teams taping out on SkyWater S130 (Bloomington, MN) through ChipFoundry shuttles. It is built on the BSD-licensed OpenRAM compiler and sold as a SaaS subscription (hosted macro generator, characterized Liberty/LEF/GDS libraries, CI regression) plus per-tapeout support, listed on the ChipFoundry Marketplace.",
+   "why_it_could_work": "OpenRAM is alive (v1.2.50, 2026-10-27), but only 1-4 KB prebuilt sky130 macros exist. They are periphery-dominated: a 2 KB macro takes 0.2845 mm2 (57.6 kbit/mm2), ~6x worse than the 1.896 um2 bitcell allows. Small teams cannot afford commercial memory compilers ($50k-$200k+ per node [UNVERIFIED-training]). ChipFoundry runs an IP marketplace on an active SkyWater shuttle flow. The work is Python, CI and web tooling, which is the founder's skill set.",
+   "evidence": [
+    {
+     "title": "OpenRAM open-source SRAM compiler (GitHub README; v1.2.50 commit 2026-10-27)",
+     "url": "https://github.com/VLSIDA/OpenRAM",
+     "type": "industry",
+     "date": "2026-10",
+     "shows": "Opened via git: BSD-3 SRAM compiler, generates GDS/LEF/Liberty/SPICE for sky130 (SkyWater) and gf180mcu; actively maintained (last commit 2026-10-27)"
+    },
+    {
+     "title": "openram on PyPI",
+     "url": "https://pypi.org/pypi/openram/json",
+     "type": "industry",
+     "date": "2026-10",
+     "shows": "Opened: release 1.2.50 on 2026-10-27; first PyPI release 2023-02-08"
+    },
+    {
+     "title": "SkyWater sky130_fd_bd_sram bitcell library (LEF)",
+     "url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram",
+     "type": "industry",
+     "date": "2021-10",
+     "shows": "Opened via git: SkyWater 130nm single-port 6T SRAM cell is 1.200 x 1.580 um = 1.896 um2 (VERIFIED primary PDK data)"
+    },
+    {
+     "title": "OpenRAM sky130 SRAM macros (LEF sizes)",
+     "url": "https://github.com/VLSIDA/sky130_sram_macros",
+     "type": "industry",
+     "date": "2024-07",
+     "shows": "Opened via git: 2 KB 1rw1r macro = 683.1 x 416.54 um (0.2845 mm2, 57.6 kbit/mm2); only 1-4 KB macros published"
+    },
+    {
+     "title": "ChipFoundry Caravel user project (README)",
+     "url": "https://github.com/chipfoundry/caravel_user_project",
+     "type": "industry",
+     "date": "2026-04",
+     "shows": "Opened via git: active SkyWater 130nm shuttle flow (last commit 2026-04-23); ChipFoundry Marketplace sells 'additional IP blocks, EDA tools, and shuttle services'"
+    },
+    {
+     "title": "Enabling Design Technology Co-Optimization of SRAMs though Open-Source Software (IEDM 2020)",
+     "url": "https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9372047",
+     "type": "conference",
+     "date": "2020-12",
+     "shows": "URL seen in OpenRAM README (not opened): IEDM paper on open-source SRAM DTCO"
+    }
+   ],
+   "trl": 6,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 12,
+   "time_to_first_revenue_text": "9-15 months (paid support/macro packages to MPW teams; one ~$10-15k shuttle slot for silicon characterization)",
+   "gross_margin_estimate": "70-85% (software/services)",
+   "gross_margin_mid_pct": 78,
+   "us_manufacturability": "Customer silicon is made at SkyWater Bloomington MN (S130) via ChipFoundry MPW, later SkyWater Fab 25 Austin. The venture itself is software in the U.S.",
+   "who_is_already_doing_this": "VLSIDA/UC Santa Cruz (OpenRAM maintainers, free); ChipFoundry marketplace vendors; commercial compilers from Synopsys and Arm (not offered for open PDKs at small-team prices) [UNVERIFIED-training]; SkyWater's own IP partners.",
+   "wins_axis": "Supply security and access: time and cost to get characterized on-chip RAM in a U.S.-fabbed ASIC. Not $/GB.",
+   "buyer": "University VLSI labs, DoD SBIR/STTR ASIC teams needing U.S.-only fabrication, hardware startups on ChipFoundry/SkyWater shuttles.",
+   "survives_glut": "yes",
+   "glut_reason": "Demand tracks ASIC tapeout activity and U.S.-fab policy, not DRAM prices.",
+   "fatal_flaw": "Tiny market (MPW customers number in the hundreds per year) with low willingness to pay for something free (BSD). UCSC, SkyWater or ChipFoundry could bundle equivalent macros at no charge. It is also on-chip memory IP, not 'RAM' in the mission's main sense.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS; IP licensing (support/indemnity on open IP); fabless->foundry (MPW); defense-first (U.S.-only fab flows)",
+   "founder_fit_note": "Yes. It is part-time-startable software and CI work, plus ~200 hours of contract layout/characterization help and one shuttle slot (<$50k total).",
+   "possible": "yes \u2014 compiler and PDK exist; needs larger, better-characterized macros",
+   "profitable": "marginal \u2014 likely <$1M ARR ceiling unless it expands to gain-cell IP (A3-03) or more PDKs",
+   "doable_by_founder": "yes \u2014 T0, software-led, starts alongside the day job",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-05",
+   "name": "Depreciated-fab revival of IBM-heritage deep-trench eDRAM",
+   "subbranch": "1T1C eDRAM at foundries; depreciated trailing-edge capacity",
+   "materials_sense": "c-capital",
+   "what_it_is": "Restart IBM-heritage 1T1C deep-trench eDRAM (32SOI/14HP class) on a depreciated U.S. 300mm line: onsemi East Fishkill NY (the former IBM/GF Fab 10) or GF Fab 8 Malta. Sell standalone 'fast DRAM' dies or LLC chiplets to U.S. HPC/ASIC buyers.",
+   "why_it_could_work": "The 0.0174 um2 14HP cell (IBM, IEDM 2014) is the densest logic-compatible DRAM ever shipped. It was used in POWER8/9 and z15. A fully depreciated line might sell wafers near cash cost (~$2.5k), which computes to ~$20/GB standalone including test (A3-05), below today's ~$27/GB DDR5 spot.",
+   "evidence": [
+    {
+     "title": "DRAM value-per-area chart (Kurnal Insights)",
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "1b DRAM bit density ~0.436 Gb/mm2, the reference against which A3 densities are compared (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "DRAM vs N2 wafer value comparison",
+     "url": "https://xenospectrum.com/dram-n2-wafer-price-comparison/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "Kurnal: 1b DRAM sales value per mm2 ~54% above TSMC N2 \u2014 logic-process memory cannot match DRAM bits per wafer dollar (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "IBM 14nm SOI FinFET with 0.0174 um2 eDRAM (IEDM 2014); Intel 22nm eDRAM 0.029 um2 (VLSI 2013, Crystalwell 128MB); IBM POWER10/z16 moved to Samsung 7nm without eDRAM; GF sold East Fishkill to onsemi (2019-2022)",
+     "url": "",
+     "type": "conference",
+     "date": "2013-2022",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade. Shows deep-trench eDRAM shipped in volume (TRL 9) and then was retired."
+    }
+   ],
+   "trl": 5,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 54,
+   "time_to_first_revenue_text": "48-60 months (re-establish DT module, requalify)",
+   "gross_margin_estimate": "negative vs glut",
+   "gross_margin_mid_pct": -60,
+   "us_manufacturability": "onsemi East Fishkill NY (ex-IBM 300mm; now running onsemi products) or GF Fab 8 Malta NY. A3 knows of no current U.S. deep-trench eDRAM capability [UNVERIFIED-training].",
+   "who_is_already_doing_this": "Nobody. IBM exited eDRAM with POWER10/z16. Intel ended Crystalwell-class eDRAM. GF no longer offers 14HP [UNVERIFIED-training].",
+   "wins_axis": "Latency (~2 ns macro cycle) vs commodity DRAM. Nothing on $/GB.",
+   "buyer": "HPC/ASIC teams wanting a fast on-package cache tier (hypothetical).",
+   "survives_glut": "no",
+   "glut_reason": "~$20/GB at depreciated cash cost and ~$50/GB at a normal wafer price, against $10-12/GB glut DDR5 and ~$2.7/GB DRAM cost.",
+   "fatal_flaw": "Depreciation cannot close a 17x density gap: wafer cost is a minor term once density is 0.026 vs 0.436 Gb/mm2. The tool set and know-how are likely gone [UNVERIFIED-training].",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "c-capital arbitrage of a depreciated fab; fabless->foundry \u2014 both fail",
+   "founder_fit_note": "No. T3 process restart.",
+   "possible": "marginal \u2014 it shipped before, but the process is retired",
+   "profitable": "no \u2014 density gap dominates even at cash-cost wafers",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-06",
+   "name": "Trailing-node bulk SRAM as a DRAM substitute (SRAM-DIMM/CXL)",
+   "subbranch": "SRAM-at-scale on trailing nodes",
+   "materials_sense": "c-capital",
+   "what_it_is": "A fabless 'SRAM-DIMM/CXL' product: ~1 Gb standalone 6T SRAM dies on 28nm-class foundry wafers (GF 12/14nm at Malta NY, or UMC/TSMC 28nm) behind a DDR4/CXL controller on a module. It is sold as refresh-free, lower-latency DRAM-replacement capacity during the shortage.",
+   "why_it_could_work": "Trailing-node logic wafers are cheap (~$3k at 28nm) and DRAM spot is ~$27/GB, so naive math looks close. SRAM is static (no refresh), simple to test, and made by many foundries, so supply is secure.",
+   "evidence": [
+    {
+     "title": "SkyWater sky130_fd_bd_sram bitcell library (LEF)",
+     "url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram",
+     "type": "industry",
+     "date": "2021-10",
+     "shows": "Opened via git: SkyWater 130nm single-port 6T SRAM cell is 1.200 x 1.580 um = 1.896 um2 (VERIFIED primary PDK data)"
+    },
+    {
+     "title": "DRAM value-per-area chart (Kurnal Insights)",
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "1b DRAM bit density ~0.436 Gb/mm2, the reference against which A3 densities are compared (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "DRAM vs N2 wafer value comparison",
+     "url": "https://xenospectrum.com/dram-n2-wafer-price-comparison/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "Kurnal: 1b DRAM sales value per mm2 ~54% above TSMC N2 \u2014 logic-process memory cannot match DRAM bits per wafer dollar (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Published 6T SRAM bitcells: 65nm 0.525 / 40nm 0.242 / 28nm 0.127 / 16nm 0.074 / N5 0.021 um2; TSMC N2 macro 38.1 Mb/mm2 (IEDM 2024)",
+     "url": "",
+     "type": "conference",
+     "date": "2006-2024",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade."
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 24,
+   "time_to_first_revenue_text": "~24 months (28nm mask set + controller/module)",
+   "gross_margin_estimate": "deeply negative (~$100/GB COGS vs ~$27/GB price)",
+   "gross_margin_mid_pct": -270,
+   "us_manufacturability": "GF Fab 8 Malta NY (12/14nm) is the closest U.S. option. 28nm SRAM die is otherwise Taiwan-made.",
+   "who_is_already_doing_this": "Nobody sells SRAM as bulk DRAM capacity. SRAM capacity is sold only as on-die memory (Groq, Cerebras, see A3-09/A3-10) or small standalone parts (A3-07).",
+   "wins_axis": "None at a DRAM interface: the latency advantage is lost behind the DDR/CXL controller (~50-100 ns), and it loses on $/GB by 3-40x.",
+   "buyer": "None identified. A DRAM buyer will not pay 4x spot for refresh-free capacity.",
+   "survives_glut": "no",
+   "glut_reason": "Computed COGS ~$79-120/GB at N5-N2 and ~$99-144/GB at 16-40nm, against $27/GB spot today, $10-12/GB in the glut and $2.7/GB DRAM cost.",
+   "fatal_flaw": "SRAM has a ~$80-120/GB silicon+test cost floor at every node from 28nm to N2. SRAM cell scaling has stalled, so trailing nodes are not cheaper per SRAM bit: 40nm is ~$144/GB and 65nm ~$268/GB.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry; module maker \u2014 both lose on cost",
+   "founder_fit_note": "No. Capital-heavy and uneconomic.",
+   "possible": "yes \u2014 trivially manufacturable",
+   "profitable": "no \u2014 4x above today's spot, ~10x above glut",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-07",
+   "name": "U.S.-fabbed long-lifecycle SRAM second source (SkyWater Fab 25)",
+   "subbranch": "SRAM 'RAM' products on depreciated U.S. 200mm capacity",
+   "materials_sense": "c-capital",
+   "what_it_is": "A fabless company with a pin-compatible family of 4-64 Mb async and QDR/sync SRAMs (plus a rad-tolerant option on SkyWater 90nm FD-SOI). Wafers come from SkyWater Fab 25 Austin TX (the ex-Cypress 200mm SRAM fab, 130-65nm), with U.S. assembly and test. Parts ship with 15-20-year longevity commitments to defense, avionics, industrial and networking OEMs replacing EOL or non-U.S.-owned sources.",
+   "why_it_could_work": "Legacy SRAM is priced per part, not per GB. A 16Mb die at 65nm is ~12 mm2, so COGS is ~$2.4 against distributor prices of ~$10-40 [UNVERIFIED-training]. Demand comes from long-lifecycle designs, not the DRAM cycle. Fab 25 made Cypress memory for decades and now runs as a foundry under an Infineon supply agreement. U.S.-fab provenance and longevity matter to DMSMS programs. ISSI is owned by China's Ingenic [UNVERIFIED-training].",
+   "evidence": [
+    {
+     "title": "SkyWater to Acquire Infineon's Austin Fab (Fab 25)",
+     "url": "https://www.businesswire.com/news/home/20250226773415/en/SkyWater-to-Acquire-Infineons-Austin-Fab-and-Establish-Strategic-Partnership-to-Expand-U.S.-Foundry-Capacity-for-Foundational-Chips",
+     "type": "company",
+     "date": "2025-02",
+     "shows": "200mm 130-65nm ex-Cypress fab becomes a SkyWater foundry with a long-term Infineon supply agreement (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "SkyWater acquires Infineon's 200mm fab (close and capacity)",
+     "url": "https://marklapedus.substack.com/p/skywater-acquires-infineons-200mm",
+     "type": "news",
+     "date": "2025",
+     "shows": "Closed 2025-06-30; ~400k wafer starts/yr; ~$73M at close; ~1,000 employees; conversion to foundry (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Infineon retains U.S. manufacturing via SkyWater supply agreement",
+     "url": "https://new-origin.infineon.com/cms/en/about-infineon/press/press-releases/2025/INFXX202502-066.html",
+     "type": "company",
+     "date": "2025-02",
+     "shows": "Legacy Infineon/Cypress products keep U.S. wafer supply through SkyWater (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Cypress Minnesota wafer fab sale",
+     "url": "https://us.design-reuse.com/news/41552/cypress-minnesota-wafer-fabrication-facility-sale.html",
+     "type": "news",
+     "date": "2017",
+     "shows": "Cypress sold its Minnesota fab (now SkyWater Bloomington), consolidating into Fab 25 Austin (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Frontgrade case study: Everspin Toggle MRAM for space",
+     "url": "https://www.frontgrade.com/news/new-case-study-touts-everspins-toggle-mram-highly-reliable-memory-technology-space",
+     "type": "company",
+     "date": "2020",
+     "shows": "Qualified hi-rel/space memory reaches primes through channels like Frontgrade \u2014 the buyer channel for U.S.-made long-lifecycle memory (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Sandia: evolving semiconductor technology for national security",
+     "url": "https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/",
+     "type": "government",
+     "date": "2026-05",
+     "shows": "DoE/NNSA funds trusted U.S. memory in the MESA rad-hard fab \u2014 evidence that U.S. trusted-memory buyers exist (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "SkyWater sky130_fd_bd_sram bitcell library (LEF)",
+     "url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram",
+     "type": "industry",
+     "date": "2021-10",
+     "shows": "Opened via git: SkyWater 130nm single-port 6T SRAM cell is 1.200 x 1.580 um = 1.896 um2 (VERIFIED primary PDK data)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 33,
+   "time_to_first_revenue_text": "30-36 months (design, 65-90nm masks, AEC-Q100/QML-style qualification)",
+   "gross_margin_estimate": "45-60%",
+   "gross_margin_mid_pct": 52,
+   "us_manufacturability": "SkyWater Fab 25 Austin TX (200mm, 130-65nm) and SkyWater Bloomington MN (S130; 90nm FD-SOI for rad-tolerant parts [UNVERIFIED-training]); a U.S. hi-rel OSAT for assembly and test.",
+   "who_is_already_doing_this": "Infineon (ex-Cypress SRAM; U.S. supply now via SkyWater), Renesas, ISSI (Ingenic-owned), GSI Technology (TSMC-fabbed high-speed SRAM), Alliance Memory, Rochester Electronics (EOL continuation, Newburyport MA). Rad-hard: Honeywell (Plymouth MN), BAE Systems (Manassas VA), Frontgrade [UNVERIFIED-training for current product status].",
+   "wins_axis": "Supply security and lifecycle length: U.S.-fab, 20-year availability, non-PRC ownership. Not $/GB.",
+   "buyer": "Defense primes (avionics, radar, EW), DMSMS/obsolescence programs, industrial controls, networking line cards using QDR SRAM.",
+   "survives_glut": "yes",
+   "glut_reason": "SRAM ASPs are decoupled from DRAM contract prices; long-lifecycle buyers pay for availability through cycles.",
+   "fatal_flaw": "The incumbent (Infineon, supplied from the same Fab 25 under contract) and Renesas can match or undercut on any socket. The standalone SRAM market is small and shrinking, and qualification takes 2-3 years before revenue.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry; defense-first; module/component maker",
+   "founder_fit_note": "No for the core (needs an SRAM design team and $5-15M). The founder could own the demand-side DMSMS tooling, which overlaps A2-15.",
+   "possible": "yes \u2014 mature technology at a willing U.S. foundry",
+   "profitable": "marginal \u2014 real margins per part, but a small market with a strong incumbent at the same fab",
+   "doable_by_founder": "no \u2014 T2 hardware team required",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-08",
+   "name": "Compute-in-SRAM vector-search appliance on GSI Gemini APU",
+   "subbranch": "SRAM-at-scale: compute-in-SRAM as a DRAM-bandwidth substitute",
+   "materials_sense": "none",
+   "what_it_is": "An on-prem retrieval and vector-search appliance plus software (FAISS/Milvus-compatible API, index build pipeline, monitoring) built on GSI Technology's Gemini APU PCIe cards. The APU does associative processing inside SRAM bit-lines (Gemini-I on TSMC 28nm, Gemini-II on 16nm) [UNVERIFIED-training]. It is sold to air-gapped defense/IC RAG and SIEM buyers as hardware plus an annual software subscription.",
+   "why_it_could_work": "The APU runs nearest-neighbour search inside SRAM, so a billion-vector index needs far less DRAM bandwidth and capacity per query than on CPUs/GPUs. With DRAM/HBM at 2-3x 2025 prices, DRAM GB per QPS matters. A 2025 Cornell study reported GPU-class retrieval at much lower energy [UNVERIFIED-training]. GSI is small (~$20M revenue) and needs software channel partners, and the integration is mostly software.",
+   "evidence": [
+    {
+     "title": "D-Matrix AI chip promises efficient transformer processing",
+     "url": "https://www.forbes.com/sites/karlfreund/2022/06/21/d-matrix-ai-chip-promises-efficient-transformer-processing/",
+     "type": "news",
+     "date": "2022-06",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): digital in-memory (SRAM) compute + chiplets for datacenter inference"
+    },
+    {
+     "title": "Startup Runs AI in Novel SRAM",
+     "url": "https://www.eetimes.com/document.asp?doc_id=1334947",
+     "type": "news",
+     "date": "2019",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): another compute-in-SRAM startup (Areanna AI)"
+    },
+    {
+     "title": "GSI Technology Gemini APU (Sunnyvale CA; FY2025 revenue ~$20M; Cornell/MICRO-2025 energy-efficiency study of APU retrieval)",
+     "url": "",
+     "type": "company",
+     "date": "2025",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade. Status as of 2026-11-01 not verified."
+    }
+   ],
+   "trl": 7,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 15,
+   "time_to_first_revenue_text": "12-18 months (eval cards, one defense/enterprise pilot)",
+   "gross_margin_estimate": "30-50% blended (hardware pass-through + software subscription)",
+   "gross_margin_mid_pct": 40,
+   "us_manufacturability": "APU silicon is TSMC (Taiwan) and boards are GSI-sourced. Integration and software are in the U.S., so the product is U.S.-assembled, not U.S.-made.",
+   "who_is_already_doing_this": "GSI Technology itself (Leda boards, software); GPU/CPU vector search (NVIDIA cuVS, Milvus/Zilliz, Pinecone, Weaviate); other compute-in-SRAM startups (d-Matrix for LLMs, Areanna historically).",
+   "wins_axis": "Watts per query and DRAM GB per QPS for large-scale vector search.",
+   "buyer": "Air-gapped defense/intelligence RAG deployments; on-prem enterprise search with power or DRAM constraints.",
+   "survives_glut": "partially",
+   "glut_reason": "The DRAM-savings pitch weakens when DDR5 falls to ~$10/GB, but the energy and air-gap pitches remain.",
+   "fatal_flaw": "Single-supplier dependency on a small, loss-making vendor whose roadmap or survival is uncertain [UNVERIFIED-training], while GPU/CPU vector search improves every year and DRAM gets cheap in the glut.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance maker (VAR); SaaS (software subscription); defense-first",
+   "founder_fit_note": "Marginal-to-yes. The software stack is in the founder's wheelhouse, and ~$100-300k buys eval hardware and pilots. The hardware dependency is the risk.",
+   "possible": "yes \u2014 the APU ships",
+   "profitable": "marginal \u2014 thin hardware margin, vendor risk",
+   "doable_by_founder": "marginal \u2014 software-led but needs a hardware partner that stays alive",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-09",
+   "name": "Memory-only wafer-scale SRAM ('Cerebras for RAM')",
+   "subbranch": "Wafer-scale SRAM as a RAM product",
+   "materials_sense": "c-capital",
+   "what_it_is": "A whole 300mm 28nm wafer of redundant, stitched SRAM (~27 GB) packaged with power delivery and cooling as an ultra-low-latency memory appliance, attached to hosts through edge SerDes/CXL links. Wafers would come from a 28nm-class foundry (GF Malta 12/14nm is the U.S. option).",
+   "why_it_could_work": "Cerebras proved wafer-scale yield through redundancy (WSE-2 '100% yield' on 7nm; WSE-3 holds 44 GB SRAM on 46,225 mm2 [UNVERIFIED-training]). 28nm wafers are cheap, and on-wafer bandwidth is enormous.",
+   "evidence": [
+    {
+     "title": "Cerebras Unveils Wafer Scale Engine Two (WSE2): 2.6 Trillion Transistors, 100% Yield",
+     "url": "https://www.anandtech.com/show/16626/cerebras-unveils-wafer-scale-engine-two-wse2-26-trillion-transistors-100-yield",
+     "type": "news",
+     "date": "2021-04",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): wafer-scale engine on TSMC 7nm (WSE1 on 16nm); redundancy gives '100% yield'"
+    },
+    {
+     "title": "Cerebras Unveils Andromeda, a 13.5 Million Core AI Supercomputer",
+     "url": "https://www.cerebras.net/press-release/cerebras-unveils-andromeda-a-13.5-million-core-ai-supercomputer-that-delivers-near-perfect-linear-scaling-for-large-language-models",
+     "type": "company",
+     "date": "2022-11",
+     "shows": "URL seen in basicmi/AI-Chip README (not opened): wafer-scale systems clustered for LLM work"
+    },
+    {
+     "title": "The Cerebras CS-1 computes deep learning AI problems by being bigger",
+     "url": "https://techcrunch.com/2019/11/19/the-cerebras-cs-1-computes-deep-learning-ai-problems-by-being-bigger-bigger-and-bigger-than-any-other-chip/",
+     "type": "news",
+     "date": "2019-11",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): CS-1 launch; first customer Argonne National Laboratory"
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "~48 months",
+   "gross_margin_estimate": "negative",
+   "gross_margin_mid_pct": -90,
+   "us_manufacturability": "GF Fab 8 Malta NY for wafers. Wafer-scale packaging capability in the U.S. is unclear [UNVERIFIED-training].",
+   "who_is_already_doing_this": "Cerebras (compute + SRAM on one wafer, TSMC). Nobody sells memory-only wafers.",
+   "wins_axis": "None for a host: on-wafer bandwidth cannot leave the wafer through an ~860 mm perimeter.",
+   "buyer": "None identified. Latency-critical buyers buy Cerebras/Groq compute instead.",
+   "survives_glut": "no",
+   "glut_reason": "~$111/GB in silicon alone and ~$1,000/GB packaged (A3-09), against $10-27/GB DRAM.",
+   "fatal_flaw": "Cerebras's economics come from co-locating compute with SRAM. A memory-only wafer exports its bandwidth through edge I/O, so it is DRAM at 40-100x the price with no latency advantage visible to the host.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance maker \u2014 fails",
+   "founder_fit_note": "No.",
+   "possible": "yes \u2014 engineering-feasible",
+   "profitable": "no",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-10",
+   "name": "U.S.-fabbed SRAM-only LLM inference accelerator (Groq pattern)",
+   "subbranch": "SRAM-instead-of-DRAM for inference",
+   "materials_sense": "c-capital",
+   "what_it_is": "A fabless startup building a deterministic SRAM-only LLM-decode accelerator (the Groq LPU pattern) on GlobalFoundries 12LP+ at Fab 8 Malta, NY. It would be sold as U.S.-made inference racks or cloud tokens, replacing HBM/DRAM with on-chip SRAM for low-latency decode.",
+   "why_it_could_work": "Groq ran Llama-2 70B at 240 tokens/s/user on first-gen 14nm silicon (EE Times 2023). Groq v1 was fabbed at GF 14nm, Malta NY [UNVERIFIED-training]. Big money keeps following SRAM-centric inference: NVIDIA's reported ~$20B license-and-hire deal with Groq (Dec 2025) [UNVERIFIED-training], d-Matrix and Cerebras raises. HBM is supply-constrained.",
+   "evidence": [
+    {
+     "title": "Groq Demonstrates Fast LLMs on 4-Year-Old Silicon",
+     "url": "https://www.eetimes.com/groq-demos-fast-llms-on-4-year-old-silicon/",
+     "type": "news",
+     "date": "2023-09",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): first-gen SRAM-only LPU ran Llama-2 70B at 240 tokens/s/user"
+    },
+    {
+     "title": "AI Chip Startup Groq Raises $300 Million",
+     "url": "https://www.forbes.com/sites/amyfeldman/2021/04/14/ai-chip-startup-groq-founded-by-ex-googlers-raises-300-million-to-power-autonomous-vehicles-and-data-centers/",
+     "type": "news",
+     "date": "2021-04",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): Groq raised $300M in 2021 (T3 capital intensity)"
+    },
+    {
+     "title": "D-Matrix AI chip promises efficient transformer processing",
+     "url": "https://www.forbes.com/sites/karlfreund/2022/06/21/d-matrix-ai-chip-promises-efficient-transformer-processing/",
+     "type": "news",
+     "date": "2022-06",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): digital in-memory (SRAM) compute + chiplets for datacenter inference"
+    },
+    {
+     "title": "AI chip startup d-Matrix raises $110 million with backing from Microsoft",
+     "url": "https://www.reuters.com/technology/ai-chip-startup-d-matrix-raises-110-mln-with-backing-microsoft-2023-09-06/",
+     "type": "news",
+     "date": "2023-09",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): $110M raise incl. Microsoft"
+    },
+    {
+     "title": "Graphcore Supercharges IPU with Wafer-on-Wafer",
+     "url": "https://www.eetimes.com/graphcore-supercharges-ipu-with-wafer-on-wafer/",
+     "type": "news",
+     "date": "2022-03",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): SRAM-heavy IPU (no HBM) using 3D wafer-on-wafer"
+    },
+    {
+     "title": "Untether AI nabs $125M for AI acceleration chips",
+     "url": "https://venturebeat.com/2021/07/20/untether-ai-nabs-125m-for-ai-acceleration-chips/",
+     "type": "news",
+     "date": "2021-07",
+     "shows": "URL + excerpt seen in basicmi/AI-Chip README (not opened): at-memory (SRAM) inference startup raised $125M"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 42,
+   "time_to_first_revenue_text": "36-48 months",
+   "gross_margin_estimate": "40-60% if it wins",
+   "gross_margin_mid_pct": 45,
+   "us_manufacturability": "GlobalFoundries Fab 8 Malta NY (12LP+/14nm), the same U.S. fab class Groq v1 used [UNVERIFIED-training]. U.S. OSAT assembly.",
+   "who_is_already_doing_this": "Groq (with NVIDIA license), Cerebras, d-Matrix, SambaNova, Etched, MatX, Positron. Graphcore (now SoftBank) and Untether AI (team absorbed by AMD, 2025) [UNVERIFIED-training] show the attrition.",
+   "wins_axis": "Tokens/s/user (decode latency) and energy per bit moved (no off-chip DRAM I/O).",
+   "buyer": "Latency-sensitive inference (agents, voice, real-time trading) and sovereign/U.S.-made AI clouds.",
+   "survives_glut": "partially",
+   "glut_reason": "The latency premium persists, but cheap HBM/DDR in a glut erodes the 'no DRAM needed' cost story, and SRAM is ~$350/GB at chip level vs ~$12/GB HBM3E (A3-10).",
+   "fatal_flaw": "Upper-T3 capital (incumbents raised $0.3-1B+ each) against four or more well-funded incumbents, with NVIDIA now holding Groq's technology license. A 70B 8-bit model needs ~300+ SRAM dies.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry; appliance; cloud service",
+   "founder_fit_note": "No. A $100M+ chip company.",
+   "possible": "yes \u2014 shipping at incumbents",
+   "profitable": "marginal \u2014 only for the category winner",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-11",
+   "name": "Nantero NRAM (carbon-nanotube) license and U.S. second source",
+   "subbranch": "Exotic: carbon-nanotube memory",
+   "materials_sense": "mixed:a+b",
+   "what_it_is": "License Nantero's (Woburn, MA) carbon-nanotube NRAM 1T1R BEOL module and run it at SkyWater Bloomington MN (200mm, already hosting third-party BEOL memory). The first product would be rad-hard, high-temperature non-volatile RAM for space and defense; the long-term pitch is DDR-class persistent memory.",
+   "why_it_could_work": "The CNT fabric is spin-coated at room temperature, which is CMOS-compatible and uses cheap tooling (materials sense a+b). Nantero claims ns switching, high endurance, multi-year retention at high temperature and radiation tolerance [UNVERIFIED-training]. A hypothetical 1T1R at 28nm computes to ~$31/GB (A3-11), cheap for rad-hard NVM.",
+   "evidence": [
+    {
+     "title": "Weebit Nano ReRAM IP achieves high-temperature qualification in SkyWater S130",
+     "url": "https://www.skywatertechnology.com/weebit-nano-reram-ip-achieves-high-temperature-qualification-in-skywater-s130-process/",
+     "type": "company",
+     "date": "2023-11",
+     "shows": "SkyWater's S130 PDK hosts third-party memory IP \u2014 precedent for licensing a memory macro into a U.S. 130nm foundry (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Frontgrade case study: Everspin Toggle MRAM for space",
+     "url": "https://www.frontgrade.com/news/new-case-study-touts-everspins-toggle-mram-highly-reliable-memory-technology-space",
+     "type": "company",
+     "date": "2020",
+     "shows": "Qualified hi-rel/space memory reaches primes through channels like Frontgrade \u2014 the buyer channel for U.S.-made long-lifecycle memory (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "Nantero NRAM: Fujitsu Semiconductor + Mie Fujitsu licenses (2016, 55nm target product ~2018-19, not known to have shipped); Nantero IEDM/company disclosures",
+     "url": "",
+     "type": "company",
+     "date": "2016-2020",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade. Status of Nantero in 2026 unknown."
+    }
+   ],
+   "trl": 5,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "~48 months (module transfer, rad testing, QML-style qualification)",
+   "gross_margin_estimate": "40-60% in a rad-hard niche if it worked",
+   "gross_margin_mid_pct": 45,
+   "us_manufacturability": "SkyWater Bloomington MN (S130 BEOL) or Fab 25 Austin. The licensor is in Massachusetts (East Coast).",
+   "who_is_already_doing_this": "Nantero (licensor; activity in 2024-2026 unverified). Fujitsu/Mie Fujitsu (licensees; Mie fab now USJC) [UNVERIFIED-training]. Rad-hard NVM incumbents: Everspin Toggle MRAM via Frontgrade, Infineon rad-hard F-RAM.",
+   "wins_axis": "Non-volatility plus radiation and temperature tolerance (space/defense). Not $/GB vs DRAM.",
+   "buyer": "Space primes and rad-hard component distributors (Frontgrade-type channel); downhole/high-temperature industrial.",
+   "survives_glut": "partially",
+   "glut_reason": "The rad-hard niche is independent of DRAM prices, but the 'DRAM replacement' story dies at $10/GB DDR5.",
+   "fatal_flaw": "20+ years and >$100M [UNVERIFIED-training] without a known volume product; the Fujitsu-licensed product apparently never shipped. In rad-hard it must displace qualified Toggle MRAM and F-RAM incumbents.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "university/lab-style patent license (from Nantero); defense-first; fabless->foundry",
+   "founder_fit_note": "No. A device-transfer and qualification program.",
+   "possible": "marginal \u2014 demonstrated by licensees, never productized",
+   "profitable": "no \u2014 no evidence of a cost or performance win that incumbents can't match",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-12",
+   "name": "2D-material (MoS2/WSe2) gain-cell DRAM or 2D flash",
+   "subbranch": "Exotic: 2D semiconductor memory",
+   "materials_sense": "a-material",
+   "what_it_is": "BEOL 2T0C gain cells or 2D-channel flash built from wafer-scale MoS2/WSe2, under a university license (Penn State 2D Crystal Consortium, MIT, or the Fudan 'PoX' line of work). Pilot fabrication would be at the Penn State 2DCC user facility or NY CREATES Albany 300mm.",
+   "why_it_could_work": "Atomically thin, wide-gap channels give ultra-low off-current (long retention, like IGZO) with higher mobility than IGZO. Lab papers report sub-ns 2D flash programming (Fudan PoX, ~400 ps, Nature 2025) and 2D logic circuits of a few thousand transistors [UNVERIFIED-training].",
+   "evidence": [
+    {
+     "title": "NY CREATES + Fraunhofer IPMS JDA on memory devices at 300mm (Albany NY)",
+     "url": "https://nachrichten.idw-online.de/2025/05/16/ny-creates-and-fraunhofer-ipms-announce-joint-development-agreement-to-advance-memory-devices-at-300mm-wafer-scale",
+     "type": "news",
+     "date": "2025-05",
+     "shows": "Venue evidence only: Albany NY 300mm hosts external memory-device JDAs (HfO2 FE), a possible pilot site; does NOT show 2D-memory mechanism (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "2D-material memory literature: Fudan quasi-non-volatile 2D memory (Nature Nanotech 2018), Fudan PoX 400-ps 2D flash (Nature 2025), Penn State 2D CMOS computer (Nature 2025)",
+     "url": "",
+     "type": "peer-reviewed",
+     "date": "2018-2025",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade. No array-scale (>1 Mb) 2D memory known to A3."
+    }
+   ],
+   "trl": 2,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 96,
+   "time_to_first_revenue_text": ">8 years",
+   "gross_margin_estimate": "not modelable",
+   "gross_margin_mid_pct": 0,
+   "us_manufacturability": "No U.S. production line; research only (Penn State 2DCC, NY CREATES Albany).",
+   "who_is_already_doing_this": "Academic groups (Fudan, Penn State, MIT, Stanford); TSMC/imec/Intel 2D-channel logic research [UNVERIFIED-training].",
+   "wins_axis": "Retention per area (speculative) \u2014 not demonstrated at array scale.",
+   "buyer": "None until TRL 6+.",
+   "survives_glut": "no",
+   "glut_reason": "Too far from product to matter. A product landing in the 2030s competes with mature IGZO 2T0C (A1) and cheap DRAM.",
+   "fatal_flaw": "No defect-controlled, wafer-scale 2D growth at BEOL-compatible temperature, and no array-scale demonstration. Contact resistance and variability are unsolved. IGZO (A1-01..04) already delivers the low-leakage benefit on 300mm today.",
+   "rule1_status": "UNSUPPORTED",
+   "business_model_lenses": "university/lab patent license \u2014 premature",
+   "founder_fit_note": "No. Basic research.",
+   "possible": "no (not within the venture horizon) \u2014 lab devices only; UNSUPPORTED at array scale",
+   "profitable": "no",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-13",
+   "name": "Printed organic ferroelectric memory (Thinfilm post-mortem)",
+   "subbranch": "Exotic: organic/polymer and printed memory",
+   "materials_sense": "mixed:a+b",
+   "what_it_is": "Roll-to-roll printed P(VDF-TrFE) ferroelectric-polymer passive-matrix memory, the Thinfilm Electronics lineage, built on a U.S. printed-electronics pilot line (e.g. NextFlex, San Jose CA) [UNVERIFIED-training]. Product: printed memory labels, pitched here as 'printable RAM'.",
+   "why_it_could_work": "No lithography and no vacuum: gravure or inkjet printing of a ferroelectric polymer between printed electrodes costs cents per label. Thinfilm did ship 20-bit printed memory labels (~2010s) [UNVERIFIED-training].",
+   "evidence": [
+    {
+     "title": "Thin Film Electronics ASA printed ferroelectric polymer memory (20-bit labels); pivot to NFC (Kovio fab, 2014), then to microbatteries as Ensurge Micropower (2021); insolvency ~2024",
+     "url": "",
+     "type": "company",
+     "date": "2009-2024",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade."
+    }
+   ],
+   "trl": 2,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 60,
+   "time_to_first_revenue_text": "never as RAM",
+   "gross_margin_estimate": "n/a",
+   "gross_margin_mid_pct": 0,
+   "us_manufacturability": "NextFlex pilot lines (San Jose CA) or university printed-electronics labs. The former Thinfilm/Kovio San Jose line is closed [UNVERIFIED-training].",
+   "who_is_already_doing_this": "Nobody for RAM. Thinfilm exited memory.",
+   "wins_axis": "Cost per label for a few bits (anti-counterfeit tags) \u2014 not any RAM axis.",
+   "buyer": "None for RAM; brand-protection labels at most.",
+   "survives_glut": "no",
+   "glut_reason": "About $4e7/GB by label cost (A3-13), ~7 orders of magnitude above DRAM, with ms latency and 1e3-1e5 endurance.",
+   "fatal_flaw": "Density, latency and endurance are each 6-10 orders of magnitude from RAM. The company that pioneered it abandoned memory twice and later failed [UNVERIFIED-training].",
+   "rule1_status": "UNSUPPORTED",
+   "business_model_lenses": "none viable",
+   "founder_fit_note": "No.",
+   "possible": "no as RAM (UNSUPPORTED for any RAM role; 20-bit labels did ship, no URL retrievable this session)",
+   "profitable": "no",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A3-14",
+   "name": "Cryo-CMOS gain-cell eDRAM IP for quantum-computer control",
+   "subbranch": "Exotic/cryogenic memory (vs superconducting memory)",
+   "materials_sense": "b-process",
+   "what_it_is": "A memory-IP and test-chip business offering Si gain-cell eDRAM macros characterized at 4 K and 77 K for cryo-CMOS qubit-controller ASICs, fabbed on GF 12LP+ (Malta NY) or SkyWater 90nm FD-SOI. Revenue is NRE plus licenses from quantum hardware teams and national-lab programs.",
+   "why_it_could_work": "At cryogenic temperatures subthreshold leakage collapses, so Si gain-cell retention rises from microseconds to seconds or more [UNVERIFIED-training]. That makes refresh nearly free while keeping ~2x SRAM density and very low static power. This matters because the 4 K stage has only ~1 W of cooling budget. Superconducting memories (SFQ/JMRAM) remain far less dense.",
+   "evidence": [
+    {
+     "title": "Disrupting the DRAM roadmap with capacitor-less IGZO DRAM technology",
+     "url": "https://www.imec-int.com/en/articles/disrupting-dram-roadmap-capacitor-less-igzo-dram-technology",
+     "type": "industry",
+     "date": "2023",
+     "shows": "2T0C gain-cell concept: charge stored on the read-transistor gate capacitance \u2014 the same topology as Si gain cells (CROSS-REFERENCE: seen in another agent's search results, not opened by A3)"
+    },
+    {
+     "title": "OpenRAM open-source SRAM compiler (GitHub README; v1.2.50 commit 2026-10-27)",
+     "url": "https://github.com/VLSIDA/OpenRAM",
+     "type": "industry",
+     "date": "2026-10",
+     "shows": "Opened via git: BSD-3 SRAM compiler, generates GDS/LEF/Liberty/SPICE for sky130 (SkyWater) and gf180mcu; actively maintained (last commit 2026-10-27)"
+    },
+    {
+     "title": "Cryogenic CMOS eDRAM/gain-cell characterization papers (2020-2024) and Intel Horse Ridge cryo-CMOS controller",
+     "url": "",
+     "type": "conference",
+     "date": "2020-2024",
+     "shows": "[UNVERIFIED-training] citation from A3 training data (<= mid-2026). No URL could be opened or seen this session: the shared WebSearch budget was exhausted and web hosts returned proxy 403. Verify agent: add a URL or downgrade."
+    }
+   ],
+   "trl": 3,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 30,
+   "time_to_first_revenue_text": "24-36 months (NRE/research contracts)",
+   "gross_margin_estimate": "60-80% (IP/NRE)",
+   "gross_margin_mid_pct": 70,
+   "us_manufacturability": "GF Fab 8 Malta NY (12LP+) or SkyWater Bloomington MN (90nm FD-SOI). Cryo test needs a dilution refrigerator, rented from a university or national lab.",
+   "who_is_already_doing_this": "Intel (Horse Ridge), IBM Quantum, Google Quantum AI and imec do in-house cryo-CMOS; SEEQC (Elmsford NY) does superconducting SFQ control; academic cryo gain-cell groups [UNVERIFIED-training].",
+   "wins_axis": "Static power at the 4 K stage and memory density for cryo control electronics.",
+   "buyer": "Quantum computing hardware teams (IBM Quantum NY, Google Quantum AI), DARPA/IARPA quantum programs.",
+   "survives_glut": "yes",
+   "glut_reason": "Unrelated to DRAM pricing.",
+   "fatal_flaw": "The market is a few dozen teams, most of which design memory in-house. Quantum roadmaps may keep control at room temperature for years. It needs a cryo test lab and a circuit designer.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "IP licensing; defense/government NRE; university/lab patent license",
+   "founder_fit_note": "No. Specialist circuit and cryo expertise, with grant-like revenue.",
+   "possible": "yes \u2014 physics favorable",
+   "profitable": "marginal \u2014 tiny market",
+   "doable_by_founder": "no",
+   "branch": "A"
+  }
+ ]
+}

@@ -1,0 +1,961 @@
+{
+ "branch_key": "A2",
+ "branch": "A",
+ "scope": "Device & materials: MRAM (Toggle, STT, SOT, eMRAM), ReRAM/memristor/CBRAM, PCM/3D XPoint — incl. design-in, defense-first, IP-licensing, salvage and software lenses",
+ "cards": [
+  {
+   "tmp_id": "A2-01",
+   "name": "Supercap-Killer PLP Kit (MRAM write-cache reference design)",
+   "subbranch": "STT-MRAM design-in: power-loss-protection write cache",
+   "materials_sense": "mixed:a+c",
+   "what_it_is": "A licensed reference design (schematic/layout, FPGA or RISC-V controller RTL, Linux/Zephyr journaling driver, validation suite) that replaces the DRAM + supercapacitor power-loss-protection block in SSD, computational-storage, RAID/HBA and industrial data-logger boards with Everspin PERSYST 1Gb ST-DDR4 or 64-256Mb xSPI STT-MRAM. Parts come from Everspin (GF 28nm CMOS + Chandler AZ MTJ BEOL; Microchip Gresham OR line from 2H-2027); revenue is design-package fee + per-unit royalty + design-in services.",
+   "why_it_could_work": "IBM moved its 5th-gen FlashCore Module to Everspin MRAM instead of capacitors (Oct-2026) because supercaps/batteries wear out in a few years and take board space. The PLP block needs only 64-512 MB, so MRAM's ~30x $/bit penalty (~$100/Gb street vs ~$3/Gb DRAM) costs ~$50-400 per board but deletes the capacitor bank, hold-up circuitry and its field failures. DRAM write-cache cost doubled in 2026 while MRAM pricing did not move with the DRAM cycle, narrowing the delta. Everspin is adding U.S. capacity (Microchip 10-yr deal, up to 1,300 wafers/qtr).",
+   "evidence": [
+    {
+     "title": "IBM using Everspin MRAM in 5th-gen FlashCore Modules",
+     "url": "https://www.blocksandfiles.com/flash/2026/10/05/ibm-using-everspin-mram-in-5th-gen-flashcore-modules/5300966",
+     "type": "news",
+     "date": "2026-10",
+     "shows": "IBM FCM5 (QLC SSD) uses a few hundred MB of Everspin MRAM as write cache/journal instead of supercapacitors for power-loss protection; production product (via search snippet)"
+    },
+    {
+     "title": "Next-Generation IBM FlashCore Modules Feature Everspin's PERSYST 1Gb STT-MRAM",
+     "url": "https://businesswire.com/news/home/20240430370312/en/Next-Generation-IBM-FlashCore-Modules-Feature-Everspins-PERSYST-1-Gigabit-STT-MRAM-Enhancing-Reliability",
+     "type": "company",
+     "date": "2024-04",
+     "shows": "IBM FCM4 design-in of EMD4E001G 1Gb STT-MRAM (via search snippet)"
+    },
+    {
+     "title": "IBM and Everspin announce 19TB NVMe SSD with MRAM write cache",
+     "url": "https://www.anandtech.com/show/13174",
+     "type": "news",
+     "date": "2018-08",
+     "shows": "IBM chose MRAM over DRAM+supercaps because supercaps/batteries last only a few years (via search snippet)"
+    },
+    {
+     "title": "Phison brings Everspin 1Gb STT-MRAM to next-gen SSD controllers",
+     "url": "https://www.3dtested.com/news/phison-ssd-controller-everspin-mram,40022.html",
+     "type": "news",
+     "date": "2018",
+     "shows": "SSD controller support for MRAM-based PLP without supercaps (via search snippet)"
+    },
+    {
+     "title": "Everspin 8-K: Foundry Services Agreement with Microchip",
+     "url": "https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408xexx991.htm",
+     "type": "company",
+     "date": "2026-04",
+     "shows": "10-yr deal: Microchip Fab 4 (Gresham OR) 8-inch MRAM/TMR/STT wafers, ramp to max 1,300 wafers/qtr, first products 2H-2027; Microchip barred from making TMR devices for Everspin competitors (via search snippet)"
+    },
+    {
+     "title": "EMD4E001G16G2-150CAS2R listing",
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "type": "industry",
+     "date": "2026",
+     "shows": "1Gb STT-MRAM reference price $102.60 @500 (~$821/GB) (via search snippet)"
+    }
+   ],
+   "trl": 8,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 15,
+   "time_to_first_revenue_text": "12-18 months: first paid design-in (services) to a Tier-2 SSD/computational-storage or industrial logger OEM; royalties only after their product ships (24-36 months)",
+   "gross_margin_estimate": "45-70% (package/royalty high, services ~40%)",
+   "gross_margin_mid_pct": 50,
+   "us_manufacturability": "MRAM die: Everspin Chandler AZ (MTJ BEOL, co-located at NXP) on GF Singapore 28nm CMOS today; Microchip Fab 4 Gresham OR 200mm from 2H-2027 for lower densities. Board assembly at any U.S. EMS. Not fully U.S.-made at 1Gb density until a U.S. CMOS source exists.",
+   "who_is_already_doing_this": "Everspin application engineering (gives reference designs free), IBM (in-house FCM), Phison (controller support), Broadcom/LSI RAID (Everspin journal MRAM since 2012), Marvell/Microchip SSD controller reference boards",
+   "wins_axis": "lifecycle length and non-volatility of the write cache (no supercap aging), board area, PLP reliability — NOT $/GB",
+   "buyer": "Tier-2 enterprise/industrial and rugged/defense SSD makers, computational-storage startups, RAID/HBA card makers, flight/data-recorder and PLC OEMs with 10-20-year field life",
+   "survives_glut": "partially",
+   "glut_reason": "The reliability/supercap-elimination case is independent of DRAM price, but a 60% DDR5/DDR4 drop makes the DRAM+supercap alternative ~$20-50 cheaper per board, so marginal designs revert to DRAM.",
+   "fatal_flaw": "Everspin and the controller vendors already give this engineering away to win sockets, and the number of new PLP designs per year is dozens, not thousands — a kit business likely caps below ~$1M/yr; plus an ITC exclusion order on Everspin STT-MRAM (Avalanche, 337-TA-1487, ~mid-2027) could interrupt 1Gb supply.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance (reference design), IP licensing (design package + royalty), design services, defense-first variant (rugged SSDs)",
+   "founder_fit_note": "Founder can own drivers, test tooling and sales, but needs a contract hardware/FPGA engineer (~$30-60k year 1); slow but possible alongside the day job.",
+   "possible": "yes — the mechanism ships today in IBM FCM5 and LSI RAID journals",
+   "profitable": "marginal — real but small niche; Everspin captures most of the value",
+   "doable_by_founder": "marginal — T1 and needs an EE partner; no fab, no chip design",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-02",
+   "name": "DDR3-EOL Socket Swap to ST-DDR4 MRAM",
+   "subbranch": "STT-MRAM as small-density DRAM replacement (industrial long-lifecycle)",
+   "materials_sense": "a-material",
+   "what_it_is": "Redesign service and drop-in mezzanine that replace end-of-life 1-4Gb DDR3/DDR4 chips on long-lifecycle industrial, medical and rail controllers with Everspin 1Gb ST-DDR4 STT-MRAM (GF 28nm + Chandler BEOL), selling instant-on non-volatility as the bonus. Target boards that need <=256 MB of working memory.",
+   "why_it_could_work": "DDR3/DDR4 are being exited by Samsung/SK hynix/Micron in 2026 and DDR4 contract rose >50% QoQ in Q3-2026, so long-lifecycle OEMs face forced respins anyway; a respin to MRAM removes battery-backed SRAM/supercaps and gives a part with a 10+-year roadmap from a U.S. vendor. COMPUTED REALITY: MRAM street ~$100/Gb vs DDR3 4Gb spot ~$3.19/Gb = ~32x per bit; manufacturing cost ~$91/GB (MRAM, 28nm) vs ~$2.5-4.5/GB (DRAM). Doubling DRAM prices does not close a 30x gap.",
+   "evidence": [
+    {
+     "title": "DDR4 reportedly leads legacy memory rally; DDR3 in tight supply",
+     "url": "https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/",
+     "type": "industry",
+     "date": "2026-01",
+     "shows": "Makers exiting DDR4 in 2026; DDR3 supply tight (via search snippet)"
+    },
+    {
+     "title": "Memory shortages drive DDR4 prices over 50% in Q3 2026; DDR3 also impacted",
+     "url": "https://wccftech.com/memory-shortages-drive-ddr4-prices-over-50-in-q3-2026-ddr3-also-impacted-by-higher-costs/",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "DDR3 4Gb spot ~$3.19/Gb vs DDR5 16Gb ~$2.94/Gb early July 2026 (via search snippet)"
+    },
+    {
+     "title": "EMD4E001G16G2-150CAS2R listing",
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "type": "industry",
+     "date": "2026",
+     "shows": "1Gb STT-MRAM reference price $102.60 @500 (~$821/GB) (via search snippet)"
+    },
+    {
+     "title": "World's First 1 Gb 28 nm STT-MRAM Product - by Everspin",
+     "url": "https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin",
+     "type": "industry",
+     "date": "2019",
+     "shows": "1Gb die 105.1 mm2, cell 0.0396 um2, 9.75 Mb/mm2 on GF 28nm (via search snippet)"
+    }
+   ],
+   "trl": 7,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 9,
+   "time_to_first_revenue_text": "6-12 months for a paid redesign study; product revenue only on boards needing <=256 MB",
+   "gross_margin_estimate": "15-35% (services; part resale is distributor-thin)",
+   "gross_margin_mid_pct": 25,
+   "us_manufacturability": "Everspin Chandler AZ BEOL on GF Singapore CMOS; board work at U.S. EMS",
+   "who_is_already_doing_this": "Everspin FAEs; long-lifecycle memory specialists (e.g., legacy-DRAM die-bank suppliers) solve the same EOL problem more cheaply with last-time-buy stock or LPDDR4 respins",
+   "wins_axis": "non-volatility + supply longevity (U.S. vendor roadmap) for boards needing <=256 MB",
+   "buyer": "industrial PLC, medical-device and rail-signalling OEMs with DDR3 EOL exposure",
+   "survives_glut": "no",
+   "glut_reason": "In a glut DDR3/DDR4 last-time-buy and broker stock gets cheap and plentiful; the only reason to swap (forced EOL respin at shortage prices) disappears and the 30x bit-cost gap widens to ~100x.",
+   "fatal_flaw": "30x $/bit gap, 1Gb max per MRAM die (a 1GB board needs 8 dies), and ST-DDR4 is not pin/protocol compatible with DDR3, so a respin to LPDDR4/DDR4 is cheaper for almost everyone.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "design services, recert/brokerage (part resale), module (mezzanine)",
+   "founder_fit_note": "Cheap to start as a consulting offer, but needs hardware design skill the founder lacks and the economics rarely close.",
+   "possible": "yes — parts exist",
+   "profitable": "no — loses on $/GB by ~30x except in rare <=256 MB sockets",
+   "doable_by_founder": "marginal — consulting-only form is T0 but needs an EE",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-03",
+   "name": "NewSpace MRAM Radiation-Data & Upscreen Service",
+   "subbranch": "Defense/space-first MRAM (data product + screened parts)",
+   "materials_sense": "mixed:a+c",
+   "what_it_is": "Buy lot-traceable Everspin Toggle MRAM (MR4A16B, Chandler AZ) and PERSYST HR xSPI STT-MRAM (EM064LX) and run heavy-ion, proton and TID campaigns at U.S. beam facilities (e.g., Texas A&M Cyclotron Institute, LBNL 88-Inch BASE [names from training, UNVERIFIED access terms]), then sell (a) a subscription database of lot-specific radiation and screening results and (b) upscreened, serialized parts to LEO smallsat builders. Software platform (lot genealogy, test data, SEE rate calculators) is the founder's build.",
+   "why_it_could_work": "NewSpace demand is pulling non-volatile MRAM into orbit: Everspin's 64Mb HR xSPI reached full production on LEO demand and Astro Digital picked it for a GEO bus (Q2-2026). Toggle MRAM shows >1 Mrad(Si) TID (Frontgrade/Cobham). Smallsat builders cannot pay QML-V prices or wait 20-26-week lead times (EM064LX 20 wks, EM128LX 26 wks) and want lot-specific COTS+ data. A report sells for ~$5-25k [ESTIMATE]; screened parts carry 2-4x markup on ~$40-60 parts.",
+   "evidence": [
+    {
+     "title": "Case study touts Everspin Toggle MRAM for space",
+     "url": "https://www.frontgrade.com/news/new-case-study-touts-everspins-toggle-mram-highly-reliable-memory-technology-space",
+     "type": "company",
+     "date": "2020",
+     "shows": "Toggle MRAM >1 Mrad(Si) TID, QML-Q/Q+ products via Cobham/Frontgrade (via search snippet)"
+    },
+    {
+     "title": "Everspin Q2-2026 earnings call highlights",
+     "url": "https://www.marketbeat.com/instant-alerts/everspin-tech-q2-earnings-call-highlights-2026-08-05/",
+     "type": "news",
+     "date": "2026-08",
+     "shows": "Q2-2026 rev $18.7M (+42%); Astro Digital picked PERSYST 64Mb STT-MRAM for GEO Raven bus; LEO demand drove 64Mb HR production (via search snippet)"
+    },
+    {
+     "title": "EM064LX Future Electronics listing",
+     "url": "https://futureelectronics.com/p/semiconductors--memory--RAM--nvram--mram/em064lxoab320is1t-everspin-technologies-4175573",
+     "type": "industry",
+     "date": "2026",
+     "shows": "64Mb xSPI STT-MRAM $39.38 @480, 20-week lead time (via search snippet)"
+    },
+    {
+     "title": "EM128LXQAB313IS2T DigiKey listing",
+     "url": "https://punchouttest.digikey.hk/en/products/detail/everspin-technologies-inc/EM128LXQAB313IS2T/24375470",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Everspin 128Mb xSPI MRAM manufacturer lead time 26 weeks (via search snippet)"
+    },
+    {
+     "title": "Everspin earns $40 million MRAM deal for defense memory services",
+     "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+     "type": "news",
+     "date": "2026-04",
+     "shows": "$40M/2.5-yr subcontract to provide Toggle MRAM process tech and foundry services for DoW Defense Industrial Base; onshore Toggle capability (via search snippet)"
+    }
+   ],
+   "trl": 8,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 12,
+   "time_to_first_revenue_text": "9-15 months: first paid test campaign / report for a smallsat bus maker; parts revenue after 2-3 campaigns build credibility",
+   "gross_margin_estimate": "45-65%",
+   "gross_margin_mid_pct": 55,
+   "us_manufacturability": "Parts: Everspin Chandler AZ Toggle line (onshore Toggle program under $40M DoW subcontract), PERSYST on GF CMOS + Chandler BEOL; testing at U.S. beam lines; screening at a U.S. test house (East Coast lab feasible).",
+   "who_is_already_doing_this": "Frontgrade (ex-Cobham CAES, QML MRAM using Everspin IP), Avalanche Technology (space-grade STT-MRAM, UMC 22nm), Everspin's own HR line, NASA GSFC/NEPP (publishes free radiation reports), independent upscreen/test labs and COTS-space distributors",
+   "wins_axis": "radiation tolerance + non-volatility + data/lot traceability (supply security for NewSpace)",
+   "buyer": "LEO/GEO smallsat bus and payload makers (Astro Digital-type buyers, constellation primes), university cubesat programs, defense small-launch payload integrators",
+   "survives_glut": "yes",
+   "glut_reason": "Space buyers price on radiation data and heritage, not on DRAM $/GB; a DDR5 glut does not change rad-hard NVM demand.",
+   "fatal_flaw": "Credibility and competition from free data: NASA NEPP publishes radiation reports for free, Everspin/Frontgrade/Avalanche sell pre-screened space parts with heritage, and a non-engineer founder has no radiation-effects reputation buyers will trust.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "data product (subscription rad database), defense-first niche, recert/upscreen of parts, SaaS (SEE calculators)",
+   "founder_fit_note": "Software/data platform fits the founder; needs a radiation-effects engineer partner and ~$100-300k for beam time, boards and export-control compliance.",
+   "possible": "yes — standard industry practice",
+   "profitable": "marginal — small, credibility-gated market",
+   "doable_by_founder": "marginal — T1 with a rad-effects partner; data platform is the founder's lever",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-04",
+   "name": "New Fabless Discrete STT-MRAM Vendor",
+   "subbranch": "Discrete STT-MRAM chips (fabless on foundry eMRAM)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Start a fabless U.S. company selling 128Mb-4Gb discrete STT-MRAM (CoFeB/MgO pMTJ) built on a foundry MRAM module (Samsung 28FDS/14nm, UMC 22nm or TSMC 16nm), competing with Everspin, Netsol and Avalanche in SPI/xSPI and ST-DDR4 sockets.",
+   "why_it_could_work": "Foundry eMRAM is now standard (Samsung 14/8nm cells 0.024/0.017 um2; GF AutoPro150; TSMC 16nm), so a fabless entrant needs no MTJ fab. COMPUTED: a 4Gb die at 14/16nm with a 0.024 um2 cell is ~229 mm2 and costs ~$72/GB — still ~3.6x the PEAK DDR5 contract price before margin — so the only markets are NOR/FRAM/nvSRAM replacement and PLP, which Everspin already serves.",
+   "evidence": [
+    {
+     "title": "IEDM 2024 Samsung eMRAM (PC Watch)",
+     "url": "https://pc.watch.impress.co.jp/docs/column/semicon/1649812.html",
+     "type": "conference",
+     "date": "2024-12",
+     "shows": "Samsung eMRAM cell 0.024 um2 (14nm) and 0.017 um2 (8nm), IEDM 2024 paper 11-4 (via search snippet)"
+    },
+    {
+     "title": "Netsol launches standalone STT-MRAM on Samsung 28nm FDSOI",
+     "url": "https://mram-info.com/netsol-launches-stand-alone-stt-mram-product-fabricated-samsung-foundrys-28nm-fdsoi-process",
+     "type": "news",
+     "date": "2023-08",
+     "shows": "Netsol 1-64Mb parallel/serial STT-MRAM via Samsung Foundry (via search snippet)"
+    },
+    {
+     "title": "Avalanche AS301G208 UMC 22nm 512Mb MRAM Process Analysis",
+     "url": "https://www.techinsights.com/blog/avalanche-as301g208-umc-22-nm-512mb-mram-process-analysis",
+     "type": "industry",
+     "date": "unknown",
+     "shows": "Avalanche 512Mb STT-MRAM manufactured at UMC 22nm (via search snippet)"
+    },
+    {
+     "title": "Everspin Q3-2026 results (8-K Ex.99.1)",
+     "url": "https://www.sec.gov/Archives/edgar/data/0001438423/000162828026067890/mram-20260930xexx991.htm",
+     "type": "company",
+     "date": "2026-10",
+     "shows": "Q3-2026 revenue $20.6M, MRAM product $16.9M, GM 51.4%, $6.0M litigation cost, cash $43.0M (via search snippet)"
+    },
+    {
+     "title": "USITC institutes Section 337 investigation 337-TA-1487",
+     "url": "https://www.usitc.gov/press_room/news_release/2026/er0227_68226.htm",
+     "type": "government",
+     "date": "2026-02",
+     "shows": "Avalanche seeks exclusion order against Everspin STT-MRAM imports (via search snippet)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 42,
+   "time_to_first_revenue_text": "36-48 months (design, MPW, qualification, AEC/JEDEC reliability, design-in cycles)",
+   "gross_margin_estimate": "40-50% at scale (Everspin runs ~51%)",
+   "gross_margin_mid_pct": 45,
+   "us_manufacturability": "Poor: foundry MRAM modules are at Samsung (Korea/Austin for logic only), UMC (Taiwan/Singapore), TSMC (Taiwan), GF 22FDX (Dresden). No U.S. 300mm MRAM foundry offering; Everspin-Microchip Gresham line is exclusive.",
+   "who_is_already_doing_this": "Everspin (U.S., ~$80M/yr run-rate), Netsol (Korea, Samsung 28FDS), Avalanche (Fremont CA, UMC 22nm), Renesas/Infineon/Cypress-lineage parts",
+   "wins_axis": "non-volatility + endurance vs NOR/EEPROM (not vs DRAM)",
+   "buyer": "industrial/automotive NOR/FRAM replacement sockets, FPGA configuration, storage PLP",
+   "survives_glut": "partially",
+   "glut_reason": "Not priced against DRAM, so the glut does not kill it, but it never wins DRAM sockets in either regime.",
+   "fatal_flaw": "Crowded tiny market (the category leader books ~$17M/qtr of MRAM product) plus a live patent war (Avalanche v. Everspin ITC 337-TA-1487) — a new entrant buys litigation risk for a market already served.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry; IP licensing (unlikely); defense-first variant",
+   "founder_fit_note": "No: needs a memory design team and $20-40M.",
+   "possible": "yes — Netsol did it in ~5 years",
+   "profitable": "no — crowded, sub-scale, litigious",
+   "doable_by_founder": "no — T2 chip company",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-05",
+   "name": "MRAM Main-Memory DIMM / CXL Module",
+   "subbranch": "STT-MRAM as DRAM replacement",
+   "materials_sense": "a-material",
+   "what_it_is": "A persistent DDR4/DDR5 RDIMM or CXL Type-3 module populated with STT-MRAM dies (Everspin 1Gb ST-DDR4 today, hypothetical 4Gb 16nm dies later) sold as non-volatile main memory for servers during the DRAM shortage.",
+   "why_it_could_work": "Tempting because DRAM is 2-3x and MRAM is non-volatile with no refresh. COMPUTED KILL: Everspin 1Gb density 9.75 Mb/mm2 vs ~400 Mb/mm2 for 1b DRAM (~42x less silicon-efficient). A 32GB RDIMM needs 256 MRAM dies (~27,000 mm2) vs 16 DRAM dies (~640 mm2). Cost ~$91/GB (28nm) or ~$72/GB (16nm) vs DDR5 ~$20/GB peak and ~$8/GB glut; street MRAM ~$821/GB.",
+   "evidence": [
+    {
+     "title": "World's First 1 Gb 28 nm STT-MRAM Product - by Everspin",
+     "url": "https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin",
+     "type": "industry",
+     "date": "2019",
+     "shows": "1Gb die 105.1 mm2, cell 0.0396 um2, 9.75 Mb/mm2 on GF 28nm (via search snippet)"
+    },
+    {
+     "title": "EMD4E001G16G2-150CAS2R listing",
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "type": "industry",
+     "date": "2026",
+     "shows": "1Gb STT-MRAM reference price $102.60 @500 (~$821/GB) (via search snippet)"
+    },
+    {
+     "title": "DRAM spot price snapshot (citing TrendForce)",
+     "url": "https://www.buysellram.com/?p=20058",
+     "type": "news",
+     "date": "2026-08",
+     "shows": "DDR5 16Gb spot avg $53.92 on 2026-08-31 (~$27/GB) (via search snippet)"
+    },
+    {
+     "title": "IEDM 2024 Samsung eMRAM (PC Watch)",
+     "url": "https://pc.watch.impress.co.jp/docs/column/semicon/1649812.html",
+     "type": "conference",
+     "date": "2024-12",
+     "shows": "Samsung eMRAM cell 0.024 um2 (14nm) and 0.017 um2 (8nm), IEDM 2024 paper 11-4 (via search snippet)"
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 60,
+   "time_to_first_revenue_text": "Never at competitive price; 5+ years for a niche persistent module",
+   "gross_margin_estimate": "negative at DRAM-parity pricing (~-355% at $20/GB)",
+   "gross_margin_mid_pct": -355,
+   "us_manufacturability": "Dies: Everspin Chandler AZ + GF Singapore; module assembly U.S. possible (SMART Modular-type assemblers)",
+   "who_is_already_doing_this": "Nobody at volume; Everspin demonstrated ST-MRAM DIMMs ~2013-2016 [UNVERIFIED: training] and moved to niche PLP",
+   "wins_axis": "non-volatility only; loses on $/GB, density, bandwidth and power per GB",
+   "buyer": "none at scale (in-memory DB persistence is better served by DRAM + NVMe logging)",
+   "survives_glut": "no",
+   "glut_reason": "At $8/GB DRAM the gap becomes ~10x on cost and ~100x on street price.",
+   "fatal_flaw": "~40x density deficit and ~4x-plus cost above peak DRAM price; physics of 50 F2 1T1MTJ cells vs 6 F2 1T1C.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance",
+   "founder_fit_note": "No — economically dead regardless of founder.",
+   "possible": "marginal — buildable but absurdly sized",
+   "profitable": "no — loses on every buyer axis except persistence",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-06",
+   "name": "Second U.S. MTJ BEOL Line on a Depreciated 200mm Fab",
+   "subbranch": "MRAM manufacturing capacity (cheaper capital)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Install an MTJ back-end module (multi-target PVD such as Canon Anelva/Applied Endura-class, ion-beam etch, magnetic anneal) in an idle or depreciated U.S. 200mm fab and offer Toggle/STT MRAM foundry services as a second U.S. source to DoD and IoT customers.",
+   "why_it_could_work": "Depreciated 200mm capacity is cheap capital and DoD wants onshore Toggle MRAM ($40M DoW subcontract to Everspin, Apr-2026). But Everspin already locked the obvious partner: Microchip Fab 4 Gresham OR, 10-year deal, up to 1,300 wafers/qtr, and Microchip is barred from making TMR devices for Everspin competitors. Minimal MTJ module capex ~$20-50M [ESTIMATE] for a market whose leader books ~$65-70M/yr of MRAM product.",
+   "evidence": [
+    {
+     "title": "Everspin 8-K: Foundry Services Agreement with Microchip",
+     "url": "https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408xexx991.htm",
+     "type": "company",
+     "date": "2026-04",
+     "shows": "10-yr deal: Microchip Fab 4 (Gresham OR) 8-inch MRAM/TMR/STT wafers, ramp to max 1,300 wafers/qtr, first products 2H-2027; Microchip barred from making TMR devices for Everspin competitors (via search snippet)"
+    },
+    {
+     "title": "Everspin earns $40 million MRAM deal for defense memory services",
+     "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+     "type": "news",
+     "date": "2026-04",
+     "shows": "$40M/2.5-yr subcontract to provide Toggle MRAM process tech and foundry services for DoW Defense Industrial Base; onshore Toggle capability (via search snippet)"
+    },
+    {
+     "title": "Everspin Form 10-K FY2025",
+     "url": "https://www.sec.gov/Archives/edgar/data/1438423/000162828026014733/mram-20251231.htm",
+     "type": "company",
+     "date": "2026-03",
+     "shows": "Everspin buys foundry CMOS wafers and adds MTJ BEOL in Chandler AZ; single foundry GLOBALFOUNDRIES Singapore for higher-density products (via search snippet)"
+    },
+    {
+     "title": "Everspin Q3-2026 results (8-K Ex.99.1)",
+     "url": "https://www.sec.gov/Archives/edgar/data/0001438423/000162828026067890/mram-20260930xexx991.htm",
+     "type": "company",
+     "date": "2026-10",
+     "shows": "Q3-2026 revenue $20.6M, MRAM product $16.9M, GM 51.4%, $6.0M litigation cost, cash $43.0M (via search snippet)"
+    }
+   ],
+   "trl": 8,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "36-60 months (tool install, process transfer/licensing, qualification)",
+   "gross_margin_estimate": "20-40% foundry services at low loading",
+   "gross_margin_mid_pct": 30,
+   "us_manufacturability": "By design U.S. (e.g., an idle 200mm line in the Northeast or Texas) — but needs MTJ process IP that only Everspin/Avalanche/foundries hold",
+   "who_is_already_doing_this": "Everspin (Chandler AZ + Microchip Gresham OR), foundries with eMRAM (GF Dresden, TSMC, Samsung, UMC)",
+   "wins_axis": "supply security / trusted U.S. source",
+   "buyer": "DoD primes and the Defense Industrial Base",
+   "survives_glut": "partially",
+   "glut_reason": "Defense demand is price-insensitive, but commercial loading collapses and a sub-scale line cannot absorb fixed cost.",
+   "fatal_flaw": "No process IP and no demand gap: Everspin's onshore expansion with Microchip and DoW money already fills the U.S. trusted-MRAM need.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "foundry services; defense-first",
+   "founder_fit_note": "No — T2 fab operation needing process engineers.",
+   "possible": "yes",
+   "profitable": "no — sub-scale vs Everspin+Microchip",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-07",
+   "name": "TrustNVM: U.S.-Made ReRAM Secure-NVM Chiplet on SkyWater S130",
+   "subbranch": "Embedded ReRAM (oxide 1T1R) via licensed IP at a U.S. trusted foundry",
+   "materials_sense": "mixed:a+c",
+   "what_it_is": "A fabless 1-4 Mb serial NVM / secure-boot key-store and FPGA-configuration chip using Weebit Nano's JEDEC-qualified 1T1R oxide ReRAM module in SkyWater's S130 130nm process (Bloomington MN), sold to DoD primes and rugged-board makers that need domestic, trusted, radiation-tolerant NVM to replace imported SPI NOR/EEPROM (e.g., Renesas serial EEPROM, last-time ship 2026-10-31).",
+   "why_it_could_work": "The ReRAM module is already qualified (256Kb, 3 lots, 10-yr retention, 125C) and sits in the S130 PDK, so IP risk is low and capital is licensed, not owned. SkyWater is a U.S. foundry used for DoD work [trusted-foundry accreditation: UNVERIFIED in this session]. Oxide ReRAM is reported to be intrinsically radiation tolerant [UNVERIFIED: literature]. Chips price per part ($20-200 in defense), so the ~$3,300/GB bit cost is irrelevant. SBIR/STTR topics for trusted microelectronics can fund the design.",
+   "evidence": [
+    {
+     "title": "Weebit Nano's ReRAM IP now fully qualified in SkyWater S130",
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/",
+     "type": "company",
+     "date": "2023-06",
+     "shows": "256Kb 1T1R ReRAM module JEDEC-qualified (3 lots), 10-yr retention at industrial temp, in SkyWater S130 PDK (via search snippet)"
+    },
+    {
+     "title": "Weebit ReRAM IP achieves high-temperature qualification in SkyWater S130",
+     "url": "https://www.skywatertechnology.com/weebit-nano-reram-ip-achieves-high-temperature-qualification-in-skywater-s130-process/",
+     "type": "company",
+     "date": "2023-11",
+     "shows": "Qualified to 125C, ready for production tape-out at SkyWater (via search snippet)"
+    },
+    {
+     "title": "Weebit Nano secures a license agreement with Texas Instruments",
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nano-secures-a-license-agreement-with-texas-instruments/",
+     "type": "company",
+     "date": "2025-12",
+     "shows": "TI licenses Weebit embedded ReRAM (tech transfer, design enablement, qualification) (via search snippet)"
+    },
+    {
+     "title": "Renesas EOL plan: serial EEPROM products",
+     "url": "https://www.renesas.cn/zh/document/gde/eol-plan-serial-eeprom-products",
+     "type": "company",
+     "date": "2025-11",
+     "shows": "Renesas serial EEPROM families EOL, last-time shipment 2026-10-31 (via search snippet)"
+    },
+    {
+     "title": "TSMC 2025 Annual Report ch.5",
+     "url": "https://investor.tsmc.com/static/annualReports/2025/english/pdf/2025_tsmc_ar_e_ch5.pdf",
+     "type": "company",
+     "date": "2026",
+     "shows": "TSMC N12e RRAM consumer-qualified; 22RRAM passed 100K-cycle qualification in 2025 (via search snippet)"
+    }
+   ],
+   "trl": 7,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 30,
+   "time_to_first_revenue_text": "24-36 months: SBIR Phase I/II funds design + MPW; first revenue from engineering samples/qualification lots to a prime",
+   "gross_margin_estimate": "50-65% (defense pricing) after Weebit royalty",
+   "gross_margin_mid_pct": 55,
+   "us_manufacturability": "SkyWater Technology, Bloomington MN, S130 (200mm, 130nm) with Weebit ReRAM in PDK; U.S. OSAT (e.g., Amkor Arizona when open, or small U.S. packaging houses)",
+   "who_is_already_doing_this": "Weebit (IP), SkyWater (foundry), Everspin Toggle MRAM (incumbent U.S. rad-tolerant NVM with DoW onshore program), Frontgrade, Infineon/Cypress rad-hard NOR/FRAM",
+   "wins_axis": "supply security (U.S.-trusted fab) + radiation tolerance + EOL replacement — not $/GB",
+   "buyer": "DoD primes and subsystem makers needing trusted NVM for FPGA config, secure boot and key storage; rugged industrial/space board makers",
+   "survives_glut": "yes",
+   "glut_reason": "Defense trusted-NVM demand is not tied to DRAM pricing.",
+   "fatal_flaw": "Everspin Toggle MRAM already fills the U.S.-made rad-tolerant NVM slot with heritage and a $40M DoW onshore program; a new ReRAM chip must beat that on cost or density with tiny volumes and a Weebit royalty.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry, IP licensing (in-licensed), defense-first, SBIR-funded",
+   "founder_fit_note": "Founder could be CEO/BD and write SBIRs, but needs a mixed-signal IC designer co-founder; not bootstrappable.",
+   "possible": "yes — qualified IP in a U.S. PDK",
+   "profitable": "marginal — small defense volumes, incumbent MRAM",
+   "doable_by_founder": "no — needs an IC design co-founder and SBIR money",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-08",
+   "name": "University / Expired-Patent CBRAM-ReRAM IP Licensor",
+   "subbranch": "ReRAM/CBRAM IP licensing (university tech-transfer path)",
+   "materials_sense": "c-capital",
+   "what_it_is": "License (or design around expired) early CBRAM/PMC patents (Ag/Cu-GeS conductive-bridge lineage from ASU -> Axon -> Adesto) or oxide ReRAM patents from a university tech-transfer office, package them with a test-chip on an MPW, and license the eNVM module to second-tier foundries/IDMs.",
+   "why_it_could_work": "CBRAM needs ~1 extra mask on logic (GF statement), and the oldest PMC patents date to the late 1990s so freedom-to-operate may be cheap. But the production-proven CBRAM now belongs to GlobalFoundries (bought from Renesas, 2023); TSMC has in-house RRAM at 28/22/12nm; Weebit, the best-funded independent ReRAM licensor (A$167M cash), took ~10+ years to reach ~A$13.5M FY26 revenue; 4DS was suspended from ASX quotation in Apr-2026.",
+   "evidence": [
+    {
+     "title": "GlobalFoundries acquires Renesas' non-volatile resistive RAM (CBRAM) technology",
+     "url": "https://gf.com/gf-press-release/globalfoundries-acquires-renesas-non-volatile-resistive-ram-technology-to-proliferate-iot-and-5g-applications/",
+     "type": "company",
+     "date": "2023-02",
+     "shows": "Adesto->Dialog->Renesas CBRAM now owned by GF; being qualified on 22FDX; ~1 extra mask (via search snippet)"
+    },
+    {
+     "title": "New Adesto memory takes 25 years to consume a battery",
+     "url": "https://spectrum.ieee.org/new-adesto-memory-takes-25-years-to-consume-a-battery",
+     "type": "news",
+     "date": "2016",
+     "shows": "Adesto CBRAM ultra-low-energy products shipped (Moneta/Mavriq) (via search snippet)"
+    },
+    {
+     "title": "Weebit Nano expands licensing agreements; three customer chip designs taped out",
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nano-expands-licensing-agreements-with-key-customers-three-customer-chip-designs-taped-out-to-date/",
+     "type": "company",
+     "date": "2026-07",
+     "shows": "3 customer tape-outs; FY26 revenue guide >=A$13.5M; cash A$167M; licensing slowed by fab undercapacity (via search snippet)"
+    },
+    {
+     "title": "4DS Memory filings index (suspension from quotation 2026-04-29)",
+     "url": "https://financialfilings.com/companies/4ds-memory-limited/",
+     "type": "other",
+     "date": "2026-04",
+     "shows": "4DS (PCMO interface-switching ReRAM) suspended from ASX quotation Apr-2026 (via search snippet)"
+    },
+    {
+     "title": "TSMC 2025 Annual Report ch.5",
+     "url": "https://investor.tsmc.com/static/annualReports/2025/english/pdf/2025_tsmc_ar_e_ch5.pdf",
+     "type": "company",
+     "date": "2026",
+     "shows": "TSMC N12e RRAM consumer-qualified; 22RRAM passed 100K-cycle qualification in 2025 (via search snippet)"
+    }
+   ],
+   "trl": 8,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "4-6 years to first meaningful license revenue (Weebit benchmark)",
+   "gross_margin_estimate": "80-90% on license revenue, but revenue tiny",
+   "gross_margin_mid_pct": 85,
+   "us_manufacturability": "Test chips at SkyWater MN or via MPW; licensees are foundries anywhere",
+   "who_is_already_doing_this": "Weebit Nano (ReRAM IP, SkyWater/onsemi/DB HiTek/TI), GlobalFoundries (owns CBRAM), TSMC (in-house RRAM), Crossbar (private, status unclear), 4DS (suspended)",
+   "wins_axis": "eNVM cost (masks) for MCUs — not RAM",
+   "buyer": "second-tier foundries and IDMs wanting eNVM at 40-130nm",
+   "survives_glut": "yes",
+   "glut_reason": "Unrelated to DRAM price; but irrelevant to the DRAM shortage too.",
+   "fatal_flaw": "Decade-long licensing sales cycles in a field where the strongest independent (Weebit) is still sub-scale and foundries own their own RRAM/CBRAM.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "university/lab patent license, IP licensing",
+   "founder_fit_note": "No — needs device/process credibility and a decade of patience.",
+   "possible": "yes",
+   "profitable": "no — revenue too slow and small",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-09",
+   "name": "RRAM Analog In-Memory-Compute Edge AI Chip",
+   "subbranch": "Memristor compute-in-memory (less RAM per unit of work)",
+   "materials_sense": "a-material",
+   "what_it_is": "An edge-AI inference SoC storing INT4 weights as multi-level conductances in HfOx/TaOx RRAM crossbars on TSMC 22nm/12nm, doing MACs in the array so the device needs little external DRAM.",
+   "why_it_could_work": "Analog IMC cuts weight-movement energy and DRAM bandwidth; TetraMem (San Jose) validated 22nm MLX200 silicon (May-2026) and taped out a 12nm MLX300 with 64M INT4 params on-chip, 50-80 TOPS/W target (Oct-2026). HPE's memristor program (The Machine) is the cautionary tale: shelved as not economically viable (2015-16).",
+   "evidence": [
+    {
+     "title": "TetraMem 22nm multi-level RRAM analog IMC SoC milestone",
+     "url": "https://www.businesswire.com/news/home/20260516556464/en/TetraMem-Announces-22nm-Multi-Level-RRAM-Analog-In-Memory-Computing-SoC-Milestone",
+     "type": "company",
+     "date": "2026-05",
+     "shows": "MLX200 on TSMC 22nm: tape-out, manufacturing, initial silicon validation; sampling 2H-2026 (via search snippet)"
+    },
+    {
+     "title": "TetraMem tapes out 12nm AI SoC (MLX300)",
+     "url": "https://www.sttinfo.fi/tiedote/72447857/tetramem-advances-analog-in-memory-computing-with-tapeout-of-new-12nm-ai-soc?publisherId=58763726",
+     "type": "company",
+     "date": "2026-10",
+     "shows": "12nm multi-level RRAM A-IMC SoC, 64M INT4 params on-chip, 50-80 TOPS/W target (via search snippet)"
+    },
+    {
+     "title": "HP puts the future of computing on hold",
+     "url": "https://www.technologyreview.com/2015/06/04/167804/hp-puts-the-future-of-computing-on-hold/",
+     "type": "news",
+     "date": "2015-06",
+     "shows": "HP removed memristor from The Machine; not economically viable for volume production (via search snippet)"
+    },
+    {
+     "title": "TSMC 2025 Annual Report ch.5",
+     "url": "https://investor.tsmc.com/static/annualReports/2025/english/pdf/2025_tsmc_ar_e_ch5.pdf",
+     "type": "company",
+     "date": "2026",
+     "shows": "TSMC N12e RRAM consumer-qualified; 22RRAM passed 100K-cycle qualification in 2025 (via search snippet)"
+    }
+   ],
+   "trl": 6,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "4+ years (multiple tape-outs, compiler stack, customer qualification)",
+   "gross_margin_estimate": "40-60% if it ever scales",
+   "gross_margin_mid_pct": 50,
+   "us_manufacturability": "RRAM modules at TSMC (Taiwan; Arizona fab does not list RRAM) — not U.S.-made",
+   "who_is_already_doing_this": "TetraMem (RRAM A-IMC), plus a crowded field of digital/analog edge-AI chips; IBM Research PCM analog AI (HERMES) [UNVERIFIED: training]",
+   "wins_axis": "TOPS/W and DRAM bandwidth avoided for always-on edge inference",
+   "buyer": "wearable, hearing-aid, industrial-sensor and always-on vision module makers",
+   "survives_glut": "partially",
+   "glut_reason": "Value is energy, not DRAM $/GB, so it survives a glut — but cheap DRAM weakens the 'less RAM' pitch.",
+   "fatal_flaw": "Analog drift/accuracy plus a software stack war against digital NPUs; TetraMem is already two tape-outs ahead with TSMC access.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry, IP licensing (TetraMem offers multi-level RRAM IP)",
+   "founder_fit_note": "No — T3 chip startup.",
+   "possible": "yes — silicon validated by TetraMem",
+   "profitable": "marginal — crowded edge-AI market",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-10",
+   "name": "3D XPoint / PCM Crosspoint Revival for the CXL Memory Tier",
+   "subbranch": "Phase-change crosspoint storage-class memory (Optane post-mortem)",
+   "materials_sense": "a-material",
+   "what_it_is": "Rebuild Optane-class memory: Ge-Sb-Te phase-change (or OTS selector-only) cells in a 4-deck 20nm-half-pitch crosspoint, sold as CXL Type-3 persistent/capacity memory at a fraction of DRAM $/GB during the shortage.",
+   "why_it_could_work": "The math looks great in Nov-2026: XPoint Gen2 was 1.31 Gb/mm2 (~3.3x 1b DRAM density) and at full fab loading the die cost computes to ~$1/GB vs DDR5 at ~$20/GB. But Optane died anyway: Intel lost >$7B, took a $559M inventory write-off (Q2-2022); Micron cited 'insufficient market validation', booked ~$545M underutilization in 4 quarters and sold Lehi to TI for $900M (below book). The killers were volume (Lehi underloaded), an Intel-only DDR-T ecosystem, ~3-4x DRAM latency, and the 2019 DRAM glut erasing Optane's ~$6.6/GB price advantage. SanDisk + imec are now prototyping '3D Matrix Memory' (target ~half DRAM cost/bit, no dates).",
+   "evidence": [
+    {
+     "title": "Intel 10-Q Q2-2022",
+     "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+     "type": "company",
+     "date": "2022-07",
+     "shows": "Optane wind-down; $559M inventory impairment (via search snippet)"
+    },
+    {
+     "title": "Micron sells Lehi 3D XPoint fab to Texas Instruments for $900M",
+     "url": "https://www.anandtech.com/show/16800",
+     "type": "news",
+     "date": "2021-06",
+     "shows": "Lehi sold to TI for $900M cash (+~$600M tools), below book value (via search snippet)"
+    },
+    {
+     "title": "Micron updates data center portfolio strategy (ends 3D XPoint)",
+     "url": "https://www.nasdaq.com/press-release/micron-updates-data-center-portfolio-strategy-to-address-growing-opportunity-for",
+     "type": "company",
+     "date": "2021-03",
+     "shows": "'insufficient market validation' to keep investing in 3D XPoint; CXL pivot (via search snippet)"
+    },
+    {
+     "title": "Persistent Memories Without Optane: Where Would We Be? (Coughlin & Handy)",
+     "url": "https://www.snia.org/sites/default/files/2025-05/SNIA-SDC22-Coughlin-Handy-Persistent-Memories-Without-Optane-Where-Would-We-Be.pdf",
+     "type": "conference",
+     "date": "2022",
+     "shows": "Intel Optane losses >$7B; emerging memory moving to foundry embedded (via search snippet)"
+    },
+    {
+     "title": "Intel 2nd generation XPoint memory",
+     "url": "https://www.techinsights.com/blog/memory/intel-2nd-generation-xpoint-memory",
+     "type": "industry",
+     "date": "2020",
+     "shows": "256Gb 4-deck die 195.6 mm2, 1.31 Gb/mm2 (via search snippet)"
+    },
+    {
+     "title": "SanDisk makes first 3D Matrix Memory chips aiming for half the cost per bit of DRAM",
+     "url": "https://www.notebookcheck.net/SanDisk-makes-first-3D-Matrix-Memory-chips-aiming-for-half-the-cost-per-bit-of-DRAM.1374351.0.html",
+     "type": "news",
+     "date": "2026-08",
+     "shows": "SanDisk crosspoint-class prototypes on 300mm, multi-Gb, target ~half DRAM cost/bit, no dates (via search snippet)"
+    },
+    {
+     "title": "Does phase change memory ride again with SanDisk?",
+     "url": "https://www.eenewseurope.com/en/does-phase-change-memory-ride-again-with-sandisk",
+     "type": "news",
+     "date": "2025",
+     "shows": "3D Matrix Memory resembles 3D XPoint; imec 'Project Neo' since 2024 (via search snippet)"
+    },
+    {
+     "title": "Pricing of Intel's Optane DC Persistent Memory Modules Leaks",
+     "url": "https://www.anandtech.com/show/14180",
+     "type": "news",
+     "date": "2019-04",
+     "shows": "PMem 128GB ~$842-893 ($6.6-7.0/GB), 256GB ~$10.4-11.1/GB (via search snippet)"
+    }
+   ],
+   "trl": 6,
+   "capital_tier": "T4",
+   "time_to_first_revenue_months": 72,
+   "time_to_first_revenue_text": "6+ years for a new entrant (tech hit TRL 9 at Intel/Micron 2017-22, but process IP stays with them; new entrants restart near TRL 4-6)",
+   "gross_margin_estimate": "theoretical 75-85% at full loading vs $8/GB glut DRAM; deeply negative during ramp (Intel/Micron history)",
+   "gross_margin_mid_pct": 10,
+   "us_manufacturability": "Lehi UT (the only U.S. XPoint fab) now runs TI analog/embedded at 65/45nm; a new 300mm fab is T4",
+   "who_is_already_doing_this": "SanDisk (3D Matrix Memory with imec), Samsung/SK hynix/Micron selector-only-memory research (IEDM 2022-2024)",
+   "wins_axis": "$/GB and capacity vs DRAM for a CXL capacity tier (in theory)",
+   "buyer": "hyperscaler CXL memory-tier and in-memory database buyers (who already chose CXL DRAM + NVMe/KV-cache offload instead)",
+   "survives_glut": "no",
+   "glut_reason": "A fab started now ships ~2030 into the cycle after the 2028-29 glut; Optane already showed a DRAM glut erases the price gap that justifies the latency penalty.",
+   "fatal_flaw": "T4 capital and 6-year timeline, IP owned by Intel/Micron, and the exact volume/ecosystem trap that cost Intel >$7B; incumbents (SanDisk/imec) are ahead.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry (impossible: no foundry offers it), IP licensing (Intel/Micron unlikely to license)",
+   "founder_fit_note": "No — this is a national/strategic bet, not a founder venture.",
+   "possible": "yes — it shipped 2017-2022",
+   "profitable": "no — for anyone below SanDisk/Samsung scale",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-11",
+   "name": "Optane PMem Salvage: Cheap Memory-Mode Capacity for Cascade/Ice Lake Fleets",
+   "subbranch": "Optane post-mortem arbitrage (recovered XPoint modules)",
+   "materials_sense": "c-capital",
+   "what_it_is": "Buy decommissioned Intel Optane PMem 100/200 modules (128/256/512 GB, 3D XPoint Gen1 media) from U.S. ITAD/recyclers, health-test them (ipmctl SMART/percentage-used, burn-in), and sell validated kits plus a web sizing tool that configures Memory Mode or App Direct for VMware/KVM, SAP HANA, Redis and HPC nodes on 2nd/3rd-gen Xeon Scalable servers.",
+   "why_it_could_work": "DDR4 RDIMMs rose >50% QoQ in Q3-2026 and DDR4 is being exited, so owners of still-useful Cascade Lake/Ice Lake fleets cannot cheaply add memory. New PMem cost $6.6-11/GB in 2019 and Intel exited with ~2 years of excess XPoint inventory; recovered modules may trade at ~$0.8-2/GB [UNVERIFIED] vs DDR4 RDIMM ~$25+/GB. Memory Mode uses DRAM as cache in front of 4-8x more PMem capacity. Software (sizing, health certificates, config scripts) is the founder's edge.",
+   "evidence": [
+    {
+     "title": "Pricing of Intel's Optane DC Persistent Memory Modules Leaks",
+     "url": "https://www.anandtech.com/show/14180",
+     "type": "news",
+     "date": "2019-04",
+     "shows": "PMem 128GB ~$842-893 ($6.6-7.0/GB), 256GB ~$10.4-11.1/GB (via search snippet)"
+    },
+    {
+     "title": "Intel kills off Optane memory, writes off $559M inventory",
+     "url": "https://www.datacenterdynamics.com/en/news/intel-kills-off-optane-memory-writes-off-559-million-inventory",
+     "type": "news",
+     "date": "2022-07",
+     "shows": "Optane wind-down; reports of ~2 years of excess XPoint inventory (via search snippet)"
+    },
+    {
+     "title": "Intel 10-Q Q2-2022",
+     "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+     "type": "company",
+     "date": "2022-07",
+     "shows": "Optane wind-down; $559M inventory impairment (via search snippet)"
+    },
+    {
+     "title": "Memory shortages drive DDR4 prices over 50% in Q3 2026; DDR3 also impacted",
+     "url": "https://wccftech.com/memory-shortages-drive-ddr4-prices-over-50-in-q3-2026-ddr3-also-impacted-by-higher-costs/",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "DDR3 4Gb spot ~$3.19/Gb vs DDR5 16Gb ~$2.94/Gb early July 2026 (via search snippet)"
+    },
+    {
+     "title": "DDR4 reportedly leads legacy memory rally; DDR3 in tight supply",
+     "url": "https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/",
+     "type": "industry",
+     "date": "2026-01",
+     "shows": "Makers exiting DDR4 in 2026; DDR3 supply tight (via search snippet)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 4,
+   "time_to_first_revenue_text": "2-6 months: first kits sold on eBay/own storefront to refurb-server buyers and homelab/SMB",
+   "gross_margin_estimate": "30-50% on kits (test + validation premium over raw eBay lots)",
+   "gross_margin_mid_pct": 40,
+   "us_manufacturability": "No fabrication; U.S. sourcing from ITAD firms and testing in an East Coast garage/lab (Xeon Cascade Lake test server ~$1-3k)",
+   "who_is_already_doing_this": "eBay/refurb-server sellers already list PMem; ITAD firms; refurbished-server resellers bundle it opportunistically — no one sells a validated, sized, warrantied PMem capacity kit [UNVERIFIED]",
+   "wins_axis": "$/GB of usable memory capacity for legacy Intel platforms (plus persistence in App Direct)",
+   "buyer": "SMBs and MSPs running VMware/KVM on Cascade/Ice Lake, research HPC labs, refurb-server resellers, homelab buyers",
+   "survives_glut": "no",
+   "glut_reason": "When DDR4 falls ~60% and Cascade/Ice Lake servers retire (~2028-29), the arbitrage and the installed base both shrink.",
+   "fatal_flaw": "Finite, shrinking installed base and supply (Intel exited 2022; only Intel Xeon 2nd/3rd gen support PMem) — a 2-3-year bridge business, not a venture; Memory Mode latency penalty limits buyers.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "recert/brokerage, SaaS (sizing/health tool), data product (PMem health/price index)",
+   "founder_fit_note": "Yes — T0, software + e-commerce + scripted testing, compatible with a day job; first revenue in months.",
+   "possible": "yes — the parts and platforms exist",
+   "profitable": "marginal — real but small and temporary",
+   "doable_by_founder": "yes — the most founder-doable card in A2",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-12",
+   "name": "MRAM Persistent-Log Accelerator (nvNITRO revival)",
+   "subbranch": "STT-MRAM NVMe/CXL log device",
+   "materials_sense": "a-material",
+   "what_it_is": "A PCIe/NVMe or CXL card carrying 2-4 GB of Everspin 1Gb ST-DDR4 MRAM behind an FPGA controller, sold as an ultra-low-latency, unlimited-endurance write-ahead-log device for ZFS SLOG, PostgreSQL WAL, Ceph/Kafka journals and trading logs.",
+   "why_it_could_work": "Optane P5800X/P1600X (the favorite SLOG/WAL devices) are discontinued, leaving a latency niche; MRAM has no supercap and near-unlimited endurance. But media BOM is ~$1,000-3,200 for 4 GB (32 x 1Gb at $30-100) vs ~$80 of DRAM + supercap, and SLC/XL-Flash SSDs plus surplus Optane cover most buyers. Everspin's own MRAM NVMe card (nvNITRO, ~2017) did not reach volume [UNVERIFIED: training].",
+   "evidence": [
+    {
+     "title": "World's First 1 Gb 28 nm STT-MRAM Product - by Everspin",
+     "url": "https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin",
+     "type": "industry",
+     "date": "2019",
+     "shows": "1Gb die 105.1 mm2, cell 0.0396 um2, 9.75 Mb/mm2 on GF 28nm (via search snippet)"
+    },
+    {
+     "title": "EMD4E001G16G2-150CAS2R listing",
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "type": "industry",
+     "date": "2026",
+     "shows": "1Gb STT-MRAM reference price $102.60 @500 (~$821/GB) (via search snippet)"
+    },
+    {
+     "title": "IBM and Everspin announce 19TB NVMe SSD with MRAM write cache",
+     "url": "https://www.anandtech.com/show/13174",
+     "type": "news",
+     "date": "2018-08",
+     "shows": "IBM chose MRAM over DRAM+supercaps because supercaps/batteries last only a few years (via search snippet)"
+    },
+    {
+     "title": "Intel 10-Q Q2-2022",
+     "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+     "type": "company",
+     "date": "2022-07",
+     "shows": "Optane wind-down; $559M inventory impairment (via search snippet)"
+    }
+   ],
+   "trl": 7,
+   "capital_tier": "T1",
+   "time_to_first_revenue_months": 30,
+   "time_to_first_revenue_text": "24-36 months (FPGA design, NVMe firmware, OS qualification)",
+   "gross_margin_estimate": "25-45%",
+   "gross_margin_mid_pct": 35,
+   "us_manufacturability": "MRAM from Everspin (Chandler AZ BEOL); card assembly at U.S. EMS",
+   "who_is_already_doing_this": "Everspin (tried, nvNITRO), DRAM+supercap NVRAM card makers, Kioxia/Solidigm SLC SSDs, surplus Optane sellers",
+   "wins_axis": "write latency + endurance for small persistent logs",
+   "buyer": "storage appliance builders (ZFS/TrueNAS), database and HFT operators",
+   "survives_glut": "no",
+   "glut_reason": "In a glut DRAM+supercap NVRAM and Optane-like alternatives get cheaper still.",
+   "fatal_flaw": "Everspin already tried this exact product; tiny market, MRAM media 10-40x the cost of DRAM+supercap per GB.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "module/appliance",
+   "founder_fit_note": "No — FPGA/NVMe firmware heavy hardware product.",
+   "possible": "yes",
+   "profitable": "no",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-13",
+   "name": "SOT-MRAM Last-Level-Cache Chiplet",
+   "subbranch": "SOT-MRAM (moonshot SRAM replacement)",
+   "materials_sense": "a-material",
+   "what_it_is": "A UCIe-attached cache chiplet using spin-orbit-torque MRAM (beta-W/Ta SOT track under CoFeB/MgO MTJ, 2T1R) to replace SRAM last-level cache in AI accelerators at N5-class nodes.",
+   "why_it_could_work": "imec reports SOT switching <100 fJ/bit and >1e15 endurance (IEDM-2023) and a 2025 IEEE TED study shows BEOL read selectors shrink bitcells 10-40% toward sub-N3 SRAM area; multi-bit VGSOT claims ~3x SRAM density. COMPUTED: even at 0.03 um2 a 1Gb die is ~80 mm2 at ~$262/GB — an SRAM-replacement play, not a DRAM one.",
+   "evidence": [
+    {
+     "title": "Why SOT-MRAM can replace SRAM in future cache memories",
+     "url": "https://imec-int.com/en/articles/bringing-sot-mram-technology-closer-last-level-cache-memory-specifications",
+     "type": "industry",
+     "date": "2023",
+     "shows": "imec SOT-MRAM <100 fJ/bit, >1e15 endurance (IEDM 2023) (via search snippet)"
+    },
+    {
+     "title": "SOT-MRAM bitcell scaling with BEOL read selectors (IEEE TED)",
+     "url": "https://imec-publications.be/handle/20.500.12860/59271",
+     "type": "peer-reviewed",
+     "date": "2025",
+     "shows": "BEOL read selectors cut SOT bitcell area 10-40%, approaching sub-N3 SRAM (via search snippet)"
+    },
+    {
+     "title": "MRAM startup makes progress as rival closes (Antaios)",
+     "url": "https://www.eenewseurope.com/en/mram-startup-makes-progress-as-rival-closes/",
+     "type": "news",
+     "date": "2021-09",
+     "shows": "Antaios SOT-MRAM test chip at tier-1 foundry 28/22nm; eVaderis closed (via search snippet)"
+    },
+    {
+     "title": "Antaios company profile",
+     "url": "https://app.dealroom.co/companies/antaios",
+     "type": "other",
+     "date": "unknown",
+     "shows": "Antaios listed as 'closed' (undated, unverified) (via search snippet)"
+    }
+   ],
+   "trl": 4,
+   "capital_tier": "T3",
+   "time_to_first_revenue_months": 84,
+   "time_to_first_revenue_text": "7+ years",
+   "gross_margin_estimate": "unknown; 50% if achieved",
+   "gross_margin_mid_pct": 50,
+   "us_manufacturability": "Requires a leading-edge foundry MTJ/SOT module (TSMC/Samsung/Intel); none offered commercially",
+   "who_is_already_doing_this": "imec, TSMC/Samsung/Intel R&D; Antaios (Grenoble SOT startup) listed closed [UNVERIFIED]; eVaderis closed 2017",
+   "wins_axis": "cache density and standby power vs SRAM",
+   "buyer": "AI accelerator and CPU designers",
+   "survives_glut": "partially",
+   "glut_reason": "Not tied to DRAM price, but irrelevant to the DRAM shortage.",
+   "fatal_flaw": "TRL 4 plus dependence on a leading-edge foundry module that only the foundries/IDMs control; independent SOT startups have folded.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "IP licensing, fabless->foundry",
+   "founder_fit_note": "No.",
+   "possible": "marginal — lab-proven, not product-proven",
+   "profitable": "no",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-14",
+   "name": "eMRAM-Unified-Memory Edge MCU (no external DRAM)",
+   "subbranch": "Embedded NVM (eMRAM/RRAM/ePCM) SoC",
+   "materials_sense": "mixed:a+b",
+   "what_it_is": "A fabless edge-AI MCU on GF 22FDX+ with AutoPro150 eMRAM (alt: TSMC 22RRAM) holding 16-64 MB of weights and working data on-die so the board needs no external DRAM/PSRAM or NOR — a way to dodge the DRAM shortage in edge devices.",
+   "why_it_could_work": "Foundry eNVM is mature: GF AutoPro150 (Auto Grade 1, 500k cycles, <10ns read, volume 2H-2026 Dresden, PDK self-serve), TSMC 22RRAM (100K cycles), ST/Samsung 18nm ePCM (0.059 um2 cell, smallest). Removing an external LPDDR4 (now ~2x price) saves BOM and standby power.",
+   "evidence": [
+    {
+     "title": "GlobalFoundries announces AutoPro150 eMRAM on FDX",
+     "url": "https://www.globenewswire.com/news-release/2026/03/09/3251832/0/en/GlobalFoundries-Announces-Availability-of-AutoPro150-eMRAM-Technology-on-Enhanced-FDX-Platform-for-Advanced-Automotive-Applications.html",
+     "type": "company",
+     "date": "2026-03",
+     "shows": "Auto Grade 1 eMRAM, 500k cycles, <10ns read; volume 2H-2026 at Dresden; PDK via GF Connect (via search snippet)"
+    },
+    {
+     "title": "ST first 18nm FD-SOI + ePCM MCU (STM32V8)",
+     "url": "https://news.mynavi.jp/techplus/article/20251120-3693534/",
+     "type": "news",
+     "date": "2025-11",
+     "shows": "ST ePCM 0.059 um2 vs MRAM 0.129 um2 (16nm) vs RRAM 0.174 um2 (12nm) per ST; co-developed with Samsung Foundry (via search snippet)"
+    },
+    {
+     "title": "TSMC 2025 Annual Report ch.5",
+     "url": "https://investor.tsmc.com/static/annualReports/2025/english/pdf/2025_tsmc_ar_e_ch5.pdf",
+     "type": "company",
+     "date": "2026",
+     "shows": "TSMC N12e RRAM consumer-qualified; 22RRAM passed 100K-cycle qualification in 2025 (via search snippet)"
+    },
+    {
+     "title": "Infineon and TSMC to introduce RRAM for automotive MCUs",
+     "url": "https://www.eenewseurope.com/en/infineon-and-tsmc-to-introduce-rram-for-automotive-mcus",
+     "type": "news",
+     "date": "2022",
+     "shows": "AURIX TC4x on TSMC 28nm RRAM (via search snippet)"
+    },
+    {
+     "title": "IEDM 2024 Samsung eMRAM (PC Watch)",
+     "url": "https://pc.watch.impress.co.jp/docs/column/semicon/1649812.html",
+     "type": "conference",
+     "date": "2024-12",
+     "shows": "Samsung eMRAM cell 0.024 um2 (14nm) and 0.017 um2 (8nm), IEDM 2024 paper 11-4 (via search snippet)"
+    }
+   ],
+   "trl": 8,
+   "capital_tier": "T2",
+   "time_to_first_revenue_months": 48,
+   "time_to_first_revenue_text": "4+ years (SoC design, AEC/industrial qual, ecosystem)",
+   "gross_margin_estimate": "40-55%",
+   "gross_margin_mid_pct": 45,
+   "us_manufacturability": "Weak: GF 22FDX eMRAM is in Dresden (not Malta NY); TSMC RRAM in Taiwan; ST ePCM captive (Crolles/Samsung). No U.S. line offers this eNVM at 22nm.",
+   "who_is_already_doing_this": "ST (STM32V8 ePCM), Infineon (AURIX TC4x RRAM), NXP/Renesas eMRAM MCUs [UNVERIFIED: training], GF automotive eMRAM customers (Bosch engagement)",
+   "wins_axis": "BOM and standby power (no external DRAM/NOR), instant-on",
+   "buyer": "industrial/automotive edge-AI module makers",
+   "survives_glut": "partially",
+   "glut_reason": "The 'avoid DRAM' pitch weakens when LPDDR4 is cheap; power and instant-on remain.",
+   "fatal_flaw": "Head-on competition with the top-5 MCU vendors who already own eNVM MCUs, and not manufacturable in the U.S.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "fabless->foundry",
+   "founder_fit_note": "No — T2 SoC company.",
+   "possible": "yes",
+   "profitable": "no — for a startup vs ST/Infineon/NXP/Renesas",
+   "doable_by_founder": "no",
+   "branch": "A"
+  },
+  {
+   "tmp_id": "A2-15",
+   "name": "NVM-EOL Migration Finder (MRAM/FeRAM/ReRAM cross-reference SaaS)",
+   "subbranch": "Software tool for the shortage, grounded in emerging-NVM device data",
+   "materials_sense": "none",
+   "what_it_is": "A web app that ingests lifecycle/PCN/EOL notices and distributor data (e.g., Renesas serial EEPROM EOL with last-time ship 2026-10-31, DDR3/DDR4 EOLs) and recommends pin- and protocol-compatible emerging-NVM replacements (Everspin Toggle/xSPI MRAM, FeRAM, Netsol MRAM, ReRAM-based parts) with BOM cost, lead-time (e.g., 20-26 weeks for Everspin xSPI) and qualification deltas; revenue from seats for component engineers plus referral fees from authorized distributors.",
+   "why_it_could_work": "2026 is an EOL wave (DDR3/DDR4 exits, serial EEPROM EOLs) during a shortage, and emerging-NVM parts are under-known by component engineers. The founder can build it with no hardware capital; device knowledge from this branch becomes the data moat (density, endurance, interface compatibility).",
+   "evidence": [
+    {
+     "title": "Renesas EOL plan: serial EEPROM products",
+     "url": "https://www.renesas.cn/zh/document/gde/eol-plan-serial-eeprom-products",
+     "type": "company",
+     "date": "2025-11",
+     "shows": "Renesas serial EEPROM families EOL, last-time shipment 2026-10-31 (via search snippet)"
+    },
+    {
+     "title": "DDR4 reportedly leads legacy memory rally; DDR3 in tight supply",
+     "url": "https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/",
+     "type": "industry",
+     "date": "2026-01",
+     "shows": "Makers exiting DDR4 in 2026; DDR3 supply tight (via search snippet)"
+    },
+    {
+     "title": "EM128LXQAB313IS2T DigiKey listing",
+     "url": "https://punchouttest.digikey.hk/en/products/detail/everspin-technologies-inc/EM128LXQAB313IS2T/24375470",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Everspin 128Mb xSPI MRAM manufacturer lead time 26 weeks (via search snippet)"
+    },
+    {
+     "title": "EM064LX Future Electronics listing",
+     "url": "https://futureelectronics.com/p/semiconductors--memory--RAM--nvram--mram/em064lxoab320is1t-everspin-technologies-4175573",
+     "type": "industry",
+     "date": "2026",
+     "shows": "64Mb xSPI STT-MRAM $39.38 @480, 20-week lead time (via search snippet)"
+    }
+   ],
+   "trl": 9,
+   "capital_tier": "T0",
+   "time_to_first_revenue_months": 8,
+   "time_to_first_revenue_text": "6-9 months: first paid seats from mid-size industrial OEMs; referral revenue later",
+   "gross_margin_estimate": "75-85%",
+   "gross_margin_mid_pct": 80,
+   "us_manufacturability": "n/a (software); promotes U.S.-made parts (Everspin Chandler) as a filter",
+   "who_is_already_doing_this": "SiliconExpert (Arrow), Z2Data, Octopart/Nexar (Altium, now Renesas-owned [UNVERIFIED]), Accuris/IHS parts databases, Findchips",
+   "wins_axis": "time-to-replacement and supply security for component engineers",
+   "buyer": "component/reliability engineers at industrial, medical and defense OEMs facing NVM/DRAM EOL",
+   "survives_glut": "partially",
+   "glut_reason": "EOLs continue in a glut, but shortage urgency and willingness to pay fall.",
+   "fatal_flaw": "Incumbent lifecycle databases already provide cross-references; the emerging-NVM slice may be too narrow to sustain standalone SaaS.",
+   "rule1_status": "SUPPORTED",
+   "business_model_lenses": "SaaS, data product, referral/brokerage",
+   "founder_fit_note": "Yes — pure software, T0, day-job compatible; the risk is market size, not execution.",
+   "possible": "yes",
+   "profitable": "marginal — crowded by SiliconExpert/Z2Data",
+   "doable_by_founder": "yes",
+   "branch": "A"
+  }
+ ]
+}

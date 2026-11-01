@@ -1,0 +1,870 @@
+{
+  "branch_key": "B",
+  "branch": "B",
+  "scope": "Architecture and systems that make existing RAM go further: CXL expanders/pooling/DDR4 reuse, tiered and persistent memory, LLM KV-cache tiering hardware, hardware memory compression, processing/compute-in-memory, HBM alternatives (LPDDR chiplets, HBF) and memory-fabric silicon. Hardware/system/IP only; pure software is left to branch D. Vendor-status claims tagged [UNVERIFIED-T] could not be re-opened this session (WebSearch budget exhausted, WebFetch DNS-blocked); primary evidence comes from public GitHub repos (Linux, vLLM, Dynamo, LMCache, Mooncake, SMDK, HMSDK, KTransformers, model configs) plus cross-referenced Phase-1 price sources.",
+  "cards": [
+    {
+      "tmp_id": "B-01",
+      "name": "DDR4 Second-Life CXL Expander",
+      "branch": "B",
+      "subbranch": "CXL memory expansion / DIMM reuse (Microsoft-Meta style DDR4 recycling)",
+      "materials_sense": "mixed:b+c",
+      "what_it_is": "A PCIe Gen5 x16 CXL 2.0 Type-3 add-in card or 1U 'JBOM' holding 8-12 decommissioned DDR4-3200 RDIMMs behind a merchant DDR4-capable CXL controller (Marvell Structera X 2404-class or Microchip SMC 2000-class). A U.S. EMS (e.g. Sanmina) assembles it, and it ships with burn-in and qualification to operators moving to DDR5-only Xeon 6 / EPYC 9005 servers. The process 'materials' are DRAM that is already fabbed and paid for, and the capital is DIMMs that are already depreciated.",
+      "why_it_could_work": "Hyperscalers reuse DDR4 behind CXL because reuse beats buying new DDR5. B's model gives the hyperscaler a +$2.0/GB advantage at the 2023 trough and +$13/GB in 4Q26, with the card at ~$0.49/GB and DDR4 dumped at ~50% of spot. Single-host Type-3 expansion is stabilizing in mainline Linux ([2]). Tiering is upstream (weighted interleave v6.9, DAMON migration v6.11). The added ~70-100 ns latency [UNVERIFIED-T, Pond] suits VM-density and in-memory DB capacity tiers.",
+      "evidence": [
+        {
+          "title": "Pond: CXL-Based Memory Pooling Systems for Cloud Platforms (ASPLOS '23) artifact repo",
+          "url": "https://github.com/vtess/Pond",
+          "type": "conference",
+          "date": "2023-03",
+          "shows": "Opened. Microsoft Azure/Virginia Tech CXL pooling paper. The repo holds the CXL-emulation scripts, and the paper preprint is linked at huaicheng.github.io/p/asplos23-pond.pdf (not opened)."
+        },
+        {
+          "title": "Linux CXL Subsystem Maturity Map (mainline, HEAD 2026-10-31)",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Single-host Type-3 enumeration/HDM decoders are [2] stabilizing. Dynamic Capacity Devices, multi-host sharing and fabrics/G-FAM are [0] known gaps. PMEM GPF/dirty shutdown is [3] mature."
+        },
+        {
+          "title": "SK hynix HMSDK README",
+          "url": "https://github.com/skhynix/hmsdk",
+          "type": "company",
+          "date": "2025-11",
+          "shows": "Opened. HMSDK v4.0 (2025-11-03). CXL weighted-interleave landed in upstream Linux v6.9 and DAMON tier migration in v6.11. CXL tiering software is free and upstream."
+        },
+        {
+          "title": "RAM market update (DRAMeXchange snapshot 2026-08-31)",
+          "url": "https://www.buysellram.com/blog/ram-market-update/",
+          "type": "news",
+          "date": "2026-08-31",
+          "shows": "CROSS-REF (p1-backend.jsonl snippet). DDR4 8Gb avg $44.37 vs DDR5 16Gb avg $53.92: DDR4 is dearer per GB than DDR5."
+        },
+        {
+          "title": "TrendForce DRAM spot price page",
+          "url": "https://www.trendforce.com/price_dram.html",
+          "type": "industry",
+          "date": "2026-08-03",
+          "shows": "CROSS-REF (p1-backend.jsonl snippet). DDR4 8Gb spot avg $21.00 on 2026-08-03."
+        },
+        {
+          "title": "Barclays via TechNews: DDR4 pricier than DDR5 in some channels",
+          "url": "https://finance.technews.tw/2026/10/13/the-shortage-of-memory-chips-may-continue-for-another-two-years/",
+          "type": "news",
+          "date": "2026-10-13",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). DDR4 increases outpace DDR5, and the two are price-inverted in some channels."
+        },
+        {
+          "title": "KED Global: DDR4 8Gb bottomed at $1.30",
+          "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+          "type": "news",
+          "date": "2023-10-04",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). 2023-trough DDR4 value anchor."
+        }
+      ],
+      "trl": 7,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 24,
+      "time_to_first_revenue_text": "18-30 months: board design + controller vendor access + qualification at one tier-2 cloud",
+      "gross_margin_estimate": "15-30% (card without DRAM)",
+      "gross_margin_mid_pct": 22,
+      "us_manufacturability": "Board assembly/test at any U.S. EMS (Sanmina, Kimball, SMTC). The controller silicon is TSMC (Taiwan). DIMMs are recovered from U.S. data centers. Only assembly and recovery are U.S.",
+      "who_is_already_doing_this": "Marvell (Structera X: DDR4 support, inline LZ4) [UNVERIFIED-T]; Astera Labs (Leo; Azure CXL instances) [UNVERIFIED-T]; Montage (MXC); Microchip (SMC 2000); SMART Modular/Penguin Solutions (4- and 8-DIMM CXL AICs) [UNVERIFIED-T]; Microsoft and Meta in-house DDR4 reuse programs [UNVERIFIED-T]",
+      "wins_axis": "$/GB of added capacity from already-owned DIMMs; lifecycle length/Scope-3; supply security when DDR5 allocation is refused",
+      "buyer": "Tier-2/neocloud and large-enterprise operators with >=10k retired DDR4 RDIMMs and DDR5-only new servers (VM density, in-memory DB capacity tier)",
+      "survives_glut": "no",
+      "glut_reason": "B's model makes reuse lose for a small vendor in every scenario: -$0.34/GB (2023 trough), -$1.34/GB (4Q26, DDR4 resale ~$25/GB ≈ new DDR5), -$3.94/GB (glut, DDR5 $10.4 vs DDR4 sticky ~$12). The only owners who come out ahead (hyperscalers) build their own.",
+      "fatal_flaw": "At small-vendor volume the card costs ~$2.3/GB. The owner's DDR4 is worth ~$21-44/GB at chip spot in Aug 2026, and DDR4 is dearer than DDR5 in some channels, so 'sell the DDR4, buy DDR5' beats reuse. The arbitrage exists only at hyperscaler scale, where buyers go direct to Marvell/Astera.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance; recert/brokerage (the profitable variant is reselling the DDR4: branch C)",
+      "founder_fit_note": "No: needs controller-vendor access (sold to hyperscalers/ODMs), a firmware/SI team and $2M+; the founder's software edge is irrelevant.",
+      "possible": "yes: deployed at hyperscalers with merchant controllers",
+      "profitable": "no: computed negative unit advantage for a small vendor in trough, shortage and glut",
+      "doable_by_founder": "no: hardware/firmware team and controller allocation required"
+    },
+    {
+      "tmp_id": "B-02",
+      "name": "KV Pool Node (shared DRAM+CXL KV-cache appliance)",
+      "branch": "B",
+      "subbranch": "LLM inference KV-cache tiering - DRAM/CXL tier",
+      "materials_sense": "c-capital",
+      "what_it_is": "A 2U EPYC 9005 / Xeon 6 server (Supermicro or Dell OEM chassis) holding 3-6 TB of DDR5 plus E3.S CXL memory modules (Samsung CMM-D, Micron CZ122 or SK hynix CMM-DDR5), with 2x400G RDMA NICs. It ships with Mooncake Store / LMCache MP preconfigured to allocate KV on the CXL tier (/dev/dax). It is sold as a rack-shared 'KV memory node' that pools prefix and agent-session caches across GPU servers running vLLM/SGLang/Dynamo.",
+      "why_it_could_work": "KV is large: Llama-3.1-70B is 320 KiB/token at BF16 (40 GiB per 128k context); DeepSeek-V3 MLA is 68.6 KiB/token. Reloading a 128k context (20 GiB FP8) over 400G RDMA takes ~0.5 s, against ~41 s to recompute on one H100. Holding KV in DDR5 pays if a prefix is reused at least once every ~1.35 h at 4Q26 prices (~3.4 h in the glut). Mooncake reports 75% more requests within SLO at Kimi. vLLM requires the CPU tier as the staging tier, and LMCache/Mooncake already speak CXL /dev/dax.",
+      "evidence": [
+        {
+          "title": "Mooncake README + Mooncake Store deployment guide (Kimi serving platform)",
+          "url": "https://github.com/kvcache-ai/Mooncake",
+          "type": "company",
+          "date": "2026-11",
+          "shows": "Opened. KV-cache-centric disaggregation lets Kimi handle 75% more requests within SLO. Store has CXL-aware allocation (--enable_cxl, /dev/dax, --allocation_strategy=cxl). Integrated into vLLM (May 2026) and TensorRT-LLM (Oct 2026)."
+        },
+        {
+          "title": "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving (FAST '25)",
+          "url": "https://www.usenix.org/system/files/fast25-qin.pdf",
+          "type": "conference",
+          "date": "2025-02",
+          "shows": "Peer-reviewed production KV-disaggregation design (link seen in the Mooncake README; PDF not opened)."
+        },
+        {
+          "title": "LMCache Device-DAX backend (CXL-attached memory as KV arena)",
+          "url": "https://github.com/LMCache/LMCache/blob/dev/docs/source/kv_cache/storage_backends/dax.rst",
+          "type": "industry",
+          "date": "2026",
+          "shows": "Opened. LMCache mmaps /dev/dax (PMEM or CXL memory) as a KV-cache arena, and several servers can share one CXL device by disjoint ranges."
+        },
+        {
+          "title": "vLLM KV Offloading Usage Guide",
+          "url": "https://github.com/vllm-project/vllm/blob/main/docs/features/kv_offloading_usage.md",
+          "type": "industry",
+          "date": "2026-11",
+          "shows": "Opened. CPU host memory is the primary KV offload tier, and secondary tiers are staged through it. Host DRAM capacity is mandatory for KV tiering."
+        },
+        {
+          "title": "NVIDIA Dynamo KVBM README + KV-cache offloading docs",
+          "url": "https://github.com/ai-dynamo/dynamo",
+          "type": "company",
+          "date": "2026-11",
+          "shows": "Opened. GPU<->CPU<->Disk<->Remote KV tiering with GDS/NIXL transfers. LMCache, FlexKV and HiCache are interchangeable backends. Host/disk KV tiering is free open-source software."
+        },
+        {
+          "title": "Meta llama-models sku_list.py",
+          "url": "https://github.com/meta-llama/llama-models",
+          "type": "company",
+          "date": "2025-10",
+          "shows": "Opened. Llama-3.1 70B has 80 layers and 8 KV heads with head_dim 128, which gives 320 KiB/token KV at BF16 (40 GiB at 128k context)."
+        },
+        {
+          "title": "DeepSeek-V3 config_671B.json",
+          "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+          "type": "company",
+          "date": "2025-08",
+          "shows": "Opened. MLA latent KV (kv_lora_rank 512 + rope 64, 61 layers) is about 68.6 KiB/token at BF16, against 320 KiB/token for Llama-3.1-70B (computed by B)."
+        },
+        {
+          "title": "Counterpoint via EE Times Asia: 64GB RDIMM $450 to >$900",
+          "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+          "type": "news",
+          "date": "2026-01",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). Server RDIMM contract doubled 4Q25 to 1Q26."
+        }
+      ],
+      "trl": 8,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 12,
+      "time_to_first_revenue_text": "9-15 months: one demo node, then build-to-order to 2-3 neocloud/enterprise inference teams",
+      "gross_margin_estimate": "12-25% hardware; 60%+ on an attached support/observability subscription",
+      "gross_margin_mid_pct": 18,
+      "us_manufacturability": "Integration/burn-in on a U.S. bench (East Coast) or through Supermicro San Jose. CPUs, NICs and most DDR5 are imported. Micron Idaho DDR5 is not before mid-2027.",
+      "who_is_already_doing_this": "NVIDIA (Dynamo KVBM; Inference Context Memory Storage on BlueField-4 [UNVERIFIED-T]); WEKA Augmented Memory Grid (NVIDIA partnership Nov 2025); VAST Data; Pliops; Hammerspace Tier 0; Penguin Solutions (CXL KV server) [UNVERIFIED-T]; Enfabrica EMFASYS (now NVIDIA) [UNVERIFIED-T]; Moonshot/Mooncake in-house; Tensormesh (LMCache commercial)",
+      "wins_axis": "$/GB-month of shared hot-KV capacity against GPU HBM (~$180-250/GB effective) and TTFT on cache hits",
+      "buyer": "Neocloud inference providers and enterprise private-inference teams with long system prompts, RAG and multi-turn agent sessions",
+      "survives_glut": "partially",
+      "glut_reason": "A 60% DRAM drop cuts the node BOM and stretches the DRAM break-even reuse interval from 1.35 h to 3.4 h. It also lets every OEM sell the same box, and flash tiers (break-even ~78 h) keep undercutting DRAM for warm KV.",
+      "fatal_flaw": "No moat: a commodity server plus open-source software (Mooncake/LMCache) that Dell/Supermicro/NVIDIA reference designs replicate. A 4 TB node ties up ~$80-130k of DRAM at 4Q26 prices for a reseller-grade margin, and flash KV tiers take the warm data.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance; SaaS (support + KV observability subscription)",
+      "founder_fit_note": "Marginal: integration and software are within reach, but DRAM working capital (~$100k per node) and a channel into inference operators exceed T0.",
+      "possible": "yes: production at Moonshot; all parts off-the-shelf",
+      "profitable": "marginal: VAR-grade hardware margin unless a subscription attaches",
+      "doable_by_founder": "marginal: needs customer prepayment or financing for DRAM inventory"
+    },
+    {
+      "tmp_id": "B-03",
+      "name": "Flash KV Accelerator (U.S. Pliops-style NVMe KV engine)",
+      "branch": "B",
+      "subbranch": "LLM inference KV-cache tiering - flash tier with hardware KV engine",
+      "materials_sense": "a-material",
+      "what_it_is": "A PCIe Gen5 card with an FPGA (AMD Versal / Altera Agilex) key-value engine fronting 8-24 Gen5 TLC NVMe SSDs (Micron 9550, Solidigm, Kioxia). It exposes a KV-block API to vLLM/Dynamo through a NIXL plugin and stores KV on NAND instead of DRAM: a U.S. competitor to Pliops XDP LightningAI.",
+      "why_it_could_work": "The material swap is NAND for DRAM. Enterprise NVMe at ~$0.30-0.60/GB holds 1M tokens of Llama-70B FP8 KV (164 GB) for ~$0.003/h, so caching pays if reused once per ~78 h, against ~1.35 h for DDR5. One Gen5 SSD reloads a 128k context in ~1.8 s vs ~41 s recompute. NAND stopped rising in Oct 2026, with surplus forecast for 2H27.",
+      "evidence": [
+        {
+          "title": "NVIDIA Dynamo KVBM README + KV-cache offloading docs",
+          "url": "https://github.com/ai-dynamo/dynamo",
+          "type": "company",
+          "date": "2026-11",
+          "shows": "Opened. GPU<->CPU<->Disk<->Remote KV tiering with GDS/NIXL transfers. LMCache, FlexKV and HiCache are interchangeable backends. Host/disk KV tiering is free open-source software."
+        },
+        {
+          "title": "WEKA partners with NVIDIA on KV cache storage for Dynamo (SC25)",
+          "url": "https://siliconangle.com/2025/11/20/nvidia-weka-kv-cache-solution-ai-inferencing-sc25/",
+          "type": "news",
+          "date": "2025-11-20",
+          "shows": "Flash-based KV tier partnership between WEKA and NVIDIA (headline seen in the Dynamo README; body not opened)."
+        },
+        {
+          "title": "LMCache README",
+          "url": "https://github.com/LMCache/LMCache",
+          "type": "industry",
+          "date": "2026-11",
+          "shows": "Opened. Vendor-neutral KV layer that tiers to CPU RAM, SSD and remote stores. Joined the PyTorch Foundation, and Tensormesh launched, in Oct 2025. Integrated in NVIDIA Dynamo (Sep 2025)."
+        },
+        {
+          "title": "NAND flat after 21 months while DRAM hits record",
+          "url": "https://tech-insider.org/dram-record-high-nand-flat-21-months-october-2026/",
+          "type": "news",
+          "date": "2026-10",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). NAND contract stopped rising in Oct 2026."
+        },
+        {
+          "title": "TrendForce 2026-07-30 press release",
+          "url": "https://www.trendforce.com/presscenter/news/20260730-13158.html",
+          "type": "industry",
+          "date": "2026-07-30",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). NAND turns to surplus in 2H27 while the DRAM gap widens."
+        }
+      ],
+      "trl": 8,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 30,
+      "time_to_first_revenue_text": "24-36 months: FPGA prototype, software integration, design-ins",
+      "gross_margin_estimate": "40-60% if differentiated",
+      "gross_margin_mid_pct": 50,
+      "us_manufacturability": "FPGA silicon from TSMC. Board assembly at a U.S. EMS. SSD NAND comes from Micron (Singapore), Kioxia/SanDisk (Japan) and Solidigm (China fab). Little U.S. content.",
+      "who_is_already_doing_this": "Pliops (XDP LightningAI) [UNVERIFIED-T]; WEKA (Augmented Memory Grid, NVIDIA partner); VAST Data; DDN; Hammerspace; NVIDIA ICMS/BlueField-4 [UNVERIFIED-T]; DeepSeek 3FS (open source; an LMCache backend); NVIDIA GDS + plain NVMe via Dynamo KVBM",
+      "wins_axis": "$/GB-month of warm KV and TTFT on long-context reuse",
+      "buyer": "Inference providers and enterprise RAG/agent platforms with long shared prefixes",
+      "survives_glut": "yes",
+      "glut_reason": "The axis is flash vs recompute, not DRAM price. A NAND surplus in 2H27 lowers BOM further. A DRAM glut narrows the DRAM-vs-flash gap but does not close it (3.4 h vs 78 h break-even).",
+      "fatal_flaw": "NVIDIA is building this tier itself (Dynamo KVBM + GDS + BlueField-4 storage), and software-only stacks on plain NVMe (3FS, LMCache, HiCache) capture most of the benefit without a special card. A late U.S. entrant faces Pliops/WEKA/VAST with a 2-3 year head start.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "fabless->foundry (FPGA then ASIC); module/appliance",
+      "founder_fit_note": "No: FPGA/storage-controller engineering and $10M+ of venture funding.",
+      "possible": "yes: shipping from several vendors",
+      "profitable": "marginal: crowded and being absorbed by NVIDIA reference stacks",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-04",
+      "name": "Compressed CXL Expander (licensed inline compression IP)",
+      "branch": "B",
+      "subbranch": "Hardware memory compression",
+      "materials_sense": "b-process",
+      "what_it_is": "An FPGA CXL 2.0 Type-3 card (Altera Agilex 7 R-tile or AMD Versal Premium) that runs licensed inline memory-compression IP (ZeroPoint Technologies, Gothenburg, or an LZ4-class core) in front of 256-512 GB DDR5. It exposes ~2x the physical capacity to Redis/Valkey/Memcached and VM hosts and would later tape out as an ASIC.",
+      "why_it_could_work": "The IBM MXT lineage and ZeroPoint claim 2-4x on compressible data [UNVERIFIED-T]. At $20-32/GB, a 2x ratio on 512 GB is worth ~$10-16k of DRAM per card in 4Q26. Linux already proves the demand: zswap plus Intel IAA hardware DEFLATE.",
+      "evidence": [
+        {
+          "title": "Linux IAA Compression Accelerator crypto driver doc",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/crypto/iaa/iaa-crypto.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Intel In-Memory Analytics Accelerator hardware DEFLATE ('deflate-iaa') is selectable as the zswap compressor. Hardware memory compression already ships in Xeon CPUs."
+        },
+        {
+          "title": "Linux zswap doc",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/zswap.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. OS-level compressed RAM cache is free in every Linux kernel."
+        },
+        {
+          "title": "Linux CXL Subsystem Maturity Map (mainline, HEAD 2026-10-31)",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Single-host Type-3 enumeration/HDM decoders are [2] stabilizing. Dynamic Capacity Devices, multi-host sharing and fabrics/G-FAM are [0] known gaps. PMEM GPF/dirty shutdown is [3] mature."
+        }
+      ],
+      "trl": 6,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 30,
+      "time_to_first_revenue_text": "24-36 months: IP license, FPGA card, qualification with one cache operator",
+      "gross_margin_estimate": "40-55%",
+      "gross_margin_mid_pct": 45,
+      "us_manufacturability": "FPGA from TSMC; board at a U.S. EMS; IP from Sweden. Little U.S. content beyond assembly.",
+      "who_is_already_doing_this": "ZeroPoint Technologies (CXL compression IP) [UNVERIFIED-T]; Marvell Structera (inline LZ4) [UNVERIFIED-T]; Intel IAA in Xeon + zswap (upstream); Meta TMO / Google zswap far-memory (software) [UNVERIFIED-T]; Rambus (CXL controller IP)",
+      "wins_axis": "Effective $/GB (capacity multiplier) for compressible in-memory data",
+      "buyer": "In-memory cache operators (Redis/Valkey/Memcached fleets) and VM hosts with cold pages",
+      "survives_glut": "no",
+      "glut_reason": "At $8-13/GB, the DRAM a 2x ratio saves on 512 GB is ~$4-6k, which no longer covers a $3-8k FPGA card plus the latency penalty.",
+      "fatal_flaw": "Compression is being absorbed for free into CPUs (Intel IAA + zswap, upstream) and merchant CXL controllers (inline LZ4). The hottest 'need more RAM' data, FP8/INT4 weights and KV, is near-incompressible, and FPGA BOM eats most of the saved DRAM value.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "IP licensing (in-license); fabless->foundry; module/appliance",
+      "founder_fit_note": "No: RTL/FPGA and CXL compliance work; the license fee and FPGA cards exceed T0.",
+      "possible": "yes: demonstrated on FPGA and in merchant controllers",
+      "profitable": "no: squeezed between free CPU/controller compression and a glut",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-05",
+      "name": "On-prem MoE Box (DRAM-instead-of-HBM inference appliance)",
+      "branch": "B",
+      "subbranch": "HBM alternatives at system level: CPU-DRAM-resident MoE inference",
+      "materials_sense": "mixed:a+c",
+      "what_it_is": "A U.S.-integrated 2-socket AMD EPYC 9005 server with 768 GB-1.5 TB of 12-channel DDR5 RDIMM and 1-2 NVIDIA RTX PRO 6000 / RTX 5090-class GPUs. It runs KTransformers/SGLang CPU-GPU hybrid inference of open frontier MoE models (Kimi K2.5, DeepSeek-V4-Flash, GLM-5) and is sold with a support and model-update subscription to firms that cannot send data to cloud APIs.",
+      "why_it_could_work": "Holding ~1 TB of weights in HBM takes ~$240k of H200-class GPUs. In DDR5 it is ~$20k at 4Q26 prices (~$8k in the glut). KTransformers documents Kimi-K2.5 on 2x4090 + >=600 GB RAM and DeepSeek-V4-Flash on one RTX 5090 + >=200 GB RAM. Decode roofline: ~23 tok/s per socket (614 GB/s, 32B active INT4), ~46 tok/s NUMA-aware. Modelled BOM ~$56k (4Q26) / ~$44k (glut), list ~$72k / $56k at 22% hardware GM.",
+      "evidence": [
+        {
+          "title": "KTransformers README + Kimi-K2.5 / DeepSeek-V4-Flash tutorials",
+          "url": "https://github.com/kvcache-ai/ktransformers",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. CPU-GPU hybrid MoE inference: Kimi-K2.5 needs >=600GB system RAM + 48GB VRAM, DeepSeek-V4-Flash needs >=200GB RAM + one RTX 5090. DRAM replaces HBM for weight residency."
+        },
+        {
+          "title": "DeepSeek-V3 config_671B.json",
+          "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+          "type": "company",
+          "date": "2025-08",
+          "shows": "Opened. MLA latent KV (kv_lora_rank 512 + rope 64, 61 layers) is about 68.6 KiB/token at BF16, against 320 KiB/token for Llama-3.1-70B (computed by B)."
+        },
+        {
+          "title": "Samsung seeks >3x HBM3E pricing for HBM4",
+          "url": "https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/",
+          "type": "news",
+          "date": "2026-10-02",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). HBM3E ~$1.50/Gb; 2027 HBM4 asks mid-to-high $4/Gb."
+        },
+        {
+          "title": "Counterpoint via EE Times Asia: 64GB RDIMM $450 to >$900",
+          "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+          "type": "news",
+          "date": "2026-01",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). Server RDIMM contract doubled 4Q25 to 1Q26."
+        },
+        {
+          "title": "ServNet DDR5 server memory price tracker 2026",
+          "url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026",
+          "type": "industry",
+          "date": "2026-08",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). Street 64GB DDR5 RDIMM ~$2,064 (~$32/GB)."
+        }
+      ],
+      "trl": 8,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 8,
+      "time_to_first_revenue_text": "6-9 months: one demo unit, then build-to-order with 50% deposits",
+      "gross_margin_estimate": "18-30% hardware; 60-80% on subscription; blended ~25-35% if subscription attaches",
+      "gross_margin_mid_pct": 28,
+      "us_manufacturability": "Assembled and tested in the U.S. (East Coast bench). CPUs/GPUs are TSMC and DDR5 is Korea/Taiwan (Micron Idaho from 2027). 'Assembled in USA' only, though TAA-compliant integration is feasible.",
+      "who_is_already_doing_this": "Puget Systems, Exxact, Lambda, Bizon, Supermicro, Dell Pro Max/HPE; NVIDIA DGX Station GB300 (large coherent memory) [UNVERIFIED-T]; Apple Mac Studio (512 GB unified memory) [UNVERIFIED-T]; KTransformers community/Chinese appliance vendors [UNVERIFIED-T]",
+      "wins_axis": "$/GB of model-resident memory (DDR5 ~$26/GB vs ~$180-250/GB HBM-in-GPU) plus data sovereignty",
+      "buyer": "20-500-person regulated firms (law, healthcare, CMMC/ITAR defense subcontractors) and universities running private chat/RAG/agents on 600B-1T-parameter MoE models",
+      "survives_glut": "yes",
+      "glut_reason": "A glut cuts the DRAM BOM from ~$20k to ~$8k, so the box gets cheaper and easier to sell. The risks are model-architecture shifts and GPU vendors' desk-side products, not DRAM price.",
+      "fatal_flaw": "Commodity integration with thin hardware margin. NVIDIA DGX Station, Apple unified-memory machines and big OEMs can undercut, and ~20-45 tok/s single-stream throughput disappoints multi-user deployments. The only moat is service quality, and it is a reseller business, not a memory venture.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance; SaaS (model-update/monitoring subscription); defense-first niche",
+      "founder_fit_note": "Yes-ish: closest to the founder's software/ops skills; build-to-order with deposits keeps cash <$50k (a smaller DeepSeek-V4-Flash demo unit ~ $15-20k).",
+      "possible": "yes: documented open-source configurations",
+      "profitable": "marginal: yes only if a recurring support/model subscription attaches",
+      "doable_by_founder": "yes: integration + software, startable with deposits"
+    },
+    {
+      "tmp_id": "B-06",
+      "name": "TB-Class CXL Node for EDA/Genomics/HANA",
+      "branch": "B",
+      "subbranch": "CXL memory expansion - vertical large-memory appliance",
+      "materials_sense": "c-capital",
+      "what_it_is": "Pre-validated single-socket Xeon 6 / EPYC 9005 servers carrying 8-16 E3.S CXL memory modules (Samsung CMM-D, Micron CZ122, SK hynix CMM-DDR5) that add 2-4 TB behind local DDR5. They are tuned with upstream weighted-interleave/DAMON tiering (SK hynix HMSDK) and Samsung SMDK, and sold to chip-design teams (full-chip Cadence/Synopsys runs), genome assemblers and SAP HANA shops that otherwise buy 4-socket boxes or cloud high-memory instances.",
+      "why_it_could_work": "CXL breaks the DIMM-slot ceiling without the 4-socket premium. Weighted interleave adds bandwidth as well as capacity (HMSDK). Single-host Type-3 support is stabilizing in Linux ([2]). Capacity-bound EDA and genomics jobs care about TB per node more than latency.",
+      "evidence": [
+        {
+          "title": "SK hynix HMSDK README",
+          "url": "https://github.com/skhynix/hmsdk",
+          "type": "company",
+          "date": "2025-11",
+          "shows": "Opened. HMSDK v4.0 (2025-11-03). CXL weighted-interleave landed in upstream Linux v6.9 and DAMON tier migration in v6.11. CXL tiering software is free and upstream."
+        },
+        {
+          "title": "Samsung SMDK v2.2 README (CXL Memory Expander software)",
+          "url": "https://github.com/OpenMPDK/SMDK",
+          "type": "company",
+          "date": "2024-12",
+          "shows": "Opened. Samsung CMM software stack (memory-node/swap/cache interfaces, tiering engine), demoed at SC24, OCP 2024 and FMS 2024. Last commit 2024-12-09."
+        },
+        {
+          "title": "Linux CXL Subsystem Maturity Map (mainline, HEAD 2026-10-31)",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Single-host Type-3 enumeration/HDM decoders are [2] stabilizing. Dynamic Capacity Devices, multi-host sharing and fabrics/G-FAM are [0] known gaps. PMEM GPF/dirty shutdown is [3] mature."
+        }
+      ],
+      "trl": 8,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 12,
+      "time_to_first_revenue_text": "9-15 months: two validated reference configs, then sales through EDA/genomics channels",
+      "gross_margin_estimate": "15-25%",
+      "gross_margin_mid_pct": 20,
+      "us_manufacturability": "U.S. integration. The CMM modules are Samsung/SK hynix (Korea) and Micron (non-U.S. assembly [UNVERIFIED-T]).",
+      "who_is_already_doing_this": "Supermicro, Dell, HPE, Lenovo (CXL-ready platforms); Penguin Solutions/SMART Modular; Colfax, Silicon Mechanics; AWS/Azure high-memory instances [UNVERIFIED-T]",
+      "wins_axis": "TB per socket and $/TB vs 4-socket servers or cloud high-memory instances",
+      "buyer": "EDA teams at fabless startups, genomics cores, SAP HANA operators",
+      "survives_glut": "partially",
+      "glut_reason": "Cheap DDR5 plus 128-256 GB RDIMM/MRDIMM give 3-6 TB per socket without CXL, so only workloads above the slot ceiling still need it.",
+      "fatal_flaw": "Big OEMs already sell CXL-ready platforms with the same modules. At 2026 DRAM prices the binding constraint is dollars, not slots, so breaking the CXL ceiling is not the customer's pain point.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance (VAR); SaaS (tiering tuning/telemetry)",
+      "founder_fit_note": "Marginal: a VAR/integration play; customers buy from OEMs they already trust.",
+      "possible": "yes",
+      "profitable": "marginal: VAR margins against OEM incumbents",
+      "doable_by_founder": "marginal"
+    },
+    {
+      "tmp_id": "B-07",
+      "name": "Rack-Scale CXL Pooling Appliance",
+      "branch": "B",
+      "subbranch": "CXL switching / multi-host memory pooling",
+      "materials_sense": "c-capital",
+      "what_it_is": "A 2-4U memory appliance with a CXL 2.0/3.x switch (XConn Apollo or Panmnesia class) fanning 16-32 hosts into a shared DDR5/DDR4 pool behind Type-3 controllers, plus orchestration software. It is sold to VM-cloud operators to cut stranded memory.",
+      "why_it_could_work": "Pond (Azure, ASPLOS '23) showed that pooling across ~16 sockets cuts fleet DRAM by single-digit-to-~10% and that a large share of rented memory is untouched [UNVERIFIED-T exact figures]. At 4Q26 prices a 7-9% fleet saving is very large money for a hyperscaler.",
+      "evidence": [
+        {
+          "title": "Pond: CXL-Based Memory Pooling Systems for Cloud Platforms (ASPLOS '23) artifact repo",
+          "url": "https://github.com/vtess/Pond",
+          "type": "conference",
+          "date": "2023-03",
+          "shows": "Opened. Microsoft Azure/Virginia Tech CXL pooling paper. The repo holds the CXL-emulation scripts, and the paper preprint is linked at huaicheng.github.io/p/asplos23-pond.pdf (not opened)."
+        },
+        {
+          "title": "Linux CXL Subsystem Maturity Map (mainline, HEAD 2026-10-31)",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Single-host Type-3 enumeration/HDM decoders are [2] stabilizing. Dynamic Capacity Devices, multi-host sharing and fabrics/G-FAM are [0] known gaps. PMEM GPF/dirty shutdown is [3] mature."
+        }
+      ],
+      "trl": 5,
+      "capital_tier": "T3",
+      "time_to_first_revenue_months": 42,
+      "time_to_first_revenue_text": "36-48 months: switch silicon access, OS support, hyperscaler qualification",
+      "gross_margin_estimate": "30-45%",
+      "gross_margin_mid_pct": 35,
+      "us_manufacturability": "Switch/controller silicon from TSMC; chassis assembly could be U.S.",
+      "who_is_already_doing_this": "Liqid (composable memory), GigaIO, XConn, Panmnesia (CXL 3.x switch), Unifabrix (status unknown), H3 Platform, Astera Labs, Enfabrica (NVIDIA acqui-hire Sep 2025) [all UNVERIFIED-T]",
+      "wins_axis": "Stranded-memory reduction (fleet $/GB)",
+      "buyer": "Hyperscale and large VM cloud operators",
+      "survives_glut": "no",
+      "glut_reason": "Savings scale with DRAM price. At -60% a 7-9% fleet saving no longer funds switches, controllers and the latency penalty.",
+      "fatal_flaw": "The OS is not ready: mainline Linux (2026-10-31) still lists Dynamic Capacity, multi-host sharing and fabrics as [0] known gaps. The only buyers big enough to benefit build their own, and Pond's own result was single-digit-percent savings.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance; fabless->foundry (switch)",
+      "founder_fit_note": "No: switch silicon, kernel work and hyperscaler sales cycles.",
+      "possible": "marginal: hardware exists, OS/pooling stack immature in late 2026",
+      "profitable": "no",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-08",
+      "name": "Persistent CXL Log Card (post-Optane PMem for WAL/journals)",
+      "branch": "B",
+      "subbranch": "Tiered memory - persistent CXL tier (NVDIMM-N/MRAM successor)",
+      "materials_sense": "a-material",
+      "what_it_is": "A 16-64 GB CXL Type-3 persistent-memory card: DDR5 backed by NAND plus supercapacitors (NVDIMM-N style), or a DRAM front fronted by Everspin STT-MRAM (Chandler AZ) for the hot journal. It is exposed as CXL PMEM with Global Persistent Flush and targets database write-ahead logs and storage-array journals that lost their home when Intel killed Optane PMem.",
+      "why_it_could_work": "Linux's CXL subsystem scores PMEM GPF/dirty-shutdown [3] mature, so the software path exists. IBM FlashCore Module 5 replaced capacitors with Everspin MRAM for power-loss protection (Oct 2026), so persistent journaling memory has buyers. Sub-microsecond durable commits beat NVMe flush latency by 10-100x.",
+      "evidence": [
+        {
+          "title": "Linux CXL Subsystem Maturity Map (mainline, HEAD 2026-10-31)",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Single-host Type-3 enumeration/HDM decoders are [2] stabilizing. Dynamic Capacity Devices, multi-host sharing and fabrics/G-FAM are [0] known gaps. PMEM GPF/dirty shutdown is [3] mature."
+        },
+        {
+          "title": "IBM uses Everspin MRAM in FlashCore Module 5",
+          "url": "https://www.blocksandfiles.com/flash/2026/10/05/ibm-using-everspin-mram-in-5th-gen-flashcore-modules/5300966",
+          "type": "news",
+          "date": "2026-10-05",
+          "shows": "CROSS-REF (A2.jsonl snippet). Storage OEM builds its own MRAM-backed power-loss journal."
+        },
+        {
+          "title": "Everspin 1Gb STT-MRAM distributor price",
+          "url": "https://www.lcsc.com/product-image/C20342497.html",
+          "type": "industry",
+          "date": "2026",
+          "shows": "CROSS-REF (A2.jsonl snippet). $102.60 @500 for 1Gb, i.e. ~$821/GB."
+        },
+        {
+          "title": "Intel 10-Q Q2-2022: Optane wind-down",
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+          "type": "industry",
+          "date": "2022-07",
+          "shows": "CROSS-REF (A2.jsonl snippet). $559M Optane inventory impairment."
+        }
+      ],
+      "trl": 6,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 30,
+      "time_to_first_revenue_text": "24-36 months: card + firmware, then a design-in at one database or storage OEM",
+      "gross_margin_estimate": "45-60%",
+      "gross_margin_mid_pct": 50,
+      "us_manufacturability": "Board assembly U.S.; Everspin Toggle MRAM is made in Chandler AZ (STT 1Gb via GF Singapore); DRAM/NAND imported",
+      "who_is_already_doing_this": "SMART Modular (CXL NV-CMM) [UNVERIFIED-T]; Samsung CMM-H (DRAM+NAND hybrid) [UNVERIFIED-T]; Netlist (NVDIMM history); Everspin (MRAM in IBM FCM); Kioxia XL-Flash",
+      "wins_axis": "Non-volatility at memory latency (durable commit latency)",
+      "buyer": "Database vendors (log/commit path), storage-array OEMs (journals), low-latency trading",
+      "survives_glut": "yes",
+      "glut_reason": "Value is persistence, not $/GB, so a DRAM glut barely changes the price per card, but volume stays tiny.",
+      "fatal_flaw": "The market is tiny. Optane PMem died for lack of volume (>$7B losses). NVMe with power-loss protection plus group commit is 'good enough', and storage OEMs build journals in-house (IBM uses MRAM). MRAM at ~$821/GB caps capacity to megabytes-gigabytes.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance; IP licensing (firmware)",
+      "founder_fit_note": "No: power-fail firmware and CXL compliance engineering.",
+      "possible": "yes: NVDIMM-N and CXL NV-CMM demos exist",
+      "profitable": "marginal: niche volumes",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-09",
+      "name": "Optane Revival (CXL-attached 3D XPoint/PCM tier) - tempting, dead",
+      "branch": "B",
+      "subbranch": "Tiered memory - storage-class memory",
+      "materials_sense": "a-material",
+      "what_it_is": "Revive a chalcogenide phase-change storage-class memory (Intel/Micron 3D XPoint lineage, or SanDisk's new 3D Matrix Memory with imec) as a CXL-attached persistent tier at ~half DRAM cost/bit. It would be built on a U.S. line, since the Micron Lehi XPoint fab was sold to TI in 2021 and now runs analog.",
+      "why_it_could_work": "With DRAM up 4-6x, a medium at half DRAM's cost/bit with persistence looks attractive for KV and in-memory DB tiers. SanDisk reports 3D Matrix Memory prototypes on 300 mm aiming at ~half DRAM cost/bit (Aug 2026).",
+      "evidence": [
+        {
+          "title": "Intel 10-Q Q2-2022: Optane wind-down",
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+          "type": "industry",
+          "date": "2022-07",
+          "shows": "CROSS-REF (A2.jsonl snippet). $559M Optane inventory impairment."
+        },
+        {
+          "title": "Coughlin & Handy, Persistent Memories Without Optane (SNIA SDC)",
+          "url": "https://www.snia.org/sites/default/files/2025-05/SNIA-SDC22-Coughlin-Handy-Persistent-Memories-Without-Optane-Where-Would-We-Be.pdf",
+          "type": "conference",
+          "date": "2022",
+          "shows": "CROSS-REF (A2.jsonl snippet). >$7B cumulative Optane losses."
+        },
+        {
+          "title": "Micron ceases 3D XPoint, pivots to CXL",
+          "url": "https://www.nasdaq.com/press-release/micron-updates-data-center-portfolio-strategy-to-address-growing-opportunity-for",
+          "type": "company",
+          "date": "2021-03-16",
+          "shows": "CROSS-REF (A2.jsonl snippet). 'insufficient market validation' for 3D XPoint."
+        },
+        {
+          "title": "SanDisk makes first 3D Matrix Memory chips",
+          "url": "https://www.notebookcheck.net/SanDisk-makes-first-3D-Matrix-Memory-chips-aiming-for-half-the-cost-per-bit-of-DRAM.1374351.0.html",
+          "type": "news",
+          "date": "2026-08",
+          "shows": "CROSS-REF (A2.jsonl snippet). PCM-like SCM prototypes on 300mm targeting ~half DRAM cost/bit, with no product date."
+        },
+        {
+          "title": "SanDisk Investor Day 2026",
+          "url": "https://quartr.com/events/sandisk-corporation-sndk-investor-day-2026_F6lVAkBS",
+          "type": "company",
+          "date": "2026",
+          "shows": "CROSS-REF (A2.jsonl snippet). SanDisk memory roadmap beyond NAND (3D Matrix Memory nearing product specs)."
+        }
+      ],
+      "trl": 4,
+      "capital_tier": "T4",
+      "time_to_first_revenue_months": 72,
+      "time_to_first_revenue_text": "6+ years: fab line, yield learning, ecosystem",
+      "gross_margin_estimate": "negative historically (Intel lost >$7B on Optane)",
+      "gross_margin_mid_pct": -20,
+      "us_manufacturability": "No U.S. line exists. Lehi went to TI (analog). A new line would be a fab build (T4), which rule 3 forbids in spirit.",
+      "who_is_already_doing_this": "SanDisk (3D Matrix Memory, with imec) [REPORTED]; Intel (exited 2022); Micron (exited 2021, pivoted to CXL); SK hynix/Kioxia SCM research",
+      "wins_axis": "$/GB vs DRAM plus non-volatility",
+      "buyer": "In-memory databases, KV-cache tiers",
+      "survives_glut": "no",
+      "glut_reason": "A glut pushes DRAM down to the SCM's cost target, as happened in 2019-2022 when Optane lost its price gap.",
+      "fatal_flaw": "Scale economics: a new memory needs DRAM-like volume to get below DRAM cost/bit. Intel's balance sheet could not get there, and every DRAM glut resets the target. Micron cited 'insufficient market validation'.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "fabless->foundry (no foundry offers it); university/lab patent license",
+      "founder_fit_note": "No: T4, fab-scale; recorded so it is killed for a stated reason.",
+      "possible": "yes: it shipped as Optane",
+      "profitable": "no: >$7B of historical losses; glut-exposed",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-10",
+      "name": "LPDDR 'HBM-lite' Memory Chiplet (UCIe/AIB-attached)",
+      "branch": "B",
+      "subbranch": "HBM alternatives / chiplet memory",
+      "materials_sense": "mixed:b+c",
+      "what_it_is": "A fabless memory-controller chiplet with a UCIe or open AIB 2.0 die-to-die interface on one side and 4-8 LPDDR5X channels on the other. It would be taped out at GlobalFoundries 12LP+ (Malta, NY) or TSMC N6 and sold or licensed to AI-ASIC startups that cannot get HBM allocation, giving ~0.5-1 TB/s and 128-512 GB per package at LPDDR prices.",
+      "why_it_could_work": "HBM takes ~22% of DRAM wafer starts for ~9% of bits and ~3x DDR5's wafer area per bit. HBM4 2027 asks of ~$4.5-4.9/Gb (~$36-39/GB) and allocation to the big GPU makers leave smaller ASIC teams short. LPDDR5X proves the bandwidth-per-pin path (NVIDIA Grace), and open AIB RTL lowers die-to-die IP cost.",
+      "evidence": [
+        {
+          "title": "CHIPS Alliance AIB PHY RTL (open die-to-die interface)",
+          "url": "https://github.com/chipsalliance/aib-phy-hardware",
+          "type": "industry",
+          "date": "2024-09",
+          "shows": "Opened. Open-source die-to-die PHY RTL (AIB 1.0/2.0, originally Intel), a royalty-free D2D path for chiplets."
+        },
+        {
+          "title": "TrendForce via TechNews: HBM share of DRAM wafer starts",
+          "url": "https://technews.tw/?p=1565421",
+          "type": "news",
+          "date": "2026",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). HBM is ~22% of wafer starts in 2026 (30% in 2027) for ~9% of bits."
+        },
+        {
+          "title": "Micron: HBM-vs-DDR5 silicon gap widening",
+          "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+          "type": "news",
+          "date": "2026",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). HBM takes ~3x the wafer area of DDR5 per bit."
+        },
+        {
+          "title": "Samsung seeks >3x HBM3E pricing for HBM4",
+          "url": "https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/",
+          "type": "news",
+          "date": "2026-10-02",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). HBM3E ~$1.50/Gb; 2027 HBM4 asks mid-to-high $4/Gb."
+        },
+        {
+          "title": "TrendForce 2Q26 mobile DRAM contract via China Times",
+          "url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+          "type": "news",
+          "date": "2026-05-15",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). LPDDR4X +70-75%, LPDDR5X +78-83% QoQ in 2Q26."
+        }
+      ],
+      "trl": 6,
+      "capital_tier": "T3",
+      "time_to_first_revenue_months": 42,
+      "time_to_first_revenue_text": "36-48 months: architecture, tape-out, package qualification, first design-in",
+      "gross_margin_estimate": "50-65% (chiplet/IP)",
+      "gross_margin_mid_pct": 55,
+      "us_manufacturability": "GlobalFoundries Malta NY can fab a 12nm-class controller. Advanced packaging at Amkor Arizona (2027-28 [UNVERIFIED-T]). LPDDR5X dies are imported.",
+      "who_is_already_doing_this": "Eliyan (NuLink die-to-die PHY), Marvell (custom HBM/memory chiplets), Synopsys/Cadence (UCIe + LPDDR IP), Alphawave (Qualcomm), d-Matrix, Tenstorrent, Primemas, NVIDIA Grace LPDDR5X [UNVERIFIED-T for company specifics]",
+      "wins_axis": "Bandwidth per dollar and allocation-free supply vs HBM for inference ASICs",
+      "buyer": "AI-inference ASIC startups, edge-AI SoC teams, defense ASIC programs",
+      "survives_glut": "partially",
+      "glut_reason": "A glut eases HBM allocation and removes the 'can't get HBM' motive, though LPDDR's lower $/GB keeps a cost niche. LPDDR prices themselves rose +70-90% QoQ in 1H26.",
+      "fatal_flaw": "IP giants (Synopsys, Cadence, Alphawave, Eliyan) already sell UCIe+LPDDR PHY/controller IP, and serious ASIC teams integrate in-house. A startup chiplet faces a $20-60M tape-out for a handful of customers.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "fabless->foundry; IP licensing",
+      "founder_fit_note": "No: T3 silicon program with a veteran design team.",
+      "possible": "yes",
+      "profitable": "marginal: crowded IP market",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-11",
+      "name": "High-Bandwidth Flash (HBF) Weight-Store Module",
+      "branch": "B",
+      "subbranch": "HBM alternatives - stacked NAND with HBM-like interface",
+      "materials_sense": "a-material",
+      "what_it_is": "Accelerator boards or appliances that pair a GPU/ASIC with SanDisk/SK hynix High Bandwidth Flash stacks (TSV-stacked BiCS NAND dies behind an HBM-like interface) to hold read-mostly model weights at ~8-16x HBM capacity per stack. The NAND is made at Kioxia/SanDisk Yokkaichi/Kitakami.",
+      "why_it_could_work": "Inference weights are read-mostly, and NAND $/GB is ~50-100x below DRAM. NAND is heading to surplus in 2H27 and contract prices were already flat in Oct 2026. SanDisk is diversifying into memory-class products (3D Matrix Memory nearing product specs).",
+      "evidence": [
+        {
+          "title": "SanDisk Investor Day 2026",
+          "url": "https://quartr.com/events/sandisk-corporation-sndk-investor-day-2026_F6lVAkBS",
+          "type": "company",
+          "date": "2026",
+          "shows": "CROSS-REF (A2.jsonl snippet). SanDisk memory roadmap beyond NAND (3D Matrix Memory nearing product specs)."
+        },
+        {
+          "title": "NAND flat after 21 months while DRAM hits record",
+          "url": "https://tech-insider.org/dram-record-high-nand-flat-21-months-october-2026/",
+          "type": "news",
+          "date": "2026-10",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). NAND contract stopped rising in Oct 2026."
+        },
+        {
+          "title": "TrendForce 2026-07-30 press release",
+          "url": "https://www.trendforce.com/presscenter/news/20260730-13158.html",
+          "type": "industry",
+          "date": "2026-07-30",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). NAND turns to surplus in 2H27 while the DRAM gap widens."
+        }
+      ],
+      "trl": 4,
+      "capital_tier": "T3",
+      "time_to_first_revenue_months": 48,
+      "time_to_first_revenue_text": "4+ years: HBF samples reportedly 2H26, devices 2027 [UNVERIFIED-T]; system integration after",
+      "gross_margin_estimate": "unknown; 30-50% for a system integrator",
+      "gross_margin_mid_pct": 40,
+      "us_manufacturability": "None: NAND fabs in Japan, packaging in Asia; integration would happen inside GPU/ASIC packages at TSMC CoWoS.",
+      "who_is_already_doing_this": "SanDisk (HBF, announced 2025 [UNVERIFIED-T]); SK hynix (HBF standardization MoU with SanDisk, Aug 2025 [UNVERIFIED-T]); Samsung, Kioxia (reported)",
+      "wins_axis": "Capacity per package and $/GB vs HBM for read-heavy inference weights",
+      "buyer": "GPU/ASIC vendors (NVIDIA, AMD, hyperscaler ASIC teams)",
+      "survives_glut": "partially",
+      "glut_reason": "Its competitor is HBM, not DDR5, but a DRAM/HBM glut narrows the capacity-cost gap that justifies flash's endurance and latency compromises.",
+      "fatal_flaw": "Integration happens inside GPU/ASIC packages at TSMC, so there is no socket for a small company. NAND endurance rules out write-heavy KV, so HBF is a weights-only niche controlled by memory makers and GPU vendors.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance (theoretical)",
+      "founder_fit_note": "No: watch item only.",
+      "possible": "marginal: TRL 4-5, samples not yet public",
+      "profitable": "no for a small entrant",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-12",
+      "name": "PIM DIMM Accelerator Servers (UPMEM / AiM) for Scans and Genomics",
+      "branch": "B",
+      "subbranch": "Processing-in-memory",
+      "materials_sense": "b-process",
+      "what_it_is": "Servers fitted with UPMEM PIM DIMMs (DDR4 DIMMs with in-order DPUs on each DRAM die) or SK hynix GDDR6-AiM/AiMX cards, sold for memory-bound kernels: genomic read alignment, database scans and filters, recommendation embedding lookups. The aim is less DRAM bandwidth and capacity per unit of work.",
+      "why_it_could_work": "Moving compute to the DRAM die removes the memory-bus bottleneck. ETH SAFARI's PrIM suite shows large speedups on memory-bound kernels over CPUs on real UPMEM hardware (IEEE Access 2022; exact ratios [UNVERIFIED-T]). Samsung HBM-PIM/LPDDR5X-PIM and SK hynix AiM show vendor interest.",
+      "evidence": [
+        {
+          "title": "PrIM benchmarks for UPMEM PIM (ETH SAFARI) + IEEE Access 2022 characterization",
+          "url": "https://github.com/CMU-SAFARI/prim-benchmarks",
+          "type": "peer-reviewed",
+          "date": "2026-06",
+          "shows": "Opened. Real UPMEM PIM hardware (DRAM arrays + in-order DPUs) characterized on memory-bound kernels. Repo active Jun 2026. Paper at ieeexplore.ieee.org/abstract/document/9771457 (seen, not opened)."
+        }
+      ],
+      "trl": 7,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 18,
+      "time_to_first_revenue_text": "12-24 months as a specialist integrator, if a PIM supplier is still selling",
+      "gross_margin_estimate": "20-35%",
+      "gross_margin_mid_pct": 25,
+      "us_manufacturability": "None for PIM silicon (foreign DRAM-process partners); U.S. integration only",
+      "who_is_already_doing_this": "UPMEM (France; current company status not verified this session); Samsung (HBM-PIM, LPDDR5X-PIM); SK hynix (GDDR6-AiM, AiMX); NeuroBlade (SQL accelerator); GSI Technology (SRAM APU, Sunnyvale) [UNVERIFIED-T]",
+      "wins_axis": "Throughput and energy per byte moved for memory-bound kernels",
+      "buyer": "Genomics cores, analytics/database operators",
+      "survives_glut": "partially",
+      "glut_reason": "The value is bandwidth and energy, not $/GB, but cheap DRAM removes the 'less RAM per job' argument.",
+      "fatal_flaw": "Hard programming model, single-vendor supply risk, and DDR4-based UPMEM DIMMs stranded as servers go DDR5-only. GPUs with HBM run the same kernels with a mature CUDA stack.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance; university/lab patent license",
+      "founder_fit_note": "No/marginal: integration is possible, but supply and porting risk are high and demand is research-grade.",
+      "possible": "yes: real hardware characterized",
+      "profitable": "no: no commercial pull beyond research",
+      "doable_by_founder": "no"
+    },
+    {
+      "tmp_id": "B-13",
+      "name": "Analog CIM Edge Module (DRAM-free defense edge inference)",
+      "branch": "B",
+      "subbranch": "Compute-in-memory (analog/charge-domain)",
+      "materials_sense": "b-process",
+      "what_it_is": "Rugged M.2/PCIe edge-AI modules built around analog or charge-domain compute-in-memory accelerators (EnCharge AI EN100, Mythic next-gen, Sagence), where weights stay in on-chip memory arrays and little or no external LPDDR is needed. They would be sold to U.S. drone/ISR integrators and assembled in the U.S.",
+      "why_it_could_work": "Weight-stationary in-memory compute removes most DRAM traffic and BOM. Edge boxes were hit by LPDDR4X/5X contract hikes of +70-90% QoQ in 1H26, and defense buyers value W/inference and a U.S.-assembled supply chain.",
+      "evidence": [
+        {
+          "title": "IBM Analog Hardware Acceleration Kit",
+          "url": "https://github.com/IBM/aihwkit",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Analog in-memory computing toolkit, still labelled 'beta' in Oct 2026. AIMC is research-grade."
+        },
+        {
+          "title": "TrendForce 2Q26 mobile DRAM contract via China Times",
+          "url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+          "type": "news",
+          "date": "2026-05-15",
+          "shows": "CROSS-REF (p1-market.jsonl snippet). LPDDR4X +70-75%, LPDDR5X +78-83% QoQ in 2Q26."
+        }
+      ],
+      "trl": 6,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 24,
+      "time_to_first_revenue_text": "18-30 months: vendor partnership, ruggedized module, SBIR/defense pilot",
+      "gross_margin_estimate": "25-40%",
+      "gross_margin_mid_pct": 30,
+      "us_manufacturability": "CIM chips designed in the U.S. (EnCharge Santa Clara, Mythic Austin), fabbed at TSMC/foreign foundries [UNVERIFIED-T]; module assembly U.S.",
+      "who_is_already_doing_this": "EnCharge AI, Mythic, Sagence AI, IBM Research (analog AI), d-Matrix (digital IMC, datacenter), Axelera (EU); digital competitors Hailo, NVIDIA Jetson, Qualcomm [UNVERIFIED-T]",
+      "wins_axis": "W per inference and a DRAM-free BOM at the edge",
+      "buyer": "Defense UAS/ISR integrators, industrial machine vision",
+      "survives_glut": "yes",
+      "glut_reason": "The axis is power, not DRAM price, so the glut weakens only the secondary 'avoid LPDDR cost' argument.",
+      "fatal_flaw": "Edge AI is being won by digital NPUs with mature toolchains. Analog CIM carries accuracy/toolchain risk (IBM's kit is still 'beta') and startup-vendor fragility, and an integrator sits between two stronger parties: not a memory business.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "module/appliance; defense-first niche",
+      "founder_fit_note": "Marginal: integration/software role possible via SBIR, but depends on a fragile chip vendor.",
+      "possible": "yes: shipping silicon from at least one vendor [UNVERIFIED-T]",
+      "profitable": "marginal",
+      "doable_by_founder": "marginal"
+    },
+    {
+      "tmp_id": "B-14",
+      "name": "TrustedCXL: U.S.-Provenance DDR4 CXL Expander for DoD/DOE HPC",
+      "branch": "B",
+      "subbranch": "CXL memory expansion - defense-first provenance",
+      "materials_sense": "c-capital",
+      "what_it_is": "A CXL Type-3 expander built from Micron Manassas-made 1-alpha DDR4 (the U.S.-fabbed DRAM ramping since May 2026 for defense, aero and auto) and a U.S.-HQ DDR4-capable controller (Microchip SMC 2000-class), assembled and tested at a DMEA-accredited U.S. trusted EMS. It is sold to DoD HPCMP centers, NNSA labs and defense primes needing capacity with TAA/Buy-American and trusted-supply provenance.",
+      "why_it_could_work": "Manassas quadruples DDR4 wafer supply, with qualified output by end-2026, aimed at exactly these buyers. The DoD supply chain already pays for on-shore memory capability (Amentum's $40M Everspin MRAM deal). DDR4 behind CXL lets DDR5-only HPC nodes consume U.S.-fabbed DRAM.",
+      "evidence": [
+        {
+          "title": "Micron advances Made-in-America memory in Virginia",
+          "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+          "type": "company",
+          "date": "2026-05-22",
+          "shows": "CROSS-REF (p1-fabs.jsonl snippet). Manassas 1-alpha DDR4/LP4 for defense/aero/auto/industrial; 4x DDR4 wafer supply; qualified output by end-2026."
+        },
+        {
+          "title": "Everspin $40M MRAM deal for defense memory",
+          "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+          "type": "news",
+          "date": "2026-04",
+          "shows": "CROSS-REF (A2.jsonl snippet). The DoD supply chain pays for on-shore memory capability."
+        },
+        {
+          "title": "Linux CXL Subsystem Maturity Map (mainline, HEAD 2026-10-31)",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+          "type": "industry",
+          "date": "2026-10",
+          "shows": "Opened. Single-host Type-3 enumeration/HDM decoders are [2] stabilizing. Dynamic Capacity Devices, multi-host sharing and fabrics/G-FAM are [0] known gaps. PMEM GPF/dirty shutdown is [3] mature."
+        }
+      ],
+      "trl": 6,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 33,
+      "time_to_first_revenue_text": "30-36 months: SBIR Phase I/II, trusted-EMS qualification, first lab buy",
+      "gross_margin_estimate": "35-50%",
+      "gross_margin_mid_pct": 40,
+      "us_manufacturability": "DRAM: Micron Manassas VA. Assembly/test: U.S. trusted EMS. Controller die: TSMC (Taiwan), the provenance gap.",
+      "who_is_already_doing_this": "Micron (direct to defense), SMART Modular (defense memory), Mercury Systems, Netlist, Microchip [UNVERIFIED-T for CXL-specific defense offerings]",
+      "wins_axis": "Supply security/provenance and lifecycle length",
+      "buyer": "DoD HPC Modernization Program centers, DOE/NNSA labs, defense-prime on-prem HPC",
+      "survives_glut": "yes",
+      "glut_reason": "The provenance premium does not depend on price, and Manassas DDR4 serves long-lifecycle buyers whatever DDR5 does. Volume stays small.",
+      "fatal_flaw": "The controller is fabbed in Taiwan, so 'all-U.S.' is only partly true. Buyers are few and slow (FAR procurement), and Micron/SMART can serve them directly. Manassas DDR4 is allocated to existing auto/defense customers first.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "defense-first niche; module/appliance; SBIR/STTR (non-dilutive start)",
+      "founder_fit_note": "Marginal/no: the SBIR Phase I proposal is founder-doable (T1), but delivery needs a cleared hardware team.",
+      "possible": "yes: each component exists",
+      "profitable": "marginal: premium pricing, tiny volume",
+      "doable_by_founder": "marginal: only as an SBIR-led partnership"
+    },
+    {
+      "tmp_id": "B-15",
+      "name": "Memory-Fabric SuperNIC (Ethernet-attached DRAM for GPUs) - acquired away",
+      "branch": "B",
+      "subbranch": "Far memory over RDMA / custom memory-fabric silicon",
+      "materials_sense": "c-capital",
+      "what_it_is": "A custom NIC/switch ASIC that attaches pools of commodity DDR5 (behind CXL controllers) to GPU servers over 800G-3.2T Ethernet/RDMA, giving each GPU tens of TB of 'elastic' memory for KV cache and weights. This is the Enfabrica ACF-S/EMFASYS concept, taped out at TSMC.",
+      "why_it_could_work": "GPUs need far more memory than HBM supplies (KV for a 128k Llama-70B context is 40 GiB at BF16). Ethernet/RDMA reloads a 128k context in ~0.5 s vs ~41 s recompute, and commodity DDR5 at ~$26/GB beats HBM-in-GPU at ~$180-250/GB.",
+      "evidence": [
+        {
+          "title": "Mooncake README + Mooncake Store deployment guide (Kimi serving platform)",
+          "url": "https://github.com/kvcache-ai/Mooncake",
+          "type": "company",
+          "date": "2026-11",
+          "shows": "Opened. KV-cache-centric disaggregation lets Kimi handle 75% more requests within SLO. Store has CXL-aware allocation (--enable_cxl, /dev/dax, --allocation_strategy=cxl). Integrated into vLLM (May 2026) and TensorRT-LLM (Oct 2026)."
+        },
+        {
+          "title": "vLLM KV Offloading Usage Guide",
+          "url": "https://github.com/vllm-project/vllm/blob/main/docs/features/kv_offloading_usage.md",
+          "type": "industry",
+          "date": "2026-11",
+          "shows": "Opened. CPU host memory is the primary KV offload tier, and secondary tiers are staged through it. Host DRAM capacity is mandatory for KV tiering."
+        },
+        {
+          "title": "Meta llama-models sku_list.py",
+          "url": "https://github.com/meta-llama/llama-models",
+          "type": "company",
+          "date": "2025-10",
+          "shows": "Opened. Llama-3.1 70B has 80 layers and 8 KV heads with head_dim 128, which gives 320 KiB/token KV at BF16 (40 GiB at 128k context)."
+        }
+      ],
+      "trl": 6,
+      "capital_tier": "T3",
+      "time_to_first_revenue_months": 48,
+      "time_to_first_revenue_text": "4+ years for a new entrant",
+      "gross_margin_estimate": "60%+ for merchant silicon if it wins",
+      "gross_margin_mid_pct": 60,
+      "us_manufacturability": "TSMC silicon; U.S. design only",
+      "who_is_already_doing_this": "Enfabrica (team and technology licensed/acqui-hired by NVIDIA, Sep 2025 [UNVERIFIED-T]); NVIDIA (BlueField/ConnectX + Dynamo); Astera Labs, Broadcom, Marvell; Mooncake Transfer Engine (software over standard RDMA)",
+      "wins_axis": "GPU-reachable memory capacity per dollar",
+      "buyer": "Hyperscalers and GPU cloud builders",
+      "survives_glut": "partially",
+      "glut_reason": "Cheaper DRAM makes pools cheaper, but the silicon economics depend on design wins at NVIDIA-scale customers, not DRAM price.",
+      "fatal_flaw": "The leading independent attempt was absorbed by NVIDIA, and standard RDMA NICs plus open-source software (Mooncake Transfer Engine, NIXL) deliver most of the benefit. There is no room for a new custom-silicon entrant.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "fabless->foundry",
+      "founder_fit_note": "No: T3 networking silicon; recorded as a kill.",
+      "possible": "yes: demonstrated before acquisition [UNVERIFIED-T]",
+      "profitable": "no for a new entrant",
+      "doable_by_founder": "no"
+    }
+  ]
+}
