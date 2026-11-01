@@ -1,0 +1,12 @@
+{
+ "merges": [
+  {"keep": "C-07", "absorb": ["D-11"], "note": "Same product: SPD/JEP106 fleet scan + attestation + lab confirmation for NDAA FY2023 §5949 memory provenance. C-07 kept (adds the partner-lab and attestation layer); D-11's open-core scanner becomes its acquisition funnel."},
+  {"keep": "A2-10", "absorb": ["B-09"], "note": "Same idea: rebuild a 3D XPoint/PCM crosspoint storage-class memory as a CXL tier. Kept the device-branch card (fuller device physics + cost inputs)."},
+  {"keep": "B-08", "absorb": ["A2-12"], "note": "Same product category and buyer: post-Optane persistent write-ahead-log/journal card (MRAM or DRAM+NAND+supercap behind PCIe/CXL). B-08 kept as the broader formulation; A2-12's MRAM-only variant is one implementation option."},
+  {"keep": "D-01", "absorb": ["D-04"], "note": "D-04 (Redis->Valkey/Dragonfly cache sizing) is a narrower instance of D-01 (cloud memory FinOps audit for SaaS); same buyer, same motion. Merged."}
+ ],
+ "notes": [
+  "Reviewed and kept SEPARATE (distinct business model, buyer or technology): E-10 lab-patent STTR studio vs A1-06 HZO FeRAM and A1-07 AlScN (portfolio/option vehicle vs single-device company); C-04 consignment LTB vault vs E-07 title-taking die bank vs C-15 buying co-op (service vs inventory owner vs agency); E-01 DIMM health subscription vs C-05 graded recovered RDIMM sales vs D-08 TB-RAM rental (subscription vs product vs rental); E-09 compliant-memory federal reseller vs C-07 provenance verification (reseller margin vs verification software); E-12 Optane IP-estate licensing vs A2-10 Optane device revival; B-01 recovered-DDR4 CXL expander vs B-14 Manassas-DDR4 trusted CXL expander; D-09 OEM cost alerts vs E-02 licensed escalation index vs D-13 newsletter; A1-13 emerging-memory qual lab vs E-08 AS6171 counterfeit lab vs A2-03 MRAM radiation data; E-13 CXL tiering practice vs D-03 KV-cache integration vs B-02 KV pool appliance; A1-12 F-RAM NVSRAM-replacement modules vs A2-01 MRAM PLP reference design; B-13 CIM module integration vs A2-09 RRAM CIM chip design.",
+  "Evidence caveat carried into Phase 3: the session's shared WebSearch budget (200/turn) was exhausted during ideation; branches C, D, E and parts of A3/B ran with zero or few searches, citing other agents' logged URLs, GitHub/PyPI, and training knowledge tagged UNVERIFIED. The Phase 3 adversarial audit re-checks evidence under explicit search quotas."
+ ]
+}

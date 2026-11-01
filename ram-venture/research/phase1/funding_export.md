@@ -22,6 +22,17 @@
 
 Tag key: [VERIFIED] means primary opened this session (none). [REPORTED via X] means a sibling agent's logged source. [UNVERIFIED-H/M/L] means prior knowledge. [ESTIMATE: basis] means my own computation or judgment.
 
+> **Phase 1b update (2026-11-01, agent `v1-policy`):**
+> - The SBIR, §5949, NSTC, CHIPS, CXMT/affiliates-rule, §232, Commons and DMEA lines were checked against search snippets and patched in place.
+> - [REPORTED-P] means a primary document seen via a search snippet. [REPORTED] means secondary coverage.
+> - The change log is in `research/phase1/verify_v1-policy.md`, and the sources are in `research/sources/v1-policy.jsonl`.
+> - **Material corrections:**
+>   - SBIR is reauthorized through 2031-09-30 (signed 2026-04-13).
+>   - The §5949 FAR rule is *proposed* (2026-02-17), not final.
+>   - CHIPS does have open opportunities, but they are capex- or equity-linked.
+>   - The affiliates-rule restart is likely to slip to 2027-01-10, pending a BIS notice.
+>   - OBSIDIA got a $34M CHIPS LOI for counterfeit-component identification, which makes it a funded provenance competitor.
+
 ---
 
 ## 1. Master table
@@ -30,11 +41,11 @@ $ figures in the third column are what a **small, new company** can realisticall
 
 | # | Program | Status (late 2026) | $ available to a small co. | Fits which concept types | Source / tag |
 |---|---|---|---|---|---|
-| 1 | **CHIPS manufacturing incentives** ($39B direct funding; $75B loan authority) | Nearly all committed by Jan 2025. CHIPS Program Office now sits under the **U.S. Investment Accelerator** (EO, 2025-03-31). Awards renegotiated for bigger investment or converted to **equity** (Intel, Aug 2025). No evidence of an open NOFO | **≈$0** for a new entrant. Precedent small-supplier awards were $6.7M–$18M, all before 2025 | Capex for packaging, test or materials (T2+). Not T0/T1 | Micron awards [REPORTED via p1-micron] ([NIST, 2024-12-10](https://www.nist.gov/node/1855121)); structure and Intel [UNVERIFIED-H]; NOFO status [UNVERIFIED-M] |
+| 1 | **CHIPS manufacturing incentives** ($39B direct funding; $75B loan authority) | Nearly all committed by Jan 2025. CHIPS Program Office now sits under the **U.S. Investment Accelerator** (est. 2025-03-31). Awards renegotiated for bigger investment or converted to **equity** (Intel, Aug 2025). **Correction:** a CPO NOFO for *materials and manufacturing-equipment facilities* was open in Aug 2026, with concept plans due **2026-11-01** (today). It is "open to companies at all growth stages" and pays direct funding and/or loans. The 2023 small-scale-supplier NOFO is closed | **≈$0** for a new entrant (capex program; deadline is today). Precedent small-supplier awards were $6.7M–$18M, all before 2025 | Capex for packaging, test or materials (T2+). Not T0/T1 | Micron awards [REPORTED via p1-micron] ([NIST, 2024-12-10](https://www.nist.gov/node/1855121)); Accelerator and Intel [REPORTED] ([Bisnow, 2025-04](https://bisnow.com/national/news/industrial/trump-moves-chips-program-to-us-investment-accelerator-plans-restructuring-128749); [DCD, 2025-08](https://www.datacenterdynamics.com/en/news/us-govt-explores-equity-stakes-in-intel-and-others-to-receive-chips-act-funds/)); open NOFO [REPORTED] ([Mayer Brown, 2026-08-10](https://www.mayerbrown.com/en/insights/publications/2026/08/chips-act-funding-opportunities-what-companies-in-the-semiconductor-ecosystem-need-to-know)) |
 | 2 | **§48D Advanced Manufacturing Investment Credit** | **35%** for property placed in service after 2025-12-31 (OBBBA, July 2025). **Construction must begin by 2026-12-31, 60 days from today.** BASIC Act extension (H.R. 3204) pending, not enacted | 35% of qualified property, **refundable via elective pay**. Example: $3M line gives $1.05M [ESTIMATE: 0.35 × $3M], but only if construction starts in the next 60 days | Only a qualifying semiconductor/SME manufacturing facility already in planning. In practice **closed** to this venture | [REPORTED via p1-micron] ([Baker Tilly, 2025](https://www.bakertilly.com/insights/advanced-manufacturing-credits-section-48d); [Instead, 2026-03-31](https://instead.com/resources/blog/section-48d-credit-rises-to-35-and-why-you-must-act-before-2027); [Congress.gov H.R. 3204](https://www.congress.gov/119/bills/hr3204/BILLS-119hr3204ih.htm)); elective pay [UNVERIFIED-H] |
-| 3 | **CHIPS R&D ($11B): NSTC** | **Natcast's operator agreement voided by Commerce, Aug 2025**; NIST took direct control. Status in 2026 unclear | **Assume $0.** No membership program to join was confirmed | Device and materials R&D | [UNVERIFIED-M]; sibling p1-fabs has same claim [UNVERIFIED] |
-| 4 | **NAPMP** (advanced packaging) and **SMART USA** (CHIPS Manufacturing USA institute, digital twins; SRC-led) | Awards made late 2024 (substrates; SMART USA ~$285M). 2025–26 activity unverified | Sub-awards or membership only. Typical team-member slices are $100k–$1M [ESTIMATE] | Packaging/KGD, digital-twin and fab software | [UNVERIFIED-M] |
-| 5 | **DoD Microelectronics Commons** (8 hubs; $2B over FY23–27) | Running through FY2027 (statutory window). Project calls via consortium manager NSTXL. FY26–27 call sizes unverified | Team-member share of hub projects. Order of $0.1–2M per company per project [ESTIMATE] | Device prototyping (eNVM, CIM, AI hardware), packaging | [UNVERIFIED-M] |
+| 3 | **CHIPS R&D ($11B): NSTC, and CRDO equity awards** | **Natcast's up-to-$7.4B operator agreement was declared void by Commerce in Aug 2025.** NIST had "assumed operational responsibility" for the NSTC by Mar 2026, with no published operating or membership model. The CHIPS R&D Office now does **equity-linked LOIs**: 7 companies, $874M (2026-07-29), including **Kepler $245M (3D/ferroelectric AI memory)** and **OBSIDIA $34M (counterfeit/malicious component ID)**. The **CRDO BAA** has been paused since 2026-09-15 and is expected to reopen in Nov 2026 | **Assume $0.** No NSTC membership program exists. The CRDO BAA reportedly needs ~$10M+ white papers [REPORTED, unverified] and takes equity | Device and materials R&D (T2+) | NSTC [REPORTED] ([Manufacturing Dive, 2025-08](https://www.manufacturingdive.com/news/commerce-department-cuts-7-4-billion-chips-act-funding-natcast-howard-lutnick/758561); [Senate Commerce, 2026-03](https://www.commerce.senate.gov/services/files/1461B96D-692E-4FD1-826A-2AA797E857C6)); LOIs [REPORTED-P] ([NIST, 2026-07-29](https://nist.gov/news-events/news/2026/07/department-commerce-announces-letters-intent-7-companies-874-million)); BAA [REPORTED-P] ([NIST CRDO BAA](https://www.nist.gov/chips/chips-rd-funding-opportunities/crdo-broad-agency-announcement-baa)) |
+| 4 | **NAPMP** (advanced packaging) and **SMART USA** (CHIPS Manufacturing USA institute, digital twins; SRC-led) | Awards made late 2024 (substrates; SMART USA ~$285M). $1.1B went to Natcast (2025-01-16) to run the Arizona (ASU Tempe) packaging pilot facility, target ~2028; its status after Natcast was voided is unverified | Sub-awards or membership only. Typical team-member slices are $100k–$1M [ESTIMATE] | Packaging/KGD, digital-twin and fab software | Arizona facility [REPORTED-P] ([NIST NAPMP](https://www.nist.gov/chips/chips-america-nstc-prototyping-and-national-advanced-packaging-manufacturing-program-napmp)); rest [UNVERIFIED-M] |
+| 5 | **DoD Microelectronics Commons** (8 hubs; $2B over FY23–27) | Running through FY2027 (statutory window). Project calls via consortium manager NSTXL. **Year-2 awards: >$200M to 26 projects (2026-04-28)** | Team-member share of hub projects. Order of $0.1–2M per company per project [ESTIMATE] | Device prototyping (eNVM, CIM, AI hardware), packaging | Year-2 [REPORTED] ([NSTXL, 2026-04-28](https://nstxl.org/microelectronics-commons-project-year-2-awards-announced/); [Manufacturing Dive, 2026-04](https://www.manufacturingdive.com/news/defense-department-awards-microelectronics-commons-26-projects-ai-warfare/818754/)) |
 | 6 | **DMEA Trusted Accreditation** | Ongoing. Accreditation, not money | **$0**, but it is **market access** to DoD programs that need trusted parts | Trusted/rad-hard memory, packaging, test, brokerage | [UNVERIFIED-H] |
 | 7 | **RAMP-C / SHIP / Secure Enclave** | Prime-level programs (Intel, Qorvo). Secure Enclave ($3.2B) folded into Intel equity, Aug 2025 | $0 direct. Possible design-access subcontracts | Chiplet memory designers only | [UNVERIFIED-M] |
 | 8 | **DPA Title III** | No memory or memory-packaging award found | $0 expected. Awards are typically $5–50M+ to established firms | Packaging capex if DoD declares a gap | [UNVERIFIED-L] |
@@ -43,7 +54,7 @@ $ figures in the third column are what a **small, new company** can realisticall
 | 11 | **DARPA MTO: SBIR topics and seedlings** | **DPA26BZ04-DV017** "Non-Volatile Memory for Extreme Environments" (−269 °C to +600 °C, rad-tolerant NOR, co-packaged). Direct-to-Phase II, **opened 2026-07-22, closed 2026-08-19**. OPTIMA (CIM) and Microsystems Exploration (μE) exist; performers and status unverified | **~$1.2M** (DV017). μE seedlings ~$1M class [UNVERIFIED-L] | Rad-tolerant/extreme-env NVM, CIM | [REPORTED via A1] ([DARPA, 2026-07](https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments); [BWCO, 2026-07](https://www.bwcoconsulting.com/fod/dpa26bz04-dv017)); rest [UNVERIFIED-M/L] |
 | 12 | **JUMP 2.0** (SRC + DARPA; 7 centers incl. **PRISM**, memory-centric) | 2023–2027 | Not money. Industry membership is costly; value is **IP and talent to license or hire** | Device IP licensing, CIM | [UNVERIFIED-M] |
 | 13 | **IARPA** | No current memory-specific program confirmed | — | — | [UNVERIFIED-L] |
-| 14 | **SBIR/STTR** | **Lapsed 2025-10-01.** DoD SBIR topics opening again in July 2026 imply authority was restored by mid-2026 [ESTIMATE: inference]. **Reauthorization terms NOT verified** | Phase I ~$150–315k; Phase II ~$1–2.1M; DoD Direct-to-Phase II ~$1.2M. **The PI must be >50% employed by the company, which rules out this founder while he keeps the day job** | Device R&D, rad-hard NVM, provenance/test tooling, memory-efficiency software (NSF) | DV017 and AF254-D0806 [REPORTED via A1] ([SBIR.gov AF254-D0806, 2025](https://www.sbir.gov/topics/12036)); rules and caps [UNVERIFIED-H/M] |
+| 14 | **SBIR/STTR** | **Lapsed after 2025-09-30 for ~6 months. Reauthorized** by the Small Business Innovation and Economic Security Act (S. 3971), **signed 2026-04-13, through 2031-09-30** (P.L. 119-83 per one source, unverified). Changes: per-firm proposal caps from FY2027; expanded foreign-risk screening; new **Strategic Breakthrough** awards (≤$30M, prior Phase II, 1:1 match) | Phase I ~$150k–$323k; Phase II ~$1–2.15M; DoD Direct-to-Phase II ~$1.2M. **SBIR PI must spend >½ of their time employed by the company, which rules out this founder while he keeps the day job. STTR PI may be employed by the research institution** | Device R&D, rad-hard NVM, provenance/test tooling, memory-efficiency software (NSF) | DV017 and AF254-D0806 [REPORTED via A1] ([SBIR.gov AF254-D0806, 2025](https://www.sbir.gov/topics/12036)); reauthorization [REPORTED-P] ([SBA via StreetInsider, 2026-04](https://www.streetinsider.com/Globe+Newswire/Administrator+Loeffler+Applauds+SBIR-STTR+Reauthorization/26306713.html); [IEDC, 2026-04-15](https://www.iedconline.org/news/2026/04/15/federal-policy-updates/federal-policy-update-sbir-and-sttr-reauthorized/)); PI rule [REPORTED-P] ([NIST](https://www.nist.gov/tpo/small-business-innovation-research-program-sbir/resources/participation-eligibility-and)); caps [REPORTED] ([GovDash](https://www.govdash.com/blog/sbir-funding-guide)) |
 | 15 | **AFWERX TACFI/STRATFI** (SBIR matching) | Exists for Phase II performers | Up to ~$15M gov't with private match (STRATFI) | Post-Phase-II DoD products | [UNVERIFIED-M] |
 | 16 | **New York: Green CHIPS and others** | Green CHIPS: $10B in refundable Excelsior credits over 20 yrs for megaprojects; **Micron up to $5.5B** | **$0** from Green CHIPS for a small co. Other NY paths (Excelsior Jobs, FuzeHub grants, NY CREATES fee-based access, NORDTECH hub) are worth $10k–$100k [ESTIMATE] | NY-sited manufacturing or R&D | Micron $5.5B [REPORTED via p1-micron] ([eeNews Europe, 2026-01](https://www.eenewseurope.com/en/micron-new-york-megafab-breaks-ground-2026/)); rest [UNVERIFIED-M] |
 | 17 | **Texas: TSIF** | Texas CHIPS Act 2023, ~$698M. Biggest grant is TIE ($552M) | Grants mostly to institutions and large projects | TIE/NGMM users | [UNVERIFIED-M] |
@@ -55,9 +66,9 @@ $ figures in the third column are what a **small, new company** can realisticall
 | 23 | **DOE Lab-Embedded Entrepreneurship** (Chain Reaction Innovations/ANL, Innovation Crossroads/ORNL, Cyclotron Road–Activate/LBNL, West Gate/NREL) | Ongoing through 2025. 2026 funding unverified | Fellowship stipend plus R&D support for **full-time** technical founders (~2 yrs) | Device/materials founder (not this founder unless a technical co-founder applies) | [UNVERIFIED-M] |
 | 24 | **NSF: I-Corps, NNCI fab access, SBIR** | Ongoing. NSF budget pressure in 2025–26 | I-Corps ~$50k per team; NNCI gives cleanroom access at academic-affiliate rates | Customer discovery (I-Corps); prototype devices (NNCI) | [UNVERIFIED-M] |
 | 25 | **Buy American Act / TAA** | BAA domestic content **65% (2024–28) → 75% (2029)**; COTS exempt from the component test. TAA treats Korea, Taiwan and Japan the same as the U.S. | **No money and no real moat** for memory | — | [UNVERIFIED-H] |
-| 26 | **FY2023 NDAA §5949** | Bars federal agencies from procuring products containing **CXMT, YMTC or SMIC** chips from **2027-12-23** (417 days) | No money. **Creates compliance demand** for provenance-verified memory | Provenance, test, screening, "clean" module supply | [REPORTED via p1-micron] ([XenoSpectrum, 2026-07](https://xenospectrum.com/en/apple-china-memory-federal-procurement-ban-2027/)); exact date [UNVERIFIED-H] |
+| 26 | **FY2023 NDAA §5949** | Bars federal agencies from procuring products containing **CXMT, YMTC or SMIC** chips from **2027-12-23** (417 days). COTS and micro-purchases are covered. Prospective only (no rip-and-replace). **FAR rule is only *proposed*** (FAR Case 2023-008, 2026-02-17; comments closed 2026-04-20; no final rule found) | No money. **Creates compliance demand.** Supplier certifications satisfy "reasonable inquiry" (no third-party audit required), so demand is mainly attestation/traceability, not lab testing | Provenance software, exception-driven screening, "clean" module supply | Date and rule [REPORTED-P] ([Federal Register, 2026-02-17](https://www.federalregister.gov/documents/2026/02/17/2026-03065/federal-acquisition-regulation-prohibition-on-certain-semiconductor-products-and-services)); scope [REPORTED] ([Wiley, 2026-02](https://www.wiley.law/alert-FAR-Council-Proposes-Rule-to-Ban-Purchases-of-Certain-Semiconductor-Products-and-Services); [Clark Hill, 2026](https://www.clarkhill.com/news-events/news/far-council-proposes-rule-restricting-certain-semiconductor-products-and-services)) |
 | 27 | **DFARS counterfeit-parts rules; CMMC** | DFARS 252.246-7007/-7008 in force. **CMMC Phase 2 (Level 2 C3PAO) from ~2026-11-10** | Cost, not money: a CMMC L2 assessment for DoD-facing work [ESTIMATE: $30–100k] | Constrains recertified/broker concepts. Bar to entry for defense suppliers | [UNVERIFIED-H/M] |
-| 28 | **BIS export controls** (Oct 2022, Oct 2023, Dec 2024 HBM, 2025 VEU and affiliates rules) | In force. **CXMT still not on the Entity List** as of mid-2026 (reports conflict). 50% affiliates rule reportedly suspended for 1 yr from ~2025-11-10, so **may resume ~2026-11-10** | — | Protects incumbents. Constrains HBM, advanced tools, and rad-hard exports | CXMT [REPORTED via p1-micron] ([TrendForce, 2025-05-16](https://www.trendforce.com/news/2025/05/16/news-u-s-rumored-to-mull-adding-dram-giant-cxmt-and-more-chinese-tech-firms-to-entity-list); [Simpson Thacher, 2025-10-17](https://www.stblaw.com/about-us/publications/view/2025/10/17/simpson-thacher-attorneys-author-i-law360-i-article-on-bis-50-rule-for-entity-list-and-other-export-restrictive-lists)); rule details [UNVERIFIED-M] |
+| 28 | **BIS export controls** (Oct 2022, Oct 2023, Dec 2024 HBM, 2025 VEU and affiliates rules) | In force. **CXMT still not on the Entity List** (no BIS screening-list match on 2026-08-31). 50% affiliates rule suspended **2025-11-10 → 2026-11-09**. Bessent said (2026-09-23) the suspension would extend to **2027-01-10** with the truce, **but no BIS notice was published as of ~mid-Oct 2026**, so it returns 2026-11-10 unless one appears | — | Protects incumbents. Constrains HBM, advanced tools, and rad-hard exports | CXMT [REPORTED] ([XenoSpectrum, 2026-09](https://xenospectrum.com/cxmt-pentagon-military-company-lawsuit/)); suspension [REPORTED-P] ([FR 2025-19846](https://public-inspection.federalregister.gov/2025-19846.pdf)); extension [REPORTED] ([NatLawReview, 2026-10](https://natlawreview.com/article/bis-affiliates-rule-suspension-extended-uncertainty-remains); [BKL, 2026-10](https://www.bkl.co.kr/en/law/insight/newsletter/6811)) |
 | 29 | **ITAR / EAR rad-hard** (USML XV(d); ECCN 9A515.d/.e; 3A001.a.1) | In force | — | Rad-hard memory becomes export-controlled: smaller export market, more compliance cost | [UNVERIFIED-M] |
 
 ---
@@ -66,33 +77,41 @@ $ figures in the third column are what a **small, new company** can realisticall
 
 1. **The big federal capital is closed to us.**
    - CHIPS manufacturing money was almost entirely committed by January 2025 [UNVERIFIED-M].
-   - The program now runs through the Investment Accelerator, which **trades money for equity or larger investment commitments** (Intel: ~9.9% stake, 433.3M shares × $20.47 ≈ **$8.87B** [ESTIMATE: arithmetic on UNVERIFIED-H terms]).
+     - Two opportunities were open in Aug 2026: a materials/equipment-facility NOFO (concept plans due 2026-11-01) and the CRDO BAA [REPORTED: Mayer Brown 2026-08-10].
+     - Both are capex-scale or equity-linked, so neither is a T0/T1 route.
+   - The program now runs through the Investment Accelerator, which **trades money for equity or larger investment commitments**:
+     - Intel: ~9.9% stake, 433.3M shares × $20.47 ≈ **$8.87B** [ESTIMATE: arithmetic; $8.9B equity on top of $2.2B of grants REPORTED: DCD 2025-08].
+     - 2026 CRDO LOIs ($874M, 7 companies, 2026-07-29) also take minority equity [REPORTED-P: NIST].
    - **§48D (35%, refundable) shuts to any project that has not begun construction by 2026-12-31** [REPORTED via p1-micron].
    - Plan every T2/T3 manufacturing concept with **0% CHIPS grant and 0% ITC**.
    - This *corrects* the implicit premise that "CHIPS money" is available to a new U.S. memory entrant. It is available to Micron (up to $6.165B ID/NY plus $275M Manassas [REPORTED via p1-micron]), not to us.
-2. **The NSTC is not a usable on-ramp right now.** Commerce voided the Natcast operator agreement in Aug 2025 and moved the NSTC under NIST [UNVERIFIED-M]. Do not build a plan that needs NSTC membership, NSTC prototyping or NSTC funding until a 2026 operating model is published.
+2. **The NSTC is not a usable on-ramp right now.** Commerce voided the Natcast operator agreement in Aug 2025, and by Mar 2026 NIST had "assumed operational responsibility" without publishing an operating model [REPORTED: Manufacturing Dive 2025-08; Senate Commerce 2026-03]. Do not build a plan that needs NSTC membership, NSTC prototyping or NSTC funding until a 2026 operating model is published.
 3. **SBIR/STTR is the only realistic non-dilutive money, but it has two problems:**
-   - **Status:** authority lapsed 2025-10-01 [UNVERIFIED-H]. DoD SBIR memory topics were open again in July 2026 (DARPA DV017, ~$1.2M Direct-to-Phase II [REPORTED via A1]), so the program is evidently running. The **reauthorization terms are unverified**.
-   - **Founder fit:** an SBIR PI must be primarily (>50%) employed by the awardee [UNVERIFIED-H]. **While the founder keeps his day job he cannot be the PI.** Routes are **STTR with a university PI** or a **hired full-time PI**.
+   - **Status: resolved.**
+     - Authority lapsed after 2025-09-30. S. 3971 (Small Business Innovation and Economic Security Act) was **signed 2026-04-13** and reauthorizes SBIR/STTR **through 2031-09-30** [REPORTED-P: SBA statement; IEDC 2026-04-15].
+     - New terms: per-firm proposal caps from FY2027, expanded foreign-risk screening, and Strategic Breakthrough awards of up to $30M with a 1:1 match [REPORTED].
+     - DoD SBIR memory topics were open again in July 2026 (DARPA DV017, ~$1.2M Direct-to-Phase II [REPORTED via A1]).
+   - **Founder fit:** an SBIR PI must spend more than one-half of their time employed by the awardee, at award and during the project [REPORTED-P: NIST SBIR eligibility]. **While the founder keeps his day job he cannot be the PI.** Routes are **STTR with a research-institution PI** (permitted under STTR [REPORTED: UTA guidance]) or a **hired full-time PI**.
 4. **There is no general "U.S.-made memory" procurement preference, and nobody is paying a broad premium for it.**
    - TAA treats Korean, Taiwanese and Japanese DRAM as equal to U.S. DRAM.
    - BAA's component test does not apply to COTS items [UNVERIFIED-H].
-   - Tariffs give U.S. memory no structural edge either: memory is outside Section 232 phase 1, and only China-origin chips pay 50% [REPORTED via p1-micron].
-   - **What *does* exist is a "not-Chinese" requirement**: NDAA §5949 bans CXMT/YMTC/SMIC-containing products from federal procurement from **2027-12-23** [REPORTED via p1-micron; date UNVERIFIED-H].
+   - Tariffs give U.S. memory no structural edge either. Memory is outside Section 232 Phase 1 (Proclamation 11002, 25% on TPP/DRAM-bandwidth-threshold advanced chips, effective 2026-01-15 [REPORTED-P: White House 2026-01-14]). No Phase 2 had been implemented by 2026-11-01. Only China-origin chips pay 50% [REPORTED via p1-micron].
+   - **What *does* exist is a "not-Chinese" requirement**: NDAA §5949 bans CXMT/YMTC/SMIC-containing products from federal procurement from **2027-12-23** [REPORTED-P: FAR Case 2023-008 proposed rule, 2026-02-17; the final rule is still pending].
    - **The moat is provenance, not U.S. origin.** This *corrects* the mission's "Made in America … potential moat". For federal and defense buyers, the paying need is **proof that there is no Chinese die**, plus trusted or rad-hard supply for a narrow set of programs.
 5. **Trusted and rad-hard is the only place where U.S. memory earns a real premium today.** But it carries export controls (3A001.a.1, 9A515, possibly ITAR XV(d)), DMEA accreditation, CMMC, and incumbents (Honeywell, BAE Systems, Frontgrade, Infineon) [UNVERIFIED-M].
    - DoD is actively funding extreme-environment non-volatile memory (DARPA DV017 2026; USAF AF254-D0806 2025 [REPORTED via A1]).
    - Sandia has HZO FeRAM running in its trusted MESA fab (2026-05-13 [REPORTED via A1]). That is a **lab-licensing lead**.
 6. **Export controls mostly protect incumbents and prolong the shortage. They do little for a U.S. startup.**
    - Tool controls (≤18nm-class DRAM since Oct 2022), the Dec 2024 HBM controls, and the 2025 revocation of Samsung/SK hynix China-fab VEU status [UNVERIFIED-M] slow Chinese and China-sited capacity.
-   - **CXMT keeps shipping** (not Entity-Listed as of mid-2026 [REPORTED via p1-micron]).
+   - **CXMT keeps shipping** (not Entity-Listed: no BIS screening-list match on 2026-08-31 [REPORTED: XenoSpectrum]). It is on the DoD 1260H list (reinstated 2026-06-08) and sued DoD on 2026-08-28 [REPORTED: Evertiq 2026-08-31].
    - For us, export controls mainly *constrain* rad-hard and HBM-class products and the hiring of foreign nationals (deemed exports). Software and CXL-type concepts are essentially unconstrained.
 7. **Dated cliffs in the next 14 months that a plan must respect** [ESTIMATE: day counts from 2026-11-01]:
 
    | Date | What happens | Days from today |
    |---|---|---|
    | ~2026-11-10 | CMMC Phase 2 starts | 9 |
-   | ~2026-11-10 | BIS affiliates-rule suspension may lapse | 9 |
+   | 2026-11-10 | BIS affiliates rule returns **unless** BIS publishes the announced extension to 2027-01-10 [REPORTED: NatLawReview 2026-10] | 9 (or 70) |
+   | Nov 2026 | CRDO BAA expected to reopen (paused since 2026-09-15) [REPORTED-P: NIST] | — |
    | 2026-12-31 | §48D construction-start deadline | 60 |
    | 2027-12-23 | §5949 effective | 417 |
    | 2029 | BAA 75% domestic content | — |
@@ -120,20 +139,35 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 
 ### 3.3 Reorganization under the current administration
 
-- **2025-03-31: Executive Order establishing the "United States Investment Accelerator"** inside Commerce. It manages the CHIPS Program Office and facilitates >$1B investments [UNVERIFIED-H; EO number believed to be 14255, UNVERIFIED-M]. Secretary Lutnick told Congress and the press in 2025 that awards would be renegotiated for "better deals" and that some PMTs would not be finalized as written [UNVERIFIED-M].
-- **2025-08-22: Intel equity deal** [UNVERIFIED-H]:
+- **2025-03-31: Executive Order establishing the "United States Investment Accelerator"** inside Commerce. It manages the CHIPS Program Office and facilitates >$1B investments [REPORTED: [Bisnow, 2025-04](https://bisnow.com/national/news/industrial/trump-moves-chips-program-to-us-investment-accelerator-plans-restructuring-128749); EO number believed to be 14255, UNVERIFIED-M]. Secretary Lutnick told Congress and the press in 2025 that awards would be renegotiated for "better deals" and that some PMTs would not be finalized as written [UNVERIFIED-M].
+- **2025-08-22: Intel equity deal** [UNVERIFIED-H for share terms; $8.9B equity on top of $2.2B of grants already received REPORTED: [DCD, 2025-08](https://www.datacenterdynamics.com/en/news/us-govt-explores-equity-stakes-in-intel-and-others-to-receive-chips-act-funds/)]:
   - The U.S. took ~**9.9%** of Intel (433.3M shares at $20.47, ≈$8.9B).
   - It was funded by the **$5.7B** of unpaid CHIPS grants plus **$3.2B** of Secure Enclave funds.
   - The U.S. also got a 5-year warrant for a further 5% at $20, exercisable if Intel's ownership of its foundry falls below 51%.
   - The government agreed to vote with the board.
-- **Other CHIPS-funded equity-style deals**, as I recall them [UNVERIFIED-M/L]:
-  - Up to **$150M** to **xLight** (EUV free-electron-laser startup) for equity, Dec 2025, reported as the first CHIPS R&D award of the new administration.
+- **Other CHIPS-funded equity-style deals** [REPORTED unless noted]:
+  - Up to **$150M** to **xLight** (EUV free-electron-laser startup) for equity, via a non-binding LOI on 2025-12-02. It was reported as the first new CHIPS award of the administration ([Axios, 2025-12-02](https://axios.com/2025/12/02/us-government-xlight-chips-act)).
+  - **2026-07-29: CHIPS R&D Office LOIs with 7 companies, up to $874M total, each for a minority non-controlling equity stake** [REPORTED-P: [NIST, 2026-07-29](https://nist.gov/news-events/news/2026/07/department-commerce-announces-letters-intent-7-companies-874-million)]:
+    - GlobalFoundries $300M (co-packaged optics).
+    - **Kepler $245M (3D and ferroelectric AI memory)**.
+    - Multibeam $140M (advanced packaging).
+    - Extropic $75M (thermodynamic sampling units).
+    - Thintronics $50M (low-loss dielectrics).
+    - **OBSIDIA Semiconductors $34M (counterfeit and malicious component identification)**.
+    - Aeluma $30M (InP-free substrates).
+    - The LOIs are non-final, pending due diligence.
+    - **Read-across:** Kepler shows Commerce paying for new AI-memory devices, at T3 scale and for equity. OBSIDIA is a **funded competitor or partner for any §5949 provenance concept** [ESTIMATE: judgment].
+  - Commerce said it would **not** seek equity from TSMC or Micron, which are stepping up U.S. investment ([Notebookcheck, 2025-08](https://www.notebookcheck.net/U-S-rules-out-equity-stakes-in-TSMC-and-Micron-under-CHIPS-Act.1094856.0.html)).
   - Reports in 2025 of CHIPS funds redirected to critical-minerals and magnet deals (e.g., Vulcan Elements).
   - **Implication:** the Investment Accelerator does fund *startups*, but only strategic, $50M+ cheques in exchange for equity, on Commerce's initiative. It is not an application program a $40k founder can enter [ESTIMATE: judgment].
 - **Awards that did not close** [UNVERIFIED-M]:
   - Wolfspeed's $750M PMT was never finalized; the company went through Chapter 11 in 2025.
   - Microchip reportedly paused its $162M process in 2025.
-- **Open NOFOs in 2026:** none found [UNVERIFIED-M]. The 2023–24 incentive NOFOs, including the "small supplier" track for projects under ~$300M, appear closed or dormant.
+- **Open NOFOs in 2026 (corrected):** Mayer Brown (2026-08-10) reported two open CHIPS opportunities [REPORTED: [Mayer Brown, 2026-08-10](https://www.mayerbrown.com/en/insights/publications/2026/08/chips-act-funding-opportunities-what-companies-in-the-semiconductor-ecosystem-need-to-know)]:
+  1. A CHIPS Program Office NOFO for **facilities for semiconductor materials and manufacturing equipment**. Concept plans are due **2026-11-01**. It is open "from venture-backed startups to large publicly held corporations" and pays direct funding and/or loans.
+  2. The **CRDO BAA** (2025-NIST-CHIPS-CRDO-01). Submissions have been paused since 2026-09-15 and are expected to reopen in Nov 2026 [REPORTED-P: [NIST](https://www.nist.gov/chips/chips-rd-funding-opportunities/crdo-broad-agency-announcement-baa)]. A blog reports a ~$10M minimum per white paper [REPORTED, unverified].
+
+  The 2023 "small supplier" track for projects under ~$300M is **closed**: full applications were due in 2024.
   - **Precedent sizes for small-supplier awards (2024):** Rogue Valley Microdevices up to ~$6.7M; Akash Systems ~$18.2M; Infinera ~$93M [UNVERIFIED-M]. Even when open, the track needed capex projects of several million dollars or more and private co-investment.
 
 ### 3.4 Small-company access to CHIPS money today [ESTIMATE: judgment]
@@ -163,15 +197,19 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
   - The **EUV Accelerator** at Albany NanoTech (NY CREATES).
   - A **Prototyping and NAPMP Advanced Packaging Piloting Facility** in Arizona (ASU, Tempe).
   - A **Design and Collaboration Facility** in Sunnyvale, CA.
-- **Aug 2025:** Secretary Lutnick called the Natcast arrangement unlawful (a "slush fund"), Commerce declined to fund it, and **NIST took direct control of NSTC functions** [UNVERIFIED-M]. Natcast then cut staff and wound down [UNVERIFIED-L]. Sibling `p1-fabs` reports that the Albany EUV Accelerator continues under NY CREATES [UNVERIFIED].
-- **2026 status:** I could not verify whether NIST runs the NSTC directly, re-competed the operator role, or folded the R&D money into Investment-Accelerator-style deals such as xLight. **Treat NSTC membership, funding and facility access as unavailable until confirmed** [ESTIMATE].
+- **Aug 2025:** Commerce determined that Natcast was illegally created, declared its agreement for up to $7.4B void, and said NIST would operate the NSTC [REPORTED: [Manufacturing Dive, 2025-08](https://www.manufacturingdive.com/news/commerce-department-cuts-7-4-billion-chips-act-funding-natcast-howard-lutnick/758561); [DCD, 2025-08](https://www.datacenterdynamics.com/en/news/commerce-dept-labels-biden-era-natcast-an-illegal-invalidates-74bn-grant-awarded-to-body/)]. Natcast then cut staff and wound down [UNVERIFIED-L]. Sibling `p1-fabs` reports that the Albany EUV Accelerator continues under NY CREATES [UNVERIFIED].
+- **2026 status:**
+  - By March 2026, NIST had "assumed operational responsibility" for the NSTC, but Commerce had shared few specifics. Per an April 2026 item, operations and funding oversight remain within Commerce/NIST [REPORTED: [Senate Commerce minority QFRs, 2026-03](https://www.commerce.senate.gov/services/files/1461B96D-692E-4FD1-826A-2AA797E857C6); [Converge Digest, 2026-04](https://convergedigest.com/?p=104788)].
+  - The R&D money is in practice flowing as **equity-linked CRDO LOIs** (xLight, Dec 2025; 7 companies for $874M, 2026-07-29; see §3.3) and the CRDO BAA.
+  - **Treat NSTC membership, funding and facility access as unavailable until an operating model is published** [ESTIMATE].
 
 ### 4.2 NAPMP (National Advanced Packaging Manufacturing Program)
 
 - About **$3B** of the R&D appropriation [UNVERIFIED-M].
 - Nov 2024: up to **$300M** for advanced-substrate R&D, to Absolics (GA), Applied Materials, and Arizona State University [UNVERIFIED-M]. Plus a 2024–25 NOFO covering further R&D areas (chiplets, power delivery, thermal, connectors, co-design), with awards up to ~$150M each [UNVERIFIED-L].
+- **Jan 2025:** $1.1B was awarded to Natcast (2025-01-16) to operate the **Prototyping and NAPMP Advanced Packaging Piloting Facility** at ASU Research Park, Tempe, targeted for ~2028 [REPORTED-P: [NIST NAPMP page](https://www.nist.gov/chips/chips-america-nstc-prototyping-and-national-advanced-packaging-manufacturing-program-napmp)]. Its status after the Natcast agreement was voided is **unverified**.
 - **Memory relevance:** HBM-class stacking and chiplet memory fall in NAPMP's scope.
-- **Small-co path:** be a named team member on a university-led award. Any open calls in 2026 are unverified.
+- **Small-co path:** be a named team member on a university-led award. No 2026 NAPMP NOFO was found (Phase 1b search, 2026-11-01).
 
 ### 4.3 SMART USA (CHIPS Manufacturing USA institute)
 
@@ -195,7 +233,7 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 | **California DREAMS** | USC, CA | Medium |
 | **Northwest-AI-Hub** | Stanford, CA | **High.** AI hardware, CIM and eNVM research |
 
-- **Project awards:** ~**$269M across 33 projects** announced Sept 2024 [UNVERIFIED-M]. Technical areas: secure edge/IoT, 5G/6G, **AI hardware**, quantum, electronic warfare, commercial leap-ahead. **AI hardware** is the natural home for compute-in-memory and embedded NVM. **I could not confirm any memory-specific Commons project** this session [UNVERIFIED].
+- **Project awards:** ~**$269M across 33 projects** announced Sept 2024 [REPORTED via Phase 1b search: ExecutiveGov 2024-09]. **Year-2 awards of >$200M to 26 projects** across the 8 hubs were announced **2026-04-28** [REPORTED: [NSTXL, 2026-04-28](https://nstxl.org/microelectronics-commons-project-year-2-awards-announced/); [Manufacturing Dive, 2026-04](https://www.manufacturingdive.com/news/defense-department-awards-microelectronics-commons-26-projects-ai-warfare/818754/)]. Technical areas: secure edge/IoT, 5G/6G, **AI hardware**, quantum, electronic warfare, commercial leap-ahead. **AI hardware** is the natural home for compute-in-memory and embedded NVM. **I could not confirm any memory-specific Commons project** this session [UNVERIFIED].
 - **How a small company joins** [UNVERIFIED-M]:
   1. Join the **Microelectronics Commons consortium** through its consortium manager (NSTXL; paid membership tiers).
   2. Join **one or more hubs** (some free; some charge fees).
@@ -221,7 +259,8 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 | **BAE Systems** | Manassas VA | Rad-hard SRAM; trusted fab. **East Coast** |
 | **Frontgrade** (formerly CAES/Cobham) | Colorado Springs | Rad-hard memories, including MRAM modules |
 | **Sandia MESA** | Albuquerque | Government trusted rad-hard fab; HZO FeRAM integration 2026 [REPORTED via A1] |
-| **Micross Components** | — | Bare die, including DRAM die, and hi-rel packaging. Trusted accreditation [UNVERIFIED-L] |
+| **Micross Components** | Raleigh NC (East Coast) and others | Bare die, including DRAM die, and hi-rel packaging. Micross STS says it is a **DMEA Category 1A Trusted IC Supplier** (test and up-screening). Raleigh was accredited Jan 2020 [REPORTED: [Micross](https://www.micross.com/products-and-services/up-screening/space-grade-up-screening); [3D InCites, 2020-01](https://www.3dincites.com/2020/01/micross-raleigh-facility-receives-dmea-microelectronics-trusted-source-certification/)] |
+| **Integra Technologies** | — | DMEA trusted supplier for **test services** [REPORTED: [Compound Semiconductor](https://compoundsemiconductor.net/article/85952/Integra_Technologies_Becomes_a_DMEA_Trusted_Supplier_for_Test_Services)] |
 | **Mercury Systems** | — | Trusted secure memory/processing modules [UNVERIFIED-L] |
 
 - **Micron is not known to me to be DMEA-accredited** [UNVERIFIED-L]. Verify on the DMEA list. If true, **no trusted-accredited U.S. DRAM wafer source exists**, which matters for any "trusted DRAM" concept.
@@ -281,33 +320,38 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 ### 7.1 Authorization status
 
 - The SBIR and STTR Extension Act of 2022 extended both programs to **2025-09-30** [UNVERIFIED-H].
-- **Authority lapsed on 2025-10-01.** That was the same day the government shutdown began; the shutdown ended ~2025-11-12. Agencies paused new solicitations and awards [UNVERIFIED-H].
+- **Authority lapsed on 2025-10-01** (the programs expired 2025-09-30; the lapse lasted about six months [REPORTED: Mondaq 2026-04]). That was the same day the government shutdown began; the shutdown ended ~2025-11-12. Agencies paused new solicitations and awards [UNVERIFIED-H].
 - **Competing reauthorization approaches in 2025** [UNVERIFIED-M]:
   - The Senate Small Business chair (Sen. Ernst) sought reforms: limits on high-volume "SBIR mill" awardees, stronger foreign-ties due diligence, and larger "strategic breakthrough" follow-on awards.
   - House leaders favored a cleaner multi-year extension.
-- **Evidence the program is running again in 2026:**
-  - DoD SBIR topic **DPA26BZ04-DV017** opened **2026-07-22** and closed **2026-08-19** [REPORTED via A1]. A DoD component would not open a new SBIR cycle without authority.
-  - **Inference:** SBIR/STTR authority was restored (reauthorized or extended) by mid-2026 [ESTIMATE: inference, moderate confidence].
-  - **The length and terms are NOT verified.** Check the enacting public law, any changed award caps, mill limits, and any new foreign-risk certification. This is the #1 item in §14.
+- **Reauthorized (Phase 1b, verified via snippets).** The **Small Business Innovation and Economic Security Act of 2026 (S. 3971)** ended the roughly six-month lapse [REPORTED-P: [SBA via StreetInsider, 2026-04](https://www.streetinsider.com/Globe+Newswire/Administrator+Loeffler+Applauds+SBIR-STTR+Reauthorization/26306713.html); [IEDC, 2026-04-15](https://www.iedconline.org/news/2026/04/15/federal-policy-updates/federal-policy-update-sbir-and-sttr-reauthorized/); [Mondaq, 2026-04](https://www.mondaq.com/unitedstates/government-contracts-procurement-ppp/1774902/sbirsttr-programs-reauthorized-after-six-month-lapse)].
+  - Senate voice vote 2026-03-03; House 345–41 on 2026-03-17; **signed 2026-04-13**.
+  - Reported as **P.L. 119-83** by one source ([Covington](https://www.insidegovernmentcontracts.com/tag/strategic-breakthrough-awards/)). The number is unverified on congress.gov.
+  - **Duration:** through **2031-09-30**. FY2026 leftover SBIR/STTR funds may be used in FY2027.
+- **Changes** [REPORTED: [Wiley, 2026-04](https://www.wiley.law/alert-SBIR-STTR-Reauthorization-Brings-New-Opportunities-and-Obligations-to-Consider); [iQuasar](https://iquasar.com/blog/sbir-sttr-is-back-through-2031-and-from-fy2027-every-proposal-has-to-count/); [ASBTDC](https://asbtdc.org/sbir-is-back-whats-changed/); [OpenGrants](https://opengrants.io/sbir-grants-2026-what-changed-whats-next/); [Funding Landscape](https://fundinglandscape.com/answers/sbir-sttr-reauthorization-2026)]:
+  - **Per-firm proposal caps:** each agency sets one from **FY2027** and publishes it at least 90 days ahead. This is the anti-"SBIR mill" measure. The proposed $75M lifetime cap was dropped.
+  - **Strategic Breakthrough awards:** up to **$30M over 48 months**. They need a prior Phase II and a **1:1 private match**, and sunset in 2031.
+  - **Expanded national-security and foreign-ownership screening** before award. Noncompliance can trigger repayment.
+- DoD SBIR topic **DPA26BZ04-DV017** (opened 2026-07-22, closed 2026-08-19 [REPORTED via A1]) fits this timeline.
 
 ### 7.2 Award sizes (ceilings move; verify per solicitation)
 
 | Agency | Phase I | Phase II | Notes | Tag |
 |---|---|---|---|---|
-| SBA guideline caps (2024 adjustment) | ~$314k | ~$2.1M | Agencies may exceed with SBA waiver | [UNVERIFIED-L] |
+| SBA guideline caps (current) | ~$323k ($323,090) | ~$2.15M ($2,153,927) | Agencies may exceed with SBA waiver. Strategic Breakthrough (post-Phase II) is up to $30M with a 1:1 match | [REPORTED] ([GovDash](https://www.govdash.com/blog/sbir-funding-guide); [ASBTDC](https://asbtdc.org/sbir-is-back-whats-changed/)) |
 | DoD (Army/Navy/AF/DARPA/MDA/DMEA) | ~$50k–$250k | ~$0.75M–$1.9M | **Direct-to-Phase II** common; DV017 ~$1.2M | [REPORTED via A1] for DV017; rest [UNVERIFIED-M] |
 | AFWERX TACFI / STRATFI | — | Matching: TACFI ~$0.4–2M; STRATFI up to ~$15M gov't with ≥1:1 private/program match | For Phase II performers with a transition customer | [UNVERIFIED-M] |
 | NSF SBIR/STTR (America's Seed Fund) | up to ~$305k | up to ~$1.25M | Project Pitch first; equity-free; broad topics incl. semiconductors and AI systems | [UNVERIFIED-M] |
 | DOE SBIR/STTR | ~$200–250k | ~$1.1–1.6M | Topics via Office of Science (incl. microelectronics) | [UNVERIFIED-L] |
 | NASA SBIR/STTR | ~$150k | ~$850k–$1M | Topics on rad-tolerant avionics and memory recur | [UNVERIFIED-L] |
 
-### 7.3 Eligibility rules that hit this founder hardest [UNVERIFIED-H, from SBA Policy Directive]
+### 7.3 Eligibility rules that hit this founder hardest [UNVERIFIED-H from the SBA Policy Directive unless tagged otherwise]
 
-- **PI primary employment:** for **SBIR**, the PI's primary employment (>50% of time) must be with the awardee at award and during the project. **A founder who keeps a full-time day job cannot be SBIR PI.**
-- **STTR** lets the PI be employed by the partner research institution. It requires ≥40% of work by the small business and ≥30% by the research institution.
+- **PI primary employment:** for **SBIR**, more than one-half of the PI's time must be spent employed by the awardee, at award and during the project. A university or subcontractor PI does not qualify [REPORTED-P: [NIST SBIR eligibility](https://www.nist.gov/tpo/small-business-innovation-research-program-sbir/resources/participation-eligibility-and)]. NIH allows a deviation if the PI commits to ≥51% employment by Phase II [REPORTED-P: [NIH GPS 18.5](https://grants.nih.gov/grants/policy/nihgps/html5/section_18/18.5_small_business_innovation_research_and_small_business_technology_transfer_programs.htm)]. **A founder who keeps a full-time day job cannot be SBIR PI.**
+- **STTR** lets the PI be employed by **either** the small business **or** the partner research institution [REPORTED: [UTA guidance](https://resources.uta.edu/research/agreement-management/sbir-sttr/description-differences.php)]. It requires ≥40% of work by the small business and ≥30% by the research institution.
 - **Work share:** SBIR Phase I ≥ 2/3 and Phase II ≥ 1/2 of the work must be performed by the small business.
 - **Ownership:** ≤500 employees; >50% owned and controlled by U.S. citizens or permanent residents (some agencies allow VC-majority).
-- **Foreign-risk due diligence** (from the 2022 Act): agencies screen for ties to PRC talent programs, PRC ownership and similar. A team member with PRC-entity affiliations can sink an application [UNVERIFIED-H].
+- **Foreign-risk due diligence** (from the 2022 Act): agencies screen for ties to PRC talent programs, PRC ownership and similar. A team member with PRC-entity affiliations can sink an application [UNVERIFIED-H]. The **2026 reauthorization expanded** this pre-award national-security and foreign-ownership screening, with repayment on noncompliance [REPORTED: [OpenGrants](https://opengrants.io/sbir-grants-2026-what-changed-whats-next/)].
 - **Upside:**
   - **SBIR data rights** are protected for 20 years.
   - **Phase III** awards can be made **sole-source** by any federal agency, with no dollar cap and no SBIR funds required. This is how SBIR becomes **revenue** rather than grant farming [UNVERIFIED-H].
@@ -408,12 +452,22 @@ It also created the **25% §48D** credit [UNVERIFIED-H].
 
 ### 10.3 FY2023 NDAA §5949: the one real memory-specific preference
 
-- Enacted **2022-12-23** (P.L. 117-263). Effective **5 years after enactment, i.e., 2027-12-23** [UNVERIFIED-H]. Sibling reporting says "Dec 2027" [REPORTED via p1-micron (XenoSpectrum)].
+- Enacted **2022-12-23** (P.L. 117-263). Effective **5 years after enactment, i.e., 2027-12-23** [REPORTED-P: [Federal Register proposed rule, 2026-02-17](https://www.federalregister.gov/documents/2026/02/17/2026-03065/federal-acquisition-regulation-prohibition-on-certain-semiconductor-products-and-services)]. Sibling reporting says "Dec 2027" [REPORTED via p1-micron (XenoSpectrum)].
+- **FAR implementing rule (Phase 1b):** FAR Case 2023-008, a **proposed rule** published **2026-02-17** (FR Doc 2026-03065). Comments closed **2026-04-20**. **No final rule was found as of 2026-11-01**, so the statutory final-rule deadline of 2025-12-23 was missed [REPORTED-P].
+  - It adds FAR 40.20X, provision **52.240-XX** (offeror certification after "reasonable inquiry") and clause **52.240-YY** (flow-down) [REPORTED: [Mayer Brown, 2026-03-03](https://www.mayerbrown.com/en/insights/publications/2026/03/far-council-proposes-rule-to-prohibit-acquisition-of-semiconductors-from-china-and-countries-of-concern)].
+  - It applies **prospectively**: no rip-and-replace.
+  - **No DFARS §5949 counterpart was found** [Phase 1b search].
 - **Prohibits executive agencies from:**
   1. procuring or obtaining any electronic part, product or service that **includes covered semiconductor products or services**; and
-  2. contracting with an entity to procure or obtain electronic parts or products that **use** them (scope language on "critical systems" to be checked).
-- **Covered:** semiconductors designed, produced or provided by **SMIC, YMTC, CXMT**, their subsidiaries, affiliates or successors, plus entities later designated (owned or controlled by a foreign country of concern) [UNVERIFIED-M].
-- **Waivers** are possible. The **FAR implementing rule's status is unverified** [UNVERIFIED-L].
+  2. contracting with an entity to procure or obtain electronic parts or products that **use** covered chips. This **applies only in a "critical system"**: national security systems under 40 USC 11103(a)(1), or systems identified by the FASC or DoD [REPORTED: [Wiley, 2026-02](https://www.wiley.law/alert-FAR-Council-Proposes-Rule-to-Ban-Purchases-of-Certain-Semiconductor-Products-and-Services)].
+- **Contractors' internal use is *not* banned.** Unlike Section 889 Part B, §5949 Part B does not reach a contractor's own use unrelated to what it furnishes the government [REPORTED: [Wiley, 2022-12](https://www.wiley.law/alert-The-NDAA-Includes-Prohibitions-Targeting-Semiconductors-Similar-to-Section-889)].
+- **Product scope:** the proposed rule applies to **COTS items and micro-purchases**. Memory dies inside servers, PCs and DIMMs sold to agencies are therefore in scope [REPORTED: [Clark Hill, 2026](https://www.clarkhill.com/news-events/news/far-council-proposes-rule-restricting-certain-semiconductor-products-and-services); in-scope reading is ESTIMATE]. Commercial **services** are excepted, **except IT and telecom services** [REPORTED-P].
+- **Covered:** semiconductors designed, produced or provided by **SMIC, YMTC, CXMT**, their subsidiaries, affiliates or successors, plus entities later designated (owned or controlled by a foreign country of concern) [REPORTED: Clark Hill 2026].
+- **Waivers and safe harbors:** agency heads and cabinet secretaries can grant waivers. There are two disclosure safe harbors aligned with §5949(h) [REPORTED: Crowell 2026-02; Mayer Brown 2026-03-03].
+- **Still unverified:**
+  - A **2028-12-23** phase-in for commercial products with no alternative source ([LexBlog](https://www.lexblog.com/?p=3682501), single source).
+  - A **72-hour** reporting window (single unattributed snippet).
+  - A proposed disclosure of sales to non-federal customers (Clark Hill snippet).
 - **Political salience is rising:**
   - In 2026 Apple lobbied Commerce for permission to buy CXMT DRAM. Senators demanded Apple commit by 2026-08-21 not to [REPORTED via p1-micron] ([The Next Web, 2026-06-27](https://thenextweb.com/news/apple-lobbying-us-approval-cxmt-blacklisted-memory-chips); [Sen. Schumer, 2026-07-30](https://www.schumer.senate.gov/newsroom/press-releases/citing-core-national-security-and-economic-reasons-schumer-demands-apple-reject-chinese-military-linked-chips)).
   - CXMT was re-added to the DoD 1260H list ~June 2026 [REPORTED via p1-micron].

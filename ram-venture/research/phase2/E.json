@@ -1,0 +1,896 @@
+{
+  "branch_key": "E",
+  "branch": "E",
+  "scope": "Business-model-first concepts: hedging/financial products, financing, inventory, authorized aftermarket, test labs, federal compliance resale, lab-patent STTR vehicles, acquisitions, IP estates, services and data products around the 2026 memory shortage. Device, architecture, manufacturing and software branches carry their own cards; overlaps are cross-referenced in E_notes.md.",
+  "cards": [
+    {
+      "branch": "E",
+      "tmp_id": "E-01",
+      "name": "DIMM Health Subscription: predictive replacement + recovered-DDR4 spares pool",
+      "subbranch": "SaaS + spares pool (third-party maintenance for memory only)",
+      "materials_sense": "c-capital",
+      "what_it_is": "A per-node agent built on the open-source rasdaemon/Linux EDAC stack streams corrected and uncorrected DRAM error counts per DIMM to a web console. It flags DIMMs trending toward failure (row/page corrected-error growth) and triggers next-business-day shipment of a burn-in-tested replacement from a spares pool of recovered DDR4 RDIMMs bought from U.S. R2 ITADs (Iron Mountain/ITRenew-Sesame, Sims, regional R2 firms). It sells at ~$0.75 per DIMM-month to operators keeping out-of-warranty Dell R740/HPE DL380 Gen10-class DDR4 fleets alive because 2026 DRAM and server prices make a refresh unaffordable.",
+      "why_it_could_work": "High DRAM prices push enterprises, universities, regional colos and MSPs to stretch DDR4 server life: DDR4 contract prices rose 24% in the 3 months to Oct 2026, and a 64GB RDIMM went from $450 to >$900 on contract. Out-of-warranty fleets lose OEM DIMM replacement. Telemetry is free (rasdaemon logs CE/UE events to SQL and already supports per-page/per-row CE thresholds), so the product is integration plus logistics. Model (e_estimates §10): a 2,400-DIMM customer pays $21.6k/yr. COGS is $8.9k at 2026 recovered-DDR4 prices (58.6% GM) and $3.9k in a glut (81.9% GM), because spares get cheaper. The pool needs only ~$7k of capital per customer. 25 customers = $540k ARR.",
+      "evidence": [
+        {
+          "title": "rasdaemon README.rst and misc/rasdaemon.env",
+          "url": "https://github.com/mchehab/rasdaemon",
+          "type": "industry",
+          "date": "2026-11",
+          "shows": "Opened by E (git clone, last commit 2026-11-01). Logs kernel memory CE/UE events to SQLite/MySQL/PostgreSQL and supports per-page/per-row corrected-error thresholds (example 50) with soft-offline actions. Free, mature DIMM-health telemetry."
+        },
+        {
+          "title": "DDR4 prices rise as shortages intensify through 2028 (Barclays)",
+          "url": "https://www.guru3d.com/story/ddr4-memory-prices-now-also-rise-as-dram-supply-shortages-intensify-through-2028/",
+          "type": "news",
+          "date": "2026-10",
+          "shows": "DDR4 contract +24% over the 3 months to Oct 2026; shortage into 2028 [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Memory prices surging by 90% from 4Q25 (Counterpoint)",
+          "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+          "type": "news",
+          "date": "2026-01",
+          "shows": "64GB RDIMM contract $450 (4Q25) to >$900 (1Q26) [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T0",
+      "time_to_first_revenue_months": 6,
+      "time_to_first_revenue_text": "4-8 months: paid pilots with 2-3 regional colo / university research-computing fleets on monthly billing",
+      "gross_margin_estimate": "59% at 2026 spares prices, 82% in a glut",
+      "gross_margin_mid_pct": 65,
+      "us_manufacturability": "No fabrication. U.S. value-add is burn-in test of recovered RDIMMs on owned DDR4 server beds (memtest86+, stressapptest) in a small East Coast space, plus the software. Supply comes from U.S. R2/e-Stewards ITADs.",
+      "who_is_already_doing_this": "Third-party maintenance firms bundle DIMM replacement into whole-server contracts (Park Place Technologies/Curvature, Service Express [UNVERIFIED-training]). Hyperscalers retire DIMMs on error trends in-house. OEM support (Dell ProSupport, HPE) covers in-warranty fleets. No memory-only predictive subscription was found, but a web search was not possible this session [UNVERIFIED].",
+      "wins_axis": "lifecycle length: $/GB-month of keeping installed DDR4 capacity running vs. refreshing at ~$20/GB DDR5",
+      "buyer": "Operators of out-of-warranty DDR4 fleets: university research computing, regional colos and MSPs, on-prem SaaS/fintech shops. Also TPM providers as wholesale buyers of the prediction feed plus spares.",
+      "survives_glut": "partially",
+      "glut_reason": "Margin improves: recovered DDR4 spares fall from ~$4.7 to ~$1.25/GB and GM rises from 59% to 82%. But demand shrinks once cheap DDR5 servers make refresh attractive again and DDR4 fleets age out after ~2029. The fee is priced on uptime, not on DRAM $/GB.",
+      "fatal_flaw": "Low spend per customer and bundling. DIMMs are a small slice of whole-server TPM contracts, so Park Place or Service Express can match it at no extra charge. Self-maintaining shops may just keep a box of spare DIMMs. The predictive layer is copyable from open-source rasdaemon.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "SaaS; recert/brokerage (spares supply)",
+      "founder_fit_note": "Yes: agent plus console is web/software work, and spares logistics can start in a garage with 4-6 used servers as test beds alongside the day job.",
+      "possible": "yes - every component exists (EDAC telemetry, recovered RDIMMs, NBD shipping)",
+      "profitable": "marginal - 59-82% GM but ~$22k ACV; needs ~25+ customers for ~$0.5M ARR, and TPM bundling caps price",
+      "doable_by_founder": "yes - T0, software-led, part-time start; first customers are reachable regionally"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-02",
+      "name": "Memory Cost Escalation Index + EPA clause kit",
+      "subbranch": "Data product (contract indexation, steel/copper-surcharge model)",
+      "materials_sense": "none",
+      "what_it_is": "Publish a monthly, methodology-documented memory cost index family (DDR4, DDR5, LPDDR4X/5X, eMMC/NAND). It is computed from authorized-distributor quote APIs (Nexar/Octopart, DigiKey, Mouser) plus transaction data contributed by a marketplace partner such as Mobius Materials. License it with ready-to-use economic-price-adjustment (EPA) clauses and a calculator API, so system integrators, EMS houses and federal contractors can pass memory cost through in both directions, like steel and copper surcharges. Federal contracts already allow index-based material EPA (FAR 16.203-1(a)(3), FAR 52.216-4).",
+      "why_it_could_work": "Memory moved about 6x on contract in five quarters (index 100 -> 601) and will probably fall ~60% in 2028-29. Fixed-price deals for servers, industrial PCs and embedded systems either bleed or carry fat contingencies; Samsung's own device division lost money on component costs in 3Q26. A neutral index lets both sides drop the contingency. Example (e_estimates §11): memory is 35% of a $500k deliverable, so +25% memory triggers a +$43.75k adjustment and -60% a -$105k refund. Revenue: 30 x $6k + 5 x $24k = $300k ARR at 89% GM if self-built, 57% if a contract-price feed must be licensed.",
+      "evidence": [
+        {
+          "title": "FAR 16.203-1 Fixed-price contracts with economic price adjustment",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/16.203-1.dita",
+          "type": "government",
+          "date": "2025-10-01",
+          "shows": "Opened by E. EPA can be based on 'cost indexes of labor or material ... specifically identified in the contract'"
+        },
+        {
+          "title": "FAR 52.216-4 Economic Price Adjustment - Labor and Material (Jan 2017)",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/52.216-4.dita",
+          "type": "government",
+          "date": "2017-01",
+          "shows": "Opened by E. A standard federal clause for material price adjustment already exists"
+        },
+        {
+          "title": "TrendForce DRAM spot price board",
+          "url": "https://www.trendforce.com/price_dram.html",
+          "type": "industry",
+          "date": "2026-08",
+          "shows": "The de facto public DRAM price reference is proprietary survey/spot data, not a licensed settlement index [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Samsung 3Q26 results",
+          "url": "https://news.samsungsemiconductor.com/global/samsung-electronics-announces-third-quarter-2026-results/",
+          "type": "company",
+          "date": "2026-10-29",
+          "shows": "Samsung's device (DX) businesses lost money on component costs while memory set records: downstream makers need memory-cost pass-through [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "TechInsights DRAM market report Q2-2026",
+          "url": "https://www.techinsights.com/blog/slides-dram-market-report-q2-2026",
+          "type": "industry",
+          "date": "2026-06-01",
+          "shows": "The paid DRAM-data tier is held by TechInsights/TrendForce/InSpectrum [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Mobius Materials raises $3M (authenticated surplus-semiconductor marketplace)",
+          "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+          "type": "news",
+          "date": "2025-12",
+          "shows": "Richmond VA marketplace with an ML authentication patent filing: incumbent in spot trading/authentication and a possible data partner [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T0",
+      "time_to_first_revenue_months": 9,
+      "time_to_first_revenue_text": "6-12 months: back-fill index history, then first paid licenses with 3-5 integrators/EMS",
+      "gross_margin_estimate": "57-89% (depends on whether contract data must be licensed)",
+      "gross_margin_mid_pct": 75,
+      "us_manufacturability": "Pure software/data; no fab dependency.",
+      "who_is_already_doing_this": "TrendForce/DRAMeXchange (public spot board plus paid contract data), InSpectrum, TechInsights and Omdia sell the data. Free retail trackers exist. No memory-specific escalation-clause/index-licensing product was found [UNVERIFIED: search unavailable]. Closest analogues are metals surcharge indexes (CRU, Fastmarkets/AMM) [UNVERIFIED-training].",
+      "wins_axis": "contract-risk transfer: lower price contingency (cost certainty) on memory-heavy fixed-price contracts",
+      "buyer": "U.S. system integrators and federal IT contractors on multi-year fixed-price deliveries (servers, rugged computers), regional and tier-2 EMS houses, industrial-PC OEMs (Advantech/OnLogic class) and their procurement counterparts.",
+      "survives_glut": "partially",
+      "glut_reason": "Index use is two-sided: buyers demand down-adjustments in a glut, and clauses already embedded in multi-year contracts persist. New-license sales slow when prices stop moving.",
+      "fatal_flaw": "Credibility. Counterparties default to TrendForce/DRAMeXchange as the reference, and an index built from distributor list quotes rather than transactions is easy to dismiss or game. Licensing real contract data for redistribution may cost more than early revenue.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "data product; SaaS",
+      "founder_fit_note": "Yes: data pipeline plus web app plus contract templates is squarely software work. Domain credibility can come from an advisory board of procurement leads.",
+      "possible": "yes - distributor APIs and index methodology are standard",
+      "profitable": "marginal - high GM, but ~$0.3M ARR ceiling unless it becomes the reference index",
+      "doable_by_founder": "yes - T0, part-time; the founder's day job (manufacturing ops) is the buyer persona"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-03",
+      "name": "DRAM futures/swap market (index-settled forwards) - tempting, dead",
+      "subbranch": "Financial market infrastructure",
+      "materials_sense": "none",
+      "what_it_is": "Create cash-settled DRAM forwards or swaps (e.g., a quarterly DDR5 16Gb contract-price swap) so OEMs, clouds, module makers and second-tier DRAM makers can hedge. They would be listed on a CFTC-registered exchange or written OTC through a swap dealer, with the venture as index provider and introducing broker.",
+      "why_it_could_work": "The exposure is huge and two-sided. DRAM industry revenue was $154.7B in 2Q26 alone. Annualized contract-price volatility is 44-55% (e_estimates §1). Makers are naturally long and buyers naturally short. The 2018-19 and 2022-23 downturns each fell ~60%.",
+      "evidence": [
+        {
+          "title": "SK hynix 3Q26: 14 LTAs, supply booked to 2029",
+          "url": "https://www.sammyfans.com/2026/10/28/sk-hynix-q3-margin-hits-record-80-secures-14-ltas-with-memory-supply-booked-to-2029/amp/",
+          "type": "news",
+          "date": "2026-10-28",
+          "shows": "Physical multi-year LTAs are how DRAM price/supply risk is actually transferred today [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Nanya 3Q26 results; LTAs repriced",
+          "url": "https://www.trendforce.com/news/?p=65146",
+          "type": "news",
+          "date": "2026-10-12",
+          "shows": "Nanya LTAs expired end-June 2026 and repriced >60% higher: LTAs re-price rather than hedge [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "TrendForce DRAM spot price board",
+          "url": "https://www.trendforce.com/price_dram.html",
+          "type": "industry",
+          "date": "2026-08",
+          "shows": "The de facto public DRAM price reference is proprietary survey/spot data, not a licensed settlement index [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Mobius Materials: the spot market for semiconductors",
+          "url": "https://www.ycombinator.com/companies/mobius-materials",
+          "type": "company",
+          "date": "unknown",
+          "shows": "The nearest thing to a DRAM 'exchange' is a physical surplus marketplace [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "TrendForce 2018 PC DRAM contract release",
+          "url": "https://press.trendforce.com/node/view/3173.html",
+          "type": "industry",
+          "date": "2018-11",
+          "shows": "2018-19 downturn: 8GB module contract $68 -> $61 in one quarter, on the way to -62.5% [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 2,
+      "capital_tier": "T3",
+      "time_to_first_revenue_months": 48,
+      "time_to_first_revenue_text": "36-60 months: index certification, CFTC product approval, and market-maker recruitment before any fee revenue",
+      "gross_margin_estimate": "n/a before liquidity (exchange-like margins only at scale)",
+      "gross_margin_mid_pct": 0,
+      "us_manufacturability": "Financial product; no manufacturing. Would run on a U.S. CFTC-registered DCM/SEF or through a registered swap dealer.",
+      "who_is_already_doing_this": "No listed DRAM futures are known on CME, ICE, SGX or TAIFEX [UNVERIFIED-training; could not search]. The de facto hedge is physical LTAs with prepayments (SK hynix: 14 LTAs, booked to 2029; CSP multi-year deals). Mobius Materials runs a physical spot marketplace.",
+      "wins_axis": "price-risk transfer (cost certainty)",
+      "buyer": "PC/phone OEMs, tier-2 clouds without LTAs, module makers (Kingston, ADATA class); second-tier DRAM makers (Nanya, Winbond) as natural sellers.",
+      "survives_glut": "partially",
+      "glut_reason": "Hedging demand persists through volatility in both directions, but no liquidity forms without a trusted index at any point in the cycle.",
+      "fatal_flaw": "No settlement-grade, licensable, manipulation-resistant index exists. TrendForce contract data is proprietary and survey-based, and spot is thin and panic-priced at ~1.7x contract. The big players already hedge physically through LTAs that simply re-price (Nanya +60%), so nobody supplies liquidity. CFTC registration and clearing push it to T3.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "data product (index); brokerage",
+      "founder_fit_note": "No: regulated market infrastructure needing CFTC counsel, clearing relationships and market-making capital.",
+      "possible": "marginal - the instrument type is standard, but the index and liquidity do not exist",
+      "profitable": "no - no fee revenue until liquidity; physical LTAs are the entrenched substitute",
+      "doable_by_founder": "no - T3, regulatory, not software-led"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-04",
+      "name": "DRAM price-cap / allocation-guarantee subscription ('memory insurance') - dead",
+      "subbranch": "Risk transfer product",
+      "materials_sense": "none",
+      "what_it_is": "Sell SMB OEMs and system integrators a 12-month subscription that caps the $/GB they pay for DDR4/DDR5, with the venture paying the difference above the cap, and/or guarantees a monthly allocation. It would be funded by premiums and backed by inventory bought ahead or by a reinsurer.",
+      "why_it_could_work": "Tier-2 buyers without LTAs bear the marginal price and allocation cuts (TrendForce Jan 2026; Micron 10-K allocation language) and would value certainty. Hyperscalers get that certainty through multi-year LTAs; SMBs cannot.",
+      "evidence": [
+        {
+          "title": "CSPs lock supply with long-term deals (TrendForce 2Q26)",
+          "url": "https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-increase-csps-lock-supply-long-term-deals/",
+          "type": "news",
+          "date": "2026-03-31",
+          "shows": "Hyperscalers lock multi-year supply; tier-2 buyers pay the marginal price [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "TrendForce: supply prioritized to strategic OEMs, module makers limited",
+          "url": "https://www.trendforce.com/research/download/RP260114IU",
+          "type": "industry",
+          "date": "2026-01-14",
+          "shows": "Allocation favours strategic customers; tier-2 buyers and module makers are limited [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Micron FY2026 Form 10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm",
+          "type": "company",
+          "date": "2026-10",
+          "shows": "'supply allocation decisions that may affect some customers': newcomers cannot buy at contract [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "SK hynix 3Q26: 14 LTAs, supply booked to 2029",
+          "url": "https://www.sammyfans.com/2026/10/28/sk-hynix-q3-margin-hits-record-80-secures-14-ltas-with-memory-supply-booked-to-2029/amp/",
+          "type": "news",
+          "date": "2026-10-28",
+          "shows": "Physical multi-year LTAs are how DRAM price/supply risk is actually transferred today [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 3,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 15,
+      "time_to_first_revenue_text": "12-18 months: insurance or swap structuring, capital/reinsurance before the first policy",
+      "gross_margin_estimate": "fair premium 9-21% of capped spend; underwriting margin ~0-10% before adverse selection",
+      "gross_margin_mid_pct": 5,
+      "us_manufacturability": "Financial product; none.",
+      "who_is_already_doing_this": "No DRAM price-cap product was found [UNVERIFIED: search unavailable]. Market substitutes are LTAs with prepayment and distributor allocation programs.",
+      "wins_axis": "cost certainty / supply security",
+      "buyer": "SMB hardware OEMs, system integrators and tier-2 clouds without LTAs",
+      "survives_glut": "no",
+      "glut_reason": "Nobody buys caps when prices are falling. During the shortage the writer is short a call on a commodity with 44-55% volatility.",
+      "fatal_flaw": "The venture is short a call option. The fair premium for an at-the-money 12-month cap is ~17-21% of capped spend (Black-76, 44-55% vol; e_estimates §2), which buyers will not pay. A 99th-percentile year costs the writer $1.5-2.1M per $1M of capped spend. Structured as indemnity it falls under state insurance regulation; structured as a price swap it falls under CFTC swap rules.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "financial/risk product; brokerage",
+      "founder_fit_note": "No: requires balance sheet or reinsurance and regulatory structuring; a single bad quarter is fatal.",
+      "possible": "marginal - structurally possible through a reinsurer, but no one will write it at a price buyers accept",
+      "profitable": "no - adverse selection plus fat-tailed price moves",
+      "doable_by_founder": "no - capital and regulatory burden"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-05",
+      "name": "Buy-and-hold DRAM inventory arbitrage - speculation, not a venture",
+      "subbranch": "Inventory trading",
+      "materials_sense": "none",
+      "what_it_is": "Buy DDR5/DDR4 components or RDIMMs on the spot market from brokers or marketplaces (U.S. independents, Mobius Materials, Shenzhen spot), hold them in dry storage, and sell into the next price step.",
+      "why_it_could_work": "Contract prices rose about 6x from 3Q25 to 4Q26. TrendForce still forecast +10-15% QoQ for 4Q26, and Micron says supply stays tight through 2028.",
+      "evidence": [
+        {
+          "title": "TrendForce 4Q26 contract price forecast",
+          "url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+          "type": "industry",
+          "date": "2026-09-30",
+          "shows": "Conventional DRAM contract +10-15% QoQ in 4Q26 (+15-20% incl. HBM); QoQ rate down from +93-98% in 1Q26 [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "RAM market update (DRAMeXchange data)",
+          "url": "https://www.buysellram.com/blog/ram-market-update/",
+          "type": "industry",
+          "date": "2026-08-31",
+          "shows": "DDR5 16Gb spot avg $53.92 (~$27/GB), about 1.7x the Q4-2026 contract price [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Micron FY2026 Form 10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm",
+          "type": "company",
+          "date": "2026-10",
+          "shows": "'supply allocation decisions that may affect some customers': newcomers cannot buy at contract [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Analyst cycle views incl. Bloomberg Intelligence bear case",
+          "url": "https://www.kucoin.com/blog/2027-memory-chip-boom-sk-hynix-samsung",
+          "type": "news",
+          "date": "2026",
+          "shows": "BI: shortage peaked 2Q26, oversupply possible in 2028; others see tightness to 2Q28 [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "DDR4 8Gb fixed price bottomed at $1.30 (Sep 2023)",
+          "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+          "type": "news",
+          "date": "2023-10-04",
+          "shows": "Last-cycle trough anchor: contract prices fell roughly 60-65% peak-to-trough [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 2,
+      "time_to_first_revenue_text": "1-3 months (first resale)",
+      "gross_margin_estimate": "expected -45% (resale vs. cost, buying at spot); -22% even if the spot premium persists",
+      "gross_margin_mid_pct": -45,
+      "us_manufacturability": "None: storage only.",
+      "who_is_already_doing_this": "Independent brokers and traders worldwide; Mobius Materials (VA) as a marketplace. Module makers' real business is already inventory timing (p1-backend).",
+      "wins_axis": "none (timing speculation)",
+      "buyer": "whoever is short that day: brokers, CMs, system builders",
+      "survives_glut": "no",
+      "glut_reason": "A 24-month hold into the A-05 glut, bought at spot, loses more than 100% after carry (e_estimates §3).",
+      "fatal_flaw": "A newcomer can only buy at spot (~$27/GB, ~1.7x contract) because makers allocate contract supply to strategic customers. The QoQ rate has slowed from +95% to +12.5%, so the expected 12-month net return is -46% (-22% even if the spot premium persists; e_estimates §3). Only allocation holders buying at contract see ~+7%. It is speculation with no recurring revenue and no moat.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "recert/brokerage (trading)",
+      "founder_fit_note": "Mechanically trivial, but it stakes the <$50k on a bet skewed against him.",
+      "possible": "yes - anyone can buy spot inventory",
+      "profitable": "no - negative expected value at spot; positive only for holders of contract allocation",
+      "doable_by_founder": "marginal - doable mechanically, imprudent financially"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-06",
+      "name": "DIMM leasing / memory-as-a-service financing for neoclouds",
+      "subbranch": "Hardware financing (lessor)",
+      "materials_sense": "c-capital",
+      "what_it_is": "A lessor buys new DDR5 RDIMMs (or CXL expanders) from Penguin/SMART Modular or Kingston and leases them for 36 months at $/GB-month to neoclouds, AI-inference startups and enterprises that lack LTAs. At lease end it takes the modules back for resale through ITAD channels.",
+      "why_it_could_work": "Buyers without LTAs face peak prices and allocation limits. Leasing turns a $1,300-2,064 capex per 64GB RDIMM into ~$49/month ($0.76/GB-month), which gives the lessor a 14% IRR with a $260 residual (e_estimates §4). Lenders have shown willingness to finance compute hardware such as GPUs [UNVERIFIED-training].",
+      "evidence": [
+        {
+          "title": "Memory prices surging by 90% from 4Q25 (Counterpoint)",
+          "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+          "type": "news",
+          "date": "2026-01",
+          "shows": "64GB RDIMM contract $450 (4Q25) to >$900 (1Q26) [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "DDR5 server memory price tracker 2026",
+          "url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026",
+          "type": "industry",
+          "date": "2026-08",
+          "shows": "Street 64GB DDR5 RDIMM ~$2,064 (Aug 2026) [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "CSPs lock supply with long-term deals (TrendForce 2Q26)",
+          "url": "https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-increase-csps-lock-supply-long-term-deals/",
+          "type": "news",
+          "date": "2026-03-31",
+          "shows": "Hyperscalers lock multi-year supply; tier-2 buyers pay the marginal price [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "TrendForce: supply prioritized to strategic OEMs, module makers limited",
+          "url": "https://www.trendforce.com/research/download/RP260114IU",
+          "type": "industry",
+          "date": "2026-01-14",
+          "shows": "Allocation favours strategic customers; tier-2 buyers and module makers are limited [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "DDR4 8Gb fixed price bottomed at $1.30 (Sep 2023)",
+          "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+          "type": "news",
+          "date": "2023-10-04",
+          "shows": "Last-cycle trough anchor: contract prices fell roughly 60-65% peak-to-trough [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 7,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 9,
+      "time_to_first_revenue_text": "6-12 months to first lease once a credit facility exists (the facility is the hard part)",
+      "gross_margin_estimate": "lessor spread a few points over cost of funds; scenario IRR -58% to +15%",
+      "gross_margin_mid_pct": 15,
+      "us_manufacturability": "None; financing. Modules are made in Asia or assembled in the U.S. by Kingston/Penguin from foreign die.",
+      "who_is_already_doing_this": "OEM captive finance (Dell Financial Services, HPE Financial Services), IT lessors, GPU-backed lenders to neoclouds [UNVERIFIED-training].",
+      "wins_axis": "$/GB-month and cash-flow timing (no capex at peak prices)",
+      "buyer": "neoclouds and AI-inference startups, mid-size enterprises without memory LTAs",
+      "survives_glut": "no",
+      "glut_reason": "Once the 2028 glut makes a new 64GB RDIMM ~$520, a lessee facing 18 more payments ($879) has every reason to walk or renegotiate. Lessor IRR falls to -29% (walk at month 18) or -58% (month 12).",
+      "fatal_flaw": "Residual-value and counterparty risk both sit on the cycle: the lessor is long DRAM bought at peak prices and short credit on neoclouds. OEM captives with cheaper capital already lease whole servers, memory included.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "financing (memory-as-a-service); recert/brokerage (end-of-lease resale)",
+      "founder_fit_note": "No: a balance-sheet business needing a $5-50M facility and credit underwriting.",
+      "possible": "yes - IT leasing is mature",
+      "profitable": "no - for a small lessor buying at 2026 prices into a 2028 glut",
+      "doable_by_founder": "no - capital-bound"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-07",
+      "name": "Authorized-aftermarket die bank for EOL legacy DRAM (title-taking LTB aggregator)",
+      "subbranch": "Authorized aftermarket / lifetime supply",
+      "materials_sense": "c-capital",
+      "what_it_is": "Become a DFARS-recognized authorized aftermarket manufacturer/authorized supplier for EOL legacy DRAM (DDR3/DDR4/LPDDR4) from a Taiwanese specialty maker (Winbond, ESMT, Etron or Nanya). Buy last-time-buy wafer lots, bank die in nitrogen at an East Coast site, and package and test on demand at U.S. OSATs (Micross Apopka FL / RTP NC, QP Technologies) for defense, avionics, rail and medical OEMs that need the parts for 10-20 years. Unlike C-04, a consignment vault for OEM-owned stock, this takes title and holds OCM authorization.",
+      "why_it_could_work": "DFARS 252.246-7008 and 246.870-2 make DoD contractors buy from OCMs, authorized suppliers or authorized aftermarket manufacturers before anyone else, so OCM authorization is a regulatory moat. DDR4 EOL pain is documented: Advantech steering customers off Samsung DDR4, and zero authorized stock of a Micron DDR4 part in May 2026. Model (e_estimates §5): a $600k single-part bank returns 16% IRR in the base case (sold at 3.0x die cost, 90% sold in years 3-8), -7% in the bear case and 39% in the bull case. Unit GM is 33-66%.",
+      "evidence": [
+        {
+          "title": "DFARS 252.246-7008 Sources of Electronic Parts (JAN 2023)",
+          "url": "https://github.com/GSA/GSA-Acquisition-DFARS/blob/master/dita/252.246-7008.dita",
+          "type": "government",
+          "date": "2023-01",
+          "shows": "Opened by E. DoD contractors must buy from OCMs, authorized suppliers or authorized aftermarket manufacturers first; else contractor-approved suppliers under industry counterfeit standards with contractor liability; if traceability cannot be established the contractor is 'responsible for inspection, testing, and authentication' and must keep the documentation"
+        },
+        {
+          "title": "DFARS 246.870-2 Policy (counterfeit electronic part avoidance)",
+          "url": "https://github.com/GSA/GSA-Acquisition-DFARS/blob/master/dita/246.870-2.dita",
+          "type": "government",
+          "date": "2023-01",
+          "shows": "Opened by E. All tiers must source in-production/in-stock parts from original manufacturers, authorized suppliers or authorized aftermarket manufacturers"
+        },
+        {
+          "title": "Memory shortage watch: DDR3L/DDR4 (May 2026)",
+          "url": "https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/",
+          "type": "news",
+          "date": "2026-05",
+          "shows": "Zero authorized stock of a mainstream Micron DDR4 part at Newark/Avnet/Mouser; independent-market premium [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Advantech response to Samsung DDR4 IC EOL",
+          "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+          "type": "company",
+          "date": "2025",
+          "shows": "Industrial OEM steers customers away from Samsung DDR4 in new designs: EOL-driven lifetime-buy demand [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Micross Die and Wafer flyer",
+          "url": "https://micross.com/uploads/05827c98-1b61-4d4d-bb3c-04dc1b207e5a/Die_and_Wafer_Flyer_Rev_1_WEB.pdf",
+          "type": "company",
+          "date": "unknown",
+          "shows": "Micross bills itself as the largest authorized bare-die/wafer supplier, with DRAM on its line card: an incumbent die bank [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Micron Manassas 1-alpha DDR4/LP4 for defense, auto, industrial",
+          "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+          "type": "news",
+          "date": "2026-05-22",
+          "shows": "U.S.-made long-lifecycle DDR4 from Micron since 2026-05-22: incumbent for any 'U.S.-made legacy DRAM' pitch [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 24,
+      "time_to_first_revenue_text": "18-30 months: OCM authorization agreement, then the first banked part reaches post-EOL demand",
+      "gross_margin_estimate": "33-66% on units",
+      "gross_margin_mid_pct": 50,
+      "us_manufacturability": "Die from Taiwan (or Micron Manassas if it ever sells die). Banking, packaging and test in the U.S. at Micross FL/NC, QP Technologies CA or Integra KS [UNVERIFIED-training sites].",
+      "who_is_already_doing_this": "Rochester Electronics (Newburyport MA; authorized aftermarket for 70+ OCMs [UNVERIFIED-training]), Micross (largest authorized die supplier), Alliance Memory (long-lifecycle brand), distributors' bonded stock.",
+      "wins_axis": "lifecycle length and supply security: authorized, traceable legacy DRAM after EOL",
+      "buyer": "DoD sustainment programs and DMSMS offices, avionics (DO-254), rail signaling, medical-device OEMs",
+      "survives_glut": "yes",
+      "glut_reason": "Demand is driven by EOL and requalification cost, not by DDR5 prices; a glut actually cheapens LTB wafers. The risk is inventory that never sells (bear-case IRR -7%).",
+      "fatal_flaw": "OCMs grant aftermarket authorization to proven firms with capital and quality systems (Rochester, Micross). A startup can neither win the authorization nor fund $2M+ of inventory, and without it the venture is just an independent distributor, which DFARS ranks last.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "recert/brokerage (authorized aftermarket); defense-first; module (packaging on demand)",
+      "founder_fit_note": "No: needs OCM relationships, an AS9120/AS6496 quality system and $2M+ of inventory capital.",
+      "possible": "yes - Rochester and Micross prove the model",
+      "profitable": "yes - for incumbents with authorization and scale",
+      "doable_by_founder": "no - capital, authorization and relationships are the moat"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-08",
+      "name": "AS6171 counterfeit-detection and authentication lab for memory lots",
+      "subbranch": "Test and qualification services (defense-first)",
+      "materials_sense": "none",
+      "what_it_is": "An ISO/IEC 17025-accredited East Coast lab (NJ/PA/MD defense-EMS corridor) running SAE AS6171 test methods on DRAM, NAND and NOR lots bought outside authorized channels: external visual, X-ray, XRF, decap with die-marking verification, and electrical/functional memory test. Each lot gets die-origin identification (CXMT/YMTC flagging) and a serialized web report, with a later goal of DLA qualified-testing-supplier status.",
+      "why_it_could_work": "DFARS 252.246-7008 makes contractors 'responsible for inspection, testing, and authentication' whenever they buy from non-authorized sources or cannot establish traceability. FAR 52.246-26 treats used-as-new as counterfeit. The 2026 shortage pushed buyers into the independent market (zero authorized DDR4 stock, May 2026). Model (e_estimates §6): $650k capex and $478k/yr fixed cost. Breakeven is 36 lots/month at $1,400 per lot. At 60 lots/month: $1.0M revenue, 41% lab GM, $314k operating profit.",
+      "evidence": [
+        {
+          "title": "DFARS 252.246-7008 Sources of Electronic Parts (JAN 2023)",
+          "url": "https://github.com/GSA/GSA-Acquisition-DFARS/blob/master/dita/252.246-7008.dita",
+          "type": "government",
+          "date": "2023-01",
+          "shows": "Opened by E. DoD contractors must buy from OCMs, authorized suppliers or authorized aftermarket manufacturers first; else contractor-approved suppliers under industry counterfeit standards with contractor liability; if traceability cannot be established the contractor is 'responsible for inspection, testing, and authentication' and must keep the documentation"
+        },
+        {
+          "title": "FAR 52.246-26 Reporting Nonconforming Items (Aug 2024)",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/52.246-26.dita",
+          "type": "government",
+          "date": "2024-08",
+          "shows": "Opened by E. 'Counterfeit item' includes used items represented as new and false grade, lot or date-code identification"
+        },
+        {
+          "title": "Memory shortage watch: DDR3L/DDR4 (May 2026)",
+          "url": "https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/",
+          "type": "news",
+          "date": "2026-05",
+          "shows": "Zero authorized stock of a mainstream Micron DDR4 part at Newark/Avnet/Mouser; independent-market premium [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Mobius Materials raises $3M (authenticated surplus-semiconductor marketplace)",
+          "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+          "type": "news",
+          "date": "2025-12",
+          "shows": "Richmond VA marketplace with an ML authentication patent filing: incumbent in spot trading/authentication and a possible data partner [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 12,
+      "time_to_first_revenue_text": "9-15 months: equipment, 17025 accreditation, first broker/EMS customers; DLA listing later",
+      "gross_margin_estimate": "22-54% depending on lot volume",
+      "gross_margin_mid_pct": 41,
+      "us_manufacturability": "U.S. lab services; no fab.",
+      "who_is_already_doing_this": "Established independent AS6171 labs and distributors' in-house labs (e.g., SMT Corp, Integra Technologies, Alter Technology [UNVERIFIED-training]); the ERAI/GIDEP reporting ecosystem; Mobius Materials' ML authentication.",
+      "wins_axis": "supply security / authenticity (counterfeit-risk reduction with documentation)",
+      "buyer": "AS6081 independent distributors, defense EMS and primes' purchasing departments, OEMs buying broker DRAM during the shortage",
+      "survives_glut": "partially",
+      "glut_reason": "Broker buying and counterfeit volume fall once authorized stock returns (lots down maybe 30-50% [ESTIMATE]). DFARS-driven testing of obsolete parts continues.",
+      "fatal_flaw": "A crowded, accreditation-heavy services market with entrenched labs. Below ~36 lots/month the lab loses money, and the founder cannot run it without a hired AS6171 test engineer and ~$650k.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "defense-first; services; data product (test-report and die-ID database)",
+      "founder_fit_note": "Marginal: the LIMS, serialized reports and die-ID database are founder work; lab operations need a hired engineer and T1 capital.",
+      "possible": "yes - routine lab methods",
+      "profitable": "marginal - breakeven at ~36 lots/month; 41% GM at 60",
+      "doable_by_founder": "marginal - needs a technical hire and ~$0.65M"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-09",
+      "name": "'Compliant memory' federal reseller on GSA MAS / SEWP (compliance-as-a-product)",
+      "subbranch": "Federal reseller (NDAA 5949 / TAA / BAA)",
+      "materials_sense": "none",
+      "what_it_is": "A small-business federal reseller that sells memory upgrades and memory-heavy servers to agencies through GSA's Multiple Award Schedule and NASA SEWP. The pitch is 'certified U.S.-supply-chain' memory: TAA-compliant, CXMT/YMTC-free under NDAA FY2023 §5949, Micron Manassas DDR4 where available, with provenance paperwork.",
+      "why_it_could_work": "§5949 bans CXMT/YMTC/SMIC content in federal purchases from 2027-12-23, with rising political salience (Senate pressure on Apple, July 2026). The Buy American Act gives small businesses a 30% evaluation preference below the TAA threshold (FAR 25.106).",
+      "evidence": [
+        {
+          "title": "Apple, China memory and the 2027 federal procurement ban",
+          "url": "https://xenospectrum.com/en/apple-china-memory-federal-procurement-ban-2027/",
+          "type": "news",
+          "date": "2026-07",
+          "shows": "NDAA FY2023 Sec. 5949 ban on CXMT/YMTC/SMIC-containing products in federal buys from Dec 2027 [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "GSA-Acquisition-FAR repository (FAR through FAC 2025-06)",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR",
+          "type": "government",
+          "date": "2026-03-30",
+          "shows": "Opened by E (git clone). grep of all 3,945 FAR DITA files finds no text implementing NDAA FY2023 Sec. 5949 ('covered semiconductor', CXMT, YMTC, SMIC)"
+        },
+        {
+          "title": "GSA-Acquisition-DFARS repository",
+          "url": "https://github.com/GSA/GSA-Acquisition-DFARS",
+          "type": "government",
+          "date": "2026-06-02",
+          "shows": "Opened by E (git clone). No Sec. 5949 implementing text in 3,320 DFARS DITA files as of the 2026-06-02 snapshot"
+        },
+        {
+          "title": "FAR 4.2101 'reasonable inquiry' (Section 889)",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/4.2101.dita",
+          "type": "government",
+          "date": "2025-10-01",
+          "shows": "Opened by E. 'Reasonable inquiry ... excludes the need to include an internal or third-party audit': the precedent a Sec. 5949 rule would likely copy"
+        },
+        {
+          "title": "FAR 25.402 trade-agreement thresholds",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/25.402.dita",
+          "type": "government",
+          "date": "2025-10-01",
+          "shows": "Opened by E. WTO GPA threshold $174,000: above it Korean/Taiwanese/Japanese memory competes equally with U.S.-made"
+        },
+        {
+          "title": "FAR 25.001 Buy American COTS waiver",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/25.001.dita",
+          "type": "government",
+          "date": "2025-10-01",
+          "shows": "Opened by E. The domestic content test is waived for COTS items, so U.S. die gets no extra BAA credit inside a COTS module"
+        },
+        {
+          "title": "FAR 25.106 BAA evaluation factors",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/25.106.dita",
+          "type": "government",
+          "date": "2025-10-01",
+          "shows": "Opened by E. 20% (large business) / 30% (small business) evaluation preference for domestic offers, applicable only where TAA does not apply"
+        },
+        {
+          "title": "FAR 52.211-5 Material Requirements",
+          "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/52.211-5.dita",
+          "type": "government",
+          "date": "2025-10-01",
+          "shows": "Opened by E. 'New' means previously unused components; used/reconditioned supplies need contracting-officer acceptance"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 15,
+      "time_to_first_revenue_text": "12-18 months: GSA MAS award (needs financials and past performance), then first task orders",
+      "gross_margin_estimate": "6-10%",
+      "gross_margin_mid_pct": 8,
+      "us_manufacturability": "Resale only; modules may be U.S.-assembled (Kingston, Penguin) from foreign die.",
+      "who_is_already_doing_this": "Hundreds of federal IT VARs and SEWP holders (CDW-G, Carahsoft, many small businesses) [UNVERIFIED-training]; Micron and Kingston through their channels.",
+      "wins_axis": "supply security / compliance documentation",
+      "buyer": "federal civilian and DoD IT buyers; prime integrators",
+      "survives_glut": "partially",
+      "glut_reason": "Compliance demand persists, but VAR margins on cheaper memory compress further.",
+      "fatal_flaw": "No pricing power. Above $174k, TAA lets Korean, Taiwanese and Japanese memory compete equally (FAR 25.402); the BAA component test is waived for COTS (FAR 25.001); and §5949 rewards 'not Chinese', which every Samsung, SK hynix or Micron reseller already meets. Neither the FAR (through FAC 2025-06) nor the DFARS (June 2026 snapshot) yet contains any §5949 text, and the §889 precedent accepts a 'reasonable inquiry' that excludes third-party audits (FAR 4.2101). Compliance is a free checkbox, leaving a 6-10% VAR margin on $1.5-2.5M of sales per $150k of gross profit (e_estimates §7).",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "defense-first; recert/brokerage (resale); compliance-as-a-product",
+      "founder_fit_note": "Marginal: possible on the side, but it is a low-margin sales and contract-vehicle job, not a software business.",
+      "possible": "yes - standard VAR model",
+      "profitable": "no - commodity margin; compliance confers no premium",
+      "doable_by_founder": "marginal - slow vehicle access, working capital ~$185-310k"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-10",
+      "name": "STTR vehicle on a national-lab / university memory patent (lab-patent studio)",
+      "subbranch": "University/lab patent license -> STTR -> defense Phase III",
+      "materials_sense": "mixed:a+c",
+      "what_it_is": "A small business takes low-cost options on 2-3 lab memory technologies: Sandia's HZO FeRAM and ferroelectric tunnel junctions from its trusted MESA 200mm fab, the Penn/AFRL AlScN 600 C ferroelectric-diode NVM, and Purdue's ALD In2O3 BEOL ferroelectric transistors. It files DoD/NASA STTRs with the inventing researcher as STTR PI, aiming at Phase III sole-source sales or a sublicense to space/defense memory suppliers (Frontgrade, Honeywell SSEC, BAE).",
+      "why_it_could_work": "STTR lets the PI be employed by the research institution, so the founder can keep his day job while the vehicle wins non-dilutive money. Defense topics for exotic NVM exist: DARPA DV017 (~$1.2M Direct-to-Phase-II, 2026) and USAF AF254-D0806 (500 C NVM). Options cost ~$1-10k (p1-ip), and Phase III awards can be sole-source with no dollar cap. Sandia's HZO FeRAM is already at 200mm wafer scale (TRL ~4-5).",
+      "evidence": [
+        {
+          "title": "Sandia: Facing radiation challenges head on",
+          "url": "https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/",
+          "type": "government",
+          "date": "2026-05-13",
+          "shows": "HfO2/HZO rad-hard FeRAM at 200mm and binary/32-state FTJs integrated in Sandia's trusted MESA fab (LDRD): TRL ~4-5 national-lab memory IP [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Turning up the heat on data storage (Penn + AFRL AlScN)",
+          "url": "https://www.engineering.upenn.edu/stories/turning-up-the-heat-on-data-storage/",
+          "type": "news",
+          "date": "2024-05",
+          "shows": "AlScN ferroelectric-diode NVM operating at 600C (Nature Electronics 2024); Penn/AFRL co-invention [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Purdue 3-tier monolithic 3D ALD In2O3 platform on 200mm",
+          "url": "https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing",
+          "type": "news",
+          "date": "2026-09-16",
+          "shows": "ALD In2O3 BEOL transistors incl. ferroelectric tiers on 200mm Si (>100,000 devices across 52 dies) [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "DARPA SBIR DPA26BZ04-DV017 Non-Volatile Memory for Extreme Environments",
+          "url": "https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments",
+          "type": "government",
+          "date": "2026-07",
+          "shows": "~$1.2M Direct-to-Phase-II memory topic, opened 2026-07-22 and closed 2026-08-19 [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "USAF SBIR AF254-D0806 500C-capable kB-scale NVM",
+          "url": "https://www.sbir.gov/topics/12036",
+          "type": "government",
+          "date": "2025",
+          "shows": "USAF topic citing ferroelectric-diode memory stable to 600C [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Everspin earns $40M MRAM deal for defense memory services",
+          "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+          "type": "news",
+          "date": "2026-04",
+          "shows": "Defense pays for on-shore memory capability through prime subcontracts (Amentum), awarded to an incumbent with a fab [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 4,
+      "capital_tier": "T1",
+      "time_to_first_revenue_months": 46,
+      "time_to_first_revenue_text": "~46 months to first Phase III/customer revenue if every step succeeds the first time; grants before that are funding, not revenue (A-04)",
+      "gross_margin_estimate": "n/a until product; Phase III device sales 50-70% if they come",
+      "gross_margin_mid_pct": 40,
+      "us_manufacturability": "Sandia MESA (trusted, but a government fab not open for production); SkyWater S130 / Fab 25 for a commercial path. Bayh-Dole and DOE U.S.-manufacture preferences align with U.S. production.",
+      "who_is_already_doing_this": "A1-06 (Sandia HZO FeRAM chip) and A1-07 (AlScN license plus STTR) card the device plays. Incumbents: Infineon rad-hard F-RAM, Frontgrade/Everspin Toggle MRAM. Many university spinouts run this STTR pattern.",
+      "wins_axis": "non-volatility plus radiation/temperature tolerance (supply security for space and hypersonics)",
+      "buyer": "AFRL/DARPA program offices, space primes, hypersonic and Venus/geothermal sensor integrators",
+      "survives_glut": "yes",
+      "glut_reason": "Rad-hard and extreme-environment NVM is priced per part to defense buyers and is indifferent to DDR5 prices.",
+      "fatal_flaw": "It is the grant farm the founder says he does not want. The chance of customer revenue is ~3% per topic attempt and ~15% after five (e_estimates §8). First revenue lands ~46 months out, past the 36-month ceiling. The vehicle depends on a lab PI and a fab it does not control. Tech-transfer listings and patent numbers could not be verified this session.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "university/lab patent license; defense-first; fabless->foundry (later)",
+      "founder_fit_note": "Marginal: the STTR structure fits a day-job founder, but every technical milestone needs a device PI the founder cannot replace.",
+      "possible": "yes - option/STTR/Phase III mechanics are routine; device TRL 3-5",
+      "profitable": "marginal - niche defense NVM can be profitable for whoever reaches Phase III, rarely within 4 years",
+      "doable_by_founder": "marginal - he can run the company shell and proposals, not the science"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-11",
+      "name": "SBA/search-fund acquisition of a small memory reseller at peak earnings - tempting, dangerous",
+      "subbranch": "Acquisition (ETA) of a memory business",
+      "materials_sense": "c-capital",
+      "what_it_is": "Buy an existing U.S. server-memory reseller, used-memory buyer or small module brand (the A-Tech / NEMIX / Memory4Less / TechMikeNY class [UNVERIFIED-training names; none confirmed for sale]) with ~$1.2M of 2026 EBITDA. Finance it 90% with an SBA 7(a) loan and 10% equity from the founder and co-investors, then grow it with software (pricing, provenance ledger, e-commerce).",
+      "why_it_could_work": "Revenue is immediate: day-one recurring B2B customers, inventory and supplier relationships. A software operator can improve a sleepy business. The Crucial exit (announced Dec 2025) reshuffled the consumer/SMB memory channel, and DDR4 prices are still rising.",
+      "evidence": [
+        {
+          "title": "Micron announces exit from Crucial consumer business",
+          "url": "https://www.storagenewsletter.com/2025/12/05/micron-announces-exit-from-crucial-consumer-business/",
+          "type": "news",
+          "date": "2025-12-05",
+          "shows": "Crucial exit announced 2025-12-03: the consumer/SMB memory channel is reshuffling [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "DDR4 prices rise as shortages intensify through 2028 (Barclays)",
+          "url": "https://www.guru3d.com/story/ddr4-memory-prices-now-also-rise-as-dram-supply-shortages-intensify-through-2028/",
+          "type": "news",
+          "date": "2026-10",
+          "shows": "DDR4 contract +24% over the 3 months to Oct 2026; shortage into 2028 [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "DDR4 8Gb fixed price bottomed at $1.30 (Sep 2023)",
+          "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+          "type": "news",
+          "date": "2023-10-04",
+          "shows": "Last-cycle trough anchor: contract prices fell roughly 60-65% peak-to-trough [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Analyst cycle views incl. Bloomberg Intelligence bear case",
+          "url": "https://www.kucoin.com/blog/2027-memory-chip-boom-sk-hynix-samsung",
+          "type": "news",
+          "date": "2026",
+          "shows": "BI: shortage peaked 2Q26, oversupply possible in 2028; others see tightness to 2Q28 [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T2",
+      "time_to_first_revenue_months": 8,
+      "time_to_first_revenue_text": "Revenue on day one after close, but sourcing, diligence and SBA close take ~6-9 months",
+      "gross_margin_estimate": "15-25% (reseller margins)",
+      "gross_margin_mid_pct": 20,
+      "us_manufacturability": "Existing U.S. operation (testing and resale); no fab.",
+      "who_is_already_doing_this": "Search funds and ETA buyers generally; ITAD consolidators such as Iron Mountain ALM (ITRenew) [UNVERIFIED-training].",
+      "wins_axis": "time-to-revenue (acquired), not a product axis",
+      "buyer": "the target's existing customers: SMB IT, refurbishers, MSPs, homelab/gaming buyers",
+      "survives_glut": "no",
+      "glut_reason": "At 3.5x shortage EBITDA, debt service is ~$612k/yr. DSCR is 1.96 in 2026, 0.65 in a normal year and 0.33 in a glut (e_estimates §9), which means default with an SBA personal guarantee.",
+      "fatal_flaw": "Buying cyclical peak earnings with leverage. Shortage-inflated EBITDA reverts, and the SBA personal guarantee ties the founder's personal assets to the 2028 glut.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "recert/brokerage; module/appliance (acquired); SaaS (bolt-on)",
+      "founder_fit_note": "No: needs ~$420k of equity (he has ~$40k) plus a personal guarantee, at the worst point in the cycle. Revisit in the 2028-29 trough, when the same business sells for trough multiples.",
+      "possible": "yes - SBA acquisitions of small distributors are routine",
+      "profitable": "no - at 2026 prices; maybe yes if bought in the trough",
+      "doable_by_founder": "no - equity gap and guarantee risk"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-12",
+      "name": "Acquire the 3D XPoint/Optane IP estate and license it (business-model Optane revival) - tempting, dead",
+      "subbranch": "IP-estate acquisition / licensing",
+      "materials_sense": "c-capital",
+      "what_it_is": "Buy or exclusively license the Intel/Micron 3D XPoint patent and know-how estate plus leftover Optane inventory, then run a licensing program aimed at CXL-memory and storage-class-memory makers, or revive a product through a foundry. The pitch: 'DRAM is 4-6x more expensive; the Optane tier is back.'",
+      "why_it_could_work": "With DRAM at $16-27/GB, a ~$4-8/GB persistent tier looks attractive again, and the estate, which cost Intel more than $7B, is idle.",
+      "evidence": [
+        {
+          "title": "Micron ends 3D XPoint (2021-03-16)",
+          "url": "https://www.nasdaq.com/press-release/micron-updates-data-center-portfolio-strategy-to-address-growing-opportunity-for",
+          "type": "company",
+          "date": "2021-03-16",
+          "shows": "'insufficient market validation to justify the ongoing high levels of investments required to commercialize 3D XPoint at scale' [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Micron pulls the plug on 3D XPoint",
+          "url": "https://www.theregister.com/2021/03/17/micron_pulls_the_plug_on/",
+          "type": "news",
+          "date": "2021-03-17",
+          "shows": "$545M of XPoint/Lehi underutilization charges over four quarters [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Micron sells Lehi fab to Texas Instruments",
+          "url": "https://www.anandtech.com/show/16800",
+          "type": "news",
+          "date": "2021-06-30",
+          "shows": "Only XPoint fab sold to TI for $900M cash plus ~$600M of tools, below book; converted to analog [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Intel 10-Q Q2-2022 (Optane wind-down)",
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+          "type": "company",
+          "date": "2022-07",
+          "shows": "Optane wind-down begun; $559M inventory impairment [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Persistent memories without Optane (Coughlin/Handy, SNIA SDC22)",
+          "url": "https://www.snia.org/sites/default/files/2025-05/SNIA-SDC22-Coughlin-Handy-Persistent-Memories-Without-Optane-Where-Would-We-Be.pdf",
+          "type": "conference",
+          "date": "2022",
+          "shows": ">$7B cumulative Intel Optane losses [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Weebit Nano expands licensing agreements",
+          "url": "https://www.weebit-nano.com/news/press-releases/weebit-nano-expands-licensing-agreements-with-key-customers-three-customer-chip-designs-taped-out-to-date/",
+          "type": "company",
+          "date": "2026-07",
+          "shows": "The best-run independent memory-IP licensor guides >=A$13.5M FY26 revenue after ~10 years: out-licensing is a decade-long path [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 5,
+      "capital_tier": "T3",
+      "time_to_first_revenue_months": 60,
+      "time_to_first_revenue_text": "60+ months; only via a licensee that would also need a new line",
+      "gross_margin_estimate": "licensing ~90% if a licensee existed; none expected",
+      "gross_margin_mid_pct": 0,
+      "us_manufacturability": "No XPoint line exists anywhere: Lehi was sold to TI and converted to 65/45nm analog.",
+      "who_is_already_doing_this": "Nobody. SanDisk's 3D-matrix/HBF work and imec research are the nearest descendants (see A2-10, B-09, B-11).",
+      "wins_axis": "$/GB vs. DRAM plus persistence",
+      "buyer": "CXL memory-tier buyers (hyperscalers, SAP HANA/database hosts)",
+      "survives_glut": "no",
+      "glut_reason": "At glut DDR5 prices ($6.4/GB, $1.6 severe), the XPoint cost gap, which never paid off even against $3-5/GB DRAM, closes again.",
+      "fatal_flaw": "IP without a line is worthless. No fab runs XPoint and rebuilding one is T3-T4. Micron and Intel both exited (Micron cited 'insufficient market validation'), and out-licensing memory IP takes a decade even for the best-run licensor (Weebit is still sub-scale).",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "IP licensing (acquired estate); fabless->foundry (impossible)",
+      "founder_fit_note": "No: T2-T3 to buy, T3-T4 to use, and no buyer for licenses.",
+      "possible": "marginal - the IP could be bought; the product cannot be made without a new line",
+      "profitable": "no",
+      "doable_by_founder": "no"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-13",
+      "name": "CXL memory-tiering integration practice (consulting -> managed tuning)",
+      "subbranch": "Services -> SaaS",
+      "materials_sense": "c-capital",
+      "what_it_is": "A services firm that assesses, deploys and tunes CXL Type-3 memory expansion and tiering on Granite Rapids/Turin servers. Hardware: Micron CZ-series, Samsung CMM-D or SK hynix CMM expanders, and Marvell Structera- or Astera Leo-based cards. Software: Linux weighted-interleave and DAMON tiering, SK hynix HMSDK. Clients are HPC centers, in-memory database hosts and EDA shops, and engagements convert into a managed tuning and monitoring subscription.",
+      "why_it_could_work": "1 TB of new DDR5 RDIMM costs ~$20.8k per node at 4Q26 prices (e_estimates §12). CXL lets buyers add cheaper or reused capacity, including DDR4 behind Structera-class controllers, without buying top-bin DIMMs. Mainline Linux still has CXL gaps (Dynamic Capacity, multi-host sharing), so integration know-how is scarce. Practice revenue: ~$83k/yr part-time, ~$248k full-time at $225/h.",
+      "evidence": [
+        {
+          "title": "Linux CXL maturity map",
+          "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+          "type": "industry",
+          "date": "2026-10-31",
+          "shows": "Mainline Linux still lacks Dynamic Capacity Device support and multi-host sharing: CXL integration is real but early [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "SK hynix Heterogeneous Memory SDK (HMSDK) v4.0",
+          "url": "https://github.com/skhynix/hmsdk",
+          "type": "industry",
+          "date": "2025-11-03",
+          "shows": "Free vendor CXL tiering SDK; weighted interleave upstream in Linux 6.9: tooling is free, value is in integration [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Memory prices surging by 90% from 4Q25 (Counterpoint)",
+          "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+          "type": "news",
+          "date": "2026-01",
+          "shows": "64GB RDIMM contract $450 (4Q25) to >$900 (1Q26) [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 7,
+      "capital_tier": "T0",
+      "time_to_first_revenue_months": 9,
+      "time_to_first_revenue_text": "6-12 months: first paid assessment at an HPC or database shop",
+      "gross_margin_estimate": "50-70% (services)",
+      "gross_margin_mid_pct": 60,
+      "us_manufacturability": "Services; hardware from Micron/Samsung/SK hynix/Astera/Marvell; no fab dependency.",
+      "who_is_already_doing_this": "OEM professional services (Dell, HPE, Supermicro), memory vendors' field engineers, Liqid/GigaIO, HPC integrators; MemVerge has pivoted toward GPU cluster software (per B) [UNVERIFIED-training for the rest].",
+      "wins_axis": "$/GB of usable capacity (cheaper or reused tier) for capacity-bound workloads",
+      "buyer": "university and DOE HPC centers, SAP HANA/in-memory database hosts, EDA and genomics shops",
+      "survives_glut": "partially",
+      "glut_reason": "The DRAM-saving pitch shrinks when DDR5 falls 60% (1 TB = $8.3k), but capacity and bandwidth expansion for >2 TB nodes remains.",
+      "fatal_flaw": "The founder is not a Linux-kernel/CXL engineer, vendors give integration away to sell hardware, and CXL deployments are still early and lumpy. A practice earns consulting income, not a scalable product.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "services -> SaaS; module/appliance (VAR)",
+      "founder_fit_note": "Marginal: needs a kernel/systems cofounder; the founder can build the monitoring/telemetry SaaS layer.",
+      "possible": "yes - CXL 2.0 expanders and Linux tiering ship today",
+      "profitable": "marginal - services margins, small and lumpy demand",
+      "doable_by_founder": "marginal - needs a technical partner"
+    },
+    {
+      "branch": "E",
+      "tmp_id": "E-14",
+      "name": "Memory patent expiry and litigation radar",
+      "subbranch": "IP intelligence data product",
+      "materials_sense": "none",
+      "what_it_is": "A subscription web app that tracks memory-relevant U.S. patents (DRAM module/PMIC, MRAM, ReRAM, FeRAM, IGZO, 3D DRAM). It computes expiry dates (term adjustments, terminal disclaimers, maintenance-fee lapses), follows assignment changes and PTAB/ITC/district-court dockets (e.g., ITC 337-TA-1487 Avalanche v. Everspin; the Netlist RDIMM/PMIC cases), and provides FTO checklists per product type. It is built from free USPTO bulk data plus PACER/ITC EDIS.",
+      "why_it_could_work": "Every hardware concept in this study has an FTO gate: Netlist PMIC for DDR5 modules, SEL for IGZO, the ITC case for Everspin STT. One FTO opinion costs $10-30k and NPE defense $0.6-4M (p1-ip). Everspin spent $6.0M on litigation in one quarter. Small module makers, recert firms and memory startups need cheap monitoring. 25 subscribers x $4.8k = $120k ARR at ~85% GM.",
+      "evidence": [
+        {
+          "title": "USITC institutes 337-TA-1487 (Avalanche v. Everspin, MRAM)",
+          "url": "https://www.usitc.gov/press_room/news_release/2026/er0227_68226.htm",
+          "type": "government",
+          "date": "2026-02-27",
+          "shows": "Active memory patent fight: an exclusion order is sought against imported Everspin STT-MRAM [cross-reference: URL from a sibling agent's log; not opened by E]"
+        },
+        {
+          "title": "Everspin Q3 2026 results (8-K Ex 99.1)",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001438423/000162828026067890/mram-20260930xexx991.htm",
+          "type": "company",
+          "date": "2026-10-28",
+          "shows": "$6.0M litigation cost inside $18.5M of quarterly opex at a $20.6M-revenue memory company; licensing/services only $3.7M [cross-reference: URL from a sibling agent's log; not opened by E]"
+        }
+      ],
+      "trl": 9,
+      "capital_tier": "T0",
+      "time_to_first_revenue_months": 9,
+      "time_to_first_revenue_text": "6-12 months: first subscriptions from module makers / IP counsel",
+      "gross_margin_estimate": "80-90%",
+      "gross_margin_mid_pct": 85,
+      "us_manufacturability": "Software.",
+      "who_is_already_doing_this": "Unified Patents, RPX, Docket Navigator, Lex Machina, PatSnap, LexisNexis PatentSight, Google Patents (free) [UNVERIFIED-training].",
+      "wins_axis": "risk reduction (lower FTO and litigation-monitoring cost)",
+      "buyer": "small U.S. module makers, recert/ITAD firms, CXL and memory startups, IP counsel, memory investors",
+      "survives_glut": "partially",
+      "glut_reason": "Litigation and FTO needs do not depend on the cycle, but the buyer set (small memory firms) shrinks in a glut.",
+      "fatal_flaw": "Crowded by well-funded patent-analytics incumbents and free Google Patents. The memory niche is too small to pay, and buyers facing real risk hire counsel rather than a dashboard.",
+      "rule1_status": "SUPPORTED",
+      "business_model_lenses": "data product; SaaS; IP licensing (intelligence)",
+      "founder_fit_note": "Yes: data engineering on public bulk data is founder work; legal accuracy needs a patent-agent advisor.",
+      "possible": "yes",
+      "profitable": "no - small niche against entrenched analytics vendors",
+      "doable_by_founder": "yes - T0, but likely a feature of E-02 or an internal tool rather than a business"
+    }
+  ]
+}

@@ -87,6 +87,19 @@ def build(cards):
         for m in dmap.get("merges", []):
             if t in m.get("absorb", []):
                 tmp_to_id[t] = tmp_to_id[m["keep"]]
+    # Rewrite working-id cross-references (e.g. "Unlike C-04") inside card text to final ids, and show
+    # lineage in dotted form (C.07) so it can't be confused with final ids (C-07).
+    ref_re = re.compile(r"\b(A1|A2|A3|B|C|D|E)-(\d{2})\b")
+    dot = lambda t: ref_re.sub(lambda m: f"{m.group(1)}.{m.group(2)}", t)
+    for c in kept:
+        for k, v in list(c.items()):
+            if isinstance(v, str) and k not in ("tmp_id", "id"):
+                c[k] = ref_re.sub(lambda m: tmp_to_id.get(f"{m.group(1)}-{m.group(2)}", m.group(0)), v)
+        c["tmp_id"] = dot(c["tmp_id"])
+        if c.get("merged_from"):
+            c["merged_from"] = [dot(t) for t in c["merged_from"]]
+    notes = [ref_re.sub(lambda m: f"{tmp_to_id.get(m.group(1) + '-' + m.group(2), '?')} (working id {m.group(1)}.{m.group(2)})", n)
+             for n in notes]
     master = {"generated_by": "research/tools/build_master.py", "raw_cards": len(cards), "absorbed": len(absorbed),
               "dedup_notes": notes, "cards": kept}
     (P2 / "concepts_master.json").write_text(json.dumps(master, indent=1, ensure_ascii=False), encoding="utf-8")

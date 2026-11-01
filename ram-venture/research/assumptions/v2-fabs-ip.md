@@ -1,0 +1,12 @@
+# Assumptions: v2-fabs-ip (Phase 1b verification, 2026-11-01)
+
+- [v2-fabs-ip] Facts from SEC, USITC, Sandia and company releases seen only in search snippets are tagged [REPORTED-P], not [VERIFIED]: no primary document was opened (sec.gov blocked; weebit-nano.com and cse.umn.edu failed DNS) — basis: CONVENTIONS tagging rules plus the task's network note.
+- [v2-fabs-ip] Gresham timing: "Toggle/sensor ~18 months, STT ~30 months from effective date" is anchored to 2026-04-08, so ~Q4-2027 and ~Q4-2028 — basis: 10-Q Q1-26 snippet; the effective date may differ slightly from the signing date.
+- [v2-fabs-ip] The Microchip TMR non-compete runs to at least 2038 (10-year term + 2 years, longer if renewed) — basis: 8-K snippet wording "during the term ... and for two (2) years thereafter".
+- [v2-fabs-ip] Weebit upfront fees ($0.29M DB HiTek, $1.8–2.6M onsemi) are broker estimates (MST Access), not disclosed terms. A fabless startup's fee is assumed to be lower than an IDM's but not T0 (<$50k) — basis: no startup term sheet found; Weebit's smallest known fee was $100k (first licence).
+- [v2-fabs-ip] Weebit ReRAM is assumed NOT to be in the ChipFoundry sky130 shuttle offer until shown otherwise — basis: the access path found was Efabless chipIgnite (2024-06), and Efabless closed in early 2025; no successor mention found.
+- [v2-fabs-ip] The neutrality risk to memory customers from IonQ owning SkyWater is rated low-moderate — basis: the press concern is specific to rival quantum firms; the CEO statement says customer access and IP protections are unchanged; IonQ could reprioritise capacity toward quantum.
+- [v2-fabs-ip] Sandia HZO is downgraded from "likely licensable" to "unconfirmed" — basis: 2 targeted searches found no IP-portal listing or CRADA offer, and the 2026-05-13 article describes internal LDRD; absence of a search hit is not proof of non-availability.
+- [v2-fabs-ip] Nantero "leans defunct" rests on one third-party directory tag plus absence of 2025–26 news — basis: apis.io snippet; weak evidence.
+- [v2-fabs-ip] OpenRAM version conflict (A3: v1.2.50 on 2026-10-27; snippets: last push 2026-04-17, PyPI 1.2.48) is left unresolved. The snippet aggregators may be stale, so A3's direct GitHub view is likely more current — basis: gittrend/PyPI snippets carry no capture date.
+- [v2-fabs-ip] The ChipFoundry price of ~$15k per 100 chips comes from a 2025 eeNews article and is assumed still current in 2026 — basis: no 2026 price list found.

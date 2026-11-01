@@ -25,10 +25,16 @@ Mission scope: §3A (IGZO: "What U.S. TFT/display capacity actually exists? Coul
    - All of Everspin's higher-density **STT-MRAM** (256 Mb, 1 Gb, xSPI) is made at **GlobalFoundries Singapore**, its single foundry for those parts ([Everspin FY2025 10-K via A2 snippet](https://www.sec.gov/Archives/edgar/data/1438423/000162828026014733/mram-20251231.htm)) [REPORTED-P].
    - The next 256 Mb xSPI part is to tape out on **TSMC 16nm** in 2H-2026 ([Q4-25 call via A2](https://www.insidermonkey.com/blog/everspin-technologies-inc-nasdaqmram-q4-2025-earnings-call-transcript-1710559/)) [REPORTED].
    - **New U.S. MRAM capacity** comes from a **10-year Microchip foundry deal**: 200mm wafers at **Fab 4, Gresham OR**, ramping to a maximum of **1,300 wafers/quarter**, first products **2H-2027**. Microchip is contractually barred from making tunnel-magnetoresistance (TMR) devices for Everspin's competitors ([Everspin 8-K, 2026-04-08, via A2](https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408xexx991.htm)) [REPORTED-P]. **Gresham is closed to an MTJ startup.**
+     - *v2 verification (2026-11-01):* the bar runs for the **term plus 2 years** (so to ≥2038). Toggle/sensor flows start ~18 months after signing (~Q4-2027); **STT flows ~30 months (~Q4-2028)**. Everspin reimburses **~$13.95M** of tooling/installation. Process foreground IP goes to Microchip. The term auto-renews in 2-year steps ([8-K](https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408.htm); [10-Q Q1-26](https://www.sec.gov/Archives/edgar/data/0001438423/000162828026028464/mram-20260331.htm); both via search snippet) [REPORTED-P].
 3. **The only open, qualified U.S. foundry offering for BEOL emerging memory is SkyWater S130 + Weebit ReRAM.**
    - The module is 256 Kb, JEDEC-qualified on 3 lots, rated to 125 °C, in the S130 PDK, at Bloomington MN, a DMEA Trusted Foundry ([Weebit, 2023-06](https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/); [SkyWater, 2023-11](https://www.skywatertechnology.com/weebit-nano-reram-ip-achieves-high-temperature-qualification-in-skywater-s130-process/)) [REPORTED].
+   - *v2 verification (2026-11-01):* the default macro is 256 Kb, configurable from 128 Kb to 2 Mb ([SkyWater, 2023-03-07](https://www.skywatertechnology.com/weebit-nano-reram-ip-now-available-in-skywater-technologys-s130-process/)) [REPORTED-P].
+     - **Prototype access** was through Efabless chipIgnite for a "small fee", with the **production licence signed directly with Weebit** ([StorageNewsletter, 2024-06-05](https://www.storagenewsletter.com/2024/06/05/weebit-nano-and-efabless-collaborate-to-enable-prototyping-of-soc-designs/)) [REPORTED]. That route died with Efabless (early 2025). Whether ChipFoundry carries the ReRAM block is [UNVERIFIED].
+     - Weebit's three customer tape-outs (by 2026-07) name **no foundry**. No 2025–26 customer tape-out on S130 was found.
+     - **SkyWater has been owned by IonQ since 2026-07-31** (see §2.3).
    - GF's eMRAM (AutoPro150, volume 2H-2026) and its CBRAM/ReRAM run on 22FDX in **Dresden**, not in the U.S. ([GF, 2026-03-09, via A2](https://www.globenewswire.com/news-release/2026/03/09/3251832/0/en/GlobalFoundries-Announces-Availability-of-AutoPro150-eMRAM-Technology-on-Enhanced-FDX-Platform-for-Advanced-Automotive-Applications.html)) [REPORTED].
-   - TI licensed Weebit ReRAM in Dec 2025, but only for its own captive use ([Weebit, 2025-12-29, via A2](https://www.weebit-nano.com/news/press-releases/weebit-nano-secures-a-license-agreement-with-texas-instruments/)) [REPORTED].
+   - TI licensed Weebit ReRAM in Dec 2025, but only for its own captive use ([Weebit, 2025-12-29, via A2](https://www.weebit-nano.com/news/press-releases/weebit-nano-secures-a-license-agreement-with-texas-instruments/)) [REPORTED]. A broker note puts TI's integration at 28–65nm ([MST, 2025-12-30, via search snippet](https://www.weebit-nano.com/wp-content/uploads/2025/12/251230.-MST-Access_Weebit-signs-Texas-Instruments.pdf)) [REPORTED].
+   - onsemi's Weebit licence (2025-01, Treo 65nm BCD) is **confirmed**. As of 2026-07, onsemi was nearing the start of qualification ([Motley Fool AU, 2026-07-31](https://www.fool.com.au/2026/07/31/weebit-nano-lifts-revenue-guidance-on-new-deals-and-chip-tape-outs/)) [REPORTED]. It is captive.
 4. **SkyWater roughly tripled its trailing-edge foundry capacity by buying Infineon's Fab 25 in Austin.**
    - Fab 25 is 200mm at 130–65nm, about **400k wafer starts/yr**, roughly 1,000 staff, bought for about **$73M at close + ~$20M working capital**. The deal **closed 2025-06-30**, and Infineon keeps a long-term supply agreement ([LaPedus, 2025, via A1](https://marklapedus.substack.com/p/skywater-acquires-infineons-200mm); [SkyWater/BusinessWire, 2025-02-26, via A1](https://www.businesswire.com/news/home/20250226773415/en/SkyWater-to-Acquire-Infineons-Austin-Fab-and-Establish-Strategic-Partnership-to-Expand-U.S.-Foundry-Capacity-for-Foundational-Chips)) [REPORTED].
    - That works out to about **$230 of purchase price per annual wafer start**, a sign of how cheap depreciated U.S. 200mm capacity is [ESTIMATE: $93M / 400k].
@@ -46,6 +52,7 @@ Mission scope: §3A (IGZO: "What U.S. TFT/display capacity actually exists? Coul
    - Next step up: a SkyWater S130 shuttle plus university BEOL post-processing (~$15–60k per iteration), then a dedicated 130nm mask set at **$500–600k** ([AnySilicon via A1](https://anysilicon.com/130nm-wafer-mpw-cost/)) [REPORTED].
    - Albany NY CREATES (300mm) is real and already hosts HfO2 ferroelectric memory work with Fraunhofer ([IDW, 2025-05-16, via A1](https://nachrichten.idw-online.de/2025/05/16/ny-creates-and-fraunhofer-ipms-announce-joint-development-agreement-to-advance-memory-devices-at-300mm-wafer-scale)) [REPORTED]. But it is a T1–T2 joint-development engagement, not a T0 path.
 8. **An overlooked U.S. asset is magnetic thin-film know-how in Minnesota.** The Seagate Bloomington head-wafer fab (TMR readers are MTJs), NVE (Eden Prairie), Honeywell Plymouth (rad-hard SRAM/MRAM), SkyWater and Polar all sit there, next to the University of Minnesota's MNC nanofab [UNVERIFIED: prior knowledge]. None sells MTJ foundry service, but it is where an MTJ or BEOL team would be recruited.
+   - *v2:* UMN is setting up a **Spin Technology Center** with **Polar Semiconductor and Honeywell Aerospace**, led by Jian-Ping Wang ([UMN CSE, via search snippet](https://cse.umn.edu/node/194186)) [REPORTED-P; date not captured]. It is the most concrete spintronics industry-academic node in the U.S.
 
 **Corrections to the mission premise (§1/§3):**
 - **(a)** "Everspin (AZ), a U.S. memory company shipping today" is true only for **Toggle MRAM**. Its densest products are Singapore-made.
@@ -65,8 +72,8 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 | Boise ID: R&D fab + ID1/ID2 (construction) | Micron | 300mm, leading-edge DRAM (1-gamma class R&D) | DRAM R&D; ID1 first wafer mid-CY2027, ID2 late CY2028 | **No** | [Micron 10-K FY2026 via p1-micron](https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm) [REPORTED-P] |
 | Manassas VA: Fab 6 | Micron | 300mm, 1-alpha DRAM (DDR4/LP4) since 2026-05-22 | **Only U.S. DRAM production** | **No** (sells parts; SpecTek sells wafers, consumer grade) | CHIPS $275M ([NIST PMT](https://www.nist.gov/node/1869301)) [REPORTED-P]; >$2B project ([HPCwire](https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia)) [REPORTED] |
 | Chandler AZ (inside NXP's fab) | Everspin | 200mm, magnetic BEOL on purchased CMOS | Toggle MRAM (≤16–32 Mb), Chandler foundry services for DoD programs | **Ltd** (DoD program foundry services) | [10-K FY2025 via A2](https://www.sec.gov/Archives/edgar/data/1438423/000162828026014733/mram-20251231.htm) [REPORTED-P]; co-located at NXP ([SiliconSemi via A2](https://siliconsemiconductor.net/article/123971/Everspin_Technologies_expands_on-shore_MRAM_manufacturing_capacity)) [REPORTED] |
-| Gresham OR: Fab 4 | Microchip (for Everspin) | 200mm | MRAM / TMR / STT-MRAM for Everspin, first products 2H-2027, max 1,300 wfr/qtr | **No** for others (TMR exclusivity) | [Everspin 8-K 2026-04-08 via A2](https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408xexx991.htm) [REPORTED-P] |
-| Bloomington MN | SkyWater | 200mm, 350–90nm (S130, S90/RH90 FDSOI rad-hard), MEMS, superconducting | **Weebit ReRAM in S130** (qualified); low-temp BEOL precedents (CNFET + RRAM, DARPA 3DSoC) | **Yes** (pure-play foundry, DMEA Trusted Cat 1A) | ReRAM [REPORTED]; Trusted status, RH90 and 3DSoC [UNVERIFIED] |
+| Gresham OR: Fab 4 | Microchip (for Everspin) | 200mm | MRAM / TMR / STT-MRAM for Everspin; first products 2H-2027 (Toggle/sensor ~Q4-27, STT ~Q4-28); max 1,300 wfr/qtr | **No** for others (TMR exclusivity for the term + 2 years) | [Everspin 8-K 2026-04-08 via A2](https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408xexx991.htm) [REPORTED-P] |
+| Bloomington MN | SkyWater | 200mm, 350–90nm (S130, S90/RH90 FDSOI rad-hard), MEMS, superconducting | **Weebit ReRAM in S130** (qualified); low-temp BEOL precedents (CNFET + RRAM, DARPA 3DSoC) | **Yes** (pure-play foundry, DMEA Trusted Cat 1A; IonQ subsidiary since 2026-07-31) | ReRAM [REPORTED]; IonQ ownership [REPORTED] ([Quantum Insider](https://thequantuminsider.com/2026/07/31/ionq-completes-skywater-acquisition-quantum-manufacturing/)); Trusted status, RH90 and 3DSoC [UNVERIFIED] |
 | Austin TX: Fab 25 | SkyWater (from Infineon, closed 2025-06-30) | 200mm, 130–65nm | Cypress/Infineon CMOS heritage; SONOS eNVM know-how [UNVERIFIED]; **smallest-geometry U.S. 200mm pure-play** | **Yes** (converting to foundry; Infineon anchor) | [LaPedus via A1](https://marklapedus.substack.com/p/skywater-acquires-infineons-200mm) [REPORTED] |
 | Kissimmee FL (Osceola County's Center for NeoVation) | SkyWater (operator; county owns) | 200/300mm advanced packaging (fan-out, interposer) | Packaging of memory chiplets (back end, out of scope) | **Yes** | [UNVERIFIED: prior knowledge] |
 | Malta NY: Fab 8 | GlobalFoundries | 300mm, 14/12nm FinFET (12LP/12LP+), 45nm RF-SOI / silicon photonics | No eMRAM/ReRAM in U.S. volume production [UNVERIFIED]; **14HP (IBM) deep-trench eDRAM existed; 2026 status unknown** | **Yes** (Trusted Foundry; DoD 10-yr contract) | [UNVERIFIED] |
@@ -82,7 +89,7 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 | San Antonio TX: Fab 9 | Tower Semiconductor | 200mm, ~180nm power/mixed-signal | None | **Yes** | [UNVERIFIED] |
 | Austin TX: S2; Taylor TX | Samsung Foundry | 300mm, 14–65nm (Austin); 2nm (Taylor) | eMRAM (28FDS) is made in Korea, **not Austin** [UNVERIFIED] | **Yes** | Taylor = logic (see `phase1/micron_us_makers.md`) |
 | Phoenix AZ: Fab 21; Camas WA: WaferTech | TSMC | 300mm N4/N3 (AZ); 200mm 350–160nm (WaferTech) | No eNVM in AZ; possible legacy eFlash at WaferTech [UNVERIFIED] | **Yes** | [UNVERIFIED] |
-| East Fishkill NY | onsemi (from GF, closed 2022-12-31) | 300mm, power / analog (65nm-class BCD) | Ex-IBM site where IBM ran SOI eDRAM; possible Weebit ReRAM license for onsemi's Treo platform [UNVERIFIED, ~60% confidence] | **No** (captive) | [UNVERIFIED] |
+| East Fishkill NY | onsemi (from GF, closed 2022-12-31) | 300mm, power / analog (65nm-class BCD) | Ex-IBM site where IBM ran SOI eDRAM; **Weebit ReRAM licensed for onsemi's Treo 65nm BCD (2025-01; confirmed), nearing qualification 2026-07**. Whether Treo runs at East Fishkill is [UNVERIFIED] | **No** (captive) | Licence [REPORTED] ([Motley Fool AU, 2026-07-31](https://www.fool.com.au/2026/07/31/weebit-nano-lifts-revenue-guidance-on-new-deals-and-chip-tape-outs/)); fab [UNVERIFIED] |
 | Colorado Springs CO: Fab 5 / Tempe AZ: Fab 2 (closing) | Microchip | 200mm | Captive EEPROM / SuperFlash eNVM | **No** (except the Everspin deal at Fab 4) | Tempe Fab 2 closure announced 2025; CHIPS PMT $162M (Jan 2024) [UNVERIFIED] |
 | Chandler AZ (CHD), Austin TX (ATMC) | NXP | 200mm (+150mm GaN in Chandler) | Hosts Everspin's Chandler line | **No** | Long-term 200mm rationalization toward VSMC Singapore 300mm (2027) is a **risk to Everspin's co-location** [ESTIMATE: inference] |
 | Beaverton OR, Camas WA, Wilmington MA | Analog Devices | 150/200mm | None (captive analog) | **No** | CHIPS PMT ~$105M (Jan 2025) [UNVERIFIED] |
@@ -93,7 +100,7 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 | Bloomington MN (Normandale) | Seagate | AlTiC head wafers | **Volume MTJ/TMR sputter + ion-beam etch** (HDD readers) | **No** | [UNVERIFIED: prior knowledge] |
 | Eden Prairie MN | NVE Corp. | Spintronic BEOL on foundry CMOS (150/200mm) [UNVERIFIED] | GMR/TMR sensors and isolators; historic MRAM licensor | **No** (product company) | [UNVERIFIED] |
 | Plymouth MN | Honeywell Aerospace | 150mm rad-hard SOI CMOS (Trusted) | Rad-hard SRAM; 1–16 Mb rad-hard MRAM products | **Ltd** (DoD) | [UNVERIFIED] |
-| Albuquerque NM: MESA | Sandia (DOE/NNSA) | 150mm rad-hard CMOS (~350nm) + III-V; FeRAM work at 200mm scale | **HZO FeRAM integrated into the trusted MESA CMOS flow (2026)** | **Ltd** (CRADA / strategic-partnership projects) | [Sandia 2026-05-13 via A1](https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/) [REPORTED] |
+| Albuquerque NM: MESA | Sandia (DOE/NNSA) | 150mm rad-hard CMOS (~350nm) + III-V; FeRAM work at 200mm scale | **HZO FeRAM integrated into the trusted MESA CMOS flow (2026)** | **Ltd** (CRADA / strategic-partnership projects; *v2: no public HZO licensing listing or CRADA offer found, internal LDRD*) | [Sandia 2026-05-13 via A1](https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/) [REPORTED]; access route [UNVERIFIED] |
 | Lexington MA: Microelectronics Lab | MIT Lincoln Laboratory | 200mm, 90nm FDSOI, superconducting (Trusted) | 3D integration R&D | **Ltd** (government sponsors) | [UNVERIFIED] |
 | Albany NY: NY CREATES / Albany NanoTech | NY CREATES (state non-profit) | 300mm, leading-edge incl. EUV | **HfO2 ferroelectric memory JDA with Fraunhofer IPMS (2025-05)**; Applied Materials META Center | **Yes** (JDA/membership; startups/SMEs) | [IDW via A1](https://nachrichten.idw-online.de/2025/05/16/ny-creates-and-fraunhofer-ipms-announce-joint-development-agreement-to-advance-memory-devices-at-300mm-wafer-scale); [NY.gov via A1](https://www.ny.gov/roadmap-national-semiconductor-technology-center-new-york) [REPORTED] |
 | Corvallis OR | HP Inc. | Thin-film MEMS (inkjet) | Thin-film/oxide know-how; no TFT line | **No** | CHIPS PMT ~$50M (2024) [UNVERIFIED] |
@@ -125,7 +132,7 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 | Toggle MRAM (parallel/SPI, industrial, aerospace; QML parts via partners) | 128 Kb – 16 Mb (32 Mb as stacked/dual-die) | Field-switched MTJ on ~180/130nm CMOS | **Chandler AZ BEOL on purchased 200mm CMOS** | Location [REPORTED-P]; densities [UNVERIFIED] |
 | STT-MRAM DDR3/DDR4-interface (EMD3D256M, EMD4E001G) | 256 Mb (40nm), 1 Gb (28nm) | pMTJ STT on 300mm | **GF Singapore** (front to back) | 1 Gb on GF 28nm ([TechInsights via A2](https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin)) [REPORTED]; Singapore [REPORTED-P] |
 | PERSYST xSPI STT-MRAM | 64–256 Mb | pMTJ STT, 28nm-class | **GF Singapore** (current); **TSMC 16nm** tape-out for monolithic 256 Mb in 2H-2026 | [REPORTED] ([Q4-25 call via A2](https://www.insidermonkey.com/blog/everspin-technologies-inc-nasdaqmram-q4-2025-earnings-call-transcript-1710559/)) |
-| Future MRAM / TMR sensors / STT | n/a | 200mm | **Microchip Fab 4, Gresham OR** from 2H-2027 | [REPORTED-P] |
+| Future MRAM / TMR sensors / STT | n/a | 200mm | **Microchip Fab 4, Gresham OR**: Toggle/sensor from ~Q4-2027, STT from ~Q4-2028 | [REPORTED-P] (8-K, 10-Q via snippet) |
 
 - **Is the Chandler line 200mm only?** I believe yes. Everspin's early 300mm STT development moved to GF in 2014 ([Design-Reuse via A2](https://us.design-reuse.com/news/35789/everspin-globalfoundries-300mm-cmos-wafer-st-mram.html)) [REPORTED]. That Chandler has no 300mm MTJ tooling today is [UNVERIFIED].
 - **Outside customers:** limited, through government programs.
@@ -136,11 +143,15 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 - **For American Memory:** Everspin is a possible customer, partner or acquirer for MTJ-adjacent work, not an open foundry. Its Microchip exclusivity closes the only new U.S. 200mm MTJ capacity to others.
 
 ### 2.3 SkyWater Technology: Bloomington MN, Austin TX (Fab 25), Kissimmee FL
-- **Bloomington MN (200mm).** This is the former Cypress Minnesota fab, sold in 2017 ([Design-Reuse via A1](https://us.design-reuse.com/news/41552/cypress-minnesota-wafer-fabrication-facility-sale.html)) [REPORTED]. It is a U.S.-owned pure-play foundry (Nasdaq: SKYT, IPO 2021) [UNVERIFIED].
+- **Bloomington MN (200mm).** This is the former Cypress Minnesota fab, sold in 2017 ([Design-Reuse via A1](https://us.design-reuse.com/news/41552/cypress-minnesota-wafer-fabrication-facility-sale.html)) [REPORTED]. It was a U.S.-owned public pure-play foundry (Nasdaq: SKYT, IPO 2021).
+  - **Correction (v2, 2026-11-01):** IonQ agreed to buy SkyWater on 2026-01-26 and **closed the ~$1.8B deal on 2026-07-31**. SkyWater shareholders got $15.00 cash + 0.4883 IONQ shares per share, and the FTC granted early termination.
+  - SkyWater now runs as a wholly owned IonQ subsidiary under its own name and is no longer separately listed. Its CEO says customer access and IP protections are unchanged.
+  - The press has flagged a neutrality concern, but it concerns IonQ's quantum rivals ([Quantum Insider, 2026-07-31](https://thequantuminsider.com/2026/07/31/ionq-completes-skywater-acquisition-quantum-manufacturing/); [Runtime Wire](https://runtimewire.com/article/ionq-closes-skywater-acquisition-ftc-clears-deal-without-conditions)) [REPORTED]. It is still U.S.-owned.
   - **Processes** [UNVERIFIED]: S130 (130nm CMOS, plus the open-source sky130 PDK released with Google in 2020), S90 and the **RH90 rad-hard 90nm FDSOI** (DoD-funded, ~$170M, 2019–20), MEMS, superconducting (D-Wave), ThermaView.
   - **Trust:** DMEA Trusted Foundry, Category 1A [UNVERIFIED].
   - **Memory:**
-    - Weebit 1T1R ReRAM is qualified and in the S130 PDK [REPORTED, above].
+    - Weebit 1T1R ReRAM is qualified and in the S130 PDK [REPORTED, above]. No 2025–26 *customer* tape-out on S130 is public (v2). The prototype route was Efabless chipIgnite, now defunct, and production use needs a direct Weebit licence.
+    - Analyst-estimated Weebit upfront fees run from ~$0.3M (DB HiTek, a foundry) to $1.8–2.6M (onsemi, an IDM). On top come NRE and royalties, which start in CY2027 ([MST, 2025-09-01, via search snippet](https://www.weebit-nano.com/wp-content/uploads/2025/09/250901.-MST-Access-Report_WBT.AX-Not-just-play-money-090125.pdf)) [REPORTED]. A fabless startup's terms are unknown.
     - Under DARPA's 3DSoC program (2018–2023), MIT/Stanford and SkyWater built monolithic 3D chips with carbon-nanotube FETs and **RRAM layered over silicon CMOS at <400 °C** on SkyWater's 200mm line [UNVERIFIED: prior knowledge]. This is the closest U.S. commercial-foundry precedent for a new-material BEOL memory module, and it bears directly on IGZO feasibility.
     - Whether Cypress-heritage SONOS is still offered is [UNVERIFIED].
 - **Austin TX, Fab 25 (200mm, 130–65nm).** Bought from Infineon; the deal closed 2025-06-30. The terms were about $73M at close plus ~$20M working capital, about 400k wafer starts/yr and about 1,000 employees. The fab is being converted to a foundry, with Infineon as the anchor customer under a long-term supply agreement ([LaPedus via A1](https://marklapedus.substack.com/p/skywater-acquires-infineons-200mm); [Infineon PR via A1](https://new-origin.infineon.com/cms/en/about-infineon/press/press-releases/2025/INFXX202502-066.html)) [REPORTED].
@@ -149,7 +160,13 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 - **Indiana (West Lafayette).** A $1.8B fab plan announced in 2022 is dormant [UNVERIFIED].
 - **CHIPS:** a preliminary memorandum of terms (PMT) of up to ~$16M for Bloomington (Dec 2024) [UNVERIFIED, low confidence]. Final status is unknown.
 - **Outside customers:** yes; this is the whole business model.
-  - **Shuttles:** the open-source sky130 shuttles ran through Efabless (Google-sponsored Open MPW, then paid chipIgnite at ~$10–15k per ~10 mm² slot). Efabless **shut down in early 2025**, with a successor (ChipFoundry) reported [UNVERIFIED].
+  - **Shuttles:** the open-source sky130 shuttles ran through Efabless (Google-sponsored Open MPW, then paid chipIgnite at ~$10–15k per ~10 mm² slot). Efabless **shut down in early 2025**, with a successor (ChipFoundry) reported.
+    - **Confirmed (v2):** Efabless founders Jeff DiCorpo and Mohammed Kassem launched **ChipFoundry.io**, which restored sky130 open-PDK shuttles.
+    - Pricing was reported as rising from $10k to **~$15k per 100 chips**, and a run can slip if it is <50% full ([eeNews Europe, 2025](https://www.eenewseurope.com/en/tiny-tapeout-sees-industrial-boost-as-it-recovers-from-efabless-closure/)) [REPORTED].
+    - Tiny Tapeout's TTSKY26b went on ChipFoundry run CI2605, which closed 2026-05-18 ([Tiny Tapeout](https://tinytapeout.com/chips/ttsky26b/)) [REPORTED-P].
+  - **GF180 alternative (v2):** wafer.space (Tim Ansell) runs GF180MCU shuttles.
+    - Run 2 costs **$7,000 early-bird / $7,500 standard for a full slot of 1,000 dies**, or $4,000/$4,500 for a half slot. Run 1 was functional ([Crowd Supply](https://www.crowdsupply.com/wafer-space/gf180mcu-run-2); [Tiny Tapeout](https://tinytapeout.com/news/wafer-space-gf180/)) [REPORTED-P].
+    - Tiny Tapeout tiles cost ~€70 each on both processes [REPORTED-P].
   - SkyWater's own commercial MPW pricing is not public [UNVERIFIED].
 - **Wafer price:** not public. I use **~$1,200–1,600 per 200mm S130 wafer**, consistent with A1 ($1,200) and A2 (S130 + ReRAM ≈ $1,600) [ESTIMATE].
 
@@ -185,7 +202,7 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 ### 2.6 Polar Semiconductor: Bloomington MN
 - **Technology:** 200mm power, BCD and high-voltage processes, plus magnetic sensors. Historically Polar was Sanken's captive fab, making parts for Allegro.
 - **Ownership and money:** in 2024 it became majority U.S.-owned after a **~$175M** private investment (Niobrara Capital, Prysm Capital), backed by **~$123M of CHIPS funding** (final 2024) for a ~$525M expansion that **roughly doubles capacity**. It is transitioning to a **commercial foundry** [UNVERIFIED: prior knowledge].
-- **Memory relevance:** low. It has no NVM offering I know of. Its value is as a U.S.-owned 200mm line open to new customers, with magnetic-sensor process experience, next door to SkyWater, Seagate and NVE. **A candidate BEOL-module host (IGZO, HZO) if SkyWater declines.**
+- **Memory relevance:** low. It has no NVM offering I know of. Its value is as a U.S.-owned 200mm line open to new customers, with magnetic-sensor process experience, next door to SkyWater, Seagate and NVE. **A candidate BEOL-module host (IGZO, HZO) if SkyWater declines.** *v2:* Polar is an industry partner in UMN's new Spin Technology Center, alongside Honeywell Aerospace ([UMN CSE, via search snippet](https://cse.umn.edu/node/194186)) [REPORTED-P]. That makes it the likeliest U.S. 200mm line to pick up spintronic/MTJ process work.
 
 ### 2.7 Intel Foundry
 - **External nodes** [UNVERIFIED]:
@@ -210,7 +227,7 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 | **Tower San Antonio (Fab 9)** | 200mm, ex-Maxim (2016), ~180nm power/mixed-signal | None | Yes |
 | **Tower @ Intel Rio Rancho (Fab 11X)** | Tower put ~$300M of tools into Intel NM, 300mm, 65nm BCD / RF-SOI (deal Sept 2023) | None | Yes (Tower) |
 | **X-FAB Lubbock** | **150mm**, SiC + legacy silicon; only open 150mm SiC foundry in the U.S.; CHIPS PMT ~$50M (Dec 2024; low confidence) | None (150mm, no BEOL memory) | Yes |
-| **onsemi East Fishkill** | 300mm, ex-IBM/GF; acquired 2022-12-31 (~$430M); power and analog (Treo 65nm BCD) | Possible Weebit ReRAM license for Treo (~60% confidence); IBM's SOI eDRAM history | No |
+| **onsemi East Fishkill** | 300mm, ex-IBM/GF; acquired 2022-12-31 (~$430M); power and analog (Treo 65nm BCD) | Weebit ReRAM licensed for Treo (2025-01, confirmed v2; fab location unverified); IBM's SOI eDRAM history | No |
 | **onsemi Nampa ID / Mountain Top PA** | 200mm power; onsemi has been rationalizing fabs (2024–25) | None | No |
 | **Microchip Fab 5 Colorado Springs** | 200mm (ex-Atmel), EEPROM / eFlash | Captive serial EEPROM, SuperFlash | No |
 | **Microchip Fab 2 Tempe** | **Closure announced ~2025** (part of restructuring) | Possible idle 200mm shell/tools | n/a |
@@ -235,9 +252,9 @@ Legend: **Outside customers** = Yes (open foundry) / Ltd (program or strategic o
 | Embedded DRAM (deep trench) | Possibly (legacy) | GF Malta 14HP (IBM) | Unknown; probably IBM/DoD only | [UNVERIFIED] |
 | SRAM (embedded / discrete on trailing nodes) | Yes | Any foundry (SkyWater, GF, Tower, Intel 16, Samsung Austin, TSMC AZ) | **Yes** | standard |
 | Toggle MRAM | Yes | Everspin Chandler (200mm BEOL); Honeywell rad-hard MRAM | **Ltd** (Everspin DoD programs) | [REPORTED-P]/[UNVERIFIED] |
-| STT-MRAM (standalone) | **No** (GF Singapore, soon TSMC 16nm); U.S. from 2H-2027 at Gresham (captive to Everspin) | Everspin via Microchip | **No** | [REPORTED-P] |
+| STT-MRAM (standalone) | **No** (GF Singapore, soon TSMC 16nm); U.S. STT flow at Gresham ~Q4-2028 (Toggle/sensor ~Q4-2027; captive to Everspin) | Everspin via Microchip | **No** | [REPORTED-P] |
 | Embedded STT-MRAM (foundry) | **No** in the U.S. (GF Dresden 22FDX; TSMC/Samsung/UMC in Asia) | n/a | **No** (unless Intel 16 offers it) | [REPORTED]/[UNVERIFIED] |
-| ReRAM (embedded) | Yes | SkyWater S130 (Weebit, qualified); TI (licensed, captive); onsemi Treo (possible) | **Yes: SkyWater S130** | [REPORTED] |
+| ReRAM (embedded) | Yes | SkyWater S130 (Weebit, qualified); TI (licensed, captive); onsemi Treo (licensed 2025-01, captive) | **Yes: SkyWater S130** | [REPORTED] |
 | CBRAM | No (GF 22FDX in Dresden) | n/a | No | [REPORTED] |
 | FeRAM (PZT, embedded) | Yes | TI (MSP430FR) | No (captive) | [UNVERIFIED] |
 | FeRAM / FeFET (HfO2/HZO) | R&D only | Sandia MESA (trusted, 2026); NY CREATES + Fraunhofer (300mm JDA); GF 22FDX (Dresden, upcoming) | **R&D access** (Albany JDA; Sandia CRADA) | [REPORTED] |
@@ -261,7 +278,8 @@ No foundry publishes wafer prices. The figures below are estimates kept consiste
 | 300mm 28nm + MTJ module | ~$4,300 | [ESTIMATE] (A2) |
 | Dedicated 130nm mask set | **$500–600k** | [REPORTED] ([AnySilicon via A1](https://anysilicon.com/130nm-wafer-mpw-cost/)) |
 | MPW shuttle (node-agnostic range) | **$5k–100k**; direct foundry NRE $0.5–15M+; per-wafer $2.5–20k | [REPORTED] ([Silicon Analysts via A1](https://siliconanalysts.com/mpw-access-planning-guide/)) |
-| sky130 open-source-style shuttle slot (~10 mm², ~100 parts) | **~$10–15k** (chipIgnite-era pricing; Efabless closed 2025; successor pricing unknown) | [UNVERIFIED] |
+| sky130 open-source-style shuttle slot (~10 mm², ~100 parts) | **~$15k per 100 chips** via ChipFoundry, Efabless's successor (up from ~$10k in the chipIgnite era) | [REPORTED] ([eeNews Europe](https://www.eenewseurope.com/en/tiny-tapeout-sees-industrial-boost-as-it-recovers-from-efabless-closure/)) |
+| GF180MCU shuttle via wafer.space (full slot, 1,000 dies) | **$7,000 early-bird / $7,500 standard**; half slot $4,000/$4,500 | [REPORTED-P] ([Crowd Supply](https://www.crowdsupply.com/wafer-space/gf180mcu-run-2)) |
 | 22FDX MPW | ~$10–25k/mm² | [ESTIMATE] |
 | 8-inch foundry pricing trend 2026 | Reports (late 2025) of TSMC/Samsung trimming 8-inch capacity and of 2026 8-inch price increases | [UNVERIFIED] |
 
@@ -451,7 +469,7 @@ This agrees with A1's conclusion that only a 300mm, ~28nm-class BEOL line makes 
    - **SkyWater/Polar + a co-developed BEOL module** (IGZO gain cell, HZO FeCAP); T2, 18–36 months.
    - **Everspin partnership** for MTJ (Toggle/STT); the founder is a customer, not a fab user.
 3. **"U.S.-made" moat claims must be precise.**
-   - Everspin STT-MRAM is Singapore-made, and moving to TSMC 16nm, until Gresham ramps in 2H-2027.
+   - Everspin STT-MRAM is Singapore-made, and moving to TSMC 16nm, until Gresham's STT flow arrives (~Q4-2028; Toggle/sensor ~Q4-2027) (v2).
    - The only U.S.-made MRAM today is Toggle (Chandler) and Honeywell rad-hard.
    - For DoD buyers, **trusted-foundry provenance** (SkyWater, GF U.S., Sandia, Honeywell) matters more than "U.S.-made" alone.
 4. **IGZO's cheap display capacity is not available in the U.S.** Any IGZO concept that relies on display-fab economics must either go abroad (and lose the moat) or accept silicon-BEOL economics and density (§8.3).
@@ -462,14 +480,14 @@ This agrees with A1's conclusion that only a 300mm, ~28nm-class BEOL line makes 
 
 ## 11. Re-verification list (priority order; ~30 searches would clear it)
 
-1. **SkyWater**: Fab 25 foundry offerings (65nm; SONOS/eNVM?); CHIPS status; post-Efabless shuttle access and pricing; 2026 10-K/10-Q.
+1. **SkyWater**: Fab 25 foundry offerings (65nm; SONOS/eNVM?); CHIPS status; post-Efabless shuttle access and pricing (*v2: ChipFoundry ~$15k/100 chips; is the Weebit ReRAM block offered?*); IonQ-era customer and IP terms (no more 10-K: IonQ subsidiary since 2026-07-31).
 2. **GF Malta**: does Malta offer 22FDX/eMRAM/ReRAM in 2026, or plan to under the CHIPS onshoring? Is 14HP eDRAM still running?
 3. **Everspin**: which fab receives the Amentum Toggle transfer; Chandler 200mm-only status; NXP Chandler fab longevity (FY2026 10-K risk factors).
 4. **Intel 16**: is eMRAM/ReRAM offered to external customers?
 5. **TI**: SM1 production date; LFAB2 status; where MSP430FR FRAM is made.
 6. **Polar**: final CHIPS amount and date; foundry-services status in 2026.
 7. **Microchip**: Tempe Fab 2 closure date and asset disposition; CHIPS status.
-8. **onsemi–Weebit** Treo license (does it exist? which fab?).
+8. **onsemi–Weebit** Treo license (*v2: exists, signed 2025-01; still open: which fab*).
 9. **ASU MTW**: is the Gen-II display line operational? Rates.
 10. **NNCI**: 2025 renewal outcome and current site list; 2026 industry rate sheets at Cornell CNF, Penn Singh, Georgia Tech IEN, Purdue Birck, NIST CNST.
 11. **Akoustis** asset sale outcome (2025).
