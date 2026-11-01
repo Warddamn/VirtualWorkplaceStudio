@@ -73,7 +73,8 @@ def load_raw():
     for f in sorted(RAW_DIR.glob("*.json")):
         data = json.loads(f.read_text(encoding="utf-8"))
         scorer = data.get("scorer", f.stem)
-        scorers.append(scorer)
+        if scorer not in scorers:
+            scorers.append(scorer)
         for row in data.get("scores", []):
             cid = row["id"]
             for crit, v in row["criteria"].items():
