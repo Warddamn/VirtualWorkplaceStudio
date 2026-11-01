@@ -1026,7 +1026,7 @@
    "profitable": "marginal - a niche product line (low-$100ks/yr ceiling [ESTIMATE]), not a venture-scale business",
    "doable_by_founder": "yes",
    "id": "C-12",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "what_it_is: The QSPI EXCELON parts named in the card cannot sit in a parallel SRAM socket. The real product is parallel F-RAM in PCMCIA/DIP form factors, where the supply gap is documented (Memex snippet).",
     "who_is_already_doing_this: Free adapters and chip vendors were missing; they cap pricing in the DIP niche.",
@@ -1042,7 +1042,10 @@
    "rank_default": 2,
    "rank_capital_constrained": 2,
    "rank_moonshot": 6,
-   "deep_dive": "DD3"
+   "deep_dive": "DD3",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD3 (Drop-in Non-Volatile Continuity Modules) was KILLED by the four-persona red team: After the red team, the revised BASE loses $29.8k over 36 months (Phase 4: +$79.1k). It breaks even only in m19, never pays the founder, and needs about $49k of peak cash (cash low -$9.2k), above the $40k deployable. The main cause is the market: once i-series controls (which take a $20 CF card) and the unfound DMSMS contracts are removed, addressable demand is about 2,591 cards/yr (~$0.62M/yr), and a 36-month cumula See 05_REDTEAM.md (DD3) and 04_DEEPDIVES/nv-continuity-modules.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "branch": "A",
@@ -1410,7 +1413,7 @@
    "doable_by_founder": "marginal — T1 and needs an EE partner; no fab, no chip design",
    "branch": "A",
    "id": "C-16",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "why_it_could_work: The Blocks&Files snippet shows a multi-year in-house IBM design, not a 2026 switch. Canonical decks are contract and glut (01_LANDSCAPE 4.3), not spot.",
     "trl: MRAM PLP journals ship in production systems: IBM FCM3/4/5, and Broadcom/LSI RAID per the card.",
@@ -1429,7 +1432,10 @@
    "rank_default": 19,
    "rank_capital_constrained": 18,
    "rank_moonshot": 18,
-   "deep_dive": "DD3"
+   "deep_dive": "DD3",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD3 (Drop-in Non-Volatile Continuity Modules) was KILLED by the four-persona red team: After the red team, the revised BASE loses $29.8k over 36 months (Phase 4: +$79.1k). It breaks even only in m19, never pays the founder, and needs about $49k of peak cash (cash low -$9.2k), above the $40k deployable. The main cause is the market: once i-series controls (which take a $20 CF card) and the unfound DMSMS contracts are removed, addressable demand is about 2,591 cards/yr (~$0.62M/yr), and a 36-month cumula See 05_REDTEAM.md (DD3) and 04_DEEPDIVES/nv-continuity-modules.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "tmp_id": "A2.02",
@@ -1990,7 +1996,7 @@
    "doable_by_founder": "no — needs an IC design co-founder and SBIR money",
    "branch": "A",
    "id": "C-22",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "trl: The qualified module is 256Kb. A 1-4 Mb product needs new or larger macros and requalification, and the rad-tolerant variant is TRL 3-4 (16-kbit gamma-only data, no heavy-ion SEE).",
     "wins_axis: Weebit radiation data is 16-kbit gamma only (Embedded Computing Design, 2023, via snippet), and S130 bulk-CMOS periphery sets the TID/SEL limit (same logic as the C-40 kill).",
@@ -2011,7 +2017,10 @@
    "rank_default": 31,
    "rank_capital_constrained": 29,
    "rank_moonshot": 24,
-   "deep_dive": "DD5"
+   "deep_dive": "DD5",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "the ReRAM T2 leg was killed (magnet-immunity axis shared by OTP/eFuse/S130 eNVM, no named buyer; RT-VET-DD5-05, RT-PHY-DD5-05) while C-33 survives as a side line. See 05_REDTEAM.md (DD5) and 04_DEEPDIVES/open-memory-ip.md §14.",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "tmp_id": "A2.08",
@@ -2384,7 +2393,7 @@
    "doable_by_founder": "yes — the most founder-doable card in A2",
    "branch": "A",
    "id": "C-26",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "buyer: Broadcom KB 326910 and KB 459135 (via search snippet)",
     "who_is_already_doing_this: The card's '[UNVERIFIED] no one sells validated kits' is weaker than stated: refurb sellers already list PMem (search, 2026-11)",
@@ -2403,7 +2412,10 @@
    "rank_default": 9,
    "rank_capital_constrained": 7,
    "rank_moonshot": 12,
-   "deep_dive": "DD1"
+   "deep_dive": "DD1",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "tmp_id": "A2.13",
@@ -2709,7 +2721,8 @@
    "rank_default": 4,
    "rank_capital_constrained": 3,
    "rank_moonshot": 4,
-   "deep_dive": "DD2"
+   "deep_dive": "DD2",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "tmp_id": "A3.01",
@@ -2956,7 +2969,7 @@
    "doable_by_founder": "no: needs a full-time memory-circuit cofounder, ~$2-5M and an FTO opinion before the founder's compiler/web tooling matters",
    "branch": "A",
    "id": "C-32",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: Card listed RAAAM as [UNVERIFIED-training] with a vague '~2x density' claim; it is now a funded, foundry-partnered incumbent",
     "fatal_flaw: Card's 'RAAAM got there first' understated the scale of the head start and omitted the patent/FTO gate",
@@ -2977,7 +2990,10 @@
    "rank_default": 25,
    "rank_capital_constrained": 28,
    "rank_moonshot": 22,
-   "deep_dive": "DD5"
+   "deep_dive": "DD5",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "the gain-cell T2 leg was killed (no density/leakage case on sky130, no named buyer; RT-VET-DD5-03, RT-PHY-DD5-03/04) while C-33 survives as a side line. See 05_REDTEAM.md (DD5) and 04_DEEPDIVES/open-memory-ip.md §14.",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "tmp_id": "A3.04",
@@ -3097,7 +3113,8 @@
    "rank_default": 3,
    "rank_capital_constrained": 5,
    "rank_moonshot": 2,
-   "deep_dive": "DD5"
+   "deep_dive": "DD5",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "tmp_id": "A3.05",
@@ -4496,7 +4513,7 @@
    "profitable": "marginal: yes only if a recurring support/model subscription attaches",
    "doable_by_founder": "yes: integration + software, startable with deposits",
    "id": "C-48",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "why_it_could_work: The card's ~46 tok/s 'NUMA-aware' figure ignores KTransformers' per-NUMA weight duplication (382 GB vs 1 TB in the R1 tutorial) and the measured 29% dual-socket gain.",
     "what_it_is: KTransformers' 255-286 tok/s prefill comes from its AMX kernel, and AMX is Intel-only (doc/en/AMX.md).",
@@ -4514,7 +4531,10 @@
    "rank_default": 15,
    "rank_capital_constrained": 15,
    "rank_moonshot": 19,
-   "deep_dive": "DD6"
+   "deep_dive": "DD6",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD6 (Private MoE Inference Appliance (DRAM instead of HBM)) was KILLED by the four-persona red team: The FATAL objection holds. Four concurrent users touch 3.88x one user's expert bytes, so the 1-socket L box serves 1-2 users at >=10 tok/s (6.7-13.3 named), not 4 (27). At authorized-channel RDIMM prices the L box quotes $78,708. A $44.6k two-node Mac Studio cluster matches its single-stream speed with a ~10x faster first token, and U.S.-origin 1T models make it a one-user box for defense. So the L SKU, which carried See 05_REDTEAM.md (DD6) and 04_DEEPDIVES/private-moe-appliance.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "tmp_id": "B.06",
@@ -5654,7 +5674,8 @@
    "rank_default": 16,
    "rank_capital_constrained": 16,
    "rank_moonshot": 13,
-   "deep_dive": "DD2"
+   "deep_dive": "DD2",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "tmp_id": "C.05",
@@ -5763,7 +5784,7 @@
    "doable_by_founder": "yes - $20-40k start, evenings and weekends",
    "branch": "C",
    "id": "C-62",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "survives_glut: As a resale business it fails the glut test. 01_LANDSCAPE 10.1 (O3) gives 1-6% contribution in the glut, and inventory held through the fall loses value.",
     "glut_reason: Replaces the instant-repricing assumption with the canonical glut case.",
@@ -5780,7 +5801,10 @@
    "rank_default": 14,
    "rank_capital_constrained": 11,
    "rank_moonshot": 16,
-   "deep_dive": "DD1"
+   "deep_dive": "DD1",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "tmp_id": "C.06",
@@ -6006,7 +6030,7 @@
     "D.11"
    ],
    "id": "C-64",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "rule1_status: The core value claim, 'Sec. 5949 pays for verified non-Chinese', is contradicted by the proposed rule text as summarized by Crowell, Covington and Wiley (via search snippets).",
     "why_it_could_work: Re-bases the value claim on the actual proposed rule and removes a non-moat.",
@@ -6025,7 +6049,10 @@
    "rank_default": 6,
    "rank_capital_constrained": 6,
    "rank_moonshot": 3,
-   "deep_dive": "DD1"
+   "deep_dive": "DD1",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "tmp_id": "C.08",
@@ -6120,7 +6147,7 @@
    "doable_by_founder": "no - hardware team and qualification timeline",
    "branch": "C",
    "id": "C-65",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: The card's flagship 8GB x72 ECC DDR4 MCM is already a catalog part with six years of heritage (via search snippets).",
     "why_it_could_work: Removes misapplied evidence and narrows the axis to where an entrant could win.",
@@ -6138,7 +6165,10 @@
    "rank_default": 30,
    "rank_capital_constrained": 31,
    "rank_moonshot": 25,
-   "deep_dive": "DD7"
+   "deep_dive": "DD7",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD7 (Authorized-Aftermarket Legacy DRAM Die Bank (+ hi-rel MCMs)) was KILLED by the four-persona red team: No objection was refuted. All three FATALs were confirmed by the model, and they kill L1, the managed die-bank program and the only line this founder could run. Banking bare die costs a board OEM $186k-347k to manage ~$52k of die, 2.9-5.4x a packaged last-time buy plus dry storage. Board OEMs qualify packaged part numbers, and Micross sells the whole bundle direct (EDSP). L3, the title-taking bank, is killed by the c See 05_REDTEAM.md (DD7) and 04_DEEPDIVES/legacy-dram-diebank.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "tmp_id": "C.09",
@@ -6801,7 +6831,8 @@
    "rank_default": 20,
    "rank_capital_constrained": 19,
    "rank_moonshot": 15,
-   "deep_dive": "DD2"
+   "deep_dive": "DD2",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "branch": "D",
@@ -6942,7 +6973,7 @@
     "D.04"
    ],
    "id": "C-73",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: Granulate's closure is now confirmed and dated (Oct-2024, not 2025). It is a warning sign: a $650M acquirer could not make standalone optimization pay. The IBM and DoiT deals were still unconfirmed after my search.",
     "glut_reason: Adds the verified 2026 AWS price actions so the glut test rests on dated facts.",
@@ -6960,7 +6991,10 @@
    "rank_default": 1,
    "rank_capital_constrained": 1,
    "rank_moonshot": 1,
-   "deep_dive": "DD4"
+   "deep_dive": "DD4",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD4 (Memory Efficiency for On-Prem & Self-Hosted Fleets) was KILLED by the four-persona red team: After the accepted objections, the value-supported C-74 fee falls 77%, from $7.36 to $1.66 per node per month. The causes compound: Proxmox already runs KSM, fleets hold less DDR5, the saving is a rental equivalent rather than a purchase avoided, and the vendor's share of a counterfactual is smaller. Meanwhile credible 24/7 on-call plus E&O costs ~$2,900-3,400 a month. The re-run BASE never breaks even, burns through See 05_REDTEAM.md (DD4) and 04_DEEPDIVES/memory-efficiency.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "branch": "D",
@@ -7062,7 +7096,7 @@
    "profitable": "marginal - real savings mainly for DDR5 fleets; DDR4 fleets can add used RDIMMs at ~$4-6/GB, buyers can DIY with free upstream features, and the pain halves in a glut",
    "doable_by_founder": "marginal - needs a Linux-mm expert for SLO safety; the sales cycle to on-prem ops is slow",
    "id": "C-74",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "why_it_could_work: Confirms the TMO number and adds the DDR4-fleet value, which cuts the headline savings 3-8x for much of the named buyer set.",
     "capital_tier: The card itself requires a kernel-savvy contractor. ~300 h at $150-200/h is ≈$45-60k, plus test hosts, which crosses the $50k T0 line unless a co-founder works for equity [ESTIMATE].",
@@ -7081,7 +7115,10 @@
    "rank_default": 10,
    "rank_capital_constrained": 13,
    "rank_moonshot": 8,
-   "deep_dive": "DD4"
+   "deep_dive": "DD4",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD4 (Memory Efficiency for On-Prem & Self-Hosted Fleets) was KILLED by the four-persona red team: After the accepted objections, the value-supported C-74 fee falls 77%, from $7.36 to $1.66 per node per month. The causes compound: Proxmox already runs KSM, fleets hold less DDR5, the saving is a rental equivalent rather than a purchase avoided, and the vendor's share of a counterfactual is smaller. Meanwhile credible 24/7 on-call plus E&O costs ~$2,900-3,400 a month. The re-run BASE never breaks even, burns through See 05_REDTEAM.md (DD4) and 04_DEEPDIVES/memory-efficiency.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "branch": "D",
@@ -7162,7 +7199,7 @@
    "profitable": "marginal-to-no - services margin only. The SaaS monitoring line competes with Tensormesh Inference (GA May-2026, NVIDIA/AMD/CoreWeave-backed) and free NVIDIA tooling",
    "doable_by_founder": "marginal - needs GPU access for benchmarking and deep inference-stack knowledge",
    "id": "C-75",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: Tensormesh's 2026 funding and GA product are verified via snippets. They directly overlap the card's monitoring revenue line.",
     "fatal_flaw: Names the funded direct competitor instead of a generic trend.",
@@ -7178,7 +7215,10 @@
    "rank_default": 7,
    "rank_capital_constrained": 8,
    "rank_moonshot": 9,
-   "deep_dive": "DD4"
+   "deep_dive": "DD4",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD4 (Memory Efficiency for On-Prem & Self-Hosted Fleets) was KILLED by the four-persona red team: After the accepted objections, the value-supported C-74 fee falls 77%, from $7.36 to $1.66 per node per month. The causes compound: Proxmox already runs KSM, fleets hold less DDR5, the saving is a rental equivalent rather than a purchase avoided, and the vendor's share of a counterfactual is smaller. Meanwhile credible 24/7 on-call plus E&O costs ~$2,900-3,400 a month. The re-run BASE never breaks even, burns through See 05_REDTEAM.md (DD4) and 04_DEEPDIVES/memory-efficiency.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "branch": "D",
@@ -7603,7 +7643,8 @@
    "rank_default": 5,
    "rank_capital_constrained": 4,
    "rank_moonshot": 5,
-   "deep_dive": "DD2"
+   "deep_dive": "DD2",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "branch": "D",
@@ -8001,7 +8042,7 @@
    "profitable": "marginal-to-no - 59-82% GM, but ~$22k ACV is ~3.6x the buyer's DIY spares cost, and ParkView-bundled TPM caps price",
    "doable_by_founder": "yes - T0, software-led, part-time start; first customers are reachable regionally",
    "id": "C-85",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: ParkView is confirmed. Predictive detection plus replacement already exists, bundled into whole-server TPM.",
     "fatal_flaw: Quantifies the self-sparing alternative from the card's own model and names the confirmed bundled competitor.",
@@ -8018,7 +8059,10 @@
    "rank_default": 11,
    "rank_capital_constrained": 10,
    "rank_moonshot": 10,
-   "deep_dive": "DD1"
+   "deep_dive": "DD1",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "branch": "E",
@@ -8120,7 +8164,7 @@
    "profitable": "marginal - high GM but a ~$0.3M ARR ceiling unless it becomes the reference index, which requires displacing TrendForce in contract language",
    "doable_by_founder": "yes - T0, part-time; the founder's day job (manufacturing ops) is the buyer persona",
    "id": "C-86",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: Adds the BLS gap (which helps) and the paid trackers (which compete for 'reference' status).",
     "fatal_flaw: Adds the verified BLS-first federal rule and the basis-risk point.",
@@ -8136,7 +8180,10 @@
    "rank_default": 8,
    "rank_capital_constrained": 9,
    "rank_moonshot": 7,
-   "deep_dive": "DD2"
+   "deep_dive": "DD2",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "the SaaS-fed Memory Cost Escalation Index leg was killed (panel never reaches the 15 contributors needed to publish; RT-HYP-DD2-01, RT-VC-DD2-01) while the rest of DD2 survives as a downgraded side line. See 05_REDTEAM.md (DD2) and 04_DEEPDIVES/lifecycle-intel.md §14.",
+   "red_team_status": "DOWNGRADED"
   },
   {
    "branch": "E",
@@ -8615,7 +8662,7 @@
    "profitable": "yes - for incumbents with authorization and scale",
    "doable_by_founder": "no - capital, authorization and relationships are the moat",
    "id": "C-91",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: Replaces [UNVERIFIED-training] with search-snippet evidence. The incumbent already covers legacy DRAM specifically, not just logic.",
     "time_to_first_revenue_months: No startup precedent for winning an OCM aftermarket authorization was found. The card's own base case sells nothing in years 1-2 and 90% in years 3-8 (e_estimates section 5). 24 months is optimistic. The rubric puts this at the 19-36 boundary (score 2), and slippage puts it above 36.",
@@ -8632,7 +8679,10 @@
    "rank_default": 28,
    "rank_capital_constrained": 30,
    "rank_moonshot": 23,
-   "deep_dive": "DD7"
+   "deep_dive": "DD7",
+   "kill_rule": "RED-TEAM",
+   "kill_reason": "DD7 (Authorized-Aftermarket Legacy DRAM Die Bank (+ hi-rel MCMs)) was KILLED by the four-persona red team: No objection was refuted. All three FATALs were confirmed by the model, and they kill L1, the managed die-bank program and the only line this founder could run. Banking bare die costs a board OEM $186k-347k to manage ~$52k of die, 2.9-5.4x a packaged last-time buy plus dry storage. Board OEMs qualify packaged part numbers, and Micross sells the whole bundle direct (EDSP). L3, the title-taking bank, is killed by the c See 05_REDTEAM.md (DD7) and 04_DEEPDIVES/legacy-dram-diebank.md §14.",
+   "red_team_status": "KILLED"
   },
   {
    "branch": "E",

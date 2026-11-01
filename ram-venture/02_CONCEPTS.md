@@ -1,6 +1,6 @@
 # 02 — CONCEPTS
 
-**98 concept cards** generated in Phase 2 by parallel ideation agents (one per branch A–E; branch A split three ways because it is the largest), then deduplicated. Merges are noted on each card. Status after Phase 3 kill pass: **31 alive, 67 killed**. Scores are in `03_SCORING.md`. The machine-readable copy is `concepts.csv`. Device $/GB comparisons are in `models/device_cost_compare.py`.
+**98 concept cards** generated in Phase 2 by parallel ideation agents (one per branch A–E; branch A split three ways because it is the largest), then deduplicated. Merges are noted on each card. Status after Phase 3 kill pass: **16 alive, 82 killed**. Scores are in `03_SCORING.md`. The machine-readable copy is `concepts.csv`. Device $/GB comparisons are in `models/device_cost_compare.py`.
 
 Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, T2 $2M–$50M, T3 $50M–$1B, T4 >$1B · materials sense: (a) material system, (b) process, (c) capital (mission rule 5).
 
@@ -368,7 +368,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* IP licensing (as licensee)
 
-### C-12 — Battery-free NV-cache / NVSRAM-replacement modules from off-the-shelf F-RAM
+### C-12 — Battery-free NV-cache / NVSRAM-replacement modules from off-the-shelf F-RAM — ☠ KILLED (RED-TEAM: DD3 (Drop-in Non-Volatile Continuity Modules) was KILLED by the four-persona red team: After the red team, the revised BASE loses $29.8k over 36 months (Phase 4: +$79.1k). It breaks even only in m19, never pays the founder, and needs about $49k of peak cash (cash low -$9.2k), above the $40k deployable. The main cause is the market: once i-series controls (which take a $20 CF card) and the unfound DMSMS contracts are removed, addressable demand is about 2,591 cards/yr (~$0.62M/yr), and a 36-month cumula See 05_REDTEAM.md (DD3) and 04_DEEPDIVES/nv-continuity-modules.md §14.)
 
 *Sub-branch:* Ferroelectric (PZT F-RAM, module) · *Materials sense:* c-capital
 
@@ -499,7 +499,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* materials supplier; defense/supply-security (CHIPS supply-chain programs)
 
-### C-16 — Supercap-Killer PLP Kit (MRAM write-cache reference design)
+### C-16 — Supercap-Killer PLP Kit (MRAM write-cache reference design) — ☠ KILLED (RED-TEAM: DD3 (Drop-in Non-Volatile Continuity Modules) was KILLED by the four-persona red team: After the red team, the revised BASE loses $29.8k over 36 months (Phase 4: +$79.1k). It breaks even only in m19, never pays the founder, and needs about $49k of peak cash (cash low -$9.2k), above the $40k deployable. The main cause is the market: once i-series controls (which take a $20 CF card) and the unfound DMSMS contracts are removed, addressable demand is about 2,591 cards/yr (~$0.62M/yr), and a 36-month cumula See 05_REDTEAM.md (DD3) and 04_DEEPDIVES/nv-continuity-modules.md §14.)
 
 *Sub-branch:* STT-MRAM design-in: power-loss-protection write cache · *Materials sense:* mixed:a+c
 
@@ -699,7 +699,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* foundry services; defense-first
 
-### C-22 — TrustNVM: U.S.-Made ReRAM Secure-NVM Chiplet on SkyWater S130
+### C-22 — TrustNVM: U.S.-Made ReRAM Secure-NVM Chiplet on SkyWater S130 — ☠ KILLED (RED-TEAM: the ReRAM T2 leg was killed (magnet-immunity axis shared by OTP/eFuse/S130 eNVM, no named buyer; RT-VET-DD5-05, RT-PHY-DD5-05) while C-33 survives as a side line. See 05_REDTEAM.md (DD5) and 04_DEEPDIVES/open-memory-ip.md §14.)
 
 *Sub-branch:* Embedded ReRAM (oxide 1T1R) via licensed IP at a U.S. trusted foundry · *Materials sense:* mixed:a+c
 
@@ -832,7 +832,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* fabless->foundry (impossible: no foundry offers it), IP licensing (Intel/Micron unlikely to license)
 
-### C-26 — Optane PMem Salvage: Cheap Memory-Mode Capacity for Cascade/Ice Lake Fleets
+### C-26 — Optane PMem Salvage: Cheap Memory-Mode Capacity for Cascade/Ice Lake Fleets — ☠ KILLED (RED-TEAM: DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.)
 
 *Sub-branch:* Optane post-mortem arbitrage (recovered XPoint modules) · *Materials sense:* c-capital
 
@@ -1030,7 +1030,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* expired-patent practice; IP licensing; fabless->foundry
 
-### C-32 — Si gain-cell eDRAM (GCRAM) IP for U.S. trailing-node SoCs
+### C-32 — Si gain-cell eDRAM (GCRAM) IP for U.S. trailing-node SoCs — ☠ KILLED (RED-TEAM: the gain-cell T2 leg was killed (no density/leakage case on sky130, no named buyer; RT-VET-DD5-03, RT-PHY-DD5-03/04) while C-33 survives as a side line. See 05_REDTEAM.md (DD5) and 04_DEEPDIVES/open-memory-ip.md §14.)
 
 *Sub-branch:* Capacitor-less silicon DRAM: 2T/3T gain-cell eDRAM in logic · *Materials sense:* b-process
 
@@ -1566,7 +1566,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* IP licensing (in-license); fabless->foundry; module/appliance
 
-### C-48 — On-prem MoE Box (DRAM-instead-of-HBM inference appliance)
+### C-48 — On-prem MoE Box (DRAM-instead-of-HBM inference appliance) — ☠ KILLED (RED-TEAM: DD6 (Private MoE Inference Appliance (DRAM instead of HBM)) was KILLED by the four-persona red team: The FATAL objection holds. Four concurrent users touch 3.88x one user's expert bytes, so the 1-socket L box serves 1-2 users at >=10 tok/s (6.7-13.3 named), not 4 (27). At authorized-channel RDIMM prices the L box quotes $78,708. A $44.6k two-node Mac Studio cluster matches its single-stream speed with a ~10x faster first token, and U.S.-origin 1T models make it a one-user box for defense. So the L SKU, which carried See 05_REDTEAM.md (DD6) and 04_DEEPDIVES/private-moe-appliance.md §14.)
 
 *Sub-branch:* HBM alternatives at system level: CPU-DRAM-resident MoE inference · *Materials sense:* mixed:a+c
 
@@ -2020,7 +2020,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* SaaS + recert/brokerage (storage service), defense-first niche optional
 
-### C-62 — ProvenRAM: graded, serialized recovered server RDIMMs
+### C-62 — ProvenRAM: graded, serialized recovered server RDIMMs — ☠ KILLED (RED-TEAM: DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.)
 
 *Sub-branch:* Recertified / recovered DRAM (module level) · *Materials sense:* c-capital
 
@@ -2087,7 +2087,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* recert/brokerage
 
-### C-64 — CleanBOM-5949: memory-provenance verification for federal IT sellers
+### C-64 — CleanBOM-5949: memory-provenance verification for federal IT sellers — ☠ KILLED (RED-TEAM: DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.)
 
 *Sub-branch:* Government preference as moat (NDAA Sec. 5949 compliance) · *Materials sense:* none · *Merged from:* C.07, D.11
 
@@ -2131,7 +2131,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* SaaS, data product, defense-first
 
-### C-65 — U.S. hi-rel DDR4/LPDDR4 multi-chip memory design house
+### C-65 — U.S. hi-rel DDR4/LPDDR4 multi-chip memory design house — ☠ KILLED (RED-TEAM: DD7 (Authorized-Aftermarket Legacy DRAM Die Bank (+ hi-rel MCMs)) was KILLED by the four-persona red team: No objection was refuted. All three FATALs were confirmed by the model, and they kill L1, the managed die-bank program and the only line this founder could run. Banking bare die costs a board OEM $186k-347k to manage ~$52k of die, 2.9-5.4x a packaged last-time buy plus dry storage. Board OEMs qualify packaged part numbers, and Micross sells the whole bundle direct (EDSP). L3, the title-taking bank, is killed by the c See 05_REDTEAM.md (DD7) and 04_DEEPDIVES/legacy-dram-diebank.md §14.)
 
 *Sub-branch:* Packaging-only: hi-rel MCM from purchased KGD · *Materials sense:* c-capital
 
@@ -2401,7 +2401,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 ## D. Software & virtual RAM (12 cards)
 
-### C-73 — Memory FinOps Audit for Cloud SaaS
+### C-73 — Memory FinOps Audit for Cloud SaaS — ☠ KILLED (RED-TEAM: DD4 (Memory Efficiency for On-Prem & Self-Hosted Fleets) was KILLED by the four-persona red team: After the accepted objections, the value-supported C-74 fee falls 77%, from $7.36 to $1.66 per node per month. The causes compound: Proxmox already runs KSM, fleets hold less DDR5, the saving is a rental equivalent rather than a purchase avoided, and the vendor's share of a counterfactual is smaller. Meanwhile credible 24/7 on-call plus E&O costs ~$2,900-3,400 a month. The re-run BASE never breaks even, burns through See 05_REDTEAM.md (DD4) and 04_DEEPDIVES/memory-efficiency.md §14.)
 
 *Sub-branch:* Cloud memory right-sizing / FinOps · *Materials sense:* none · *Merged from:* D.01, D.04
 
@@ -2442,7 +2442,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* SaaS; services (fixed-fee audit) -> SaaS
 
-### C-74 — Fleet Memory-Reclaim Autopilot (TMO for on-prem)
+### C-74 — Fleet Memory-Reclaim Autopilot (TMO for on-prem) — ☠ KILLED (RED-TEAM: DD4 (Memory Efficiency for On-Prem & Self-Hosted Fleets) was KILLED by the four-persona red team: After the accepted objections, the value-supported C-74 fee falls 77%, from $7.36 to $1.66 per node per month. The causes compound: Proxmox already runs KSM, fleets hold less DDR5, the saving is a rental equivalent rather than a purchase avoided, and the vendor's share of a counterfactual is smaller. Meanwhile credible 24/7 on-call plus E&O costs ~$2,900-3,400 a month. The re-run BASE never breaks even, burns through See 05_REDTEAM.md (DD4) and 04_DEEPDIVES/memory-efficiency.md §14.)
 
 *Sub-branch:* Transparent memory compression / proactive reclaim / dedup · *Materials sense:* none
 
@@ -2478,7 +2478,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* SaaS (per-node subscription); open-core agent
 
-### C-75 — KV-Cache Tier Integration & Tuning for Self-Hosted LLMs
+### C-75 — KV-Cache Tier Integration & Tuning for Self-Hosted LLMs — ☠ KILLED (RED-TEAM: DD4 (Memory Efficiency for On-Prem & Self-Hosted Fleets) was KILLED by the four-persona red team: After the accepted objections, the value-supported C-74 fee falls 77%, from $7.36 to $1.66 per node per month. The causes compound: Proxmox already runs KSM, fleets hold less DDR5, the saving is a rental equivalent rather than a purchase avoided, and the vendor's share of a counterfactual is smaller. Meanwhile credible 24/7 on-call plus E&O costs ~$2,900-3,400 a month. The re-run BASE never breaks even, burns through See 05_REDTEAM.md (DD4) and 04_DEEPDIVES/memory-efficiency.md §14.)
 
 *Sub-branch:* LLM inference KV-cache management software · *Materials sense:* none
 
@@ -2797,7 +2797,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 ## E. Business-model-first concepts (14 cards)
 
-### C-85 — DIMM Health Subscription: predictive replacement + recovered-DDR4 spares pool
+### C-85 — DIMM Health Subscription: predictive replacement + recovered-DDR4 spares pool — ☠ KILLED (RED-TEAM: DD1 (Provenance & Recertified Memory) was KILLED by the four-persona red team: The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscript See 05_REDTEAM.md (DD1) and 04_DEEPDIVES/provenance-recert.md §14.)
 
 *Sub-branch:* SaaS + spares pool (third-party maintenance for memory only) · *Materials sense:* c-capital
 
@@ -2831,7 +2831,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* SaaS; recert/brokerage (spares supply)
 
-### C-86 — Memory Cost Escalation Index + EPA clause kit
+### C-86 — Memory Cost Escalation Index + EPA clause kit — ☠ KILLED (RED-TEAM: the SaaS-fed Memory Cost Escalation Index leg was killed (panel never reaches the 15 contributors needed to publish; RT-HYP-DD2-01, RT-VC-DD2-01) while the rest of DD2 survives as a downgraded side line. See 05_REDTEAM.md (DD2) and 04_DEEPDIVES/lifecycle-intel.md §14.)
 
 *Sub-branch:* Data product (contract indexation, steel/copper-surcharge model) · *Materials sense:* none
 
@@ -3001,7 +3001,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* financing (memory-as-a-service); recert/brokerage (end-of-lease resale)
 
-### C-91 — Authorized-aftermarket die bank for EOL legacy DRAM (title-taking LTB aggregator)
+### C-91 — Authorized-aftermarket die bank for EOL legacy DRAM (title-taking LTB aggregator) — ☠ KILLED (RED-TEAM: DD7 (Authorized-Aftermarket Legacy DRAM Die Bank (+ hi-rel MCMs)) was KILLED by the four-persona red team: No objection was refuted. All three FATALs were confirmed by the model, and they kill L1, the managed die-bank program and the only line this founder could run. Banking bare die costs a board OEM $186k-347k to manage ~$52k of die, 2.9-5.4x a packaged last-time buy plus dry storage. Board OEMs qualify packaged part numbers, and Micross sells the whole bundle direct (EDSP). L3, the title-taking bank, is killed by the c See 05_REDTEAM.md (DD7) and 04_DEEPDIVES/legacy-dram-diebank.md §14.)
 
 *Sub-branch:* Authorized aftermarket / lifetime supply · *Materials sense:* c-capital
 
