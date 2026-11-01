@@ -397,7 +397,7 @@ All of it is copyable.
 
 The test was also under-budgeted and triple-booked (RT-VC-DD6-10). K7's 20 conversations at 3 h each is 60 h, more than the ~55 h budget, and it ran on the same dates as DD7's and DD2's tests.
 
-**If a reopen trigger fires (§14.4), run this instead.** It runs on DD6's own calendar, alone, over 6 weeks and ~80 founder hours with a time log. The ~$7k budget and $9,500 hard cap are unchanged.
+**If a reopen trigger fires (§14.4), run this instead.** It runs on DD6's own calendar, alone, over 6 weeks and ~80 founder hours with a time log. The ~$7k budget (Phase 4 notes §13: ~$6.5k) and $9,500 hard cap [ESTIMATE: set under the <$10k kill-experiment ceiling, notes §13] are unchanged.
 
 | Test | Pass | Fail → action | Changed because |
 |---|---|---|---|

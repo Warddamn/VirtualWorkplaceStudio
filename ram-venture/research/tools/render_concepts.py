@@ -70,7 +70,10 @@ def main():
     rule5 = (" Rule 5 coverage (counted from `research/phase2/concepts_master.json`, mixed cards counted under each "
              f"sense they touch): **(a) {n_sense['a']} cards**, **(b) {n_sense['b']} cards**, **(c) {n_sense['c']} cards**, "
              f"{n_none} cards with no materials sense (pure software/service). Survivors: (a) {surv_list('a')}, "
-             f"(b) {surv_list('b')}, (c) {surv_list('c')}.")
+             f"(b) {surv_list('b')}, (c) {surv_list('c')}."
+             " Mission §3E: all eight business-model lenses are applied to every surviving concept in the lens matrix "
+             "in `SUMMARY_TABLE.md` (built from `research/phase6/lens_matrix.json`); each card's *Business-model lenses* "
+             "line records only the lenses its author judged to fit at ideation time.")
     lines = [
         "# 02 — CONCEPTS",
         "",

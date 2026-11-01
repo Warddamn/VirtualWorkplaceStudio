@@ -55,6 +55,26 @@ for c in alive:
         f"{c.get('score_moonshot', '')} ({c.get('rank_moonshot', '')}) | {c.get('trl', '')} | "
         f"{c.get('time_to_first_revenue_months', '')} | {c.get('gross_margin_mid_pct', '')}% | {c.get('survives_glut', '')} | "
         f"{dd_cell} | {status} | {r} |")
+lm_path = RV / "research/phase6/lens_matrix.json"
+if lm_path.exists():
+    lm = json.loads(lm_path.read_text(encoding="utf-8"))
+    lenses = lm["lenses"]
+    mark = {"BEST": "★ BEST", "VIABLE": "viable", "WEAK": "weak", "N/A": "n/a"}
+    lines += ["", "## Business-model lens matrix (mission §3E: every lens applied to every surviving concept)", "",
+              "Verdicts per lens (★ BEST = the lens the concept should use). Full one-line assessments follow the table. "
+              "Source: `research/phase6/lens_matrix.json`.", "",
+              "| ID | " + " | ".join(lenses) + " |", "|---|" + "---|" * len(lenses)]
+    for row in lm["rows"]:
+        cells = {c["lens"]: c for c in row["cells"]}
+        lines.append(f"| {row['id']} | " + " | ".join(mark.get(cells.get(l, {}).get("verdict", ""), cells.get(l, {}).get("verdict", ""))
+                                                    for l in lenses) + " |")
+    lines += ["", "<details><summary><b>Lens-by-lens assessments for each surviving concept</b></summary>", ""]
+    for row in lm["rows"]:
+        lines += [f"**{row['id']} {row.get('name', '')}** — {row.get('summary', '')}", ""]
+        for c in row["cells"]:
+            lines.append(f"- *{c['lens']}* ({c['verdict']}): {c['note']}")
+        lines.append("")
+    lines += ["</details>"]
 lines += ["", "## Kill tally", "",
           "| Stage | Killed |", "|---|---|"]
 from collections import Counter

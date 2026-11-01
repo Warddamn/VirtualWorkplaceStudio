@@ -32,7 +32,7 @@
 |---|---|
 | About 15 h/week alongside the day job | Founder profile (MISSION); LI.py input `trials_cap_pt` ("15 h/wk = ~65 h/month") |
 | ≤$500 before K0; DD2 test **~$1,950 planned** (~$2,950 if the $1,000 consult is not deferred), hard cap **$5,000**; **≤$34k ever**; **$5k cash floor** | DEC PRIMARY.spend |
-| Plan cash check: max founder draw **$30,850** vs the $34k cap; cash low **$9,150** at m16 (2028-03) vs the $5k floor. If K3+K4 pass and the deferred $6k is spent: **$36,850** and **$3,150**, over the cap and under the floor unless results beat BASE | LI.py §10 PLAN rows; DEC PRIMARY.plan_cash |
+| Plan cash check: max founder draw **$30,850** vs the $34k cap; cash low **$9,150** at m16 (2028-03) vs the $5k floor. If K3+K4 pass and the deferred $6k is spent: **$36,850** and **$3,150**, over the cap and under the floor unless results beat BASE — so the **funding rule** applies: the deferred $6k is spent only if index prepayments (≥$6k) or a ≤$10k note from an index LOI signer/strategic cover it; otherwise the index stays closed and the cap/floor hold | LI.py §10 PLAN rows; DEC PRIMARY.plan_cash; DEC MOONSHOT.funding_rule |
 | $40,000 deployable | LI.py `founder_cash` (ASSUMPTIONS A-03) |
 | The $1,000 government-contracts consult and the $5,000 antitrust opinion wait until K3 **and** K4 pass. November spend is therefore **$1,950**, with $1,000 held in reserve | DEC MOONSHOT.spend; LI §10 line items |
 | DD5: $0 in November (letters only). Up to **$9.1k** only if DD2 fails on 2026-12-01 **and** both no-release statements arrive | DEC FALLBACK.spend |

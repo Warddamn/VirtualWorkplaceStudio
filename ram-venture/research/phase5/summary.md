@@ -60,7 +60,7 @@ Sources: `research/phase5/responses_*.json`; `models/lifecycle-intel.py` and `mo
 
 ### How the outcome changed the decision
 
-Round 1 killed DD1, DD3 and DD4 and cut DD2 and DD5 to side lines. The study then ran round 2 on the strongest untested survivors (`03_SCORING.md` §9). DD6, the best-fit hardware concept and the only one a glut helps, was the PRIMARY candidate; DD7, the strongest T2+ path, was the MOONSHOT candidate. Round 2 killed both: DD6 nets −$29,411 over 36 months and needs a $25k bridge, and DD7's Plan B returns 0.29× on $11.49M.
+Round 1 killed DD1, DD3 and DD4 and cut DD2 and DD5 to side lines. The study then ran round 2 on the strongest untested survivors (`03_SCORING.md` §9). DD6, the best-fit hardware concept and, per the round-2 selection, the only one a glut helps (its deep dive found the gain small: GLUT m36 ARR $66,969 vs BASE $63,873), was the PRIMARY candidate; DD7, the strongest T2+ path, was the MOONSHOT candidate. Round 2 killed both: DD6 nets −$29,411 over 36 months and needs a $25k bridge, and DD7's Plan B returns 0.29× on $11.49M.
 
 The three judges then reached the same picks independently (`research/phase6/judge_*.json`):
 

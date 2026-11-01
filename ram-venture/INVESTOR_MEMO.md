@@ -48,7 +48,7 @@ This case is thin. The founder ships software fast and works in product developm
 | Covers $10k/mo salary | never | never | never |
 
 - **Timing:** first revenue at m6 (2027-05); breakeven at m17, founder unpaid (LI.py §4, §6).
-- **Cash on the plan** ($1,950 test charged; $5k antitrust opinion and $1k consult deferred): max draw **$30,850** (cap $34k), cash low **$9,150** at m16 (floor $5k). If K3+K4 pass and that $6k is spent: **$36,850** and **$3,150**, over the cap and under the floor unless results beat BASE (LI.py §10 PLAN rows).
+- **Cash on the plan** ($1,950 test charged; $5k antitrust opinion and $1k consult deferred): max draw **$30,850** (cap $34k), cash low **$9,150** at m16 (floor $5k). If K3+K4 pass and that $6k is spent: **$36,850** and **$3,150**, over the cap and under the floor unless results beat BASE (LI.py §10 PLAN rows) — so that $6k is spent only if index prepayments or a ≤$10k note cover it.
 - **Margin:** gross margin reaches 57% by m36 (LI.py §3).
 - **Downside:** a 30% miss on price or conversion takes the BASE cash low to −$11,109 or −$4,943 (LI.py §7).
 

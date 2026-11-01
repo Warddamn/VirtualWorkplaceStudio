@@ -42,7 +42,8 @@
   "economics": "Only credible >$2M path in the study (03_SCORING.md \u00a76: $2-10M ARR upside if it becomes the reference index cited in contracts); ceiling judge puts odds at ~3%",
   "gate": "K3 >=2 signed LOIs naming a live contract/surcharge schedule that would cite the index (and why TrendForce/open-book doesn't serve it) + K4 >=10 signed PO-price contribution agreements, inside the DD2 test window",
   "spend": "$0 marginal (asks ride on DD2 calls); defer the $1k gov-contracts and $5k antitrust opinions until K3+K4 pass",
-  "confidence": "All three judges agree no MOONSHOT honestly qualifies (judge confidence in that call: 0.7-0.8; the ceiling judge's 0.03 is the odds that the C-86 option itself succeeds)"
+  "confidence": "All three judges agree no MOONSHOT honestly qualifies (judge confidence in that call: 0.7-0.8; the ceiling judge's 0.03 is the odds that the C-86 option itself succeeds)",
+  "funding_rule": "Funding rule (Phase 7): if K3+K4 pass, the deferred $6k of index legal work (the $5k antitrust opinion + $1k gov-contracts consult) is spent only if it is covered by (a) index pre-sale deposits/LOI prepayments of >=$6k or (b) a <=$10k convertible note from an index LOI signer or a strategic; otherwise the index stays closed. The $34k draw cap and $5k cash floor are never breached."
  },
  "watch_list": [
   {
