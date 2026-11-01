@@ -1,0 +1,763 @@
+{
+ "batch": "09",
+ "auditor": "p3-audit-09",
+ "verdicts": [
+  {
+   "id": "C-58",
+   "verdict": "KILL",
+   "kill_rule": "R3-FAB/T4",
+   "reason": "The card is a new U.S. 300mm DRAM fab: about 20k wpm on a licensed 25-46nm flow, with $2.0-3.5B of capex by its own model. That is T4, which mission rule 3 and A-11 forbid. It also loses on its only axis. Micron Manassas has shipped 1-alpha DDR4/LPDDR4 to the same long-lifecycle buyers since 2026-05-22 at ~2.7x the bits per wafer. The card's own $5.5-7.8/GB cost matches or exceeds the $7.2/GB A-05 glut DDR4 price it would meet on landing (~2031). The licensable legacy-flow route is going to Micron too: Micron signed to buy PSMC's 25/38nm-capable Tongluo fab for $1.8B, and PSMC is taking a Micron 1Y license (via search snippet).",
+   "evidence_check": [
+    {
+     "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Manassas 1-alpha DDR4 since 2026-05-22 is a canonical 01_LANDSCAPE 6.1 fact; not re-opened"
+    },
+    {
+     "url": "https://www.trendforce.com/news/?p=65146",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Nanya 3Q26 GM 85.7% is canonical in 01_LANDSCAPE 0; trendforce.com blocked"
+    },
+    {
+     "url": "https://semiwiki.com/forum/threads/chinas-cxmts-ddr5-reveals-3-year-technology-gap.23270/latest",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Supports density only; the '8 years and tens of $B' gloss is the card's"
+    },
+    {
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "1b ~0.436 Gb/mm2 is used in other audits; the 25nm-class 0.11 figure is the card's estimate"
+    },
+    {
+     "url": "https://www.storagereview.com/news/micron-and-sk-hynix-commit-billions-to-memory-capacity-but-almost-nothing-lands-before-2028",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Not needed for the verdict"
+    },
+    {
+     "url": "",
+     "status": "unreachable",
+     "supports": "unknown",
+     "note": "Qimonda Richmond / CXMT-Qimonda document citation has no URL; [UNVERIFIED-training]; the verdict does not depend on it"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 0,
+     "why": "Revenue starts ~2031, during or after the glut, where the card's own $5.5-7.8/GB cost roughly equals the $7.2/GB DDR4 glut price. The 60-65% 2026 margin is never realized."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Micron Manassas VA (1-alpha DDR4/LP4 since 2026-05-22, $275M CHIPS). Micron is also absorbing PSMC's Tongluo P5 fab ($1.8B LOI, Jan-2026), and PSMC is taking a Micron 1Y license. Winbond, Nanya (Taiwan); CXMT (China).",
+     "why": "The PSMC deal shows the licensed-legacy-flow route being absorbed by the incumbent (via search snippet)."
+    },
+    {
+     "field": "evidence",
+     "new_value": "Qimonda/CXMT entry: downgrade to [UNVERIFIED-training], no URL; do not cite as support",
+     "why": "No URL was found or checked."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Micron finds a way to make more DRAM with $1.8bn chip plant purchase",
+     "url": "https://www.theregister.com/2026/01/20/micron_powerchip_fab_acquisition/",
+     "type": "news",
+     "date": "2026-01-20",
+     "shows": "Micron signed an LOI to buy PSMC's Tongluo P5 300mm fab for $1.8B cash, completion expected 2Q26 (closing not confirmed in results); PSMC to join Micron's DRAM supply chain (via search snippet)"
+    },
+    {
+     "title": "Micron Acquires PSMC Fab in Tongluo, Taiwan",
+     "url": "https://www.all-about-industries.com/micron-acquires-psmc-fab-in-tongluo-taiwan-a-5efad0a188c7b546054c4d0c2a7c8e81/?cflt=rel",
+     "type": "news",
+     "date": "2026-01",
+     "shows": "PSMC's existing DRAM capacity is 25nm/38nm (TrendForce); PSMC expected to receive a Micron 1Y license; PSMC scaling back non-AI business and phasing out low-margin products (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-59",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's business is a U.S.-based fabless DRAM brand selling DDR4/LPDDR4 with long-term support on foundry or KGD silicon. Alliance Memory already runs exactly that model. It describes itself as a fabless maker of pin-for-pin drop-in DRAM/SRAM with long-term support, and its DDR4 8Gb AS4C1G8D4 is in distribution (via search snippets). Intelligent Memory, Etron and Zentel do the same. A newcomer sells the same lifecycle axis with no track record, ~$15M of NRE and first revenue at 36-48 months, past the 36-month ceiling, so the named industrial/avionics buyer gets worse price, availability and longevity credibility. The supply premise is also weakening: PSMC, the named DRAM foundry, is selling its Tongluo fab to Micron ($1.8B LOI, Jan-2026), taking a Micron 1Y license and phasing out low-margin legacy products (via search snippet).",
+   "evidence_check": [
+    {
+     "url": "https://etron.com/kgdm/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Open legacy KGD program per 01_LANDSCAPE 6.1 row 29"
+    },
+    {
+     "url": "https://winbond.com/hq/product/customized-memory-solution/kgd/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Open legacy KGD program per 01_LANDSCAPE 6.1 row 29. If the venture only buys Winbond KGD and packages it, it is a reseller of an incumbent's die, not a die designer"
+    },
+    {
+     "url": "https://www.trendforce.com/news/2025/07/09/news-ddr4-exit-timeline-unfolds-for-top-memory-makers-plans-for-samsung-sk-hynix-and-micron",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "The DDR4 EOL timeline is consistent with 01_LANDSCAPE 3.3; trendforce blocked"
+    },
+    {
+     "url": "https://www.trendforce.com/news/2025/09/02/news-samsung-sk-hynix-reportedly-delay-phase-out-to-2026-as-ddr4-becomes-unexpected-cash-cow/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with landscape"
+    },
+    {
+     "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows buyer EOL pain, not willingness to adopt an unproven brand"
+    },
+    {
+     "url": "https://www.trendforce.com/news/2025/04/23/news-micron-reportedly-joins-samsung-in-cutting-ddr4-output-spurring-opportunities-for-taiwanese-suppliers/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Legacy demand is shifting to existing Taiwanese suppliers, not to new brands"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Alliance Memory (U.S.-based fabless legacy DRAM brand; 'long-term support'; DDR4 8Gb AS4C1G8D4 in distribution; stock in U.S./Shanghai/Taiwan), Intelligent Memory, Etron, Zentel, ISSI. PSMC's DRAM foundry capacity is shifting toward Micron (Tongluo sale, 1Y license).",
+     "why": "Alliance Memory is the exact model, and the card lists it without drawing the conclusion (via search snippets)."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "none vs incumbents: the same lifecycle/supply-security axis Alliance Memory and Intelligent Memory already sell, with no track record and worse wafer access",
+     "why": "A buyer paying for longevity picks the supplier with a longevity record."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "This is Alliance Memory's business model with no history, ~$15M NRE and 36-48 months to revenue. Its named foundry (PSMC) is pivoting its DRAM capacity to Micron and phasing out low-margin legacy work, so a newcomer gets wafers only after prices collapse.",
+     "why": "Adds the verified incumbent and the PSMC pivot."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes technically; newcomer wafer supply doubtful as PSMC's DRAM capacity moves to Micron",
+     "why": "PSMC/Micron deal (via search snippet)."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Micron finds a way to make more DRAM with $1.8bn chip plant purchase",
+     "url": "https://www.theregister.com/2026/01/20/micron_powerchip_fab_acquisition/",
+     "type": "news",
+     "date": "2026-01-20",
+     "shows": "Micron signed an LOI to buy PSMC's Tongluo P5 300mm fab for $1.8B cash, completion expected 2Q26 (closing not confirmed in results); PSMC to join Micron's DRAM supply chain (via search snippet)"
+    },
+    {
+     "title": "Micron Acquires PSMC Fab in Tongluo, Taiwan",
+     "url": "https://www.all-about-industries.com/micron-acquires-psmc-fab-in-tongluo-taiwan-a-5efad0a188c7b546054c4d0c2a7c8e81/?cflt=rel",
+     "type": "news",
+     "date": "2026-01",
+     "shows": "PSMC's existing DRAM capacity is 25nm/38nm (TrendForce); PSMC expected to receive a Micron 1Y license; PSMC scaling back non-AI business and phasing out low-margin products (via search snippet)"
+    },
+    {
+     "title": "Alliance Memory line card",
+     "url": "https://www.ibselectronics.com/manufacturers/alliance-memory/?page=1",
+     "type": "other",
+     "date": "unknown",
+     "shows": "Fabless legacy/new memory, pin-for-pin drop-in replacements, long-term support; DDR4 8Gb AS4C1G8D4-75BCN listed (via search snippet)"
+    },
+    {
+     "title": "Introducing our partner Alliance Memory",
+     "url": "https://www.alantys.com/introducing-our-partner-alliance-memory/",
+     "type": "other",
+     "date": "unknown",
+     "shows": "Up to 10 years of product support (reseller claim); stock in U.S., Shanghai and Taiwan (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-60",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card itself gives wins_axis as 'None that is paid for'. Per 01_LANDSCAPE: U.S. assembly adds $8.63 per 64GB RDIMM, 0.7% of a $1,300 contract module (4.2). TAA treats Korean and Taiwanese DRAM as compliant, Section 232 charges memory 0%, and the FTC allows only 'Assembled in USA' on foreign die (7.3). Without die allocation the brand buys components at street prices and competes with Kingston, PNY and the Taiwanese module houses at a 5-15% margin. Landscape 10.2 lists this path as closed, and C-70, the all-domestic variant, was already killed.",
+   "evidence_check": [
+    {
+     "url": "https://www.storagenewsletter.com/2025/12/05/micron-announces-exit-from-crucial-consumer-business/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Crucial exit (announced 2025-12-03) is consistent with other agents' logs, but it opens no premium. Kingston, PNY and others fill the gap"
+    },
+    {
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical in 01_LANDSCAPE 4.3"
+    },
+    {
+     "url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Street price only; does not bear on the kill"
+    },
+    {
+     "url": "https://www.trendforce.com/research/download/RP260114IU",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Abstract only: allocation goes to strategic OEMs, which supports the no-die point"
+    },
+    {
+     "url": "https://www.koreatimes.co.kr/opinion/20260915/what-us-tariff-push-means-for-koreas-semiconductor-industry",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Memory pays 0% under Section 232 Phase 1, canonical in 01_LANDSCAPE 7.3"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "6-12 months only at street-priced components. Contract-price die allocation is unavailable to a new module brand in 2026 (TrendForce: supply prioritized to strategic OEMs)",
+     "why": "Clarifies that the 9-month figure assumes buying at spot, which removes the remaining margin."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-61",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "No kill rule applies. Long-term consignment storage of components is an established practice with a standard (IEC 62435; Part 4 covers nitrogen storage), the EOL pain is documented, and the venture needs no fab or die. The field is more crowded than the card says: Semitron and Astute sell nitrogen long-term storage that accepts customer-supplied stock, Micross publishes long-term-storage guidance next to its die banking, and Super Dry/Totech sells dry-storage systems OEMs install in-house (all via search snippets). The card's own model loses money below ~8 OEMs and earns ~27% GM at 10 OEMs ($7.5M under management), so a 50% mid margin overstates years 1-3. Micron's Manassas DDR4 targets the same long-lifecycle buyers (01_LANDSCAPE 0 item 11), which shrinks LTB demand for Micron-designed parts and leaves mainly Samsung/SK hynix DDR4 and DDR3 EOLs.",
+   "evidence_check": [
+    {
+     "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows the EOL pain, not willingness to pay ~4%/yr for third-party storage"
+    },
+    {
+     "url": "https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Also cited by the C-67 audit. Zero authorized stock also means OEMs cannot place LTBs right now, which delays inventory under management"
+    },
+    {
+     "url": "https://www.eenewseurope.com/en/micron-ramps-us-made-ddr4-production-in-virginia/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Buffer data is plausible. The same article's Manassas ramp is a substitute for LTBs on Micron parts"
+    },
+    {
+     "url": "https://www.trendforce.com/news/2025/07/09/news-ddr4-exit-timeline-unfolds-for-top-memory-makers-plans-for-samsung-sk-hynix-and-micron",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with 01_LANDSCAPE 3.3"
+    },
+    {
+     "url": "https://www.trendforce.com/news/2025/09/02/news-samsung-sk-hynix-reportedly-delay-phase-out-to-2026-as-ddr4-becomes-unexpected-cash-cow/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with landscape"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Rochester Electronics (die/wafer banking, Newburyport MA), Micross (die banking; long-term storage guidance), Semitron (DE, nitrogen long-term packaging of customer-supplied stock), Astute Group (nitrogen/humidity-controlled storage), Super Dry/Totech (OEM in-house dry-storage systems), distributor bonded inventory (Arrow, Avnet), HTV (DE); lifecycle data from SiliconExpert and Z2Data",
+     "why": "Adds verified storage-service and DIY-equipment competitors (via search snippets)."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 25,
+     "why": "The card's own model is negative below ~8 OEMs and ~27% at 10 OEMs. 25 OEMs (~70%) is a year-4+ outcome, not a mid case."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "negative below ~8 OEMs; ~27% at 10 OEMs ($7.5M under management); ~70% only at 25 OEMs ($25M), realistically year 4+",
+     "why": "Same model, with the scale timing made explicit."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 15,
+     "why": "Storage revenue needs insurance, ISO 9001/AS6081 groundwork and an OEM willing to move $0.5-2M of inventory to a vault with no track record. With zero authorized DDR4 stock (Findchips 2026-05), OEMs cannot even place LTBs today. LTB-sizing software alone could invoice earlier."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "9-12 months for paid LTB-sizing software pilots; 15-18 months for the first consignment storage contract (insurance, quality system, first OEM LTB actually placed)",
+     "why": "Splits software and vault revenue."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "As the card says, plus a caveat: Micron's Manassas fab now makes 1-alpha DDR4/LPDDR4 for auto, industrial, medical and defense buyers. That reduces LTB need for Micron-designed parts, so demand is concentrated in Samsung/SK hynix DDR4 and DDR3/DDR3L EOLs.",
+     "why": "Canonical 01_LANDSCAPE 0 item 11 / 6.1 row 2."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Trust, scale and cheap substitutes. OEMs hand $0.5-2M of critical inventory only to an insured vault with a record. Incumbents (Rochester, Micross, distributor bonded stock, Semitron/Astute) already store parts. An OEM can buy an N2 dry cabinet for ~$5k and store in-house, which caps the 4%/yr fee. Breakeven needs ~8-10 OEMs.",
+     "why": "Adds the DIY alternative that sets the price ceiling."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal-to-no until ~10+ OEMs; ~27% GM at 10",
+     "why": "Matches the card's own model."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Long-Term Packaging for Electronic Components",
+     "url": "https://www.semitron.de/en/test-house-services/long-term-packaging/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Nitrogen-purged long-term packaging; accepts products from customer supply sources (via search snippet)"
+    },
+    {
+     "title": "Astute Group long-term storage",
+     "url": "https://www.astutegroup.com/?p=47448",
+     "type": "company",
+     "date": "2022-10-25",
+     "shows": "Humidity- and nitrogen-controlled storage with access control (via search snippet)"
+    },
+    {
+     "title": "Micross Technical Booklet: Long-Term Storage",
+     "url": "https://shop.micross.com/pdf/Micross_Technical_Booklet-Long-Term_Storage_Can_o_Worms.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Incumbent die banker publishes long-term-storage guidance (via search snippet)"
+    },
+    {
+     "title": "Super Dry Totech expands long-term storage solutions offering",
+     "url": "https://circuitsassembly.com/ca/current/33568-super-dry-totech-expands-long-term-storage-solutions-offering.html",
+     "type": "news",
+     "date": "unknown",
+     "shows": "Dry-storage systems OEMs can run in-house (via search snippet)"
+    },
+    {
+     "title": "IEC 62435-4 Long-term storage of electronic semiconductor devices: Storage",
+     "url": "https://www.vde-verlag.de/iec-normen/preview-pdf/info_iec62435-4{ed1.0}b.pdf",
+     "type": "standard",
+     "date": "unknown",
+     "shows": "Long-term storage practice standardized, incl. nitrogen positive-pressure storage (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-62",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "This is an existing U.S. trade (TRL 9, T0) under a real price umbrella, so no kill rule applies. Used 64GB DDR4 RDIMMs ran $250-370 over the 12 months to Aug-2026 ($3.9-5.8/GB; amcompute, per p3-audit-11), above the landscape's $2/GB O3 kill line. But the 32GB PC4-2933Y asking prices I found run from $24 to $319 per module (~$0.75-10/GB), so the sold-price median, the O3 kill test, has still not been pulled. The glut claim is too kind: the card's 13-28% glut contribution assumes buy prices reprice instantly, while 01_LANDSCAPE 10.1 puts resale contribution at 1-6% in a glut. The 'serialized test record' moat is thin, because SPD already carries an assembly serial number that decode-dimms prints.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/memtest86plus/memtest86plus",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Opened by C via clone. I did not re-clone, but I checked decode-dimms instead (see new_evidence)"
+    },
+    {
+     "url": "https://github.com/stressapptest/stressapptest",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Well-known Apache-2.0 tool"
+    },
+    {
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical spot reference in 01_LANDSCAPE 4.3"
+    },
+    {
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "2023 trough $1.30, canonical in 01_LANDSCAPE 4.3"
+    },
+    {
+     "url": "https://www.guru3d.com/story/ddr4-memory-prices-now-also-rise-as-dram-supply-shortages-intensify-through-2028/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Barclays shortage view; 01_LANDSCAPE house call is a 2028 turn"
+    },
+    {
+     "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Comparable confirmed in 01_LANDSCAPE 6.1 row 33"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "survives_glut",
+     "new_value": "no",
+     "why": "As a resale business it fails the glut test. 01_LANDSCAPE 10.1 (O3) gives 1-6% contribution in the glut, and inventory held through the fall loses value."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "Resale contribution drops to ~1-6% (01_LANDSCAPE O3), and DDR4 bought at 2026-27 peak prices loses value in transit. Only the serialized test-record layer survives, and only if it becomes part of a provenance or authentication service (C-64, C-92).",
+     "why": "Replaces the instant-repricing assumption with the canonical glut case."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "17-32% contribution in 2026 if ITAD lots can be bought at ~60% of resale (buy side UNVERIFIED; ITADs also sell direct); ~1-6% in the A-05 glut (01_LANDSCAPE O3); negative on eBay in a 2023-like trough",
+     "why": "The glut band was based on instant repricing."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 20,
+     "why": "A 50/50 eBay/B2B mix at $6/GB gives ~25%, less ~3-5 points of inventory value loss as DDR4 peaks in 2026-27 (the card's own note)."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "No moat and a closing window. The resale spread is a bet on DDR4 prices that peak in 2026-27, so the line must be cash-positive by end-2027 (01_LANDSCAPE F2). ITADs sell direct, and hyperscalers reuse DDR4 behind CXL. The serialized ledger is copyable because SPD already holds an assembly serial that decode-dimms prints. DoD is closed (DFARS 252.246-7008).",
+     "why": "Adds the landscape timing rule and the copyability of the differentiator."
+    },
+    {
+     "field": "profitable",
+     "new_value": "yes in 2026-27 / no in a glut - ~20% contribution now, ~1-6% in the A-05 glut",
+     "why": "Matches the corrected glut case."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "i2c-tools mirror: eeprom/decode-dimms",
+     "url": "https://github.com/mozilla-b2g/i2c-tools",
+     "type": "code",
+     "date": "2018-09-27",
+     "shows": "Opened via git clone. decode-dimms prints 'Assembly Serial Number' and 'DRAM Manufacturer' from SPD, so a serial-keyed ledger is commodity code"
+    },
+    {
+     "title": "eBay listing: used Samsung 32GB 2Rx4 PC4-2933Y RDIMM",
+     "url": "https://www.ebay.com/itm/405909777866",
+     "type": "listing",
+     "date": "unknown",
+     "shows": "Asking $24 (asking, not sold; date unclear) (via search snippet)"
+    },
+    {
+     "title": "eBay product page: Samsung 32GB PC4-23400 RDIMM",
+     "url": "https://www.ebay.com/p/22059250442",
+     "type": "listing",
+     "date": "unknown",
+     "shows": "Asking $225 for 32GB (via search snippet)"
+    },
+    {
+     "title": "Samsung 32GB 2Rx4 PC4-2933Y-R refurbished",
+     "url": "https://pcserverandparts.com/samsung-32gb-2rx4-pc4-2933y-r-ddr4-ecc-rdimm-memory-m393a4k40db2-cvfby-refurbished/",
+     "type": "listing",
+     "date": "2026",
+     "shows": "Refurbished 32GB listed at $318.99 (via search snippet)"
+    },
+    {
+     "title": "1X 32GB PC4-2933Y 2Rx4 Micron MTA36ASF4G72PZ-2G9",
+     "url": "https://www.ubbcentral.com/store/item/1X-32GB-PC4-2933Y-2Rx4-Crucial-Micron-MTA36ASF4G72PZ-2G9-ECC-REG-23400_166719454663.html",
+     "type": "listing",
+     "date": "unknown",
+     "shows": "Used 32GB at $46 each, 46 available, date unclear (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-63",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's own model says rebuilding destroys value. An intact, tested 32GB RDIMM is worth ~$192, against ~$72 of harvested x4 chips before a new PCB, RCD, assembly and 5-10% reball fallout. At the A-05 glut a harvested chip ($2.5) is worth less than its rework cost ($3.6). For the named price-sensitive buyer, an intact used module (C-62) beats a rebuilt one on price, reliability and legality. Reballed parts read as suspect counterfeits under AS6171, and x4 server die fit only RDIMMs (01_LANDSCAPE 6.3, 10.2). The only viable fragment, disclosed BGA repair, is already folded into C-62.",
+   "evidence_check": [
+    {
+     "url": "https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Legacy shortage is canonical; trendforce blocked"
+    },
+    {
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical spot reference"
+    },
+    {
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical trough"
+    },
+    {
+     "url": "",
+     "status": "unreachable",
+     "supports": "unknown",
+     "note": "Champion Spark Plug / 18 U.S.C. 2320 / AS6171 cited without URL [UNVERIFIED-training]. The kill does not depend on it, because the card's own economics fail first"
+    }
+   ],
+   "corrections": [],
+   "new_evidence": []
+  },
+  {
+   "id": "C-64",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The statute and its date are confirmed. FAR Case 2023-008 was proposed in the Federal Register on 2026-02-17, takes effect 2027-12-23 and covers SMIC, CXMT and YMTC plus products that incorporate their chips. Comments closed 2026-04-20, and no final rule was found (via search snippets). But the card's fatal flaw has largely materialized. The proposed rule is a certification (52.240-XX/-YY) after a 'reasonable inquiry', with no third-party audit, no affirmative duty to prove compliance, and a safe harbor for reasonable reliance on supplier certifications under 5949(h). That moves paid demand away from lab attestations for GSA/SEWP resellers, who can rely on OEM certifications, toward OEM/ODM and module suppliers who must actually know the die source. The scan tool is not a moat either: coreboot already reads the DDR4 DRAM-manufacturer bytes 350-351, and decode-dimms prints 'DRAM Manufacturer'.",
+   "evidence_check": [
+    {
+     "url": "https://xenospectrum.com/en/apple-china-memory-federal-procurement-ban-2027/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "The statute date is now confirmed by the Federal Register proposed rule (new_evidence)"
+    },
+    {
+     "url": "https://thenextweb.com/news/apple-lobbying-us-approval-cxmt-blacklisted-memory-chips",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows CXMT pressure on U.S. brands, not willingness to pay for verification"
+    },
+    {
+     "url": "https://gigazine.net/gsc_news/en/20260810-apple-tests-cxmt/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Same"
+    },
+    {
+     "url": "https://github.com/memtest86plus/memtest86plus",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The memtest86+ gap may be real, but other open tools (coreboot, decode-dimms) already read the DRAM-manufacturer field, so it is no moat"
+    },
+    {
+     "url": "https://biz.heraldcorp.com/article/10866656",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "CXMT 9.5% is canonical in 01_LANDSCAPE 10.1"
+    },
+    {
+     "url": "https://www.schumer.senate.gov/newsroom/press-releases/citing-core-national-security-and-economic-reasons-schumer-demands-apple-reject-chinese-military-linked-chips",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "eWeek coverage of senators pressing Apple on CXMT/YMTC seen in search results"
+    },
+    {
+     "url": "https://www.techinsights.com/blog/spectek-pt040-56b-ddr5-dram-micron-1a-memory-floorplan-analysis",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Die-ID teardown is a service, but at TechInsights prices, not $1,200 per sample [UNVERIFIED]"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/memtest86plus/memtest86plus/main/system/jedec_id.h",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "JEP106 IDs accepted as reported by C"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/memtest86plus/memtest86plus/main/system/spd.c",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Accepted as reported by C"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "rule1_status",
+     "new_value": "PARTIAL - statute and FAR Case 2023-008 confirmed; demand for independent verification is NOT supported by the proposed rule (certification after reasonable inquiry, no third-party audit, no affirmative proof, safe harbor for reliance on supplier certifications)",
+     "why": "The core value claim, 'Sec. 5949 pays for verified non-Chinese', is contradicted by the proposed rule text as summarized by Crowell, Covington and Wiley (via search snippets)."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "Sec. 5949 pays for certified non-Chinese after a reasonable inquiry, not for verified non-Chinese. Demand comes from (1) False Claims Act exposure on the certification, (2) the proposed 72-hour reporting window, which needs continuous monitoring, and (3) OEM/ODM and module makers who certify upstream but cannot see the die source from module labels (CXMT die inside third-party modules). Drop the 'concrete gap a software founder can fill' claim: coreboot and decode-dimms already read the SPD DRAM-manufacturer field.",
+     "why": "Re-bases the value claim on the actual proposed rule and removes a non-moat."
+    },
+    {
+     "field": "buyer",
+     "new_value": "Primary: server/PC/appliance OEMs and ODMs, DIMM/SSD module makers and federal systems integrators that must certify upstream and need die-level knowledge. Secondary: GSA MAS/SEWP resellers, who under the 5949(h) safe harbor will mostly rely on OEM certifications and pay little.",
+     "why": "The safe harbor shifts willingness to pay up the supply chain."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Now largely confirmed. The proposed FAR rule (2026-02-17) is certification-based, requires no third-party audit or proof artifacts, and gives a safe harbor for relying on supplier certifications, as Section 889 did. Most sellers can self-attest at near-zero cost. Paid demand shrinks to OEM/module makers and risk-averse integrators. Large compliance-data vendors can add a CXMT flag, and the SPD scanner is commodity code. The final rule could tighten or loosen this.",
+     "why": "Replaces a conditional risk with the observed rule text."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 12,
+     "why": "Buyers are waiting for the final FAR rule (none found as of 2026-11-01), and the 2027-12-23 date pushes purchasing into mid/late 2027."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "9-15 months: SPD-scan plus supplier-attestation 'reasonable inquiry' package piloted with 2-3 OEM/ODM or module makers once the final rule is published; lab die-ID offered only as an optional add-on",
+     "why": "Matches the corrected buyer and the rule timing."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal-to-no - ~70% GM on software, but the certification-based rule and safe harbor cut the paying population well below the card's 37 customers",
+     "why": "Willingness to pay is no longer just 'hinged on the unpublished rule'. The proposed rule points the wrong way."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "No memory-specific Sec. 5949 product found in a 2026-11-01 search [UNVERIFIED]. Adjacent: government-contracts law firms advising on 5949 (Crowell, Wiley, Covington, Mayer Brown, DLA Piper, Reed Smith), supply-chain-illumination vendors (Exiger, Interos, Govini), component-risk data (SiliconExpert, Z2Data), teardown die-ID (TechInsights), counterfeit-test labs (SMT Corp, Micross), OEM self-certification (Dell, HP, Lenovo).",
+     "why": "Adds the advisory incumbents that buyers will hear from first."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "FAR Case 2023-008: Prohibition on Certain Semiconductor Products and Services (proposed rule)",
+     "url": "https://www.govinfo.gov/content/pkg/FR-2026-02-17/html/2026-03065.htm",
+     "type": "government",
+     "date": "2026-02-17",
+     "shows": "Proposed FAR implementation of Sec. 5949, effective 2027-12-23; certification provision 52.240-XX and clause 52.240-YY (via search snippet)"
+    },
+    {
+     "title": "Section 5949 Proposed Rule Puts the FAR Council's Chips on the Table",
+     "url": "https://www.crowell.com/en/insights/client-alerts/section-5949-proposed-rule-puts-the-far-councils-chips-on-the-table",
+     "type": "legal-analysis",
+     "date": "2026-02",
+     "shows": "Reasonable inquiry needs no formal third-party audit; Council declined to require proof artifacts; 72-hour reporting (via search snippet)"
+    },
+    {
+     "title": "FAR Council issues NPRM to implement prohibition on acquisition of certain semiconductors",
+     "url": "https://www.insidegovernmentcontracts.com/2026/02/far-council-issues-notice-of-proposed-rulemaking-to-implement-prohibition-on-acquisition-of-certain-semiconductors/",
+     "type": "legal-analysis",
+     "date": "2026-02",
+     "shows": "Covered products include products incorporating covered semiconductors; no affirmative obligation to provide proof; safe harbor for reliance on supplier certifications (via search snippet)"
+    },
+    {
+     "title": "FAR Council Proposes Rule to Ban Purchases of Certain Semiconductor Products and Services",
+     "url": "https://www.wiley.law/alert-FAR-Council-Proposes-Rule-to-Ban-Purchases-of-Certain-Semiconductor-Products-and-Services",
+     "type": "legal-analysis",
+     "date": "2026-02",
+     "shows": "Prospective application; waivers; safe harbor per 5949(h) (via search snippet)"
+    },
+    {
+     "title": "PSC Urges Clarity and Balance in FAR Semiconductor Prohibition Proposed Rule",
+     "url": "https://pscouncil.org/a/Resources/2026/PSC_Comments_2026Apr_Semiconductor_20260420.aspx",
+     "type": "industry",
+     "date": "2026-04-20",
+     "shows": "Comment period closed 2026-04-20; contractors seeking clarity (via search snippet)"
+    },
+    {
+     "title": "Breaking circuit: how the covered semiconductor ban is reshaping the supply chain",
+     "url": "https://www.reedsmith.com/articles/breaking-circuit-how-covered-semicon-ban-reshaping-supply-chain-usgovcon/",
+     "type": "legal-analysis",
+     "date": "2026",
+     "shows": "Due-diligence tools are part of a reasonable inquiry. That is partial evidence of tool demand (via search snippet)"
+    },
+    {
+     "title": "coreboot src/device/dram/ddr4.c",
+     "url": "https://review.coreboot.org/plugins/gitiles/coreboot/+/67c73110e96ec6f1ec90c12f1ed6aac95107e896/src/device/dram/ddr4.c",
+     "type": "code",
+     "date": "unknown",
+     "shows": "Reads manufacturer ID from DDR4 SPD bytes 350-351 (via search snippet)"
+    },
+    {
+     "title": "Samsung M393A4K40CB1-CRC40 datasheet (SPD table)",
+     "url": "https://download.semiconductor.samsung.com/resources/data-sheet/M393A4K40CB1-CRC40.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "DDR4 SPD bytes 350-351 = DRAM manufacturer ID; 320-321 = module manufacturer ID (via search snippet)"
+    },
+    {
+     "title": "i2c-tools mirror: eeprom/decode-dimms",
+     "url": "https://github.com/mozilla-b2g/i2c-tools",
+     "type": "code",
+     "date": "2018-09-27",
+     "shows": "Opened via git clone. decode-dimms prints 'DRAM Manufacturer' (DDR3 bytes 148-149); DDR4/DDR5 decode is in later i2c-tools releases [UNVERIFIED]"
+    }
+   ]
+  },
+  {
+   "id": "C-65",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "Hi-rel DDR MCMs ship today (TRL 9) and are assembled at U.S. OSATs from open KGD, so no kill rule applies, but the flagship SKU already exists. Teledyne e2v's DDR4T04G72 is a 4GB/8GB, 72-bit (64+8 ECC) DDR4 multi-chip package of Micron die in 15x20 mm. It is rated -55 to 125 C at NASA Level 1 / ECSS Class 1 and has shipped since 2020 (via search snippets), alongside Micross, DDC, Mercury, Frontgrade and 3D Plus. The card's DoD-funding evidence is misapplied: DARPA DV017 funds extreme-environment non-volatile memory, not DRAM MCM packaging. The only plausible opening is a cheaper, U.S.-assembled, non-NASA-Level-1 part for NewSpace and rugged industrial buyers, and qualification plus design-in puts first revenue nearer 36 months.",
+   "evidence_check": [
+    {
+     "url": "https://micross.com/uploads/05827c98-1b61-4d4d-bb3c-04dc1b207e5a/Die_and_Wafer_Flyer_Rev_1_WEB.pdf",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Per the C-69 audit and 01_LANDSCAPE row 23, DRAM is on the line card but Micron is not named, so 'Micron silicon via Micross' is unproven. Micross is also a direct MCM competitor"
+    },
+    {
+     "url": "https://winbond.com/hq/product/customized-memory-solution/kgd/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Open legacy KGD per 01_LANDSCAPE row 29"
+    },
+    {
+     "url": "https://esmt.com.tw/en/Applications/Known-Good-Die",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Open legacy KGD per 01_LANDSCAPE row 29"
+    },
+    {
+     "url": "https://www.jedec.org/node/8358",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "JESD49B.01 exists per landscape"
+    },
+    {
+     "url": "https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "DV017 is a non-volatile memory topic for -269 to +600 C (01_LANDSCAPE 7.1), not DRAM MCM packaging. It does not support 'DoD keeps funding memory packaging' for this product"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Teledyne e2v DDR4T04G72 (4GB/8GB x72 ECC rad-tolerant DDR4 MCM on Micron die, 15x20 mm, -55 to 125 C, NASA Level 1/ECSS Class 1, since 2020), Micross, Mercury Systems, Data Device Corp, Frontgrade, 3D Plus (HEICO), Intelligent Memory",
+     "why": "The card's flagship 8GB x72 ECC DDR4 MCM is already a catalog part with six years of heritage (via search snippets)."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "Hi-rel memory MCMs sell at 10-100x commodity $/bit and die is <15% of ASP (model: ~$457 unit cost vs $800-3,000). The opening is narrower than the card says: a lower-cost, U.S.-assembled, screened-but-not-NASA-Level-1 DDR4/LPDDR4X MCM for NewSpace and rugged-industrial SoMs, where Teledyne e2v's space-grade pricing overshoots. Drop DARPA DV017 as evidence; it is an NVM topic.",
+     "why": "Removes misapplied evidence and narrows the axis to where an entrant could win."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "Substrate design and SI/PI (6-9 months), environmental qualification (6-12), then a design-in at a prime or NewSpace program against parts with flight heritage. The card's own text says 24-36 months, so the upper end is the realistic case for a no-heritage entrant."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "30-42 months: design and SI/PI, environmental qualification and radiation data, then a first design-in; NewSpace/rugged-industrial first, primes later",
+     "why": "Matches the corrected months."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "U.S. assembly and screening at hi-rel OSATs (Micross, QP Technologies, Integra) of imported die. Winbond/ESMT KGD is open. Micron die reaches established hi-rel houses (Teledyne e2v uses it), but startup access through Micross/SpecTek is UNVERIFIED (Micross line card does not name Micron, 01_LANDSCAPE row 23).",
+     "why": "The card asserted Micron die 'via SpecTek/Micross' without support."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "The flagship SKU already ships. Teledyne e2v has sold an x72 ECC 4/8GB DDR4 MCM with NASA Level 1 heritage since 2020, and Micross, DDC, Mercury, Frontgrade and 3D Plus hold flight and field heritage. Qualification plus design-in takes 30-42 months, and Micross is both a die/OSAT supplier and a competitor.",
+     "why": "Names the exact incumbent product."
+    },
+    {
+     "field": "profitable",
+     "new_value": "yes for incumbents with heritage; unproven for a no-heritage entrant",
+     "why": "Separates possibility from entrant economics."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Radiation tolerant DDR4 memory chip DDR4T04G72M",
+     "url": "https://signalintegrityjournal.com/articles/1749-radiation-tolerant-ddr4-memory-chip-ddr4t04g72m",
+     "type": "news",
+     "date": "2020-05",
+     "shows": "Teledyne e2v 4GB DDR4 MCM, 72-bit (64+8 ECC), Micron-based die, 15x20x1.92 mm, SEL >60 MeV.cm2/mg (via search snippet)"
+    },
+    {
+     "title": "Teledyne e2v Introduces First Radiation-Tolerant DDR4 Memory for Space Applications",
+     "url": "https://www.guru3d.com/story/teledyne-e2v-introduces-first-radiation-tolerant-ddr4-memory-for-space-applications/",
+     "type": "news",
+     "date": "2020-05",
+     "shows": "-55 to 125 C, NASA Level 1 / ECSS Class 1 (via search snippet)"
+    },
+    {
+     "title": "Teledyne e2v DDR4T04G72M (Avnet Silica NPI)",
+     "url": "https://my.avnet.com/silica/products/new-products/npi/2020/teledyne-e2v-ddr4t04g72m/",
+     "type": "distributor",
+     "date": "2020",
+     "shows": "DDR4T04G72 4GB/8GB series in distribution (via search snippet)"
+    },
+    {
+     "title": "High-Density Space-Grade DDR4 Data Storage Devices",
+     "url": "https://www.epdtonthenet.net/article/214852/High-Density-Space-Grade-DDR4-Data-Storage-Devices.aspx",
+     "type": "news",
+     "date": "unknown",
+     "shows": "2.4 GT/s; compatible with most processors, SoCs and FPGAs (via search snippet)"
+    }
+   ]
+  }
+ ]
+}
