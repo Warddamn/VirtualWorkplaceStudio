@@ -75,8 +75,8 @@ Author: `p4w-private-moe-appliance` · As of 2026-11-01 · Model: `models/privat
 
 | SKU | Hardware | Models it runs |
 |---|---|---|
-| **L "Team-1T"** | 768 GB DDR5, 48-core EPYC, RTX PRO 6000 | 1T-class at native INT4: Kimi-K2.5, or the U.S.-origin Inkling 975B and Nemotron 3 Ultra 550B |
-| **S "Team-S"** | 384 GB DDR5, 32-core EPYC, RTX 5090 | 200–300B-class (MiniMax-M2.x, DeepSeek-V4-Flash); interactive, with ~5–7 s to first token |
+| **L "Team-1T"** | 768 GB DDR5, 48-core EPYC, RTX PRO 6000 (revised after red team: 832 GB bought, 12 installed + 1 on-site spare RDIMM, RT-PHY-DD6-05; L is out of BASE) | 1T-class at native INT4: Kimi-K2.5, or the U.S.-origin Inkling 975B and Nemotron 3 Ultra 550B |
+| **S "Team-S"** | 384 GB DDR5, 32-core EPYC, RTX 5090 (revised after red team: RTX PRO 5000 Blackwell 48GB at $8,216, RT-VET-DD6-03) | 200–300B-class (MiniMax-M2.x, DeepSeek-V4-Flash); interactive, with ~5–7 s to first token (model §2: 5 s at 2k, 7 s at 8k) |
 
 Both come with:
 
@@ -94,7 +94,7 @@ Both come with:
 
 All figures are from `python3 models/private-moe-appliance.py` with the Phase 5 inputs (BASE unless stated; m1 = 2026-11, m36 = 2029-10). Model §0 lists all 25 input changes, old → new, each with its objection id. Model §0 also reproduces the Phase 4 numbers, which are quoted below in parentheses.
 
-DRAM is `models/dram_cost_stack.py` `ddr5_reference()`: $25.78 per RDIMM user-GB at Q4-26 contract, times a small-buyer premium. That premium was **1.15** in Phase 4 and is now **1.65 before the 2028 turn**, unwinding to 1.15 across 2028. It gives **$42.5/GB, or $2,722 per 64 GB RDIMM** (Phase 4: $1,898). Inputs are logged in `research/assumptions/p4-private-moe-appliance.md` and `p5r-private-moe-appliance.md`.
+DRAM is `models/dram_cost_stack.py` `ddr5_reference()`: $25.78 per RDIMM user-GB at Q4-26 contract, times a small-buyer premium. That premium was **1.15** in Phase 4 and is now **1.65 before the 2028 turn**, unwinding to 1.15 across 2028. It gives **$42.5/GB, or $2,722 per 64 GB RDIMM** (Phase 4: $29.65/GB, $1,897; `dram_price()` × 64 GB at m1). Inputs are logged in `research/assumptions/p4-private-moe-appliance.md` and `p5r-private-moe-appliance.md`.
 
 ### 2.1 Bill of materials and box price (model §1; 22% GM target)
 
@@ -160,7 +160,7 @@ Capacity is now computed from memory bandwidth, not from a concurrency curve fit
 | **Recurring ARR m36** | **$63,873** ($253,693) | **$66,969** ($212,936) | **$68,675** ($197,747) |
 | … of which renewal-tested (delivered ≤ m24) | $22,645 ($75,334) | $25,340 | $26,174 |
 | 36-month revenue | $408,640 ($1,274,019) | $355,501 | $319,431 |
-| Subscription share of 36-month revenue | 17.0% | 21.1% | 24.2% |
+| Subscription share of 36-month revenue [ESTIMATE: Σ monthly sub revenue ÷ 36-mo revenue from the model's simulate() rows; not printed] | 17.0% | 21.1% | 24.2% |
 | Breakeven as run, founder unpaid | m28 (2029-02) | m26 | m25 |
 | Salary-inclusive breakeven / founder full-time | **never / never** (m20 / m23) | never / never | never / never |
 | 36-month net after tax | **−$29,411** ($129,441) | −$24,164 | −$21,971 |
@@ -189,7 +189,7 @@ Capacity is now computed from memory bandwidth, not from a concurrency curve fit
 | COGS +30% after quoting | $63,873 | −$95,730 | never |
 
 - **No single lever reaches full-time.** Phase 4's m23 full-time switch sat on a knife-edge: adding only the $400/month insurance change moves it to m28 and cuts m36 ARR to $201,730 [ESTIMATE: model decomposition run].
-- **Dropping the L box alone, on every other Phase 4 assumption, gives ARR $109,172 and never full-time.** The Phase 4 path depended on L boxes' $12k of gross profit each, and that box fails the bandwidth arithmetic.
+- **Dropping the L box alone, on every other Phase 4 assumption, gives ARR $109,172 and never full-time** [ESTIMATE: model decomposition run, `run_with(P_PHASE4 + mix_L 0)`, BASE; not printed]. The Phase 4 path depended on L boxes' $12k of gross profit each, and that box fails the bandwidth arithmetic.
 - **Component spikes are no longer upside** (RT-VC-DD6-01). Orders now fall 0.5% per 1% the box price sits above the Phase 4 card.
 
 ### 2.6 What must be true (model §8)
@@ -242,7 +242,7 @@ Nobody knows what share of the ~80,000 Level 2 firms keep CUI on-prem. That shar
 **Channels.**
 
 1. **Founder-led direct sales (m3–m12),** at 5 qualified conversations a month.
-2. **MSP/RPO co-sell from m13.** Partners take 10% of hardware and 15% of subscription and add 3 conversations a month. This channel is load-bearing: without it, ARR at m36 drops 44% and full-time slips to m30.
+2. **MSP/RPO co-sell from m13.** Partners take 10% of hardware and 15% of subscription and add 3 conversations a month. This channel is load-bearing: without it, ARR at m36 drops 44% and full-time slips to m30 (Phase 4 inputs [ESTIMATE: `run_with(P_PHASE4)` with no channel, $142,861]). **(Revised after red team, RT-VC-DD6-06:** partners take 15% of hardware and 20% of subscription and add 2 conversations a month. Without the channel, Phase 5 m36 ARR falls 17%, from $63,873 to $52,843, and the 36-month net to −$42,858; model §7.**)**
 3. **Lead magnets.** A reproducible public benchmark on the actual box by m3, and a one-page "how an on-prem LLM box is scoped under CMMC" memo built from Track C (§10).
 
 **Pricing** (model inputs):
@@ -375,15 +375,15 @@ All of it is copyable.
 
 | Role | When | Cost | Where to find |
 |---|---|---|---|
-| **Founder** (product, builds, sales) | ~15 h/week; full-time m23 in BASE | Unpaid, then $10k/month loaded (model) | — |
+| **Founder** (product, builds, sales) | ~15 h/week; never full-time in Phase 5 BASE (Phase 4: m23) | Unpaid ($0 salary paid in 36 months, model §5); $10k/month loaded only after the full-time trigger (model) | — |
 | Employment attorney | m0 | ~$500 [ESTIMATE] | Reviews the agreement before the K0 request |
 | Commercial attorney | m1 | $3,000 (model): MSA, warranty, ITAR terms | East Coast tech-transactions boutique |
 | CMMC RPO or C3PAO advisor | m1, then as needed | $500 consult; ESP review inside the $8k at m9 | The Cyber AB marketplace [UNVERIFIED]; Petronella, CyberSheath, Daymark |
-| **Backup Linux/GPU technician** (U.S. person) | Named before m8 | $85/h. BASE uses only ~25 h (24.5 h) in 36 months, but someone must answer during the founder's day job | Local MSP bench techs; U.S.-person KTransformers and SGLang contributors |
+| **Backup Linux/GPU technician** (U.S. person) | Named before m8 | (Revised after red team, RT-VC-DD6-03, RT-HYP-DD6-06) a $500/month business-hours retainer; Phase 5 BASE books 0 contractor hours (model §6a). Phase 4: $85/h, only ~25 h (24.5 h) in 36 months, but someone must answer during the founder's day job | Local MSP bench techs; U.S.-person KTransformers and SGLang contributors |
 | Advisors: a DIB IT director and a legal-IT director | m1–m3 | 0.25–0.5% equity each [ESTIMATE] | Kill-test interviewees; CMMC Con |
-| Insurance (GL, E&O, cyber) | m6 | $500/month (model) | Tech E&O broker |
-| MSP/RPO partners | m13 | 10% of HW, 15% of subscription | §3 #2, #6 |
-| Field technician | ≥30 boxes under subscription and founder full-time | $7,500/month (model) | Ex-MSP field engineers. **Never triggered in BASE** (22.3 boxes at m36) |
+| Insurance (GL, E&O, cyber) | m6 | $900/month (model; Phase 4 $500, RT-HYP-DD6-01) | Tech E&O broker |
+| MSP/RPO partners | m13 | 15% of HW, 20% of subscription (Phase 4: 10% / 15%; RT-VC-DD6-06) | §3 #2, #6 |
+| Field technician | ≥30 boxes under subscription and founder full-time | $7,500/month (model) | Ex-MSP field engineers. **Never triggered in BASE** (8.2 boxes under subscription at m36, model §5; Phase 4: 22.3) |
 | Channel seller | Only with a T1 raise | ~$10k/month [ESTIMATE] | Ex-Exxact, Puget or MSP account managers |
 
 ---
@@ -450,9 +450,11 @@ From 2028-Q1 (m15) the model takes three paths:
 
 Boxes are priced cost-plus, so a glut lowers the box price.
 
-| Metric (model §1, §3, §5) | BASE | GLUT | SEVERE |
+Phase 4 inputs, reproduced by `run_with(P_PHASE4)`. The ARR, full-time and net rows are printed in model §0; the price, GP and salary rows are model §1/§3/§5 on Phase 4 inputs [ESTIMATE: Phase 4 re-run at the Phase 7 gate, not printed in the current output].
+
+| Metric (model §1, §3, §5; Phase 4 inputs) | BASE | GLUT | SEVERE |
 |---|---|---|---|
-| L box price (Jan-2028 quote) | $62,525 | $35,779 (−43%) | $25,997 (−58%) |
+| L box price (BASE: Nov-2026 quote; GLUT/SEVERE: Jan-2028 quote) | $62,525 | $35,779 (−43%) | $25,997 (−58%) |
 | HW gross profit per L box | $12,105 | $6,756 | $4,799 |
 | 3-yr GP per L customer | $40,366 | $35,016 | $33,060 |
 | **Recurring ARR m36** | **$253,693** | **$212,936 (−16%)** | **$197,747 (−22%)** |
@@ -464,10 +466,10 @@ Boxes are priced cost-plus, so a glut lowers the box price.
 
 - Cheaper boxes lift unit demand slightly (elasticity 0.3), but each box carries 44–60% fewer gross-profit dollars.
 - Hardware gross profit is what pays the founder, so the full-time switch slips 5–7 months.
-- The per-box subscription does not deflate, so the subscription share of revenue rises to 23–28%.
+- The per-box subscription does not deflate, so the subscription share of revenue rises to 23–28% [ESTIMATE: Σ sub revenue ÷ 36-mo revenue, Phase 4 run; not printed].
 - Model §5's "breakeven as run" (BASE m26, GLUT and SEVERE m15) does not mean a glut helps. BASE's earlier full-time switch at m23 briefly pushes EBITDA negative.
 
-**(Superseded by §14: with Phase 5 inputs GLUT and SEVERE are 5–8% above a BASE that never pays the founder; the glut is irrelevant to a business this small.)** Phase 4 verdict: **it survives every glut case, shrinking 16–22%. It is the only concept in the study that still pays its founder through the glut.** The round-2 selection rationale ("the only concept that BENEFITS from a DRAM glut", `selection.json`) is **not supported** at the base elasticity. It holds only if a 43% price cut roughly doubles demand (elasticity 1.0 gives $322k).
+**(Superseded by §14: with Phase 5 inputs GLUT and SEVERE are 5–8% above a BASE that never pays the founder; the glut is irrelevant to a business this small.)** Current model, Phase 5 inputs, BASE / GLUT / SEVERE: L box $78,708 (Nov-2026) / $36,752 / $26,240 (Jan-2028), HW gross profit per L box $13,500 / $6,090 / $4,234 (model §1, §3; L is out of BASE); recurring ARR m36 $63,873 / $66,969 / $68,675; founder full-time never, $0 salary paid; 36-month net −$29,411 / −$24,164 / −$21,971 (model §5). Phase 4 verdict: **it survives every glut case, shrinking 16–22%. It is the only concept in the study that still pays its founder through the glut.** The round-2 selection rationale ("the only concept that BENEFITS from a DRAM glut", `selection.json`) is **not supported** at the base elasticity. It holds only if a 43% price cut roughly doubles demand (elasticity 1.0 gives $322k).
 
 **Caveats:**
 
@@ -655,7 +657,7 @@ Every URL below is logged in `research/sources/*.jsonl` (mostly `p4-private-moe-
 | 36-month net after tax | **−$29,411** | −$24,164 | −$21,971 | $129,441 |
 | External capital drawn | $25,000 | $25,000 | $25,000 | $0 |
 | Founder economic profit | −$228,311 | −$223,064 | −$220,871 | $7,891 |
-| Kill-test-pass case (8% close, 6-month cycle, channel 3/mo) | $86,763 ARR; +$6,446; never full-time | $93,260; +$14,411 | $96,299; +$15,095 | — |
+| Kill-test-pass case (8% close, 6-month cycle, channel 3/mo) | $86,763 ARR; +$6,446; never full-time (model §7) | $93,260; +$14,411 [ESTIMATE: same overrides run on GLUT; not printed] | $96,299; +$15,095 [ESTIMATE: same, SEVERE; not printed] | — |
 
 The economics do not depend on DRAM prices in either direction. A DRAM premium of 1.15 gives −$23,755 and 2.0 gives −$36,496, and the glut cases are 5–8% better than BASE. **What decides the business is the L box's physics and the close rate**, and neither moves with the DRAM cycle.
 
@@ -669,7 +671,7 @@ The economics do not depend on DRAM prices in either direction. A DRAM premium o
 
 **Reason.**
 - **The FATAL objection holds.** CPU decode cannot share expert reads across users: 4 users read 3.88× the bytes. So the L box is a 1–2-user machine. At authorized RDIMM prices it costs $78,708, and a $44.6k Mac cluster matches it with a ~10× faster first token.
-- **The L box was the profit engine.** Without it, even on every other Phase 4 assumption, the founder never goes full-time (ARR $109,172).
+- **The L box was the profit engine.** Without it, even on every other Phase 4 assumption, the founder never goes full-time (ARR $109,172; §2.5).
 - **The accepted commercial corrections make it worse.** Close rate, cycle, channel terms, support cost, insurance and the price response together turn it into a money-losing S-box integrator that needs a bridge before its first order.
 - **Passing the kill test would not change this.** The pass case still never pays a salary.
 

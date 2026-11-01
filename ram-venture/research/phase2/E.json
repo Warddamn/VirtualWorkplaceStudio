@@ -309,7 +309,7 @@
       "fatal_flaw": "A newcomer can only buy at spot (~$27/GB, ~1.7x contract) because makers allocate contract supply to strategic customers. The QoQ rate has slowed from +95% to +12.5%, so the expected 12-month net return is -46% (-22% even if the spot premium persists; e_estimates §3). Only allocation holders buying at contract see ~+7%. It is speculation with no recurring revenue and no moat.",
       "rule1_status": "SUPPORTED",
       "business_model_lenses": "recert/brokerage (trading)",
-      "founder_fit_note": "Mechanically trivial, but it stakes the <$50k on a bet skewed against him.",
+      "founder_fit_note": "Mechanically trivial, but it stakes the <$50k on a bet skewed against them.",
       "possible": "yes - anyone can buy spot inventory",
       "profitable": "no - negative expected value at spot; positive only for holders of contract allocation",
       "doable_by_founder": "marginal - doable mechanically, imprudent financially"
@@ -602,7 +602,7 @@
       "subbranch": "University/lab patent license -> STTR -> defense Phase III",
       "materials_sense": "mixed:a+c",
       "what_it_is": "A small business takes low-cost options on 2-3 lab memory technologies: Sandia's HZO FeRAM and ferroelectric tunnel junctions from its trusted MESA 200mm fab, the Penn/AFRL AlScN 600 C ferroelectric-diode NVM, and Purdue's ALD In2O3 BEOL ferroelectric transistors. It files DoD/NASA STTRs with the inventing researcher as STTR PI, aiming at Phase III sole-source sales or a sublicense to space/defense memory suppliers (Frontgrade, Honeywell SSEC, BAE).",
-      "why_it_could_work": "STTR lets the PI be employed by the research institution, so the founder can keep his day job while the vehicle wins non-dilutive money. Defense topics for exotic NVM exist: DARPA DV017 (~$1.2M Direct-to-Phase-II, 2026) and USAF AF254-D0806 (500 C NVM). Options cost ~$1-10k (p1-ip), and Phase III awards can be sole-source with no dollar cap. Sandia's HZO FeRAM is already at 200mm wafer scale (TRL ~4-5).",
+      "why_it_could_work": "STTR lets the PI be employed by the research institution, so the founder can keep their day job while the vehicle wins non-dilutive money. Defense topics for exotic NVM exist: DARPA DV017 (~$1.2M Direct-to-Phase-II, 2026) and USAF AF254-D0806 (500 C NVM). Options cost ~$1-10k (p1-ip), and Phase III awards can be sole-source with no dollar cap. Sandia's HZO FeRAM is already at 200mm wafer scale (TRL ~4-5).",
       "evidence": [
         {
           "title": "Sandia: Facing radiation challenges head on",
@@ -659,13 +659,13 @@
       "buyer": "AFRL/DARPA program offices, space primes, hypersonic and Venus/geothermal sensor integrators",
       "survives_glut": "yes",
       "glut_reason": "Rad-hard and extreme-environment NVM is priced per part to defense buyers and is indifferent to DDR5 prices.",
-      "fatal_flaw": "It is the grant farm the founder says he does not want. The chance of customer revenue is ~3% per topic attempt and ~15% after five (e_estimates §8). First revenue lands ~46 months out, past the 36-month ceiling. The vehicle depends on a lab PI and a fab it does not control. Tech-transfer listings and patent numbers could not be verified this session.",
+      "fatal_flaw": "It is the grant farm the founder says they do not want. The chance of customer revenue is ~3% per topic attempt and ~15% after five (e_estimates §8). First revenue lands ~46 months out, past the 36-month ceiling. The vehicle depends on a lab PI and a fab it does not control. Tech-transfer listings and patent numbers could not be verified this session.",
       "rule1_status": "SUPPORTED",
       "business_model_lenses": "university/lab patent license; defense-first; fabless->foundry (later)",
       "founder_fit_note": "Marginal: the STTR structure fits a day-job founder, but every technical milestone needs a device PI the founder cannot replace.",
       "possible": "yes - option/STTR/Phase III mechanics are routine; device TRL 3-5",
       "profitable": "marginal - niche defense NVM can be profitable for whoever reaches Phase III, rarely within 4 years",
-      "doable_by_founder": "marginal - he can run the company shell and proposals, not the science"
+      "doable_by_founder": "marginal - they can run the company shell and proposals, not the science"
     },
     {
       "branch": "E",
@@ -720,7 +720,7 @@
       "fatal_flaw": "Buying cyclical peak earnings with leverage. Shortage-inflated EBITDA reverts, and the SBA personal guarantee ties the founder's personal assets to the 2028 glut.",
       "rule1_status": "SUPPORTED",
       "business_model_lenses": "recert/brokerage; module/appliance (acquired); SaaS (bolt-on)",
-      "founder_fit_note": "No: needs ~$420k of equity (he has ~$40k) plus a personal guarantee, at the worst point in the cycle. Revisit in the 2028-29 trough, when the same business sells for trough multiples.",
+      "founder_fit_note": "No: needs ~$420k of equity (they have ~$40k) plus a personal guarantee, at the worst point in the cycle. Revisit in the 2028-29 trough, when the same business sells for trough multiples.",
       "possible": "yes - SBA acquisitions of small distributors are routine",
       "profitable": "no - at 2026 prices; maybe yes if bought in the trough",
       "doable_by_founder": "no - equity gap and guarantee risk"

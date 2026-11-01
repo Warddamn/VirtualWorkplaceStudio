@@ -48,7 +48,7 @@ Nothing is [VERIFIED]. To open the primaries, the session's network settings nee
 2. **There is a funded competitor in provenance.** OBSIDIA Semiconductors holds a CHIPS R&D LOI for up to **$34M** for counterfeit and malicious component identification (2026-07-29). Phase 2 should card OBSIDIA as a competitor and possible partner or acquirer.
 3. **Kepler ($245M LOI) shows Commerce funding new AI-memory device concepts (3D/ferroelectric).** That validates the device axis but at a T3 scale, in exchange for equity. It is not a T0/T1 route.
 4. **SBIR is back through 2031.**
-   - Gating constraint: the PI rule is confirmed, so the founder cannot be SBIR PI while he keeps his day job. STTR with a research-institution PI remains the route.
+   - Gating constraint: the PI rule is confirmed, so the founder cannot be SBIR PI while they keep their day job. STTR with a research-institution PI remains the route.
    - New costs from FY2027: per-firm proposal caps, and heavier foreign-risk screening that adds diligence for teams with PRC ties.
    - New upside: Strategic Breakthrough awards (up to $30M with a 1:1 match) are a post-Phase-II accelerant.
 5. **CHIPS is "closed" for this venture, for a different reason than the notes gave.** Two funding opportunities do exist, so the old "no open NOFO" claim was wrong. But the facilities NOFO is a capex program due today, and the CRDO BAA is large-ticket (reported $10M minimum) and equity-linked. Keep modelling 0% CHIPS for T0–T2.

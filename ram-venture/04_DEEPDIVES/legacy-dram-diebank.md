@@ -46,7 +46,7 @@ All three scorers gave both concepts the floor score (1) on competition and on f
   - **L1** has no rational buyer.
   - **DoD study work** needs NIST SP 800-171 (~$35k + $500/month), and **defense-OEM agency** needs AS9120B (~$35k). Each breaks the $20k cash floor by m6 (model §10c).
   - **Bank and MCM** need OCM authorization, a hi-rel co-founder and ~$11.5M.
-  - **Founder hours.** Every 10 h/month diverted from DD6 moves its full-time switch from m23 to m33, and 20 h/month means never (model §10h).
+  - **Founder hours.** On DD6's revised (Phase 5) model, DD6 never goes full-time even at 65 h/month, and every 10 h/month diverted to DD7 cuts DD6's m36 ARR from $63.9k to $56.2k (20 h/month: $45.3k) (model §10h). On DD6's Phase 4 inputs, 10 h/month moved its full-time switch from m23 to m33, and 20 h/month meant never [ESTIMATE: DD6 `run_with(P_PHASE4)`; `responses_legacy-dram-diebank.json` RT-VC-DD7-03].
   - **Residual rep line.** It reaches $5.0k ARR at m18 and $8.6k at m36 in BASE ($4.4k GLUT, $928 SEVERE). It never breaks even and needs an employer carve-out.
 
 **Recommendation (revised after red team): DROP. FINAL STATUS: KILLED (§14).** Do not fill any slot with DD7, and do not keep it as a DD2 SKU (RT-VET-DD7-01). **Do not run the 29-day kill test**: that saves ~$6k and ~50 founder hours that DD6 needs (RT-VC-DD7-03). Two things remain, both at $0:
@@ -94,11 +94,13 @@ All three scorers gave both concepts the floor score (1) on competition and on f
  + $4.0M (m30) + bridges.   Plan C = buy a ~30-person licensed manufacturer with SBA debt.
 ```
 
+*(Diagram shows the Phase 4 inputs. Revised after red team: the L3 bank is 17 wafers × 736 good die sold at 2.0×; L1, L3 and Plan C are killed (§14).)*
+
 ---
 
 ## 2. Cost and unit-economics model
 
-> **Revised after red team (model re-run 2026-11-01 with the RED-TEAM REVISIONS (Phase 5) block; the Phase 4 figures below are reproduced exactly in model §10a and kept for the record).** Each line's revised standing:
+> **Revised after red team (model re-run 2026-11-01 with the RED-TEAM REVISIONS (Phase 5) block; the Phase 4 figures below are reproduced exactly in model §10a and kept for the record).** Model §10a, §10d, §10e and §10g print the Phase 4 headline figures. The other Phase 4 table cells come from running the same model on `INPUTS_P4`; the Phase 7 gate re-ran it on 2026-11-01 and every cell matched [ESTIMATE: Phase 4 re-run, not printed in the current output]. Each line's revised standing:
 >
 > | Line | Phase 4 | Revised | Driver (objection) |
 > |---|---|---|---|
@@ -210,7 +212,7 @@ No bank is bought in any scenario. Plan C is **killed**: it needs a full-time fo
 | SEVERE | $46.1k | $5.50M | $1.69M | −$635k | $9.08M ($3.58M) | 0.28× |
 
 - The bank and the MCM book **no revenue before m36**, and there is no post-raise breakeven inside 36 months.
-- GLUT and SEVERE **buy no bank at all**: none passes the model's rule that projected unit GM at purchase must be ≥20%. BASE buys one at m20 and skips m44 and m68 (model §5).
+- GLUT and SEVERE **buy no bank at all**: none passes the model's rule that projected unit GM at purchase must be ≥20%. On Phase 4 inputs BASE buys one at m20 and skips m44 and m68 (model §10g, "banks bought"; on revised inputs no scenario buys one, model §5).
 - **Plan C** buys a Resurgent-type licensed manufacturer (~30 staff, $6.0M revenue) for $4.5M with a $3.6M SBA loan ($598.5k/yr debt service), $410k of outside equity and a full-time founder. **Debt-service coverage (DSCR) is 1.50 BASE, 0.85 GLUT, 0.45 SEVERE** (model §7); lenders want ~1.25 [ESTIMATE].
 
 ### 2.6 Sensitivity (±30%, model §8)
@@ -339,7 +341,7 @@ All rows are [REPORTED] (search-snippet grade).
 
 **Rules that matter:**
 - **DFARS 252.246-7008 / 246.870-2** create the moat only for an *authorized* aftermarket manufacturer. Without the letter, the venture is an independent distributor, which DFARS ranks last (§1).
-- **Quality systems:** AS9120B for distribution (model: $35k over m21–m25, then $8k/yr); AS6496 for authorized distributors ([RF Essentials](https://rfessentials.com/resources/rf-glossary/as6496/)); MIL-PRF-38535 QML for hi-rel re-manufacture ([NSWC Crane SD-18](https://www.navsea.navy.mil/Home/Warfare-Centers/NSWC-Crane/Resources/SD-18/Products/Microcircuits/Facility-Assessment-Quality/)) [REPORTED]. **Revised after red team (RT-VET-DD7-06):** a nine-die x72 module is a hybrid microcircuit under **MIL-PRF-38534** (Class H/K), or a plastic part screened to NASA EEE-INST-002. 38534 certification attaches to a DLA-audited line, and those lines are largely owned by the §5 competitors [UNVERIFIED]. The model now carries $1.6M of NRE (was $1.4M) for line access. No QML cost was found; the model carries MCM qualification inside the $1.4M NRE.
+- **Quality systems:** AS9120B for distribution (model: $35k over m21–m25, then $8k/yr); AS6496 for authorized distributors ([RF Essentials](https://rfessentials.com/resources/rf-glossary/as6496/)); MIL-PRF-38535 QML for hi-rel re-manufacture ([NSWC Crane SD-18](https://www.navsea.navy.mil/Home/Warfare-Centers/NSWC-Crane/Resources/SD-18/Products/Microcircuits/Facility-Assessment-Quality/)) [REPORTED]. **Revised after red team (RT-VET-DD7-06):** a nine-die x72 module is a hybrid microcircuit under **MIL-PRF-38534** (Class H/K), or a plastic part screened to NASA EEE-INST-002. 38534 certification attaches to a DLA-audited line, and those lines are largely owned by the §5 competitors [UNVERIFIED]. The model now carries $1.6M of NRE (was $1.4M) for line access. No QML cost was found; the model carries MCM qualification inside the $1.6M NRE (Phase 4: $1.4M).
 - **Storage standards:** IEC 62435-5 ([BSI](https://knowledge.bsigroup.com/products/electronic-components-long-term-storage-of-electronic-semiconductor-devices-die-and-wafer-devices)) and GEIA-STD-0003B, revised Dec 2025 ([SAE](https://saemobilus.sae.org/standards/geiastd0003b-long-term-storage-lts-electronic-devices)) [REPORTED]. Customers will audit the vault against them.
 - **Export:** ITAR registration once defense technical data is handled (model: $250/month from m30) [ESTIMATE: prior knowledge, not verified]. Rad-tolerant MCMs may fall under 9A515 or USML XV, which limits foreign NewSpace sales (VC and veteran scorers).
 - **§5949** (statutory effect 2027-12-23; the implementing FAR rule was still a proposed rule as of 2026-11) bars CXMT, YMTC and SMIC chips from federal buys ([Federal Register](https://www.federalregister.gov/documents/2026/02/17/2026-03065/federal-acquisition-regulation-prohibition-on-certain-semiconductor-products-and-services)) [REPORTED]. Taiwanese and U.S. die are clean. That is a minor selling point, not a moat.
@@ -351,7 +353,7 @@ All rows are [REPORTED] (search-snippet grade).
 - **Other DoD money flows to incumbents.** IBAS went to Micross ($134.3M ceiling). DoW reverse-engineering money was ~$1.8M over two years to one network ([war.gov](https://www.war.gov/News/Releases/Release/Article/4401952/dow-addresses-material-obsolescence-through-reverse-engineering-training)). DPA Title III figures come only from a low-confidence repost.
 - **Expect $0 non-dilutive money in the first 24 months.**
 
-**Equity.** Plan B assumes $1.5M at m18 and $4.0M at m30, with no investor conversation behind either (model §1). **On these numbers, do not raise:** 0.46× is not fundable venture equity. The realistic capital is private equity rolling up EOL houses (O2 Investment Partners → Flip; [PrivSource](https://www.privsource.com/acquisitions/deal/wySWZM)) or SBA 7(a) debt for Plan C, which fails the ~1.25 DSCR test in GLUT (0.85).
+**Equity.** Plan B assumes $1.5M at m18 and $4.0M at m30, with no investor conversation behind either (model §1). **On these numbers, do not raise:** 0.29× of $11.49M (Phase 4: 0.46× of $8.11M; model §6, §10g) is not fundable venture equity. The realistic capital is private equity rolling up EOL houses (O2 Investment Partners → Flip; [PrivSource](https://www.privsource.com/acquisitions/deal/wySWZM)) or SBA 7(a) debt for Plan C, which fails the ~1.25 DSCR test in GLUT (0.85).
 
 ---
 
@@ -370,7 +372,7 @@ Plan A only; "model" figures are BASE (model §4). Gates sit at ~75% of the mode
 | **m13–m15** (Nov 2027–Jan 2028) | Assemble the Stage-1 file; watch the glut signal (A-05) | **2028-01-31 (Stage-1 gate):** a DRAM OCM letter **and** ≥3 locked-die LOIs at ≥2.5× the EOL price; otherwise no raise, and Plan A stays a side line inside DD2 |
 | **m16–m18** (Feb–Apr 2028) | If the gate passed: recruit the hi-rel co-founder and quality manager; open investor talks. **Buy no wafers** | **2028-04-30:** recurring ARR ≥ **$16.5k** (model $22.0k: 1.9 programs, 2.8 rep accounts). Raise $1.5M only if the m15 gate passed **and** a hi-rel co-founder has signed |
 
-**No bank purchase with founder money at any point.** A bank bought at the 2026–27 peak returns 6.5% at best (model §3), on ~$0.3M of die plus set-up cost that the founder does not have [ESTIMATE: 12,510 die × 0.75 × $20.37 + $120k ≈ $311k].
+**No bank purchase with founder money at any point.** A bank bought at the 2026–27 peak returns 6.5% at best on Phase 4 inputs, and −16.5% on revised inputs (model §3), on ~$0.3M of die plus set-up cost that the founder does not have [ESTIMATE: 12,510 die × 0.75 × $20.37 + $120k ≈ $311k].
 
 ---
 
@@ -379,7 +381,7 @@ Plan A only; "model" figures are BASE (model §4). Gates sit at ~75% of the mode
 | Role | When | Cost (model input unless noted) | Where to find |
 |---|---|---|---|
 | **Founder** (sales, program management, software) | Now, ~15 h/week | Unpaid in Plan A; Plan B full-time from m18 at $11k/month loaded | — |
-| **Contracts attorney** | m1–m2 | $900 rep-agreement review + $2,500 LLC/rep legal (in the $8.5k one-off) | Government-contracts boutiques (as in DD2) |
+| **Contracts attorney** | m1–m2 | $900 rep-agreement review + $2,500 LLC/rep legal (in the $3,900 month-1 one-off, with the $500 employer review; Phase 4: in the $8.5k one-off) | Government-contracts boutiques (as in DD2) |
 | **DMSMS advisor** (retired DoD obsolescence manager) | m1 | 0.25–0.5% equity [ESTIMATE] | DMSMS conference; NSWC Crane and DLA alumni on LinkedIn (post-government employment rules not checked) |
 | **Hi-rel hardware co-founder** (package/SI or memory reliability, flight heritage) | Before any raise (m16–m18) | Equity; salary from Stage 1 [ESTIMATE] | Teledyne e2v/HiRel, Mercury, Frontgrade, DDC, 3D Plus alumni |
 | **Quality / operations manager** (AS9120B, AS6081, AS6496) | m19+ (Plan B) | $11k/month loaded | Rochester (Newburyport MA), Flip, Micross alumni |
@@ -395,7 +397,7 @@ Plan A needs only the founder, an attorney and an advisor: its virtue and its ce
 
 ## 10. Cheapest experiment that could kill it
 
-**Revised after red team: the 29-day kill test is WITHDRAWN and will not be run.** The red team killed L1, L3 and Plan C with evidence and model re-runs (§14), so the test has nothing left to decide. It would have cost ~$6,000 and ~50 founder hours in the same weeks as DD6's and DD2's tests. Every 10 h/month diverted from DD6 moves DD6's full-time switch from m23 to m33 (RT-VC-DD7-03).
+**Revised after red team: the 29-day kill test is WITHDRAWN and will not be run.** The red team killed L1, L3 and Plan C with evidence and model re-runs (§14), so the test has nothing left to decide. It would have cost ~$6,000 and ~50 founder hours in the same weeks as DD6's and DD2's tests. Every 10 h/month diverted from DD6 cuts DD6's revised m36 ARR from $63.9k to $56.2k (model §10h); on DD6's Phase 4 inputs it moved DD6's full-time switch from m23 to m33 (RT-VC-DD7-03).
 
 The test was also mis-specified:
 - Track A could pass on a rep agreement without testing the moat (RT-HYP-DD7-05, RT-VC-DD7-04, RT-VET-DD7-05).
@@ -630,7 +632,7 @@ They raised **27 objections against DD7: 3 FATAL, 12 MAJOR, 12 MINOR**. The obje
 | RT-PHY-DD7-05 | MINOR | ACCEPTED-MITIGATED | Die basis 45→75 mm²: 736 good die/wafer, 17 wafers per bank; C4's wrong-die purchase withdrawn |
 | RT-VC-DD7-01 | FATAL | ACCEPTED-KILL | **L1 killed.** Founder billing alone ($85k) exceeds the die value ($52k); Phase 4 pull-billing bug fixed |
 | RT-VC-DD7-02 | MAJOR | ACCEPTED-DOWNGRADE | Micross EDSP sells the whole bundle direct (confirmed by search). `p_program` 0.35→0.10 |
-| RT-VC-DD7-03 | MAJOR | ACCEPTED-DOWNGRADE | DD7 gets zero hours. DD6 full-time slips m23→m33 at −10 h/month; the kill test is withdrawn |
+| RT-VC-DD7-03 | MAJOR | ACCEPTED-DOWNGRADE | DD7 gets zero hours. On DD6's Phase 4 inputs, full-time slips m23→m33 at −10 h/month; on DD6's revised model it is never full-time and m36 ARR falls $63.9k→$56.2k (model §10h). The kill test is withdrawn |
 | RT-VC-DD7-04 | MAJOR | ACCEPTED-DOWNGRADE | Moat untested and likely unobtainable (OCMs extending, not exiting); P(rights in 15 months) ≤5% [ESTIMATE] |
 | RT-VC-DD7-05 | MINOR | ACCEPTED-DOWNGRADE | Ceiling restated as a fee pool; 3–5% share = $34–57k of new ARR a year |
 | RT-VC-DD7-06 | MINOR | ACCEPTED-DOWNGRADE | Plan B 0.46×→0.29×; the 4×1,000 cell falls 4.04×→2.73×; BULL ≈22%/yr gross; 3D Plus added to competitors |

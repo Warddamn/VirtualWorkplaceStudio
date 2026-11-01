@@ -184,7 +184,7 @@ Phase 4 had BASE ARR of $66.6k at m18 and $157.6k at m36, breakeven at m8, the f
 
 **The cash gate.** On the Phase 4 schedule, the added spends (test structures, thermal forcing, a 40 h kill-test review, $150/h) drive BASE cash to −$8.2k at m11. That is beyond the $40k deployable (A-03). The model therefore defers each test chip, slot, bench or characterization spend until cash after paying it stays at $2.5k or more. The first sky130 slot waits from m7 to m15, so sky130 silicon arrives at m24.
 
-**"Cash-positive from m12" means the business stops eating the founder's savings while the founder works for free.** By m36 it builds about $7k a month of gross profit for about 15 hours a week. That is side income, not a salary.
+**"Cash-positive from m12" means the business stops eating the founder's savings while the founder works for free.** By m36 it builds about $8k a month of gross profit ($8.0k at m36, model §5; ~$6.9k after the $1.1k monthly opex) for about 15 hours a week. That is side income, not a salary.
 
 ### 2.5 Revenue mix: a services business (BASE, model §5; revised after red team)
 
@@ -520,7 +520,7 @@ PASS (continue as a side line) only if **all four** hold:
     - it needs rewrites that rule out OTP, eFuse and S130's own embedded NVM;
     - an LOI of $75k or more;
     - a SkyWater quote for three S130+ReRAM engineering lots plus a JESD47 qual-house quote.
-12. **2029-05-31 (m30).** Trailing-3-month GP under $11.85k (model: $7.6k) → DD5 is permanently a side line. Seed and T2 are already off.
+12. **2029-05-31 (m30).** Trailing-3-month GP under $11.85k (model: $7.5k average over m28–m30; $7.6k in m30 alone) → DD5 is permanently a side line. Seed and T2 are already off.
 
 ---
 
@@ -748,4 +748,4 @@ Only the combined upside case (price ×1.3, close ×1.3, no free release) pays t
 
 **Reason:** the red team killed both T2 legs. Neither has a named buyer, a gain cell has no density or leakage case on sky130, and ReRAM's magnet axis is shared by OTP, eFuse and S130 eNVM. The C-33 wedge survives only as a part-time **side line**. On revised inputs it never pays the founder within 36 months, so it is withdrawn as a FALLBACK candidate. It is not KILLED because it needs no outside capital, is cash-positive from m12 with a gated cash low of $4.0k, and a ~$9.1k day-30 test decides it.
 
-**Role for Phase 6:** side line only. Not PRIMARY, not FALLBACK, not MOONSHOT. EV for this founder is about +$5–15k over three years, before the founder's time, at an estimated 15–25% pass probability on the strengthened kill test [ESTIMATE].
+**Role for Phase 6:** side line only. Not PRIMARY, not FALLBACK, not MOONSHOT. EV for this founder is about +$5–15k over three years, before the founder's time, at an estimated 15–25% pass probability on the strengthened kill test [ESTIMATE]. **Correction (Phase 7 gate):** that figure multiplies p by $88.4k of end cash, which includes the founder's own $40k. The gain if the test passes is $48.4k in BASE (model end cash $88.4k − $40k start; the $9.1k test is already inside it), so at the same 15–25% the EV is about −$0.5k to +$5.3k [ESTIMATE: p × $48.4k − (1 − p) × $9.1k]. J-INT puts it at about −$4k to +$1k at its own lower pass probability (`research/phase6/judge_integrity.json`).

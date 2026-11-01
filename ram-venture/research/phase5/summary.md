@@ -64,7 +64,7 @@ Round 1 killed DD1, DD3 and DD4 and cut DD2 and DD5 to side lines. The study the
 
 The three judges then reached the same picks independently (`research/phase6/judge_*.json`):
 
-- **PRIMARY: DD2, SaaS only.** It has the cheapest decisive test (~$2,950 over 29 days) and 57% gross margin by m36, and its lifecycle module holds flat at $5,774/month in the glut. If K0, K1 or K6 fails, the PRIMARY becomes NONE.
+- **PRIMARY: DD2, SaaS only.** It has the cheapest decisive test (~$1,950 planned over 29 days, ~$2,950 if the deferred $1,000 consult is spent; `decision.json` PRIMARY.spend) and 57% gross margin by m36, and its lifecycle module holds flat at $5,774/month in the glut. If K0, K1 or K6 fails, the PRIMARY becomes NONE.
 - **FALLBACK: DD5, the wedge only, run after DD2 rather than alongside it.** Its buyers do not overlap with DD2's. If it passes its test, it is the only survivor that ends 36 months above its starting $40k in all three price scenarios.
 - **MOONSHOT: none qualifies.** The killed index (C-86) is kept as a ~$0 option inside DD2's test.
 

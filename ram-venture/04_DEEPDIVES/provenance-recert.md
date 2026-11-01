@@ -130,7 +130,7 @@ All figures in this section are **(revised after red team)** unless a column say
 | Cash at m36 (+ inventory) | $23,270 (+$2,965) | $22,086 (+$890) | $21,588 (+$466) | $610,097 (+$70,850) |
 | Cumulative EBITDA (tax provision) | −$3,473 ($0) | −$7,852 ($0) | −$8,998 ($0) | $662,971 (no tax line) |
 | Gross margin: blended / recert+PMem / CleanBOM | 38% / 11% / 75% | 43% / 11% / 75% | 44% / 11% / 75% | 25% / 15% / 81% |
-| Recert+PMem share of cumulative revenue | 57% of $273,517 (only 356 recert modules sold; PMem is most of it) | 49% of $231,157 | 47% of $222,072 | 85% of $4.14M |
+| Recert+PMem share of cumulative revenue | 57% of $273,517 (only 355 recert modules sold; PMem is most of it) | 49% of $231,157 | 47% of $222,072 | 85% of $4.14M |
 
 Recert buying drops to the 10% trickle from month 2, because expected contribution is below the 5% buy line. From Jan-28 to Feb-29 cash sits below the reserve, so nothing is bought at all.
 
@@ -457,7 +457,7 @@ The founder's operations background fits receiving, test flow and supplier attes
 
 | Outcome | What happens |
 |---|---|
-| C′ fails | **DD1 stays dead.** If A′ passes, the founder may run recert as a hobby-scale side trade. At 0.62 it adds ~$71k of cumulative EBITDA over 36 months and never funds full-time (m§5). It is not a venture. |
+| C′ fails | **DD1 stays dead.** If A′ passes, the founder may run recert as a hobby-scale side trade. At 0.62, recert + PMem alone earn ~$60k of cumulative EBITDA over 36 months (model re-run 2026-11-01, `simulate('BASE', dict(P0, buy_frac=0.62), lines=('recert','pmem'))`; the m§5 bundle row at 0.62 is $71,494) and never fund full-time. It is not a venture. |
 | C′ passes, A′ fails | Stage 2 runs track B only (~$3.6k). CleanBOM is planned standalone at the Phase 4 demand inputs. Standalone gives $171,852 ARR at m36, never full-time, salary breakeven at m31, and a cash low of $2,105 at m15 on $40k. The bundle row in m§8d is nearly identical ($3,326 low). |
 | C′ and A′ pass | Stage 2 runs tracks A and B (~$8.1k). Re-plan from the m§8d "both pass" row. |
 
@@ -504,7 +504,7 @@ Months are model months (m1 = Nov-26). Each criterion is marked "(revised after 
 
 > **(revised after red team)** The figures below are Phase 4's. After the red team, recert loses money in every deck (−1% today, −10% GLUT, −23% SEVERE per module). Revised ARR at m36 is $58,335 in BASE, GLUT and SEVERE alike, cash at m36 is $21.6–23.3k, and the founder is never full-time (m§3, m§7). DD1 is "glut-proof" only because it barely depends on recert any more, and that is no virtue. The closing claim "DD1 is glut-proof only if the subscription business is real by the end of 2027" still stands. The red team says it will not be real (§14).
 
-**GLUT (DDR5 −60% over 2028).** The used-price index falls from 1.0 to 0.40 (m§2 GLUT):
+**GLUT (DDR5 −60% over 2028) (Phase 4, superseded).** The used-price index falls from 1.0 to 0.40 (Phase 4 m§2 GLUT; reproduce with `pr.P_PHASE4`):
 
 | Month | What happens |
 |---|---|
@@ -516,13 +516,13 @@ Months are model months (m1 = Nov-26). Each criterion is marked "(revised after 
 - **Last-12-month recert revenue:** $284,620 in GLUT vs $1,361,633 in BASE. CleanBOM is $391,022 in both (m§7).
 - **Bundle at m36:** **$434,012 ARR and $392,118 cash** (m§3).
 
-**SEVERE (−90%, DDR5 at $2.04/GB).**
+**SEVERE (−90%, DDR5 at $2.04/GB) (Phase 4, superseded).**
 - Recert margin goes to −2%, and lot buying stops in Apr-28 at an index of 0.70.
 - Last-12-month recert revenue is $16,297.
 - Cash never breaks the reserve. The bundle ends with **$434,012 ARR and $328,128 cash** (m§3, m§7).
 - PMem runs at −34% GM, but VMware has already sunset it.
 
-**Cash at m36 by configuration (m§4):**
+**Cash at m36 by configuration (Phase 4 m§4, superseded; revised values are in §2.3):**
 
 | Configuration | BASE | GLUT | SEVERE |
 |---|---|---|---|
@@ -531,11 +531,11 @@ Months are model months (m1 = Nov-26). Each criterion is marked "(revised after 
 | CleanBOM standalone | $91,351 | $91,351 | $91,351 |
 | DIMM-health standalone | $583 | $5,248 | $7,412 |
 
-**Verdict.** Recert dies in the glut, as all three C-62 scorers said (cycle score 1: "Resale contribution falls to ~1-6% in the glut"). The bundle survives only because CleanBOM has 13.5 subscribers by Oct-28. Their ~$17.5k a month of gross profit (13.5 × $1,295; m§1c) covers the $10k salary and ~$3.5k of opex.
+**Verdict (Phase 4, superseded).** Recert dies in the glut, as all three C-62 scorers said (cycle score 1: "Resale contribution falls to ~1-6% in the glut"). The bundle survives only because CleanBOM has 13.5 subscribers by Oct-28. Their ~$17.5k a month of gross profit (13.5 × $1,295; m§1c) covers the $10k salary and ~$3.5k of opex.
 
 That survival is conditional on three things:
 - **Turn timing.** If the glut starts in Oct-27, the founder only goes full-time at m31, and GLUT ARR at m36 is $268,513.
-- **The FAR rule's timing.** A 6-month slip during a glut leaves $203,455. Add a 30% lower close rate and it is $115,358 (§2.6).
+- **The FAR rule's timing.** A 6-month slip during a glut leaves $203,455. Add a 30% lower close rate and it is $115,358 (Phase 4 variant runs on `pr.P_PHASE4`, re-run 2026-11-01: `simulate('GLUT', dict(P_PHASE4, turn_month=12))` and `dict(P_PHASE4, _cb_delay=6[, _close_mult=0.7])`; superseded by §2.6).
 - **CleanBOM demand holding up.** The model holds it flat, but the sign is unclear:
   - cheap Samsung, SK hynix and Micron bits could pull OEMs off CXMT and shrink the problem;
   - cheap CXMT bits (already 9.5% of 2Q26 DRAM revenue; [Herald](https://biz.heraldcorp.com/article/10866656)) could gain share and grow it.

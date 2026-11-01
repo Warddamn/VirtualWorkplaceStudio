@@ -17,7 +17,7 @@
    "name": "OS-eDRAM: IGZO/IWO 2T0C gain-cell memory IP on a U.S. 200mm foundry",
    "subbranch": "Oxide-semiconductor DRAM (embedded gain cell)",
    "materials_sense": "mixed:a+b+c",
-   "what_it_is": "Replace '~4-5x the bit density of 130nm SRAM' with '~2-4x the bit density of 130nm SRAM'",
+   "what_it_is": "A fabless IP company co-develops a low-temperature (<400C) IGZO or W-doped In2O3 2T0C gain-cell BEOL module with SkyWater (S130 in Bloomington MN, or the ex-Infineon Fab 25 in Austin, 130-65nm, 200mm). It then licenses the memory macro and compiler to ASIC designers, giving them on-die memory with ~2-4x the bit density of 130nm SRAM and near-zero standby leakage, stacked over logic.",
    "why_it_could_work": "IGZO off-current ~3e-19 A/um gives >400-1,000 s retention (imec IEDM 2020/2021) vs SRAM's constant leakage, so an always-on edge chip can hold weights/activations at near-zero standby power. A planar 2T0C at ~30F2 is ~0.5 um2/bit at 130nm vs ~2.0-2.5 um2 for 6T SRAM [ESTIMATE], and because it sits in BEOL it uses no extra silicon area. Arbitrage: SkyWater bought Fab 25 (~$73M + working capital, ~400k wafer starts/yr) and is converting it to a foundry, so it needs differentiated process options. Embedded-memory IP royalties carry ~85% gross margin.",
    "evidence": [
     {
@@ -289,7 +289,7 @@
    "subbranch": "Oxide-semiconductor DRAM (4F2 1T1C)",
    "materials_sense": "a-material",
    "what_it_is": "License Kioxia and Nanya's OCTRAM (a vertical cylindrical InGaZnO access transistor built on top of a high-aspect-ratio DRAM capacitor, 4F2) and have it produced for U.S. low-power DRAM buyers. The product would be a low-refresh LPDDR-class part for defense and IoT.",
-   "why_it_could_work": "Replace '~3x DDR5's estimated ~$2.7/GB cost' with '~5.1x incumbent DDR5 1-beta cost ($1.64/GB) and 1.3x the $6.40 glut price'",
+   "why_it_could_work": "Ioff <1 aA/cell and Ion >15 uA (2024), >30 uA in Kioxia's 8-layer stack (IEDM 2025); a 275 Mbit array works at 54/63nm pitches. Scratch model at demo pitches on a DRAM-class line: ~0.16 Gb/mm2, ~$8.4/GB (below DDR5's ~$27 spot price but ~5.1x incumbent DDR5 1-beta cost ($1.64/GB) and 1.3x the $6.40 glut price at today's demo pitch; pre-Phase-1b deck). On the live deck `models/device_cost_compare.py` gives $8.50/GB: 5.73x the $1.48/GB cost and 1.04x the $8.15/GB glut.",
    "evidence": [
     {
      "title": "Kioxia develops OCTRAM (with Nanya), IEDM 2024",
@@ -1333,7 +1333,7 @@
    "subbranch": "STT-MRAM design-in: power-loss-protection write cache",
    "materials_sense": "mixed:a+c",
    "what_it_is": "A licensed reference design (schematic/layout, FPGA or RISC-V controller RTL, Linux/Zephyr journaling driver, validation suite) that replaces the DRAM + supercapacitor power-loss-protection block in SSD, computational-storage, RAID/HBA and industrial data-logger boards with Everspin PERSYST 1Gb ST-DDR4 or 64-256Mb xSPI STT-MRAM. Parts come from Everspin (GF 28nm CMOS + Chandler AZ MTJ BEOL; Microchip Gresham OR line from 2H-2027); revenue is design-package fee + per-unit royalty + design-in services.",
-   "why_it_could_work": "Replace 'IBM moved its 5th-gen FlashCore Module to Everspin MRAM instead of capacitors (Oct-2026)' with 'IBM has used Everspin MRAM as the FCM write cache/journal for several generations (FCM3 up to 128 MB Toggle; FCM4 1Gb PERSYST, 2024; FCM5 MRAM-instead-of-capacitors, reported 2026-10)'. Replace '~30x $/bit penalty (~$100/Gb street vs ~$3/Gb DRAM)' with '~51x the 4Q26 DDR5 contract ($821 vs $15.99/GB) and ~128x the $6.40 glut price'.",
+   "why_it_could_work": "IBM has used Everspin MRAM as the FCM write cache/journal for several generations (FCM3 up to 128 MB Toggle; FCM4 1Gb PERSYST, 2024; FCM5 MRAM-instead-of-capacitors, reported 2026-10) because supercaps/batteries wear out in a few years and take board space. The PLP block needs only 64-512 MB, so MRAM's $/bit penalty (~51x the pre-Phase-1b 4Q26 DDR5 contract, $821 vs $15.99/GB, and ~128x the $6.40 glut price; ~40x and ~101x on the live $20.37 / $8.15 deck) costs ~$50-400 per board but deletes the capacitor bank, hold-up circuitry and its field failures. DRAM write-cache cost doubled in 2026 while MRAM pricing did not move with the DRAM cycle, narrowing the delta. Everspin is adding U.S. capacity (Microchip 10-yr deal, up to 1,300 wafers/qtr).",
    "evidence": [
     {
      "title": "IBM using Everspin MRAM in 5th-gen FlashCore Modules",

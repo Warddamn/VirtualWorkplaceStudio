@@ -194,8 +194,8 @@ How to read the table:
 ### 2.4 What must be true (model §8 and §10; revised after red team)
 
 - **To pay the founder $10k/month:** at least **55 paying accounts, or ~31 accounts plus 10 index licences**. BASE has 17 accounts and no licences at m18 and 37 accounts at m36, so the founder stays part-time throughout.
-- **To reach $1M ARR by m36:** SaaS trial inflow must be **3.3×** the revised level (~65 qualified trials/month part-time). That means ~235 accounts by m36. The base is now an estimated 3,000 U.S. SMB OEMs, replacing the unsourced 6,000 (revised after red team), so that is **7.8% of the market**. The 3,000 is a bottom-up [ESTIMATE] from a third-party NAICS 334 firm count (RT-VC-DD2-04).
-- **To reach $2M:** inflow must be **6.4×**, with ~476 accounts (15.9%).
+- **To reach $1M ARR by m36:** SaaS trial inflow must be **3.3×** the revised level (~65 qualified trials/month part-time). That means ~238 accounts by m36 (model §8). The base is now an estimated 3,000 U.S. SMB OEMs, replacing the unsourced 6,000 (revised after red team), so that is **7.9% of the market**. The 3,000 is a bottom-up [ESTIMATE] from a third-party NAICS 334 firm count (RT-VC-DD2-04).
+- **To reach $2M:** inflow must be **6.4×**, with ~478 accounts (15.9%).
 - **Index-only equivalent:** 115 licences per $1M at $8,700/yr. The revised model sells at most 1.8 licences by m36 if 10 seed contributors deliver (2.8 only if the publication gate is also lowered to 10 contributors).
 - **The kill test must show** at least 5 paid deposits from 25 qualified conversations (20%), which supports the revised 10% trial-to-paid conversion. It must also pass K0, K2b, K5 and K6 (§10).
 
@@ -640,7 +640,7 @@ They raised **24 objections against DD2: 1 FATAL, 14 MAJOR, 9 MINOR**. The objec
 | RT-PHY-DD2-05 | MINOR | ACCEPTED-MITIGATED | Die-revision PCN parsing in the MVP; launch m5→m6; "PDN only" claim until back-tested |
 | RT-VC-DD2-02 | MAJOR | ACCEPTED-DOWNGRADE | Pre-licence back-test against TrendForce; K3 needs both contract parties' written agreement |
 | RT-VC-DD2-03 | MAJOR | ACCEPTED-DOWNGRADE | K5 tightened; K5-fail variant ($69k ARR at m36) means K1 is re-tested or DD2 dies |
-| RT-VC-DD2-04 | MAJOR | ACCEPTED-DOWNGRADE | TAM 6,000→3,000 [ESTIMATE]; $1M ARR needs 7.8% penetration; ceiling $0.1–0.3M |
+| RT-VC-DD2-04 | MAJOR | ACCEPTED-DOWNGRADE | TAM 6,000→3,000 [ESTIMATE]; $1M ARR needs 7.9% penetration (model §8); ceiling $0.1–0.3M |
 | RT-VC-DD2-05 | MAJOR | ACCEPTED-DOWNGRADE | New K0 employer carve-out before any code; launch trials 6→4 |
 | RT-VC-DD2-06 | MINOR | ACCEPTED-DOWNGRADE | Part-time trial cap 25→20; new K6 call-booking test |
 | RT-VET-DD2-01 | MAJOR | ACCEPTED-DOWNGRADE | Quarterly index; the VET publication test replaces the m9 gate |
@@ -667,7 +667,7 @@ They raised **24 objections against DD2: 1 FATAL, 14 MAJOR, 9 MINOR**. The objec
   - A signed price move, so falls are weighted separately from rises.
   - Higher licence churn while prices fall.
   - A price-line switch for the K5-fail case.
-  - `ov=` overrides, so model §10 shows 29 scenario runs: the Phase 4 inputs (identical to the old output), the revised baseline, and the reviewer and stress variants.
+  - `ov=` overrides, so model §10 shows 29 scenario runs: the Phase 4 inputs (identical to the old output), the revised baseline, and the reviewer and stress variants. (The Phase 7 gate later appended 8 PLAN-variant rows for the Phase 6 decision, so §10 now has 37 rows; BASE and the 29 Phase 5 rows are unchanged.)
 
 **Plan**
 

@@ -611,7 +611,7 @@
    "fatal_flaw": "Zero control: FMC has no chip, its timeline is uncertain, and once it ships it will use established distributors. A one-person channel partner has no moat.",
    "rule1_status": "SUPPORTED",
    "business_model_lenses": "module/appliance; distribution/brokerage",
-   "founder_fit_note": "Marginal: the founder's product/ops background fits apps and BD, but revenue timing is out of his hands.",
+   "founder_fit_note": "Marginal: the founder's product/ops background fits apps and BD, but revenue timing is out of their hands.",
    "possible": "marginal - depends on FMC delivering silicon",
    "profitable": "marginal - thin channel margins",
    "doable_by_founder": "marginal"
@@ -829,7 +829,7 @@
    "fatal_flaw": "Small, lumpy demand: customers with money (Samsung, Micron, Infineon) test in-house. Device-physicist labor is the bottleneck and the founder is not one.",
    "rule1_status": "SUPPORTED",
    "business_model_lenses": "services; defense-first; data product (test database)",
-   "founder_fit_note": "Marginal: his ops-management background fits running a lab business, but it needs a hired reliability engineer and >$50k equipment (SBA/equipment financing).",
+   "founder_fit_note": "Marginal: their ops-management background fits running a lab business, but it needs a hired reliability engineer and >$50k equipment (SBA/equipment financing).",
    "possible": "yes",
    "profitable": "marginal - services margin, small market",
    "doable_by_founder": "marginal"

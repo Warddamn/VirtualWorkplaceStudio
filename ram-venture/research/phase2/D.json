@@ -156,7 +156,7 @@
    "fatal_flaw": "It is configuration of free kernel features. Sophisticated operators already do it themselves, and conservative ones fear swap latency and OOM incidents. One production incident at an early customer ends the company.",
    "rule1_status": "SUPPORTED",
    "business_model_lenses": "SaaS (per-node subscription); open-core agent",
-   "founder_fit_note": "Marginal. The control plane is easy for him; safe Linux memory-management tuning needs a kernel-savvy contractor or co-founder.",
+   "founder_fit_note": "Marginal. The control plane is easy for them; safe Linux memory-management tuning needs a kernel-savvy contractor or co-founder.",
    "possible": "yes - production-proven at Meta/Google, and every component is upstream",
    "profitable": "marginal - real savings while DRAM is expensive, but buyers can DIY and the pain halves in a glut",
    "doable_by_founder": "marginal - needs a Linux-mm expert for SLO safety; the sales cycle to on-prem ops is slow"
@@ -453,7 +453,7 @@
    "fatal_flaw": "Every modern OS already compresses memory, so the app can only deliver placebo. History says this ends in FTC or app-store action and reputational ruin.",
    "rule1_status": "UNSUPPORTED",
    "business_model_lenses": "consumer software",
-   "founder_fit_note": "Technically trivial for him, but he should not build it.",
+   "founder_fit_note": "Technically trivial for them, but they should not build it.",
    "possible": "marginal - the mechanism exists, but it is already in the OS, so the product claim is unsupported",
    "profitable": "no - refunds, chargebacks, store bans and regulatory risk",
    "doable_by_founder": "yes technically; rejected on ethics and durability"
@@ -699,7 +699,7 @@
    "fatal_flaw": "SPD is writable and the DRAM-manufacturer field is set by the module maker, so it can be blank or spoofed: software can triage but not prove provenance. And if the FAR rule accepts supplier attestations or excludes subcomponents, nobody pays for scanning.",
    "rule1_status": "SUPPORTED",
    "business_model_lenses": "SaaS (per-node); services (audit); defense-first niche",
-   "founder_fit_note": "Yes. Agent plus dashboard is his skill set, and the domain is learnable from JEDEC docs. Federal sales need a channel partner.",
+   "founder_fit_note": "Yes. Agent plus dashboard is their skill set, and the domain is learnable from JEDEC docs. Federal sales need a channel partner.",
    "possible": "yes - SPD decode is mature; mapping JEP106 to CXMT is trivial",
    "profitable": "marginal - hinges on the FAR rule scope and on integrators paying rather than self-attesting",
    "doable_by_founder": "yes - T0, software-only; the first customer is the hard part"

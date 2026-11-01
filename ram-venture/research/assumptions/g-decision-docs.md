@@ -1,0 +1,6 @@
+# Assumptions — g-decision-docs (Phase 7 gate: decision docs)
+
+- [g-decision-docs] The November 2026 DD2 kill-test spend ($1,950 planned) is booked in model month m1 (2026-12) in the new PLAN variants of `models/lifecycle-intel.py`, because the model starts at m1 and the decision falls on 2026-12-01 — basis: decision.json PRIMARY.spend; 04_DEEPDIVES/lifecycle-intel.md §10 line items ($500 + $100 + $1,250 + $100). Booking it a month earlier would not change any cash low after m1.
+- [g-decision-docs] "PLAN" (index option closed) sets `seed_contributors` to 0 as well as deferring the $5k antitrust opinion and $1k consult, since K4 contributors exist only if K4 passes — basis: LI §11 #3; the model's own "0 seed contributors" variant shows this changes no BASE figure.
+- [g-decision-docs] "PLAN + index option passes" charges $2,950 at m1 ($1,950 test + the $1,000 consult) and keeps BASE's $5,000 opinion at m2 and 5 seed contributors; the $7,000 m8 legal review stays in every row because DEC does not defer it — basis: decision.json PRIMARY.spend and MOONSHOT.spend.
+- [g-decision-docs] Max founder draw = $40,000 founder_cash minus the lowest month-end cash in the run (the same definition behind the judges' "$33,900 draw" = $40,000 − $6,100) — basis: research/phase6/judge_ceiling.json, judge_integrity.json.

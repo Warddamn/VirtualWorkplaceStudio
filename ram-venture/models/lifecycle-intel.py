@@ -138,6 +138,12 @@ INPUTS = {
     "antitrust_opinion_month": (2, "ESTIMATE: written opinion on cell rules before seed contributors deliver data"),
     "antitrust_compliance_month": (0.0, "Phase 4: no ongoing information-exchange compliance cost"),
     "price_line_on": (1, "1 = buy/hold price-alert line sold (needs K5 data rights); 0 = K5-fail case, line deleted"),
+    # --- Phase 7 (gate g-decision-docs): kill-test spend. BASE keeps 0 so every Phase 4/5 figure is unchanged; ---------
+    # --- the PLAN variants in section 10 charge it (research/phase6/decision.json PRIMARY.spend). ---------------------
+    "kill_test_spend": (0.0, "BASE: the November 2026 kill test (04_DEEPDIVES/lifecycle-intel.md s.10) is NOT charged. PLAN variants "
+                             "charge $1,950 (attorney review $500 + Sales Navigator $100 + 25 x $50 thank-yous + domain/hosting $100), "
+                             "or $2,950 when the deferred $1,000 government-contracts consult is spent (decision.json PRIMARY.spend)"),
+    "kill_test_month": (1, "ESTIMATE: when charged, the November test spend is booked in m1 (2026-12), the month of the 2026-12-01 decision"),
 }
 P4 = {k: v[0] for k, v in INPUTS.items()}   # Phase 4 inputs, kept for the section-10 comparison
 
@@ -348,6 +354,7 @@ def simulate(scen, price_m=1.0, conv_m=1.0, churn_m=1.0, cogs_m=1.0, trial_m=1.0
         opex_ns = q["tools"] + mkt + q["accounting"] + (q["insurance"] if m >= q["saas_launch_month"] else 0.0)
         opex_ns += q["legal_onetime"] if m == q["legal_month"] else 0.0
         opex_ns += q["antitrust_opinion"] if m == q["antitrust_opinion_month"] else 0.0
+        opex_ns += q["kill_test_spend"] if m == q["kill_test_month"] else 0.0
         opex_ns += q["antitrust_compliance_month"] if (pub_month is not None and m >= pub_month) else 0.0
         opex_ns += q["travel"] if m in (10, 22, 34) else 0.0
         salary = (q["founder_salary_ft"] if ft else 0.0) + (q["hire_cost"] if hired else 0.0)
@@ -390,6 +397,28 @@ def summarize(r):
 
 def fm(x):
     return "never" if x is None else "m%d (%s)" % (x, label(x))
+
+
+# ----------------------------------------------------------------------------------------------
+# PLAN variants (Phase 6 decision; added at the Phase 7 gate). BASE is NOT changed.
+# research/phase6/decision.json PRIMARY.spend: ~$1,950 planned for the November test; the $1,000 government-contracts
+# consult and the $5,000 antitrust opinion are deferred until K3+K4 (the index option) pass.
+#   PLAN                        : test $1,950 at m1; no antitrust opinion; no $1k consult; no K4 seed contributors.
+#   PLAN + index option passes  : test $1,950 + $1,000 consult = $2,950 at m1; $5,000 antitrust opinion at m2 (as BASE);
+#                                 5 seed contributors (as BASE).
+#   PLAN, K5 fail               : PLAN with the price-alert line deleted (LI s.11 #4 case).
+# ----------------------------------------------------------------------------------------------
+PLAN_TEST_SPEND = 1_950.0
+PLAN_CONSULT = 1_000.0
+PLAN_CAP_EVER = 34_000.0     # decision.json PRIMARY.spend "<=$34k ever"
+PLAN_CASH_FLOOR = 5_000.0    # decision.json PRIMARY.spend "$5k cash floor"; LI s.11 #10
+PLAN_OV = dict(kill_test_spend=PLAN_TEST_SPEND, antitrust_opinion=0.0, seed_contributors=0)
+PLAN_INDEX_OV = dict(kill_test_spend=PLAN_TEST_SPEND + PLAN_CONSULT)
+PLAN_VARIANTS = (
+    ("PLAN (Phase 6 decision): test $1,950 m1; $5k antitrust + $1k consult deferred", "DEC", dict(PLAN_OV), SCENARIOS),
+    ("PLAN + index option passes: test+consult $2,950 m1; $5k antitrust m2", "DEC", dict(PLAN_INDEX_OV), SCENARIOS),
+    ("PLAN, K5 fail: price line deleted", "DEC", dict(PLAN_OV, price_line_on=0), ("BASE", "GLUT")),
+)
 
 
 # ----------------------------------------------------------------------------------------------
@@ -591,7 +620,7 @@ def main():
         ("Revised, funnel at Phase 4 (conv .12, cap 25, 6 at launch, m5)", "-",
          dict(trial_conversion=0.12, trials_cap_pt=25.0, trials_at_launch=6.0, saas_launch_month=5), ("BASE", "GLUT")),
         ("Revised, trial conversion 0.15 (K1 strong pass)", "-", dict(trial_conversion=0.15), ("BASE",)),
-    )
+    ) + PLAN_VARIANTS
     rows = []
     for name, oid, ov, scens in variants:
         for s in scens:
@@ -620,6 +649,26 @@ def main():
             lo = mid
     print("  (or trial conversion %.1f%% instead of %.0f%%, all else revised; conv_m also scales index close rate)."
           % (100 * P["trial_conversion"] * hi2, 100 * P["trial_conversion"]))
+
+    print("\nPLAN variants (Phase 6 decision): max founder draw vs the %s cap and cash low vs the %s floor"
+          % (money(PLAN_CAP_EVER), money(PLAN_CASH_FLOOR)))
+    print("  max founder draw = founder_cash %s - lowest month-end cash; the BASE (REVISED) row charges no kill test but the"
+          % money(P["founder_cash"]))
+    print("  $5,000 antitrust opinion at m2. PLAN charges the $1,950 November test at m1 and defers the opinion and the $1,000 consult.")
+    rows = []
+    for name, ov, scens in (("BASE (REVISED; no test spend, $5k opinion at m2)", {}, SCENARIOS),
+                            ("PLAN (Phase 6 decision)", PLAN_OV, SCENARIOS),
+                            ("PLAN + index option passes", PLAN_INDEX_OV, SCENARIOS),
+                            ("PLAN, K5 fail: price line deleted", dict(PLAN_OV, price_line_on=0), ("BASE", "GLUT"))):
+        for s in scens:
+            z = summarize(simulate(s, ov=ov))
+            draw = P["founder_cash"] - min(P["founder_cash"], z["low"])
+            rows.append([name, s, money(draw), "within" if draw <= PLAN_CAP_EVER else "OVER by %s" % money(draw - PLAN_CAP_EVER),
+                         "%s @ m%d (%s)" % (money(z["low"]), z["low_m"], label(z["low_m"])),
+                         "above" if z["low"] >= PLAN_CASH_FLOOR else "BELOW by %s" % money(PLAN_CASH_FLOOR - z["low"]),
+                         money(z["arr"][36]), money(z["cash36"])])
+    table(["variant", "scen", "max founder draw", "vs $34k cap", "cash low", "vs $5k floor", "ARR m36", "cash m36"], rows,
+          ["l", "l", "r", "l", "r", "l", "r", "r"])
     return 0
 
 

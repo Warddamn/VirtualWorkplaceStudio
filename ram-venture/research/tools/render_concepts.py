@@ -50,6 +50,27 @@ def main():
         sys.exit("duplicate ids in master")
 
     alive = sum(1 for c in cards if c.get("status", "ALIVE") != "KILLED")
+
+    # Rule 5 coverage (materials sense), computed from the master so the legend never drifts from the data.
+    def senses(c):
+        ms = str(c.get("materials_sense", "")).strip().lower()
+        if ms.startswith("mixed:"):
+            return set(ms.split(":", 1)[1].split("+"))
+        return {ms[0]} if ms[:1] in ("a", "b", "c") else set()
+
+    def surv_list(s):
+        ids = [c["id"] for c in cards if c.get("status", "ALIVE") != "KILLED" and s in senses(c)]
+        if len(ids) == 1:
+            ms = str(next(c for c in cards if c["id"] == ids[0]).get("materials_sense", ""))
+            return f"{ids[0]} only" + (f" ({ms.split(':', 1)[1]})" if ms.startswith("mixed:") else "")
+        return ", ".join(ids) or "none"
+
+    n_sense = {s: sum(1 for c in cards if s in senses(c)) for s in ("a", "b", "c")}
+    n_none = sum(1 for c in cards if not senses(c))
+    rule5 = (" Rule 5 coverage (counted from `research/phase2/concepts_master.json`, mixed cards counted under each "
+             f"sense they touch): **(a) {n_sense['a']} cards**, **(b) {n_sense['b']} cards**, **(c) {n_sense['c']} cards**, "
+             f"{n_none} cards with no materials sense (pure software/service). Survivors: (a) {surv_list('a')}, "
+             f"(b) {surv_list('b')}, (c) {surv_list('c')}.")
     lines = [
         "# 02 — CONCEPTS",
         "",
@@ -60,7 +81,7 @@ def main():
         "`models/device_cost_compare.py`.",
         "",
         "Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, T2 $2M–$50M, T3 $50M–$1B, T4 >$1B · "
-        "materials sense: (a) material system, (b) process, (c) capital (mission rule 5).",
+        "materials sense: (a) material system, (b) process, (c) capital (mission rule 5)." + rule5,
         "",
     ]
     if data.get("dedup_notes"):

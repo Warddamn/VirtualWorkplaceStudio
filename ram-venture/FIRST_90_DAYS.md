@@ -12,17 +12,18 @@
 
 ---
 
-## 0. What these 90 days are for (read this first)
+## 0. The kill experiment first: what these 90 days are for (read this first)
 
+- **This is a test plan, not a launch plan. It opens with one kill experiment that costs well under $10k:** DD2's 29-day test, Mon 2026-11-02 → Tue 2026-12-01 (LI §10). It spends **$1,950** planned (~$2,950 only if the deferred $1,000 consult is spent; hard cap $5,000; DEC) and about **60 founder hours** to answer one question: will any memory buyer pay this part-time founder at all? DEC calls this the study's biggest unknown: "the study contains no deposit, PO or paid pilot."
+  - **Gates:** K0 written employer carve-out by Mon 2026-11-09; K6 25 qualified calls booked within 21 days and K1 ≥5 of 25 refundable $500 deposits or paid LOIs at ≥$200/mo by Tue 2026-12-01; K5 data terms ≤$1,000/month by Tue 2026-12-15 (LI §10–§11; DEC). Weeks 1–5 below run it day by day; weeks 6–13 run the branch it picks.
 - **The study found nothing venture-scale.** In DEC's words: "No venture-scale opportunity to make RAM, or something better than RAM, in the U.S. survived for a founder with under $50k." Seven deep dives drew 186 red-team objections and none was refuted. Five were killed and two downgraded (RT scoreboard).
-- **This is a test plan, not a launch plan.** It spends **$1,950** (the planned ceiling is ~$2,950 and the hard cap $5,000) and about **60 founder hours** to answer one question by **Tue 2026-12-01**: will any memory buyer pay this part-time founder at all? DEC calls this the study's biggest unknown: "the study contains no deposit, PO or paid pilot."
 - **Expect a no.** The judges put the chance of passing K0, K6 and K1 together at about **0.10 (J-EV)** and **0.09 (J-INT)**. DD5's test passes 15–25% of the time by its author's estimate (OM §10), or about 10% by J-EV's.
 - **A pass buys a side business, not a company.**
   - BASE ARR is **$69,915 at m18** and **$149,629 at m36**. GLUT gives $104,077 and SEVERE $83,031.
   - Breakeven with the founder unpaid comes at m17 (2028-04).
   - The $10k/month salary is **never** covered within 36 months unless trial conversion reaches **≥14.7%** (LI.py §6, §10).
   - The first subscription revenue arrives at **m6 = 2027-05** (LI.py §4). **No branch earns subscription revenue inside these 90 days.**
-- **One test at a time.** DD2 runs first. DD5 gets only $0 letters until DD2 has died. 15 hours a week cannot staff both tests. DD2's $33.9k model draw and DD5's ~$36k draw also cannot both fit inside $40k (J-INT FALLBACK rationale, point 6).
+- **One test at a time.** DD2 runs first. DD5 gets only $0 letters until DD2 has died. 15 hours a week cannot staff both tests. DD2's max draw on this plan ($30,850; LI.py §10 PLAN) and DD5's ~$36k draw (J-CEIL) also cannot both fit inside $40k (J-INT FALLBACK rationale, point 6).
 - **The most likely ending is Branch C:** stop on 2026-12-01, keep the day job, and keep **$38,050** of the $40k.
 
 ## 1. Standing rules for all 13 weeks
@@ -30,7 +31,8 @@
 | Rule | Source |
 |---|---|
 | About 15 h/week alongside the day job | Founder profile (MISSION); LI.py input `trials_cap_pt` ("15 h/wk = ~65 h/month") |
-| ≤$500 before K0; DD2 test hard cap **$5,000** (~$2,950 planned); **≤$34k ever**; **$5k cash floor** | DEC PRIMARY.spend |
+| ≤$500 before K0; DD2 test **~$1,950 planned** (~$2,950 if the $1,000 consult is not deferred), hard cap **$5,000**; **≤$34k ever**; **$5k cash floor** | DEC PRIMARY.spend |
+| Plan cash check: max founder draw **$30,850** vs the $34k cap; cash low **$9,150** at m16 (2028-03) vs the $5k floor. If K3+K4 pass and the deferred $6k is spent: **$36,850** and **$3,150**, over the cap and under the floor unless results beat BASE | LI.py §10 PLAN rows; DEC PRIMARY.plan_cash |
 | $40,000 deployable | LI.py `founder_cash` (ASSUMPTIONS A-03) |
 | The $1,000 government-contracts consult and the $5,000 antitrust opinion wait until K3 **and** K4 pass. November spend is therefore **$1,950**, with $1,000 held in reserve | DEC MOONSHOT.spend; LI §10 line items |
 | DD5: $0 in November (letters only). Up to **$9.1k** only if DD2 fails on 2026-12-01 **and** both no-release statements arrive | DEC FALLBACK.spend |
@@ -103,7 +105,7 @@ Optional, J-INT only: "at least 3 of the 5 must be cash." It binds only if it wa
 1. "Before any code (target 2026-11-09): K0 fails (no written employer carve-out) → **kill DD2 for this founder**." DEC adds: "by 2026-11-09 (else stop)".
 2. "By 2026-12-01: K1 fails (<5 of 25 deposits or paid LOIs at ≥$200/mo), or K6 fails (<25 qualified calls booked in 21 days) → **kill DD2 entirely**. Spend no more money."
 3. "By 2026-12-01: K3 fails (<2 signed LOIs naming a live contract or surcharge schedule), or K4 fails (<10 legal-signed contribution agreements, or the cell map fails) → close the index option for good. The bundle continues as SaaS only, which is the revised BASE."
-4. "By 2026-12-15: neither Nexar nor DigiKey grants in-app price display in writing at ≤$1,000/month → run the price line on public prints only and re-test K1 on that demo; if K1 then fails, kill DD2. The revised model's K5-fail case is $69,289 ARR at m36 with a $947 cash low."
+4. "By 2026-12-15: neither Nexar nor DigiKey grants in-app price display in writing at ≤$1,000/month → run the price line on public prints only and re-test K1 on that demo; if K1 then fails, kill DD2. The revised model's K5-fail case is $69,289 ARR at m36 with a $947 cash low." [On this plan: $3,997 cash low at m22, LI.py §10 "PLAN, K5 fail".]
 5. "By 2026-12-01: 0 of 3 suppliers will discuss a pooled allocation agreement → C-72 is closed permanently." (DEC has since killed C-72 as a standalone concept. The three calls ride along at $0.)
 6. "By 2027-02-28 (m3): two design-partner BOM tests. If <70% of memory spend falls in ≤4 grade-homogeneous cells → close the index option. If no BOM has an EOL NVM part with a pin-compatible F-RAM/MRAM alternate within 3× the price → drop the C-29 feature."
 7. "By 2027-08-31 (m9): fewer than 2 paying accounts (model: 2.7) → stop. The persona doesn't pay."
@@ -249,7 +251,7 @@ In Branches B and C, refund every DD2 deposit by Fri 12-04 [PLAN] and thank ever
 **The honest frame.**
 
 - Inside the 90 days the job is to turn deposits into design partners and build the MVP. No subscription revenue arrives: the model's first revenue is m6 (2027-05), and its first paying cohort pays 40% less through m10 (LI §4; LI.py §4). The m9 and m12 gates fall in August and November 2027. This branch only sets them up.
-- **A1 (index closed)** is the revised BASE without the $5k opinion. **A2 (index open)** adds the $1,000 consult and the $5,000 opinion.
+- **A1 (index closed)** is the model's "PLAN" row: the $1,950 test charged, no $5k opinion and no $1k consult. Max founder draw $30,850, cash low $9,150 at m16 (LI.py §10). **A2 (index open)** adds the $1,000 consult and the $5,000 opinion ("PLAN + index option passes"): max draw $36,850 and cash low $3,150 at m16, over the $34k cap and under the $5k floor unless results beat BASE.
 - **If K2 failed,** lifecycle alerts become a free funnel. The paid line is then the price and allocation alerts, which fall 57% in GLUT and 83% in SEVERE (LI.py §6).
 - **Spending caps after a pass:** "≤~$22k cumulative through the m9 gate" (J-INT, J-CEIL); "≤$34k ever, $5k cash floor" (DEC).
 - **Monthly opex follows the model:** $650/month in Dec and Jan, made up of tools $250, marketing $300 and accounting $100 (LI.py §4 m1–m2; LI.py inputs).
@@ -271,7 +273,7 @@ In Branches B and C, refund every DD2 deposit by Fri 12-04 [PLAN] and thank ever
 - **Tasks (hours):** BOM upload and memory MPN classifier, reusing the scan (10.0); first monthly memory note (3.0); K5 decision (0.5); if K5 failed, write the public-prints demo specification (1.5).
 - **Deliverables:** classifier v0.1; Memory Note #1; the newsletter launched, with a target of 150 subscribers (LI §4).
 - **Checkpoint, Tue 12-15, K5:** pass = "Nexar or DigiKey permits in-app price/stock display in writing, **with a quote of ≤$1,000/month**". Fail → "Run the price line on public market prints only and re-run K1 on a demo without distributor prices; if K1 then fails, **kill DD2**".
-- **Honest note.** Even if the K1 re-test passes, the model's K5-fail case ends with $69,289 ARR at m36 and a **$947 cash low at m22** (LI.py §10). That is below the $5k floor before the $1,950 test spend is even counted. Plan to stop at the floor unless actual results beat the model.
+- **Honest note.** Even if the K1 re-test passes, the model's K5-fail case on this plan (test charged, opinion deferred) ends with $69,289 ARR at m36 and a **$3,997 cash low at m22** (LI.py §10 "PLAN, K5 fail"; $947 in the BASE model, which books the $5k opinion and no test spend). That is below the $5k floor. Plan to stop at the floor unless actual results beat the model.
 
 ### Week 8 · Mon 12-21 → Sun 12-27 (Christmas) · ~8 h · spend $0
 
@@ -396,7 +398,8 @@ In Branches B and C, refund every DD2 deposit by Fri 12-04 [PLAN] and thank ever
 | ID | Trigger (DEC, verbatim) | Where to watch ($0) | If it fires |
 |---|---|---|---|
 | C-64 | "Final FAR rule in FAR Case 2023-008 (§5949) drops reliance on supplier self-certification, or a module maker pays cash because its supplier refuses a die-source declaration" | Federal Register docket for FAR Case 2023-008, checked monthly. The rule was proposed 2026-02-17, the prohibition starts 2027-12-23, and no final rule existed on 2026-11-01 (LS §0 #8) | DD1's $1.4k Stage-1 track C' probe (J-EV, J-INT). The best case is still ~$227k ARR at m36 (J-CEIL) |
-| C-48 | "A VAR/MSP commits in writing to >=6 boxes/yr on its own paper AND a measured >=10 tok/s per user at 2 concurrent users on the L box" | Server-platform launches and public hybrid-inference benchmarks, checked quarterly (J-CEIL) | Reopen DD6 only on its §14.4 terms. **Caution:** DD6 §14.4's own reopen trigger asks for ≥10 tok/s at **4** concurrent users on a 1T-class MoE in a box quoting ≤$65k, or a blind evaluation. Use the stricter version (§10 #2) |
+| C-48 | "Both needed (04_DEEPDIVES/private-moe-appliance.md §14.4): (a) a VAR/MSP commits in writing to >=6 boxes/yr on its own paper at <=15%/20%; and (b) a published or socket-pinned single-socket run showing >=10 tok/s per user at 4 concurrent users on a 1T-class MoE in a box quoting <=$65k (or the alternative proof listed there)" | Server-platform launches and public hybrid-inference benchmarks, checked quarterly (J-CEIL) | Reopen DD6 only on its §14.4 terms |
+| C-72 | "Any of Winbond, Nanya, Micron (Manassas DDR4) or a franchised distributor agrees in writing to honor a pooled multi-year allocation agreement with a no-title buying co-op (one of DD2's three $0 supplier calls)" | Answered on the week-3 supplier calls if K0 passed (LI §10 step 4); otherwise passive only | Reopen C-72 only as a written-agreement case; it was killed standalone under Rule 1 (DEC `embedded_tests`) |
 | C-91 | "A written OCM offer of authorized-aftermarket rights (wafers, test programs, marking) for a named EOL DRAM family" | Passive only. P ≤5% within 15 months; do not solicit (J-EV) | It must also come with an all-in pull cost of ≤$1.53/die (J-CEIL) |
 | C-12 | "Unsolicited reseller sell-through or commitment showing >=33 MRAM backup cards/month" | Passive. 33/month is the 36-month breakeven (`04_DEEPDIVES/nv-continuity-modules.md` §0) | DD3's $1.2k, 28-day demand-only probe (J-EV) |
 | C-65 | "A hi-rel cofounder arrives with an existing x72 design-in and >=3 evaluation LOIs at >=$1,200/unit" | Passive | Reopen only as a cofounder-led T2 raise of $5.5–11.5M (J-CEIL). Not a T0 path |
@@ -413,9 +416,9 @@ All dollar figures are cumulative from 2026-11-02 and come from the week tables 
 |---|---|---|---|---|---|---|---|
 | Weeks 1–5 (shared) | Tue 2026-12-01 | $1,950 (+$1,000 held) | n/a | $38,050 | ~60 by 12-01 | n/a | 12-01 |
 | K0 fails | Mon 2026-11-09 | $500 | n/a | $39,500 | ~13, then B or C | n/a | DD5 check 12-01 |
-| **A1**: DD2 passes; K3 or K4 fails (SaaS only) | 12-01 | **$3,250** | n/a | **$36,750** | ~171 (60 + ~111) | BASE cash low $6,100 at m16 includes the $5k opinion. Without it ~$11.1k (J-EV, J-INT), less the $1,950 test spend = **~$9.2k** [ESTIMATE]. Draw ≤~$22k through m9 (J-INT) | 2027-02-28 (m3); 2027-08-31 (m9) |
-| **A2**: DD2 passes; K3 + K4 pass (index open) | 12-01 | **$9,250** | n/a | **$30,750** | ~171 | BASE cash low $6,100 at m16, less the $2,950 test spend = **~$3,150: below the $5k floor** unless results beat BASE. The total draw of ~$36.9k breaks DEC's ≤$34k (§10 #1) | Same, plus the index VET-01 test at m9 |
-| A with K5 failed | 12-15 → re-test 01-08 | as A1 or A2 | n/a | as A1 or A2 | as A | K5-fail model: $69,289 ARR at m36, **$947 cash low at m22** (LI.py §10). The floor is breached in BASE | K1 re-test 2027-01-08 [PLAN] |
+| **A1**: DD2 passes; K3 or K4 fails (SaaS only) | 12-01 | **$3,250** | n/a | **$36,750** | ~171 (60 + ~111) | LI.py §10 "PLAN": cash low **$9,150** at m16 (BASE $6,100 + the deferred $5k opinion − the $1,950 test); max draw **$30,850**, inside the $34k cap. Draw ≤~$22k through m9 (J-INT) | 2027-02-28 (m3); 2027-08-31 (m9) |
+| **A2**: DD2 passes; K3 + K4 pass (index open) | 12-01 | **$9,250** | n/a | **$30,750** | ~171 | LI.py §10 "PLAN + index option passes": cash low **$3,150** at m16, **below the $5k floor**; max draw **$36,850**, over DEC's ≤$34k cap, unless results beat BASE | Same, plus the index VET-01 test at m9 |
+| A with K5 failed | 12-15 → re-test 01-08 | as A1 or A2 | n/a | as A1 or A2 | as A | LI.py §10 "PLAN, K5 fail": $69,289 ARR at m36, **$3,997 cash low at m22**. The floor is breached | K1 re-test 2027-01-08 [PLAN] |
 | **B**: DD2 dead, DD5 letters clean | Wed 2027-02-10 | $3,550 (tranche 1), or **$9,550** if (ii) passes and the contractor is commissioned 01-29 | **≤$11,050** (DD5 ≤$9,100) | ≥$28,950 | ~141 (60 + ~81), plus ~20 h to 02-10 | OM BASE: ARR $41.2k at m18, cash low $4.0k at m15 from $40k. Branch B starts it at $38,050 [ESTIMATE: further slot deferral] | 02-10, then the OM §11 #2 contractor SOW (re-dated) |
 | B, with DD2 dead at K0 | 02-10 | $500 + DD5 | ≤$9,600 | ≥$30,400 | ~100 | as B | as B |
 | B stops at (ii) | Fri 2027-01-29 | $3,550 | n/a | $36,450 | ~141 | none | none |
@@ -424,24 +427,26 @@ All dollar figures are cumulative from 2026-11-02 and come from the week tables 
 **How to read it.**
 
 - **The worst case inside the 90 days is A2 at $9,250.** The largest committed path overall is Branch B at ≤$11,050 by 2027-02-10.
-- **Every branch stays far inside $40k for these 13 weeks.** The real cash risk starts later, at DD2's m8–m16 trough (cash $20,171 at m8 down to $6,100 at m16; LI.py §4).
+- **Every branch stays far inside $40k for these 13 weeks.** The real cash risk starts later, at DD2's m8–m16 trough (BASE model: cash $20,171 at m8 down to $6,100 at m16, LI.py §4; on this plan the low is $9,150 at m16, LI.py §10).
 - **Branch C is the most probable outcome.** It costs about 4.9% of the capital ($1,950 of $40,000) and about 63 hours.
 
 ---
 
 ## 10. Inconsistencies found in the inputs (flagged here, not fixed)
 
-1. **DD2's model leaves out its own kill-test spend.**
+*Phase 7 gate status (g-mission-critic, 2026-11-01): items 1, 2 and 4 are now resolved upstream. (1) `models/lifecycle-intel.py` §10 now has PLAN rows that charge the $1,950 test at m1: max draw $30,850 and cash low $9,150 at m16 in BASE. With the index option, the $2,950 case gives $36,850 and $3,150, and `decision.json` `PRIMARY.plan_cash` states that the cap and floor still bind. (2) `decision.json` `watch_list` C-48 now reads "4 concurrent users". (4) `decision.json` keeps C-72 killed standalone but lists a supplier "yes" as its reopen trigger, which matches LI §10. The other items are left as flagged.*
+
+1. **DD2's model leaves out its own kill-test spend.** *(Resolved; see the note above. §1, §6 and §9 now quote the PLAN rows.)* The original finding:
    - `models/lifecycle-intel.py` starts m1 (2026-12) at $40,000, after the November test. OM.py, by contrast, books DD5's $9.1k test in its m1.
    - So DD2's "$33,900 max draw" plus the ~$2,950 test comes to ~$36,850, which breaks DEC's "≤$34k ever".
    - The BASE cash low becomes ~$3,150, below the $5k floor, once the $5k antitrust opinion is spent (A2).
    - The K5-fail case has a $947 cash low before any test spend.
-2. **DEC's C-48 trigger is wrong.** DEC says "≥10 tok/s per user at **2** concurrent users on the L box". DD6 §14.4's reopen trigger (`04_DEEPDIVES/private-moe-appliance.md`) says **4** concurrent users on a 1T-class MoE in a ≤$65k box, or a blind evaluation. The "2 concurrent" wording belongs to DD6's K5 U.S.-origin test.
+2. **DEC's C-48 trigger was wrong.** *(Resolved; see the note above. §8 quotes the corrected trigger.)* DEC said "≥10 tok/s per user at **2** concurrent users on the L box". DD6 §14.4's reopen trigger (`04_DEEPDIVES/private-moe-appliance.md`) says **4** concurrent users on a 1T-class MoE in a ≤$65k box, or a blind evaluation. The "2 concurrent" wording belongs to DD6's K5 U.S.-origin test.
 3. **LI points to dead deep dives.** LI §0 and §14.5 say to run the DD2 test "alongside DD1/DD3 customer discovery". Both are killed, and DEC runs DD2 alone.
 4. **C-72's status conflicts.** LI §10 step 4 says a supplier "yes" reopens C-72. DEC says C-72 was killed standalone under Rule 1 at Phase 7.
 5. **Two judges misstate the m12 gate.** J-EV and J-INT give it as "≥5 accounts **or** MRR ≥$1,700". LI §11 #9 stops the business if *either* figure is missed. J-CEIL states it correctly.
 6. **The deadline for DD5 test (iv) differs between files.** J-INT says silence by day 14 fails. J-EV and J-CEIL request an answer by 2026-12-01. OM §10 schedules the questions for days 7–20. This plan requests 11-20 and uses 12-01 as the cut-off.
 7. **OM §11's dates assume a November DD5 test.** They are m3 2027-02-28, m6 05-31 and m12 11-30. DEC's sequencing puts the DD5 decision about 71 days later, on 2027-02-10. The OM model also assumes a $40k start, against ~$38k in Branch B.
 8. **The size of DD5's first tranche differs.** J-EV caps it at "$1.5k". OM §10's own line items for that tranche (compute $0.3k, web $0.2k, outreach $0.1k, template $1.0k) add up to $1.6k.
-9. **The m2 antitrust opinion conflicts.** LI §4, LI §8 and the model book the $5k opinion unconditionally at m2. DEC defers it until K3 and K4 pass.
+9. **The m2 antitrust opinion conflicts.** LI §4, LI §8 and the model's BASE book the $5k opinion unconditionally at m2. DEC defers it until K3 and K4 pass. *Resolved for this plan:* the model's PLAN rows (LI.py §10) defer it; BASE is left unchanged for comparability.
 10. **The brief's "first paying accounts" in weeks 6–13 does not fit the model.** The model's first revenue is m6 (2027-05), and the m9 and m12 gates fall in August and November 2027, outside these 90 days.

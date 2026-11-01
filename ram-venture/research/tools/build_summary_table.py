@@ -27,10 +27,11 @@ role = {}
 alive = [c for c in m["cards"] if c.get("status") != "KILLED"]
 alive.sort(key=lambda c: c.get("rank_default", 999))
 killed = [c for c in m["cards"] if c.get("status") == "KILLED"]
+n_p3 = sum(1 for c in killed if c.get("kill_rule") != "RED-TEAM" and "Phase 7" not in c.get("kill_rule", ""))
 
 lines = ["# SUMMARY TABLE", "",
-         f"Every concept still alive after the Phase 3 kill pass, scoring, and both Phase 5 red-team rounds: **{len(alive)} of {len(m['cards'])}** "
-         f"({len(killed)} killed; reasons in `03_SCORING.md` §2 and `02_CONCEPTS.md`). Scores are consensus "
+         f"Every concept still alive after the Phase 3 kill pass, scoring, both Phase 5 red-team rounds and the Phase 7 gate: **{len(alive)} of {len(m['cards'])}** "
+         f"({len(killed)} killed; every reason is in `02_CONCEPTS.md`; the {n_p3} Phase 3 kills are also in `03_SCORING.md` §2 and the red-team kills in `05_REDTEAM.md`). Scores are consensus "
          "(median of three independent scorers) on a 0–100 scale from `models/scoring.py`; rank of 40 scored concepts "
          "in parentheses. Weightings: **Default** (mission rubric), **Cap** = capital-constrained (×2 capital & "
          "founder-fit), **Moon** = moonshot (×2 moat & margin). Deep-dive status reflects the Phase 5 red team "

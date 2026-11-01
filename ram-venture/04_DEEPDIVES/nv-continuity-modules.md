@@ -137,7 +137,7 @@ The m36 run-rate is below m24 because demand decays 10%/yr after launch. That ra
 
 **First revenue** now comes in **month 11 (2027-09)** [m4]. The DIP leg that supplied revenue from m4 is gone, and card launch slips from m9 to **m11** (RT-VET-DD3-05, RT-PHY-DD3-06). The slip comes from validation on a pre-i control, a three-family bench, outside-lab ESD/temperature/insertion tests and a rev-B respin before the first 100-card lot. The month is still within the 18-month first-revenue window.
 
-**Net by year in BASE:** −$33.5k, then −$0.6k, then +$4.4k [Phase 4: −$17.8k / +$34.3k / +$62.6k] [ESTIMATE: model `simulate` summed by year]. Steady-state monthly net is ~$350–380: **about $6 per part-time hour in year 3.** The negative cash low means the full plan needs ~$49k, above the $40k deployable.
+**Net by year in BASE:** −$33.5k, then −$0.6k, then +$4.4k [Phase 4: −$17.8k / +$34.3k / +$62.6k] [ESTIMATE: model `simulate` summed by year]. Steady-state monthly net is ~$350–380: **about $6 per part-time hour in year 3** [ESTIMATE: ~$365/month model net ÷ ~65 founder-hours/month at ~15 h/week, A-03]. The negative cash low means the full plan needs ~$49k, above the $40k deployable.
 
 ### 2.4 Sensitivity (BASE, one variable at a time; model §[6]) (revised after red team)
 
