@@ -216,6 +216,7 @@ Ranked by the decision they feed. "If wrong" names the consequence.
 ### 6.3 Unverified items that change no pick
 
 These stay open but move nothing. They are listed so nobody spends time on them first:
+- the 2023 DDR5 contract trough of ~$1.60/GB (~$3.2 per 16Gb chip), which rests on prior knowledge with no URL found this session (01_LANDSCAPE.md §5.3 tags it [UNVERIFIED]); the severe-glut line uses the model's $2.04/GB, so it changes no pick — check TrendForce's 2023 DDR5 contract releases;
 - the 1-beta/1-gamma DRAM wafer cost, which is "the largest model swing, but it changes no decision" (LAND §10.5 #6; V4 2a);
 - Samsung and SK hynix 1b/1c die areas (V4 1f);
 - Sandia HZO and Penn AlScN licensing (V2 3a, 3b);

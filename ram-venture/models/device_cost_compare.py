@@ -256,7 +256,7 @@ AXIS_KEYWORDS = [
     ("latency", ["latency"]),
     ("on-die density vs SRAM", ["density vs sram", "cache density", "on-chip memory density", "vs 6t sram",
                                 "density (bits/mm2)", "and density vs sram"]),
-    ("compute energy", ["tops/w", "watts per query", "energy per bit moved", "w per inference"]),
+    ("compute energy", ["tops/w", "watts per query", "energy per bit moved", "w per inference", "energy per retrieval query", "energy per query"]),
 ]
 NONE_TRIGGERS = ("wins on no axis", "not any ram axis")
 AXIS_OVERRIDE = {
