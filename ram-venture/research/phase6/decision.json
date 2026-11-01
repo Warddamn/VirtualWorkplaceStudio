@@ -1,0 +1,69 @@
+{
+ "as_of": "2026-11-01",
+ "method": "Three independent judges (research/phase6/judge_ev.json, judge_ceiling.json, judge_integrity.json) read the full record after two red-team rounds and proposed picks without seeing each other; all three converged. The orchestrator adopted the consensus.",
+ "headline": "No venture-scale opportunity to make RAM, or something better than RAM, in the U.S. survived for a founder with under $50k. The best available moves are a capped, gated software side business sold to memory buyers, a sequenced fallback, and a ~$0 option on a contract-reference price index.",
+ "PRIMARY": {
+  "dd": "DD2",
+  "slug": "lifecycle-intel",
+  "concepts": [
+   "C-80",
+   "C-29",
+   "C-61",
+   "C-72"
+  ],
+  "label": "Memory Lifecycle & Cost Intelligence SaaS for small U.S. hardware OEMs (EOL/PCN alerts, NVM cross-reference, last-time-buy sizer & studies) \u2014 run as a gated side business, not a venture",
+  "economics": "BASE ARR ~$69.9k at m18 / ~$149.6k at m36 (GLUT $104.1k, SEVERE $83.0k at m36); breakeven m17 with founder unpaid; never pays a $10k/month salary within 36 months unless trial conversion >=14.7% (models/lifecycle-intel.py; 04_DEEPDIVES/lifecycle-intel.md \u00a714)",
+  "gate": "K0 written employer carve-out by 2026-11-09 (else stop); K6 25 qualified cold calls booked in 21 days and K1 >=5 of 25 refundable $500 deposits/paid LOIs at >=$200/mo by 2026-12-01; K5 data-terms by 2026-12-15",
+  "spend": "<=$500 before K0; <=$5,000 hard cap for the whole test (~$2,950 planned); <=$34k ever, $5k cash floor",
+  "confidence": "0.2-0.45 across judges"
+ },
+ "FALLBACK": {
+  "dd": "DD5",
+  "slug": "open-memory-ip",
+  "concepts": [
+   "C-33"
+  ],
+  "label": "OpenRAM macro service for U.S. open-PDK tapeouts (sky130/GF180) \u2014 wedge only; sequenced, never parallel to DD2",
+  "economics": "BASE ARR ~$41.2k at m18 / ~$65.7k at m36 (GLUT $54.9k, SEVERE $49.3k); breakeven m12 founder unpaid; never pays a salary (models/open-memory-ip.py; 04_DEEPDIVES/open-memory-ip.md \u00a714)",
+  "gate": "$0 written no-release statements from UCSC VLSIDA and Open Circuit Design first (silence = fail); then >=2 buyers at >=$10k; then contractor-signed 16 KB corner + Monte Carlo; >=3 paid deposits or >=$15k LOIs",
+  "spend": "$0 in Nov 2026 (letters only); <=$9.1k only if DD2 fails on 2026-12-01 and both no-release statements arrive",
+  "confidence": "0.2-0.3 across judges"
+ },
+ "MOONSHOT": {
+  "dd": "DD2",
+  "slug": "lifecycle-intel",
+  "concepts": [
+   "C-86"
+  ],
+  "label": "NONE honestly qualifies. Best available: a contract-reference Memory Cost Escalation Index (C-86, killed as designed by the red team) held as a ~$0-marginal option inside DD2's kill test",
+  "economics": "Only credible >$2M path in the study (03_SCORING.md \u00a76: $2-10M ARR upside if it becomes the reference index cited in contracts); ceiling judge puts odds at ~3%",
+  "gate": "K3 >=2 signed LOIs naming a live contract/surcharge schedule that would cite the index (and why TrendForce/open-book doesn't serve it) + K4 >=10 signed PO-price contribution agreements, inside the DD2 test window",
+  "spend": "$0 marginal (asks ride on DD2 calls); defer the $1k gov-contracts and $5k antitrust opinions until K3+K4 pass",
+  "confidence": "0.03-0.8 that 'none qualifies' is the right call (judges agree it is an option, not a venture)"
+ },
+ "watch_list": [
+  {
+   "id": "C-64",
+   "trigger": "Final FAR rule in FAR Case 2023-008 (\u00a75949) drops reliance on supplier self-certification, or a module maker pays cash because its supplier refuses a die-source declaration"
+  },
+  {
+   "id": "C-48",
+   "trigger": "A VAR/MSP commits in writing to >=6 boxes/yr on its own paper AND a measured >=10 tok/s per user at 2 concurrent users on the L box"
+  },
+  {
+   "id": "C-91",
+   "trigger": "A written OCM offer of authorized-aftermarket rights (wafers, test programs, marking) for a named EOL DRAM family"
+  },
+  {
+   "id": "C-12",
+   "trigger": "Unsolicited reseller sell-through or commitment showing >=33 MRAM backup cards/month"
+  },
+  {
+   "id": "C-65",
+   "trigger": "A hi-rel cofounder arrives with an existing x72 design-in and >=3 evaluation LOIs at >=$1,200/unit"
+  }
+ ],
+ "biggest_unknown": "Whether any memory-adjacent buyer will pay this part-time, non-chip founder recurring cash at all: the study contains no deposit, PO or paid pilot, and every red-team round cut demand inputs that were estimates.",
+ "monday_action": "Monday 2026-11-02, <=2 hours, $0: (1) copy DD2's K0-K6 pass/fail thresholds from 04_DEEPDIVES/lifecycle-intel.md \u00a710 into a dated doc and email it to an outside advisor to lock them; (2) read the employment agreement for IP-assignment, moonlighting, non-compete/non-solicit and confidentiality clauses and send HR a written carve-out request; (3) send DD5's $0 no-release questions to UCSC VLSIDA and Open Circuit Design.",
+ "reaim": "Re-aim the project from 'make memory in America' to 'sell software to the people who buy memory', run as a capped experiment while keeping the day job. The physical U.S. memory build-out is Micron's T4, CHIPS-funded program; the openings for a <$50k founder sit beside it (procurement, lifecycle and price intelligence), not inside it."
+}
