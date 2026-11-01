@@ -1,0 +1,261 @@
+{
+  "persona": "VC",
+  "persona_name": "Semiconductor VC who lost money on Z-RAM, T-RAM, Nantero, Crossbar and an Optane-adjacent bet, and on picks-and-shovels SaaS that capped out at $2M ARR",
+  "objections": [
+    {
+      "id": "RT-VC-DD1-01",
+      "dd": "DD1",
+      "severity": "FATAL",
+      "section": "§3 target customer / §5 'free self-certification' / §7 §5949 row / INPUTS cb_close_bundle",
+      "objection": "The named core buyer for CleanBOM (OEM-compatible module makers: AddOn, Axiom, Brute) is the one party in the chain that already holds die-source evidence for free: its own DRAM purchase invoices or its module ODM's certificate of conformance. Under the proposed FAR 52.240-XX it certifies after a 'reasonable inquiry' and may rely on lower-tier supplier certifications with no third-party audit (Mayer Brown, Covington, Reed Smith as cited in §7), and the SEWP/GSA resellers downstream may in turn rely on the module maker's certification. So the party with the liability already has the data, and the parties without it are allowed to rely on the first party. 01_LANDSCAPE §10.2 already lists '§5949 die-level lab screening (X-ray/decap) as the core product' as a closed path, yet DD1's moat is a lab-built library, and the model still books a 10% close rate with demand held flat in every scenario.",
+      "would_change_my_mind": "At least 3 of 5 compatible-memory makers (AddOn/Axiom/Brute class) state in writing that they cannot obtain die-source certifications from their ODMs or die suppliers and will pay at least $750/month for independent evidence. A final FAR rule that bars reliance on supplier certification for memory modules would also do it."
+    },
+    {
+      "id": "RT-VC-DD1-02",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§1 Line 2 / §2.3 'library worth ~$122k' / INPUTS lib_samples_early, lib_module_cost",
+      "objection": "The library is sampled from ITAD decommissioned flow: DDR4 RDIMMs pulled from 2017–2022 Dell/HPE fleets, overwhelmingly Samsung, SK hynix and Micron OEM modules. The risky population is new CXMT-die DDR5 RDIMMs sold into federal channels in 2026–27 (the router-switch listing in §3), and it will not appear in ITAD lots until roughly 2030 decommissions. The 63 lab-confirmed part numbers by m36 would therefore characterize modules nobody needs proven. The $121,985 of m36 ARR credited to the library ($445,543 vs $323,558 'no evidence lift', m§4) rests on an unmeasured 7%→10% close-rate lift from the wrong sample. The bundle hypothesis that 'recert is how it gets die-source data' fails on sample selection.",
+      "would_change_my_mind": "Track A lot manifests showing at least 10% of 2026–27 ITAD lots carry third-party-brand DDR5 RDIMMs or post-2024 date codes. Alternatively, re-run the bundle with lib_module_cost charged for buying new compatible SKUs at retail, and keep the lift only if the library still pays."
+    },
+    {
+      "id": "RT-VC-DD1-03",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§1 Line 2 ('one result identifies the die source for every stick sharing that part number and date-code family')",
+      "objection": "This inference is least safe for exactly the compatible-memory makers DD1 targets. Module makers qualify multiple die sources behind one SKU, and even Micron markets 'design-ID-agnostic' server DRAM with interchangeable parts kept transparent behind one part number (Simms, snippet, 2026-11-01). A maker that switches from Samsung to CXMT die partway through a date-code family under an unchanged part number is the case that matters, and a library sampling 3 modules a month will report 'Samsung' for it. A false-negative evidence pack is a False Claims Act-adjacent liability, which DD1 covers with a $400/month E&O policy and a $6k template.",
+      "would_change_my_mind": "Lab results showing at least 90% die-source consistency within part-number plus date-code families, from at least 3 samples per family across at least 10 families, including at least 2 compatible brands."
+    },
+    {
+      "id": "RT-VC-DD1-04",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§2.2 cash low point / model simulate() recert cash timing / §2.5 #2",
+      "objection": "The model books recert cash in the month of sale and runs m6–m10 within ~$3k of the $5,000 floor, with $55–71k of lots outstanding each month. Three real frictions are missing. eBay new-seller limits commonly start near 10 items and $500 a month and take months to lift (nifty.ai, closo, snippets), while the model sells ~25 eBay units (~$6.8k) in Jan-27. New-seller payouts are held for roughly 2–4 weeks. And B2B refurbishers (xByte, PCSP, TPM desks), 55% of the mix by m10, buy on net-30. At m10 that is ~$40k of B2B receivables plus ~$20–30k of held eBay funds, more than the founder's entire $40k. The T0 claim depends on a cash cycle the model does not simulate.",
+      "would_change_my_mind": "A re-run with eBay revenue capped by a realistic new-seller ramp, a 21-day eBay payout hold and net-30 on B2B. If the cash low stays at or above $0 on $40k, I withdraw this."
+    },
+    {
+      "id": "RT-VC-DD1-05",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "INPUTS buy_frac=0.65 / §2.4 sensitivity / §2.5 #1",
+      "objection": "The model's own INPUTS note says an open-market lot (PCSP, 24×32GB) lists at ~$140/module, which is about realized resale: a buy fraction near 1.0, against a 0.78 breakeven. So 0.65 assumes direct ITAD allocation of $70–100k a month for a part-time newcomer with no R2 certificate, while Iron Mountain's ALM revenue rose 88% YoY because it keeps the spread (§2.7). At 0.75, m36 ARR falls to $250,221 and m36 cash to $163,673. Recert is 85% of cumulative revenue, so one unsourced input decides the bundle.",
+      "would_change_my_mind": "Two written ITAD lot quotes at or below 70% of trailing amcompute realized resale, for at least $20k a month of volume, on downstream terms a non-R2 buyer can meet."
+    },
+    {
+      "id": "RT-VC-DD1-06",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§2.5 #4 / §5 'Where you lose' / §7 'Raise?' (exit)",
+      "objection": "Ceiling and exit. CleanBOM reaches 23.5 subscribers (~$384k ARR) at m36, and $1M ARR needs 61. My [ESTIMATE] of the buyers who cannot lean on an upstream certification is roughly 20–40 compatible-module and white-box builders plus a few hundred SEWP/GSA resellers. Even 40 × $30k plus 300 × $9k is about $3.9M at 100% share. DD1's own exit is a dataset sale to Z2Data, Accuris or OBSIDIA, but §5 prices replication at ~$25k (63 samples × $400). A buyer will not pay more than the cost of rebuilding a dataset it can replicate in a quarter. As a VC I see a $0.4M-ARR lifestyle business, 85% of whose revenue is a 15%-margin resale trade.",
+      "would_change_my_mind": "An LOI from a compliance-data vendor to license the dataset at $100k/yr or more. Alternatively, a bottom-up count from GSA eLibrary and the SEWP V holder list showing at least 150 entities that must certify without an upstream certificate they can rely on."
+    },
+    {
+      "id": "RT-VC-DD1-07",
+      "dd": "DD1",
+      "severity": "MINOR",
+      "section": "All models: no income-tax line (models/provenance-recert.py; same in DD2–DD5)",
+      "objection": "None of the five models provisions income or self-employment tax. In DD1, BASE cumulative EBITDA of $662,971 flows through a pass-through LLC to the founder, who owes roughly 25–35% combined tax on it even if the cash is recycled into inventory. So the $610,097 m36 cash (and the m14 full-time trigger, which is tested on pre-tax cash) is overstated. The other models are smaller but have the same flaw.",
+      "would_change_my_mind": "Re-run all five models with a 30% provision on positive cumulative EBITDA, and show the full-time triggers still fire in the same months."
+    },
+    {
+      "id": "RT-VC-DD2-01",
+      "dd": "DD2",
+      "severity": "FATAL",
+      "section": "§1 steps 3–4 / §8 m9 gate / INPUTS contributor_share=0.40, index_methodology_month=9, index_first_sale_month=12",
+      "objection": "The index is the only leg the bundle exists to borrow its moat and cycle scores from, and it cannot be computed at the model's own account counts. At m9 the model has 5.8 paying accounts × 40% contributors = 2.3 contributors; at m12 it has 11.8 × 0.4 = 4.7. The §8 gate demands at least 10 contributors and at least 5 per DDR4/DDR5 cell at m9, and the methodology needs at least 5 companies per price cell. Even at m36, 88 accounts give ~35 contributors spread across DDR3/4/5, LPDDR, eMMC, NOR and EEPROM cells and densities, so most cells still fail the 5-contributor rule. Licence revenue from m12 is booked against an index that cannot yet exist.",
+      "would_change_my_mind": "At least 10 signed PO-history contribution agreements before m9, independent of SaaS conversions (K4 asks for only 5), plus a cell map naming at least 3 cells that reach 5 contributors."
+    },
+    {
+      "id": "RT-VC-DD2-02",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§1 index rationale / §5 'On credibility' / §3 'No U.S. OEM surcharge notice was found'",
+      "objection": "The panel measures the wrong price. SMB OEMs with $1–50M of BOM spend buy memory through franchised distribution and brokers (Avnet, Arrow, DigiKey) at allocation-inflated distribution prices. The escalation clauses in EMS and federal contracts reference supplier contract prices. An index built from five SMBs' distributor POs carries basis risk against both TrendForce contract and spot (spot ran ~2× contract in 2026, §5). The counterparty on the other side of every surcharge clause has a ready objection: 'unrepresentative, use TrendForce.' No U.S. OEM surcharge was found to cite any index at all, and the two European examples (Unipi, KUNBUS) charge 'at cost'.",
+      "would_change_my_mind": "K3 passes with at least 2 of 10 prospects committing, and in at least one live contract both buyer and seller agree in writing to cite the index. Or a back-test showing the panel would have tracked TrendForce contract within ±10% through 2025–26."
+    },
+    {
+      "id": "RT-VC-DD2-03",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§6 data-rights table / §12 module table / INPUTS display_licence=$1,000 from m12",
+      "objection": "39% of BASE m36 revenue is the 'buy/hold + allocation alerts' module, which is a price-trend product. By DD2's own reading, Octopart's terms bar historical pricing and trend use, bar caching beyond 24 h, and exclude 'software developers building applications for that market'. DigiKey's display and redistribution terms were not found, and its API caps at 1,000 requests a day. Without a lawful historical price series there are no buy/hold signals. The model's $1,000/month 'display licence' from m12 has no quote behind it.",
+      "would_change_my_mind": "Written permission (K5) from Nexar or DigiKey for in-app display and historical use at $1,000/month or less. Otherwise delete the price-driven line and re-run; my [ESTIMATE] is that BASE m36 ARR falls toward $250k."
+    },
+    {
+      "id": "RT-VC-DD2-04",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§2.4 'What must be true' / INPUTS tam_us_smb_oems=6,000 ('unsourced order-of-magnitude')",
+      "objection": "This is the low-ACV picks-and-shovels SaaS I have lost money on. $1M ARR needs 225–249 accounts (3.7–4.2% of a guessed 6,000) at a $335 ARPA, sold against SiliconExpert's $250 Essentials tier and Octopart's free BOM tool with lifecycle flags. Even 10% penetration of 6,000 at $4,020/yr is $2.4M ARR, and that is the absolute ceiling before the 2028 turn removes the price-motivated half (−57% GLUT, −86% SEVERE on that module). The TAM itself has no source.",
+      "would_change_my_mind": "A sourced count (Census County Business Patterns, NAICS 3341/3342/3345/3391 at 20–500 employees, filtered for memory on board) of at least 4,000 firms. Plus K2 showing under 40% say Octopart, SiliconExpert or their EMS already covers the need."
+    },
+    {
+      "id": "RT-VC-DD2-05",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§3 customer #1 / §6 FTO risk #3 / INPUTS trials_at_launch=6 ('founder network + day-job peers')",
+      "objection": "Founder conflict is sharpest here. The day job is product development and operations at a design/manufacturing company, which is the buyer persona. The plan names the employer as design partner #1 and draws the first 6 trials a month from 'day-job peers'. A standard invention-assignment and moonlighting clause would let the employer claim the code or bar selling into its own industry and suppliers. The founder's procurement contacts are likely bound by confidentiality over PO prices, which is the very data the panel needs. If clearance fails, the launch funnel and the panel lose their first source together.",
+      "would_change_my_mind": "A written carve-out from the employer before any code is written, covering the product, the target industry, and third parties contributing their own PO data."
+    },
+    {
+      "id": "RT-VC-DD2-06",
+      "dd": "DD2",
+      "severity": "MINOR",
+      "section": "§2.3 / INPUTS trials_growth=2.0, trials_cap_pt=25, founder_sales_h_per_trial=1.0",
+      "objection": "Qualified trials ramp from 6 to 25 a month on $900/month of marketing and $35 per trial, while a 15 h/week founder also builds the product, the PDN crawler, the index methodology and monthly content. Twenty-five one-hour demos take ~25 of ~65 monthly hours. Price or close rate 30% low pushes the salary date to 'never' (§2.3), so this unbenchmarked volume ramp carries the whole case.",
+      "would_change_my_mind": "The kill test's 25 qualified calls booked within 3 weeks from cold outreach outside the employer's network, showing that 25 a month is reachable part-time."
+    },
+    {
+      "id": "RT-VC-DD3-01",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§0 pitch / §1 'How it works' / §6 'Can't clone Fanuc boards'",
+      "objection": "The product does not replace the battery-backed memory that loses the machine's parameters; it replaces the backup card. The loss event in §1 ('If that battery dies during a shutdown, the settings are gone') happens in the control's internal SRAM and battery (for example the A20B-2900-0531 module), which §6 says cannot be cloned. Any working backup solves that pain: a battery card checked once a year, RS-232/DNC to a laptop, or a CF card where the control accepts one. The real comparison is a battery-free backup medium at $249 against a $160 used card, not 'save my machine'. The pitch overstates the value proposition and therefore the willingness to pay.",
+      "would_change_my_mind": "Track A deposits (at least 15) from buyers who, when asked, say they chose $249 battery-free over a $160–200 used battery card. Or a legal route to a drop-in replacement for the internal SRAM module itself."
+    },
+    {
+      "id": "RT-VC-DD3-02",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§10 Track B validation target / §2.5 TAM INPUTS legacy_share=0.35",
+      "objection": "The first validation target, Fanuc 16i/18i/21i or 0i-A, is the family where the cheap substitute already works. On i-series controls, boot-menu SRAM backup to CompactFlash in a PCMCIA adapter is a documented routine (IMD 'Fanuc 0i-Mate parameter backup to CompactFlash procedure'; dedicated CF-to-PCMCIA adapters recommended; snippets 2026-11-01). DD3's own CF-rejection source concerns the older Series 20/21, and Memex pairs SRAM cards with the 16/18-B/C. If only pre-i controls (0-C, 15, 16/18-A/B/C, 20/21, RJ-2) truly need SRAM cards, the '35% on SRAM-card-era controls' overstates demand. The kill test could then 'pass' by proving acceptance on controls whose owners don't need the product.",
+      "would_change_my_mind": "A compatibility matrix showing which families reject CF in a PCMCIA adapter. Validate first on a CF-rejecting pre-i control (16-C/18-C or 0-C), and re-run the TAM counting only CF-rejecting families."
+    },
+    {
+      "id": "RT-VC-DD3-03",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§2.5 TAM chain / INPUTS card_units_steady_month=40, global_over_us_mult=4.0, us_share_installed=0.15",
+      "objection": "BASE sells 480 cards a year, 16% of the modeled U.S. demand (3,076/yr), within about two years of launch. The global $2.97M is not addressable in this plan: export classification is 'not assessed' (§7) and every channel named is North American, so the real market is about $0.74M/yr. It also depletes itself: each MRAM card removes an 8-year replacement while the installed base retires, yet the model holds demand flat. The TAM chain is internally inconsistent too: a 15% U.S. share implies global ≈ 6.7× U.S., not the 4.0× used. That tells me it is assembled from guesses.",
+      "would_change_my_mind": "The 20-shop MRO survey from 03_SCORING §8 giving card purchase frequency per shop, plus sell-through data from Memex, MRO Electric or Do Supply supporting at least 3,000 U.S. cards a year."
+    },
+    {
+      "id": "RT-VC-DD3-04",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§2.2 recurring line / INPUTS ltsa_contracts=[(27, $2,000), (33, $2,000)]",
+      "objection": "BASE includes two $24k/yr DMSMS blanket orders from m27 and m33: $48k of the $56.2k m36 recurring ARR and ~25% of m36 revenue. Yet §2.2 says 'no DLA demand for DS12xx-class parts was found', and §3 row 10 estimates 12–24 months to approved-source status after SAM/CAGE registration. A base case should not contain revenue from customers the research could not find. Without them, recurring ARR is $8.2k, m36 run-rate $147.8k and 36-month net $65.1k: about $28 per part-time hour, with no recurring revenue for a founder who asked for it.",
+      "would_change_my_mind": "A DIBBS/NSN buy history showing at least $25k/yr of awards for DS1225/1230/1245-class NVSRAM or PC Card SRAM that a new CAGE could quote within 24 months. Otherwise, move the LTSAs to an upside case."
+    },
+    {
+      "id": "RT-VC-DD3-05",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§5 'Where you lose' / §2.4 'Price −30%' / §3 customer #1 wholesale offer",
+      "objection": "Moat is 2/5, and price is the whole P&L: a 30% price cut leaves $1.2k of 36-month net. The design is three buffers, an MRAM and an attribute EEPROM on a standard frame. The compatibility matrix, the claimed asset, is published as the sales tool (§4). Memex already sells Fanuc cards and is customer #1. Offering it wholesale at $175 shows it the cost structure, and once a card is in the field it or a Shenzhen house can copy it within a lot cycle.",
+      "would_change_my_mind": "An exclusive white-label or supply agreement with Memex or MRO Electric (at least 200 cards a year over 2 years). Or evidence that Fanuc or Mitsubishi acceptance depends on non-obvious attribute or CIS behavior the founder can keep as a trade secret."
+    },
+    {
+      "id": "RT-VC-DD3-06",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§9 team / INPUTS warranty_returns_pct=0.03",
+      "objection": "A 3% return rate is optimistic for a card sold into 1990s controls with dozens of firmware and option combinations, when the kill test validates one or two families. Each 'won't format on my 18-B' ticket needs Fanuc service knowledge the founder lacks, and the contract EE is paid per design, not kept on call.",
+      "would_change_my_mind": "Returns under 5% on the first 100 cards (already kill criterion 7), and a paid support arrangement with a CNC service technician signed before launch."
+    },
+    {
+      "id": "RT-VC-DD4-01",
+      "dd": "DD4",
+      "severity": "FATAL",
+      "section": "§2.4 'best case still misses the bar' / §2.5 / §10 kill experiment budget",
+      "objection": "No outcome of the ~$6k kill experiment can turn DD4 into a venture or even a salary. Every lever +30% gives $313k ARR at M36. BASE never takes the founder full-time. The funnel yields 0.37 customers a month against the ~2.5 needed. The 2028 turn arrives at M15 with ~2.6 customers, and SEVERE runs the C-74 subscription at −3% GM. The author's own recommendation is 'demote'. Spending ~15% of the founder's capital ($6k, up to a $10k cap) and 50+ founder hours to confirm a ceiling the model already proves is poor capital allocation.",
+      "would_change_my_mind": "A pass condition that changes the ceiling, added to §10 and tested in the 29 days: for example, a channel partner (Advanced Clustering, a refurbished-server reseller, or an MSP with at least 2,000 DDR5 nodes) committing in writing to resell at volume. Without that, kill DD4 now at $0."
+    },
+    {
+      "id": "RT-VC-DD4-02",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§2.1 'How the value is computed' / INPUTS contract_months=36, savings_share=0.30",
+      "objection": "The model calls the value 'deferred' but prices it as 'avoided': 51.2 GB is valued at the full $25.78/GB, as if the DIMMs are never bought. If the operator merely defers a purchase, the saving is the price difference between buying now and buying later, plus time value. That is near zero in BASE, where prices hold through 2027, and large only if a glut arrives, when the fee basis collapses anyway. The customer is also asked to pay a 36-month recurring fee for a one-time deferral, and has every reason to cancel once the purchase decision has passed.",
+      "would_change_my_mind": "Pilot customers signing 12-month contracts where the ledger ties the saving to a specific cancelled or reduced DIMM or server PO. And a re-run with value = price(now) − PV(price at the deferred date)."
+    },
+    {
+      "id": "RT-VC-DD4-03",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§3 customers #1–2 (Proxmox MSPs) / §1 KSM lever / INPUTS reclaim_frac=0.10",
+      "objection": "The first contacts are Proxmox MSPs (RichWeb, Petronella), and Proxmox VE already ships KSM enabled by default through ksmtuned, which kicks in at ~80% host RAM. The Proxmox wiki also advises disabling KSM on multi-tenant hosting for security reasons (pve.proxmox.com wiki, snippet, 2026-11-01). On the beachhead, the dedup lever is either already harvested or a cross-tenant side-channel liability. That leaves zswap and proactive reclaim, where Google's fleet figure is ~5%, and at 5% reclaim M36 ARR is $40.3k (§2.4).",
+      "would_change_my_mind": "Measured incremental reclaim of at least 10% on at least 2 production Proxmox MSP hosts, with KSM left in its default state and no cross-tenant KSM enabled."
+    },
+    {
+      "id": "RT-VC-DD4-04",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "INPUTS oncall_small=$750/month, oncall_large=$2,000 / §2.2 loaded margin",
+      "objection": "$750 a month for a kernel-savvy engineer on call for production memory incidents buys about 4 hours at $175/h: a best-effort email, not on-call. The VC scorer's 'one production incident from zero' needs a responder within an hour, around the clock. A credible retainer costs several thousand dollars a month, or a cofounder. That pushes loaded C-74 gross margin from 37% to negative until the 6+ customers the model reaches only after M24.",
+      "would_change_my_mind": "A signed retainer quote at $1,000/month or less with a response SLA of 1 hour or less, from a named kernel contractor."
+    },
+    {
+      "id": "RT-VC-DD4-05",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§5 'The real C-74 competitor' / INPUTS reply_rate, conv_to_scan, scan_to_pilot, pilot_to_sub",
+      "objection": "The real competitor is the operator's own Linux admin using free upstream features (zswap, MGLRU, PSI reclaim, Proxmox defaults, tuned). The target buyer has 'no kernel team' yet runs 20–200 nodes, and such shops are the least willing to let an outside agent change production memory behavior before seeing SOC 2, which the model books only at M20 ($12k). The precedents are bad: Intel shut Granulate in Oct-2024 and MemVerge pivoted (§5). None of the 8% × 35% × 40% × 60% funnel steps has a benchmark.",
+      "would_change_my_mind": "At least 2 signed paid-pilot LOIs at $5/node/month or more from majority-DDR5 fleets (already a PASS condition), where neither signer had zswap or tuned reclaim enabled before the scan."
+    },
+    {
+      "id": "RT-VC-DD4-06",
+      "dd": "DD4",
+      "severity": "MINOR",
+      "section": "§0 C-73 'cash bridge' / INPUTS c73_rate_pt=0.33",
+      "objection": "C-73 averages about $1k a month (0.33 audits a month at $3k) from a manufacturing network that is not the SaaS buyer (the model's own note). AWS on-demand prices were unchanged across 92 SKUs, so there is no tailwind. At that rate it does not bridge anything and only takes founder hours from C-74.",
+      "would_change_my_mind": "3 committed $3k audits from the founder's network inside the kill window; otherwise drop C-73."
+    },
+    {
+      "id": "RT-VC-DD5-01",
+      "dd": "DD5",
+      "severity": "FATAL",
+      "section": "§2.2 market funnel / §2.6 'Free-bundle shock' / §2.7 #4 and #6",
+      "objection": "The serviceable ceiling at 100% share is $747k a year, and it rests mostly on estimates. Of the 298 projects a year, 150 are the author's estimates (ChipFoundry 60, Cadence 30, MOSIS/Commons/other 60), and 54 more depend on an estimated second wafer.space run a year. Paying the founder needs ~18 accounts by m18, 25% of every account that could exist. One free release of characterized ≥16 KB macros cuts m36 ARR to $50k and the founder is never paid. OCD and UCSC committed code in the last week, and Chips4Makers taped out SRAM test chips in Jul-2026. A business whose ceiling is under $1M even with no competition, and which one free release kills, is not one I would fund.",
+      "would_change_my_mind": "Kill-test results (i) and (iv) both pass: at least 3 paid deposits, and a written statement from UCSC VLSIDA, OCD and ChipFoundry that none plans free characterized ≥16 KB macros within 18 months. Or an independent count showing at least 150 paying-capable shuttle projects a year."
+    },
+    {
+      "id": "RT-VC-DD5-02",
+      "dd": "DD5",
+      "severity": "FATAL",
+      "section": "§2.8 T2 overlay / §5 RAAAM and Toggle rows / 03_SCORING §7.7 (T2 slot)",
+      "objection": "The T2 stage (C-32/C-22) is the only thing that makes DD5 more than C-33, and it fails on its own numbers. In silicon, gain cells give 1.25–1.43× bitcell density, a small step next to the 5.5× macro-density gain the wedge already sells by banking SRAM, so a customer short of area gets more from the wedge than from the product. RAAAM holds the commercial seat and the patent lineage: $17.5M NXP-led Series A, TSMC N2 test chip, GF FDX access. ReRAM 'loses to Toggle MRAM everywhere except magnet immunity' (§0), and the Weebit licence is non-exclusive, with fabless-startup fees unknown against a $0.1–2.6M precedent. The seed gate (run-rate ≥ $250k plus gain-cell silicon ≥ 1.2×) can be met with services revenue and no product pull. The study's T2 constraint is satisfied by a paper option.",
+      "would_change_my_mind": "A named design partner (defense prime, SkyWater/IonQ, or a secure-boot customer) signing an LOI of at least $75k for a sky130 gain-cell or ReRAM macro. Plus an FTO read that clears a 2T/3T cell design around the RAAAM/Bar-Ilan claims."
+    },
+    {
+      "id": "RT-VC-DD5-03",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.5 revenue mix / §9 'single point of failure' / INPUTS contract_vlsi_rate_per_hour=125",
+      "objection": "This is a staffing agency for OpenRAM, not an IP company. Every service and licence sale consumes $125/h contract VLSI hours (44% GM academic services, 58% commercial), and recurring revenue is only 30–37% of the mix. The founder is not a chip engineer and cannot judge a timing sign-off they are warrantying. The single point of failure is the contract memory engineer, and the best candidate, Open Circuit Design, is also the likeliest free competitor. The supplier can cut out the founder whenever it likes.",
+      "would_change_my_mind": "A signed exclusive with the characterization partner, or at least a non-compete covering free large sky130 macros. Or a technical cofounder with equity before m6."
+    },
+    {
+      "id": "RT-VC-DD5-04",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.7 #7 shuttles / INPUTS one_time_spends (slots at m4, m7, m16, m19)",
+      "objection": "The funnel and the 'one shuttle cycle' moat both ride a fragile shuttle supply. Efabless is gone (01_LANDSCAPE §0 item 12), ChipFoundry runs only when a shuttle is at least 50% full, wafer.space Run 3 is only 'coming soon', and SkyWater has been IonQ-owned since 2026-07-31. The model fixes slot dates at m4, m7, m16 and m19 and characterization at m10 and m13, with no slip case. A 6-month slip on the m7 ChipFoundry slot moves sky130 silicon past m19, which erases the claimed head start and delays the only line with SBIR and DoD buyers.",
+      "would_change_my_mind": "Confirmed 2027 shuttle calendars with dates from ChipFoundry and wafer.space, plus a model variant with a 6-month slip on the m7 slot that still pays the founder by m30."
+    },
+    {
+      "id": "RT-VC-DD5-05",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.2 'Commercial NDA customers are out of reach' / §3 customer #2 / INPUTS academic_share_of_accounts=0.60, churn_academic_month=0.03",
+      "objection": "The paying commercial tier ($800/month, $10k services, $20k licences) is structurally thin. SkyWater S130 bundles NDA SRAM compilers, foundry-sponsored compilers cost designers $0, and Mobile Semiconductor serves DoD on RH90. That leaves 60% academic accounts at $200/month and $3k services, churning 3% a month as students graduate. Customer #2, the Synopsys–GF GF180MCU pilot with 40 universities, is a vendor-run program. If it ships Synopsys or GF memory IP to members, the largest academic block is already served free.",
+      "would_change_my_mind": "At least one commercial or SBIR buyer committing $10k or more (criterion ii) who is on open sky130 and cannot use SkyWater's NDA compiler. Plus written confirmation of what memory IP the Synopsys–GF pilot provides."
+    },
+    {
+      "id": "RT-VC-DD5-06",
+      "dd": "DD5",
+      "severity": "MINOR",
+      "section": "§4 pricing (12-month warranty) / INPUTS license_warranty_reserve_share=0.10, e_and_o_insurance=$250",
+      "objection": "A 12-month warranty on a macro whose failure costs the customer a $7–15k slot plus 3–6 months can produce claims larger than the licence fee. It is backed by a 10% reserve and $250/month of E&O, while only a 1 KB sky130 macro is silicon-proven and the published 16 KB attempt 'left only a log'.",
+      "would_change_my_mind": "Warranty language limited to re-delivery or a refund of fees, accepted by at least 2 kill-test buyers."
+    }
+  ],
+  "overall": {
+    "DD1": "Recert is a 15%-margin working-capital trade on an unsourced buy price that the model's cash cycle understates, and CleanBOM sells die-source evidence to the one party that already holds it; harvest-grade lifestyle business, not a venture. Kill CleanBOM if fewer than 3 compatible-memory makers pay.",
+    "DD2": "A $249 feature priced against free Octopart and $250 SiliconExpert, plus an index that cannot be computed at the model's own contributor counts and lacks the data rights for its biggest module; fallback at best, kill on K3/K4.",
+    "DD3": "An honest small hardware SKU in a ~$0.74M U.S. niche that depletes itself, whose first validation targets controls that already accept CF, and whose only recurring revenue is two contracts nobody found; moonlighting income, never a company.",
+    "DD4": "Already demoted by its own author, and its $6k kill test cannot change the ceiling; kill now and keep the cash.",
+    "DD5": "A services shop with a ceiling under $0.75M, whose contractors are its free competitors, plus a T2 'option' that exists on paper only; side line at most, and only if the authors of the free code sign exclusives."
+  }
+}

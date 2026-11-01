@@ -1,0 +1,253 @@
+{
+  "persona": "VET",
+  "persona_name": "30-year DRAM process veteran: ex-Micron/Qimonda process integration and yield engineering, qualified memory for automotive and defense customers, ran fab test floors (KGD, burn-in, AS6081, module qual)",
+  "objections": [
+    {
+      "id": "RT-VET-DD1-01",
+      "dd": "DD1",
+      "severity": "FATAL",
+      "section": "§1 Line 3 / §3 core buyer / §5 win condition 2 (die-level library)",
+      "objection": "Whoever holds a module can read the die maker off the package top mark: Samsung K4..., SK hynix H5.../HMC..., Micron FBGA codes (decodable on micron.com), CXMT CXDB.../logo. Module makers like AddOn, Axiom and Brute also hold the component invoice and CoC. Under the proposed FAR rule their 'reasonable inquiry' is a supplier CoC plus a visual top-mark check. That is a $0 internal SOP, as 01_LANDSCAPE §0 item 8/F4 already concedes ('lab test is an exception-driven add-on'). Decap adds information only when remarking is suspected, and §5 admits no case of CXMT die relabeled inside U.S. server RDIMMs was found. So the $2,500/month tier (35% of customers, m§1c) sells module makers information they already own, and the library is not the moat the Phase 3 VC asked for.",
+      "would_change_my_mind": "In track C, at least 3 of the 5 named module makers or resellers state in writing that, for 20% or more of the SKUs they ship federally, they cannot establish die source from their own purchase records plus top-mark inspection. At least one of them also pays for a $900 pack on such a SKU."
+    },
+    {
+      "id": "RT-VET-DD1-02",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§1 Line 2 ('one result identifies the die source for every stick sharing that part number and date-code family')",
+      "objection": "The library is keyed wrong for exactly the modules where die source is uncertain. Memory-maker-branded modules (Samsung M393..., SK hynix HMA..., Micron MTA...) need no library, because brand = die. Third-party and OEM-relabeled part numbers (Kingston, AddOn, Dell/HPE P/Ns) are multi-sourced under one P/N, and swapping between Hynix, Micron and Samsung die under an unchanged P/N is routine. The module date code is the assembly week, not a DRAM lot identifier. A P/N + date-code cross-reference will therefore be wrong on the modules that matter, which makes it an E&O liability, not an asset. And 63 lab-confirmed part numbers by m36 (m§3) is a rounding error against the thousands of compatible-module P/Ns in the channel.",
+      "would_change_my_mind": "Buy 3 lots of one third-party P/N with different date codes and show the same die source in 90% or more of modules. Otherwise, redesign the library around per-lot top-mark images and re-cost it."
+    },
+    {
+      "id": "RT-VET-DD1-03",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§1 Line 1 test flow / §10 track A / INPUTS fail_rate 0.03, return_rate 0.02",
+      "objection": "On an ECC RDIMM in a Gen10 (Skylake-SP/Cascade Lake) bed, single-bit errors are silently corrected. memtest86+ does not report corrected ECC errors there (memtest86+ discussion #248; v7's preliminary ECC support is AMD Zen only). Fleet DIMMs are disproportionately retired because they crossed correctable-error/PFA thresholds, which is the very signal behind the Lenovo MPFA and Intel MFP that §5 cites. Those modules pass memtest86+ clean and alarm in the buyer's BMC within weeks. There is also no thermal or voltage margining: retention and VRT fails appear at 85°C+ and not on a room-temperature bench. My run with fallout 8% and returns 5% cuts unit contribution from $36.9 to $19.1 (15% to 8%) and m36 ARR to $351,765, and moves full-time from m14 to m24 (m34 in GLUT).",
+      "would_change_my_mind": "Test the track A lot under Linux stressapptest with rasdaemon/EDAC logging corrected errors per DIMM, ideally in a 55-65°C ambient box. On the first 200 units, measure CE-inclusive fallout of 4% or less and 90-day returns of 2% or less."
+    },
+    {
+      "id": "RT-VET-DD1-04",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "INPUTS mix_ddr5_64 = 0.10 / m§1a per-SKU contribution",
+      "objection": "DDR5 server platforms shipped from Nov-2022 (Genoa) and Jan-2023 (Sapphire Rapids). On 5-6-year lives, almost none are decommissioned before 2028. In a shortage, operators extend lives and redeploy DIMMs, and §5 itself cites Sims redeploying them into CXL. Yet this 10% slice earns 45% of per-module contribution: $167 per DDR5 unit, $16.7 of the $36.9 blend. With mix_ddr5_64=0 (70/30 DDR4), the model gives $21.3 per module, m36 ARR $372,010, cash $344,648 and full-time at m22. Add realistic fallout and returns (8%/5%) and a 0.70 buy fraction, and recert contributes nothing: −$0.4 per module, m36 ARR $237,798, full-time m34.",
+      "would_change_my_mind": "Three track A ITAD quotes in which 64GB DDR5 RDIMMs are 10% or more of units, offered at 70% of realized resale or less."
+    },
+    {
+      "id": "RT-VET-DD1-05",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "INPUTS b2b_price_factor 0.88 / ebay_share_m12 0.40 (B2B is 60% of volume from m12)",
+      "objection": "The B2B buyers in §3 (#6-9: xByte, TechMikeNY, PCSP, Park Place/Curvature) buy ITAD lots and run their own test benches. They will pay a middleman only up to their own lot cost plus test cost, not 88% of eBay realized. If you can buy at 65% of resale, so can they. My run at b2b_price_factor=0.75 cuts unit contribution to $16.7 (7%) and m36 ARR to $341,342, and moves full-time to m25 (m34 in GLUT). Because the model shifts 60% of volume to B2B by m12, the price these accounts actually pay is a first-order input. It has no source.",
+      "would_change_my_mind": "Two signed B2B purchase orders or written price sheets from the §3 accounts at 0.85x eBay realized or better, for tested 32GB DDR4."
+    },
+    {
+      "id": "RT-VET-DD1-06",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§10 track B / INPUTS lab_cost $400 / kill criterion 3 (15 business days)",
+      "objection": "A die ID that will stand behind an attestation with False-Claims exposure is not 'X-ray + decap + die photo for $400'. Most AS6171 labs hold no CXMT or YMTC reference-die images (TechInsights has them, at subscription prices), so 'die source identifiable' depends on die logos CXMT may not print. Accredited labs add minimum lot charges and report fees, and the DD's own weak source says turnaround is 2-6 weeks. Track B is therefore likely to fail its 15-business-day rule on day 29 with zero slack, which drops the library (−$122k of m36 ARR, m§4). At lab_cost $1,200 with no close-rate lift (7%), my run gives m36 ARR $297,042 and full-time at m19.",
+      "would_change_my_mind": "Three written AS6171 lab quotes, including minimum and report charges, at $600 per sample or less and 15 business days or less. At least one lab must confirm in writing that it holds a CXMT DDR4/DDR5 reference die image."
+    },
+    {
+      "id": "RT-VET-DD1-07",
+      "dd": "DD1",
+      "severity": "MINOR",
+      "section": "§1 Optane PMem SKU / INPUTS pmem_* (fallout treated like RDIMMs)",
+      "objection": "ITAD workflows often leave PMem 100/200 modules passphrase-locked or security-frozen. Without the passphrase they cannot be reprovisioned short of an OEM/Intel RMA path. They also run only on matching Xeon generations: PMem 100 on Cascade Lake, PMem 200 on Ice Lake, with BIOS/firmware dependencies. Expect fallout and platform-mismatch returns well above the 3%/2% assumed. The line is small and sunsetting with vSphere 8, so this does not move the verdict.",
+      "would_change_my_mind": "In track A, read the security state of 20 lot PMem modules with ipmctl: 90% or more 'disabled/unlocked', and fewer than 5% returns on the first 50 sold."
+    },
+    {
+      "id": "RT-VET-DD2-01",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§1 steps 3-4 / §8 Q3 gate ('≥10 contributors, ≥5 per DDR4/DDR5 cell')",
+      "objection": "A memory price cell that means anything is density x organization x speed x temperature grade x package x supplier class. Examples: DDR4 8Gb x16-3200 commercial vs industrial-temp (Micron IT, ISSI and Alliance at large premiums), DDR3L 4Gb, LPDDR4, eMMC by capacity, SPI NOR by density, industrial SO-DIMMs from Innodisk/ATP/Swissbit/Virtium. A 60-person OEM buys DRAM a few times a year, often as LTB or broker buys. With 10-20 contributors, at most one or two cells will have 5 buyers in a given month. Everything else is composition noise: the index moves with who bought what, not with price. That is on top of the ~2x spot/contract basis risk §5 already concedes.",
+      "would_change_my_mind": "From the K4 contributors' 24-month PO histories: 3 or more cells with 5 or more independent buyers in 80% or more of months, and bootstrapped month-to-month index noise below one-third of the TrendForce contract move over the same period."
+    },
+    {
+      "id": "RT-VET-DD2-02",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§1 ('Memory has no such index') / §5 win condition 2",
+      "objection": "In practice there is a reference: TrendForce/DRAMeXchange publishes monthly contract prices (DDR4 8Gb, DDR5 16Gb, PC modules, server RDIMMs). Memory suppliers, module houses and large OEMs already negotiate against those prints, whatever DXI is. In the EMS segment (§3 #10), turnkey memory is normally passed through at actual invoice cost under open-book terms, which needs no index. Counterparties will pick the print their supplier already quotes against, or pass through actual cost. A one-person index has to beat both, not a vacuum.",
+      "would_change_my_mind": "In K3, 2 signed commitments in which the counterparty explicitly considered and rejected both TrendForce contract prints and open-book pass-through in favor of this index."
+    },
+    {
+      "id": "RT-VET-DD2-03",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§12 index +31%/+34% in GLUT/SEVERE / INPUTS vol_ref, index_rate, index_floor",
+      "objection": "The model makes index demand rise with volatility in either direction. The industry has already run that experiment. DRAM roughly tripled in 2016-18 and fell about 60% in four quarters in 2018-19 (01_LANDSCAPE §1 row 4a), and no memory escalation index or clause-licensing business came out of it; DD2 found none in 2026. In a crash the payer simply stops paying the surcharge (Unipi: 'reduced once memory prices normalize'). Nobody licenses a $6k/yr index to compute a refund they can negotiate away. If GLUT index revenue at m36 is half of BASE ($2,785/month) instead of $7,318, GLUT m36 ARR falls by about $54k, from $334k to about $280k [ESTIMATE: (7,318−2,785)x12].",
+      "would_change_my_mind": "One documented 2019 or 2023 commercial hardware contract that invoked an index-based memory down-adjustment, or 2 K3 commitments whose draft clause includes a symmetric down-adjustment."
+    },
+    {
+      "id": "RT-VET-DD2-04",
+      "dd": "DD2",
+      "severity": "MINOR",
+      "section": "§6 IP ('contributed price panel ... the only real moat') / INPUTS contributor_share 0.40, contributor_discount 0.10",
+      "objection": "Distributor and franchised-supplier price agreements commonly carry confidentiality terms. Procurement leads at medtech and defense-adjacent OEMs will need contracts or legal sign-off before handing 24 months of PO prices to a one-person startup. The model assumes 40% of accounts do so for a 10% discount ($25-65/month). That is a weak trade for a supplier-confidentiality risk. K4 already gates this, so MINOR, but the K4 bar is too soft.",
+      "would_change_my_mind": "K4 commitments signed by each contributor's legal or contracts function, not only the buyer, and stating that there is no supplier-confidentiality conflict."
+    },
+    {
+      "id": "RT-VET-DD2-05",
+      "dd": "DD2",
+      "severity": "MINOR",
+      "section": "§1 step 2 / C-29 NVM cross-reference (EEPROM/NOR -> F-RAM/MRAM)",
+      "objection": "For most parts this is not a real alternate path. SPI NOR runs to 1-2 Gb at roughly $1-5, while F-RAM tops out at a few Mb and Toggle MRAM at 16-32 Mb for $40+ (DD3 §0: $21,504/GB). EEPROMs are multi-sourced commodities (Microchip, ST, onsemi, Rohm) that seldom truly go EOL, and F-RAM drop-ins cost 5-10x more. For customer #9 (medtech), any memory substitution is a design change under FDA design controls. The feature will generate alerts, not swaps.",
+      "would_change_my_mind": "Across the 5 design-partner BOMs, at least 1 NVM part per BOM that has an EOL notice and a pin-compatible F-RAM/MRAM alternate within 3x the price."
+    },
+    {
+      "id": "RT-VET-DD2-06",
+      "dd": "DD2",
+      "severity": "MINOR",
+      "section": "§1 / C-61 LTB sizer and LTB studies ($3,500)",
+      "objection": "In 2026, suppliers took DDR4 LTB orders subject to allocation, so the sizer's optimal quantity is moot when the supplier caps the fill. Micron Manassas 1-alpha DDR4 (since 2026-05-22) and Micron's stated ongoing DDR4/LP4 commitment (01_LANDSCAPE §0 item 11) also blunt the EOL panic for the biggest DRAM line on SMB BOMs. Any LTB study that ignores storage is incomplete. Holding DRAM 5-10 years needs J-STD-033 dry/N2 storage and periodic solderability checks, or a GEIA-STD-0003/Rochester-style bank. Those costs and yield losses change the answer.",
+      "would_change_my_mind": "3 design partners with a 2026-27 DRAM LTB that the supplier filled at 90% or more of the requested quantity, plus an LTB study template that prices storage and solderability."
+    },
+    {
+      "id": "RT-VET-DD3-01",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§10 track B (validate on Fanuc 16i/18i/21i or 0i-A) / INPUTS legacy_share 0.35 ('0/15/16/18/20/21, i-A')",
+      "objection": "The validation target is the wrong control. Fanuc i-series controls (16i/18i/21i, 0i) take boot-menu SRAM backup and parameter/program I/O on a CompactFlash card in a CF-to-PCMCIA adapter (IMD 0i-Mate CF procedure; IMD RJ-3/16i page). The DD's own IMD source says it is the older controls that reject CF. On exactly the controls track B tests, a $20 CF card already removes the battery. The base that genuinely needs an SRAM card is pre-i (Series 0-C, 15, 16/18-A/B/C, 20, 21-B) plus RJ-2, the oldest and fastest-retiring slice. If i-series is excluded (legacy share about 0.15 [ESTIMATE]), global card demand falls from 12,305/yr to about 5,300/yr, and BASE's 480 cards/yr becomes about 9% of global and 36% of U.S. demand.",
+      "would_change_my_mind": "A Fanuc maintenance-manual (boot-system chapter) excerpt showing a common i-series configuration that rejects ATA cards for SRAM backup, or 10 or more of the 15 track A deposits from owners of i-series controls. Also: re-run the TAM without i-series, and move track B to a pre-i control."
+    },
+    {
+      "id": "RT-VET-DD3-02",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§10 track B 'magnetic-field check' tagged [UNVERIFIED risk]",
+      "objection": "The risk is not unverified; it is in the datasheet. MR4A16B's absolute-maximum field during write is 8,000 A/m, about 10 mT (Everspin datasheet Rev 11.7 mirror; Everspin app note: 8,000 A/m for 16Mb parallel parts). A magnetic dial-indicator base or tool-tray magnet is hundreds of mT at contact, and surface-grinder chucks and demagnetizers are worse. This product is a backup card that technicians keep in tool boxes and stick to machine panels, and the lithium SRAM card it replaces does not care about magnets. Seventy-two hours 'beside a spindle motor' does not test the real exposure.",
+      "would_change_my_mind": "A bench result: write a pattern, hold each face of 5 cards against a 0.3 T magnetic base for 60 s, and verify zero bit errors. Or a shielded (mu-metal) design that passes this, with the added BOM cost and thickness checked against the PC Card Type I envelope."
+    },
+    {
+      "id": "RT-VET-DD3-03",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§1 'Second product: DIP modules' / INPUTS fm18w08_*, fm28v100_* (DIP line kept on F-RAM)",
+      "objection": "The /CE-latch trap that moved the card to MRAM applies just as much to the DIP line, which still uses FM18W08 and FM28V100. These F-RAMs latch the address on /CE falling and need a /CE precharge between accesses (FM18W08: 70 ns access but about 130 ns cycle, per the datasheet as I recall it; verify). DS1225/DS1230-70 are true asynchronous SRAMs that tolerate /CE held low with address-only cycling at 70 ns. Host boards that tie /CE to a static decode, or cycle faster than about 130 ns, will read garbage. DS12xx parts also block writes internally below about 4.5 V, so F-RAM drop-ins need an added supervisor against brown-out corruption. With contribution already at −1% and 17%, a 10-20% host-compatibility return rate turns this line into a cash and reputation sink for the card brand.",
+      "would_change_my_mind": "A published compatibility list of 10 or more host boards passing, including one with /CE tied low and one cycling at 100 ns or less. Or move the DIPs to a true async NVM (nvSRAM or Toggle MRAM) and re-cost them."
+    },
+    {
+      "id": "RT-VET-DD3-04",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "INPUTS card_frame_kit_connector_usd $12 ('no small-qty price found ... one 68-pos connector is Last Time Buy') / §8 G2",
+      "objection": "The one part that makes this a PC Card, the 68-position Type I/II connector and frame kit, is end-of-life across the industry. The model's own source note says Last Time Buy. The plan has no qualified source, no MOQ and no LTB stock plan, yet assumes a 36-month product. If the connector source dies, the card line dies. Buying an LTB for 36 months (~1,000+ sets) ties up cash the plan does not have: the cash low is $10.8k. Track B's 'reuse donor shells' is a prototype trick, not a production path.",
+      "would_change_my_mind": "A written quote for 1,000 or more 68-pin PC Card connectors plus frame kits at $20 or less landed, with confirmed availability through 2029, or a funded LTB line in the model."
+    },
+    {
+      "id": "RT-VET-DD3-05",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§8 Q2 validation protocol (100 power cycles, 72-h soak, format/restore) / §4 2-year warranty / INPUTS warranty_returns_pct 0.03",
+      "objection": "That protocol is a functional check, not a qualification. A handheld card needs ESD testing (IEC 61000-4-2 ±8 kV contact on shell and pins; 74LVC buffers are typically about 2 kV HBM). It also needs connector insertion life, hot removal while a boot-menu write is in flight, cabinet temperature (0-55°C ambient, hotter at the slot), and drop/shock. A backup card that turns out dead on the day the CNC loses its battery is the worst failure this buyer can have. It ends the brand. An outside-lab pass is roughly $5-10k [ESTIMATE], which is material against a $10.8k cash low and is not in the model.",
+      "would_change_my_mind": "An outside-lab ESD, temperature and insertion report on 10 rev-A cards before the first 100-card lot, with the cost added to the model and the cash low re-run."
+    },
+    {
+      "id": "RT-VET-DD3-06",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§3 customer #7 (MELSEC-Q) / INPUTS other_families_mult 1.5",
+      "objection": "Mitsubishi's bulletin FA-A-0184 discontinued the Q2MEM-8MBA ATA card and points High-speed Universal QCPU users to battery-free SD cards. The SRAM card's unique remaining role is runtime file registers and sampling trace on older QnH/QnUD CPUs. Mitsubishi's share of the 1.5x 'other families' multiplier is smaller than §3 implies.",
+      "would_change_my_mind": "5 or more Mitsubishi deposits in track A from owners of QnH/QnUD (non-V) CPUs who use SRAM-card file registers."
+    },
+    {
+      "id": "RT-VET-DD4-01",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§2.1 value ledger ('51.2 GB freed = $883 of DDR5 not bought') / INPUTS node_gb, reclaim_frac",
+      "objection": "DRAM is not bought by the GB. It is bought in DIMM quanta under channel-population rules. A 2-socket SPR/EMR or Genoa node must populate every channel (8 or 12 per socket) with identical DIMMs for full bandwidth. The step below 512 GB (16x32 GB) is 384 GB (16x24 GB non-binary), a 25% step, or 256 GB. A 10% reclaim changes no purchase order unless the fleet is memory-bound and the operator buys fewer nodes. The model prices a fractional DIMM linearly, when the real value is zero below the next DIMM step and lumpy above it.",
+      "would_change_my_mind": "From the 2 or more pilot LOIs, a written 2027 server quote or PO showing a smaller DIMM configuration or fewer nodes because of measured reclaim."
+    },
+    {
+      "id": "RT-VET-DD4-02",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§1 ('Small operators rarely turn these on') / §3 customers #1-#2 (Proxmox MSPs)",
+      "objection": "Proxmox VE enables KSM by default: ksmtuned starts merging at about 80% host RAM use (Proxmox wiki; forum on KSM_THRES_COEF=20). The dedup slice of the 10% is already being harvested free on the beachhead platform. The same wiki recommends disabling KSM for hosting services for security reasons. Cross-VM page dedup opens dedup side channels and Flip Feng Shui-style Rowhammer attacks (Razavi et al., USENIX Security 2016 [training]), a real multi-tenant risk on DDR4 without robust TRR. The MSP buyer is being sold a feature that is either already on or that their security posture says to turn off.",
+      "would_change_my_mind": "Scan data from 5 or more MSP Proxmox hosts showing 10% or more further reclaim from zswap and proactive reclaim alone, with KSM counted as already on (or off for security), at 5% or less p99 regression."
+    },
+    {
+      "id": "RT-VET-DD4-03",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§3 rows 4-7 (research computing; contacted first per 'Order of contact')",
+      "objection": "HPC is a poor fit for reclaim. Slurm allocates memory per job by request. Compute nodes usually run without swap. MPI codes are sensitive to OS jitter, so compression stalls show up in collectives. Node memory is specified as GB/core in a grant-funded buy to meet user requirements. Reclaiming cold pages on a running job frees nothing the scheduler can resell unless memory is oversubscribed, which HPC centers avoid, so 'more PI jobs per purchased node' is not how HPC buys.",
+      "would_change_my_mind": "One research-computing center agrees to run the agent on production compute nodes (not login nodes) with memory oversubscription enabled. Otherwise drop rows 4-7 and re-run the funnel."
+    },
+    {
+      "id": "RT-VET-DD4-04",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "INPUTS oncall_small $750/month, oncall_large $2,000 / kill criterion 4",
+      "objection": "No one can buy a credible on-call for an agent that changes memory behavior on customers' production nodes for $750 a month. That is about 4 hours of a kernel memory-management engineer's time, with no response SLA. A real retainer with a 1-2-hour response SLA is about $3k/month [ESTIMATE: ~15 reserved h plus an availability premium]. My run with on-call at $3,000 in both tiers drives the cash low to −$11,544 (it breaches the $40k) and C-74 subscription GM to −18%. With a part-time founder at a day job, kill criterion 4 ('second incident -> kill') is one bad night from triggering.",
+      "would_change_my_mind": "A signed retainer from a named kernel engineer at $1,000/month or less with a 2-hour response SLA or better."
+    },
+    {
+      "id": "RT-VET-DD4-05",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "INPUTS ddr5_share 0.60 / §10 PASS ('majority DDR5')",
+      "objection": "SMB MSP and university fleets on 4-6-year refresh cycles were still mostly DDR4 in late 2026, because DDR5 server platforms have shipped only since late 2022/2023. On installed DDR5 nodes, reclaim defers only incremental purchases, which a shortage is already delaying. Nothing sources 60% DDR5 node-GB. At ddr5_share=0.30 the model's supportable fee falls from $7.36 to $4.63/node, below the DD's own $5 pass bar. m36 ARR falls to $47,664 and C-74 subscription GM to 6%. Combined with $3k on-call, cash ends m36 at −$18,734.",
+      "would_change_my_mind": "A kill-test census of 10 or more responding fleets showing 50% or more of node-GB on DDR5, with 2027 server purchases planned."
+    },
+    {
+      "id": "RT-VET-DD5-01",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.7 #5 / §10 PASS (iii) ('timing-clean ≥16 KB in ≤200 h', confirmed by a 16-h desk review)",
+      "objection": "OpenRAM's own funded university team has had sky130 since MPW-1 (2020-21) and has silicon-verified only 1 KB; the 16 KB attempt 'left only a log' [VERIFIED-git per DD]. Large arrays at 130 nm fail on things a desk review of simulated Liberty files will not show: bitline leakage across 256-512 rows, and sense-amp offset vs. bitline swing under mismatch, which needs bitcell Monte Carlo to ~5σ for 131k-262k bits. Replica-timing tracking across corners and array IR drop fail the same way. Criterion (iii) passes on an opinion. The real test comes at m10/m13 silicon, after services and pre-silicon macros have been sold.",
+      "would_change_my_mind": "Before 2026-12-01: a post-layout extracted SPICE read/write of a 16 KB macro passing at SS/0.9xVdd/125°C and FF/1.1xVdd/−40°C, with a bitcell Monte Carlo of 1,000+ points, signed by the contractor."
+    },
+    {
+      "id": "RT-VET-DD5-02",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.3 line C 'Characterized licence: measured data, PVT corners, 12-month warranty' / INPUTS characterization 40 h ($5k) + $4k FPGA bench",
+      "objection": "PVT corners cannot be characterized from an MPW. Shuttle wafers are typical-corner lots with no FF/SS/FS/SF skew wafers, so corners must be inferred from simulation, which is exactly what free OpenRAM provides. A $4k FPGA carrier has no thermal forcing, and −40/125°C needs a ThermoStream or chamber time that the model does not carry. '≥80% of tested die' on a few dozen die from one lot says nothing about yield or Vmin tails on the customer's later lot. A warranty on that data is either worthless (capped at the fee) or uninsurable, so the licence's edge over free is mostly marketing.",
+      "would_change_my_mind": "A characterization plan that either buys SkyWater/GF skew-corner wafers or states plainly 'TT measured, corners simulated' and re-prices the licence, with thermal test equipment added to the model."
+    },
+    {
+      "id": "RT-VET-DD5-03",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.1 gain-cell density 1.25-1.43x / kill criterion #10 (≥1.2x vs the 1.896 µm² 6T)",
+      "objection": "The 1.896 µm² sky130 6T cell is a foundry SRAM cell drawn to pushed (waivered) SRAM rules. Published gain-cell density gains are measured against logic-rule 6T in the same node. A novel 2T/3T cell on an open MPW will be drawn to standard logic DRC, because SkyWater will not grant pushed-rule waivers for it. It is unlikely to beat 1.896 µm² at all, even before refresh logic is added. Sky130 gain-cell retention at 85-125°C will be in microseconds to milliseconds, so refresh is constant and 'drop-in SRAM' is false. C-32 will probably fail its own criterion; check that before writing an STTR around it.",
+      "would_change_my_mind": "A DRC-clean (logic rules) sky130 gain-cell layout of 1.58 µm² or less (1.2x) with simulated retention of 100 µs or more at 125°C, produced before the STTR proposal (m6-m9)."
+    },
+    {
+      "id": "RT-VET-DD5-04",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§1 / §2.2 '298 projects/yr on U.S.-fab open/academic shuttles' / Rule-4 axis 'U.S.-fabbed ASIC'",
+      "objection": "wafer.space (108 of the 298 projects/yr) is Singapore-based, and GF's 180 nm capacity is concentrated in Singapore. The 40-university GF180MCU pilot also runs on GF180MCU. DD5 cites no source placing GF180MCU open-PDK wafers in a U.S. fab, and 01_LANDSCAPE §6 lists GF's U.S. fabs as Malta (12/14 nm, 45RFSOI) and Essex Junction (90-350 nm RF/SiGe) with no GF180MCU. I could not confirm the fab either way [UNVERIFIED]. If GF180 runs offshore, about half the funnel is not 'U.S.-fab', and the supply-security axis covers only the ~90 sky130 projects/yr. That shrinks the 'U.S. Open Memory IP' framing and the DoD/SBIR pitch to that slice.",
+      "would_change_my_mind": "GF or wafer.space documentation naming a U.S. fab for GF180MCU open-PDK runs."
+    },
+    {
+      "id": "RT-VET-DD5-05",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.8 C-22 ReRAM chiplet ('S130 mask set + JEDEC qualification + packaging' $950k) / 'defense secure-boot sockets'",
+      "objection": "Qualifying a new NVM die is a program, not a line item. JESD47 needs HTOL 1,000 h on 3 lots x 77 units, then endurance-cycled and uncycled retention bakes (e.g., 150°C/1,000 h), ESD/latch-up and MSL preconditioning. That is 9-12 months and three wafer lots on a production S130+ReRAM flow. The Efabless ReRAM shuttle died with Efabless, and nothing shows ChipFoundry or Cadence carry the Weebit layers (01_LANDSCAPE §0 1b #3). Defense sockets also want QML-class screening and a trusted package/test flow, which open-MPW die are not (DD §7). $950k buys a mask set and perhaps one lot.",
+      "would_change_my_mind": "A SkyWater quote for three S130+ReRAM engineering lots plus a qual-house JESD47 quote totalling $950k or less, and evidence that some 2027 MPW offers the Weebit layers."
+    },
+    {
+      "id": "RT-VET-DD5-06",
+      "dd": "DD5",
+      "severity": "MINOR",
+      "section": "INPUTS sky130_characterized_month = 13 (ChipFoundry slot m7 + ~6-month turn)",
+      "objection": "Open sky130 MPW turns from the Efabless era took far longer than 6 months from tapeout to packaged parts on a bench, and ChipFoundry runs only at 50% fill or better (eeNews, cited in DD). The sky130 line is the only one with SBIR/DoD buyers. Realistically its licences open in 2028-H2, just as the modeled glut thins commercial design starts from m14. Licences are a small revenue share, so MINOR.",
+      "would_change_my_mind": "A written ChipFoundry schedule committing to packaged parts within 6 months of the m7 tapeout."
+    }
+  ],
+  "overall": {
+    "DD1": "Downgrade: recert is a thin, test-escape-prone trade whose margin leans on DDR5 pulls that do not exist yet and on B2B prices nobody quoted. CleanBOM sells die-source facts that are printed on the package top mark: a cash side business, and the anchor is unproven.",
+    "DD2": "A plausible small SaaS. The index, its only moat, is statistically thin at 10-20 contributors, competes with TrendForce contract prints and open-book pass-through, and its glut upside has no precedent in the 2018-19 or 2023 cycles.",
+    "DD3": "The best-engineered of the five and still a side business. It validates on controls that already take a $20 CF card, ignores an 8,000 A/m magnet limit and an EOL connector, and keeps the /CE trap alive in an F-RAM DIP line.",
+    "DD4": "Confirm the demotion. The ledger prices fractional DIMMs nobody buys, KSM is already on in Proxmox, HPC does not oversubscribe, and real on-call costs push cash negative: kill C-74 unless pilots show changed purchase orders.",
+    "DD5": "A real gap, but 'characterized and warranted' cannot come from typical-corner MPW die and a $4k bench, large sky130 macros are unproven after five years of OpenRAM, and C-32/C-22 do not survive contact with pushed-rule bitcells and JESD47: side line only."
+  }
+}
