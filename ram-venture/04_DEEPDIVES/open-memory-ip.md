@@ -69,7 +69,7 @@ A macro is like a pre-engineered roof truss. Someone has drawn it, checked it ag
 **The free memory blocks for these processes are small:**
 - The largest are 4 KB on sky130 and 1 KB on GF180.
 - Only a 1 KB sky130 macro has been proven in silicon.
-- A small RISC-V microcontroller wants 8–64 KB.
+- A small RISC-V microcontroller wants 8–64 KB [ESTIMATE: the TinyQV variant on wafer.space Run 2 already carries 9.5 kB of scratch RAM ([ws-run2](https://github.com/wafer-space/ws-run2))].
 
 **Small blocks also waste space.** A 2 KB sky130 macro packs 57.6 kbit/mm², while the cell itself allows 527 kbit/mm². Most of the block is "plumbing": decoders and sense amplifiers around a tiny array. A properly banked 32–64 KB macro reaches about 316 kbit/mm², 5.5× better. That takes better generator software and verification, not new physics (model §1).
 
@@ -93,7 +93,7 @@ A macro is like a pre-engineered roof truss. Someone has drawn it, checked it ag
 
 **The later options (T2):**
 - **A gain cell (C-32)** uses 2–3 transistors instead of SRAM's 6. It holds a tiny charge that leaks away in microseconds to milliseconds, so it must be rewritten ("refreshed") like DRAM. The payoff is lower idle leakage and 1.25–1.43× density in measured silicon ([BIU CRIS](https://cris.biu.ac.il/en/publications/4t-gain-cell-providing-unlimited-availability-through-hidden-refr/)) [REPORTED].
-- **ReRAM (C-22)** stores data by switching a thin oxide's resistance, so it keeps the data with the power off. Weebit Nano has already qualified a 256 Kb ReRAM block in SkyWater's 130nm process. We would license it to build a small key-storage chip.
+- **ReRAM (C-22)** stores data by switching a thin oxide's resistance, so it keeps the data with the power off. Weebit Nano has already qualified a 256 Kb ReRAM block in SkyWater's 130nm process ([Weebit](https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/)) [REPORTED]. We would license it to build a small key-storage chip.
 
 **Where it beats "RAM" (Rule 4).** Not on $/GB: sky130 SRAM costs about $1,330/GB, 73× DDR5's base price (model §1).
 - **Wedge axis: supply security and access.** That is the time and cost to get characterized on-chip memory into a U.S.-fabbed ASIC, for open-shuttle teams with no NDA compiler.
@@ -113,7 +113,7 @@ All figures come from `models/open-memory-ip.py` (section numbers refer to its p
 | Largest free sky130 macros (OpenRAM 1 KB / 2 KB) | 43.0 / 57.6 kbit/mm² | [efabless macros](https://github.com/efabless/sky130_sram_macros), [VLSIDA macros](https://github.com/VLSIDA/sky130_sram_macros) [VERIFIED-git] |
 | Banked 32–64 KB macro, 60% array efficiency | 316.5 kbit/mm² (5.5×) | model §1 [ESTIMATE] |
 | Largest free GF180 macros (GF 512 B / OCD 1 KB) | 19.6 / 52.7 kbit/mm² | [GF IP](https://github.com/google/globalfoundries-pdk-ip-gf180mcu_fd_ip_sram), [OCD](https://github.com/RTimothyEdwards/gf180mcu_ocd_ip_sram) [VERIFIED-git] |
-| Gain cell vs 6T density | 1.25–1.43× (silicon); 1.67–2.0× (vendor) | [Silicon Saxony 2026-09](https://silicon-saxony.de/en/globalfoundries-and-raaam-memory-technologies-development-of-next-generation-gcram-technology-and-a-test-chip-on-the-fdx-platform/) [REPORTED] |
+| Gain cell vs 6T density | 1.25–1.43× (silicon); 1.67–2.0× (vendor) | Silicon: [BIU CRIS](https://cris.biu.ac.il/en/publications/4t-gain-cell-providing-unlimited-availability-through-hidden-refr/) (20–30% smaller cell). Vendor: ~40% from [Silicon Saxony 2026-09](https://silicon-saxony.de/en/globalfoundries-and-raaam-memory-technologies-development-of-next-generation-gcram-technology-and-a-test-chip-on-the-fdx-platform/), up to 50% from [arXiv 2507.10849](https://arxiv.org/html/2507.10849v1) [REPORTED]; model §1 |
 | sky130 SRAM vs DDR5 (BASE $18.33 / GLUT $8.15 / SEVERE $2.04 per GB, from `models/dram_cost_stack.py`) | ~$1,330/GB = 73× / 163× / 653× | model §1; 01_LANDSCAPE §4.4 [ESTIMATE] |
 
 Macros are priced per design. The DRAM cycle reaches this business only through design-start budgets.
@@ -221,7 +221,9 @@ Every service and licence sale consumes contract VLSI hours. "SaaS" overstates i
 | m30 | STTR Phase II | $1,500.0k | NSF/DoD STTR |
 | m30–m48 | Full-time circuit cofounder (2 years, loaded) | $440.0k | seed |
 | m36–m54 | ReRAM chiplet: S130 mask set + JEDEC qualification + packaging | $950.0k | seed / Phase II / DoD |
-| **Total external** | | **~$4,305k** | |
+| **Total external raised** (STTR I $305k + seed $2,500k + STTR II $1,500k) | | **~$4,305k** | |
+
+The total counts only the three funding inflows. The other dollar rows are uses paid out of them, so the column does not sum to the total (model §9).
 
 **What the overlay adds:**
 - **Revenue:** at most one $75k gain-cell evaluation licence before m36, for 36-month revenue of $788.9k.
@@ -283,7 +285,7 @@ Both are also the likeliest free substitutes (§5).
 |---|---|---|
 | 1–30 | Landing page with real prices and $500 refundable deposits; 120 named contacts; 5 channel calls; contract review of the 16–32 KB macros | ≥3 paid deposits or ≥$15k in LOIs; written channel answers |
 | 31–60 | Convert deposits into signed orders. Publish preview library v0.1 (8/16/32 KB sky130; 2/4/8 KB GF180). Sign a contractor statement of work (SOW). Apply for the ChipFoundry Marketplace. | ≥3 signed orders; SOW signed; ≥200 PyPI downloads [ESTIMATE target] |
-| 61–90 | Schedule first deliveries against the next shuttle deadline. Follow-up sequence. Draft the NSF Project Pitch with a candidate PI. | ≥5 paying or committed accounts by m4 (Mar-2027, first model invoices); a PI letter of interest |
+| 61–90 | Schedule first deliveries against the next shuttle deadline. Follow-up sequence. Draft the NSF Project Pitch with a candidate PI. | ≥5 paying or committed accounts by m4 (Mar-2027, first model invoices) [ESTIMATE target: "committed" includes the day-30 deposits; the model expects only 1.2 new paying customers in m4]; a PI letter of interest |
 
 ---
 
@@ -330,7 +332,7 @@ Both are also the likeliest free substitutes (§5).
 - **The moat** is "a first-mover lead that takes one shuttle cycle to copy" (VC scorer).
 
 **What you license:**
-- **For C-22: Weebit ReRAM.** SkyWater's licence is non-exclusive, with fees "not material" and contingent on customers ([Weebit](https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/)). A product needs its own licence. Analysts estimate past upfront fees at about $0.1M (first ever), $0.29M and $1.8–2.6M (01_LANDSCAPE §9; [MST Access](https://www.weebit-nano.com/wp-content/uploads/2025/09/250901.-MST-Access-Report_WBT.AX-Not-just-play-money-090125.pdf)) [REPORTED]. The fee for a fabless startup is unknown.
+- **For C-22: Weebit ReRAM.** SkyWater's licence is non-exclusive, with fees "not material" and contingent on customers ([Weebit](https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/)). A product needs its own licence. Analysts estimate past upfront fees at about $0.1M (first ever), $0.29M and $1.8–2.6M (01_LANDSCAPE §0, "What changed in Phase 1b" #3; [MST Access](https://www.weebit-nano.com/wp-content/uploads/2025/09/250901.-MST-Access-Report_WBT.AX-Not-just-play-money-090125.pdf)) [REPORTED]. The fee for a fabless startup is unknown.
 - **For C-32:** STTR or university IP, from UCSC VLSIDA or Stanford.
 
 **What you can't own or use:** RAAAM's GCRAM (Bar-Ilan/EPFL lineage), SkyWater's NDA compilers, or Mobile Semiconductor's RH90 compilers.
@@ -359,12 +361,12 @@ Both are also the likeliest free substitutes (§5).
 **Non-dilutive funding**
 - **SBIR PI constraint.**
   - The SBIR PI must spend more than half their time with the small business, at award and for the whole project ([NIST](https://www.nist.gov/tpo/small-business-innovation-research-program-sbir/resources/participation-eligibility-and)). **That excludes the founder while they keep the day job.**
-  - The STTR PI may be employed by the research institution ([NIH GPS 18.5](https://grants.nih.gov/grants/policy/nihgps/html5/section_18/18.5_small_business_innovation_research_and_small_business_technology_transfer_programs.htm)).
+  - The STTR PI may be employed by the research institution ([NIH GPS 18.5](https://grants.nih.gov/grants/policy/nihgps/html5/section_18/18.5_small_business_innovation_research_and_small_business_technology_transfer_programs.htm); 01_LANDSCAPE §7) [REPORTED-P].
   - **So the route is STTR with a university PI:** UCSC VLSIDA (Guthaus), the Stanford OpenGCRAM group, or the Brown Saligane lab.
 - **STTR terms.**
   - NSF Phase I is up to $305k (NSF 26-510). The Semiconductors topic includes an IC Design subtopic ([NSF Seed Fund](https://seedfund.nsf.gov/topics/semiconductors/); [summary](https://grantedai.com/grants/semiconductors-s-sbir-sttr-program-national-science-foundation-nsf-small-bu-ef99bad7)) [REPORTED]. A Project Pitch comes first.
   - The program is reauthorized through 2031-09-30 ([IEDC 2026-04-15](https://www.iedconline.org/news/2026/04/15/federal-policy-updates/federal-policy-update-sbir-and-sttr-reauthorized/)).
-  - New rules: per-firm proposal caps from FY2027, foreign-ownership screening, and Strategic Breakthrough awards that need a prior Phase II and a 1:1 match ([Wiley](https://www.wiley.law/alert-SBIR-STTR-Reauthorization-Brings-New-Opportunities-and-Obligations-to-Consider)).
+  - New rules: per-firm proposal caps from FY2027, foreign-ownership screening, and Strategic Breakthrough awards that need a prior Phase II and a 1:1 match ([Wiley](https://www.wiley.law/alert-SBIR-STTR-Reauthorization-Brings-New-Opportunities-and-Obligations-to-Consider); 01_LANDSCAPE §7).
   - At least 30% of the award goes to the university [UNVERIFIED].
   - **Grants are funding, not revenue** (A-04).
 - **DoD.** No 2026 topic on memory compilers or trusted NVM was found. The only one found, DARPA DV017 on extreme-environment NVM, closed 2026-08-19 ([DARPA](https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments)).
@@ -391,8 +393,8 @@ Both are also the likeliest free substitutes (§5).
 | m0 | Nov-2026 | Kill experiment (§10) | §10 pass rules |
 | m1 | Dec-2026 | Form the LLC; licence and warranty templates ($1k) | Terms reviewed |
 | m2–m3 | Jan–Feb-2027 | Contract build-out, 60 h ($7.5k); library v0.1 in CI; hosted generator beta | ≥6 macros (8/16/32 KB sky130; 2/4/8 KB GF180) DRC/LVS-clean in CI |
-| **m4** | Mar-2027 | **First invoices.** wafer.space GF180 half slot with test macros ($3.75k) | ≥2 paying accounts (model: first revenue $4.5k) |
-| m5–m6 | Apr–May-2027 | NSF Project Pitch with a university PI; inbound from the previews | ≥2.5 accounts and ≥$15k cumulative revenue (model); PI letter |
+| **m4** | Mar-2027 | **First invoices.** wafer.space GF180 half slot with test macros ($3.75k) | ≥1 paying customer (model: 1.2 new customers, first revenue $4.5k) |
+| m5–m6 | Apr–May-2027 | NSF Project Pitch with a university PI; inbound from the previews | ≥2.5 accounts and ≥$15k cumulative revenue (model: 2.5 accounts, $16.0k); PI letter |
 | m7 | Jun-2027 | ChipFoundry sky130 slot with 8–32 KB test macros ($15k) | Pay only if cash is ≥$30k beforehand (model: $32.0k at m6, $20.4k after) |
 | m8 | Jul-2027 | Three cash-positive months begin | Net cash flow ≥0 for 3 months |
 | m9 | Aug-2027 | Test bench ($4k); STTR Phase I submitted | Submitted by 2027-08-31 |
@@ -402,7 +404,7 @@ Both are also the likeliest free substitutes (§5).
 | m14 | Jan-2028 | The glut scenario starts | ≥1.5 new accounts/month (model `new` field: BASE 1.55, GLUT 1.45) |
 | m15 | Feb-2028 | STTR Phase I decision ($305k) | Award, or drop C-32 at m19 |
 | m16 | Mar-2028 | wafer.space GF180 full slot with 8–32 KB production macros ($7.25k) | Second-spin yield ≥ first |
-| **m18** | May-2028 | Full-time decision; Cadence ReRAM probe ($12k), only if Weebit terms allow product use | ≥12 accounts, ARR ≥$66k and GP ≥$11.85k/mo for 3 months → founder full-time at m20 |
+| **m18** | May-2028 | Full-time decision; Cadence ReRAM probe ($12k), only if Weebit terms allow product use | ≥12 accounts, ARR ≥$66k, and trailing-3-month GP ≥$11.85k/mo (model: $11.6k at m18, $12.2k at m19) → founder full-time at m20 |
 
 Dollar amounts are the model's one-time spends. The gates are this author's [ESTIMATE], set near BASE values.
 
@@ -413,7 +415,7 @@ Dollar amounts are the model's one-time spends. The gates are this author's [EST
 | Role | When | Cost | Where to find |
 |---|---|---|---|
 | **Founder (CEO):** automation, CI, portal, sales, grant administration | m0 onward; 15 h/week until m20 | $0, then $10k/mo (A-03) | — |
-| **Contract memory/VLSI engineer:** macro review, timing sign-off, integration | m0 (16 h), m2–m3 (60 h), then 12–30 h per job | $125/h [ESTIMATE]; $22.5k one-time over 24 months plus service COGS (model) | Open Circuit Design LLC; OpenRAM/UCSC VLSIDA alumni; Chips4Makers; the FOSSi (ORConf, Latch-Up) and Tiny Tapeout communities |
+| **Contract memory/VLSI engineer:** macro review, timing sign-off, integration | m0 (16 h), m2–m3 (60 h), then 12–30 h per job | $125/h [ESTIMATE]; $7.5k one-time build-out (m2–m3) plus service COGS (model) | Open Circuit Design LLC; OpenRAM/UCSC VLSIDA alumni; Chips4Makers; the FOSSi (ORConf, Latch-Up) and Tiny Tapeout communities |
 | **Characterization contractor** with bench access | m10, m13, m24 | $5k each + $4k bench (model) | University labs (Brown; NEMC/NORDTECH members through PROPEL) |
 | **University STTR PI** | Writing m5–m9; award m15 | ≥30% of the award [UNVERIFIED] | UCSC VLSIDA, Stanford OpenGCRAM, Brown Saligane lab |
 | Bookkeeper and attorney (licence, warranty, export screening) | m1 onward | $350/mo inside $600/mo fixed opex (model) | Local small-business firms |
@@ -429,7 +431,7 @@ Dollar amounts are the model's one-time spends. The gates are this author's [EST
 
 **Hypothesis to kill:** "Funded open-PDK teams will pay for larger, characterized macros, and no one in the channel will give them away within a year."
 
-**Budget and timing:** about $5.1k over 30 days, 2026-11-02 to 2026-12-01, before the academic winter break. About $3k of it is already in the model (the m1 templates and the m2 contractor). The roughly $2.1k that is new lowers the cash low point from $20.4k to about $18.3k [ESTIMATE: arithmetic].
+**Budget and timing:** about $5.1k, 2026-11-02 (day 1) to the decision on 2026-12-01 (day 30), which is 29 elapsed days, inside the 30-day limit, and before the academic winter break. Deposits are refundable, so they are not cost. About $3k of it is already in the model (the m1 templates and the m2 contractor). The roughly $2.1k that is new lowers the cash low point from $20.4k to about $18.3k [ESTIMATE: arithmetic].
 
 **Steps**
 1. **Days 1–7 ($2.3k): build the previews.**
@@ -468,12 +470,12 @@ PASS (continue) only if **all four** hold:
 "Model" means the BASE value in `models/open-memory-ip.py`.
 
 1. **2026-12-01 (day 30).** The experiment fails (i), (iii) or (iv) → **kill DD5.**
-2. **2027-05-31 (m6).** Fewer than 2 paying accounts, or under $8k invoiced (model: 2.5 accounts, $15.9k) → **kill.**
+2. **2027-05-31 (m6).** Fewer than 2 paying accounts, or under $8k invoiced (model: 2.5 accounts, $16.0k) → **kill.**
 3. **2027-10-31 (m11).** GF180 silicon: fewer than 2 of 3 sizes working on ≥80% of die, or access time more than 1.5× simulated → **stop selling licences**, and kill if operating cash cannot fund a re-spin.
 4. **2027-11-30 (m12).** ARR under $20k, or run-rate under $64k (about half the model's $40.7k / $127.9k) → **kill.**
 5. **2028-01-31 (m14).** The sky130 macro of 16 KB or more fails test #3 → **kill the sky130 line**, the only line with SBIR and DoD buyers.
 6. **Any date.** ChipFoundry, Cadence, UCSC, OCD or Chips4Makers releases free silicon-characterized macros of 16 KB or more → **stop one-time spend within 30 days.** The founder never goes full-time (model: ARR at m36 $50.0k). Harvest, or sell the contracts to the releaser.
-7. **2028-05-31 (m18).** Fewer than 9 paying accounts, or trailing-3-month GP under $8k/mo (model: 12.7 and $12.2k; full-time needs ~18 and $11.85k) → **the founder does not quit**, and DD5 stays a side line.
+7. **2028-05-31 (m18).** Fewer than 9 paying accounts, or trailing-3-month GP under $8k/mo (model: 12.7 accounts and $11.6k trailing GP, with $12.2k in m18 alone; full-time needs ~18 and $11.85k) → **the founder does not quit**, and DD5 stays a side line.
 8. **2027-08-31 (m9).** No STTR proposal submitted with a signed university PI → **drop C-32.**
 9. **2028-06-30 (m19).** No STTR Phase I award → **drop C-32.**
 10. **Before any C-32 spend beyond the STTR.** The FTO read flags a blocking claim, or the sky130 gain-cell macro measures below 1.2× density against the 1.896 µm² 6T cell → **kill C-32.**
@@ -588,5 +590,5 @@ All URLs below are logged in `research/sources/p4-open-memory-ip.jsonl` or other
 - `research/phase4/open-memory-ip_notes.md`
 - `research/phase2/concepts_master.json` (C-33, C-32, C-22)
 - `research/phase3/selection.json` and `research/phase3/scores_raw/*.json`
-- `scores.csv`, `03_SCORING.md` §7.5, `01_LANDSCAPE.md` §4.4, §7, §8 and §9
+- `scores.csv`, `03_SCORING.md` §7.5, `01_LANDSCAPE.md` §0 (Phase 1b #3), §4.4, §7, §8 and §9
 - `ASSUMPTIONS.md` A-03, A-04 and A-05
