@@ -1,0 +1,604 @@
+{
+ "scorer": "veteran",
+ "chunk": "2",
+ "scores": [
+  {
+   "id": "C-37",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Gemini-I APU servers are in GSI production and Cornell's MICRO '25 measured A6000-class RAG retrieval at 54-118x lower energy (GSI co-author); bit-line associative compute is real, the risk is vendor not physics."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Card's own budget is ~$100-300k for eval cards and pilots (low T1); no silicon or board NRE because GSI sells the cards and servers."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "21 months (18-24): a first air-gapped defense/IC pilot needs a prime sponsor and an ATO, and GSI's own direct vector-search sales have not converted since 2021."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "APU silicon is TSMC 28nm/16nm and boards are GSI-sourced; the U.S. content is integration and software only."
+    },
+    "margin": {
+     "score": 2,
+     "why": "Blended 20-40% (mid 30) but the hardware line is a 10-20% VAR markup on servers GSI also sells direct; software is a minor share in years 1-2."
+    },
+    "moat": {
+     "score": 1,
+     "why": "GSI already sells production Gemini-I servers and has had an OpenSearch k-NN plugin since 2021, so the founder's layer duplicates the vendor's own."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Exact niche is GSI itself, and the broader buyer has NVIDIA cuVS/CAGRA, quantized CPU search in Milvus/Qdrant/Weaviate, and Pinecone."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "No export issue on the APU, but the named buyers (air-gapped defense/IC) require ATO/ICD 503-style accreditation before any paid deployment."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "The surviving pitch is energy per query and air-gap, not DRAM $/GB (the 10-200 GB corpora still sit in DRAM), so a glut at $8.15/GB does not touch it; vendor-survival risk is separate."
+    },
+    "founder": {
+     "score": 3,
+     "why": "The FAISS/Milvus-compatible API and monitoring are squarely software, but the defense channel and a single fragile hardware vendor need a domain hire."
+    }
+   },
+   "one_line_view": "Physics is fine and the energy number is real, but this is a thin reseller layer on a ~$25M/yr vendor losing $5.4M a quarter that already sells the same servers and plugin."
+  },
+  {
+   "id": "C-39",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "The SRAM-only deterministic LPU ships (Groq, TRL 9; Llama-2 70B at 240 tok/s/user in 2023), but a new entrant still owes a full tape-out and compiler at GF 12LP+ with ~2-3x worse SRAM density than 4-5nm rivals."
+    },
+    "capital": {
+     "score": 1,
+     "why": "Minimum path to first rack revenue is ~$150-400M (T3; Groq raised ~$300M by 2021, d-Matrix $110M+ in 2023)."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "54 months (48-60): ~24-30 months to first silicon plus compiler and rack integration; Groq took 4+ years from founding to meaningful revenue."
+    },
+    "usmfg": {
+     "score": 4,
+     "why": "GF Fab 8 Malta NY takes outside customers and is Trusted, but large flip-chip packaging for a small customer is effectively offshore until Amkor Peoria AZ (~2028, anchor customers only)."
+    },
+    "margin": {
+     "score": 2,
+     "why": "A 70B 8-bit model needs ~300+ SRAM dies at ~$375/GB chip-level vs HBM3E ~$12/GB, and token prices are set by GPU clouds, so the card's 20-50% is a winner's range, not an entrant's."
+    },
+    "moat": {
+     "score": 3,
+     "why": "Owned chip and compiler IP would be real know-how, but the pattern's leading IP now sits in NVIDIA's roadmap via the non-exclusive Groq license (~2025-12-24)."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Groq, NVIDIA (Groq license plus its founder and president, ~$20B reported), Cerebras, d-Matrix, SambaNova, Etched, MatX and Positron; Graphcore and Untether already fell out."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "AI accelerators above the TPP line are 3A090/4A090 export-controlled, which caps non-U.S. sales, but the named core buyer is U.S. sovereign/latency inference."
+    },
+    "cycle": {
+     "score": 2,
+     "why": "The house glut case (2H28-29) only happens if AI capex slows, which hits inference-accelerator demand directly, and cheaper HBM widens SRAM's ~30x $/GB penalty."
+    },
+    "founder": {
+     "score": 1,
+     "why": "A $100M+ fabless chip company needing a veteran silicon, compiler and systems team from day one; nothing for a software founder with a day job."
+    }
+   },
+   "one_line_view": "A $150-400M chip program entering a market where NVIDIA just licensed the leader's architecture, on a node 2-3x behind on SRAM density; dead for this founder."
+  },
+  {
+   "id": "C-44",
+   "criteria": {
+    "tech": {
+     "score": 3,
+     "why": "Structera X 2404 has sampled since Q4 2024, but running 8-12 mixed-vendor, mixed-die-rev used RDIMMs at 3 DPC is a real SI and training problem (servers historically derated DDR4 3DPC to ~2133-2400 MT/s) [training]."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2: board design, controller access, firmware, CXL compliance and tier-2 qualification push past $2M before meaningful revenue."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "24 months (18-30): board design plus controller-vendor access plus qualification at one tier-2 cloud."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Board assembly at a U.S. EMS that takes outside customers (Sanmina, Kimball) around a TSMC-made Marvell/Microchip controller; DIMMs are recovered, not made, here."
+    },
+    "margin": {
+     "score": 2,
+     "why": "15-30% (mid 22) on a ~$1.8k card without DRAM, i.e. ~$270-540 gross per card."
+    },
+    "moat": {
+     "score": 2,
+     "why": "Qualification at one tier-2 operator would give some lock-in, but the controller is merchant silicon and the firmware is reproducible."
+    },
+    "competition": {
+     "score": 3,
+     "why": "No GA merchant DDR4-reuse CXL card for tier-2 operators was found; Marvell sells to hyperscalers that already run in-house DDR4 reuse, and Penguin/SMART CXA-8F2W is the nearest card."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "CXL compliance is a test, not a regulator; reusing an operator's own DIMMs carries no counterfeit exposure unless sold into federal channels."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "Reuse still saves ~$4.3-5.3/GB against the $8.15 glut deck but loses at the 2023-style trough ($2.04 severe deck), and freed DDR5 allocation removes the urgency."
+    },
+    "founder": {
+     "score": 2,
+     "why": "Needs a full-time firmware/signal-integrity team and Marvell allocation that goes to hyperscalers and ODMs; the founder's software edge is irrelevant."
+    }
+   },
+   "one_line_view": "The unit economics flip positive once used DDR4 is valued at $3.9-5.8/GB resale, but a no-name cannot get Structera allocation or qualify mixed used DIMMs at 3 DPC on a T2 budget, and hyperscalers already do this in-house."
+  },
+  {
+   "id": "C-45",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Mooncake pools KV in DRAM in production at Kimi (FAST '25, +75% requests within SLO) and LMCache mmaps CXL /dev/dax; the CXL tier rides on Linux Type-3 support that the maturity map still rates [2] stabilizing."
+    },
+    "capital": {
+     "score": 3,
+     "why": "A 4 TB demo node is ~$83k of DRAM alone at the $20.37/GB deck ($80-130k per node), so a demo plus two pilot nodes is high T1."
+    },
+    "ttr": {
+     "score": 3,
+     "why": "15 months (12-18): a demo node, then 1-2 design wins against Penguin MemoryAI and the OEM reference boxes."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. bench integration of imported CPUs, NICs and DDR5; Micron Idaho DDR5 is not available before mid-2027."
+    },
+    "margin": {
+     "score": 1,
+     "why": "10-20% hardware margin while buying the key CXL card from a competitor (Penguin owns SMART); the 60% subscription attach is unproven."
+    },
+    "moat": {
+     "score": 1,
+     "why": "Commodity server plus open-source Mooncake/LMCache that any OEM reference design replicates."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Penguin MemoryAI (2026-03-16) is this exact box with captive SMART CXA-8F2W cards; NVIDIA BlueField-4 CMX ships 2H26 through Dell, HPE, IBM, VAST, WEKA and others."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "Buying licensed DIMMs inside OEM chassis carries no export, counterfeit or Netlist module exposure for the integrator."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "KV demand is structural, but a glut stretches the DRAM break-even reuse interval from 1.35 h to 3.4 h, lets every OEM sell the same box, and coincides with an AI-capex slowdown."
+    },
+    "founder": {
+     "score": 2,
+     "why": "Integration software is within reach, but ~$100k of DRAM working capital per node and neocloud buyers who want GPU-infrastructure credibility are not."
+    }
+   },
+   "one_line_view": "Penguin already ships this exact box with captive SMART CXL cards; tying up ~$83k of DRAM per node for 10-20% margin is a working-capital trap for an unknown integrator."
+  },
+  {
+   "id": "C-47",
+   "criteria": {
+    "tech": {
+     "score": 3,
+     "why": "Inline CXL compression is in merchant silicon (Structera X four LZ4 engines) and 5nm IP (ZeroPoint DenseMem), but the venture's own FPGA card is TRL 5-6, and FP8/INT4 weights and KV, the data people actually need RAM for, barely compress."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2: an IP license with a 24-36 month licensor cycle, Agilex 7 R-tile/Versal FPGA boards, CXL compliance and operator qualification."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "36 months (30-42): ZeroPoint's stated 24-36 month sales process comes before the FPGA card and operator qualification start."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "FPGA from TSMC, IP from Gothenburg, board at a U.S. EMS; little U.S. content beyond assembly."
+    },
+    "margin": {
+     "score": 2,
+     "why": "20-40% (mid 30): a $3-8k FPGA BOM cannot price at the full ~$10.4k of DRAM saved when ASIC-based cards exist."
+    },
+    "moat": {
+     "score": 1,
+     "why": "Non-exclusive in-licensed IP that ZeroPoint also sells to SoC makers who put it in cheaper, lower-power ASICs."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Marvell Structera X ships the same function in silicon, ZeroPoint licenses it to a 'major global semiconductor manufacturer' (2024-03), and Intel IAA + zswap is free."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "No export or compliance issue for an FPGA memory card sold to U.S. cache operators."
+    },
+    "cycle": {
+     "score": 1,
+     "why": "At the $8.15/GB glut deck 2x on 512 GB saves ~$4.2k, which no longer covers a $3-8k FPGA card plus the latency penalty, so the revenue line dies."
+    },
+    "founder": {
+     "score": 2,
+     "why": "RTL/FPGA and CXL compliance engineering need at least one deep hardware hire full-time, and the license fee and boards exceed T0."
+    }
+   },
+   "one_line_view": "An FPGA integrator of non-exclusive IP that Marvell already put in merchant silicon; the DRAM saving that pays for the card is gone at the $8.15 glut."
+  },
+  {
+   "id": "C-48",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "KTransformers documents it (Kimi-K2.5 >=600 GB RAM + 48 GB VRAM), but measured scaling gives ~20 tok/s single-socket and only +29% on two sockets, and fast prefill (255-286 tok/s) needs Intel AMX, so it barely meets the multi-user brief."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Build-to-order with 50% deposits; a 768 GB demo is ~$15.6k of DRAM at $20.37/GB plus GPU and platform, roughly $35-45k, at the T0/T1 line."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "10 months (8-14): demo unit and published benchmark, then a 3-6 month security review at regulated buyers."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Assembled and tested on a U.S. bench from TSMC CPUs/GPUs and Korean/Taiwanese DDR5; 'Assembled in USA' and TAA-compliant integration only."
+    },
+    "margin": {
+     "score": 2,
+     "why": "18-25% hardware margin (card's own BOM model at 22%); the 60-80% subscription has no attach evidence."
+    },
+    "moat": {
+     "score": 1,
+     "why": "Service quality is the only moat; a tuned KTransformers build on a Xeon 6 box is copyable by any integrator in a week."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Puget, Exxact, Lambda, Bizon, Supermicro and Dell Pro Max/DGX Station GB300 sell to the same buyers, though few package DRAM-resident MoE specifically."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "The flagship models (Kimi-K2.5, DeepSeek-V4) are PRC-origin weights that CMMC/ITAR buyers' compliance teams may refuse, forcing U.S.-origin model substitutes."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "A glut cuts the DRAM BOM from ~$20k to ~$8k and makes the box easier to sell; the residual risk is cheaper HBM/GPU desk-side products, not DRAM price."
+    },
+    "founder": {
+     "score": 4,
+     "why": "Closest hardware play to the founder's software/ops skills and startable on deposits, but on-site support for regulated buyers strains a day job."
+    }
+   },
+   "one_line_view": "The most founder-doable and glut-friendly hardware in this chunk, but it is a ~20%-margin white-box business with no moat against Puget/Exxact/Dell and a ~20 tok/s single-stream ceiling."
+  },
+  {
+   "id": "C-49",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Samsung CMM-D, Micron CZ122 and SK hynix CMM-DDR5 ship and weighted interleave/DAMON tiering is upstream (Linux v6.9/v6.11), with Type-3 support rated [2] stabilizing."
+    },
+    "capital": {
+     "score": 3,
+     "why": "Each validated 2-4 TB reference node carries ~$41-83k of CXL DRAM at $20.37/GB before local DDR5, so two reference configs plus demo stock is high T1."
+    },
+    "ttr": {
+     "score": 3,
+     "why": "15 months (12-18) to a first sale through EDA/genomics channels against OEM incumbents."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. integration of Korean CMM modules and imported CPUs; no U.S. manufacturing content."
+    },
+    "margin": {
+     "score": 2,
+     "why": "15-25% (mid 20) VAR margin on modules that carry the same DRAM plus a controller."
+    },
+    "moat": {
+     "score": 1,
+     "why": "A VAR configuration of OEM-certified platforms and free upstream tiering software; nothing exclusive."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Penguin sells CXL memory-expansion servers, and Supermicro, Dell, HPE, Lenovo, Colfax and Silicon Mechanics sell CXL-ready platforms with the same modules."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "No export, counterfeit or certification exposure beyond normal OEM warranty terms."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "At glut prices 128-256 GB RDIMMs give 3-6 TB/socket without CXL; demand stays only for jobs above the slot ceiling, which exists in both regimes."
+    },
+    "founder": {
+     "score": 2,
+     "why": "EDA/genomics/HANA buyers purchase from OEMs they already trust, so this needs a channel hire and inventory the founder lacks."
+    }
+   },
+   "one_line_view": "A VAR wrapper on CXL modules Dell/HPE/Supermicro/Penguin already sell; below the ~6 TB/socket slot ceiling CXL loses on $/TB and latency, so the addressable job is tiny."
+  },
+  {
+   "id": "C-51",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "NVDIMM-N is TRL 9 and SMART/Penguin's NV-CMM (CXL 2.0, DRAM backed to NAND on an onboard energy source) passed CXL compliance in 2026-01, so save-on-power-fail firmware is hard but solved."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2: board, power-fail firmware and CXL compliance (12-18 months), then 12-24 months of storage/DB OEM qualification."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "36 months (30-42); SMART needed ~10 months from sampling to compliance alone and already holds the OEM slots."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. board assembly; Everspin Toggle MRAM is made in Chandler AZ, but DRAM and NAND are imported."
+    },
+    "margin": {
+     "score": 2,
+     "why": "25-40% (mid 30): 64 GB of DRAM is ~$1.3k at the $20.37 deck and dominates the BOM, and the incumbent with Tier-1 channels sets the persistence premium."
+    },
+    "moat": {
+     "score": 2,
+     "why": "OEM qualification would lock in a design win, but the entrant arrives 3+ years after SMART with no qualification to defend."
+    },
+    "competition": {
+     "score": 2,
+     "why": "SMART/Penguin NV-CMM (Integrators List 2026-01), Samsung CMM-H, Kioxia XL-Flash, and IBM building its own Everspin-MRAM journal into FlashCore since 2018."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "The MRAM variant inherits ITC 337-TA-1487 (Avalanche v. Everspin, target ~2027-07) exposure, and NVDIMM-style backup has a litigated patent history."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "Value is persistence, not $/GB, so per-card price holds; a glut cuts the 64 GB DRAM BOM to ~$520 for incumbent and entrant alike, and volume stays tiny."
+    },
+    "founder": {
+     "score": 2,
+     "why": "Power-fail firmware, supercap hold-up design and CXL compliance need a full-time hardware/firmware team."
+    }
+   },
+   "one_line_view": "Optane's niche without Optane's volume, and SMART/Penguin's compliance-listed NV-CMM already is this card; a late entrant has nothing new to sell OEMs."
+  },
+  {
+   "id": "C-52",
+   "criteria": {
+    "tech": {
+     "score": 3,
+     "why": "Components ship (UCIe/AIB IP, LPDDR5X PHYs, Grace's 512-bit LPDDR5X at ~546 GB/s), but the chiplet is unbuilt (TRL 5) and 4-8 x64 LPDDR5X-8533 packages give only 0.27-0.55 TB/s, under half an HBM3E stack."
+    },
+    "capital": {
+     "score": 1,
+     "why": "~$50-90M program (T3) for architecture, tape-out and package qualification."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "42 months (36-48) to first design-in."
+    },
+    "usmfg": {
+     "score": 2,
+     "why": "GF Malta can fab a 12nm-class controller die, but Amkor Peoria AZ is logic 2.5D for anchor customers from ~2028, so packaging and LPDDR5X die are offshore in practice."
+    },
+    "margin": {
+     "score": 3,
+     "why": "40-60% (mid 50) for a sub-scale chiplet that carries package/test cost while competing against IP royalties."
+    },
+    "moat": {
+     "score": 2,
+     "why": "The product is mostly licensed Synopsys/Cadence PHY plus UCIe; little owned IP, though a design-in would be sticky."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Synopsys, Cadence and Alphawave (Qualcomm) sell the IP, Eliyan and Marvell do custom memory dies, and Qualcomm AI200 and d-Matrix attach LPDDR directly without a third-party chiplet."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "Buyers' AI ASICs fall under the 3A090/4A090 and Dec-2024 HBM-related controls, which adds classification work but leaves the U.S. market open."
+    },
+    "cycle": {
+     "score": 2,
+     "why": "A glut eases HBM allocation and removes the 'can't get HBM' motive; LPDDR's lower $/GB keeps only a small cost niche."
+    },
+    "founder": {
+     "score": 1,
+     "why": "A T3 silicon program needing a veteran SoC/packaging/SI team from day one."
+    }
+   },
+   "one_line_view": "A $50-90M chip program delivering under half an HBM3E stack of bandwidth to buyers who already bolt LPDDR5X on directly with Synopsys/Cadence IP; nothing here for this founder."
+  },
+  {
+   "id": "C-55",
+   "criteria": {
+    "tech": {
+     "score": 3,
+     "why": "Mythic M1076 (25 TOPS at ~3 W, weights on-chip) has shipped, but analog flash-cell compute drifts with temperature and age, so -40 to +85 C rugged qualification of the accuracy, not the board, is the open engineering risk [training]."
+    },
+    "capital": {
+     "score": 3,
+     "why": "High T1: rugged module design, MIL-STD-810-class environmental qualification and a defense pilot; SBIR needs a PI other than the day-job founder."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "24 months (18-30): vendor partnership, ruggedized module and an SBIR/defense pilot."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Chips designed in the U.S. (Mythic Austin, EnCharge Santa Clara) and fabbed offshore, with module assembly and environmental test at a U.S. EMS."
+    },
+    "margin": {
+     "score": 3,
+     "why": "25-40% (mid 30); rugged defense modules support a premium, but the integrator buys silicon from vendors who also sell modules."
+    },
+    "moat": {
+     "score": 2,
+     "why": "Environmental qualification data and a platform design-in are sticky, but the chip vendor owns the roadmap and can go direct."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Mythic and EnCharge sell M.2/PCIe cards themselves, Hailo-8 and NVIDIA Jetson own edge AI toolchains, and Aitech, Curtiss-Wright and Mercury own rugged modules."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "Drone/ISR modules bring ITAR/EAR classification and NDAA/Blue UAS component-compliance work; manageable but real."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "The axis is W/inference on U.S.-designed silicon and defense budgets, not DRAM price; the glut only removes the secondary LPDDR-cost argument (EN100 carries up to 128 GB of LPDDR anyway)."
+    },
+    "founder": {
+     "score": 2,
+     "why": "Needs a rugged-hardware engineer and a defense channel, and depends on venture-funded chip vendors (Mythic nearly folded in 2022-23)."
+    }
+   },
+   "one_line_view": "Analog CIM drift over a rugged temperature range is the last thing I would put in an ISR box without the vendor's own qualification, and the vendors already sell the modules; this is C-67's integrator economics with a fragile chip."
+  },
+  {
+   "id": "C-61",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "Nitrogen long-term storage is standardized (IEC 62435-4, J-STD-033) and proven at scale (Rochester banks >10B die); LTB sizing is ordinary demand forecasting."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Software can start at T0; a 2,000-4,000 sq ft ESD/climate vault with N2 cabinets (~$5k each), insurance and ISO 9001/AS6081 groundwork is low T1."
+    },
+    "ttr": {
+     "score": 3,
+     "why": "15 months (15-18) to the first consignment contract; LTB-sizing software pilots could invoice at 9-12 months."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "A U.S. service with no fab dependency; Micron Manassas DDR4 can be the stored part when OEMs want domestic origin."
+    },
+    "margin": {
+     "score": 2,
+     "why": "The card's own model is negative below ~8 OEMs and ~27% at 10 OEMs ($7.5M under management); ~70% only at 25 OEMs in year 4+."
+    },
+    "moat": {
+     "score": 3,
+     "why": "Holding an OEM's moisture-sensitive inventory under chain of custody creates real switching costs once trust is won, and trust is the hard part."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Rochester, Micross, Semitron and Astute store customer stock, Arrow/Avnet offer bonded inventory, and an OEM can buy an N2 cabinet for ~$5k."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Parts are OEM-owned from authorized LTBs, so the duty is to preserve DFARS traceability under AS6081-style custody, which is low-risk if done right."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "Demand is EOL-driven and a glut lets OEMs place bigger LTBs, but a 4%/yr fee on cheaper parts shrinks per-part revenue and Micron Manassas DDR4 removes Micron-designed EOLs."
+    },
+    "founder": {
+     "score": 3,
+     "why": "LTB software and the custody ledger fit the founder part-time; the physical vault needs an AS6081-literate operator or partner."
+    }
+   },
+   "one_line_view": "Real but small: the LTB-sizing software is founder-shaped, while the vault is a trust-and-insurance business that Rochester, Semitron and a $5k N2 cabinet already cover."
+  },
+  {
+   "id": "C-62",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "An existing U.S. trade on free, current tools (memtest86+ last commit 2026-10-28, Google stressapptest), though bench testing misses the retention and marginal-timing screens real ATE runs [training]."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: a $20-40k start covers test beds and the first ITAD lot."
+    },
+    "ttr": {
+     "score": 5,
+     "why": "3 months (2-4): the first ITAD lot, a test bench, eBay and two B2B accounts."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. test-and-grade bench in East Coast flex space; testing and documentation, not manufacturing."
+    },
+    "margin": {
+     "score": 2,
+     "why": "17-32% contribution in 2026 (mid 20) if ITAD lots can be bought at ~60% of resale, which is unverified because ITADs also sell direct."
+    },
+    "moat": {
+     "score": 1,
+     "why": "The 'serialized test record' is copyable: SPD already holds an assembly serial that decode-dimms prints."
+    },
+    "competition": {
+     "score": 1,
+     "why": "ServerMonkey, Memory4Less, TechMikeNY, BuySellRAM, Curvature/Park Place, ITADs selling direct, Mobius Materials and thousands of eBay sellers."
+    },
+    "regulatory": {
+     "score": 2,
+     "why": "Recovered DRAM is where re-marked counterfeits come from: used-as-new is counterfeit under FAR 52.246-26, and DFARS 252.246-7008 closes DoD."
+    },
+    "cycle": {
+     "score": 1,
+     "why": "Resale contribution falls to ~1-6% in the glut (01_LANDSCAPE O3), and DDR4 bought at 2026-27 peaks loses value in inventory; F2 requires cash-positive by end-2027."
+    },
+    "founder": {
+     "score": 4,
+     "why": "Part-time ops with web-app grading and listing software; the founder's manufacturing-ops day job fits the receiving and test flow."
+    }
+   },
+   "one_line_view": "A fine 2026-27 cash trade (T0, 3 months to revenue) with no moat that must be cash-positive by end-2027 before the glut takes contribution to 1-6%; run it as a cash cow or a provenance-data feeder, not a venture."
+  },
+  {
+   "id": "C-64",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "SPD and JEP106 reads are routine (memtest86+ maps CXMT 0x0A11, YMTC 0x091B), but SPD 'DRAM manufacturer' bytes are written by the module assembler, not read from the die, so real proof needs sampled X-ray/decap at a partner lab."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: scan tool, attestation workflow and part-number database are software, and lab die-ID is outsourced pass-through."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "12 months (9-15): buyers wait for the final FAR rule (none as of 2026-11-01) ahead of the 2027-12-23 effective date."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Software and services with physical die-ID at U.S. independent labs; no fab dependency."
+    },
+    "margin": {
+     "score": 5,
+     "why": "65-75% (mid 70) on software plus marked-up lab pass-through."
+    },
+    "moat": {
+     "score": 2,
+     "why": "The scanner is commodity (coreboot reads DDR4 bytes 350-351, decode-dimms prints 'DRAM Manufacturer'); only a module-part-number-to-die-source database could become a data moat."
+    },
+    "competition": {
+     "score": 3,
+     "why": "No memory-specific Sec. 5949 product found, but OBSIDIA holds a $34M CHIPS LOI (2026-07-29) and Exiger, Interos, SiliconExpert and Z2Data can add a CXMT flag."
+    },
+    "regulatory": {
+     "score": 2,
+     "why": "The business exists only by a proposed rule (FAR Case 2023-008, 2026-02-17) whose reasonable-inquiry standard and supplier-certification safe harbor undercut paid demand, with no final rule yet."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Demand is statutory, and in a glut CXMT's cheap bits (9.5% of 2Q26 DRAM revenue) gain share, which raises contamination risk."
+    },
+    "founder": {
+     "score": 5,
+     "why": "Squarely software, startable part-time, with the founder's manufacturing-ops background helping on supplier attestations."
+    }
+   },
+   "one_line_view": "Best founder fit in my chunk and glut-proof, but the proposed rule's safe harbor lets most sellers self-attest for free, and SPD die bytes are assembler-written, so the scan proves less than buyers think; sell it to module makers and OEMs, not resellers."
+  }
+ ]
+}

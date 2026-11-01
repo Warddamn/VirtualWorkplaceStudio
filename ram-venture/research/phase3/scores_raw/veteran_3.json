@@ -1,0 +1,604 @@
+{
+ "scorer": "veteran",
+ "chunk": "3",
+ "scores": [
+  {
+   "id": "C-65",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Category ships (Teledyne e2v DDR4T04G72, x72 ECC on Micron die, since 2020), but an entrant on Winbond/ESMT KGD compounds per-die yield across 9 die (99% KGD -> ~91% module) and must screen -55 to 125 C on die sorted only at room/hot."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2: the card's own founder note puts it at ~$2-4M before revenue for substrate design, SI/PI, environmental and radiation qualification."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "36 months (30-42): 6-9 months substrate and SI/PI, 6-12 months MIL-STD-883-style qualification, then a design-in against parts with flight heritage; the upper end crosses 36."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. assembly and screening of imported Taiwanese KGD at Integra (Wichita) or QP Technologies, which take outside customers; Micron die via Micross/SpecTek is unverified and Micross is a competitor."
+    },
+    "margin": {
+     "score": 3,
+     "why": "The entrant's only opening is the cheap, non-Level-1 end (~$800 ASP vs ~$457 unit cost = ~43%), and burn-in fallout plus destructive qual-lot samples on low volumes cut further."
+    },
+    "moat": {
+     "score": 3,
+     "why": "Qualification lock-in is real once designed into a 10-20-year program, but there is no IP and the same Winbond/ESMT KGD is open to every incumbent."
+    },
+    "competition": {
+     "score": 1,
+     "why": "The flagship SKU already exists: Teledyne e2v DDR4T04G72 plus Micross, Mercury, DDC, Frontgrade and 3D Plus (HEICO) all hold flight or field heritage."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "Rad-tolerant memory sold to primes brings ITAR/EAR classification (possible 9A515/3A001 review) and DFARS 252.246-7008 die traceability: manageable compliance."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "Priced on heritage with die <15% of ASP, so a 2028 glut barely touches unit economics; the cost-sensitive NewSpace end could revert to upscreened commercial DDR4."
+    },
+    "founder": {
+     "score": 1,
+     "why": "Needs package, SI and reliability engineers plus defense BD full-time from day one and $2-4M; nothing here is part-time software work."
+    }
+   },
+   "one_line_view": "Teledyne e2v has shipped this exact x72 ECC DDR4 MCM with NASA Level 1 heritage since 2020; a no-heritage entrant on Winbond/ESMT KGD faces compounded multi-die screening fallout and a 30-42-month qualification cycle on T2 money, which makes it a product line for Micross, not a venture for this founder."
+  },
+  {
+   "id": "C-67",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "Shipping category (TRL 9): JEDEC raw cards, conformal coat and screw-lock CAMM2 already ship from Innodisk (Aug-2025) and congatec (Apr-2026); integration risk only."
+    },
+    "capital": {
+     "score": 3,
+     "why": "High T1: layout, MIL-environment qualification and module tester are small, but DRAM component inventory at ~$20/GB contract (a 500 x 16GB build is ~$160k of die alone) sets the bill."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "24 months (18-30): a 12-24-month design-win cycle at rugged-computer makers sits on top of winning authorized allocation while distributors show zero Micron DDR4 stock (Findchips, May-2026)."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. EMS SMT of imported packaged DRAM; even Manassas DDR4/LPDDR4 die are packaged in Malaysia/India, and DDR5/LPDDR5X SKUs are all Asian die."
+    },
+    "margin": {
+     "score": 2,
+     "why": "20-35% now (mid 25) and 10-27% in the A-05 glut, per the card."
+    },
+    "moat": {
+     "score": 2,
+     "why": "Rugged module vendors are routinely second-sourced; MIL-STD-810 test data and relationships are the only barrier."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Virtium, SMART (Penguin), ATP, Swissbit, Cervoz and Innodisk already ship rugged modules, and Micron/Samsung/SK hynix make LPCAMM2 themselves, all competing for the same allocation."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Commercial rugged modules carry little regulatory exposure; defense SKUs add DFARS 252.246-7008 authorized-source traceability, which an allocation-starved entrant may be tempted to skirt."
+    },
+    "cycle": {
+     "score": 2,
+     "why": "Module price tracks DRAM down (dollar margin -55%), and a small house holding component inventory bought at 4Q26 prices ($20.37/GB) into an $8.15/GB glut takes a write-down."
+    },
+    "founder": {
+     "score": 3,
+     "why": "The founder's product-development and manufacturing-ops background fits EMS management, but it needs a hardware/SI cofounder and is not a part-time start."
+    }
+   },
+   "one_line_view": "Board-level SMT of imported DRAM is ~1% of module value; the entrant fights Virtium, SMART, ATP and Innodisk for the same scarce allocation at 20-35% margin, and holding peak-priced component inventory into a 2028 glut is how small module houses die."
+  },
+  {
+   "id": "C-72",
+   "criteria": {
+    "tech": {
+     "score": 2,
+     "why": "The gating mechanism (Micron, Nanya or Winbond honoring a pooled LTA from a co-op holding no title and no credit) has no electronics precedent (search 2026-11-01); makers allocate by account design-in history and NCNR commitments."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Low T1 on the agency model: portal, legal for LC-backed membership, and a memory-sales veteran cofounder; the title-taking fallback is T2 ($8-27M working capital)."
+    },
+    "ttr": {
+     "score": 3,
+     "why": "Members will not pay $10k fees before a supplier LOI exists, and the first pooled allocation lands at 12-18 months (late 2027-2028)."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Commercial structure with no fab dependency; can steer pooled volume to U.S.-made Manassas DDR4."
+    },
+    "margin": {
+     "score": 5,
+     "why": "~80-90% on fee revenue under the agency model (~2.5% of pooled spend plus $10k membership)."
+    },
+    "moat": {
+     "score": 2,
+     "why": "An LC-backed member network would be sticky if it formed, but no supplier contract exists and distributors can offer the same NCNR pooling."
+    },
+    "competition": {
+     "score": 2,
+     "why": "No electronics GPO found, but franchised distributors (Arrow, Avnet, WPG, Future) and EMS turnkey procurement already aggregate small-OEM demand as their core function."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "A buyers' co-op sharing forecasts among competing OEMs needs antitrust counsel (FTC/DOJ purchasing-group safety-zone logic), but members are a negligible share of DRAM purchases."
+    },
+    "cycle": {
+     "score": 1,
+     "why": "The whole product is allocation scarcity; it eases in 2028 (landscape F2), and in a glut fees compress to <=1% against distributor pricing and members churn."
+    },
+    "founder": {
+     "score": 3,
+     "why": "The portal and member operations fit the founder, but supplier credibility needs a memory-sales veteran cofounder."
+    }
+   },
+   "one_line_view": "Having sat on the supply side, allocation goes to accounts with design-in history and NCNR commitments, not to a no-title co-op; Arrow/Avnet and EMS turnkey buying already aggregate this demand, and the window shuts when allocation eases in 2028, so run the three supplier calls before spending anything."
+  },
+  {
+   "id": "C-73",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "Standard FinOps right-sizing on the AWS Price List and CUR APIs, K8s in-place resize (stable v1.35) and Valkey migration: software built with known techniques."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: a read-only IAM integration and report generator; the first fixed-fee audit needs no capital beyond founder hours."
+    },
+    "ttr": {
+     "score": 5,
+     "why": "~6 months (4-8) to a first $3-8k NDA consulting audit; the recurring subscription waits ~9-12 months for SOC 2-style review."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Pure software hosted in us-east-1; no fab dependency and no U.S. manufacturing added."
+    },
+    "margin": {
+     "score": 4,
+     "why": "60-80% blended (mid 70), but year-1 revenue is founder-hour consulting, not software margin."
+    },
+    "moat": {
+     "score": 1,
+     "why": "Report logic is a weekend copy of free AWS Compute Optimizer, Robusta KRR, VPA and OpenCost, and the report churns once savings are booked."
+    },
+    "competition": {
+     "score": 1,
+     "why": "CAST AI, ScaleOps, StormForge, Kubecost/OpenCost, PerfectScale, Sedai and Densify sell this; Intel shut Granulate in Oct-2024 after failing to sell it."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "No regulatory or export exposure; SOC 2 is a commercial gate, not a regulatory one."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "All 92 compared on-demand EC2 SKUs had identical prices in Sep-2025 and Oct-2026, so savings never depended on DRAM prices and a glut changes nothing."
+    },
+    "founder": {
+     "score": 5,
+     "why": "A web app on AWS APIs, startable part-time as consulting in the founder's network."
+    }
+   },
+   "one_line_view": "Strong founder fit and glut-proof, but it is not a memory business at all, since the DRAM shortage never reached EC2 list prices; it sells ~$270/month ACV against free Compute Optimizer/KRR and funded CAST AI/ScaleOps."
+  },
+  {
+   "id": "C-74",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Production-proven (Meta TMO saves 20-32% of memory across millions of servers, ASPLOS 2022; zswap, PSI and K8s v1.34 swap are upstream), but safe tuning across heterogeneous on-prem fleets without OOM or tail-latency incidents is real engineering."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Low T1: ~300 h of kernel-savvy contractor time at $150-200/h (~$45-60k) plus test hosts crosses the $50k T0 line."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "12 months (9-15): 3-4 months to a guarded agent, a volunteer-host SLO test, then a 60-90-day paid pilot at $500-2k/month."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Pure software on upstream Linux, Proxmox and Kubernetes; no fab dependency."
+    },
+    "margin": {
+     "score": 5,
+     "why": "75-85% per-node SaaS (mid 80), with incident and on-call support as the main COGS."
+    },
+    "moat": {
+     "score": 2,
+     "why": "It configures free kernel features; the only defensible asset is per-workload SLO tuning data."
+    },
+    "competition": {
+     "score": 3,
+     "why": "No commercial on-prem TMO product found (MemVerge left the field), but Red Hat/Canonical tuned profiles, Proxmox KSM and DIY are the real competition."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "No regulatory or export exposure."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "Deferred-DRAM value of the 10 TB reference fleet falls from ~$154k to ~$61k at -60%; still positive ROI against a $6-24k/yr subscription, but the price story behind the sale is gone."
+    },
+    "founder": {
+     "score": 3,
+     "why": "The control plane is the founder's work, but SLO-safe Linux-mm tuning needs a kernel contractor or cofounder."
+    }
+   },
+   "one_line_view": "Compressed swap physics is settled (TMO 20-32%), but this tunes free kernel knobs where one OOM or latency incident at an early customer ends the company, and deferred-DRAM value drops 3-8x for DDR4 fleets that can buy used RDIMMs at $3.9-5.8/GB."
+  },
+  {
+   "id": "C-75",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Shipping open source (LMCache, NVIDIA Dynamo KVBM, Mooncake at Kimi with 75% more requests in SLO), but integrating into stacks that churn weekly (65 LMCache releases May-2025 to Oct-2026) is ongoing engineering risk."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: a public benchmark on rented 8xH100 costs ~$5-15k, under the $50k line."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "12 months (9-15): benchmark, one discounted reference deployment, then a $15-40k integration engagement."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Software and services on customers' U.S.-colo GPU clusters; no fab dependency."
+    },
+    "margin": {
+     "score": 4,
+     "why": "50-70% services-heavy (mid 60)."
+    },
+    "moat": {
+     "score": 1,
+     "why": "Apache-2.0 components with the upstream authors selling the same monitoring; nothing proprietary."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Tensormesh (the LMCache creators, $24.5M incl. a $20M extension 2026-05-27 from NVentures, AMD Ventures and CoreWeave) has its hit-rate and $/token dashboards GA, and NVIDIA Dynamo is free."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "No export issue for domestic integration, but healthcare and legal buyers will demand HIPAA BAAs because KV tiers persist prompt (PHI) data to host DRAM and NVMe."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "A glut makes host DRAM cheaper and the KV tier more attractive; the value is GPU-hours avoided, not DRAM $/GB."
+    },
+    "founder": {
+     "score": 3,
+     "why": "Python/K8s skills transfer, but GPU-serving credibility has to be earned and needs GPU access plus an inference-stack specialist."
+    }
+   },
+   "one_line_view": "Real technique and glut-friendly, but Tensormesh ($24.5M from NVIDIA/AMD/CoreWeave) sells the recurring line and NVIDIA keeps folding KV tiering into Dynamo defaults, so this is a consulting gig with a ~12-month half-life."
+  },
+  {
+   "id": "C-79",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "Plain hosting of Dell R740/HPE DL380 Gen10-class servers with 24 x 64GB DDR4 RDIMM (TRL 9); 2DPC drops speed to ~2666 MT/s, which a capacity buyer accepts."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Low T1: ~$7.5-10.4k per 1.5 TB box at $250-370 per used 64GB RDIMM; 10 boxes is ~$75-150k, but 2-3 boxes reach first revenue."
+    },
+    "ttr": {
+     "score": 5,
+     "why": "4-8 months to the first 2-3 rented boxes."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "A service on recovered U.S. ITAD hardware in Ashburn/Secaucus colo; no U.S. manufacturing added."
+    },
+    "margin": {
+     "score": 3,
+     "why": "The 47-53% computed GM assumes 100% utilization; at a realistic 70-80% fill, plus remote-hands fees and used-RDIMM swaps, it lands nearer 30-45%."
+    },
+    "moat": {
+     "score": 1,
+     "why": "Commodity hosting on commodity used hardware; nothing to defend."
+    },
+    "competition": {
+     "score": 2,
+     "why": "OVHcloud, PhoenixNAP, Latitude.sh, Cherry and Vultr rent high-memory bare metal, AWS x2idn has Savings Plans and Spot, and academic buyers have campus or ACCESS big-memory nodes."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "Single-tenant hosting carries negligible regulatory or export exposure."
+    },
+    "cycle": {
+     "score": 2,
+     "why": "A 40% rent cut drops GM to ~11-22%, and DDR4 bought at $3.9-5.8/GB in 2026 is stranded capex when Hetzner/OVH restock cheaply in 2028."
+    },
+    "founder": {
+     "score": 3,
+     "why": "Portal and billing are easy, but 24/7 hardware ops and >$50k capex for a 10-box fleet exceed the founder profile; a 2-3 box part-time start with colo remote hands is possible."
+    }
+   },
+   "one_line_view": "Plain hosting on peak-priced used DDR4 (64GB at $250-370) that must pay back before Hetzner/OVH restock cheaply in 2028; mixed-lot used RDIMMs at 2DPC throw correctable errors, and the on-call burden does not fit a day job."
+  },
+  {
+   "id": "C-80",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "Every input exists via the Nexar/Octopart, DigiKey and Mouser APIs plus free spot trackers; standard web app."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: MVP on public APIs; the only capital risk is an unpriced redistribution-grade data licence."
+    },
+    "ttr": {
+     "score": 5,
+     "why": "4-8 months to an MVP with 5-10 design-partner OEMs at $150-300/month (~2Q27)."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Pure software hosted in the U.S.; no fab dependency."
+    },
+    "margin": {
+     "score": 5,
+     "why": "70-85% (mid 75 after the data-licence haircut)."
+    },
+    "moat": {
+     "score": 1,
+     "why": "No proprietary data: 37 GitHub 'dram price' repos and free trackers (RamRadar, nwfella index, Mobius report) cover the same feed."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Supplyframe Commodity IQ (Siemens) and Counterpoint's monthly Memory Price Tracker already sell DRAM price and lead-time forecasts; SiliconExpert and Z2Data own EOL alerts."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "No regulatory exposure, but TrendForce/InSpectrum contract data cannot be redistributed and distributor API terms are written for buyers, not re-display."
+    },
+    "cycle": {
+     "score": 1,
+     "why": "Buy/hold alerts lose their value when DDR5 falls to $8.15/GB; revenue starts near the 4Q26-2Q27 peak with ~12-18 months before the 2028 turn."
+    },
+    "founder": {
+     "score": 5,
+     "why": "Web app plus APIs, part-time, and the founder's day job is the buyer persona."
+    }
+   },
+   "one_line_view": "Ideal founder fit and buildable in weeks, but there is no proprietary data, Supplyframe CIQ and Counterpoint already sell the forecast, and the revenue line dies at the 2028 turn; use it only as a free lead-gen front end."
+  },
+  {
+   "id": "C-84",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "smem PSS, cgroup peaks and zram (~2:1) are upstream, but no audit can prove the absence of field OOM under worst-case load, and that residual risk sits with the OEM's sign-off."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: CLI and report tooling, with a contracted embedded-Linux engineer paid per audit."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "9-15 months: recruit the contractor, then sell 2-3 audits at $5-20k through the founder's manufacturing network."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Software and services; no fab dependency."
+    },
+    "margin": {
+     "score": 4,
+     "why": "45-65% (mid 55) with contractor delivery at ~$120-180/h."
+    },
+    "moat": {
+     "score": 1,
+     "why": "Free smem/zram/Yocto buildhistory; embedded engineers can run it themselves, and the audit is one-off per product line."
+    },
+    "competition": {
+     "score": 3,
+     "why": "No dedicated 'RAM-diet' product found, but Memfault (Nordic since Jun-2025), Bootlin/Witekio/Toradex services and SoM vendor FAEs cover adjacent ground."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Little regulatory exposure for the venture, but medical-device buyers face 21 CFR 820 design-change re-validation, which suppresses demand."
+    },
+    "cycle": {
+     "score": 1,
+     "why": "At glut prices a 1GB step saves ~$2.5/unit, below re-qualification cost, so demand evaporates."
+    },
+    "founder": {
+     "score": 2,
+     "why": "The founder supplies access and report tooling only; the credibility is the embedded-Linux contractor's."
+    }
+   },
+   "one_line_view": "One density step is worth $8-21/unit today but ~$2.5 at glut prices, and stepping down to 8Gb LPDDR4/DDR4 moves the OEM onto the most EOL-exposed, $/GB-premium die in the market; embedded engineers will run smem and zram themselves."
+  },
+  {
+   "id": "C-85",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "rasdaemon/EDAC CE logging and CE-to-UE prediction are published (IBM, arXiv 2212.10441, SC22), but firmware-first CE handling (eMCA/GHES with leaky-bucket thresholds) on many Dell/HPE Gen10-class platforms filters CEs, so BMC/Redfish integration is needed and many UEs show no prior CE."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: agent plus console, 4-6 used test-bed servers and a ~$7k spares pool per customer."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "6-12 months (mid 9), slowed by university procurement and security review of an agent on production nodes."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. burn-in of recovered RDIMMs (memtest86+, stressapptest) plus software; no manufacturing added."
+    },
+    "margin": {
+     "score": 4,
+     "why": "59% at 2026 spares prices, 82% in a glut (mid 65), resting on an unverified 1.5%/DIMM-yr replacement rate."
+    },
+    "moat": {
+     "score": 2,
+     "why": "rasdaemon and BMC alerts are free; only a cross-fleet CE-trend dataset could compound into a moat."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Park Place ParkView has bundled predictive hardware fault detection with auto-ticketing into whole-server TPM since 2017; Service Express and OEM iDRAC/iLO alerts cover the rest."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Commercial buyers carry little risk, but used spares sold into federal work must be disclosed as used (FAR 52.246-26), and the US8468422 patent family needs an FTO check."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "Spares get cheaper in a glut (GM 59% -> 82%), but cheap DDR5 servers make refresh attractive and DDR4 fleets age out after ~2029, so revenue shrinks."
+    },
+    "founder": {
+     "score": 4,
+     "why": "Software-led and startable part-time with a garage test bed, but a next-business-day replacement SLA is a real operational tie."
+    }
+   },
+   "one_line_view": "Predictive DIMM replacement from CE trends works for row and bank faults, but firmware-first error handling hides many CEs from OS EDAC, the ~$21.6k/yr fee is ~3.6x the buyer's DIY self-sparing, and Park Place ParkView already bundles it into whole-server TPM."
+  },
+  {
+   "id": "C-86",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Index methodology on distributor APIs is standard, but distributor list quotes carry basis risk to contract prices (2026 DDR4 branded spot ~$44/GB vs ~$20/GB contract parity), which is the hard technical problem."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: data pipeline, 12+ months of back-filled history and clause templates; contract-data licensing is the only capital risk."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "9-15 months: back-fill, publish methodology, then 2-3 commercial integrator/EMS licences that both counterparties' legal teams must accept."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Pure software/data; no fab dependency."
+    },
+    "margin": {
+     "score": 5,
+     "why": "57-89% (mid 75), depending on whether a contract-price feed must be licensed."
+    },
+    "moat": {
+     "score": 2,
+     "why": "Clauses embedded in multi-year contracts would lock the index in, but nothing is adopted yet and TrendForce/DRAMeXchange is the default reference."
+    },
+    "competition": {
+     "score": 3,
+     "why": "No memory-specific EPA index product found and BLS has no DRAM PPI, but TrendForce, InSpectrum, Counterpoint and Supplyframe compete for 'reference' status."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "FAR 16.203-1 and 52.216-4 allow material-index EPA, but DLAD 16.203-4 makes contracting officers pick a BLS index first, so federal adoption is a case-by-case pricing-office decision."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "Two-sided: buyers demand down-adjustments in a -60% glut and embedded clauses persist; new licence sales slow only once prices stop moving."
+    },
+    "founder": {
+     "score": 4,
+     "why": "Data pipeline plus web app is squarely the founder's work, but selling a new price index needs procurement credibility from an advisory board."
+    }
+   },
+   "one_line_view": "The best-shaped data product in my chunk because it is two-sided and its clauses persist through the glut, but a distributor-quote index carries real basis risk against contract prices (spot ran ~2x contract in 2026), and displacing TrendForce in contract language is a credibility sale."
+  },
+  {
+   "id": "C-91",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Rochester proves die banking at scale, but re-creating legacy DDR4 packages needs the OCM's ballout and at-speed test programs on memory ATE, which is real engineering per part."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2: ~$0.6M per single-part bank and $2M+ for a portfolio, plus an AS9120/AS6496 quality system."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "30-48 months: 6-18 months to win an OCM authorization (no startup precedent found), then the card's own base case sells nothing in years 1-2."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Taiwanese KGD (Winbond, ESMT, Etron) banked, packaged and tested at U.S. OSATs that take outside customers (Integra, QP Technologies)."
+    },
+    "margin": {
+     "score": 3,
+     "why": "33-66% unit GM (mid 50), with a bear case of -7% IRR from banked die that never sell."
+    },
+    "moat": {
+     "score": 3,
+     "why": "DFARS 252.246-7008 ranks authorized aftermarket manufacturers ahead of all independents, a real regulatory moat, but only if an OCM grants the letter, and Rochester already holds 70+."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Rochester (>10B banked die, ~30B capacity, Intelligent Memory DRAM partnership), Micross, Alliance Memory and Micron's long-lifecycle Manassas DDR4 since 2026-05-22."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "AS6496/AS9120 quality systems and DFARS counterfeit-avoidance flow-downs are manageable; without authorization the venture slides into independent-distributor counterfeit exposure."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "EOL-driven demand persists, but a glut brings more authorized DDR4 (Manassas, Winbond), delays when banked die are needed and lowers the 1.5-5x aftermarket price cap."
+    },
+    "founder": {
+     "score": 1,
+     "why": "Needs OCM relationships, an aerospace quality system and $2M+ of inventory capital from day one."
+    }
+   },
+   "one_line_view": "Rochester already is this business, with >10B banked die, 70+ OCM authorizations and an Intelligent Memory DRAM partnership; no Taiwanese OCM will authorize an unfunded startup, and without that letter the venture is an independent distributor that DFARS ranks last."
+  },
+  {
+   "id": "C-92",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "External visual, X-ray, XRF, decap with die-marking and electrical test are routine SAE AS6171 methods (TRL 9) run daily by incumbents."
+    },
+    "capital": {
+     "score": 3,
+     "why": "High T1: ~$650k capex plus $478k/yr fixed cost and ramp losses below breakeven; at-speed DDR5 test gear could push it higher."
+    },
+    "ttr": {
+     "score": 3,
+     "why": "12-18 months: equipment, quality system, proficiency testing and ANAB 17025/AS6171 scope assessment before defense buyers will send lots."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. lab services; no fab dependency."
+    },
+    "margin": {
+     "score": 2,
+     "why": "Mid 22% at 40 lots/month; -34% at 20 and 41% only at 60 (1.7x the 36-lot breakeven)."
+    },
+    "moat": {
+     "score": 2,
+     "why": "17025/AS6171 accreditation is table stakes that every competitor holds, and CXMT/YMTC die-origin flagging uses the same decap methods."
+    },
+    "competition": {
+     "score": 1,
+     "why": "SMT Corp (Sandy Hook CT, 17025 + AS6171 HRL2, DLA QTSL) sits in the target corridor; Micross Clearwater turns full lots in ~2 weeks; A2 Global, Vyrian and White Horse Labs also compete."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "Needs ITAR registration, 17025 accreditation and AS6171 scope, plus liability for a false pass on a counterfeit lot: manageable but real."
+    },
+    "cycle": {
+     "score": 2,
+     "why": "Broker buying and lot volume fall 30-50% when authorized stock returns, which drops a 40-lot lab to 20-28 lots/month, below the 36-lot breakeven."
+    },
+    "founder": {
+     "score": 2,
+     "why": "ISO 17025 requires a full-time technical and quality manager from day one; the founder's part is the LIMS and report software."
+    }
+   },
+   "one_line_view": "Routine methods, but SMT Corp sits in the same corridor with 17025/AS6171 HRL2 and DLA QTSL, Micross turns full lots in ~2 weeks, and the lab is underwater below 36 lots/month, which a glut-driven 30-50% drop in broker lots guarantees."
+  }
+ ]
+}

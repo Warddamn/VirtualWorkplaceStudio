@@ -1,0 +1,650 @@
+{
+ "scorer": "veteran",
+ "chunk": "1",
+ "scores": [
+  {
+   "id": "C-01",
+   "criteria": {
+    "tech": {
+     "score": 2,
+     "why": "TRL 4 only on imec 300mm (IEDM 2020/21); on the venture's actual path, a SkyWater S130 oxide BEOL module, nothing exists (2026-11 search), PBTI reaches 5 yr at 95C only in a 2025 lab abstract with no 10-yr data, and IWO retention drops to ~300 ms at 85C."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2: dedicated IGZO sputter / In2O3 ALD tools ($4-10M) to satisfy In/Ga contamination rules, plus ~$10-30M of module qualification before any customer NRE."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "48 months (auditor-corrected): 18-24 mo module build at SkyWater plus 12-18 mo PBTI/retention qualification. That is past the 36-month ceiling."
+    },
+    "usmfg": {
+     "score": 2,
+     "why": "Neither SkyWater Bloomington nor Fab 25 runs an oxide-semiconductor module, so the U.S. capacity it needs doesn't exist yet. Purdue Birck's 200mm In2O3 is a university pilot."
+    },
+    "margin": {
+     "score": 4,
+     "why": "Blended ~65-75%. Royalty lines run ~85%, but early revenue is NRE/test-chip support, and the foundry keeps the wafer adder."
+    },
+    "moat": {
+     "score": 3,
+     "why": "Being the only oxide BEOL module qualified in a U.S. PDK would lock customers in, but SEL's dominant oxide-semiconductor patent estate (plus US12191135) is a live FTO gate."
+    },
+    "competition": {
+     "score": 3,
+     "why": "Nobody sells oxide gain-cell IP at a U.S. foundry, but buyers can already pick Weebit ReRAM (qualified in S130) or a zero-mask Si gain cell (RAAAM / C-32)."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "IP licensing for edge/defense ASICs is mostly EAR99. Patent exposure (SEL) is an FTO issue, not a regulatory one."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Priced against on-die SRAM/ReRAM inside someone's ASIC. A DDR5 move from $20.37 to $8.15/GB doesn't touch it."
+    },
+    "founder": {
+     "score": 1,
+     "why": "Process-module development and reliability physics on the critical path need a device/process CTO and a SkyWater JDA from day one."
+    }
+   },
+   "one_line_view": "Real physics on the wrong substrate: no U.S. fab has an oxide module, contamination rules force a dedicated tool set, PBTI is still lab-grade, and a zero-mask Si gain cell serves the same buyer, so it's a 5-year science project for this founder."
+  },
+  {
+   "id": "C-06",
+   "criteria": {
+    "tech": {
+     "score": 3,
+     "why": "HZO is plain ALD HfO2/ZrO2, already a CMOS-fab material, and Gb-class HZO 1T1C has been shown (Micron NVDRAM, IEDM 2023). But the U.S. path is TRL 4: Sandia MESA is capacitor/FTJ-level, SkyWater has no module, and arrays reach 1e11 cycles vs PZT's 1e13-1e14."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2, ~$10-30M: an HZO capacitor module at SkyWater, a Sandia CRADA, a product family and QML screening."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "54 months: module (24 mo) plus design/samples (12 mo) gets first industrial sales to ~month 48-54, and QML-V adds 1-2 years for the space buyer."
+    },
+    "usmfg": {
+     "score": 2,
+     "why": "No HZO module exists at SkyWater S130 or Fab 25. Sandia MESA is 'Ltd' (CRADA/SPP), and licensability isn't confirmed (1b found no IP listing)."
+    },
+    "margin": {
+     "score": 3,
+     "why": "Card says 50-65%, but a startup ramping a new 200mm module at Mb-class volumes, while Infineon sets the price, will land in the 30-50% band."
+    },
+    "moat": {
+     "score": 3,
+     "why": "QML/space qualification is sticky once won, and a Sandia license would help. Today the license is unconfirmed, and RAMXEED and CEA-Leti are pursuing the same HZO density axis."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Infineon QML-V 2Mb F-RAM (die U.S.-fabbed at TI Dallas DMOS6), RAMXEED, Everspin Toggle (Chandler AZ), Honeywell and Frontgrade already serve this rad-hard NVM socket."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "The rad-hard variant falls under 3A001.a.1 (>=500 krad) or possibly ITAR XV(d), with deemed-export rules for foreign-national engineers. The core market is U.S. defense, so this is manageable."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Mb-class rad-hard NVM is bought on reliability and supply security, with no link to DDR5's $8.15/GB glut price."
+    },
+    "founder": {
+     "score": 1,
+     "why": "A T2 chip company that needs a memory designer, a reliability engineer and module integration at a foundry from day one."
+    }
+   },
+   "one_line_view": "HZO is the right ferroelectric and the physics is sound, but the 'onshore second source' story collapses because Infineon's F-RAM is already fabbed in Dallas, and a 54-month T2 module build makes this a funded-team play, not this founder's."
+  },
+  {
+   "id": "C-07",
+   "criteria": {
+    "tech": {
+     "score": 2,
+     "why": "The device is real (Nature Electronics 2024: switching at 600C for >60 h at <15 V), but that's hours, not years. Read endurance is ~1e6 cycles, arrays are a kB-scale preprint, and a 500C periphery (SiC JFET/CMOS) exists only in labs, so the system is TRL 2-3."
+    },
+    "capital": {
+     "score": 3,
+     "why": "High T1, ~$1-2.5M before meaningful revenue (arrays plus high-temperature ceramic packaging), mostly through STTR with a Penn PI."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "42 months to a first paid eval part. AF254-D0806 and DPA26BZ04-DV017 are both closed, and STTR money is not revenue (A-04)."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Prototypes at Penn Singh Center (open to industry, $75-250/tool-hr) and U.S. high-temperature packaging houses are domestic, but no U.S. 200mm foundry is confirmed to offer AlScN ferroelectric to outsiders for scale-up."
+    },
+    "margin": {
+     "score": 3,
+     "why": "Early lots are low-volume eval parts where fab-lot and HT-packaging costs dominate (40-60%), and SBIR Phase III work is often cost-plus."
+    },
+    "moat": {
+     "score": 3,
+     "why": "An exclusive Penn license plus scarce 600C packaging know-how would be real, but DARPA TUFEN funding gives the government rights, and no license is confirmed."
+    },
+    "competition": {
+     "score": 4,
+     "why": "No commercial player found (two searches found no Penn spin-out or license). The only threat is the unknown AF254-D0806 scale-up performer."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "The hypersonics and engine buyers are U.S. defense (ITAR/EAR 9A515 exposure on tech data). Downhole and geothermal are EAR99. Manageable."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "No incumbent RAM works at 500C+, so demand is completely decoupled from commodity DRAM pricing."
+    },
+    "founder": {
+     "score": 2,
+     "why": "STTR lets a Penn PI carry the science while the founder is CEO/BD, but a device CTO is mandatory before any product exists."
+    }
+   },
+   "one_line_view": "The most interesting physics in my chunk and a genuinely empty niche, but 60 hours at 600C with 1e6 read cycles and no 500C periphery is a DoD research program, not a product; at best a grant-shaped side bet."
+  },
+  {
+   "id": "C-12",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Parallel F-RAM ships (TRL 9), but it isn't a true SRAM drop-in: FM18W08-class parts latch the address on /CE falling and need a /CE precharge, which breaks sockets that hold /CE low. Some SKUs will need Everspin parallel MRAM (MR4A08B-class) instead."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: PCB layout, small-lot East Coast EMS build, a used Fanuc 0i/16i test controller and inventory fit under $50k."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "10 months to first module SKUs sold to MRO buyers online. Per-controller validation (Fanuc/Mitsubishi/Okuma card attributes) sets the pace."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "U.S. EMS assembly of distribution parts. Infineon's F-RAM die is reportedly TI Dallas-fabbed, but it is packaged offshore and RAMXEED parts are Japanese."
+    },
+    "margin": {
+     "score": 3,
+     "why": "40-55% on modules, capped by free open-source DS1230-to-FM18W08 adapters in the DIP niche."
+    },
+    "moat": {
+     "score": 2,
+     "why": "The only moat is controller-validation know-how. Any Fanuc-card reseller (Memex) can copy it once a working design is in the field."
+    },
+    "competition": {
+     "score": 3,
+     "why": "Memex sells only rechargeable-battery cards and lists most capacities as unavailable. The free adapters cover DIP NVSRAM only, so the PCMCIA niche is thin but open."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "Negligible, and removing lithium cells drops a hazmat shipping burden."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Sold against failing NVSRAM batteries in legacy CNC, so it is indifferent to DDR5 at $8.15 or $2.04/GB."
+    },
+    "founder": {
+     "score": 4,
+     "why": "PCB, firmware and a storefront fit a founder with a design/manufacturing day job. He needs a contract PCB designer, but it can start part-time."
+    }
+   },
+   "one_line_view": "A clean, doable, glut-proof product line that will top out in the low $100ks/yr; good as a side SKU, not a venture, and watch the F-RAM /CE-latch timing trap."
+  },
+  {
+   "id": "C-13",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Tools are commercial (Radiant RT66B, aixACCT, B1500-class parametric analyzers), but no JEDEC standard covers HZO wake-up/imprint or IGZO PBTI lifetime extrapolation, so the 'qualification' deliverable is a methodology risk."
+    },
+    "capital": {
+     "score": 3,
+     "why": "High T1, ~$0.5-0.8M: used probe station with hot chuck, parametric analyzer, ferroelectric tester and bake ovens, plus a ~$150-180k/yr reliability engineer, before steady revenue."
+    },
+    "ttr": {
+     "score": 3,
+     "why": "18 months (auditor-corrected): hire the engineer, finance the gear, win from a small pool. Asset-light projects on university tools can bridge."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "A U.S. services lab near Albany NanoTech or Penn, with no manufacturing."
+    },
+    "margin": {
+     "score": 3,
+     "why": "30-45% for labor-heavy services at low utilization across a 10-30 customer pool."
+    },
+    "moat": {
+     "score": 2,
+     "why": "Credibility comes from named device physicists the founder doesn't have, and every university with an RT66B can run the basic P-E/PUND/fatigue work in-house."
+    },
+    "competition": {
+     "score": 3,
+     "why": "No U.S. commercial specialist found, but Neumonda and Fraunhofer IPMS (Germany), NY CREATES member characterization and Sandia CRADAs all serve the same few startups."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Mostly unregulated services. Radiation-test coordination and defense-prime data bring ITAR handling that ISO 17025-style procedures can manage."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "In a glut, VC money for memory startups dries up and so do their test budgets. Defense and SBIR demand keeps the lab alive at smaller scale."
+    },
+    "founder": {
+     "score": 2,
+     "why": "Needs a full-time reliability engineer/device physicist from day one. The founder's ops background helps run the lab but isn't the product."
+    }
+   },
+   "one_line_view": "There is a real gap, but the customer pool is maybe 10-30 U.S. outfits, universities already own the testers, and a lab without a recognized reliability physicist has no credibility, so this is a consulting job, not a venture."
+  },
+  {
+   "id": "C-16",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "MRAM-as-PLP journal is TRL 9: IBM FlashCore FCM3 (Toggle), FCM4 (1Gb PERSYST, 2024) and FCM5 (MRAM instead of capacitors, 2026-10). Phison and Sage paired controllers with the 1Gb part in 2019."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Low T1: a contract hardware/FPGA engineer (~$30-60k in year 1), reference boards and validation, well under $500k."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "20 months: a 6-9 month reference-board build plus 6-12 month OEM evaluation cycles before a paid design-in. Royalties come at 30-42 months, if ever."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "A design/IP business. The 1Gb MRAM uses GF Singapore 28nm CMOS with Chandler AZ MTJ BEOL, and Gresham OR STT doesn't come until ~Q4-2028."
+    },
+    "margin": {
+     "score": 3,
+     "why": "35-45% in years 1-3, because revenue is design services. Royalty margin is speculative and late."
+    },
+    "moat": {
+     "score": 2,
+     "why": "No owned IP. The kit sits between the controller vendors (Phison, Sage, Marvell) and Everspin, either of whom can publish the same reference for free."
+    },
+    "competition": {
+     "score": 3,
+     "why": "Controller vendors and IBM in-house set PLP architecture, and Teledyne HiRel covers rugged, but no public Everspin PLP reference kit was found (2026-11-01)."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "The single-source Everspin part is imported (GF Singapore CMOS) and exposed to ITC 337-TA-1487 (Avalanche v. Everspin, target ~Jul-2027). An exclusion order would cut the BOM."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "The supercap-aging case holds, but a 60% DRAM drop makes DRAM+supercap ~$20-50/board cheaper against $51-410 of MRAM at $821/GB, so marginal designs revert."
+    },
+    "founder": {
+     "score": 3,
+     "why": "The founder can own drivers, test tooling and sales but needs a contract EE/FPGA engineer for the board and the ST-DDR4 controller."
+    }
+   },
+   "one_line_view": "Proven mechanism, but a third party with no IP sitting between Everspin and the SSD-controller vendors in a market of a few dozen PLP designs a year caps out below $1M/yr."
+  },
+  {
+   "id": "C-18",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "Lot-specific TID/SEE/proton testing is standard practice (NASA GSFC and ESA both call for per-lot acceptance), and Toggle MRAM has >1 Mrad(Si) TID heritage."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Low T1, ~$100-300k: a self-funded seed heavy-ion campaign (~$30-70k each at TAMU/LBNL), boards, a contract rad engineer and export compliance."
+    },
+    "ttr": {
+     "score": 3,
+     "why": "18 months (auditor-corrected): heavy-ion beam time is booked months ahead, and the first paid report needs prior data for credibility."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "A U.S. test service at U.S. beam lines. The parts are Everspin Chandler AZ Toggle and GF-CMOS PERSYST."
+    },
+    "margin": {
+     "score": 2,
+     "why": "Each $30-70k campaign sells as a $5-25k report, beam hours and rad-engineer labor pass straight through, and lot-specific RLAT data resells poorly."
+    },
+    "moat": {
+     "score": 2,
+     "why": "No radiation-effects reputation, and NASA NEPP and ESA ESCIES publish part-type data free. Only an accumulating proprietary lot database could become a moat."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Teledyne HiRel sells screened PERSYST with qualification docs from 4Q-2026, alongside Frontgrade, Honeywell, Avalanche and TRAD R2COTS, plus U.S. contract rad-test houses (VPT, Radiation Test Solutions [training knowledge])."
+    },
+    "regulatory": {
+     "score": 2,
+     "why": "Certifying parts to >=500 krad pulls them under ECCN 3A001.a.1, and radiation data can become controlled technical data, so selling to non-U.S. smallsat builders needs licences."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Space buyers pay for radiation data and heritage, and DDR5 at $8.15/GB changes nothing."
+    },
+    "founder": {
+     "score": 3,
+     "why": "The data platform and SEE tooling fit the founder, but every deliverable needs a named radiation-effects engineer to be credible."
+    }
+   },
+   "one_line_view": "Half of it was overtaken when Teledyne HiRel became Everspin's authorized screening channel; what remains is pass-through-heavy, credibility-gated rad testing in a field with established labs and free NASA data."
+  },
+  {
+   "id": "C-22",
+   "criteria": {
+    "tech": {
+     "score": 3,
+     "why": "The qualified Weebit module is 256Kb (JEDEC 3 lots, 125C) in S130, but a 1-4 Mb product needs bigger macros and requalification. The rad-tolerant claim rests on 16-kbit gamma-only data with bulk-CMOS periphery (TRL 3-4)."
+    },
+    "capital": {
+     "score": 2,
+     "why": "~$1.5-3M+ before production revenue: two MPWs, a ~$0.5-0.6M 130nm mask set, qual lots, 2-3 years of IC and test engineers, plus a Weebit fee (~$0.1-2.6M precedent). That is low T2."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "36 months is the optimistic end. Weebit itself quotes 12-18 months of characterization/qual after tape-out, and defense design-in on top pushes real production revenue past 36 months."
+    },
+    "usmfg": {
+     "score": 5,
+     "why": "SkyWater Bloomington S130 is an open foundry (still serving all customers under IonQ since 2026-07-31) with Weebit ReRAM in the PDK, and U.S. OSATs (Integra, Promex) take outside work."
+    },
+    "margin": {
+     "score": 4,
+     "why": "50-65% after the Weebit royalty at $20-200 defense ASPs, though low volumes make mask amortization hurt."
+    },
+    "moat": {
+     "score": 3,
+     "why": "A DMEA-trusted flow plus defense design-in would be sticky once qualified, but the Weebit license is non-exclusive and its first U.S. security licensee may already hold this slot."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Everspin Toggle (16-32 Mb, unlimited endurance), Honeywell trusted MRAM, Teledyne HiRel PERSYST, Frontgrade and Infineon rad NOR/F-RAM all sit in this socket with heritage."
+    },
+    "regulatory": {
+     "score": 3,
+     "why": "Trusted/rad-tolerant NVM brings 3A001.a.1 or ITAR exposure if rated, and DoDI 5200.44 targets custom ICs, not COTS memory. Manageable."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Trusted key-store NVM demand has no tie to DDR5 pricing."
+    },
+    "founder": {
+     "score": 2,
+     "why": "Needs a full-time mixed-signal IC designer co-founder and SBIR money from day one. The founder can be CEO/BD."
+    }
+   },
+   "one_line_view": "The most U.S.-manufacturable device card in my chunk, but a 1-4 Mb ReRAM with ~1e5 endurance loses to 16-32 Mb Toggle MRAM on everything except magnet immunity, and its radiation claim is a 16-kbit gamma test."
+  },
+  {
+   "id": "C-26",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "The parts and platforms exist (TRL 9). Memory Mode and App Direct work on 2nd/3rd-gen Xeon Scalable, and ipmctl reports health."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: a ~$1-3k Cascade Lake test server and inventory bought from U.S. ITADs."
+    },
+    "ttr": {
+     "score": 5,
+     "why": "4 months to first kits on eBay or a storefront."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Resale with U.S. test value-add. The Gen1 XPoint media came from Lehi UT [training knowledge], but nothing new is manufactured."
+    },
+    "margin": {
+     "score": 2,
+     "why": "20-35% (mid 28%) on commodity resale. eBay prices are transparent at ~$0.5-3/GB."
+    },
+    "moat": {
+     "score": 1,
+     "why": "None. Used prices are public, ipmctl health checks are free, and ITCreations and Uvation already list PMem kits."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Many eBay US/DE sellers, refurb-server resellers and ITADs selling lots direct already do exactly this."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Commercial resale is open. DFARS bars recovered parts from DoD deliverables, and App Direct modules can hold persistent customer data, so NIST 800-88 sanitization chain-of-custody matters."
+    },
+    "cycle": {
+     "score": 1,
+     "why": "Dies twice: vSphere 8 EoGS on 2027-10-11 (VCF 9.0 dropped PMem) removes the lead buyer before the glut, and a 60% DDR4 drop closes the price gap as Cascade/Ice Lake retire."
+    },
+    "founder": {
+     "score": 5,
+     "why": "Scripted testing, e-commerce and a sizing web tool, startable part-time this month."
+    }
+   },
+   "one_line_view": "Fast and doable, but it's a 2-year liquidation trade on a dead product line with no moat; run it as a SKU of the recert business, if at all."
+  },
+  {
+   "id": "C-28",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Foundry eMRAM ships (Renesas RA8P1 1MB on TSMC 22ULL, GF AutoPro150 on 22FDX). An aggregate 16-64MB on die is replication plus ECC, not new physics, but it isn't demonstrated."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2 at the high end: 22nm masks, NPU/CPU IP, AEC qualification and an SDK ecosystem put a fabless MCU at ~$20-40M before volume revenue."
+    },
+    "ttr": {
+     "score": 1,
+     "why": "48 months (SoC design, AEC/industrial qualification, ecosystem)."
+    },
+    "usmfg": {
+     "score": 1,
+     "why": "Offshore only: GF eMRAM runs in Dresden (not Malta NY), TSMC RRAM in Taiwan and ST ePCM is captive. No U.S. line offers 22nm eNVM."
+    },
+    "margin": {
+     "score": 3,
+     "why": "40-55% for a startup MCU priced against Renesas, ST, Infineon and NXP."
+    },
+    "moat": {
+     "score": 2,
+     "why": "On-die capacity is a spec, not IP. 15-60 mm2 of eMRAM array is something any incumbent can tape out."
+    },
+    "competition": {
+     "score": 1,
+     "why": "Renesas RA8P1/RA8M2, Infineon PSoC Edge (RRAM), ST STM32V8 (ePCM), NXP and SEMIFIVE/ICY Tech on Samsung 8nm eMRAM already do exactly this."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Edge MCUs are generally EAR99, and automotive functional-safety qualification is a cost, not a regulatory gray zone."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "The 'no external DRAM' pitch weakens as 512MB LPDDR4X falls from ~$10.5 to ~$4 in a glut, but standby power and instant-on still sell MCUs."
+    },
+    "founder": {
+     "score": 1,
+     "why": "A T2 SoC company that needs a full chip team from day one."
+    }
+   },
+   "one_line_view": "A me-too edge MCU against four incumbents that already ship eNVM AI parts, made offshore, with a differentiator a glut erases; no."
+  },
+  {
+   "id": "C-29",
+   "criteria": {
+    "tech": {
+     "score": 5,
+     "why": "Pure software built with known techniques: PCN/EOL ingestion, distributor APIs and a curated pin/protocol compatibility table."
+    },
+    "capital": {
+     "score": 5,
+     "why": "T0: founder labor plus distributor API access."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "8 months to first paid seats, assuming willingness to pay exists, which is STILL-UNVERIFIED."
+    },
+    "usmfg": {
+     "score": 3,
+     "why": "Software. It can filter for U.S.-made parts (Everspin Chandler), but it manufactures nothing."
+    },
+    "margin": {
+     "score": 5,
+     "why": "75-85% SaaS gross margin."
+    },
+    "moat": {
+     "score": 1,
+     "why": "A cross-reference table any lifecycle database can add. No owned data or lock-in."
+    },
+    "competition": {
+     "score": 1,
+     "why": "SiliconExpert (Arrow), Z2Data, Accuris, Supplyframe (Siemens) and Octopart/Nexar (Altium, Renesas-owned since 2024-08-01, building lifecycle management) already sell cross-references."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "Negligible."
+    },
+    "cycle": {
+     "score": 3,
+     "why": "EOLs continue in a glut, but shortage urgency and willingness to pay fall."
+    },
+    "founder": {
+     "score": 5,
+     "why": "Squarely software, T0, compatible with the day job."
+    }
+   },
+   "one_line_view": "Easy to build and hard to sell: the DRAM half is false (no emerging NVM replaces DDR3/DDR4), and the EEPROM-to-F-RAM/MRAM slice is a feature for SiliconExpert or Octopart, not a company. Lead-gen at best."
+  },
+  {
+   "id": "C-32",
+   "criteria": {
+    "tech": {
+     "score": 3,
+     "why": "2T/3T Si gain cells are silicon-proven (Intel 65nm 2008; RAAAM 180nm-5nm), but this venture's macro has no silicon on S130/S90 or 12LP+, and retention of ~10-100 us at 85-125C forces refresh that eats the leakage advantage."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2, ~$2-5M: two MPW spins, characterization, an FTO opinion against the RAAAM/Bar-Ilan/EPFL estate, and a memory-circuit team."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "~36 months: design 6-9 mo plus two SkyWater MPWs at ~6-month turns, then characterization before a first evaluation license."
+    },
+    "usmfg": {
+     "score": 4,
+     "why": "Test chips and customer silicon run at U.S. foundries that take outside customers: SkyWater S130 via ChipFoundry or the Cadence/SkyWater MPW, and GF Fab 8 Malta. GF's own GCRAM program, though, is on Dresden FDX."
+    },
+    "margin": {
+     "score": 5,
+     "why": "80-90% on IP licenses and royalties, with zero extra masks, so there is no wafer-adder dispute with the foundry."
+    },
+    "moat": {
+     "score": 2,
+     "why": "A new entrant's patents sit behind RAAAM's head start and estate. At best a SkyWater-specific compiler port with first-mover standing."
+    },
+    "competition": {
+     "score": 2,
+     "why": "RAAAM ($17.5M Series A led by NXP, GF FDX test vehicle, TSMC 2nm qual) does exactly this and can port to S130 at will. Synopsys/Arm SRAM compilers are the default."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Memory-compiler IP is generally EAR99. Trusted-ASIC customers handle their own ITAR. Patent FTO is not regulatory."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Priced in die area inside customers' SoCs, so it is decoupled from DRAM contract prices."
+    },
+    "founder": {
+     "score": 2,
+     "why": "Needs a full-time memory-circuit cofounder. The founder's compiler automation and web portal are off the critical path."
+    }
+   },
+   "one_line_view": "Better engineering than C-01 (zero masks, no contamination fight), but RAAAM already owns the commercial Si gain-cell seat with NXP money and foundry programs, and trailing-node royalty pools are small; a licensing dead-end for a newcomer."
+  },
+  {
+   "id": "C-33",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "OpenRAM v1.2.50 (2026-10-27) runs, but sky130 silicon has verified only a 1 KB dual-port macro. Larger 16-64 KB macros carry unknown sense-amp and bitline timing margins until a shuttle proves them."
+    },
+    "capital": {
+     "score": 4,
+     "why": "Low T1 at worst: two ChipFoundry sky130 slots (~$15k per 100 chips each), ~200 h of contract layout/characterization and a test bench come to ~$50-65k."
+    },
+    "ttr": {
+     "score": 4,
+     "why": "~12 months. Paid macro generation and support can start before silicon, and characterized libraries follow one ~6-month SkyWater MPW turn."
+    },
+    "usmfg": {
+     "score": 4,
+     "why": "Its macros enable U.S.-fabbed ASICs at SkyWater Bloomington via U.S. MPWs (ChipFoundry, Cadence/SkyWater), so the value-add is all U.S., though the venture itself is software/services."
+    },
+    "margin": {
+     "score": 4,
+     "why": "55-75% (mid 65%). Per-tapeout support, contract layout and shuttle slots are COGS."
+    },
+    "moat": {
+     "score": 2,
+     "why": "The compiler is BSD-3, so the only moat is silicon characterization data and support relationships, which ChipFoundry, Cadence/SkyWater or UCSC could replicate or give away."
+    },
+    "competition": {
+     "score": 3,
+     "why": "Free OpenRAM 1-4 KB macros and DFFRAM exist, and commercial compilers don't serve sky130 shuttle teams. A few players, room for a niche."
+    },
+    "regulatory": {
+     "score": 5,
+     "why": "Negligible. Design-IP services for open-PDK tapeouts; customers' ITAR stays with them."
+    },
+    "cycle": {
+     "score": 5,
+     "why": "Demand tracks ASIC tapeouts and U.S.-fab policy, not DRAM prices."
+    },
+    "founder": {
+     "score": 4,
+     "why": "Python, CI and web tooling are the founder's skills. SRAM characterization needs ~200 h of contract circuit help but can start part-time."
+    }
+   },
+   "one_line_view": "A sensible, founder-shaped, glut-proof services business on a real gap (nothing above 4 KB on sky130), but the market is hundreds of MPW projects a year at university budgets and the funnel owners can bundle it free; a sub-$1M ARR lifestyle line."
+  },
+  {
+   "id": "C-36",
+   "criteria": {
+    "tech": {
+     "score": 4,
+     "why": "Async/QDR SRAM is TRL 9, but whether Fab 25 offers outsiders the ex-Cypress high-density 6T bitcell and a characterized 65nm PDK is unverified. A logic-rule bitcell (1.896 um2 at sky130) would bloat die size."
+    },
+    "capital": {
+     "score": 2,
+     "why": "T2, ~$5-15M: an SRAM design team, 65-90nm mask sets, a likely respin, and JEDEC/AEC-Q100 qualification for a 4-64 Mb family."
+    },
+    "ttr": {
+     "score": 2,
+     "why": "~36 months (auditor 30-42): design 9-12 mo, first silicon 3-4 mo, a respin ~6 mo and qualification ~6 mo before industrial orders. QML adds 12+ months."
+    },
+    "usmfg": {
+     "score": 4,
+     "why": "SkyWater Fab 25 Austin is an open foundry (closed 2025-06-30, ~400k starts/yr, 65-130nm, memory a target market) with U.S. assembly and test, but outside access to the SRAM bitcell/PDK is the gating unknown."
+    },
+    "margin": {
+     "score": 4,
+     "why": "45-60%. A 16Mb die at 65nm costs ~$2.4 in COGS against $10-40 distributor prices, though startup volumes keep 200mm wafers expensive."
+    },
+    "moat": {
+     "score": 3,
+     "why": "Written 15-20-year longevity commitments and DMSMS design-ins are sticky once won, but the core technology is commodity."
+    },
+    "competition": {
+     "score": 2,
+     "why": "Infineon still sells 256K-64M async and QDR from the same Fab 25, and Renesas EOL260016 (92 codes) maps customers to Infineon. ISSI, GSI, Alliance and Rochester fill the rest."
+    },
+    "regulatory": {
+     "score": 4,
+     "why": "Commercial async SRAM is EAR99. Only the rad-tolerant FD-SOI option draws 3A001/ITAR exposure."
+    },
+    "cycle": {
+     "score": 4,
+     "why": "Legacy SRAM ASPs are per-part and mostly decoupled from DRAM, but a glut loosens legacy-memory allocation and blunts the supply-security urgency behind second-sourcing."
+    },
+    "founder": {
+     "score": 1,
+     "why": "Needs a full SRAM design and product/test team and $5-15M from day one."
+    }
+   },
+   "one_line_view": "Mature technology at a willing U.S. fab, but you'd be a startup second-sourcing Infineon from Infineon's own anchor fab in a shrinking standalone-SRAM market; the bitcell-access question alone could kill it."
+  }
+ ]
+}
