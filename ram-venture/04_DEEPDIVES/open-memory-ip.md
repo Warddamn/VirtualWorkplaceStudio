@@ -10,7 +10,7 @@
 - **Tags:** [VERIFIED-git] marks primary data read directly from a public git repository. Other tags follow `research/CONVENTIONS.md`.
 
 
-> **Phase 6 decision note (added after both red-team rounds).** The red team cut this deep dive to the C-33 wedge as a side line (the C-32 and C-22 T2 legs are killed), and that characterization stands. Because every other deep dive was killed or downgraded, the Phase 6 judge panel selected it as **FALLBACK — sequenced after DD2, never in parallel** (`research/phase6/decision.json`). Statements in §14 such as "side line only, not PRIMARY, FALLBACK or MOONSHOT" predate that decision. As FALLBACK, its paid kill-test steps shift ~2 months later than the §10 dates (to Jan–Feb 2027, after DD2's 2026-12-01 decision); its $0 written questions still go out in week 1 (see `FIRST_90_DAYS.md`).
+> **Phase 6 decision note (added after both red-team rounds).** The red team cut this deep dive to the C-33 wedge as a side line (the C-32 and C-22 T2 legs are killed), and that characterization stands. Because every other deep dive was killed or downgraded, the Phase 6 judge panel selected it as **FALLBACK — sequenced after DD2, never in parallel** (`research/phase6/decision.json`). Statements in §0 and §14 such as "Not a PRIMARY, and not a FALLBACK either" or "side line only, not PRIMARY, FALLBACK or MOONSHOT" predate that decision. As FALLBACK, its paid kill-test steps shift ~2 months later than the §10 dates (to Jan–Feb 2027, after DD2's 2026-12-01 decision); its $0 written questions still go out in week 1 (see `FIRST_90_DAYS.md`).
 
 ---
 

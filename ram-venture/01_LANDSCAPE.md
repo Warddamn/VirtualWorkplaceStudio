@@ -551,7 +551,7 @@ Legend for "Outside customers?": **Yes** = open to a small company; **Ltd** = pr
 
 ### 10.3 Scoring rules to carry into Phase 3
 
-1. **Glut line: $8.15/GB DDR5 component contract ($10.31 per RDIMM user-GB); severe line: $1.60/GB (2023 trough; −90% from 4Q26 = $2.04).** (1b) Before 1b the glut line was $6.40. Score cycle-proofing against both, and say which a concept fails.
+1. **Glut line: $8.15/GB DDR5 component contract ($10.31 per RDIMM user-GB); severe line: $2.04/GB (−90% from 4Q26; `ddr5_reference()`, as in §4.3 and §5.3), bracketed below by the 2023 trough (~$1.60/GB DDR5 [UNVERIFIED], $1.30 DDR4).** (1b) Before 1b the glut line was $6.40 and the severe line was quoted as the $1.60 trough. Score cycle-proofing against both, and say which a concept fails.
 2. **Timing:** price-arbitrage revenue must be cash-positive by **end-2027**.
 3. **FTO gates:** DDR5 module/appliance → Netlist PMIC (Samsung reportedly licensed in 2026); IGZO cell → SEL; Everspin STT design-in → ITC 337-TA-1487 outcome (~Jul-2027, secondary-sourced); VCT-like device → Samsung/Micron/Unisantis.
 4. **Funding realism:** score SBIR only if the concept names a full-time PI or a university STTR partner. SBIR authority runs to 2031-09-30, with per-firm caps from FY2027. CHIPS and §48D = 0.

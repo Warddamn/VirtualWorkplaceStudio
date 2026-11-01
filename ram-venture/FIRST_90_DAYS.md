@@ -34,7 +34,7 @@
 | ≤$500 before K0; DD2 test **~$1,950 planned** (~$2,950 if the $1,000 consult is not deferred), hard cap **$5,000**; **≤$34k ever**; **$5k cash floor** | DEC PRIMARY.spend |
 | Plan cash check: max founder draw **$30,850** vs the $34k cap; cash low **$9,150** at m16 (2028-03) vs the $5k floor. If K3+K4 pass and the deferred $6k is spent: **$36,850** and **$3,150**, over the cap and under the floor unless results beat BASE — so the **funding rule** applies: the deferred $6k is spent only if index prepayments (≥$6k) or a ≤$10k note from an index LOI signer/strategic cover it; otherwise the index stays closed and the cap/floor hold | LI.py §10 PLAN rows; DEC PRIMARY.plan_cash; DEC MOONSHOT.funding_rule |
 | $40,000 deployable | LI.py `founder_cash` (ASSUMPTIONS A-03) |
-| The $1,000 government-contracts consult and the $5,000 antitrust opinion wait until K3 **and** K4 pass. November spend is therefore **$1,950**, with $1,000 held in reserve | DEC MOONSHOT.spend; LI §10 line items |
+| The $1,000 government-contracts consult and the $5,000 antitrust opinion wait until K3 **and** K4 pass **and** the funding rule covers them. November spend is therefore **$1,950**, with $1,000 held in reserve | DEC MOONSHOT.spend, MOONSHOT.funding_rule; LI §10 line items |
 | DD5: $0 in November (letters only). Up to **$9.1k** only if DD2 fails on 2026-12-01 **and** both no-release statements arrive | DEC FALLBACK.spend |
 | No code until K0 is signed. No domain, no Sales Navigator and no contact with any prospect before K0 either | LI §10 step 0b; J-INT and J-EV Monday actions |
 | None of the 60 contacts may come from the employer's network | LI §10 step 2 |
@@ -235,8 +235,8 @@ PASS (continue as a side line) only if **all four** hold:
      │ yes                                                                       ▼
      ▼                                              DD5 check on 2026-12-01: written no-release
  BRANCH A — DD2 continues                           statements from BOTH UCSC VLSIDA and OCD (or a
-   K3 AND K4 pass → A2 (index option open,          signed exclusivity), and no channel owner
-                    spend the deferred $1k + $5k)   confirms a free release?
+   K3 AND K4 pass AND funding rule met → A2         signed exclusivity), and no channel owner
+     (index open; spend the deferred $1k + $5k)     confirms a free release?
    otherwise      → A1 (SaaS only = revised BASE)      yes ─► BRANCH B: DD5 test, Jan 2027, ≤$9.1k
    K5 decided 12-15; K2 decides paid vs free           no  ─► BRANCH C: stop
    lifecycle alerts
@@ -251,7 +251,7 @@ In Branches B and C, refund every DD2 deposit by Fri 12-04 [PLAN] and thank ever
 **The honest frame.**
 
 - Inside the 90 days the job is to turn deposits into design partners and build the MVP. No subscription revenue arrives: the model's first revenue is m6 (2027-05), and its first paying cohort pays 40% less through m10 (LI §4; LI.py §4). The m9 and m12 gates fall in August and November 2027. This branch only sets them up.
-- **A1 (index closed)** is the model's "PLAN" row: the $1,950 test charged, no $5k opinion and no $1k consult. Max founder draw $30,850, cash low $9,150 at m16 (LI.py §10). **A2 (index open)** adds the $1,000 consult and the $5,000 opinion ("PLAN + index option passes"): max draw $36,850 and cash low $3,150 at m16, over the $34k cap and under the $5k floor unless results beat BASE.
+- **A1 (index closed)** is the model's "PLAN" row: the $1,950 test charged, no $5k opinion and no $1k consult. Max founder draw $30,850, cash low $9,150 at m16 (LI.py §10). **A2 (index open)** adds the $1,000 consult and the $5,000 opinion ("PLAN + index option passes"): max draw $36,850 and cash low $3,150 at m16, over the $34k cap and under the $5k floor unless results beat BASE. So A2 runs only when K3 and K4 pass **and** DEC's funding rule is met: ≥$6k of index pre-sale deposits or LOI prepayments, or a ≤$10k convertible note from an index LOI signer or a strategic, covers the $6k (DEC MOONSHOT.funding_rule). Otherwise the index stays closed and the plan is A1.
 - **If K2 failed,** lifecycle alerts become a free funnel. The paid line is then the price and allocation alerts, which fall 57% in GLUT and 83% in SEVERE (LI.py §6).
 - **Spending caps after a pass:** "≤~$22k cumulative through the m9 gate" (J-INT, J-CEIL); "≤$34k ever, $5k cash floor" (DEC).
 - **Monthly opex follows the model:** $650/month in Dec and Jan, made up of tools $250, marketing $300 and accounting $100 (LI.py §4 m1–m2; LI.py inputs).
@@ -417,7 +417,7 @@ All dollar figures are cumulative from 2026-11-02 and come from the week tables 
 | Weeks 1–5 (shared) | Tue 2026-12-01 | $1,950 (+$1,000 held) | n/a | $38,050 | ~60 by 12-01 | n/a | 12-01 |
 | K0 fails | Mon 2026-11-09 | $500 | n/a | $39,500 | ~13, then B or C | n/a | DD5 check 12-01 |
 | **A1**: DD2 passes; K3 or K4 fails (SaaS only) | 12-01 | **$3,250** | n/a | **$36,750** | ~171 (60 + ~111) | LI.py §10 "PLAN": cash low **$9,150** at m16 (BASE $6,100 + the deferred $5k opinion − the $1,950 test); max draw **$30,850**, inside the $34k cap. Draw ≤~$22k through m9 (J-INT) | 2027-02-28 (m3); 2027-08-31 (m9) |
-| **A2**: DD2 passes; K3 + K4 pass (index open) | 12-01 | **$9,250** | n/a | **$30,750** | ~171 | LI.py §10 "PLAN + index option passes": cash low **$3,150** at m16, **below the $5k floor**; max draw **$36,850**, over DEC's ≤$34k cap, unless results beat BASE | Same, plus the index VET-01 test at m9 |
+| **A2**: DD2 passes; K3 + K4 pass and DEC's funding rule is met (index open) | 12-01 | **$9,250** | n/a | **$30,750** | ~171 | LI.py §10 "PLAN + index option passes": cash low **$3,150** at m16, **below the $5k floor**; max draw **$36,850**, over DEC's ≤$34k cap, unless results beat BASE. These figures are gross: the funding rule requires ≥$6k of index prepayments or a ≤$10k note to cover the $6k first, so the founder's own draw stays near A1 | Same, plus the index VET-01 test at m9 |
 | A with K5 failed | 12-15 → re-test 01-08 | as A1 or A2 | n/a | as A1 or A2 | as A | LI.py §10 "PLAN, K5 fail": $69,289 ARR at m36, **$3,997 cash low at m22**. The floor is breached | K1 re-test 2027-01-08 [PLAN] |
 | **B**: DD2 dead, DD5 letters clean | Wed 2027-02-10 | $3,550 (tranche 1), or **$9,550** if (ii) passes and the contractor is commissioned 01-29 | **≤$11,050** (DD5 ≤$9,100) | ≥$28,950 | ~141 (60 + ~81), plus ~20 h to 02-10 | OM BASE: ARR $41.2k at m18, cash low $4.0k at m15 from $40k. Branch B starts it at $38,050 [ESTIMATE: further slot deferral] | 02-10, then the OM §11 #2 contractor SOW (re-dated) |
 | B, with DD2 dead at K0 | 02-10 | $500 + DD5 | ≤$9,600 | ≥$30,400 | ~100 | as B | as B |
@@ -442,7 +442,7 @@ All dollar figures are cumulative from 2026-11-02 and come from the week tables 
    - The BASE cash low becomes ~$3,150, below the $5k floor, once the $5k antitrust opinion is spent (A2).
    - The K5-fail case has a $947 cash low before any test spend.
 2. **DEC's C-48 trigger was wrong.** *(Resolved; see the note above. §8 quotes the corrected trigger.)* DEC said "≥10 tok/s per user at **2** concurrent users on the L box". DD6 §14.4's reopen trigger (`04_DEEPDIVES/private-moe-appliance.md`) says **4** concurrent users on a 1T-class MoE in a ≤$65k box, or a blind evaluation. The "2 concurrent" wording belongs to DD6's K5 U.S.-origin test.
-3. **LI points to dead deep dives.** LI §0 and §14.5 say to run the DD2 test "alongside DD1/DD3 customer discovery". Both are killed, and DEC runs DD2 alone.
+3. **LI points to dead deep dives.** *(Resolved, p7-critic: LI's Phase 6 decision note now covers §0, §8 and §14, says DD2 runs alone, and records the deferred consult, the PLAN cash rows and DEC's ≤$34k cap.)* LI §0 and §14.5 say to run the DD2 test "alongside DD1/DD3 customer discovery". Both are killed, and DEC runs DD2 alone.
 4. **C-72's status conflicts.** LI §10 step 4 says a supplier "yes" reopens C-72. DEC says C-72 was killed standalone under Rule 1 at Phase 7.
 5. **Two judges misstate the m12 gate.** J-EV and J-INT give it as "≥5 accounts **or** MRR ≥$1,700". LI §11 #9 stops the business if *either* figure is missed. J-CEIL states it correctly.
 6. **The deadline for DD5 test (iv) differs between files.** J-INT says silence by day 14 fails. J-EV and J-CEIL request an answer by 2026-12-01. OM §10 schedules the questions for days 7–20. This plan requests 11-20 and uses 12-01 as the cut-off.

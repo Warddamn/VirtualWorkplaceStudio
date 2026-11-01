@@ -49,7 +49,7 @@ All three scorers gave both concepts the floor score (1) on competition and on f
   - **Founder hours.** On DD6's revised (Phase 5) model, DD6 never goes full-time even at 65 h/month, and every 10 h/month diverted to DD7 cuts DD6's m36 ARR from $63.9k to $56.2k (20 h/month: $45.3k) (model §10h). On DD6's Phase 4 inputs, 10 h/month moved its full-time switch from m23 to m33, and 20 h/month meant never [ESTIMATE: DD6 `run_with(P_PHASE4)`; `responses_legacy-dram-diebank.json` RT-VC-DD7-03].
   - **Residual rep line.** It reaches $5.0k ARR at m18 and $8.6k at m36 in BASE ($4.4k GLUT, $928 SEVERE). It never breaks even and needs an employer carve-out.
 
-**Recommendation (revised after red team): DROP. FINAL STATUS: KILLED (§14).** Do not fill any slot with DD7, and do not keep it as a DD2 SKU (RT-VET-DD7-01). **Do not run the 29-day kill test**: that saves ~$6k and ~50 founder hours that DD6 needs (RT-VC-DD7-03). Two things remain, both at $0:
+**Recommendation (revised after red team): DROP. FINAL STATUS: KILLED (§14).** Do not fill any slot with DD7, and do not keep it as a DD2 SKU (RT-VET-DD7-01). **Do not run the 29-day kill test**: that saves ~$6k and ~50 founder hours that DD6, then round 2's PRIMARY candidate, needed (RT-VC-DD7-03; DD6 was later killed too, and the Phase 6 PRIMARY is DD2). Two things remain, both at $0:
 - one paragraph of packaged-part dry-storage advice inside DD2's LTB study;
 - a passive reopen watch (§10, §11). Reopen C-91 only on a written OCM offer of authorized-aftermarket rights for a named EOL DRAM part. Reopen C-65 only if a hi-rel co-founder brings an existing x72 design-in plus ≥3 evaluation LOIs at ≥$1,200.
 
@@ -703,7 +703,7 @@ Phase 4 for comparison: Plan A (L1 + L2) $22.0k / $42.6k BASE; bank 39.6% / 2.6%
 - **DOABLE BY THIS FOUNDER: No.**
   - The only founder-sized line (L1) has no rational buyer.
   - DoD and defense routes need ~$35k of compliance each, and either one breaks the cash floor.
-  - Any hours diverted from DD6 delay the PRIMARY.
+  - Any hours diverted from DD6, round 2's PRIMARY candidate, delay it. (DD6 was killed by the same red team; the Phase 6 PRIMARY is DD2, `research/phase6/decision.json`.)
 
 ### 14.5 FINAL STATUS: KILLED
 
