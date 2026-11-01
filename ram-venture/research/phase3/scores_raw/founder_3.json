@@ -135,7 +135,7 @@
     },
     "founder": {
      "score": 2,
-     "why": "The portal fits him, but the whole value is supplier credibility with Micron, Winbond and Nanya, which needs a memory-sales veteran cofounder. That is not a part-time negotiation."
+     "why": "The portal fits them, but the whole value is supplier credibility with Micron, Winbond and Nanya, which needs a memory-sales veteran cofounder. That is not a part-time negotiation."
     }
    },
    "one_line_view": "Three supplier calls decide everything. If Winbond or Nanya won't sign a pooled LTA, there's no product, and if they will, the window closes in 2028. A free kill test, not a venture."
@@ -227,7 +227,7 @@
     },
     "founder": {
      "score": 3,
-     "why": "The control plane is easy for him, but safe Linux-mm tuning needs a kernel contractor or cofounder, and one swap-induced outage at a pilot customer ends the company."
+     "why": "The control plane is easy for them, but safe Linux-mm tuning needs a kernel contractor or cofounder, and one swap-induced outage at a pilot customer ends the company."
     }
    },
    "one_line_view": "The best software economics in my chunk (80% GM, low T1), but it sells tuning of free kernel knobs that sophisticated ops already turn and conservative ops fear. Viable only with a kernel-savvy partner and a flawless first pilot."
@@ -273,7 +273,7 @@
     },
     "founder": {
      "score": 3,
-     "why": "Python/K8s skills transfer, but buyers pay for GPU-serving credibility he hasn't earned yet, in a stack that ships weekly (65 LMCache releases May-2025 to Oct-2026)."
+     "why": "Python/K8s skills transfer, but buyers pay for GPU-serving credibility they haven't earned yet, in a stack that ships weekly (65 LMCache releases May-2025 to Oct-2026)."
     }
    },
    "one_line_view": "Real pain and cheap to start, but the vendor that wrote LMCache already sells the recurring product with NVIDIA/AMD money, and NVIDIA keeps folding tiering into free defaults. A shrinking services gap."
@@ -337,7 +337,7 @@
     },
     "ttr": {
      "score": 5,
-     "why": "An MVP in a few months of evenings, with 5-10 design-partner OEMs from his manufacturing network at $150-300/month; first revenue around 2Q27."
+     "why": "An MVP in a few months of evenings, with 5-10 design-partner OEMs from their manufacturing network at $150-300/month; first revenue around 2Q27."
     },
     "usmfg": {
      "score": 3,
@@ -365,7 +365,7 @@
     },
     "founder": {
      "score": 5,
-     "why": "Web app plus APIs, part-time, and the founder is himself a sample of the buyer."
+     "why": "Web app plus APIs, part-time, and the founder is themselves a sample of the buyer."
     }
    },
    "one_line_view": "Best founder-fit and fastest to ship, with the worst durability. With no proprietary data, a ~$24k MRR ceiling and revenue that dies at the 2028 turn, it's only useful as a free lead-gen funnel for something else."
@@ -383,7 +383,7 @@
     },
     "ttr": {
      "score": 4,
-     "why": "~12 months (9-15): recruit an embedded-Linux contractor, then sell 2-3 $5-20k audits through his manufacturing network."
+     "why": "~12 months (9-15): recruit an embedded-Linux contractor, then sell 2-3 $5-20k audits through their manufacturing network."
     },
     "usmfg": {
      "score": 3,
@@ -411,7 +411,7 @@
     },
     "founder": {
      "score": 2,
-     "why": "His day-job network gives access, but embedded engineers rarely buy from non-engineers, and all delivery is contractor expertise."
+     "why": "Their day-job network gives access, but embedded engineers rarely buy from non-engineers, and all delivery is contractor expertise."
     }
    },
    "one_line_view": "One-off audits that only pay at 2026 LPDDR4X prices (~$8-21/GB saved per unit), sold to engineers who can do it themselves for free. Demand dies at ~$2.5/unit in the glut."
@@ -457,7 +457,7 @@
     },
     "founder": {
      "score": 4,
-     "why": "Agent plus console is software he ships fast, startable part-time with garage test beds. NBD shipping (~36 swaps/yr per 2,400-DIMM customer) is manageable through a 3PL."
+     "why": "Agent plus console is software they ship fast, startable part-time with garage test beds. NBD shipping (~36 swaps/yr per 2,400-DIMM customer) is manageable through a 3PL."
     }
    },
    "one_line_view": "Founder-shaped and cheap to start, but the buyer pays ~3.6x their DIY spares cost ($21.6k vs ~$6.1k/yr) for something Park Place bundles into TPM. Sell it wholesale to TPMs or not at all."
@@ -503,7 +503,7 @@
     },
     "founder": {
      "score": 4,
-     "why": "Data pipeline, web app and contract templates are software work, startable part-time, and his manufacturing-ops job is the buyer persona. Credibility needs a procurement-lead advisory board."
+     "why": "Data pipeline, web app and contract templates are software work, startable part-time, and their manufacturing-ops job is the buyer persona. Credibility needs a procurement-lead advisory board."
     }
    },
    "one_line_view": "The most durable shape in my chunk, because a two-sided index earns on both legs of the cycle. But it is a ~$0.3M ARR ceiling unless it displaces TrendForce in contract language, and every sale needs two legal departments to agree."
@@ -595,7 +595,7 @@
     },
     "founder": {
      "score": 2,
-     "why": "LIMS and serialized reports are his, but accreditation requires a hired AS6171 test engineer and an operating lab from day one, which doesn't fit a day job."
+     "why": "LIMS and serialized reports are theirs, but accreditation requires a hired AS6171 test engineer and an operating lab from day one, which doesn't fit a day job."
     }
    },
    "one_line_view": "A capital-heavy, 22%-margin lab entering a corridor where SMT Corp and Micross are already accredited and DLA-recognized, and it loses money below 36 lots/month. Wrong business for a software founder."

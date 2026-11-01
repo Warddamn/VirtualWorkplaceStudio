@@ -227,7 +227,7 @@
     },
     "founder": {
      "score": 2,
-     "why": "The founder's ops background fits running a lab, but the product is a full-time device-reliability engineer, which he is not; it cannot start part-time."
+     "why": "The founder's ops background fits running a lab, but the product is a full-time device-reliability engineer, which they are not; it cannot start part-time."
     }
    },
    "one_line_view": "A thin, lumpy services lab whose whole value is a hire the founder cannot replace; at best a side line next to a device STTR."
@@ -365,7 +365,7 @@
     },
     "founder": {
      "score": 1,
-     "why": "Needs a full-time mixed-signal IC designer and test engineer from day one, and the founder cannot be SBIR PI while keeping his day job."
+     "why": "Needs a full-time mixed-signal IC designer and test engineer from day one, and the founder cannot be SBIR PI while keeping their day job."
     }
    },
    "one_line_view": "The cleanest U.S.-made device path in the set, but it is a $2-3M fabless chip company with small defense volumes, revenue after 2029 and no role for a part-time software founder."
@@ -595,7 +595,7 @@
     },
     "founder": {
      "score": 4,
-     "why": "Python, CI and web work is squarely the founder's skill; tapeout support needs VLSI knowledge he must buy (~200 contract hours)."
+     "why": "Python, CI and web work is squarely the founder's skill; tapeout support needs VLSI knowledge they must buy (~200 contract hours)."
     }
    },
    "one_line_view": "The most founder-doable device-adjacent card, but likely capped at <$0.5-1M ARR in a funnel owned by IonQ/SkyWater and ChipFoundry; a credible part-time wedge, not an endgame."

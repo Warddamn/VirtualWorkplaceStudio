@@ -1,5 +1,5 @@
 {
- "rule": "Each deep dive is anchored on a top-ranked concept and folds in adjacent survivors that the independent scorers themselves said should be run as a SKU/feeder/feature of it. Coverage: every concept in the top 10 under all three weightings is in a deep dive. Constraint check: >=1 T0/T1 (DD1-DD4) and >=1 T2+ (DD5, whose product stage C-22/C-32 is T2).",
+ "rule": "Each deep dive is anchored on a top-ranked concept and folds in adjacent survivors that the independent scorers themselves said should be run as a SKU/feeder/feature of it. Coverage: every concept that ranks in the top 10 under ANY of the three weightings (the union: 11 ids) is in a deep dive. Constraint check: >=1 T0/T1 (DD1-DD4) and >=1 T2+ (DD5, whose product stage C-22/C-32 is T2).",
  "post_score_kill_rule": "Killed at scoring: default total < 55/100 AND not part of any deep-dive bundle (scorers were unanimous 'pass' on these).",
  "deep_dives": [
   {

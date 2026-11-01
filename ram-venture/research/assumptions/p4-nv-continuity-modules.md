@@ -1,0 +1,27 @@
+# Assumptions: p4-nv-continuity-modules (DD3, anchor C-12, folded C-16)
+
+All values feed `models/nv-continuity-modules.py`. "ESTIMATE" means no source was found within the 28-search quota.
+
+- [p4-nv-continuity-modules] Month 1 of the model = 2026-11. 2028-Q1 = months 15-17. — basis: A-01, task spec.
+- [p4-nv-continuity-modules] Founder stays part-time with no salary draw. They go full-time ($10k/mo, A-03) only when trailing-3-month operating profit is at least $12k/mo. — basis: A-03 plus a 20% buffer.
+- [p4-nv-continuity-modules] The PC-card product uses Everspin MR4A16B Toggle MRAM, not F-RAM. — basis: the veteran scorer's /CE-latch objection to FM18W08-class F-RAM. Toggle has true async-SRAM timing, is U.S.-fabbed (Chandler AZ, per the Everspin 10-K via Phase 1/2 notes) and, per Everspin (A2 notes), is not implicated in ITC 337-TA-1487.
+- [p4-nv-continuity-modules] Legacy PC Card slots signal at 5V, so the 3.3V-only MRAM needs 5V-tolerant LVC buffers (~$5/card). The card straps BVD1/BVD2 to "battery good" so the host raises no battery alarm. — basis: design judgment, not validated on a control [UNVERIFIED].
+- [p4-nv-continuity-modules] MR4A16B costs $42 at our 100-500 pcs/yr. — basis: between $37.67 @1k (Future) and $46.03 qty 1 (DigiKey).
+- [p4-nv-continuity-modules] PC Card frame kit plus 68-pin connector costs $12/card. — basis: no small-quantity price found. ITT StarCard kits exist, and one connector is Last Time Buy. This is a top open gap.
+- [p4-nv-continuity-modules] U.S. EMS assembly costs $14/card, plus $4 setup amortization and $4 test/pack, at 100-card lots. — basis: anecdotal $415-1,300 per 10 turnkey boards; Screaming Circuits is cheapest at 25+ units.
+- [p4-nv-continuity-modules] List prices: 2MB card $249, 4MB card $349, DS1230-class DIP $34, DS1245-class DIP $59. Resellers take 30% on cards and 20% on DIPs. — basis: Synchrotech 2MB battery card $239.39 (CDW-G), used 2MB cards $160-440, Q2MEM-2MBSN $403.81, DS1230Y-85 $35-44, Glitch Works ~$30.
+- [p4-nv-continuity-modules] Channel mix: cards 25% eBay / 35% own store / 40% resellers; DIPs 40/40/20. — basis: judgment. Maintenance techs buy from MRO catalogs and eBay.
+- [p4-nv-continuity-modules] eBay fee is 13.6% + $0.40; card processing is 2.9% + $0.30. — basis: typical 2025 fee schedules, not re-verified.
+- [p4-nv-continuity-modules] CAC is $30 per own-store card order and $6 per DIP order. Direct orders ship free ($9 card, $5 DIP). Warranty/returns cost 3% of revenue. — basis: niche part-number search terms, judgment.
+- [p4-nv-continuity-modules] Launch timing: DIPs in month 4 (FM18W08 in stock, 8-week lead time). Cards in month 9, after design, validation and the 20-26-week MRAM lead time. — basis: distributor lead times.
+- [p4-nv-continuity-modules] Steady-state BASE volumes: 40 cards/mo (~4% of the estimated global demand) and 50 DIPs/mo. Cards ramp over 12 months, DIPs over 9. — basis: TAM chain below, judgment.
+- [p4-nv-continuity-modules] TAM chain: 5M Fanuc CNCs produced (2022) x 15% in the U.S. x 35% on SRAM-card-era controls x 50% still running = ~131k machines. At 8 machines per shop that is ~16k shops. One card per shop every 8 years, x1.5 for other families (Mitsubishi Q, robots, other) = ~3.1k cards/yr in the U.S., and x4 = ~12k/yr globally. — basis: ESTIMATE on one REPORTED anchor. Demand is per shop, not per machine.
+- [p4-nv-continuity-modules] Cloud line: $29/shop/month, 6% attach among direct card buyers, 2.5% monthly churn, $3/mo COGS, launch in month 15. — basis: judgment. DNC/backup software competitors were not researched.
+- [p4-nv-continuity-modules] LTSA/DMSMS: two $2k/mo blanket orders at 50% GM, starting months 27 and 33. — basis: judgment. DLA buys 5962 memory by NSN through DIBBS, but no DS12xx NSN demand was found.
+- [p4-nv-continuity-modules] One-time spend: ~$15.3k (LLC $0.8k, DIP designs $1.5k, contract card design $9k, used Fanuc control + Mitsubishi Q CPU + reader $2.5k, prototype run $1.5k). — basis: judgment.
+- [p4-nv-continuity-modules] Inventory: 3 months of forward cover, with first lots of 100 cards and 200 DIPs. — basis: the 26-week MRAM lead time.
+- [p4-nv-continuity-modules] Scenario multipliers on the core. Demand: 1.00 / 0.95 / 0.85. Price: 1.00 / 1.00 / 0.90 (copycats in SEVERE). COGS: 1.00 / 0.95 / 0.90. Order is BASE / GLUT / SEVERE. — basis: judgment. The core sells against batteries and obsolete NVSRAM, not DRAM.
+- [p4-nv-continuity-modules] BASE DRAM path: flat at $20.37/GB through 2027-12, then -10% over 2028. GLUT and SEVERE ramp to $8.15 and $2.04 over 2028-H1. — basis: ddr5_reference() and the 01_LANDSCAPE BofA call.
+- [p4-nv-continuity-modules] C-16 PLP option: $45k contract EE plus $5k eval boards. Design-in fee $40k at 40% GM. p(paid design-in by month 36) = 0.35 at the Q4-2026 DRAM price, scaled by the computed (DRAM+supercap saving / MRAM cost) ratio. The DRAM-less design replaces 2GB DRAM plus $12 of supercaps with 512MB STT-MRAM at $102.60/Gb chip. — basis: C-16 card, LCSC price, judgment.
+- [p4-nv-continuity-modules] Removing the lithium cell removes lithium-metal battery shipping rules (UN3090/3091), and a memory-card subassembly needs no UL/FCC certification for U.S. sale. CE/RoHS matter only for EU sales. — basis: general regulatory knowledge [UNVERIFIED].
+- [p4-nv-continuity-modules] Claims are "Assembled in USA", never "Made in USA" (FTC all-or-virtually-all standard). Toggle die is U.S.-fabbed, but package and assembly origin are unverified. — basis: A-09, 01_LANDSCAPE §10.3 rule 6.

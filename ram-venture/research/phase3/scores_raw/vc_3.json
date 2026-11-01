@@ -273,7 +273,7 @@
     },
     "founder": {
      "score": 2,
-     "why": "Python/K8s skills transfer, but buyers pay for GPU-infra credibility he lacks, and a stack this fast-moving (65 LMCache releases May-2025 to Oct-2026) does not fit a day job."
+     "why": "Python/K8s skills transfer, but buyers pay for GPU-infra credibility they lack, and a stack this fast-moving (65 LMCache releases May-2025 to Oct-2026) does not fit a day job."
     }
    },
    "one_line_view": "The recurring line is Tensormesh's GA product, backed by NVIDIA, AMD and CoreWeave, and NVIDIA keeps folding KV tiering into free Dynamo defaults: a services gig with a closing window, not a venture."
