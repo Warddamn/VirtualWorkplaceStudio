@@ -219,73 +219,80 @@ Reading the table:
 
 ## 4. The DRAM cost stack (`models/dram_cost_stack.py`)
 
-All figures are [ESTIMATE] outputs of the model, re-run 2026-11-01 (exit 0; full output in `research/phase1/cost_stack_output.md`). Inputs come from `research/phase1/cost_inputs.json` (219 keys, low/base/high). Component $/GB is per raw GB. Module $/GB is per user GB; an RDIMM carries +25% ECC bits.
+All figures are [ESTIMATE] outputs of the model. It was re-run 2026-11-01 after `v4-cost`'s Phase 1b input corrections (exit 0; full output in `research/phase1/cost_stack_output.md`; change log in `research/phase1/verify_v4-cost.md`). Inputs come from `research/phase1/cost_inputs.json` (224 records, low/base/high). Component $/GB is per raw GB. Module $/GB is per user GB; an RDIMM carries +25% ECC bits.
+
+**(1b) What moved the model.** Each of these changed by more than 15%:
+- **1-beta 16Gb die:** 41.0 → **36.5 mm²**, anchored on teardowns of Micron's D1β DDR5 (35.83 mm², 0.447 Gb/mm²) and Samsung's D1b LPDDR5X (36.68 mm²) [REPORTED-P].
+- **1-gamma die:** 33.3 → 29.1 mm², derived from Micron's ">30% more bits per wafer" claim. The area itself is still unverified.
+- **4Q26 RDIMM anchor:** $1,300 → **$1,650**, from Counterpoint's 3Q26 forecast (~$1,500) × TrendForce's 4Q26 +10–15% ([Counterpoint Jul-26](https://counterpointresearch.com/en/reports/memory-price-tracker-and-forecast-july-2026)).
+- **EUV tool price:** ~$220M → ~$290M ([S&P Global 2026-03](https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/03/sk-hynix-invests-in-euv-as-ai-boom-tightens-conventional-dram-supply)).
+- **Not moved:** the 1-alpha die (52.6 mm², confirmed), the CXMT G4 die (66.99 mm², confirmed) and the HBM3E price (confirmed).
 
 ### 4.1 Wafer → die → $/GB
 
 | Case | Wafer $ | Die mm² | Good dies/wafer | Component $/GB | 4Q26 GM | Glut GM | 2023-trough GM |
 |---|---|---|---|---|---|---|---|
-| DDR5 16Gb 1-alpha | 3,400 | 53.3 | 1,042 | 1.88 | 88% | 71% | −18% |
-| **DDR5 16Gb 1-beta (BASE)** | **3,800** | **41.0** | **1,363** | **1.64** | **90%** | **74%** | **−3%** |
-| DDR5 16Gb 1-beta, cash cost only | 1,650 | 41.0 | 1,363 | 0.84 | 95% | 87% | 47% |
-| DDR5 16Gb 1-gamma (2026 ramp, y 0.80) | 4,300 | 33.3 | 1,497 | 1.69 | 89% | 74% | −6% |
-| DDR5 16Gb 1-gamma (mature) | 4,300 | 33.3 | 1,684 | 1.52 | 90% | 76% | 5% |
+| DDR5 16Gb 1-alpha | 3,400 | 53.3 | 1,042 | 1.88 | 91% | 77% | −18% |
+| **DDR5 16Gb 1-beta (BASE)** | **3,800** | **36.5** | **1,534** | **1.48** | **93%** | **82%** | **7%** |
+| DDR5 16Gb 1-beta, cash cost only | 1,650 | 36.5 | 1,534 | 0.78 | 96% | 90% | 52% |
+| DDR5 16Gb 1-gamma (2026 ramp, y 0.80) | 4,300 | 29.1 | 1,717 | 1.50 | 93% | 82% | 6% |
+| DDR5 16Gb 1-gamma (mature) | 4,300 | 29.1 | 1,931 | 1.36 | 93% | 83% | 15% |
 | HBM3E 12-high 36GB | 4,450 | 110 | 437 | **6.08** ($219/stack) | 49% (at $12) | n/a | n/a |
-| DDR5 16Gb on CXMT G4 die (1z-class) | 3,000 | 67.0 | 823 | 2.07 | 87% | 68% | −30% |
-| DDR4 16Gb 1y, depreciated line | 1,300 | 88 | 604 | 1.28 | 92% | 80% | 1% |
-| **DDR4 8Gb 1x, NEW U.S.-style line** | 2,800 | 55 | 953 | **3.28** | 79% | 49% | **−153%** |
-| DDR3 4Gb 25nm, PSMC-class foundry | 1,600 | 60 | 922 | 4.12 | 74% | 36% | −217% |
+| DDR5 16Gb on CXMT G4 die (1z-class) | 3,000 | 67.0 | 823 | 2.07 | 90% | 75% | −30% |
+| DDR4 16Gb 1y, depreciated line | 1,300 | 88 | 604 | 1.28 | 94% | 84% | 1% |
+| **DDR4 8Gb 1x, NEW U.S.-style line** | 2,800 | 55 | 953 | **3.28** | 84% | 60% | **−153%** |
+| DDR3 4Gb 25nm, PSMC-class foundry | 1,600 | 60 | 922 | 4.12 | 80% | 49% | −217% |
 
-Wafer cost (1-beta, $3,746 bottom-up) is **56% depreciation**. Incumbents can therefore run through a glut at cash cost (~$0.84/GB).
+Wafer cost (1-beta, $3,746 bottom-up) is **56% depreciation**. Incumbents can therefore run through a glut at cash cost (~$0.78/GB). Legacy rows use the legacy price deck, which assumes DDR5 parity at 4Q26. Their 4Q26 and glut GMs rose with the new contract anchor.
 
 ### 4.2 Modules (64GB DDR5 RDIMM, 1-beta)
 
 | Item | Value |
 |---|---|
-| DRAM (40 × 16Gb, 80 GB raw) | $131.28 |
+| DRAM (40 × 16Gb, 80 GB raw) | $118.69 |
 | Non-DRAM BOM (RCD, PMIC, SPD hub, PCB, passives) | $17.10 |
 | Assembly + test, Asia / U.S. | $3.50 / $12.00 |
-| **Module cost, Asia / U.S. assembly** | **$154 ($2.41/user-GB) / $163 ($2.54)** |
-| U.S. assembly penalty | **+$8.63** = +5.6% of cost, **0.7% of a $1,300 contract module** |
-| 4Q26 contract / glut / 2023-trough price | $20.31 / $8.12 / $2.32 per user-GB |
-| Module GM at those prices | 88% / 70% / −4% |
+| **Module cost, Asia / U.S. assembly** | **$141 ($2.21/user-GB) / $150 ($2.34)** |
+| U.S. assembly penalty | **+$8.63** = +6.1% of cost, **0.5% of a $1,650 contract module** |
+| 4Q26 contract / glut / 2023-trough price | $25.78 / $10.31 / $2.32 per user-GB |
+| Module GM at those prices | 91% / 79% / 5% |
 
 ### 4.3 Cost vs price vs glut (the three decks every concept is scored against)
 
 | Deck | DDR5 component $/GB | 64GB RDIMM $/user-GB | Basis |
 |---|---|---|---|
-| **Shortage (4Q26)** | **15.99** | **20.31** | $1,300 RDIMM = Counterpoint 2Q26 ~$1,000 × TrendForce 3Q/4Q midpoints ([EE Times Asia](https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/); [TrendForce](https://www.trendforce.com/presscenter/news/20260930-13258.html)) |
+| **Shortage (4Q26)** | **20.37** | **25.78** | (1b) $1,650 RDIMM = Counterpoint 3Q26F ~$1,500 × TrendForce 4Q26 +10–15% ([Counterpoint Jul-26](https://counterpointresearch.com/en/reports/memory-price-tracker-and-forecast-july-2026); [TrendForce](https://www.trendforce.com/presscenter/news/20260930-13258.html)). Cross-checks: Citi $1,586; 1Q26 actual $927 compounded through 4Q26 gives $1,933. The old $1,300 anchor (2Q26 ~$1,000) was stale |
 | Spot reference (2026-08-31) | 26.96 | — | [BuySellRAM](https://www.buysellram.com/blog/ram-market-update/) |
-| **Glut (A-05: −60% from 4Q26)** | **6.40** | **8.12** | ASSUMPTIONS.md A-05 |
-| **Severe (−90%) ≈ 2023 trough** | **1.60** (DDR4 2023: 1.30) | 2.32 | [KED Global](https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013); 2023 DDR5 trough [UNVERIFIED] |
-| Incumbent full cost / cash cost | 1.64 / 0.84 | 2.41 | model |
+| **Glut (A-05: −60% from 4Q26)** | **8.15** | **10.31** | ASSUMPTIONS.md A-05 applied to the 1b deck (was 6.40 / 8.12) |
+| **Severe (−90%)** / 2023 trough | **2.04** / 1.60 (DDR4 2023: 1.30) | — / 2.32 | [KED Global](https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013); 2023 DDR5 trough [UNVERIFIED] |
+| Incumbent full cost / cash cost | 1.48 / 0.78 | 2.21 | model |
 
-- **A −60% glut leaves DDR5 at 3.9× incumbent full cost.** Prices must fall ~90% before 1-beta full cost bites, and ~95% before cash cost does.
-- **Margin is set by price, not cost.** Across all ±20% cost cases, gross margin stays at 87–92% at the 4Q26 price and 69–79% in the glut (model §10).
-- **Validation:** the model's 90% component GM sits within ~3–4 pp of Micron's ~87% and Nanya's 85.7% reported GMs, which include older nodes, NAND and period costs ([Finviz/Micron](https://finviz.com/news/397277/micron-technology-inc-reports-record-fiscal-fourth-quarter-and-full-year-2026-results); [TrendForce News](https://www.trendforce.com/news/?p=65146)).
+- **A −60% glut leaves DDR5 at 5.5× incumbent full cost** (it was 3.9× before 1b). Prices must fall ~93% before 1-beta full cost bites, and ~96% before cash cost does.
+- **Margin is set by price, not cost.** Across all ±20% cost cases, gross margin stays at 91–94% at the 4Q26 price and 78–85% in the glut (model §10).
+- **Validation:** the model's 93% component GM sits **6–7 pp above** Micron's ~87% and Nanya's 85.7% reported GMs, which include older nodes, NAND and period costs ([Finviz/Micron](https://finviz.com/news/397277/micron-technology-inc-reports-record-fiscal-fourth-quarter-and-full-year-2026-results); [TrendForce News](https://www.trendforce.com/news/?p=65146)). (1b) Before 1b the gap was 3–4 pp. Density is now anchored by teardowns, so the wider gap most plausibly means the $3.8k 1-beta wafer is understated. The higher EUV tool price points the same way. A ~$5k wafer would put 1-beta at ~$1.9/GB and 4Q26 GM at ~91%. **No decision changes** (verify_v4-cost.md, note 3) [ESTIMATE].
 
 ### 4.4 Alternatives on the same $/GB axis (from cost_stack.md §8; for the Phase 2 device models)
 
 | Memory | $/GB | Basis |
 |---|---|---|
-| DDR5 1-beta (cost / glut price / 4Q26 price) | 1.64 / 6.40 / 15.99 | model |
-| Everspin 1Gb STT-MRAM (GF 28nm, 105.1 mm², 0.0095 Gb/mm², ~40× below 1-beta DDR5) | ~91 silicon+package (A2 model); **~$821 street** ($102.60 @500) | [TechInsights](https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin); [LCSC](https://www.lcsc.com/product-image/C20342497.html) [REPORTED] |
-| SRAM silicon, 7–28nm / 65nm / U.S. 130nm (sky130 cell 1.896 µm², VERIFIED) | ~55–72 / ~195 / ~1,330 | cost_stack.md §8.5 [ESTIMATE]; [sky130 SRAM](https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram) |
+| DDR5 1-beta (cost / glut price / 4Q26 price) | 1.48 / 8.15 / 20.37 (1b; was 1.64 / 6.40 / 15.99) | model |
+| Everspin 1Gb STT-MRAM (GF 28nm, 105.1 mm², 0.0095 Gb/mm², ~46× below 1-beta DDR5 at the 1b density) | ~91 silicon+package (A2 model); **~$821 street** (1b confirmed: ~$103 @500, ~$101 @1,000, $266 @1) | [TechInsights](https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin); [LCSC](https://www.lcsc.com/product-image/C20342497.html); [LCSC detail](https://www.lcsc.com/product-detail/C20342497.html) [REPORTED-P] |
+| SRAM silicon, 7–28nm / 65nm / U.S. 130nm (sky130 cell 1.896 µm², VERIFIED) | ~55–72 / ~195 / ~1,330; (1b) street 72Mb QDR-II+ ≈ 1,400–3,800 | cost_stack.md §8.5 [ESTIMATE]; [sky130 SRAM](https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram); [broker listing](https://www.lisleapex.com/product-cy7c25652kv18-550bzxi) [REPORTED] |
 | IGZO 2T0C on U.S. 130nm / 65nm BEOL | 250–490× / 60–120× less dense than DDR5 1b per tier | us_fabs.md §8.3 [ESTIMATE] |
 | 3D XPoint gen1 / gen2 density | 0.62 / 1.31 Gb/mm² (beats 1-beta DDR5 on density; died on volume and cost absorption) | [TechInsights](https://www.techinsights.com/blog/intel-3d-xpoint-memory-die-removed-intel-optanetm-pcm-phase-change-memory) [REPORTED] |
 | NAND TLC 2026 | ~0.09 | cost_stack.md §8.6 [ESTIMATE] |
 
-**Rule from this table:** no non-DRAM memory available to us comes within 10× of DDR5 *cost*. SRAM at 7–28nm is only ~2.5–5× the 2026 DDR5 *price*, but ~10× the glut price.
+**Rule from this table:** no non-DRAM memory available to us comes within 10× of DDR5 *cost*: SRAM at 7–28nm is ~37–49× the 1-beta cost. SRAM is only ~3× the 4Q26 DDR5 *price*, but ~7–9× the 1b glut price.
 
 ### 4.5 Weakest inputs (fix these first)
 
 | Input | Current value | Why weak | Effect |
 |---|---|---|---|
-| Fully loaded 1-beta wafer cost | $3,800 ($3.2–5.5k) | Capex/wpm rules of thumb [UNVERIFIED] | **Largest swing**: $1.42–2.27/GB over its range (model §10e) |
-| 1-beta / 1-gamma die sizes | 41 / 33.3 mm² | Derived from density; the only teardown anchor is CXMT/Micron 1z ([SemiWiki](https://semiwiki.com/forum/threads/chinas-cxmts-ddr5-reveals-3-year-technology-gap.23270/latest)) | ±20% die → $1.33–1.97/GB |
-| 4Q26 contract level | $1,300 RDIMM | No public chip-level contract; Citi $1,586 untraceable | Sets the margin and the glut line |
+| Fully loaded 1-beta wafer cost | $3,800 ($3.2–5.5k) | Capex/wpm rules of thumb [UNVERIFIED]. (1b) No public IC Knowledge, SemiAnalysis, TechInsights or broker estimate was found. The GM gap of 6–7 pp and the ~$290M EUV tool hint it is understated | **Now the dominant unknown and the largest swing**: $1.29–2.04/GB over its range (model §10e) |
+| 1-beta / 1-gamma die sizes | 36.5 / 29.1 mm² (1b; were 41 / 33.3) | (1b) 1-beta is anchored on TechInsights teardowns (Micron D1β 35.83 mm²) [REPORTED-P] ([TechInsights](https://techinsights.com/ja/node/57875)). 1-gamma is derived from Micron's >30% bits-per-wafer gain ([Micron brief](https://micron.cn/content/dam/micron/global/public/products/technical-marketing-brief/1-gamma-technology-brief.pdf)), and its area is still unverified | ±20% die → $1.21–1.77/GB |
+| 4Q26 contract level | $1,650 RDIMM (1,500–1,930) (1b; was $1,300) | No public chip-level contract. Citi $1,586 is REPORTED through a secondary relay only. The derived 16Gb contract is ~$41 ($37–48), against $53.92 spot (2026-08-31) | Sets the margin and the glut line |
 | 2023 DDR5 trough | $3.2/chip ($1.60/GB) | Prior knowledge | Sets the severe-case test |
-| DDR4 4Q26 contract | Parity with DDR5 | No legacy contract series; spot shows a 1.65× premium | Understates legacy margins today, overstates them in a glut |
+| DDR4 4Q26 contract | Parity with DDR5 | No legacy contract series; spot shows a 1.65× premium. (1b) DDR4 contract was +4% MoM in Oct 2026 and +24% over three months (bank note via [Guru3D](https://www.guru3d.com/story/ddr4-memory-prices-now-also-rise-as-dram-supply-shortages-intensify-through-2028/)) [REPORTED] | Understates legacy margins today, overstates them in a glut |
 | HBM core die and stack yield | 110 mm², 0.75 | [UNVERIFIED] | HBM $/GB $5.0–7.3 under ±20% |
 
 ---
@@ -308,22 +315,22 @@ Wafer cost (1-beta, $3,746 bottom-up) is **56% depreciation**. Incumbents can th
 2. Customer inventory climbs from ~3 weeks to 9–13 weeks.
 3. Spot falls below contract, and LTAs get renegotiated. **Micron (35% of revenue locked through 2030) and SK hynix (booked to 2029) push the pain onto the spot and channel market**, which is where small buyers and sellers live.
 4. Second-tier makers (Nanya, Winbond, CXMT) go negative first, and utilization is cut to 75–80%.
-5. **DDR4 collapses first and hardest** as the EOL premium unwinds and CXMT backfills. Recovered DDR4 RDIMMs fall from an estimated $3–8/GB to $0.5–1.5/GB (us_backend.md §6.5) [ESTIMATE].
+5. **DDR4 collapses first and hardest** as the EOL premium unwinds and CXMT backfills. Recovered DDR4 RDIMMs fall from an observed **$3.1–5.8/GB** (1b: realized resale over the 12 months to Aug 2026 ([amcompute](https://www.amcompute.com/appraisals/ddr4-32gb-rdimm)) [REPORTED]) to $0.5–1.5/GB (us_backend.md §6.5) [ESTIMATE].
 
 ### 5.3 The stress test every concept faces
 
 | Test | DDR5 $/GB | A concept fails if… |
 |---|---|---|
-| Shortage base (4Q26) | 15.99 (contract) / 27 (spot) | It only works at spot prices |
-| **Glut (A-05)** | **6.40** component / 8.12 RDIMM user-GB | **Its cost or value proposition needs DDR5 above ~$6.4/GB** |
+| Shortage base (4Q26) | 20.37 (contract; 1b, was 15.99) / 27 (spot) | It only works at spot prices |
+| **Glut (A-05)** | **8.15** component / 10.31 RDIMM user-GB (1b; was 6.40 / 8.12) | **Its cost or value proposition needs DDR5 above ~$8/GB** |
 | Spot-based −60% (upper bound) | ~11.4 | — (use only as a sensitivity) |
-| Severe / 2023-style trough | 1.30–1.60 | It needs DDR5 above ~$1.6/GB; most device concepts fail here |
+| Severe / 2023-style trough | 2.04 (−90%) / 1.30–1.60 (2023 actuals) | It needs DDR5 above ~$1.6–2/GB; most device concepts fail here |
 | Timing | Turn in 2028 | Arbitrage revenue is not cash-positive by end-2027 |
 
 Worked examples [ESTIMATE]:
 - A **new U.S. legacy DDR4 line** costs $3.28/GB. That beats the glut price, but it runs at **−153% GM at the 2023 trough**. It is a shortage-only business.
-- A **U.S. recert shop** clears ~20% contribution at 2026 prices and **~1–6% in a glut** (us_backend.md §6.6).
-- A **memory-efficiency tool** saves DRAM worth ~$16/GB of contract value today and ~$6.4/GB in the glut. Its ROI falls 60% but does not vanish.
+- A **U.S. recert shop** clears **17–23% contribution** at the observed used prices ($3.1–5.8/GB realized; 1b) and **~1–6% in a glut** (us_backend.md §6.6). The model assumes lots are bought at 60% of resale. ITAD incumbents are keeping the 2026 repricing, so that is optimistic.
+- A **memory-efficiency tool** saves DRAM worth ~$20/GB of contract value today and ~$8/GB in the glut. Its ROI falls 60% but does not vanish.
 
 ---
 
