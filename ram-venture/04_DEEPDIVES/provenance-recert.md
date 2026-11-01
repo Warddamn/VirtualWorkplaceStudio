@@ -2,7 +2,7 @@
 
 **Author:** `p4w-provenance-recert`; Phase 5 red-team revision by `p5r-provenance-recert` · **As of:** 2026-11-01 · **Model:** `models/provenance-recert.py`, revised after the red team (RED-TEAM REVISIONS block), re-run 2026-11-01, exit 0; output in `research/phase4/provenance-recert_model_output.md` · **Notes:** `research/phase4/provenance-recert_notes.md` · **Red-team responses:** `research/phase5/responses_provenance-recert.json` · **Judgment calls:** `research/assumptions/p4w-provenance-recert.md`, `research/assumptions/p5r-provenance-recert.md`
 
-> **FINAL STATUS after the Phase 5 red team: KILLED** as a venture candidate (§14). Sections 0, 2, 10 and 11 carry the revised numbers, marked "(revised after red team)". Sections 1 and 3–9 describe the Phase 4 plan and are kept as the record; where the red team overturned a claim there, a note points to §14.
+> **FINAL STATUS after the Phase 5 red team: KILLED** as a venture candidate (§14). Sections 0, 2, 10 and 11 carry the revised numbers, marked "(revised after red team)". Sections 1, 3–9 and 12 describe the Phase 4 plan and are kept as the record; where the red team overturned a claim there, a note points to §14.
 
 **How to read the citations.**
 - **m§N** = section N of the model's printed output. m§0 lists every red-team input change; m§8 attributes the change and runs the variants.
@@ -62,7 +62,7 @@ Every server holds memory sticks called RDIMMs: a row of DRAM chips plus a tiny 
 
 **Line 1: recert, the cash engine.**
 1. Buy lots.
-2. Burn in each stick for hours in a used server with free software (memtest86+, Google's stressapptest).
+2. Burn in each stick for hours in a used server with free software (memtest86+, Google's stressapptest). **(revised after red team)** memtest86+ cannot report ECC-corrected errors on a Xeon bed. The protocol is now Linux stressapptest with rasdaemon/EDAC per-DIMM CE logging (any CE = reject) and a 55–70°C soak (RT-VET-DD1-03, RT-PHY-DD1-03).
 3. Log its SPD data and apply a serial label and test record.
 4. Sell good sticks on eBay and to refurbishers and maintenance firms, labeled "used/recertified."
 
@@ -79,7 +79,7 @@ Optane PMem rides along as one extra SKU.
 - **What CleanBOM sells them:** a subscription ($750 or $2,500 a month), per-SKU evidence packs ($900), and lab die-checks at cost × 1.6.
 - **How it is framed:** an evidence-based assessment, never a legal certification.
 
-**Line 4: the spares feed (DIMM-health, demoted).** Tested spares plus a corrected-error trend feed, sold wholesale to third-party maintenance (TPM) firms.
+**Line 4: the spares feed (DIMM-health, demoted).** Tested spares plus a corrected-error trend feed, sold wholesale to third-party maintenance (TPM) firms. **(revised after red team)** The predictive feed is killed (RT-PHY-DD1-04): DDR5 on-die ECC thins the corrected-error signal, BMC prediction is free, and there are no precision/recall numbers. Tested spares sell only as recert B2B.
 
 ```
  ITAD lots --buy ~65% of resale--> [ Bench: burn-in, SPD log, serial ]
@@ -258,15 +258,15 @@ No single revision kills DD1. Together, they leave recert below zero margin and 
 ## 4. Go-to-market
 
 **Channels.**
-- **Recert:** eBay first, then B2B accounts #6–9. eBay's share falls from 70% to 40% of sales by m12 (INPUTS `ebay_share_*`).
+- **Recert:** eBay first, then B2B accounts #6–9. eBay's share falls from 70% to 40% of sales by m12 (INPUTS `ebay_share_*`). (revised after red team) It falls to 50%, and B2B is planned only on written offers ≥0.85× eBay.
 - **CleanBOM:** direct founder selling, plus SEWP/GSA vendor days from a $3k launch budget (INPUTS `cb_launch_marketing`).
-- **Dataset:** business development with compliance-data vendors.
+- **Dataset:** business development with compliance-data vendors. (revised after red team) Removed unless a ≥$100k/yr licensing LOI appears (RT-VC-DD1-06).
 
 **Pricing** [ESTIMATE unless cited]:
 
 | Item | Price | Basis |
 |---|---|---|
-| Recert module, eBay / B2B | Realized resale (e.g., $125 for 32GB DDR4) / 0.88× that | INPUTS (amcompute midpoints) |
+| Recert module, eBay / B2B | Realized resale (e.g., $125 for 32GB DDR4) / 0.88× that (revised after red team: 0.80×) | INPUTS (amcompute midpoints) / RED_TEAM_REVISIONS |
 | PMem 128GB | $200 | m§1b |
 | CleanBOM integrator/reseller tier | $750/month | Above SiliconExpert-class entry: Accuris prices 20% below SiliconExpert with a $6,000 minimum ACV ([Accuris](https://accuristech.com/siliconexpert-offer-terms/)) [REPORTED], which implies SiliconExpert ≈ $7.5k/yr [ESTIMATE: $6,000 ÷ 0.8] |
 | CleanBOM high tier | $2,500/month. (revised after red team) White-box builders only, 10% of customers; module makers removed | m§1c |
