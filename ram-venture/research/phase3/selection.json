@@ -70,5 +70,32 @@
   "C-47",
   "C-51",
   "C-52"
- ]
+ ],
+ "round2": {
+  "why": "Round-1 red team (05_REDTEAM.md) killed DD1, DD3 and DD4 and downgraded DD2 and DD5 to side lines (0 of 127 objections refuted). That left no PRIMARY-grade venture and no MOONSHOT candidate. Rather than pick from a pool the red team had already gutted, the orchestrator ran a second deep-dive + red-team round on the strongest scored survivors that had not been selected, chosen for the two empty roles.",
+  "deep_dives": [
+   {
+    "dd": "DD6",
+    "slug": "private-moe-appliance",
+    "title": "Private MoE Inference Appliance (DRAM instead of HBM)",
+    "anchor": "C-48",
+    "folded": [],
+    "tier": "T1",
+    "role_candidate": "PRIMARY",
+    "why_chosen": "Highest founder-fit hardware survivor (founder 4/5, cycle 4/5, TTR 10 months, default #15); the only concept that BENEFITS from a DRAM glut; addresses the hottest 'we need more RAM' workload (LLM inference) by using DRAM to do HBM's job."
+   },
+   {
+    "dd": "DD7",
+    "slug": "legacy-dram-diebank",
+    "title": "Authorized-Aftermarket Legacy DRAM Die Bank (+ hi-rel MCMs)",
+    "anchor": "C-91",
+    "folded": [
+     "C-65"
+    ],
+    "tier": "T2",
+    "role_candidate": "MOONSHOT",
+    "why_chosen": "Highest ceiling among survivors (Rochester-scale model), moat 4/5 (DFARS authorized-aftermarket status), glut-proof lifecycle demand; the strongest surviving T2+ path after DD5's T2 legs were killed. C-65 (hi-rel MCMs from banked die) folded in as the natural product line."
+   }
+  ]
+ }
 }

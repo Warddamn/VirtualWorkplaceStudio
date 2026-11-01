@@ -717,3 +717,14 @@ A standalone Python check (a scratch script, not part of the repo, run after thi
 5. **Coverage wording.** `selection.json` said 'top 10 under all three weightings'; the property holds for the union (11 ids). *Resolved by the orchestrator: `selection.json` now states the union rule.*
 6. **Lower median.** With three scorers it is the plain median.
 7. **Pronouns.** Several `*_why` texts called the founder 'he'. *Resolved by the orchestrator: all scorer files, `scores.csv` and `concepts_master.json` now use they/them; `scores.csv` was regenerated (scores unchanged).*
+
+## 9. Addendum — Round 2 selection (added after the Phase 5 red team)
+
+The round-1 red team (`05_REDTEAM.md`) killed DD1, DD3 and DD4 and downgraded DD2 and DD5 to side lines; **0 of 127 objections were refuted**. That left no PRIMARY-grade venture and no MOONSHOT candidate, and DD5's T2 legs (C-32, C-22) were killed. Rather than pick from a pool the red team had already gutted, a **second deep-dive + red-team round** was run on the strongest scored survivors not selected in round 1, chosen for the two empty roles (`research/phase3/selection.json` → `round2`):
+
+| Round-2 deep dive | Anchor (+ folded) | Tier | Ranks (default / cap / moon) | Role candidate | Why |
+|---|---|---|---|---|---|
+| DD6 Private MoE Inference Appliance (DRAM instead of HBM) | C-48 | T1 | #15 / #15 / #19 | PRIMARY | Highest founder-fit hardware survivor (founder 4, cycle 4, TTR 10 mo); the only concept that *benefits* from a DRAM glut; uses DRAM to do HBM's job for LLM inference |
+| DD7 Authorized-Aftermarket Legacy DRAM Die Bank (+ hi-rel MCMs) | C-91 (+ C-65) | T2 | #28 / #30 / #23 (C-65: #30 / #31 / #25) | MOONSHOT | Highest ceiling among survivors (Rochester-scale model), moat 4 (DFARS authorized-aftermarket status), glut-proof lifecycle demand; strongest surviving T2+ path |
+
+Both go through the same Phase 4 pipeline (research+model → write → verify) and the same four-persona Phase 5 red team as round 1.

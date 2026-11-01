@@ -32,7 +32,16 @@ def q(text: str) -> str:
 
 
 def main():
-    personas = [json.loads(f.read_text(encoding="utf-8")) for f in sorted(P5.glob("rt_*.json"))]
+    # Round 1 (rt_*.json, DD1-DD5) and round 2 (rt2_*.json, DD6-DD7) objections; one persona row per persona.
+    personas = []
+    for f in sorted(P5.glob("rt_*.json")) + sorted(P5.glob("rt2_*.json")):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        prev = next((p for p in personas if p["persona"] == d["persona"]), None)
+        if prev:
+            prev["objections"] = prev.get("objections", []) + d.get("objections", [])
+            prev.setdefault("overall", {}).update(d.get("overall", {}))
+        else:
+            personas.append(d)
     resp_files = {}
     for f in sorted(P5.glob("responses_*.json")):
         d = json.loads(f.read_text(encoding="utf-8"))

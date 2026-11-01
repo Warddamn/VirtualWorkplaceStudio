@@ -4513,7 +4513,8 @@
    "score_moonshot": 63.3,
    "rank_default": 15,
    "rank_capital_constrained": 15,
-   "rank_moonshot": 19
+   "rank_moonshot": 19,
+   "deep_dive": "DD6"
   },
   {
    "tmp_id": "B.06",
@@ -6136,7 +6137,8 @@
    "score_moonshot": 57.5,
    "rank_default": 30,
    "rank_capital_constrained": 31,
-   "rank_moonshot": 25
+   "rank_moonshot": 25,
+   "deep_dive": "DD7"
   },
   {
    "tmp_id": "C.09",
@@ -8629,7 +8631,8 @@
    "score_moonshot": 59.2,
    "rank_default": 28,
    "rank_capital_constrained": 30,
-   "rank_moonshot": 23
+   "rank_moonshot": 23,
+   "deep_dive": "DD7"
   },
   {
    "branch": "E",
