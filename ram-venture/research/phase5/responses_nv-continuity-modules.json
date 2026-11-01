@@ -1,0 +1,173 @@
+{
+  "dd": "DD3",
+  "slug": "nv-continuity-modules",
+  "title": "Drop-in Non-Volatile Continuity Modules",
+  "final_status": "KILLED",
+  "status_reason": "After the red team, the revised BASE loses $29.8k over 36 months (Phase 4: +$79.1k). It breaks even only in m19, never pays the founder, and needs about $49k of peak cash (cash low -$9.2k), above the $40k deployable. The main cause is the market: once i-series controls (which take a $20 CF card) and the unfound DMSMS contracts are removed, addressable demand is about 2,591 cards/yr (~$0.62M/yr), and a 36-month cumulative breakeven needs 33 cards/month, 30% of revised U.S. demand. The F-RAM DIP leg (/CE-latch timing) and C-16 (hold-up energy still needed) are killed outright. The card leg is physically sound but unprofitable at any evidenced volume. ARR figures are run-rate (month revenue x 12); recurring ARR at m36 is only $2.7k.",
+  "revised_verdicts": {
+    "possible": "YES, conditionally: TRL-9 parts and no physical show-stopper, but the card now needs dual-supply translators, a mandatory CPLD for 8-bit steering and power-fail gating, and a magnetic shield. Magnetic immunity above 8,000 A/m (~10 mT), hot removal and acceptance by a pre-i Fanuc control are all untested.",
+    "profitable": "NO: BASE 36-month net -$29.8k (GLUT -$29.8k, SEVERE -$36.9k), breakeven m19, run-rate $29.4k at m18 and $39.9k at m36, recurring ARR $2.7k, founder never paid. Even a demand-validated 40 cards/month case nets only $13.3k over 36 months.",
+    "doable": "PARTLY: the work (contract EE, U.S. EMS, store, compatibility database) still fits a part-time software and operations founder, but the full plan's peak cash need of ~$49k exceeds the $40k deployable. Only a lean re-plan fits T0, and it still loses $22.4k."
+  },
+  "revised_economics": {
+    "arr_m18_base": 29423,
+    "arr_m36_base": 39890,
+    "arr_m36_glut": 37895,
+    "arr_m36_severe": 30515,
+    "founder_fulltime_month_base": "never",
+    "breakeven_month_base": "m19"
+  },
+  "ev_note": "For this founder the expected value of executing DD3 is negative. The revised BASE loses about $30k over 36 months, year 3 earns about $4.4k (~$6 per part-time hour), and the plan does not fit $40k without a lean re-plan. The upside requires demand about 2.5x BASE: roughly 40 cards/month, ~19% of the addressable market. At that level it returns only $13-19k over 36 months, ~$29k/yr by year 3, and essentially no recurring revenue. A generous 15-20% chance of that upside does not cover the ~$6k technical, ~$12k qualification and ~$5k connector spend at risk. Role: drop. It is no longer the FALLBACK, and it is not a moonshot. The only residual action is an optional $1.2k, 28-day demand-only reopen probe, run only with spare capacity after the PRIMARY pick. It reopens on >=30 full-list deposits plus a >=100-card/yr reseller LOI, or a >=200-card/yr white-label commitment. Its by-products (part-number search traffic, the CNC maintenance contacts and DD2's EOL funnel) may be worth more as lead generation for another concept than as a business.",
+  "responses": [
+    {
+      "id": "RT-HYP-DD3-01",
+      "response": "Correct, and it hits the core of the TAM. The Phase 4 legacy_share of 0.35 mixed two groups: pre-i controls that need an SRAM card, and i-series controls where boot-menu SRAM backup to a CF card in an adapter is a documented routine (IMD 0i-Mate CF procedure; IMD calls it 'virtually identical' across 0i/16i/18i/21i). On i-series the residual need is real but partial. An 18i-T needs an SRAM card for normal-mode I/O, and one CNCzone 16iA user got an 'NMI occurred' alarm formatting a CF card. Memex documents the SRAM card as the backup medium for 16-B/16-C/18-B/18-C (M100741G manual, Phase 5 search). I could not find a Fanuc maintenance-manual excerpt showing i-series controls rejecting ATA cards for SRAM backup, so I cannot refute the objection. I re-split the TAM. Pre-i: 15% of cumulative units, 40% still running. i-series: 20% share, 60% running, 20% residual SRAM-card need. U.S. machines fall from 131,250 to 63,000 and U.S. card demand from 3,076 to 1,329 a year (model §[3]).",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: legacy_share 0.35->0.15, legacy_still_running 0.50->0.40, new iseries_share 0.20 / iseries_still_running 0.60 / iseries_card_need 0.20 (RED-TEAM block). Deep dive: pitch narrowed to pre-i controls (§0, §1); the bench target moves to a pre-i 16-C/18-C or 21-B (§10 step 2); the reopen probe records control model and caps i-series deposits at one-third of the count (§10)."
+    },
+    {
+      "id": "RT-HYP-DD3-02",
+      "response": "Correct. I reproduced the reviewer's run: volume x0.5 on the Phase 4 model gives $17.7k of 36-month net. With the TAM corrected (HYP-01), 40 cards a month would be 19% of the revised addressable market and 36% of U.S. demand, which is not credible for a part-time new entrant. Phase 4 also held demand flat while every battery-free card removes a future 8-year replacement. Revised BASE: 16 cards/month steady state (7% of SAM, 14% of U.S. demand), decaying 10%/yr after launch (about 6% retirement plus 4% self-depletion). Result: 36-month net -$29.8k (was +$79.1k), breakeven m19 (was m11), run-rate $29.4k at m18 and $39.9k at m36. Removing the decay alone helps only to -$25.9k. A 36-month cumulative breakeven needs 33 cards/month. I have no sell-through data from Memex, Do Supply or MRO Electric, so I cannot meet the reviewer's bar of 1,000 units a year.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: card_units_steady_month 40->16; new card_demand_decay_yr 0->0.10; sensitivity rows added for volume x0.5, no decay, back to 40/mo, and demand-validated 40/mo. Deep dive §2.2-2.6 rewritten. The reopen probe requires >=30 full-list deposits plus a >=100-card/yr reseller LOI, or reseller sell-through >=1,000 cards/yr in North America (§10)."
+    },
+    {
+      "id": "RT-HYP-DD3-03",
+      "response": "Valid, and I could not refute it with evidence. One Phase 5 search found the following. Hirose IC1K-68RD-1.27SF(71) is Last Time Buy (Cytech). The FCI 90937 Type I/II part is reported obsolete. 3M MCH068 shows only broker stock (AERI). A TE page says 68-position receptacle assemblies with frames are offered, but gives no status or MOQ. NX1-series frame kits appear on an RS datasheet with no status. I found no franchised, current-production, card-side source with a stated MOQ, so the reviewer's would-change-my-mind bar is unmet. The reviewer's $29k figure assumed 480 cards a year for 5 years. At the revised volume the model needs 288 cards from m11 to m36, so a lifetime buy of 350 sets at $15 costs $5.2k. That sum is not trivial: it moves the BASE cash low by about $5.4k (the reverted case is -$3.8k). An MOQ-1,000 buy takes the cash low to -$18.9k.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: card_frame_kit_connector_usd $12->$15; new ltb_connector_sets 350 bought at ltb_month 9 (section [0b]); sensitivity rows for an MOQ-1,000 LTB and for no LTB. Kill criterion 5 (after reopen): no two current-production card-side sources and no LTB quote of <=$20 landed at <=500 sets -> kill. The $299 reprice path is dropped."
+    },
+    {
+      "id": "RT-HYP-DD3-04",
+      "response": "Partly valid. For the pre-i controls that are now the core target, the $20 CF anchor does not apply because those controls reject CF. The $160-200 used-battery-card anchor does apply, and $249 is a federal list-price anchor (CDW-G/Synchrotech $239.39). I re-ran the price stress on the revised model. Price x0.8 gives 36-month net -$42.7k with no breakeven, against -$29.8k at $249. Price x1.2 gives -$16.9k, so a higher price does not rescue the concept either. The plan now tests price before any hardware spend.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "Reopen probe: deposits count only at full list ($249/$349) with no discount codes. The reseller ask is >=$175 wholesale on a >=100-card/yr LOI. The deposit form records the buyer's alternative (used card price, Synchrotech, CF, RS-232). Sensitivity row 'RT price x0.8' added (model §[6]). Kill criterion 11: realized blended price <$175 for 3 months -> exit."
+    },
+    {
+      "id": "RT-HYP-DD3-05",
+      "response": "Valid. A $125/month policy will not produce a $1-2M product-liability certificate of insurance for MRO vendor onboarding. A card that corrupts a restore on a $300k machine invites consequential-loss claims. I did not budget ISO 9001 certification (about $5-10k plus annual audits [ESTIMATE]), which this volume cannot justify. That leaves a residual risk that Radwell or Do Supply will not onboard us. The model now carries insurance at about $250/month plus a short quality manual and an RMA process. Combined effect: -$5.6k of 36-month net (insurance -$4.1k, QMS -$1.5k).",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: opex_from_launch_month $225->$350/month; one_time +$1.5k at m7 for the QMS manual and RMA process. Deep dive §4: terms of sale limit liability to the purchase price, and the COI is obtained before reseller onboarding. Resellers that require ISO 9001 are treated as unreachable rather than funded."
+    },
+    {
+      "id": "RT-HYP-DD3-06",
+      "response": "Valid. A surface-grinder chuck or a dial-indicator base at contact, not a spindle motor at a distance, is the real exposure. The datasheet guarantees only Hmax_write 8,000 A/m, about 10 mT (MR4A16B Rev 11.7; Everspin AN02049, via reviewer snippets). The Phase 4 '72 h beside a spindle motor' check tested the wrong thing. This is answered in full under RT-PHY-DD3-01.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "Same as RT-PHY-DD3-01: calibrated 10/30/100 mT exposures, a 0.3 T base held 60 s on each face, 10 chuck cycles, a $3 shield in COGS, a $0.3k gaussmeter and magnets at m1, a keep-away label and a warranty exclusion for magnetic-chuck contact. New kill criterion 3."
+    },
+    {
+      "id": "RT-PHY-DD3-01",
+      "response": "Correct on the numbers: mu0 x 8,000 A/m = 10.05 mT. Permanent-magnet contact fields of 0.1-1 T are 10-100x over the rating. A Toggle free layer is a synthetic antiferromagnet with near-zero net moment, which gives more standby margin than a single layer. But a field above the SAF's saturation field (tens of mT [ESTIMATE]) aligns both layers, and when the field is removed the bit can relax into either state. Contact with a magnetic base can plausibly scramble data. The datasheet guarantees nothing above 8,000 A/m, so only a test settles it. A thin Ni-Fe foil helps against fringing fields, but it can saturate near 0.7-0.8 T at contact, so its effect must be measured too. This is a failure mode the product introduces and the lithium card does not have, so it can kill the card line. I adopt the reviewer's protocol in full.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "Model: card_shield_usd $0->$3; one_time +$0.3k at m1 for the gaussmeter and test magnets; warranty_returns_pct raised (shared with VC-06). Deep dive §1 adds the magnetic limit; §10 step 2 tests calibrated 10/30/100 mT in standby and during write with a full-array CRC, then 60 s contact with a dial-indicator base and 10 magnetic-chuck cycles, shielded and unshielded, with an envelope check. Kill criterion 3: a shielded card that loses any bit at 30 mT or after 60 s on a 0.3 T base kills the card line. Failure only on chuck contact means a label plus a warranty exclusion."
+    },
+    {
+      "id": "RT-PHY-DD3-02",
+      "response": "Correct, and it reverses §1's own logic. FM18W08 latches the address on /CE falling and has a ~130 ns cycle with a 60 ns precharge, against the DS1230Y-70's 70 ns asynchronous cycle. Hosts that hold /CE low, or that cycle in under 130 ns, read stale data. The FM28V100 version adds two translator delays against a 70 ns socket. A redesign on a true asynchronous core needs a 3.3V Toggle MRAM or nvSRAM plus dual-supply translators and an LDO. That is about $26-28 of COGS [ESTIMATE] against a $34 price, and it competes with DS1230Y/DS1245Y parts that ADI still lists in production (Phase 5 search). The leg already had -1% and +17% contribution. With revised returns, restoring it as in Phase 4 makes BASE worse (-$32.7k vs -$29.8k).",
+      "disposition": "ACCEPTED-KILL",
+      "action": "DIP leg killed. Model: dip_units_steady_month 50->0, first_lot_dip 200->0, DIP design $1.5k removed from m2, DIP marketing $300->$150 (kept as pre-launch card marketing). Deep dive §0, §1, §2.1, §3 (#8 dropped), §4 and kill criterion 13: reopen only on a true-async core with >=10 hosts passing, including one with /CE tied low and one cycling at <=100 ns."
+    },
+    {
+      "id": "RT-PHY-DD3-03",
+      "response": "Correct arithmetic: 1e14 / 1e6 accesses per second = 1e8 s, about 3.2 power-on years, and about 4 months at 10M/s. F-RAM restores after every read, so a stack row in an arcade or instrument board wears out, and a blanket 2-year warranty is exposed. On its own this is fixable with a duty-cycle screen or a working-RAM exclusion. It is moot for BASE because the F-RAM DIP leg is killed under RT-VET-DD3-03.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "No model change beyond the DIP kill. Kill criterion 13 adds a revival condition: any revived DIP leg must use a non-wearing core (Toggle MRAM, or nvSRAM whose STORE runs only at power-down) and must exclude or screen working-RAM use."
+    },
+    {
+      "id": "RT-PHY-DD3-04",
+      "response": "Correct on both points. First, a single-supply 74LVC16245 at 3.3 V gives VOH of about 3 V. The PC Card 5V signalling spec is TTL-level [UNVERIFIED], so many hosts would accept that, but the Fanuc host logic family is unknown and a 5V-CMOS VIH of 3.5 V would fail. Dual-supply 74LVC16T245-class parts powered from host VCC and the 3.3 V rail are the safe choice. Second, PC Card 8-bit mode (CE1# low, CE2# high, A0 selecting the odd byte onto D0-D7) needs byte-lane steering from the x16 MR4A16B. A '245 bank alone cannot do it, so the CPLD is mandatory, not optional. Re-costed logic: $5->$9 (2MB) and $6->$10 (4MB), plus a $1.5k rev-B respin. Combined effect about -$2.7k of 36-month net.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "Model: card_logic_2mb_usd $5->$9, card_logic_4mb_usd $6->$10; one_time +$1.5k rev-B respin at m8. Deep dive §1 block diagram and cost bullet updated. §10 step 2 adds 8-bit and 16-bit access tests on the bench control."
+    },
+    {
+      "id": "RT-PHY-DD3-05",
+      "response": "Valid. Technicians hot-remove cards, and Everspin requires E and W held high through power-up and power-down. The design now puts a supervisor on host VCC (trip at about 4.5 V). The CPLD forces E and W inactive, pull-ups go to MRAM VDD, and a hold-up capacitor on the 3.3 V rail lets an in-flight 35 ns cycle finish. The energy is trivial; the gating is what matters. Hot removal is now a test with a pass/fail line. The cost sits inside the $9 logic line.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "Model: included in card_logic_2mb_usd/4mb ($5->$9/$10). §10 step 2 and step 4: >=500 hot removals during active writes, with CRC of every non-addressed block. Kill criterion 4: corruption outside the addressed word that a rev-C does not fix -> kill."
+    },
+    {
+      "id": "RT-PHY-DD3-06",
+      "response": "Correct. Zero failures in 100 cycles bounds the per-cycle failure rate at <=3% (95%, rule of three), and one control instance at room temperature says nothing about the family and firmware span. As planned, the >10% returns kill would be discovered on customers. The plan now qualifies before the first lot: >=10 rev-B cards on >=3 families or firmware revisions, and >=1,000 power cycles at 0-55 C. That costs $3k of extra bench time and, with VET-05, moves launch from m9 to m11. Combined effect about -$4.6k of 36-month net.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "Model: one_time +$3k at m6 for bench time on 2 more families; card_launch_month 9->11 (shared with VET-05). §10 step 4 qualification gate; kill criterion 7: >3% compatibility failure on the qualification bench -> no first lot."
+    },
+    {
+      "id": "RT-PHY-DD3-07",
+      "response": "Correct, and fatal to C-16 as a kit. Replacing the DRAM cache with an MRAM journal removes the DRAM flush, but not the energy needed to finish or safely abort an in-flight MLC/TLC/QLC program. An interrupted upper-page program can corrupt paired lower-page data. Either hold-up capacitance stays, or the FTL becomes paired-page-aware. IBM's FlashCore can drop capacitors because IBM owns its FTL, which is consistent with the objection. A kit vendor that owns no FTL cannot capture the 'supercap-killer' value. With only about $4 of the $12 capacitor BOM removable, option EV is -$44.9k (BASE) to -$49.0k (SEVERE). The 1Gb STT part is also the ITC 337-TA-1487 target.",
+      "disposition": "ACCEPTED-KILL",
+      "action": "C-16 killed. Model: plp_supercap_bom_usd $12->$4, and §[7] prints 'C-16 KILLED'. Deep dive §0, §1, §2.7 and kill criterion 13. The $0 email interest test is dropped from §10."
+    },
+    {
+      "id": "RT-VC-DD3-01",
+      "response": "Correct. The loss event happens in the control's internal battery-backed SRAM (for example the A20B-2900-0531 module), which we cannot clone. Our card replaces the backup medium. Its value is that the backup itself does not silently die (Mitsubishi T30-0007). That is real, but it is a smaller claim than 'save my machine', and RS-232/DNC, a checked battery card, or CF (on i-series) all compete for the same job. This lowers confidence in willingness to pay at $249 against a $160 used card, and it is one reason BASE volume falls to 16 cards a month. No legal route to a drop-in for the internal SRAM module was found.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Deep dive §0 pitch rewritten ('battery-free backup card; does not replace the internal SRAM or prevent the loss event'); §1 and §4 messaging changed. The reopen probe's deposit form asks what the buyer would otherwise buy; volume is cut (see HYP-02)."
+    },
+    {
+      "id": "RT-VC-DD3-02",
+      "response": "Correct. Track B would have validated on the family whose owners need the product least, so the test could 'pass' while proving nothing about demand. The evidence split is the one under HYP-01: Memex documents the SRAM card as the medium for 16-B/C and 18-B/C, IMD calls CF backup routine on i-series, and the IMD CF-rejection source concerns Series 20/21. The TAM is re-run counting pre-i controls plus an i-series residual (U.S. 1,329 cards/yr, SAM 2,591/yr). The bench target and the compatibility matrix now start with pre-i.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "§10 step 2: bench a pre-i 16-C/18-C or 21-B first, then i-A, then Mitsubishi QnH. Kill criterion 2 is now a pre-i Fanuc rejection, and Mitsubishi or i-A alone is not enough to continue. Model TAM inputs as under HYP-01."
+    },
+    {
+      "id": "RT-VC-DD3-03",
+      "response": "Mostly correct. (1) The global multiplier contradicted the model's own 15% U.S. share: 1/0.15 = 6.67, not 4.0. Corrected, for information only. (2) Self-depletion and retirement are now modeled as a 10%/yr decay. (3) Partial counter on addressability: a plain memory card with no cryptography is very likely EAR99 [ESTIMATE, unconfirmed], so eBay and a web store can reach some non-U.S. buyers without a licence. I credit only 15% of non-U.S. demand. Revised SAM = 1.1 x U.S. + 15% of non-U.S. = 2,591 cards/yr, about $0.62M/yr, not $2.97M. That is still well short of the reviewer's 3,000 U.S. cards a year. No 20-shop survey or reseller sell-through data exists.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: global_over_us_mult 4.0->6.67; new sam_over_us_mult 1.10 and sam_intl_reach 0.15; card_demand_decay_yr 0.10. Section [3] prints SAM, U.S. and global separately, and the scale paths report share of SAM. The reopen probe asks each reseller for annual SRAM-card sell-through (§10)."
+    },
+    {
+      "id": "RT-VC-DD3-04",
+      "response": "Correct. A base case should not contain revenue from customers the research could not find. A Phase 5 search for NSN or DLA award history on DS1230/DS1225/DS1245 found only commercial distributor listings. Phase 4 had found no DS12xx NSN demand either, and approved-source status takes 12-24 months after CAGE registration. The LTSAs are removed from BASE. In the old model this alone cost $14.0k of 36-month net. BASE recurring ARR at m36 falls from $56.2k to $2.7k (cloud vault only), so the founder's recurring-revenue goal is not met by this concept.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: ltsa_contracts [(27,$2k),(33,$2k)]->[] in BASE; LTSAs survive only in scale paths S2/S4 and a labeled upside sensitivity row ('+2 LTSAs', 36-month net -$15.8k). Deep dive §2.2 and §3 #10 marked upside-only."
+    },
+    {
+      "id": "RT-VC-DD3-05",
+      "response": "Valid. The moat is 2/5 and price drives the P&L. A Phase 5 search again found no battery-free PC Card SRAM product, so the gap is real, but a gap is not a moat. The design is a few buffers, a CPLD and an MRAM. A copycat entering at m24 at 75% of our price takes revised BASE from -$29.8k to -$39.2k with no breakeven. Offering Memex MOQ-10 wholesale at $175 reveals our price floor to the most likely copier and locks nothing. I can partly answer the 'non-obvious behaviour' question: the CPLD attribute/CIS configuration and the per-family compatibility results can stay trade secrets until the matrix is published. That is weak protection.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: simulate() gains a copycat price step; new sensitivity row 'RT copycat from m24, price x0.75'. §3 and §10: the reseller ask becomes an exclusive white-label commitment of >=200 cards/yr x 2 yrs, which is also a reopen trigger. The compatibility matrix is published only to paying resellers until launch. Kill criterion 11 adds 'battery-free copy listed at <75% of our price -> exit'."
+    },
+    {
+      "id": "RT-VC-DD3-06",
+      "response": "Valid. The card goes into 1990s controls with many firmware and option combinations, and the founder has no Fanuc service knowledge. 3% returns with no support channel was optimistic. Returns are raised to 6%, and a CNC field-service technician is retained at $150/month from launch. Combined effect -$6.0k of 36-month net (returns -$2.1k, retainer -$3.9k).",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: warranty_returns_pct 0.03->0.06; new opex_support_retainer $150/month from card launch. §9 adds the support role. Kill criterion 10 tightened to >5% compatibility returns on the first 100 cards -> stop sales, and >10% -> kill (was 10%/20%)."
+    },
+    {
+      "id": "RT-VET-DD3-01",
+      "response": "Correct. This is the same finding as HYP-01 and VC-02, and it is the single largest change in the red team. Excluding i-series (keeping a residual for i-A normal-mode I/O) cuts U.S. card demand from 3,076 to 1,329 a year. Phase 4's 480 cards a year would be 36% of that. The reviewer estimated about 0.15 for the pre-i share, and I use it. Reverting only the volume and decay changes would move revised BASE from -$29.8k to +$23.1k, so this objection accounts for about $53k of the $109k swing.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: legacy_share 0.35->0.15, legacy_still_running 0.50->0.40, i-series residual rows, card_units_steady_month 40->16. Track B moved to a pre-i control; the reopen probe caps i-series deposits at one-third."
+    },
+    {
+      "id": "RT-VET-DD3-02",
+      "response": "Correct. The risk is in the datasheet (Hmax_write 8,000 A/m), and the Phase 4 tag of [UNVERIFIED risk] was wrong. The reviewer's protocol is adopted verbatim: write a pattern, hold each face of 5 cards against a 0.3 T magnetic base for 60 s, and verify zero bit errors, shielded and unshielded, with the shield's thickness checked against the 3.3 mm Type I envelope. The physics and the shield are covered under RT-PHY-DD3-01.",
+      "disposition": "ACCEPTED-MITIGATED",
+      "action": "As RT-PHY-DD3-01: card_shield_usd $3, a gaussmeter and magnets at m1, §10 step 2 magnetic tests, and kill criterion 3 (a shielded card that fails at 30 mT or after 60 s on a 0.3 T base kills the card line)."
+    },
+    {
+      "id": "RT-VET-DD3-03",
+      "response": "Correct. The /CE-latch trap that moved the card to MRAM applies equally to the F-RAM DIP line. Hosts that tie /CE to a static decode, or cycle faster than about 130 ns, read garbage. The DS12xx parts also block writes below about 4.5 V, so an F-RAM drop-in would need its own supervisor. The leg's contribution was -1%/+17% in Phase 4 and -4%/+14% with revised returns. DS1230Y and DS1245Y are still in ADI production (Phase 5 search), which weakens the obsolescence premise. A true-async redesign costs more than a $34 price can carry. Restoring the leg makes revised BASE worse (-$32.7k vs -$29.8k).",
+      "disposition": "ACCEPTED-KILL",
+      "action": "DIP leg killed (same actions as RT-PHY-DD3-02): dip_units_steady_month 0, first_lot_dip 0, DIP design cost removed, DIP marketing cut. Card launch becomes first revenue (m11, 2027-09). Kill criterion 13 states the revival conditions."
+    },
+    {
+      "id": "RT-VET-DD3-04",
+      "response": "Valid. The one part that makes this a PC Card has no confirmed current-production source (see RT-HYP-DD3-03 for the search results). 'Reuse donor shells' is a prototype trick, as the reviewer says. At revised volume the funded lifetime buy is 350 sets x $15 = $5.2k at m9, not 1,000+ sets, but it still deepens the cash hole. An MOQ of 1,000 at $15 would take the cash low to -$18.9k. The reviewer's written-quote condition is unmet.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: card_frame_kit_connector_usd $12->$15; ltb_connector_sets 350 at m9; sensitivity rows for MOQ 1,000 and for no LTB. §10 step 3 requires two current-production quotes, or an LTB quote of <=500 sets at <=$20 landed, before rev-B. Kill criterion 5."
+    },
+    {
+      "id": "RT-VET-DD3-05",
+      "response": "Valid. 100 power cycles, a soak and a format test are a functional check, not a qualification. A backup card that is dead on the day the CNC loses its battery is the worst failure this buyer can have. The plan now funds an outside-lab pass before the first lot: IEC 61000-4-2 +/-8 kV contact on shell and pins, insertion life, and 0-55 C (the reviewer's $5-10k range; $7.5k modeled). Hot removal is added under PHY-05. Together with PHY-06 and the rev-B respin, card launch moves from m9 to m11. The lab alone costs $7.5k of 36-month net, and the launch slip a further $1.6k.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: one_time +$7.5k at m8 for the outside lab; card_launch_month 9->11; warranty_returns_pct raised (shared). §10 step 4 qualification gate; kill criterion 7 (an ESD failure at +/-8 kV contact, or >3% compatibility failure -> no first lot)."
+    },
+    {
+      "id": "RT-VET-DD3-06",
+      "response": "Correct. Mitsubishi FA-A-0184 discontinued the Q2MEM-8MBA ATA card and pointed High-speed Universal QCPU users to SD cards. The SRAM card's remaining role is file registers and sampling trace on older QnH/QnUD CPUs. Mitsubishi's share of 'other families' is smaller than §3 implied. The other-families multiplier drops from 1.5 to 1.35, and Mitsubishi is demoted from co-primary validation target to third.",
+      "disposition": "ACCEPTED-DOWNGRADE",
+      "action": "Model: other_families_mult 1.5->1.35. §3 customer #7 narrowed to QnH/QnUD file-register users; §10 benches Mitsubishi QnH third and tracks Mitsubishi deposits separately; kill criterion 2 no longer lets Mitsubishi alone carry the card line."
+    }
+  ]
+}

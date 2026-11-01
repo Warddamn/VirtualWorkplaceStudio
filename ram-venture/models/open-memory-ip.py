@@ -15,7 +15,16 @@ It is modeled as a separately printed funding path and overlay, never mixed into
 
 Pure Python 3 stdlib. Run from the repo root:  python3 models/open-memory-ip.py
 Writes nothing; research/phase4/open-memory-ip_model_output.md holds a captured copy of stdout.
+
+PHASE 5 (red team, agent p5r-open-memory-ip, 2026-11-01): the INPUTS block below still holds the Phase 4
+values. The "RED-TEAM REVISIONS (Phase 5)" block that follows it overrides the inputs that accepted
+objections changed (old -> new, objection id) and switches on four new mechanics: an outreach cap at the
+number of distinct project teams, an academic procurement lag, an expected-value free-release haircut in
+every scenario, and a dated list of one-time spends that can be shifted for a shuttle-slip case. Section 0
+of the output prints every revision and a Phase 4 vs Phase 5 headline side by side. The T2 overlay
+(C-32 gain cell, C-22 ReRAM) is KILLED after the red team and printed for reference only.
 """
+import contextlib
 import os
 import sys
 
@@ -174,15 +183,164 @@ MASK_SET_130 = inp("s130_production_mask_set_usd", 550_000, "01_LANDSCAPE s6 (13
 QUAL_LOTS = inp("jedec_qual_and_packaging_usd", 400_000, "C-22 verify_corrections (~$0.3-0.5M)")
 COFOUNDER_LOADED = inp("circuit_cofounder_loaded_year", 220_000, "ESTIMATE: U.S. memory/mixed-signal designer, loaded")
 
+# --- Phase 5 mechanics. These starting values reproduce the Phase 4 model exactly; the RED-TEAM
+#     REVISIONS block below changes them. ---
+OUTREACH_UNIVERSE_CAP = inp("outreach_capped_at_distinct_teams_per_month", False,
+                            "Phase 4: outbound contacts/month not capped by the number of distinct project teams")
+ACAD_PROC_LAG = inp("academic_procurement_lag_months", 0, "Phase 4: academic accounts pay in the month they are won")
+P_GF180_FREE = inp("prob_free_characterized_gf180_macros_by_partial_month", 0.0,
+                   "Phase 4: a free release appears only as a sensitivity case (free_bundle_shock)")
+FREE_PARTIAL_MONTH = inp("partial_free_release_month", 24, "ESTIMATE: month from which the expected-value free-release haircut applies (Nov-2028)")
+ONE_TIME_LIST = inp("one_time_spend_items", [(m, d, c) for m, (d, c) in sorted(ONE_TIME.items())],
+                    "Phase 4 one-time spends (identical to one_time_spends); items whose label contains 'sky130' shift in the slip case")
+CASH_GATE_FLOOR = inp("cash_gate_floor_usd", None,
+                      "Phase 4: no gate in the model (the DD text gated the m7 slot on cash >= $30k, but the model paid every spend on schedule)")
+
+# =============================================================================================
+# RED-TEAM REVISIONS (Phase 5) - agent p5r-open-memory-ip, 2026-11-01
+# Objections: research/phase5/rt_{VET,VC,HYP,PHY}.json (26 on DD5). Responses:
+# research/phase5/responses_open-memory-ip.json. Each rt() call below records one changed input:
+# old -> new, the objection id(s) that forced it, and the basis. PHASE4 keeps the old values so the
+# output can print the Phase 4 headline next to the revised one.
+# =============================================================================================
+PHASE4 = {}
+RT_LOG = []
+
+
+def _fmt(v):
+    if isinstance(v, list):
+        return "%d items, $%s total" % (len(v), format(sum(c for _, _, c in v), ","))
+    return repr(v)
+
+
+def rt(name, new, ids, basis, key=None):
+    old = globals()[name]
+    PHASE4.setdefault(name, old)
+    globals()[name] = new
+    RT_LOG.append((name, _fmt(old), _fmt(new), ids, basis))
+    if key is not None and key in INPUTS:
+        INPUTS[key] = (new, "RED-TEAM Phase 5 (%s): %s -> %s; %s | Phase 4 source: %s" % (
+            ids, _fmt(old), _fmt(new), basis, INPUTS[key][1]))
+
+
+# Market count: half of the 298 projects/yr were author estimates (RT-VC-DD5-01).
+rt("CF_PROJECTS_PER_YEAR", 30, "RT-VC-DD5-01",
+   "the Phase 4 input note itself says 2-3 shuttles/yr at >=50% fill = ~20-30 paid slots; Efabless chipIgnite peaked at ~43/yr (80 commercial + 50 university designs over ~3 yrs) with subsidised demand",
+   key="chipfoundry_sky130_projects_per_year")
+rt("CADENCE_PROJECTS_PER_YEAR", 20, "RT-VC-DD5-01",
+   "only one 2026 Cadence SKY130 run is documented (deadline 2026-01-16); 'multiple runs per year' is a plan, not a count",
+   key="cadence_sky130_mpw_projects_per_year")
+rt("OTHER_US_ACAD_PROJECTS", 30, "RT-VC-DD5-01",
+   "MOSIS 2.0 and the Commons publish no counts of full-chip open-PDK projects; halved for lack of any count",
+   key="mosis2_commons_other_projects_per_year")
+# Buyer mix (RT-HYP-DD5-03, RT-VC-DD5-05).
+rt("ACAD_SHARE", 0.70, "RT-HYP-DD5-03; RT-VC-DD5-05",
+   "named commercial targets are microfirms (Avalon, Cloneless, Tillitis/Zedulo); funded SBIR teams going to production move to the S130 NDA PDK with SkyWater's bundled compilers; 0.80 is run as a sensitivity",
+   key="academic_share_of_accounts")
+# Licence restated: no skew-corner wafers on an MPW (RT-HYP-DD5-02, RT-PHY-DD5-01, RT-VET-DD5-02, RT-VC-DD5-06).
+rt("P_LIC", 12_000, "RT-HYP-DD5-02; RT-PHY-DD5-01; RT-VET-DD5-02; RT-VC-DD5-06",
+   "licence restated as 'one nominal MPW lot measured at voltage/temperature points (rented thermal forcing), process corners simulated and correlated to that lot, yield on >=50 die, warranty = re-delivery or refund of fees'; priced at 1.2x the commercial service fee [ESTIMATE]",
+   key="price_characterized_macro_license")
+rt("LIC_RATE_COM_YR", 0.15, "RT-HYP-DD5-02; RT-PHY-DD5-01; RT-VET-DD5-02",
+   "without skew-corner data the licence's edge over free simulated OpenRAM corners is smaller, so fewer commercial teams buy it [ESTIMATE]",
+   key="licenses_per_commercial_account_year")
+rt("LIC_DOD_MONTH", 0.04, "RT-PHY-DD5-07; RT-VET-DD5-04; RT-HYP-DD5-05",
+   "DoD/SBIR buyers usually need SEE/TID data the plan will not fund, and the U.S.-fab axis covers only sky130 (wafer.space Run 3 page: GF180MCU chips fabricated at GF in Singapore)",
+   key="dod_sbir_license_channel_per_month")
+# Contractor dependence (RT-VC-DD5-03).
+rt("CONTRACT_RATE", 150, "RT-VC-DD5-03",
+   "retainer premium for a memory contractor who signs a 12-month exclusivity / non-compete on publishing free characterized >=16 KB sky130 macros [ESTIMATE: +20%]",
+   key="contract_vlsi_rate_per_hour")
+# Shuttle timing (RT-VET-DD5-06, RT-VC-DD5-04).
+rt("GF180_CHAR_DONE", 11, "RT-VC-DD5-04",
+   "wafer.space Run 3 dates are unpublished; one month of slack on the m4 GF180 slot",
+   key="gf180_characterized_month")
+rt("SKY130_CHAR_DONE", 16, "RT-VET-DD5-06; RT-VC-DD5-04",
+   "TTSKY25b on ChipFoundry CI2511: submissions closed 2025-11-10, chips expected Jul-2026 (~8 months), plus ~1 month on the bench; ChipFoundry moves an under-filled run to the next shuttle",
+   key="sky130_characterized_month")
+# Funnel realism (RT-HYP-DD5-01, RT-HYP-DD5-06).
+rt("OUTREACH_UNIVERSE_CAP", True, "RT-HYP-DD5-01",
+   "outbound contacts/month capped at distinct new project teams = full-chip projects per year / 12; the 120-name list is spent in the m0 kill test, and full-time work adds no fresh names",
+   key="outreach_capped_at_distinct_teams_per_month")
+rt("ACAD_PROC_LAG", 2, "RT-HYP-DD5-06",
+   "university vendor registration and POs add 30-90 days (DD4 s7); the academic offer becomes a per-term course pack at the same $1.2k/term",
+   key="academic_procurement_lag_months")
+# Free release as an expected value in every scenario (RT-HYP-DD5-04, RT-VC-DD5-01).
+rt("P_GF180_FREE", 0.6, "RT-HYP-DD5-04; RT-VC-DD5-01",
+   "OCD (last commit 2026-10-30) and Chips4Makers (3 GF180 SRAM test chips, Jul-2026) already have silicon, and DD s5 says GF180 is probably lost within 12 months; the haircut weight is GF180 share of projects x 0.6, applied from m24 to close rate, churn, subscription price and licences through the free_bundle_shock parameters",
+   key="prob_free_characterized_gf180_macros_by_partial_month")
+# Density claim (RT-PHY-DD5-06): context only, not a revenue input.
+rt("LARGE_MACRO_ARRAY_EFF", 0.30, "RT-PHY-DD5-06",
+   "no OpenRAM evidence for 60%; going from the 1 KB to the 2 KB OpenRAM sky130 macro adds 11.4 um2 per added bit (6x the 1.896 um2 bitcell), so OpenRAM's periphery does not amortise like a commercial compiler's; 30% until the day 1-7 run measures a 32 KB macro",
+   key="large_macro_array_efficiency")
+# One-time spends (RT-VET-DD5-01, RT-PHY-DD5-02, RT-VET-DD5-02, RT-VC-DD5-03): costed BIST/timing structures,
+# thermal forcing, a 40 h extracted-SPICE + Monte Carlo gate in the kill test, all hours at the revised rate.
+_CR = CONTRACT_RATE
+rt("ONE_TIME_LIST", [
+    (1, "company formation + licence/warranty templates", 1_000),
+    (1, "kill-test spend not elsewhere in model: 40 h extracted-SPICE + 1,000-pt bitcell Monte Carlo review, compute, web, outreach, hub event", 8_100),
+    (2, "contract VLSI build-out 20h", 20 * _CR),
+    (3, "contract VLSI build-out 40h", 40 * _CR),
+    (3, "GF180 test chip: on-chip BIST + programmable delay-line / ring-oscillator timing structures 20h", 20 * _CR),
+    (4, "wafer.space GF180 half slot (test macros + BIST)", 3_750),
+    (6, "sky130 test chip: on-chip BIST + delay-line timing structures 20h", 20 * _CR),
+    (7, "ChipFoundry sky130 slot (test macros)", 15_000),
+    (9, "test bench: FPGA carrier + PCB + bench time", 4_000),
+    (11, "GF180 characterization contractor 40h", 40 * _CR),
+    (11, "GF180 thermal-forcing rental (-40/125C, ~1 week)", 2_500),
+    (16, "wafer.space GF180 full slot: 8-32KB macros", 7_250),
+    (16, "sky130 characterization contractor 40h", 40 * _CR),
+    (16, "sky130 thermal-forcing rental (-40/125C, ~1 week)", 2_500),
+    (19, "ChipFoundry sky130 slot: 16-64KB macros", 15_000),
+    (24, "characterization contractor 40h", 40 * _CR),
+    (24, "thermal-forcing rental", 2_500),
+], "RT-VET-DD5-01; RT-PHY-DD5-02; RT-VET-DD5-02; RT-VC-DD5-03",
+   "adds test structures that make ns access time measurable, thermal forcing for -40/125C [ESTIMATE: ThermoStream-class rental ~$2-4k/week], the stronger kill-test gate (kill test now ~$9.1k, of which $1k template is the m1 item), and moves characterization to m11/m16",
+   key="one_time_spend_items")
+rt("CASH_GATE_FLOOR", 2_500, "RT-PHY-DD5-02; RT-VET-DD5-02; RT-VC-DD5-04 (consequence)",
+   "the added spends push BASE cash to -$8.2k at m11 on the Phase 4 schedule, beyond the $40k deployable (A-03); deferrable spends (test chips, slots, bench, characterization) now wait until cash after the spend stays >= $2.5k, and the characterized month moves with them",
+   key="cash_gate_floor_usd")
+INPUTS["one_time_spends"] = (ONE_TIME, "SUPERSEDED in Phase 5 by one_time_spend_items (the model no longer reads this dict) | " + INPUTS["one_time_spends"][1])
+# T2 reference line only (RT-VET-DD5-05): the T2 overlay is killed.
+rt("QUAL_LOTS", 1_000_000, "RT-VET-DD5-05",
+   "JESD47 needs HTOL 1,000 h on 3 lots x 77 units plus retention bakes, ESD/latch-up and MSL on a production S130+ReRAM flow: three engineering lots plus a qual house, not one lot [ESTIMATE]; T2 is killed, so this is reference only",
+   key="jedec_qual_and_packaging_usd")
+
 # ---------------------------------------------------------------------------------------------
-# Derived market sizing
+# Derived market sizing (a function, so the Phase 4 inputs can be swapped back in for comparison)
 # ---------------------------------------------------------------------------------------------
-FULLCHIP_PROJECTS_YR = (WS_SLOTS_PER_RUN * WS_RUNS_PER_YEAR + CF_PROJECTS_PER_YEAR + CADENCE_PROJECTS_PER_YEAR
-                        + GF_UNIV_PROJECTS_PER_YEAR + OTHER_US_ACAD_PROJECTS)
-PAYING_PROJECTS_YR = FULLCHIP_PROJECTS_YR * MEMORY_NEED_SHARE * WTP_SHARE
-CAP_TOTAL = PAYING_PROJECTS_YR * GROUP_CYCLES
-CAP_ACAD = CAP_TOTAL * ACAD_SHARE
-CAP_COM = CAP_TOTAL * (1 - ACAD_SHARE)
+FULLCHIP_PROJECTS_YR = PAYING_PROJECTS_YR = CAP_TOTAL = CAP_ACAD = CAP_COM = 0.0
+GF180_PROJECTS_YR = USFAB_PROJECTS_YR = FREE_PARTIAL_WEIGHT = 0.0
+
+
+def derive():
+    global FULLCHIP_PROJECTS_YR, PAYING_PROJECTS_YR, CAP_TOTAL, CAP_ACAD, CAP_COM
+    global GF180_PROJECTS_YR, USFAB_PROJECTS_YR, FREE_PARTIAL_WEIGHT
+    FULLCHIP_PROJECTS_YR = (WS_SLOTS_PER_RUN * WS_RUNS_PER_YEAR + CF_PROJECTS_PER_YEAR + CADENCE_PROJECTS_PER_YEAR
+                            + GF_UNIV_PROJECTS_PER_YEAR + OTHER_US_ACAD_PROJECTS)
+    GF180_PROJECTS_YR = WS_SLOTS_PER_RUN * WS_RUNS_PER_YEAR + GF_UNIV_PROJECTS_PER_YEAR
+    USFAB_PROJECTS_YR = FULLCHIP_PROJECTS_YR - GF180_PROJECTS_YR
+    PAYING_PROJECTS_YR = FULLCHIP_PROJECTS_YR * MEMORY_NEED_SHARE * WTP_SHARE
+    CAP_TOTAL = PAYING_PROJECTS_YR * GROUP_CYCLES
+    CAP_ACAD = CAP_TOTAL * ACAD_SHARE
+    CAP_COM = CAP_TOTAL * (1 - ACAD_SHARE)
+    FREE_PARTIAL_WEIGHT = (GF180_PROJECTS_YR / FULLCHIP_PROJECTS_YR) * P_GF180_FREE
+
+
+derive()
+
+
+@contextlib.contextmanager
+def phase4_inputs():
+    """Temporarily restore every input the red team changed, to reproduce the Phase 4 model."""
+    saved = {k: globals()[k] for k in PHASE4}
+    globals().update(PHASE4)
+    derive()
+    try:
+        yield
+    finally:
+        globals().update(saved)
+        derive()
 
 SCEN_DROP = {
     "BASE": BASE_2028_DROP,
@@ -222,14 +380,38 @@ def unit_econ(price_mult=1.0, cogs_mult=1.0, com_price_mult=1.0):
 # ---------------------------------------------------------------------------------------------
 # Monthly simulation
 # ---------------------------------------------------------------------------------------------
+def spend_chain(desc):
+    """Dependency chain of a one-time item. None = not deferrable (formation, kill test, library build-out)."""
+    if "sky130" in desc:
+        return "sky130"
+    if "GF180" in desc or "test bench" in desc:
+        return "gf180"
+    if "characterization" in desc or "thermal" in desc:
+        return "misc"
+    return None
+
+
+def one_time_spend(m, sky130_slip=0):
+    """Scheduled one-time spend in month m (no cash gate); 'sky130' items shift by sky130_slip (RT-VC-DD5-04)."""
+    tot, labels = 0.0, []
+    for mm, d, c in ONE_TIME_LIST:
+        if ("sky130" in d and mm + sky130_slip == m) or ("sky130" not in d and mm == m):
+            tot += c
+            labels.append(d)
+    return tot, labels
+
+
 def simulate(scen="BASE", price_mult=1.0, close_mult=1.0, churn_mult=1.0, cogs_mult=1.0, t2_overlay=False,
-             free_shock=False):
+             free_shock=False, sky130_slip=0, no_partial_free=False, licenses_off=False):
     drop = SCEN_DROP[scen]
     base_close, base_churn = close_mult, churn_mult
     cash = START_CASH
     acad = com = 0.0
     full_time = False
     first_license_month = None
+    off = {"gf180": 0, "sky130": sky130_slip, "misc": 0}       # month offsets per spend chain (slip + cash gate)
+    char_m = {"gf180": GF180_CHAR_DONE, "sky130": SKY130_CHAR_DONE + sky130_slip}
+    pending_acad = [0.0] * (MONTHS + ACAD_PROC_LAG + 2)  # academic wins wait ACAD_PROC_LAG months for a PO
     rows = []
     for m in range(1, MONTHS + 1):
         in_glut = m >= GLUT_START_MONTH
@@ -237,20 +419,30 @@ def simulate(scen="BASE", price_mult=1.0, close_mult=1.0, churn_mult=1.0, cogs_m
         p_mult_c = (1 - PRICE_ELASTICITY * drop) if in_glut else 1.0
         ch_mult_c = (1 + CHURN_ELASTICITY * drop) if in_glut else 1.0
         shock = free_shock and m >= FREE_SHOCK["month"]
-        close_mult = base_close * (FREE_SHOCK["close"] if shock else 1.0)
-        churn_mult = base_churn * (FREE_SHOCK["churn"] if shock else 1.0)
+        # Phase 5: expected-value partial free release (weight = GF180 share x P(free GF180 macros)) from
+        # FREE_PARTIAL_MONTH, unless the full shock is on or the case asks for no free release.
+        w = 0.0 if (free_shock or no_partial_free or m < FREE_PARTIAL_MONTH) else FREE_PARTIAL_WEIGHT
+
+        def factor(k):
+            return FREE_SHOCK[k] if shock else 1.0 + w * (FREE_SHOCK[k] - 1.0)
+        close_mult = base_close * factor("close")
+        churn_mult = base_churn * factor("churn")
+        sub_f, lic_f = factor("sub_price"), factor("lic")
         ue = unit_econ(price_mult, cogs_mult, p_mult_c)
-        if shock:
+        if sub_f != 1.0:
             for k in ("A1 Sub academic (/mo)", "A2 Sub commercial (/mo)"):
                 pr, co = ue[k]
-                ue[k] = (pr * FREE_SHOCK["sub_price"], co - PAY_FEE * pr * (1 - FREE_SHOCK["sub_price"]))
+                ue[k] = (pr * sub_f, co - PAY_FEE * pr * (1 - sub_f))
 
         # --- acquisition ---
         contacts = OUTREACH_FT if full_time else OUTREACH_PT
+        if OUTREACH_UNIVERSE_CAP:
+            contacts = min(contacts, FULLCHIP_PROJECTS_YR / 12.0)  # distinct new teams per month (RT-HYP-DD5-01)
         outbound = contacts * REPLY_RATE * CLOSE_RATE * close_mult if m >= 2 else 0.0
         inbound = min(INBOUND_MAX, INBOUND_RAMP * (m - INBOUND_START + 1)) * close_mult if m >= INBOUND_START else 0.0
         new_accts = (outbound + inbound) if m >= SERVICES_START else 0.0
-        new_acad = new_accts * ACAD_SHARE * max(0.0, 1 - acad / CAP_ACAD)
+        pending_acad[m + ACAD_PROC_LAG] += new_accts * ACAD_SHARE * max(0.0, 1 - acad / CAP_ACAD)
+        new_acad = pending_acad[m]
         new_com = new_accts * (1 - ACAD_SHARE) * d_mult * max(0.0, 1 - com / CAP_COM)
 
         # --- churn then adds (subscriptions) ---
@@ -261,12 +453,13 @@ def simulate(scen="BASE", price_mult=1.0, close_mult=1.0, churn_mult=1.0, cogs_m
         svc_a = new_acad * FIRST_SVC_ACAD + acad * TAPEOUTS_YR_ACAD / 12 * REPEAT_SVC_ATTACH
         svc_c = new_com * FIRST_SVC_COM + com * TAPEOUTS_YR_COM / 12 * REPEAT_SVC_ATTACH
         lic = 0.0
-        if m >= SKY130_CHAR_DONE:
+        if m >= char_m["sky130"]:
             lic = com * LIC_RATE_COM_YR / 12 + LIC_DOD_MONTH * d_mult
-        elif m >= GF180_CHAR_DONE:
+        elif m >= char_m["gf180"]:
             lic = (com * LIC_RATE_COM_YR / 12) * 0.5  # GF180-only library: half the demand [ESTIMATE]
-        if shock:
-            lic *= FREE_SHOCK["lic"]
+        lic *= lic_f
+        if licenses_off:
+            lic = 0.0
         if lic > 0 and first_license_month is None:
             first_license_month = m
 
@@ -303,15 +496,39 @@ def simulate(scen="BASE", price_mult=1.0, close_mult=1.0, churn_mult=1.0, cogs_m
         opex = OPEX_FIXED + (MKT_FT if full_time else MKT_PT)
         if first_license_month is not None and m >= first_license_month:
             opex += EO_INSURANCE
-        one_time = ONE_TIME[m][1] if m in ONE_TIME else 0.0
         salary = FOUNDER_FT_SALARY if full_time else 0.0
+        # --- one-time spends: chains of dependent items; with a cash gate a chain waits a month whenever
+        #     paying its due items would leave cash below the floor (Phase 5; Phase 4 = no gate) ---
+        avail = cash + gp - opex - salary + t2_cash
+        due = {}
+        one_time = 0.0
+        for mm, d, c in ONE_TIME_LIST:
+            ch = spend_chain(d)
+            if ch is None:
+                if mm == m:
+                    one_time += c
+            elif mm + off[ch] == m:
+                due[ch] = due.get(ch, 0.0) + c
+        avail -= one_time
+        for ch in ("gf180", "sky130", "misc"):
+            c = due.get(ch, 0.0)
+            if c <= 0:
+                continue
+            if CASH_GATE_FLOOR is None or avail - c >= CASH_GATE_FLOOR:
+                avail -= c
+                one_time += c
+            else:
+                off[ch] += 1
+                if ch in char_m and m <= char_m[ch]:
+                    char_m[ch] += 1
         net = gp - opex - one_time - salary + t2_cash
         cash += net
         rows.append(dict(m=m, label=month_label(m), acad=acad, com=com, new=new_acad + new_com,
                          svc=svc_a + svc_c, lic=lic, revA=lines["A"][0], revB=lines["B"][0], revC=lines["C"][0],
                          t2=t2_rev, rev=rev, cogs=cogs, gp=gp, opex=opex, one_time=one_time, salary=salary,
                          t2_cash=t2_cash, net=net, cash=cash, ft=full_time,
-                         mrr_sub=lines["A"][0], outbound=outbound, inbound=inbound))
+                         mrr_sub=lines["A"][0], outbound=outbound, inbound=inbound,
+                         char_gf=char_m["gf180"], char_sky=char_m["sky130"], first_lic=first_license_month))
 
         # --- full-time switch for next month: trailing-3 GP covers salary + FT opex and cash buffer ---
         if not full_time and m >= 3:
@@ -340,7 +557,8 @@ def summarize(rows):
     return dict(cash_low=cash_low["cash"], cash_low_m=cash_low["m"], breakeven=be, ft=ft, first_rev=first_rev,
                 fte_be=fte_be, arr={m: arr(m) for m in (12, 18, 24, 36)}, end_cash=rows[-1]["cash"],
                 rev36=sum(r["rev"] for r in rows), gp36=sum(r["gp"] for r in rows),
-                accts36=(rows[-1]["acad"], rows[-1]["com"]))
+                accts36=(rows[-1]["acad"], rows[-1]["com"]),
+                char_gf=rows[-1]["char_gf"], char_sky=rows[-1]["char_sky"], first_lic=rows[-1]["first_lic"])
 
 
 def money(x):
@@ -358,11 +576,31 @@ def main():
     W = 108
     print("=" * W)
     print("DD5 U.S. OPEN MEMORY IP - unit economics & 36-month P&L (models/open-memory-ip.py, as of 2026-11-01)")
+    print("PHASE 5 REVISED (red team, p5r-open-memory-ip). Sections 1-10 use the revised inputs; section 0 compares.")
     print("=" * W)
     print("DDR5 reference source: %s" % REF_SRC)
     print("  incumbent cost $%.2f/GB | Q4-26 contract $%.2f/GB | glut $%.2f/GB | severe $%.2f/GB" % (
         REF["cost_component_usd_per_gb"], REF["contract_component_usd_per_gb_q4_2026"],
         REF["glut_component_usd_per_gb"], REF["severe_glut_component_usd_per_gb"]))
+
+    # --- 0. red-team revisions ---
+    print("\n0. RED-TEAM REVISIONS (Phase 5): every changed input, old -> new, objection id")
+    for i, (name, old, new, ids, basis) in enumerate(RT_LOG, 1):
+        print("  R%-2d %-24s %s -> %s  [%s]" % (i, name, old, new, ids))
+        print("      basis: %s" % basis)
+    print("  Phase 4 vs Phase 5 headline (same code; Phase 4 = the inputs above swapped back):")
+    print("  %-18s %-7s %11s %13s %12s %9s %9s %10s %10s %9s" % (
+        "inputs", "scen", "cash low", "3-mo CF+", "founder FT", "ARR m18", "ARR m36", "RR m36", "end cash", "sky130 ch"))
+    for tag in ("Phase 4", "Phase 5"):
+        ctx = phase4_inputs() if tag == "Phase 4" else contextlib.nullcontext()
+        with ctx:
+            for sc in ("BASE", "GLUT", "SEVERE"):
+                sm = summarize(simulate(sc))
+                print("  %-18s %-7s %11s %13s %12s %9s %9s %10s %10s %9s" % (
+                    tag, sc, "%s@m%d" % (money(sm["cash_low"]), sm["cash_low_m"]),
+                    "m%d" % sm["breakeven"] if sm["breakeven"] else "never",
+                    "m%d" % sm["ft"] if sm["ft"] else "never", money(sm["arr"][18][0]), money(sm["arr"][36][0]),
+                    money(sm["arr"][36][1]), money(sm["end_cash"]), "m%d" % sm["char_sky"]))
 
     # --- 1. technical context ---
     print("\n1. WHY THE AXIS IS NOT $/GB (density and $/GB context)")
@@ -376,6 +614,11 @@ def main():
     print("  sky130 OpenRAM 1KB / 2KB macros (largest)  %7.1f / %5.1f kbit/mm2" % (d1, d2))
     print("  sky130 banked 32-64KB macro @%.0f%% array eff %7.1f kbit/mm2  -> %.1fx the 2KB macro (compiler work, no new cell)" % (
         LARGE_MACRO_ARRAY_EFF * 100, dbig, dbig / d2))
+    inc = (SKY130_2KB_MM2 - SKY130_1KB_MM2) * 1e6 / 8192
+    print("    revised after red team (RT-PHY-DD5-06): Phase 4 assumed %.0f%% (%.1f kbit/mm2, %.1fx). OpenRAM 1KB->2KB adds %.1f um2 per added bit" % (
+        PHASE4["LARGE_MACRO_ARRAY_EFF"] * 100, bit_kb * PHASE4["LARGE_MACRO_ARRAY_EFF"], bit_kb * PHASE4["LARGE_MACRO_ARRAY_EFF"] / d2, inc))
+    print("    (%.1fx the bitcell), so periphery does not amortise like a commercial compiler; the kill test measures a real 32KB macro." % (
+        inc / SKY130_BITCELL_UM2))
     print("  GF180 open macros: GF 512B / OCD 1KB       %7.1f / %5.1f kbit/mm2 (largest free GF180 macro = 1KB)" % (g5, g1))
     lo, hi = GC_AREA_SAVING_SILICON
     clo, chi = GC_AREA_SAVING_CLAIM
@@ -386,11 +629,14 @@ def main():
     print("  => macros are priced per design/tapeout, not per GB; the DDR5 cycle touches this only via design-start budgets.")
 
     # --- 2. market sizing ---
-    print("\n2. MARKET SIZING (projects per year on U.S.-fab open/academic shuttles)")
+    print("\n2. MARKET SIZING (projects per year on open/academic shuttles: U.S.-fab sky130 + GF180MCU fabbed in Singapore)")
     print("  Tiny Tapeout 2026 tiles (funnel only, not macro buyers): %d" % TT_PROJECTS_2026)
     print("  wafer.space %d x %d + ChipFoundry %d + Cadence MPW %d + GF univ pilot %d + MOSIS2/Commons/other %d = %d full-chip projects/yr" % (
         WS_SLOTS_PER_RUN, WS_RUNS_PER_YEAR, CF_PROJECTS_PER_YEAR, CADENCE_PROJECTS_PER_YEAR, GF_UNIV_PROJECTS_PER_YEAR,
         OTHER_US_ACAD_PROJECTS, FULLCHIP_PROJECTS_YR))
+    print("  of which GF180MCU (wafer.space + GF pilot; fabbed by GF in Singapore per wafer.space Run 3) %d | U.S.-fab sky130/MOSIS/Commons %d" % (
+        GF180_PROJECTS_YR, USFAB_PROJECTS_YR))
+    print("  -> the supply-security axis ('U.S.-fabbed ASIC') covers only the %d U.S.-fab projects/yr (RT-VET-DD5-04, RT-HYP-DD5-05)" % USFAB_PROJECTS_YR)
     print("  x need memory beyond free macros %.0f%% x willing to pay %.0f%% = %.0f paying projects/yr" % (
         MEMORY_NEED_SHARE * 100, WTP_SHARE * 100, PAYING_PROJECTS_YR))
     print("  active-account cap (x %.1f yr groups): academic %.0f, commercial %.0f" % (GROUP_CYCLES, CAP_ACAD, CAP_COM))
@@ -405,17 +651,21 @@ def main():
     print("  %-28s %10s %10s %8s" % ("Product line", "Price", "COGS", "GM"))
     for k, (p, c) in ue0.items():
         print("  %-28s %10s %10s %7.0f%%" % (k, "$%s" % format(p, ",.0f"), "$%s" % format(c, ",.0f"), 100 * (p - c) / p))
+    print("  C licence restated after red team: one nominal MPW lot measured at V/T points, process corners simulated,")
+    print("    yield on >=50 die, warranty = re-delivery or refund of fees (Phase 4: 'measured PVT corners', $%s)." % format(PHASE4["P_LIC"], ","))
+    print("  Academic subscription sold as a per-term course pack ($1.2k/term = $200/mo); POs lag %d months." % ACAD_PROC_LAG)
     gpa = ue0["A1 Sub academic (/mo)"][0] - ue0["A1 Sub academic (/mo)"][1]
     gpc = ue0["A2 Sub commercial (/mo)"][0] - ue0["A2 Sub commercial (/mo)"][1]
     ltv_a = gpa / CHURN_ACAD + FIRST_SVC_ACAD * (ue0["B1 Tapeout svc academic"][0] - ue0["B1 Tapeout svc academic"][1])
     ltv_c = gpc / CHURN_COM + FIRST_SVC_COM * (ue0["B2 Tapeout svc commercial"][0] - ue0["B2 Tapeout svc commercial"][1])
-    new_pt = OUTREACH_PT * REPLY_RATE * CLOSE_RATE
+    contacts_pt = min(OUTREACH_PT, FULLCHIP_PROJECTS_YR / 12.0) if OUTREACH_UNIVERSE_CAP else OUTREACH_PT
+    new_pt = contacts_pt * REPLY_RATE * CLOSE_RATE
     cac_cash = MKT_PT / new_pt
     cac_loaded = (MKT_PT + 16 * 75) / new_pt
     print("  Lifetime GP: academic sub %s (life %.0f mo) | commercial sub %s (life %.0f mo), incl. first tapeout service" % (
         money(ltv_a), 1 / CHURN_ACAD, money(ltv_c), 1 / CHURN_COM))
-    print("  Acquisition: %d contacts/mo x %.0f%% reply x %.0f%% close = %.2f outbound accounts/mo part-time (+ inbound ramp to %.1f/mo)" % (
-        OUTREACH_PT, REPLY_RATE * 100, CLOSE_RATE * 100, new_pt, INBOUND_MAX))
+    print("  Acquisition: %.0f contacts/mo (capped at distinct new teams) x %.0f%% reply x %.0f%% close = %.2f outbound accounts/mo (+ inbound ramp to %.1f/mo)" % (
+        contacts_pt, REPLY_RATE * 100, CLOSE_RATE * 100, new_pt, INBOUND_MAX))
     print("  CAC: cash %s/account; loaded with 16 founder h/mo @ $75/h = %s/account -> LTV/CAC (blended %.0f%% acad) %.1fx" % (
         money(cac_cash), money(cac_loaded), ACAD_SHARE * 100,
         (ACAD_SHARE * ltv_a + (1 - ACAD_SHARE) * ltv_c) / cac_loaded))
@@ -428,6 +678,10 @@ def main():
         print("  %-6s DDR5 drop %.0f%% -> commercial demand x%.2f, commercial price x%.2f, commercial churn x%.2f" % (
             s, SCEN_DROP[s] * 100, 1 - DEMAND_ELASTICITY * SCEN_DROP[s], 1 - PRICE_ELASTICITY * SCEN_DROP[s],
             1 + CHURN_ELASTICITY * SCEN_DROP[s]))
+    print("  All scenarios carry an expected-value free-release haircut from m%d: weight %.2f = GF180 share %.2f x P(free GF180 macros) %.1f" % (
+        FREE_PARTIAL_MONTH, FREE_PARTIAL_WEIGHT, GF180_PROJECTS_YR / FULLCHIP_PROJECTS_YR, P_GF180_FREE))
+    print("  Outbound contacts capped at %.1f distinct new teams/month; one-time spends gated at cash >= %s." % (
+        FULLCHIP_PROJECTS_YR / 12, money(CASH_GATE_FLOOR) if CASH_GATE_FLOOR is not None else "no gate"))
     for s in ("BASE", "GLUT", "SEVERE"):
         rows = simulate(s)
         res[s] = (rows, summarize(rows))
@@ -452,6 +706,10 @@ def main():
             s, "m%d" % sm["first_rev"], "%s@m%d" % (money(sm["cash_low"]), sm["cash_low_m"]), mo(sm["breakeven"]), mo(sm["ft"]),
             100 * sm["gp36"] / sm["rev36"], money(sm["arr"][12][0]), money(sm["arr"][18][0]), money(sm["arr"][24][0]),
             money(sm["arr"][36][0]), money(sm["end_cash"])))
+    print("  Characterized silicon after cash gate: GF180 %s; sky130 %s / %s / %s (BASE/GLUT/SEVERE). Founder-paid GP month (GP >= %s): %s / %s / %s." % (
+        mo(res["BASE"][1]["char_gf"]), mo(res["BASE"][1]["char_sky"]), mo(res["GLUT"][1]["char_sky"]), mo(res["SEVERE"][1]["char_sky"]),
+        money(FOUNDER_FT_SALARY + OPEX_FIXED + MKT_FT + EO_INSURANCE),
+        mo(res["BASE"][1]["fte_be"]), mo(res["GLUT"][1]["fte_be"]), mo(res["SEVERE"][1]["fte_be"])))
     print("  ARR = subscription MRR x 12 (recurring only). Revenue run-rate (last 3 months x 4) incl. services/licenses:")
     for s in ("BASE", "GLUT", "SEVERE"):
         sm = res[s][1]
@@ -474,6 +732,25 @@ def main():
         sm = summarize(simulate(sc, free_shock=True))
         print("  %-22s %12s %16s %16s %10s %10s %10s" % (lab, money(sm["cash_low"]), mo(sm["breakeven"]), mo(sm["ft"]),
                                                       money(sm["arr"][18][0]), money(sm["arr"][36][0]), money(sm["arr"][36][1])))
+    extra = [
+        ("no free release at all", dict(no_partial_free=True)),
+        ("close rate x0.5", dict(close_mult=0.5)),
+        ("licences removed", dict(licenses_off=True)),
+        ("sky130 slot slips 6 mo", dict(sky130_slip=6)),
+        ("price+close x1.3,nofree", dict(price_mult=1.3, close_mult=1.3, no_partial_free=True)),
+    ]
+    for lab, kw in extra:
+        sm = summarize(simulate("BASE", **kw))
+        print("  %-22s %12s %16s %16s %10s %10s %10s" % (lab, money(sm["cash_low"]), mo(sm["breakeven"]), mo(sm["ft"]),
+                                                      money(sm["arr"][18][0]), money(sm["arr"][36][0]), money(sm["arr"][36][1])))
+    _a = globals()["ACAD_SHARE"]
+    globals()["ACAD_SHARE"] = 0.80
+    derive()
+    sm = summarize(simulate("BASE"))
+    globals()["ACAD_SHARE"] = _a
+    derive()
+    print("  %-22s %12s %16s %16s %10s %10s %10s" % ("academic share 0.80", money(sm["cash_low"]), mo(sm["breakeven"]), mo(sm["ft"]),
+                                                  money(sm["arr"][18][0]), money(sm["arr"][36][0]), money(sm["arr"][36][1])))
     worst = summarize(simulate("SEVERE", price_mult=0.7, close_mult=0.7, churn_mult=1.3, cogs_mult=1.3))
     print("  %-22s %12s %16s %16s %10s %10s %10s" % ("SEVERE + all adverse", money(worst["cash_low"]), mo(worst["breakeven"]),
                                                   mo(worst["ft"]), money(worst["arr"][18][0]), money(worst["arr"][36][0]),
@@ -500,10 +777,16 @@ def main():
         100 * need_accts / CAP_TOTAL, CAP_TOTAL))
     print("  Equivalently (no subscriptions): %.1f commercial tapeout services/mo or %.1f licenses/mo." % (
         need_gp / gp_svc_c, need_gp / gp_lic))
-    print("  Kill line for the 30-day experiment: >=3 paid pre-orders (>=$2k each) or >=$15k in signed LOIs from the outreach list.")
+    print("  Best revised BASE month: GP %s at m36 vs %s needed -> the founder is not paid inside 36 months in any scenario." % (
+        money(max(r["gp"] for r in rows)), money(need_gp)))
+    print("  Kill line for the 30-day experiment: >=3 paid pre-orders (>=$2k each) or >=$15k in signed LOIs from >=100 distinct funded teams,")
+    print("  plus extracted-SPICE corner + 1,000-pt Monte Carlo pass on a 16KB macro, plus written no-free-release statements (UCSC, OCD).")
 
     # --- 9. T2 path ---
-    print("\n9. PATH TO T2 (gain-cell + ReRAM macros) - funding, not revenue (A-04)")
+    print("\n9. PATH TO T2 (gain-cell + ReRAM macros) - KILLED in Phase 5; printed for reference only")
+    print("  Killed by RT-VC-DD5-02, RT-HYP-DD5-07, RT-PHY-DD5-03/04/05, RT-VET-DD5-03/05: no named buyer; a logic-rule sky130 gain cell")
+    print("  is unlikely to beat the pushed-rule 1.896 um2 6T; no leakage case at 130nm; magnet immunity is shared by OTP/eFuse and")
+    print("  S130's own eNVM options; JESD47 needs ~3 lots (qual line now %s). Not part of any revised verdict or headline." % money(QUAL_LOTS))
     t2 = [
         ("m6-m9", "STTR Phase I proposal with university PI (e.g. UCSC OpenRAM / Stanford OpenGCRAM group)", 0, "founder time"),
         ("m%d" % STTR_P1_AWARD_MONTH, "STTR Phase I award: sky130 gain-cell macro + test chip", STTR_P1, "NSF/DoD STTR"),
@@ -532,7 +815,7 @@ def main():
     b = res["BASE"][1]
     g = res["GLUT"][1]
     sv = res["SEVERE"][1]
-    print("\n10. HEADLINE")
+    print("\n10. HEADLINE (Phase 5 revised; T2 killed)")
     print("  36-mo gross margin %.0f%% (base). Cash-flow breakeven (first of 3 cash-positive months) %s; founder can go full-time %s." % (
         100 * b["gp36"] / b["rev36"], mo(b["breakeven"]), mo(b["ft"])))
     print("  Recurring ARR m18 / m36: BASE %s / %s | GLUT %s / %s | SEVERE %s / %s" % (
@@ -547,6 +830,8 @@ def main():
     for k, (v, src) in INPUTS.items():
         if isinstance(v, dict) and all(isinstance(x, tuple) for x in v.values()):
             v = "; ".join("m%d %s $%s" % (m, d, format(c, ",")) for m, (d, c) in v.items())
+        elif isinstance(v, list) and all(isinstance(x, tuple) and len(x) == 3 for x in v):
+            v = "; ".join("m%d %s $%s" % (m, d, format(c, ",")) for m, d, c in v)
         print("  %-52s %s | %s" % (k, v, src))
     return 0
 

@@ -12,6 +12,11 @@ Scenarios: BASE (2026-27 prices hold, soft turn in 2028), GLUT (A-05: -60% over 
 Pure Python 3 stdlib. Run from the repo root:  python3 models/provenance-recert.py   (exits 0)
 Every INPUT carries a source URL or "ESTIMATE: basis". Snippet-grade sources are listed in
 research/sources/p4-provenance-recert.jsonl; judgment calls in research/assumptions/p4-provenance-recert.md.
+
+PHASE 5 (red team, agent p5r-provenance-recert, 2026-11-01): see the "RED-TEAM REVISIONS (Phase 5)" block after
+INPUTS. INPUTS keep their Phase 4 values (P_PHASE4 reproduces the Phase 4 run exactly); P0 = Phase 4 + revisions
+and is what the report prints. Section 0 lists every revision; section 8 attributes the change and runs variants.
+Responses to all 28 objections: research/phase5/responses_provenance-recert.json.
 """
 import contextlib
 import io
@@ -172,7 +177,121 @@ INPUTS = {
     "founder_hour_value": (75.0, "ESTIMATE: imputed founder time for CAC only (never cash)"),
     "hours_per_conversation": (3.0, "ESTIMATE: prospecting + call + follow-up"),
 }
-P0 = {k: v[0] for k, v in INPUTS.items()}
+
+# ==============================================================================================
+# RED-TEAM REVISIONS (Phase 5)  -- agent p5r-provenance-recert, 2026-11-01
+# Four adversarial reviewers (VET, VC, HYP, PHY; research/phase5/rt_*.json) attacked DD1 with 28 objections.
+# Every ACCEPTED objection that changes a number is applied here as
+#     key: (new value, "old -> new | objection id(s) | basis")
+# INPUTS above keep the Phase 4 values, so P_PHASE4 reproduces the Phase 4 run exactly, and report section 8
+# attributes the change revision group by revision group. Verbatim objections and dispositions:
+# research/phase5/responses_provenance-recert.json.
+# ==============================================================================================
+# Inputs that did not exist in Phase 4, with the value that reproduces Phase 4 behaviour:
+NEW_INPUT_DEFAULTS = {
+    "tax_rate": (0.0, "Phase 4 had no income-tax line"),
+    "pmem_fail_rate": (0.0, "Phase 4 applied no test fallout to PMem"),
+    "pmem_return_rate": (0.02, "Phase 4 used the RDIMM return_rate (2%) for PMem"),
+    "ebay_new_seller_caps": ((), "Phase 4 had no eBay new-seller selling limits"),
+    "ebay_hold_selling_months": (0, "Phase 4 booked eBay cash in the month of sale"),
+    "b2b_terms_months": (0, "Phase 4 booked B2B cash in the month of sale"),
+    "lib_bundle_pays_module": (False, "Phase 4: bundled library samples came free from recert flow"),
+    "dh_in_bundle": (True, "Phase 4: the bundle included the DIMM-health subscription"),
+    "ft_min_subs": (0, "Phase 4: the full-time trigger used EBITDA and cash only (DD §11 #7 adds >=5 subs)"),
+}
+RED_TEAM_REVISIONS = {
+    # --- recert: buy side, channel, test protocol, SKU mix, supply ---------------------------------
+    "buy_frac": (0.70, "0.65 -> 0.70 | RT-HYP-DD1-04, RT-VC-DD1-05 | no published ITAD lot price (2nd search "
+                       "2026-11-01 found none); open-market lots list at ~1.0x resale (PCSP); Iron Mountain keeps the "
+                       "spread; hyperscalers now keep DDR4 (Meta Vistara CXL, Marvell Structera X, Sims). 0.70 is the "
+                       "reviewers' own test value"),
+    "b2b_price_factor": (0.80, "0.88 -> 0.80 | RT-HYP-DD1-05, RT-VET-DD1-05 | B2B accounts buy ITAD lots and test "
+                               "in-house; their ceiling is their own landed cost (~0.75-0.80); top of range for "
+                               "per-serial test records"),
+    "ebay_share_m12": (0.50, "0.40 -> 0.50 | consequence of RT-HYP-DD1-05 / RT-VET-DD1-05 | at 0.80 B2B earns less "
+                             "than eBay, so volume shifts back to eBay, limited by single-seller absorption [ESTIMATE]"),
+    "fail_rate": (0.07, "0.03 -> 0.07 | RT-VET-DD1-03, RT-PHY-DD1-03 | protocol now rejects any ECC-corrected error "
+                        "logged by rasdaemon/EDAC under stressapptest plus a 55-70C soak; fleet DIMMs over-represent "
+                        "CE-prone parts (Schroeder 2009) [ESTIMATE between C_notes 3% and VET's 8%]"),
+    "return_rate": (0.03, "0.02 -> 0.03 | RT-VET-DD1-03, RT-PHY-DD1-03 | CE-reject protocol catches most escapes; "
+                          "retention/VRT escapes remain (VET's 5% applied to the old memtest-only protocol)"),
+    "minutes_per_module": (15.0, "12 -> 15 | RT-VET-DD1-03, RT-PHY-DD1-03 | Linux CE logging, heated-soak load/unload"),
+    "capex_m1": (4700.0, "4,200 -> 4,700 | RT-VET-DD1-03, RT-PHY-DD1-03 | +$500 heated soak enclosure/heaters "
+                         "[ESTIMATE]"),
+    "mix_ddr4_32": (0.65, "0.60 -> 0.65 | RT-VET-DD1-04 | DDR5 slice reallocated to DDR4"),
+    "mix_ddr4_64": (0.32, "0.30 -> 0.32 | RT-VET-DD1-04 | as above"),
+    "mix_ddr5_64": (0.03, "0.10 -> 0.03 | RT-VET-DD1-04 | DDR5 servers shipped from Nov-22/Jan-23; 5-6-year lives "
+                          "mean almost no decommissions before 2028; residual = excess/new-pull stock [ESTIMATE]"),
+    "units_cap_pt": (300, "400 -> 300 | RT-HYP-DD1-04 | DDR4 supply reaching ITADs shrinks as hyperscalers redeploy "
+                          "it behind CXL; a small buyer is a broker's customer [ESTIMATE]"),
+    "units_cap_ft": (450, "600 -> 450 | RT-HYP-DD1-04 | as above"),
+    # --- cash cycle and tax --------------------------------------------------------------------------
+    "ebay_new_seller_caps": ((20, 50, 100), "none -> 20/50/100 eBay units in the first 3 selling months | "
+                             "RT-VC-DD1-04 | new-seller limits start near 10 items/$500 and lift over ~90 days "
+                             "(nifty.ai, closo snippets); excess is sold B2B"),
+    "ebay_hold_selling_months": (3, "0 -> 3 | RT-VC-DD1-04 | new-seller payout holds ~14-30 days "
+                                    "(auctionnudge snippet): eBay proceeds of the first 3 selling months land a month late"),
+    "b2b_terms_months": (1, "0 -> 1 | RT-VC-DD1-04 | refurbishers and TPM desks buy on net-30"),
+    "tax_rate": (0.30, "0 -> 0.30 | RT-VC-DD1-07 | pass-through LLC: federal + state + SE tax provision on positive "
+                       "taxable income (EBITDA after salary, capex expensed), loss carry-forward, paid monthly"),
+    # --- PMem SKU -------------------------------------------------------------------------------------
+    "pmem_fail_rate": (0.10, "0 -> 0.10 | RT-PHY-DD1-05, RT-VET-DD1-07 | passphrase-locked/security-frozen "
+                             "modules, unsanitizable media, worn media [ESTIMATE]"),
+    "pmem_return_rate": (0.05, "0.02 -> 0.05 | RT-PHY-DD1-05, RT-VET-DD1-07 | Cascade Lake vs Ice Lake platform "
+                               "mismatch and firmware returns [ESTIMATE]"),
+    # --- die-source library (redesigned: per-lot package top-mark images + X-ray triage + exception decap)
+    "lib_bundle_pays_module": (True, "False -> True | RT-PHY-DD1-01, RT-HYP-DD1-02, RT-VC-DD1-02 | recert flow is "
+                                     "2018-22 OEM DDR4 with ~zero CXMT; the at-risk population (new third-party DDR5 "
+                                     "RDIMMs) must be bought at market"),
+    "lib_module_cost": (600.0, "150 -> 600 | RT-PHY-DD1-01, RT-HYP-DD1-02, RT-VC-DD1-02 | new 16-32GB third-party "
+                               "DDR5 RDIMM at ~$25/GB contract ($400-800) [ESTIMATE]"),
+    "lib_samples_early": (1.0, "3 -> 1 | RT-PHY-DD1-02, RT-VET-DD1-02, RT-HYP-DD1-03, RT-VC-DD1-03 | module P/N + "
+                               "date code is not a valid key (multi-sourced P/Ns); library becomes per-lot package "
+                               "top-mark images keyed on FBGA/marking code, decap only for exceptions"),
+    "lib_samples_late": (0.5, "1 -> 0.5 | as above"),
+    "lab_cost": (600.0, "400 -> 600 | RT-VET-DD1-06 | lab minimum-lot and report charges; plan at the track-B "
+                        "ceiling until three written quotes exist"),
+    # --- CleanBOM demand (core module-maker buyer removed) ---------------------------------------------
+    "cb_close_bundle": (0.05, "0.10 -> 0.05 | RT-HYP-DD1-01, RT-VC-DD1-01, RT-VET-DD1-01, RT-HYP-DD1-02, RT-PHY-DD1-01, "
+                              "RT-VC-DD1-02 | the core module-maker buyer already holds die source and may self-certify; "
+                              "no library lift; remaining buyers are refurb/odd-lot resellers and white-box builders "
+                              "[ESTIMATE]"),
+    "cb_close_standalone": (0.05, "0.07 -> 0.05 | as above; no bundle/standalone difference remains"),
+    "cb_hi_share": (0.10, "0.35 -> 0.10 | RT-HYP-DD1-06 + the three FATALs | high tier now = white-box/appliance "
+                          "builders only; module makers removed"),
+    "cb_pack_rate": (0.10, "0.15 -> 0.10 | RT-HYP-DD1-07 | top-mark + SPD check does the common case in-house; "
+                           "packs sell only for refurb/odd-lot exceptions"),
+    "opex_eo": (600.0, "400 -> 600 | RT-HYP-DD1-08 | published tech E&O range ~$500-9,000+/yr (Insureon); premium "
+                       "for government-reliance exposure without a regulatory exclusion is unquoted [ESTIMATE]"),
+    # --- DIMM-health ------------------------------------------------------------------------------------
+    "dh_in_bundle": (False, "True -> False | RT-PHY-DD1-04 | predictive claim dropped (DDR5 on-die ECC thins the "
+                            "CE signal; free BMC prediction; no precision/recall); tested spares sell via recert B2B"),
+}
+_unknown = set(RED_TEAM_REVISIONS) - set(INPUTS) - set(NEW_INPUT_DEFAULTS)
+assert not _unknown, _unknown
+# Revision groups, in the order section 8 applies them cumulatively (attribution waterfall):
+REVISION_GROUPS = [
+    ("Tax provision 30% (VC-07)", ("tax_rate",)),
+    ("Cash cycle: eBay limits/holds, B2B net-30 (VC-04)",
+     ("ebay_new_seller_caps", "ebay_hold_selling_months", "b2b_terms_months")),
+    ("Buy fraction 0.70 + supply caps 300/450 (HYP-04, VC-05)", ("buy_frac", "units_cap_pt", "units_cap_ft")),
+    ("B2B at 0.80x eBay, eBay share 0.50 (HYP-05, VET-05)", ("b2b_price_factor", "ebay_share_m12")),
+    ("CE-logging test protocol: fallout 7%, returns 3% (VET-03, PHY-03)",
+     ("fail_rate", "return_rate", "minutes_per_module", "capex_m1")),
+    ("SKU mix: DDR5 10% -> 3% (VET-04)", ("mix_ddr4_32", "mix_ddr4_64", "mix_ddr5_64")),
+    ("PMem fallout/returns (PHY-05, VET-07)", ("pmem_fail_rate", "pmem_return_rate")),
+    ("DIMM-health subscription dropped (PHY-04)", ("dh_in_bundle",)),
+    ("Library re-keyed, bought at market, lab $600 (PHY-01/02, HYP-02/03, VC-02/03, VET-02/06)",
+     ("lib_bundle_pays_module", "lib_module_cost", "lib_samples_early", "lib_samples_late", "lab_cost")),
+    ("CleanBOM demand: close 5%, high tier 10%, packs 10% (HYP-01, VC-01, VET-01, HYP-06, HYP-07)",
+     ("cb_close_bundle", "cb_close_standalone", "cb_hi_share", "cb_pack_rate")),
+    ("E&O $600/month (HYP-08)", ("opex_eo",)),
+]
+assert sorted(k for _, ks in REVISION_GROUPS for k in ks) == sorted(RED_TEAM_REVISIONS)
+P_PHASE4 = {k: v[0] for k, v in INPUTS.items()}
+P_PHASE4.update({k: v[0] for k, v in NEW_INPUT_DEFAULTS.items()})
+P0 = dict(P_PHASE4)
+P0.update({k: v[0] for k, v in RED_TEAM_REVISIONS.items()})
 M = P0["months"]
 SCENARIOS = ("BASE", "GLUT", "SEVERE")
 ALL_LINES = ("recert", "pmem", "cb", "dh")
@@ -219,12 +338,14 @@ def ebay_share(p, m):
 def recert_unit(p, idx_sell, idx_buy, es):
     """Per GOOD module sold: revenue, buy (incl. fallout), fees, ship, consumables, returns, labor, contribution."""
     cm = p.get("_cogs_mult", 1.0)
-    rev = buy = fees = ship = 0.0
+    rev = buy = fees = ship = rev_e_tot = rev_b_tot = 0.0
     for _, gb, base, share in skus(p):
         ps = sku_price(p, base, gb, idx_sell)
         pb = sku_price(p, base, gb, idx_buy)
         r_e, r_b = ps, ps * p["b2b_price_factor"]
         rev += share * (es * r_e + (1 - es) * r_b)
+        rev_e_tot += share * es * r_e
+        rev_b_tot += share * (1 - es) * r_b
         fees += share * (es * (r_e * p["ebay_fee_pct"] * cm + p["ebay_fee_per_order"])
                          + (1 - es) * r_b * p["b2b_fee_pct"] * cm)
         ship += share * (es * p["ship_ebay"] + (1 - es) * p["ship_b2b"])
@@ -234,17 +355,19 @@ def recert_unit(p, idx_sell, idx_buy, es):
     labor = p["minutes_per_module"] / 60.0 * p["tech_rate"] / (1 - p["fail_rate"])
     cons = p["consumables"]
     contrib = rev - buy_good - fees - ship - ret - cons - labor
-    return dict(rev=rev, buy=buy_good, buy_raw=buy, fees=fees, ship=ship, ret=ret, cons=cons, labor=labor,
-                contrib=contrib, gm=contrib / rev if rev else 0.0)
+    return dict(rev=rev, rev_ebay=rev_e_tot, rev_b2b=rev_b_tot, buy=buy_good, buy_raw=buy, fees=fees, ship=ship,
+                ret=ret, cons=cons, labor=labor, contrib=contrib, gm=contrib / rev if rev else 0.0)
 
 
 def pmem_unit(p, idx):
+    """Per GOOD PMem module sold; fallout (locked/unsanitizable/worn, Phase 5) is carried by good units."""
     cm = p.get("_cogs_mult", 1.0)
+    fr = p["pmem_fail_rate"]
     price = p["pmem_price"] * idx * p.get("_recert_price_mult", 1.0)
-    buy = p["pmem_buy_frac"] * cm * price
+    buy = p["pmem_buy_frac"] * cm * price / (1 - fr)
     fees = price * p["ebay_fee_pct"] * cm + p["ebay_fee_per_order"]
-    labor = 15.0 / 60.0 * p["tech_rate"]
-    c = price - buy - fees - p["ship_ebay"] - price * p["return_rate"] - p["consumables"] - labor
+    labor = 15.0 / 60.0 * p["tech_rate"] / (1 - fr)
+    c = price - buy - fees - p["ship_ebay"] - price * p["pmem_return_rate"] - p["consumables"] - labor
     return dict(rev=price, buy=buy, fees=fees, labor=labor, contrib=c, gm=c / price if price else 0.0)
 
 
@@ -265,7 +388,14 @@ def cb_arpa(p):
 # ----------------------------------------------------------------------------------------------
 # Monthly simulation
 # ----------------------------------------------------------------------------------------------
-def simulate(scn, p, lines=ALL_LINES):
+def bundle_lines(p):
+    """Phase 5: DIMM-health subscription dropped from the bundle (RT-PHY-DD1-04) unless dh_in_bundle."""
+    return ALL_LINES if p.get("dh_in_bundle", True) else ("recert", "pmem", "cb")
+
+
+def simulate(scn, p, lines=None):
+    if lines is None:
+        lines = bundle_lines(p)
     cm = p.get("_cogs_mult", 1.0)
     sp = p.get("_saas_price_mult", 1.0)
     close_mult = p.get("_close_mult", 1.0)
@@ -279,6 +409,10 @@ def simulate(scn, p, lines=ALL_LINES):
     dh = 0.0
     pool_units = 0.0
     lib_n = 0.0
+    ar = 0.0            # receivables (eBay new-seller holds, B2B net-30) collected next month   (Phase 5)
+    sell_months = 0     # recert selling months so far (eBay new-seller ramp)                      (Phase 5)
+    nol = 0.0           # tax loss carry-forward                                                   (Phase 5)
+    caps = tuple(p.get("ebay_new_seller_caps") or ())
     rows, pre_hist = [], []
     for m in range(1, M + 1):
         idx = price_index(scn, m, p)
@@ -290,14 +424,26 @@ def simulate(scn, p, lines=ALL_LINES):
         cash_in = cash_out = 0.0
         # ---- recert: sell last month's purchases ------------------------------------------------
         units_sold = 0.0
+        cash_in += ar          # last month's held eBay proceeds and B2B net-30 invoices arrive
+        ar = 0.0
         if inv_units > 0:
-            u = recert_unit(p, idx, inv_idx, es)
             good = inv_units * (1 - p["fail_rate"])
+            es_m = es
+            if sell_months < len(caps) and good > 0:      # eBay new-seller limit; excess sold B2B
+                es_m = min(es, caps[sell_months] / good)
+            u = recert_unit(p, idx, inv_idx, es_m)
             units_sold = good
             rev["recert"] = good * u["rev"]
             var_cash = good * (u["fees"] + u["ship"] + u["ret"] + u["cons"])
             cogs["recert"] = inv_cost + var_cash
-            cash_in += rev["recert"]
+            deferred = 0.0
+            if sell_months < p.get("ebay_hold_selling_months", 0):
+                deferred += good * u["rev_ebay"]
+            if p.get("b2b_terms_months", 0) > 0:
+                deferred += good * u["rev_b2b"]
+            ar = deferred
+            sell_months += 1
+            cash_in += rev["recert"] - deferred
             cash_out += var_cash
         # ---- PMem SKU (bought and sold within the month) ----------------------------------------
         pm_units = 0.0
@@ -307,12 +453,12 @@ def simulate(scn, p, lines=ALL_LINES):
             if pu["gm"] < p["min_margin_to_buy"]:
                 pm_units *= p["maintenance_buy_frac"]
             rev["pmem"] = pm_units * pu["rev"]
-            pm_cash = pm_units * (pu["buy"] + pu["fees"] + p["ship_ebay"] + pu["rev"] * p["return_rate"]
+            pm_cash = pm_units * (pu["buy"] + pu["fees"] + p["ship_ebay"] + pu["rev"] * p["pmem_return_rate"]
                                   + p["consumables"])
             cogs["pmem"] = pm_cash
             cash_in += rev["pmem"]
             cash_out += pm_cash
-            hours += pm_units * 15.0 / 60.0
+            hours += pm_units * 15.0 / 60.0 / (1 - p["pmem_fail_rate"])
         # ---- CleanBOM ---------------------------------------------------------------------------
         lib_cost = 0.0
         cb_conv = 0.0
@@ -320,7 +466,8 @@ def simulate(scn, p, lines=ALL_LINES):
         if "cb" in lines:
             if m >= 4:
                 n = p["lib_samples_early"] if m <= 18 else p["lib_samples_late"]
-                lib_cost = n * p["lab_cost"] * cm + (0.0 if (bundled and not p.get("_no_lift")) else n * p["lib_module_cost"])
+                pays_module = (not bundled) or p.get("_no_lift") or p.get("lib_bundle_pays_module")
+                lib_cost = n * p["lab_cost"] * cm + (n * p["lib_module_cost"] if pays_module else 0.0)
                 lib_n += n
             if m >= cb_launch:
                 cb_conv = p["cb_conv_ft"] if ft else p["cb_conv_pt"]
@@ -393,6 +540,16 @@ def simulate(scn, p, lines=ALL_LINES):
         ebitda_pre = gp - opex
         ebitda = ebitda_pre - salary
         cash += cash_in - cash_out - tech - opex - salary - capex
+        # ---- income tax provision (Phase 5, RT-VC-DD1-07): capex expensed, losses carried forward -----
+        taxable = ebitda - capex
+        if taxable > 0:
+            use = min(nol, taxable)
+            nol -= use
+            tax = p.get("tax_rate", 0.0) * (taxable - use)
+        else:
+            nol += -taxable
+            tax = 0.0
+        cash -= tax
         # ---- recert purchase for next month (capital- and margin-limited) -------------------------
         buy_units, buy_cost = 0.0, 0.0
         if "recert" in lines and m >= p["recert_start"]:
@@ -415,7 +572,7 @@ def simulate(scn, p, lines=ALL_LINES):
         pre_hist.append(ebitda_pre)
         ft_this = ft
         if not ft and not p.get("_never_ft") and len(pre_hist) >= 3 and sum(pre_hist[-3:]) / 3.0 >= p["ft_trigger_ebitda"] \
-                and cash >= p["ft_trigger_cash"]:
+                and cash >= p["ft_trigger_cash"] and (cb_lo + cb_hi) >= p.get("ft_min_subs", 0):
             ft = True
         elif ft and cash < p["ft_revert_cash"]:
             ft = False
@@ -424,7 +581,7 @@ def simulate(scn, p, lines=ALL_LINES):
                          revenue=revenue, gp=gp, opex=opex, salary=salary, ebitda=ebitda, ebitda_pre=ebitda_pre,
                          cash=cash, cb_subs=cb_lo + cb_hi, dh_custs=dh, mrr=cb_mrr + dh_mrr, cb_mrr=cb_mrr,
                          dh_mrr=dh_mrr, ft=ft_this, lib=lib_n, cb_conv=cb_conv, cb_new=cb_new, inv=buy_cost,
-                         pool=pool_units * spare_cost(p, idx, bundled), net=cash + buy_cost,
+                         pool=pool_units * spare_cost(p, idx, bundled), net=cash + buy_cost, tax=tax, ar=ar,
                          gp_recert=rev["recert"] + rev["pmem"] - cogs["recert"] - cogs["pmem"] - tech,
                          gp_cb=rev["cb"] - cogs["cb"], gp_dh=rev["dh"] - cogs["dh"]))
     return rows
@@ -450,7 +607,8 @@ def metrics(rows):
                 low_net=low_net["net"], low_net_m=low_net["m"], inv36=rows[-1]["inv"], net36=rows[-1]["net"],
                 cash36=rows[-1]["cash"], cum_ebitda=sum(r["ebitda"] for r in rows), subs18=rows[17]["cb_subs"], subs36=rows[-1]["cb_subs"],
                 dh18=rows[17]["dh_custs"], dh36=rows[-1]["dh_custs"], ft_months=sum(1 for r in rows if r["ft"]),
-                rev_total=sum(r["revenue"] for r in rows))
+                rev_total=sum(r["revenue"] for r in rows), cum_tax=sum(r["tax"] for r in rows), ar36=rows[-1]["ar"],
+                rec_rev=sum(r["rev_recert"] for r in rows), units_total=sum(r["units"] for r in rows))
 
 
 # ----------------------------------------------------------------------------------------------
@@ -499,13 +657,27 @@ def main():
           "(amcompute 55-74%% band check)" % (NEW_RDIMM64_PER_GB, used_ddr5_gb, 100 * used_ddr5_gb / NEW_RDIMM64_PER_GB))
     print("  Used resale index applied to all recert SKUs, PMem and spares; CleanBOM demand is statutory (same in all).")
     print("  INPUTS: %d values, each with a source or 'ESTIMATE: basis' (see the INPUTS dict in this file)." % len(INPUTS))
+    print("  PHASE 5: every number below uses P0 = Phase 4 INPUTS + the %d RED-TEAM REVISIONS listed in section 0."
+          % len(RED_TEAM_REVISIONS))
+
+    # ---------------- 0. red-team revisions ----------------
+    section("0. RED-TEAM REVISIONS (Phase 5): every changed input, old -> new, objection id (2026-11-01)")
+    rows = []
+    for key, (val, note) in RED_TEAM_REVISIONS.items():
+        old = P_PHASE4[key]
+        parts = note.split(" | ")
+        rows.append([key, str(old), str(val), parts[1] if len(parts) > 1 else ""])
+    table(["Input", "Phase 4", "Phase 5", "Objection id(s)"], rows, ["l", "r", "r", "l"])
+    print("  Basis for each revision: RED_TEAM_REVISIONS in this file. Section 8 shows what each group costs.")
 
     # ---------------- 1. unit economics per line ----------------
     section("1. UNIT ECONOMICS PER PRODUCT LINE (per unit, at each price deck; steady state, no inventory lag)")
     decks = [("Today (BASE 2026-27)", 1.0), ("GLUT (x%.2f)" % GLUT_RATIO, GLUT_RATIO),
              ("SEVERE (x%.2f)" % SEVERE_RATIO, SEVERE_RATIO)]
-    print("\n1a. Recert RDIMM (mix 60%% 32GB DDR4 / 30%% 64GB DDR4 / 10%% 64GB DDR5), per good module; "
-          "buy at %.0f%% of realized resale" % (100 * p["buy_frac"]))
+    print("\n1a. Recert RDIMM (mix %.0f%% 32GB DDR4 / %.0f%% 64GB DDR4 / %.0f%% 64GB DDR5), per good module; "
+          "buy at %.0f%% of realized resale; fallout %.0f%%, returns %.0f%%"
+          % (100 * p["mix_ddr4_32"], 100 * p["mix_ddr4_64"], 100 * p["mix_ddr5_64"], 100 * p["buy_frac"],
+             100 * p["fail_rate"], 100 * p["return_rate"]))
     rows = []
     for name, idx in decks:
         for ch, es in (("eBay", 1.0), ("B2B", 0.0), ("mix m12", p["ebay_share_m12"])):
@@ -529,7 +701,8 @@ def main():
     print("  Inventory lag: buying at today's price and selling one GLUT month later (-%.0f%%/month) gives %s "
           "contribution per module (%s)." % (100 * (1 - GLUT_RATIO) / 12, usd(u_lag["contrib"]), pct(u_lag["gm"])))
 
-    print("\n1b. Optane PMem 128GB (C-26 SKU), eBay only")
+    print("\n1b. Optane PMem 128GB (C-26 SKU), eBay only; fallout %.0f%% (locked/unsanitizable), returns %.0f%%"
+          % (100 * p["pmem_fail_rate"], 100 * p["pmem_return_rate"]))
     table(["Deck", "Price", "Buy", "Fees", "Labor", "Contrib", "GM"],
           [[n, usd(pmem_unit(p, i)["rev"]), usd(pmem_unit(p, i)["buy"]), usd(pmem_unit(p, i)["fees"]),
             usd(pmem_unit(p, i)["labor"]), usd(pmem_unit(p, i)["contrib"]), pct(pmem_unit(p, i)["gm"])]
@@ -548,7 +721,8 @@ def main():
     print("  One-off evidence pack: $%d at ~%s GM (software cost only)." % (p["cb_pack_price"],
                                                                         pct(1 - p["cb_sw_cogs_pct"])))
 
-    print("\n1d. DIMM-health per customer-year (%d DIMMs at $%.2f/DIMM-month)" % (p["dh_dimms"], p["dh_price"]))
+    print("\n1d. DIMM-health per customer-year (%d DIMMs at $%.2f/DIMM-month) -- Phase 5: DROPPED from the bundle "
+          "(RT-PHY-DD1-04); shown for reference only" % (p["dh_dimms"], p["dh_price"]))
     rows = []
     for n, i in decks:
         for bundled in (True, False):
@@ -586,19 +760,23 @@ def main():
     for scn in SCENARIOS:
         rows = simulate(scn, p)
         results[scn] = rows
-        section("2. MONTHLY P&L AND CASH, %s scenario (all four lines; $; FT = founder full-time)" % scn)
+        section("2. MONTHLY P&L AND CASH, %s scenario (bundle = %s; $; FT = founder full-time)"
+                % (scn, "+".join(bundle_lines(p))))
         out = []
         for r in rows:
             out.append([r["label"], "%.2f" % r["idx"], "%d" % round(r["units"]), k(r["rev_recert"]), k(r["rev_cb"]),
                         k(r["rev_dh"]), k(r["revenue"]), k(r["gp"]), k(r["opex"]), k(r["salary"]), k(r["ebitda"]),
-                        k(r["cash"]), k(r["inv"]), "%.1f" % r["cb_subs"], "%.1f" % r["dh_custs"], k(r["mrr"] * 12),
+                        k(r["tax"]), k(r["cash"]), k(r["ar"]), k(r["inv"]), "%.1f" % r["cb_subs"], "%.1f" % r["dh_custs"], k(r["mrr"] * 12),
                         "FT" if r["ft"] else ""])
         table(["Month", "Idx", "Mods", "Recert+PMem", "CleanBOM", "DIMM-h", "Revenue", "GP", "Opex", "Salary",
-               "EBITDA", "Cash", "Inv buy", "CB subs", "DH cust", "ARR", ""], out)
+               "EBITDA", "Tax", "Cash", "AR", "Inv buy", "CB subs", "DH cust", "ARR", ""], out)
         print("  Mods = good recert modules sold. Inv buy = lots bought this month for next month (cash already out).")
+        print("  Tax = 30% provision on positive taxable income (Phase 5). AR = eBay held proceeds + B2B net-30 invoices"
+              " (Phase 5),")
+        print("  collected next month. Recert buying stops (10% trickle) when expected contribution < 5% of price.")
 
     # ---------------- 3. scenario summary ----------------
-    section("3. SCENARIO SUMMARY (bundle, all four lines)")
+    section("3. SCENARIO SUMMARY (bundle = %s)" % "+".join(bundle_lines(p)))
     out = []
     for scn in SCENARIOS:
         mt = metrics(results[scn])
@@ -609,8 +787,13 @@ def main():
     table(["Scenario", "Breakeven (actual)", "Breakeven @$10k salary", "Cash low", "Cash+inv low", "ARR m12",
            "ARR m18", "ARR m24", "ARR m36", "Run-rate m18", "Run-rate m36", "Cash m36", "Inventory m36",
            "Founder FT from"], out)
-    print("  Cash low sits on the $5k reserve by design: the operator buys inventory down to the reserve, so working")
-    print("  capital, not losses, is what binds in year 1. 'Cash+inv low' adds back the lots bought that month.")
+    print("  The operator buys inventory down to the $5k reserve, so a cash low AT the reserve is working capital; a low")
+    print("  BELOW it is operating losses (Phase 5 BASE: CleanBOM's fixed costs before it covers them).")
+    print("  'Cash+inv low' adds back the lots bought that month.")
+    for scn in SCENARIOS:
+        mt = metrics(results[scn])
+        print("  %-6s cumulative EBITDA %s; tax provision %s; receivables at m36 %s; founder full-time months %d"
+              % (scn, usd(mt["cum_ebitda"]), usd(mt["cum_tax"]), usd(mt["ar36"]), mt["ft_months"]))
     print("  ARR = recurring only (CleanBOM subscriptions + DIMM-health) x 12. Run-rate = all revenue in that month x 12.")
     print("  'Breakeven (actual)' = first of 3 straight months with EBITDA >= 0 as actually incurred (founder unpaid")
     print("  until the full-time trigger). 'Breakeven @$10k salary' charges a market founder salary every month.")
@@ -630,16 +813,19 @@ def main():
         print("  %-6s blended %s | recert+PMem %s | CleanBOM %s | DIMM-health %s"
               % (scn, g("revenue", "gp"), g("rev_recert", "gp_recert"), g("rev_cb", "gp_cb"), g("rev_dh", "gp_dh")))
     lib = results["BASE"][-1]["lib"]
-    print("  Die-source library by m36: %d lab-confirmed module part numbers (X-ray+decap), plus SPD records on every"
-          " recert module." % lib)
+    print("  Die-source library by m36: %.0f lab samples (Phase 5: validation/exception samples of NEW third-party DDR5"
+          % lib)
+    print("  RDIMMs bought at market, keyed on DRAM package marking + die outline; NOT module-P/N coverage).")
 
     # ---------------- 4. whole vs parts ----------------
     section("4. IS THE WHOLE BETTER THAN ITS PARTS?  (same founder, same $40k, run line-by-line)")
-    configs = [("Bundle (all four)", ALL_LINES, {}), ("Recert + PMem only", ("recert", "pmem"), {}),
+    bl = bundle_lines(p)
+    configs = [("Bundle (%s)" % "+".join(bl), bl, {}), ("Recert + PMem only", ("recert", "pmem"), {}),
                ("CleanBOM standalone", ("cb",), {}), ("DIMM-health standalone", ("dh",), {}),
-               ("Recert + CleanBOM", ("recert", "pmem", "cb"), {}),
-               ("Bundle, no evidence lift", ALL_LINES, {"_no_lift": True}),
-               ("Bundle, founder never FT", ALL_LINES, {"_never_ft": True})]
+               ("Bundle + DIMM-health (Phase 4 line)", ALL_LINES, {}),
+               ("Bundle, no evidence lift", bl, {"_no_lift": True}),
+               ("Bundle, founder never FT", bl, {"_never_ft": True}),
+               ("Bundle, FT gate >=5 subs (DD §11 #7)", bl, {"ft_min_subs": 5})]
     out = []
     for scn in SCENARIOS:
         for name, ln, ov in configs:
@@ -651,9 +837,10 @@ def main():
                         usd(mt["cum_ebitda"]), "%d" % mt["ft_months"]])
     table(["Scenario", "Configuration", "Cash low", "Breakeven", "ARR m18", "ARR m36", "Run-rate m36", "Cash m36",
            "Cum EBITDA", "FT months"], out, ["l", "l"] + ["r"] * 8)
-    print("  Standalone CleanBOM pays for each library sample module and closes at %.0f%% vs %.0f%% (the bundle"
+    print("  Standalone CleanBOM closes at %.0f%% vs %.0f%% in the bundle. Phase 5: the two are equal and the bundle"
           % (100 * p["cb_close_standalone"], 100 * p["cb_close_bundle"]))
-    print("  hypothesis, untested). Standalone DIMM-health buys spares at resale, not recert buy cost.")
+    print("  pays for library modules too, because recert flow samples the wrong population (RT-PHY-DD1-01 et al.).")
+    print("  Standalone DIMM-health buys spares at resale, not recert buy cost.")
     print("  'No evidence lift' keeps the recert cash but gives CleanBOM the standalone close rate and sample cost:")
     print("  the gap to the full bundle is what the die-source library is worth; the gap to 'founder never FT' is")
     print("  what recert cash (buying founder time) is worth.")
@@ -680,12 +867,14 @@ def main():
         mt = metrics(simulate("BASE", q))
         out.append([name, "+6 mo" if key == "_cb_delay" else "PT", mo(mt["be"]), usd(mt["low"]), usd(mt["arr"][18]), usd(mt["arr"][36]),
                     usd(mt["cash36"]), usd(mt["cum_ebitda"])])
-    for bf in (0.55, 0.75):
-        q = dict(p)
-        q["buy_frac"] = bf
-        mt = metrics(simulate("BASE", q))
-        out.append(["ITAD buy fraction = %.2f" % bf, "abs", mo(mt["be"]), usd(mt["low"]), usd(mt["arr"][18]),
-                    usd(mt["arr"][36]), usd(mt["cash36"]), usd(mt["cum_ebitda"])])
+    for nm, key, vals in (("ITAD buy fraction", "buy_frac", (0.55, 0.60, 0.62, 0.65, 0.75)),
+                          ("B2B price factor", "b2b_price_factor", (0.75, 0.88))):
+        for v in vals:
+            q = dict(p)
+            q[key] = v
+            mt = metrics(simulate("BASE", q))
+            out.append(["%s = %.2f" % (nm, v), "abs", mo(mt["be"]), usd(mt["low"]), usd(mt["arr"][18]),
+                        usd(mt["arr"][36]), usd(mt["cash36"]), usd(mt["cum_ebitda"])])
     table(["Input", "Move", "Breakeven", "Cash low", "ARR m18", "ARR m36", "Cash m36", "Cum EBITDA"], out,
           ["l", "l"] + ["r"] * 6)
     print("  Glut and severe sensitivities: see sections 3-4 (CleanBOM is price-independent; recert is not).")
@@ -714,10 +903,14 @@ def main():
     u = recert_unit(p, 1.0, 1.0, p["ebay_share_m12"])
     fixed18 = p["opex_tools"] + p["opex_tools_cb"] + p["opex_insurance"] + p["opex_eo"] + p["opex_books"] \
         + p["opex_marketing"] + p["opex_space"] + p["lib_samples_late"] * p["lab_cost"]
-    print("b) Recert alone covers a $10k/mo founder salary + ~%s fixed opex at %d good modules/month at today's prices"
-          % (usd(fixed18), (p["founder_salary"] + fixed18) / max(1e-9, u["contrib"])))
-    print("   (needs ~%s of inventory cash per month at %.0f%% buy) -- and only until the 2028 turn."
-          % (usd((p["founder_salary"] + fixed18) / u["contrib"] * u["buy_raw"]), 100 * p["buy_frac"]))
+    if u["contrib"] > 0:
+        print("b) Recert alone covers a $10k/mo founder salary + ~%s fixed opex at %d good modules/month at today's"
+              " prices" % (usd(fixed18), (p["founder_salary"] + fixed18) / u["contrib"]))
+        print("   (needs ~%s of inventory cash per month at %.0f%% buy) -- and only until the 2028 turn."
+              % (usd((p["founder_salary"] + fixed18) / u["contrib"] * u["buy_raw"]), 100 * p["buy_frac"]))
+    else:
+        print("b) Recert cannot cover a founder salary + ~%s fixed opex at ANY volume: contribution is %s per module"
+              " at %.0f%% buy." % (usd(fixed18), usd(u["contrib"]), 100 * p["buy_frac"]))
     gp_sub = arpa + lab_rev - lab_c - sw_c
     n_need = (p["founder_salary"] + fixed18) / gp_sub
     print("c) For the business to survive the glut on recurring revenue alone, CleanBOM needs ~%.0f paying subscribers"
@@ -730,14 +923,29 @@ def main():
     print("   Getting there by m18 from a m%d launch needs a %.0f%% close rate at %d conversations/month, or %.0f"
           " conversations/month at a %.0f%% close." % (p["cb_launch"], 100 * close_need, p["cb_conv_pt"], conv_need,
                                                      100 * p["cb_close_bundle"]))
-    print("d) Equivalently: by month 18 the founder needs ~%.0f signed provenance customers (e.g. %.0f module makers at"
-          " $%d + %.0f integrators at $%d)." % (n_need, n_need * p["cb_hi_share"], p["cb_hi_price"],
-                                                n_need * (1 - p["cb_hi_share"]), p["cb_lo_price"]))
+    print("d) Equivalently: by month 18 the founder needs ~%.0f signed provenance customers (e.g. %.0f high-tier"
+          " white-box builders at $%d + %.0f resellers/integrators at $%d)."
+          % (n_need, n_need * p["cb_hi_share"], p["cb_hi_price"], n_need * (1 - p["cb_hi_share"]), p["cb_lo_price"]))
     print("e) DIMM-health must sell at %.1fx the buyer's DIY spares cost against free OEM/BMC prediction (Lenovo MPFA,"
           % (p["dh_dimms"] * p["dh_price"] * 12 / (p["dh_dimms"] * p["dh_repl_rate"] * (spare_cost(p, 1, True) + p["dh_ship"]))))
     print("   Intel MFP) and ParkView-bundled TPM: it must be sold as a wholesale feed + spares to TPMs/MSPs, or dropped.")
     print("f) $1M ARR at m36 would need ~%.0f CleanBOM subscribers at the blended ARPA; the model reaches %.1f."
           % (1e6 / 12 / arpa, results["BASE"][-1]["cb_subs"]))
+    def solve_gm(target, es):
+        lo, hi = 0.0, 1.0
+        for _ in range(60):
+            mid = (lo + hi) / 2
+            q = dict(p)
+            q["buy_frac"] = mid
+            if recert_unit(q, 1.0, 1.0, es)["gm"] > target:
+                lo = mid
+            else:
+                hi = mid
+        return lo
+    print("g) (Phase 5) For the 8%% contribution that kill track A requires, lots must cost <= %.0f%% of realized"
+          " resale" % (100 * solve_gm(0.08, p["ebay_share_m12"])))
+    print("   (m12 mix), or <= %.0f%% selling eBay-only; the 5%% buy/no-buy line sits at %.0f%%."
+          % (100 * solve_gm(0.08, 1.0), 100 * solve_gm(p["min_margin_to_buy"], p["ebay_share_m12"])))
 
     # ---------------- 7. glut behavior per line ----------------
     section("7. GLUT BEHAVIOR PER LINE (steady-state unit margin and modeled revenue in the last 12 months)")
@@ -753,6 +961,81 @@ def main():
     print("  Recert dies as a profit line in GLUT/SEVERE (buying stops; trickle kept for spares/library). PMem dies on")
     print("  2027-10-11 (VMware) regardless. CleanBOM is unaffected by price. DIMM-health margin rises (cheap spares) but")
     print("  customers churn faster once DDR5 refresh is cheap.")
+
+    # ---------------- 8. red-team attribution and variants ----------------
+    section("8. RED-TEAM ATTRIBUTION AND VARIANTS (Phase 5)")
+
+    def row(name, q, scn="BASE", lines=None):
+        mt = metrics(simulate(scn, q, lines))
+        uu = recert_unit(q, 1.0, 1.0, q["ebay_share_m12"])
+        return [name, scn, "%s (%s)" % (usd(uu["contrib"]), pct(uu["gm"])), usd(mt["arr"][18]), usd(mt["arr"][36]),
+                usd(mt["cash36"]), "%s @m%d" % (usd(mt["low"]), mt["low_m"]), mo(mt["ft_m"]), mo(mt["be_sal"]),
+                "%.1f / %.1f" % (mt["subs18"], mt["subs36"]), usd(mt["cum_ebitda"])]
+    hdr = ["Run", "Scn", "Recert/module", "ARR m18", "ARR m36", "Cash m36", "Cash low", "Founder FT",
+           "BE @$10k salary", "CB subs m18/m36", "Cum EBITDA"]
+    al = ["l", "l"] + ["r"] * 9
+
+    print("\n8a. Phase 4 inputs reproduced (P_PHASE4), then revision groups applied CUMULATIVELY (BASE):")
+    out = [row("Phase 4 (as published)", dict(P_PHASE4))]
+    q = dict(P_PHASE4)
+    for gname, keys in REVISION_GROUPS:
+        for kk in keys:
+            q[kk] = P0[kk]
+        out.append(row("+ " + gname, dict(q)))
+    table(hdr, out, al)
+
+    print("\n8b. Each revision group applied ALONE to Phase 4 inputs (BASE):")
+    out = [row("Phase 4 (as published)", dict(P_PHASE4))]
+    for gname, keys in REVISION_GROUPS:
+        q = dict(P_PHASE4)
+        for kk in keys:
+            q[kk] = P0[kk]
+        out.append(row(gname, q))
+    table(hdr, out, al)
+
+    print("\n8c. Reviewers' own runs, re-run on Phase 4 inputs (checks their numbers):")
+    checks = [("HYP-05: B2B 0.80", {"b2b_price_factor": 0.80}, "BASE"),
+              ("HYP-05/VET-05: B2B 0.75", {"b2b_price_factor": 0.75}, "BASE"),
+              ("HYP-05/VET-05: B2B 0.75", {"b2b_price_factor": 0.75}, "GLUT"),
+              ("HYP-05: B2B 0.80 + buy 0.70", {"b2b_price_factor": 0.80, "buy_frac": 0.70}, "BASE"),
+              ("HYP-06: high-tier share 0.15", {"cb_hi_share": 0.15}, "BASE"),
+              ("HYP-06: high-tier share 0.15", {"cb_hi_share": 0.15}, "GLUT"),
+              ("VET-03: fallout 8%, returns 5%", {"fail_rate": 0.08, "return_rate": 0.05}, "BASE"),
+              ("VET-04: no DDR5 (70/30 DDR4)", {"mix_ddr4_32": 0.7, "mix_ddr4_64": 0.3, "mix_ddr5_64": 0.0}, "BASE"),
+              ("VET-04: no DDR5 + 8%/5% + buy 0.70", {"mix_ddr4_32": 0.7, "mix_ddr4_64": 0.3, "mix_ddr5_64": 0.0,
+                                                      "fail_rate": 0.08, "return_rate": 0.05, "buy_frac": 0.70}, "BASE"),
+              ("VET-06: lab $1,200, close 7%", {"lab_cost": 1200.0, "cb_close_bundle": 0.07}, "BASE"),
+              ("PHY-01: library modules $1,000, bundled too", {"lib_module_cost": 1000.0, "_no_lift": True}, "BASE")]
+    out = []
+    for name, ov, scn in checks:
+        q = dict(P_PHASE4)
+        q.update(ov)
+        out.append(row(name, q, scn))
+    table(hdr, out, al)
+
+    print("\n8d. Revised model (P0) under stress and under the kill-test outcomes:")
+    c_pass = {"cb_close_bundle": 0.10, "cb_close_standalone": 0.10, "cb_hi_share": 0.35, "cb_pack_rate": 0.15}
+    variants = [("Revised base", {}, "BASE"), ("Revised base", {}, "GLUT"), ("Revised base", {}, "SEVERE"),
+                ("Turn early (Oct-27)", {"turn_month": 12}, "GLUT"),
+                ("FAR rule slips 6 months", {"_cb_delay": 6}, "BASE"),
+                ("CleanBOM sells nothing", {"cb_close_bundle": 0, "cb_close_standalone": 0, "cb_pack_rate": 0}, "BASE"),
+                ("Recert + PMem only", {}, "BASE"),
+                ("No tax provision (VC-07 check)", {"tax_rate": 0.0}, "BASE"),
+                ("Track A passes at buy 0.62", {"buy_frac": 0.62}, "BASE"),
+                ("Track A passes at buy 0.62", {"buy_frac": 0.62}, "GLUT"),
+                ("Track C passes (close 10%, high tier 35%, packs 15%)", c_pass, "BASE"),
+                ("Tracks A (0.62) and C both pass", dict(c_pass, buy_frac=0.62), "BASE"),
+                ("Tracks A (0.62) and C both pass", dict(c_pass, buy_frac=0.62), "GLUT"),
+                ("Tracks A (0.62) and C both pass", dict(c_pass, buy_frac=0.62), "SEVERE"),
+                ("A + C pass, FT gate >=5 subs", dict(c_pass, buy_frac=0.62, ft_min_subs=5), "BASE")]
+    out = []
+    for name, ov, scn in variants:
+        q = dict(P0)
+        q.update(ov)
+        out.append(row(name, q, scn, ("recert", "pmem") if name.startswith("Recert + PMem") else None))
+    table(hdr, out, al)
+    print("  Track C 'passes' restores the Phase 4 CleanBOM demand inputs (what the red team says is unproven).")
+    print("  Under the revised inputs, kill criteria 1-2 fire on day 29: recert is not bought and CleanBOM is not built.")
     print("\nDone. exit 0")
 
 

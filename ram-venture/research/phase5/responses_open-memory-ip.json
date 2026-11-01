@@ -1,0 +1,179 @@
+{
+ "dd": "DD5",
+ "slug": "open-memory-ip",
+ "title": "U.S. Open Memory IP (compiler service -> gain-cell & ReRAM macros)",
+ "final_status": "DOWNGRADED",
+ "status_reason": "The red team killed both T2 legs. C-32 (gain cell) and C-22 (ReRAM) have no named buyer and no density or leakage case on sky130, and C-22's magnet-immunity axis is shared by OTP, eFuse and S130's own embedded NVM. The C-33 wedge survives on revised inputs: 228 projects/yr and a 55-account cap; the licence restated to nominal-lot data at $12k; free GF180 macros in the base case; a $150/h exclusive contractor; and cash-gated spends. On those inputs BASE ARR is $41.2k at m18 and $65.7k at m36, and the founder is never paid in BASE, GLUT or SEVERE. It is DOWNGRADED rather than KILLED because it needs no outside capital, is cash-positive from m12, and a ~$9.1k day-30 test decides it cheaply.",
+ "revised_verdicts": {
+  "possible": "Yes at simulation level for the C-33 wedge: a 1 KB sky130 macro is silicon-verified (TRL 6), while 16 KB+ macros are unproven and now gated on contractor-signed extracted-SPICE corners plus a 1,000-point Monte Carlo. An MPW can deliver 'nominal lot measured, corners simulated', not 'measured PVT corners'. No for T2 on this PDK: a logic-rule gain cell does not beat the pushed-rule 6T, and ReRAM's axis is shared by OTP and S130 eNVM.",
+  "profitable": "No as a job; marginal as a side line. Gross margin is 57%, and the business is cash-positive from m12 with the founder unpaid. ARR is $41.2k at m18 and $65.7k at m36 ($164.1k run-rate), and the founder is never paid in BASE, GLUT or SEVERE: peak GP is $8.0k/mo against the $11.85k needed. Only a combined upside (price x1.3, close x1.3, no free release) pays the founder, at m22. A full free release cuts ARR at m36 to $34.0k.",
+  "doable": "Yes for the wedge part-time (automation, CI, portal and sales are the founder's skills), but only with a contract memory engineer under a signed 12-month exclusivity, or a technical cofounder with equity, by m3, because the founder cannot judge the sign-off they sell. No for T2 (killed)."
+ },
+ "revised_economics": {
+  "arr_m18_base": 41179,
+  "arr_m36_base": 65678,
+  "arr_m36_glut": 54907,
+  "arr_m36_severe": 49337,
+  "founder_fulltime_month_base": "never",
+  "breakeven_month_base": "m12"
+ },
+ "ev_note": "For this founder the expected value is small and bounded. The strengthened day-30 test needs 2 open-PDK commercial or SBIR LOIs of $10k or more, a contractor-signed extracted-SPICE and Monte Carlo pass, and written no-release statements from both UCSC VLSIDA and OCD. I estimate it passes with ~15-25% probability. If it passes, revised BASE builds ~$7-8k a month of gross profit by m36 and ~$88k of cash for ~15 hours a week, but never a salary within 36 months; only a combined upside case pays the founder, at m22. If it fails, the loss is ~$9k, and the cash gate keeps the $40k from going negative. Net EV is about +$5-15k over three years (p x $88k - (1-p) x $9k at p = 0.15-0.25) before counting the founder's ~15 h/week [ESTIMATE]. Role: side line only. It is not PRIMARY. It is not FALLBACK, because it is not a path to full-time income. It is not a MOONSHOT candidate: T2 is killed and the wedge ceiling is ~$0.42M/yr. Run it beside the primary pick only if the founder wants open-silicon side income, and drop it on any failed day-30 rule.",
+ "responses": [
+  {
+   "id": "RT-VET-DD5-01",
+   "response": "Accepted. A 16 h desk review of simulated Liberty files was an opinion gate. My searches found only a 1 KB silicon-verified OpenRAM sky130 macro (NSF PAR 10495552) and 4/8 KB OpenRAM test-chip configurations taped out on MPW-3 in 2021, with no published measurements of the larger ones. So the gap is real, and so is the buildability risk. Test (iii) now requires, before 2026-12-01, a contractor-signed post-layout extracted SPICE read/write of a 16 KB sky130 macro at SS/1.62 V/125 C and FF/1.98 V/-40 C, with a bitcell Monte Carlo of 1,000 points or more. If the sky130 SRAM special-device models lack usable mismatch data, (iii) fails. Contractor time rises from 16 h to 40 h ($6.0k at the revised $150/h), and the kill test from ~$5.1k to ~$9.1k, still under the $10k cap and now carried in the model at m1. Pre-silicon macros are sold labelled 'simulated, not silicon-proven'. This does not remove the silicon risk at m11/m24, but the business no longer sells on an opinion.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Rewrote section 10 step 1 and pass rule (iii) to require extracted-SPICE corners plus a 1,000-point Monte Carlo. Kill-test budget $5.1k -> $9.1k, added to the model at m1 (R15: +$8.1k kill-test item). Section 4 preview library labelled 'simulated, not silicon-proven'."
+  },
+  {
+   "id": "RT-VET-DD5-02",
+   "response": "Accepted; this is the same finding as RT-PHY-DD5-01 and RT-HYP-DD5-02. An MPW gives one typical lot with no FF/SS/FS/SF skew wafers, and buying skew-corner wafers is not a T0 option. The plan now says plainly 'TT measured, corners simulated': one nominal lot measured at voltage and temperature points, process corners simulated and correlated to that lot, yield on 50 or more die, and a warranty limited to re-delivery or a refund of fees. The licence is repriced from $20k to $12k, and attach falls from 0.25 to 0.15 licences per commercial account a year. Thermal forcing (ThermoStream-class rental, ~$2.5k per campaign [ESTIMATE]) and BIST/delay-line test structures are now in the model. The licence's edge over free is honestly smaller, so the line falls to about $0.9k a month at m36 in revised BASE.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R5 (P_LIC $20,000 -> $12,000), R6 (LIC_RATE_COM_YR 0.25 -> 0.15) and R15 (thermal forcing $2.5k at each characterization; BIST structures). Licence restated in sections 0, 1, 2.3 and 4. Section 11 #4 now tests 50 or more die with BIST-measured timing."
+  },
+  {
+   "id": "RT-VET-DD5-03",
+   "response": "Accepted; same finding as RT-PHY-DD5-03/04. A novel 2T/3T cell on an open MPW gets the standard logic DRC deck. My rough sky130 logic-rule estimate for an NMOS-only 3T cell is 2.0-2.5 um2 before refresh logic [ESTIMATE, not a layout], against the 1.896 um2 pushed-rule 6T. My own Phase 4 notes said 'near parity unless the foundry grants rule waivers'. Retention at 85-125 C in the microsecond-to-millisecond range makes 'drop-in SRAM' false. C-32 is killed on this PDK. If it is ever revived, the first deliverable is your test: a logic-rule DRC-clean layout of 1.58 um2 or less with simulated retention of 100 us or more at 125 C. PHY's 1 ms at 85 C and power test come next, all before any STTR proposal.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "C-32 leg killed (sections 0, 2.8, 7, 8, 9). Section 11 #10 rewritten as a revival gate starting with the logic-DRC layout and retention tests. Model section 9 printed as KILLED, reference only."
+  },
+  {
+   "id": "RT-VET-DD5-04",
+   "response": "Accepted, and now confirmed rather than unverified. The wafer.space GF180MCU Run 3 page on Crowd Supply says chips are fabricated at GlobalFoundries in Singapore (search snippet, accessed 2026-11-01). The 40-university Synopsys-GF pilot also runs GF180MCU. Of the revised 228 projects a year, 148 are GF180MCU and only ~80 are U.S.-fab (ChipFoundry and Cadence sky130, plus MOSIS and the Commons). The supply-security axis and the DoD/SBIR pitch therefore apply only to that slice. GF180 buyers stay in the market on access alone, since no free macro there exceeds 1 KB. 'U.S.' in the name now describes the sky130 line only.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Section 1 Rule-4 axis split into sky130 (supply security + access) and GF180 (access only). Model section 2 now prints the GF180 (148) / U.S.-fab (80) split. R7 (LIC_DOD_MONTH 0.08 -> 0.04). Source logged in p5r-open-memory-ip.jsonl."
+  },
+  {
+   "id": "RT-VET-DD5-05",
+   "response": "Accepted on qualification, with one factual correction. The Cadence SKY130 MPW did offer a Weebit-ReRAM process option at $10-12k per block for its 2026 run (deadline 2026-01-16, die Jul-2026, per the SkyWater/Cadence page in the Phase 4 notes [REPORTED]). So a prototype path existed, but no 2027 run is documented. On qualification you are right. JESD47 needs HTOL 1,000 h on 3 lots x 77 units, plus cycled and uncycled retention bakes, ESD/latch-up and MSL, on a production S130+ReRAM flow: three engineering lots, 9-12 months, and a trusted package/test flow. $950k buys a mask set and perhaps one lot. The qualification line is revised from $400k to ~$1.0M, so the chiplet line goes from $0.95M to ~$1.55M [ESTIMATE]. Together with RT-PHY-DD5-05 and RT-VC-DD5-02, C-22 is killed.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "C-22 leg killed. Model R17 (QUAL_LOTS $400k -> $1.0M, reference only). Section 2.8 lists the reason. Section 11 #11 rewritten as a revival gate requiring a SkyWater 3-lot quote plus a JESD47 qual-house quote."
+  },
+  {
+   "id": "RT-VET-DD5-06",
+   "response": "Accepted. TTSKY25b on ChipFoundry CI2511 closed submissions on 2025-11-10 and expected chips in Jul-2026, about 8 months. ChipFoundry also moves under-filled runs to the next shuttle (Tiny Tapeout pages, via search). sky130 characterization moves from m13 to m16 on schedule. With the new cash gate, the slot itself waits from m7 to m15, so sky130 licences open at m24 (Nov-2028), inside the modeled glut. The licence line is small (~$0.9k a month at m36), so the revenue effect is minor, but the sky130/SBIR story arrives about a year later than Phase 4 said.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R10 (SKY130_CHAR_DONE 13 -> 16), plus the cash gate. Section 2.4 now shows characterized-silicon dates (GF180 m11, sky130 m24). Section 8 roadmap re-timed. Section 11 #6 moved from m14 to m25."
+  },
+  {
+   "id": "RT-VC-DD5-01",
+   "response": "Accepted on the numbers, not on KILL. Half of the 298 projects were my estimates, and the Phase 4 ChipFoundry input note itself said ~20-30 paid slots a year yet used 60. Revised inputs:\n- ChipFoundry 30, Cadence 20, MOSIS/Commons/other 30;\n- 228 projects a year, 27 paying projects a year, a 55-account cap, and a $424k/yr serviceable ceiling (was $747k);\n- free is now in the base case (RT-HYP-DD5-04).\n\nRevised BASE has ARR $41.2k at m18 and $65.7k at m36, and the founder is never paid. A full free shock gives $34.0k at m36. I do not accept KILL, because the wedge asks no one for money. It runs on $40k with a gated cash low of $4.0k, is cash-positive from m12, and a ~$9k day-30 test can kill it cheaply. I withdraw 'credible FALLBACK' and agree it is not fundable: it is a side line only.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R1-R3 (market 298 -> 228 projects/yr) and R13 (base-case free release). Section 0 verdict changed from 'FALLBACK or side line' to 'side line only'. Section 2.2 ceiling $747k -> $424k. Section 7: never raise. Section 10 (iv) requires written statements."
+  },
+  {
+   "id": "RT-VC-DD5-02",
+   "response": "Accepted. On its own numbers the T2 stage adds at most 1.25-1.43x bitcell density in same-rule silicon, and ~0.75-0.95x against sky130's pushed-rule 6T (RT-PHY-DD5-03). Even after the downgrade to ~2.7x, the wedge's banking gain is larger. RAAAM holds the commercial seat (NXP-led $17.5M Series A, TSMC N2 test chip, GF FDX access). Weebit's licence is non-exclusive, with an unknown fee for a startup. The seed gate could have been met on services run-rate with no product pull. No named design partner or $75k LOI exists, and the FTO read was never done. T2 (C-32 and C-22) is killed. DD5 is now C-33 only, and this deep dive cannot fill the study's T2 slot.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "T2 legs killed across sections 0, 2.8, 7, 8, 9 and 11. Model section 9 is printed as 'KILLED, reference only' and is excluded from every headline. No external capital is planned."
+  },
+  {
+   "id": "RT-VC-DD5-03",
+   "response": "Accepted. Revised revenue is 29-40% recurring. Service gross margin falls to 34% (academic) and 51% (commercial) at the revised $150/h. The founder cannot judge the sign-off they sell. Two mitigations, both raising cost:\n(a) a new m3 kill criterion requiring a signed 12-month exclusivity / non-compete from the memory contractor on free silicon-characterized 16 KB+ sky130 macros, or a technical cofounder with equity;\n(b) a contract rate of $150/h to pay for that exclusivity [ESTIMATE: +20%].\n\nOCD may refuse a non-compete, because its business is open source; the fallback candidates are OpenRAM alumni or Chips4Makers. Either way this is a services shop, not an IP company.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R8 (CONTRACT_RATE $125 -> $150). Section 11 #2: new m3 kill criterion (exclusive SOW or technical cofounder by 2027-02-28). Section 9 team table updated. Section 2.5 now says 'staffing agency for OpenRAM is close to the truth'."
+  },
+  {
+   "id": "RT-VC-DD5-04",
+   "response": "Accepted in substance. Searches found no 2027 ChipFoundry or wafer.space calendar. TTSKY25b took ~8 months from submission close to expected chips, and ChipFoundry slips under-filled runs. sky130 characterization moves from m13 to m16 before the cash gate. With the gate, the first sky130 slot waits to m15 and silicon to m24. Your requested variant:\n- on Phase 4 inputs, a 6-month slip of the m7 slot still pays the founder at m21, inside your m30 test;\n- on revised inputs the slip changes nothing (ARR m36 $65.7k), because the gate already holds the slot to m15, and the founder is never paid for other reasons.\n\nThe 'one shuttle cycle' head start is withdrawn.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R9 (GF180 characterized m10 -> m11), R10 (sky130 m13 -> m16), and a sky130_slip variant in sensitivity (section 2.6). Section 5 win condition #1 rewritten. Section 10 asks ChipFoundry and wafer.space for dated 2027 calendars. Section 11 #6 moved to m25."
+  },
+  {
+   "id": "RT-VC-DD5-05",
+   "response": "Accepted. Academic share rises to 0.70 (RT-HYP-DD5-03); revised BASE has ~11 academic and ~5 commercial accounts at m36. I could not confirm what memory IP the Synopsys-GF pilot provides, so the kill test now asks Synopsys / GF University Partnership in writing. If the pilot gives members GF180 memory IP of 8 KB or more free, its 40 projects come out of the market (228 -> 188 a year) before any GF180 slot spend. Kill-test (ii) now requires 2 or more open-PDK commercial/SBIR buyers committing $10k or more who confirm in writing they will not move to SkyWater's NDA compiler for production.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R4 (ACAD_SHARE 0.60 -> 0.70). Section 10 step 4 adds the Synopsys-GF memory-IP question. Section 11 #9: new market-removal rule. Section 10 (ii) tightened to 2 buyers with written open-PDK confirmation."
+  },
+  {
+   "id": "RT-VC-DD5-06",
+   "response": "Accepted. The warranty is now limited to re-delivery or a refund of fees, with liability capped at fees paid and no consequential damages (slot cost or schedule). The $1k terms template in the kill test carries that language, and at least 2 buyers must accept it during the test. The 10% reserve now backs refunds only, and $250 a month of E&O stays. Licences are now a small line (~$0.9k a month at m36), so the exposure is bounded by the fees received.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Licence/warranty text restated in sections 1, 2.3 and 4. Section 10 step 5 tests the warranty language with 2 or more buyers. Model reserve unchanged at 10% (R5 lowers the fee it applies to)."
+  },
+  {
+   "id": "RT-HYP-DD5-01",
+   "response": "Accepted. I re-ran your case on the Phase 4 inputs. Halving only the outbound close rate gives ARR m36 $110.9k, your number; halving inbound too gives $71.5k, with the founder never paid. The funnel did recycle names: 30 contacts a month is 360 a year against 298 projects. The revised model caps outbound contacts at distinct new project teams, 228/12 = 19 a month, and the 120-name list is spent in the m0 kill test. Going full-time no longer adds contacts. With all revisions, BASE share of the cap at m36 falls from 42% to 28% (15.5 of 55 accounts). Revised close x0.5 gives ARR m36 $36.6k. Kill-test (i) now counts deposits and LOIs only from distinct funded teams, and at least 100 of the 120 contacts must be such teams.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R11 (OUTREACH_UNIVERSE_CAP False -> True, 19 contacts/mo). Section 2.3 outbound 1.12 -> 0.71 accounts/mo; LTV/CAC 12.3x -> 6.2x. Section 10 pass rule (i) restricted to distinct funded teams. Close x0.5 added to section 2.6."
+  },
+  {
+   "id": "RT-HYP-DD5-02",
+   "response": "Accepted. My searches found no MPW offering skew-corner wafers, and OpenRAM's own sky130 configuration characterizes SS/TT/FF in simulation (MPW-3 config file), which the free tool already provides. Your licences-off run reproduces on Phase 4 inputs: run-rate m36 $337.5k and founder full-time at m25. The licence is restated as one nominal MPW lot measured at voltage and temperature points with rented thermal forcing, process corners simulated and correlated to that lot, yield on 50 or more die, and a warranty limited to re-delivery or a refund of fees. It is repriced from $20k to $12k, and attach falls from 0.25 to 0.15. Removing licences entirely now costs only $11.2k of revised m36 run-rate ($164.1k -> $152.9k), because the line is small. No LOI yet shows TT-only data is worth $12k; (ii) now tests it.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R5 (P_LIC $20k -> $12k) and R6 (0.25 -> 0.15 licences/commercial account/yr). Licence restated in the section 0 pitch, section 1 diagram, section 2.3 and section 4. Section 10 (ii) requires buyers to accept the restated licence. 'Licences removed' added to section 2.6."
+  },
+  {
+   "id": "RT-HYP-DD5-03",
+   "response": "Accepted. Reproduced on Phase 4 inputs: academic share 0.80 gives ARR m36 $100.7k, run-rate $273.3k and full-time at m32, matching your run. The named commercial targets are microfirms. SkyWater's S130 bundles SRAM compilers and embedded-NVM options (SkyWater/Infineon release, 2025-07-29), so a funded SBIR team going to production has a free path off the open PDK. Revised BASE uses academic share 0.70 (commercial cap 16 accounts). On revised inputs, 0.80 gives ARR m36 $55.1k, with the founder never paid. Kill-test (ii) now needs 2 (was 1) commercial/SBIR LOIs of $10k or more, each confirming in writing that it stays on the open PDK for production.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R4 (ACAD_SHARE 0.60 -> 0.70); academic share 0.80 case added to section 2.6. Section 10 pass rule (ii) tightened. Section 2.2 note on S130 bundling."
+  },
+  {
+   "id": "RT-HYP-DD5-04",
+   "response": "Accepted. Silence would have passed test (iv); that was a design flaw. (iv) now requires written statements from both UCSC VLSIDA and OCD that they do not plan silicon-characterized 16 KB+ open macros within 18 months, or a signed exclusivity with whichever does not give one. No answer = FAIL. 'Free' is also now in the base case. OCD and Chips4Makers already have GF180 SRAM silicon, so every scenario carries an expected-value haircut from m24. Its weight is 0.39: the GF180 share of projects (0.65) x P(free GF180 macros) 0.6. It is applied to close rate, churn, subscription price and licences through the free-shock parameters. Without it, revised BASE ARR m36 would be $86.1k; with it, $65.7k. A full shock gives $34.0k (Phase 4: $50.0k). I estimate the strengthened kill test passes with ~15-25% probability, the main reason the EV is low.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Section 10 pass rule (iv) rewritten (silence = FAIL). Model R13 (P_GF180_FREE 0 -> 0.6; partial free release in every scenario from m24). Section 11 #7 split: a sky130 release stops spend; a GF180 release is already in the base case."
+  },
+  {
+   "id": "RT-HYP-DD5-05",
+   "response": "Accepted, and now confirmed. The wafer.space GF180MCU Run 3 Crowd Supply page says chips are fabricated at GlobalFoundries in Singapore (search snippet, 2026-11-01). The wafer.space runs (108) and the GF pilot (40) are 148 of the revised 228 projects a year, so the supply-security axis covers only the ~80 U.S.-fab (sky130, MOSIS, Commons) projects. GF180 buyers remain, but only on access (no free macro above 1 KB). 'U.S.' now applies to the sky130 line only. The DoD/SBIR licence channel is halved.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Section 1 axis split (sky130: supply security + access; GF180: access only). Model section 2 prints the 148/80 split. R7 (LIC_DOD_MONTH 0.08 -> 0.04). Source logged."
+  },
+  {
+   "id": "RT-HYP-DD5-06",
+   "response": "Accepted. The academic offer becomes a per-term course pack at the same $1.2k a term ($200/mo equivalent), which fits grant budget periods and P-card limits. The model now delays academic accounts by 2 months for vendor registration and POs. On its own, the lag costs ~$2k of ARR at m12 ($25.1k -> $23.1k) and m18 ($43.2k -> $41.2k) and ~$0.3k at m36, so it mainly shifts timing. New m6 gate: if fewer than 2 university POs or P-card subscriptions close, academics move to a free tier and buy services only.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model R12 (ACAD_PROC_LAG 0 -> 2 months). Section 2.3 row A1 relabelled as a per-term course pack. Section 11 #3 adds the university-PO gate at m6. Section 4 days 61-90 start vendor registration."
+  },
+  {
+   "id": "RT-HYP-DD5-07",
+   "response": "Accepted. The only T2 revenue was one $75k evaluation licence at m34 to an unnamed 'trusted-ASIC team'. The overlay existed to fill the T2 selection slot, not because a buyer asked for it. Together with the physics objections (RT-PHY-DD5-03/04/05, RT-VET-DD5-03/05), the T2 stage is killed. Revival would need a paid-evaluation LOI of $75k or more from a named buyer, plus the technical gates in section 11 #10-11.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "T2 overlay (C-32, C-22) killed. Sections 0, 2.8 and 7 (seed path) updated; T2 roles struck from section 9. Model section 9 printed 'KILLED, reference only'. Section 11 #10-11 rewritten as revival conditions."
+  },
+  {
+   "id": "RT-PHY-DD5-01",
+   "response": "Accepted. One MPW lot is one point in the process window. Your arithmetic is right: 262,144 bits at 99% macro yield needs per-bit failure below ~4e-8 (~5.4 sigma), which a few dozen die cannot verify. The licence is restated as 'measured at nominal lot X; process corners simulated and correlated to that lot; yield measured on 50 or more die; warranty limited to re-delivery/re-spin support or a refund of fees', with no macro-yield claim beyond the measured die count. Price falls from $20k to $12k. The 10% reserve now covers refunds only. Kill-test (iii) adds a 1,000-point bitcell Monte Carlo, which tests on days 1-20 whether the special SRAM device models carry usable mismatch data.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R5/R6 (licence $12k, 0.15 attach). Licence text restated in sections 0, 1, 2.3 and 4. Section 10 step 1 and (iii) add the Monte Carlo. Section 11 #4 requires 50 or more tested die."
+  },
+  {
+   "id": "RT-PHY-DD5-02",
+   "response": "Accepted, and both items are now costed:\n- on-chip BIST plus programmable delay-line / ring-oscillator timing structures, 20 contract hours at $150 = $3k per test chip (GF180 at m3, sky130 at m6);\n- thermal-forcing rental at ~$2.5k per characterization campaign [ESTIMATE, ThermoStream-class], at m11 and m24 (sky130 and the second campaign).\n\nWith the other revisions, these drive BASE cash to -$8.2k at m11 on the Phase 4 schedule, beyond the $40k deployable. The model therefore gates every deferrable spend so that cash after paying it stays at $2.5k or more. Recomputed BASE cash low: $4.0k at m15 (Phase 4: $20.4k at m7). The cost is timing: the first sky130 slot waits from m7 to m15, and sky130 silicon arrives at m24 instead of m13. The access-time kill criterion can now be evaluated.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R15 (one-time list 11 items/$68.5k -> 17 items/$94.6k, including BIST/delay-line structures and thermal rental) and R16 (cash gate, $2.5k floor). Section 2.4 cash low $20.4k@m7 -> $4.0k@m15. Section 8 roadmap re-timed. Section 11 #4 is now BIST-measured."
+  },
+  {
+   "id": "RT-PHY-DD5-03",
+   "response": "Accepted; my Phase 4 notes already said a logic-rule gain cell 'may land near parity'. A rough sky130 logic-rule count for an NMOS-only 3T cell is ~3 contacted poly pitches x two diffusion rows, about 2.0-2.5 um2 before refresh periphery. That is ~0.75-0.95x the density of the 1.896 um2 pushed-rule 6T [ESTIMATE, not a layout]. The BIU 1.25-1.43x compares cells drawn to the same rules. Scheduling the density check after a $305k STTR was backwards. With no density case, C-32 is killed on sky130. Revival requires a standard-DRC-clean layout of 1.58 um2 or less, including its share of read-reference and refresh periphery, produced before any proposal (~16 contract h, ~$2.4k, not funded).",
+   "disposition": "ACCEPTED-KILL",
+   "action": "C-32 leg killed. Section 2.1 gain-cell row annotated with the logic-rule estimate. Section 11 #10 rewritten as a revival gate with the logic-DRC layout test first."
+  },
+  {
+   "id": "RT-PHY-DD5-04",
+   "response": "Accepted. At 130 nm, 6T standby leakage is small, so the gain cell's leakage advantage is small too. My own notes put 130/180 nm gain-cell retention at tens of microseconds to ~1 ms, shrinking at 85-125 C. That means constant refresh and lost availability. A density-only gate would have passed a cell with tens of microseconds of retention at 85 C. C-32 is killed. The revival gate also requires 1 ms or more of worst-bit retention at 85 C (post-layout Monte Carlo or silicon), and refresh plus leakage power below measured sky130 6T standby at 16 KB or more.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "C-32 leg killed. Section 11 #10 adds the retention and power conditions. Section 2.8 states the reason."
+  },
+  {
+   "id": "RT-PHY-DD5-05",
+   "response": "Accepted. SkyWater's 2025-07-29 Infineon IP release says S130 already offers embedded NVM options alongside its SRAM compilers (the snippet does not name the technology). Antifuse/eFuse OTP also covers provisioning-time keys; the Tillitis/Zedulo GF180 chip already uses eFUSE. Everspin's AN02049 gives 8,000 A/m write immunity for 16 Mb parallel parts and 12,000 A/m for serial. ReRAM adds forming, write-verify, ECC and high-temperature drift. No named buyer states a field requirement above 8,000 A/m plus a rewrite need. C-22 is killed.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "C-22 leg killed. Section 1 C-22 axis struck; sections 2.8, 3 #6 and 6 annotated. Section 11 #11 rewritten as a revival gate: a named program above 8,000 A/m, a rewrite need that rules out OTP/eFuse/S130 eNVM, an LOI of $75k or more, and 3-lot plus JESD47 quotes."
+  },
+  {
+   "id": "RT-PHY-DD5-06",
+   "response": "Accepted. The free OpenRAM macros sit at 8-11% array efficiency. Going from the 1 KB to the 2 KB OpenRAM sky130 macro adds 11.5 um2 per added bit, 6.0x the bitcell (model section 1), so the periphery does not amortise like a commercial compiler's. The even row/column rule and the strap and dummy cells cut efficiency further. The assumption is cut from 60% to 30% until measured, so the claim falls from 316.5 to 158.2 kbit/mm2 (5.5x to 2.7x the 2 KB macro). The day 1-20 run must report the real area of a DRC/LVS-clean 32 KB macro. If it is under 2x the 2 KB density (~115 kbit/mm2), the density pitch to FABulous-class buyers is dropped.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R14 (LARGE_MACRO_ARRAY_EFF 0.60 -> 0.30; context only, no revenue effect). Density claim revised in sections 1 and 2.1. Section 10 step 1 measures the 32 KB macro area."
+  },
+  {
+   "id": "RT-PHY-DD5-07",
+   "response": "Accepted. A heavy-ion SEE campaign (~$10-30k) would use a quarter to three-quarters of the founder's capital, and Mobile Semiconductor's RH90 compilers already serve the rad-hard segment. Scope is narrowed instead: no radiation data and no rad claims. The DoD/SBIR licence channel is halved from 0.08 to 0.04 a month. Each SBIR performer contacted in the kill test is asked whether it needs radiation data, and (ii) counts only buyers who accept macros without it. Gain cells, the worst soft-error case, are killed anyway.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model R7 (LIC_DOD_MONTH 0.08 -> 0.04). Section 3 #7-8 annotated. Section 4 licence row says 'no radiation data'. Section 10 step 3 and pass rule (ii) updated."
+  }
+ ]
+}

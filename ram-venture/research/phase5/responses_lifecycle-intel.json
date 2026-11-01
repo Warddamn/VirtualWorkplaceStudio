@@ -1,0 +1,167 @@
+{
+ "dd": "DD2",
+ "slug": "lifecycle-intel",
+ "title": "Memory Lifecycle & Cost Intelligence for OEMs",
+ "final_status": "DOWNGRADED",
+ "status_reason": "No objection was refuted. The FATAL objection, confirmed by the model, killed the SaaS-fed Memory Cost Escalation Index: the panel never reaches the 15 contributors needed to publish within 36 months, and the index has no precedent for a glut upside. That index was the leg the bundle existed to borrow its moat and cycle scores from. With 15 further downgrades, revised BASE m36 ARR falls from $421,548 to $149,629 and the founder is never paid within 36 months. The SaaS still earns first revenue at m6 and breaks even (founder unpaid) at m17, so it is demoted to a side line, not killed; the 30-day kill test decides.",
+ "revised_verdicts": {
+  "possible": "Yes for the SaaS: TRL 9 software on public APIs and PDN/PCN documents. No for the index as designed: a SaaS-fed panel reaches 14 contributors by m36, below the 15 needed for 3 grade-homogeneous cells. It becomes possible only if the kill test signs >=10 non-subscriber contributors, and even then the model sells <=2.8 licences by m36.",
+  "profitable": "No as a venture; marginal as a side business. Revised BASE ARR is $69,915 at m18 and $149,629 at m36 (GLUT $104,077, SEVERE $83,031). Breakeven with the founder unpaid comes at m17 (2028-04), and the $10k/month salary is never covered within 36 months. The cash low is $6,100 at m16, a $33,900 draw. A 30% miss on price, conversion or COGS exhausts the $40k.",
+  "doable": "Yes technically (pure software, part-time, T0), but conditional on a written employer carve-out before any code (K0) and on booking 25 qualified calls in 21 days from cold outreach outside the employer's network (K6). Part-time capacity caps the funnel at ~20 trials/month."
+ },
+ "revised_economics": {
+  "arr_m18_base": 69915,
+  "arr_m36_base": 149629,
+  "arr_m36_glut": 104077,
+  "arr_m36_severe": 83031,
+  "founder_fulltime_month_base": "never",
+  "breakeven_month_base": "m17"
+ },
+ "ev_note": "After the red team the expected value for this founder is low, but it is cheap to test. If every kill gate passes, the revised BASE is a part-time side business: first revenue at m6 (2027-05), breakeven with the founder unpaid at m17 (2028-04), ARR $70k at m18 and $150k at m36, and ~$6.5k/month of profit (founder unpaid) by m36. Cash bottoms at $6.1k (a ~$34k draw on the $40k). It never pays a $10k/month salary within 36 months in any scenario, and the glut case is $104k ARR because the index, the only moat, cannot be computed on the funnel and has no glut upside. The founder gets paid inside 36 months only if conversion reaches >=14.7% or trial inflow is 1.5x the revised level. A 30% miss on price, conversion or data costs exhausts the $40k. The ~$3k, 30-day kill test (now with the K0 employer carve-out, K2b, K5 and K6 gates) is worth running only if it shares customer-discovery calls with DD1's and DD3's SMB-OEM buyers. Role: side line, demoted from FALLBACK; not a PRIMARY or MOONSHOT candidate. Drop it if K0, K1 or K6 fails; the free BOM scan can survive as a lead-gen front end for another deep dive.",
+ "responses": [
+  {
+   "id": "RT-HYP-DD2-01",
+   "response": "Correct, and the model confirms it. On the Phase 4 inputs the panel is 0.40 x accounts = 2.3 contributors at m9, 4.7 at m12 and 10.8 at m18, yet the roadmap published the index at m9 and sold it from m12, and index_rate had no link to panel size. Your m18-first-sale run reproduces exactly: BASE m36 ARR $410,092 vs $421,548 (-$11k), which shows the index was booked independently of its own data. I added a panel gate: the index is published only when contributors (0.25 x accounts + 5 seed contributors signed in the kill test) reach 15, and first sold 3 months later. On the revised funnel the panel reaches 9.3 contributors at m18 and 14.2 at m36, so the index is never published within 36 months in BASE, GLUT or SEVERE. Even on the Phase 4 funnel the gate alone pushes publication to m23 (BASE) and m34 (GLUT). DDR5 is dropped from the cell plan; SMB industrial buyers mostly buy DDR4, eMMC and SPI NOR. The SaaS-fed index as designed is dead. It can be re-opened only if the kill test signs at least 10 non-subscriber contributors (revised K4), and even then (10 seeds, 10-contributor gate) the model sells only 2.8 licences by m36.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Named leg killed: the SaaS-fed Memory Cost Escalation Index licensed from m12. Model: panel gate added (panel_min_contributors 0->15, seed_contributors 0->5, contributor_share 0.40->0.25, index_lag_after_panel 3); index revenue is now $0 in all revised scenarios. Deep dive: index demoted to a K4-gated option in s0/s1/s2/s8/s10/s11; old m9 gate ('>=10 contributors, >=5 per DDR4/DDR5 cell') replaced by the VET-01 publication test."
+  },
+  {
+   "id": "RT-HYP-DD2-02",
+   "response": "Mostly right. A 60-person OEM holds distributor or EMS sell prices that lag 1-2 quarters, not supplier contract prices, and an EMS-turnkey buyer has no memory line item at all. One part does not hold: for the one use that remains, an SMB OEM passing its own memory cost through to its customer (the Unipi and Revolution Pi pattern), the seller's real cost basis IS the distribution price, so a distribution-channel index is the correct measure for that clause and TrendForce contract is the one carrying basis risk. That rescues only a narrow case. It removes LTA settlement, Tier-1 EMS and federal uses from the index market and shrinks the contributor pool, because only line-item buyers can contribute.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Index re-scoped to a distribution-channel memory cost index for OEM-to-customer surcharges; EMS-turnkey buyers excluded as contributors; K4 counts only contributors with line-item memory POs (direct or franchised distribution) and >=$250k/yr memory spend. Model: contributor_share 0.40->0.25, index_rate 0.60->0.40."
+  },
+  {
+   "id": "RT-HYP-DD2-03",
+   "response": "Accepted. The s1 claim 'memory has no such index' was wrong in substance. DRAMeXchange has used the 8GB PC DRAM module contract price as its contract-trend base since 2019 (TrendForce press release 2018-11-05, via snippet). The 2025-26 pass-through by U.S. OEMs came as list-price hike notices (Dell +15-20% from mid-Dec-2025; Lenovo quotes expiring 2026-01-01; TrendForce 2025-12-05) or as at-cost surcharges naming no index (Revolution Pi RAM surcharge since 2026-02-16, adjusted 2026-04-02; Unipi). One more search found no U.S. surcharge schedule that names any index. The K3 pass bar ('would cite within 6 months') was a free opinion, as you say.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "s1/s5 corrected: TrendForce contract prints are the de facto reference and the index must beat them. K3 now needs >=2 signed LOIs naming a live contract or surcharge schedule. New m15 kill criterion adopts your test: one executed contract or published surcharge schedule between unaffiliated parties naming the index, or the index option closes. Model: index_rate 0.60->0.40. Sources logged in p5r-lifecycle-intel.jsonl."
+  },
+  {
+   "id": "RT-HYP-DD2-04",
+   "response": "Your run reproduces: trial conversion 0.08 on the Phase 4 inputs gives BASE m36 ARR $257,424 and full-time at m32. The substitution is real: Octopart's BOM tool is free and franchised distributors e-mail PDNs to account holders. Free tools miss memory-specific events: die-revision and fab-transfer PCNs under an unchanged MPN (RT-PHY-DD2-05), LTB quantity sizing, and memory alternates. None of those is proven to convert yet. I cut trial_conversion from 0.12 to 0.10 as the revised central value and adopted your test as K2b. On the revised model 0.08 gives m36 ARR $119,703 and a cash low of $486 at m22, which uses up almost all of the $40k. At 0.10 it is $149,629 and the founder is never paid.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: trial_conversion 0.12->0.10; conversion-0.08 variant reported in model s10. Kill test: new K2b, >=10 of 25 calls must name a specific memory EOL, LTB deadline or die-revision PCN they missed in 2025-26 with current tools, or lifecycle becomes a free funnel only. Die-revision PCN alerts made the lead differentiator."
+  },
+  {
+   "id": "RT-HYP-DD2-05",
+   "response": "Confirmed. On the Phase 4 inputs with index_rate = 0, GLUT m36 ARR is $156,308 and the salary is never covered, against $333,977 with the index. The '+31% in a glut' was an assumption with no precedent: my search for an index-linked memory down-adjustment in 2018-19 or 2023 found only contract-price reporting and no clause. I made two changes. Falling prices now add no index demand beyond the floor, and licences churn 3%/month while the 3-month move is below -5%. On the Phase 4 inputs these two changes alone cut GLUT index revenue at m36 from $7,318 to $3,371/month, below BASE's $3,859, and GLUT m36 ARR from $333,977 to $246,895. On the revised model GLUT m36 ARR is $104,077 and SEVERE $83,031, and the founder is never paid in any scenario.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: vol_down_weight 1.0->0.0, index_churn_falling 0.008->0.03. s12 verdict changed from 'survives a glut partially' to 'survives a glut only as part-time side income; the index is no glut hedge'. The 'earns more in a glut' claim is withdrawn from s0/s1/s12."
+  },
+  {
+   "id": "RT-HYP-DD2-06",
+   "response": "Your run reproduces: Nexar at $1,000 and display at $2,500 on the Phase 4 inputs give a cash low of $15,263 and full-time at m28. Nexar's paid tier prices were still unpublished on 2026-11-01 (compare-plans page, via snippet), so neither my figures nor yours are sourced. I moved both to the midpoint: Nexar Standard $300->$600, Pro $1,000->$2,000, display licence $1,000->$2,000. Fixed data costs are now $3,167/month from m12, which makes m12 gross margin -13%. On the revised model your stress gives a cash low of -$1,884 at m18, so the $40k would be exhausted.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: nexar_standard 300->600, nexar_pro 1,000->2,000, display_licence 1,000->2,000; HYP stress reported in model s10. K5 now requires written permission plus a quote of <=$1,000/month; above that, in-app price display is deferred until >=20 accounts. s0 capital note changed: 'T0, barely'."
+  },
+  {
+   "id": "RT-HYP-DD2-07",
+   "response": "Accepted. U.S. agencies withdrew the information-exchange safety zones in 2023, and DOJ's 2024 RealPage complaint targets pooled nonpublic pricing data [UNVERIFIED-training]. Pooling buyers' purchase prices is still an information exchange among competitors. A one-off $7k review is not a compliance programme, and contributors' counsel will rightly ask for one. The cost is real but modest. A $5,000 opinion lowers the cash low by $5,000 on the Phase 4 inputs, and the revised BASE cash low of $6,100 already includes it. Beyond what the index kill already took, prospects are not materially lower.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: antitrust_opinion $0->$5,000 at m2 (written opinion on cell rules before any contributor data arrives), antitrust_compliance_month $0->$400 from index publication; the $7k m8 review is kept. Cell rules written into s6/s10: >=5 contributors per cell, >=1-quarter lag, no contributor >25% of a cell's weight, aggregates only, no forward-looking data. K4 counts only contributors whose counsel accepts those rules."
+  },
+  {
+   "id": "RT-PHY-DD2-01",
+   "response": "Correct. A manufacturer-field flag identifies the seller, not the die. A Kingston, ATP, Innodisk or SMART module, eMMC, SSD or MCP can carry CXMT DRAM or YMTC NAND die, and DD1 shows that only decap or supplier die-source documents prove the source. A false negative is the worst failure mode for a s5949 feature, and leading the pitch to Trenton, CP Tech and Core Systems with it invited exactly that liability. No revenue was attributed to the flag, so the economics do not change.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Flag relabelled 'brand-level screen only, not die-level; a negative result is NOT evidence of compliance', with a counsel-reviewed disclaimer. For module/eMMC/SSD/MCP lines it prompts the customer to request a supplier die-source certificate and points to DD1's die-level service. Removed from the pitch to customers #4-6, who are now led with the LTB sizer and die-revision PCN monitoring (s3). If DD1 lab data exists, measure recall on 20 known-die MPNs before any compliance claim."
+  },
+  {
+   "id": "RT-PHY-DD2-02",
+   "response": "Accepted. The s3 buyers (industrial PC, rugged, medtech) mostly buy industrial-temperature DDR3/DDR4 components and modules, eMMC and SPI NOR from Micron, ISSI, Alliance, Winbond and Nanya. Their 2026 price path is driven by EOL and allocation, not by the DDR5 contract path the model uses as its urgency proxy. An index that averages across temperature grades or generations measures mix, not price, and any counterparty can reject it. Ten contributors fill one or two broad cells at most. I also note in s12 that the DDR5 path is only a proxy for these buyers.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Index limited to <=4 grade-homogeneous cells (generation x density x width x temperature grade; candidates: DDR4 8Gb x16 industrial-temp components, DDR4 8/16GB industrial SO-DIMMs, 32-64GB industrial eMMC, 128Mb SPI NOR), published quarterly. Model: panel_min_contributors 0->15. Your test adopted at m3: if <70% of the 5 design partners' memory spend falls in <=4 such cells that can each reach 5 contributors, the index option closes (s8, s11)."
+  },
+  {
+   "id": "RT-PHY-DD2-03",
+   "response": "Correct on every physics point. F-RAM reads are destructive and count toward ~1e14 endurance. Many F-RAMs run at 2.0-3.6 V where EEPROMs run at 1.7-5.5 V. F-RAM tops out near 8-16 Mbit, so it cannot replace 128 Mbit-2 Gbit NOR code storage. Everspin's 16 Mb parallel MRAM is rated only to 8,000 A/m. An alert saying 'this EEPROM can become an F-RAM' that a customer acts on is a design-failure liability. C-29 carries no modelled revenue, so prospects are unchanged.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Cross-reference pairs ship only after automated checks on supply-voltage range, density, endurance counting reads at the customer's stated access rate, temperature grade, package/pinout, command set and magnetic-field rating. Each carries a counsel-reviewed 'candidate only; engineering validation required' disclaimer, and the wording 'can become' is removed from s1. E&O insurance ($150/month) stays in the model."
+  },
+  {
+   "id": "RT-PHY-DD2-04",
+   "response": "Correct. Multi-year LTB stock of BGA DRAM and eMMC is typically MSL-3. J-STD-033 floor life, repeated bakes, intermetallic growth, solderability retest and dry or N2 storage all add cost and attrition. A sizer without them under-buys, and nobody finds out until the reflow line years later. The fix is cheap and lowers study margin from 67% to 62%.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "LTB sizer spec gains inputs for attrition %, expected bake cycles, MSL floor life, yearly storage cost (dry cabinet, N2 or a GEIA-STD-0003/Rochester-style bank) and solderability-retest interval. Every LTB study gets a storage-and-attrition section. Model: ltb_cogs_share 0.30->0.35. No LTB study is sold until the sizer is back-tested on one design partner's past LTB (s8)."
+  },
+  {
+   "id": "RT-PHY-DD2-05",
+   "response": "Correct, and it is the most useful objection for the SaaS. Die-revision, fab-transfer and assembly-site PCNs under an unchanged MPN leave the DigiKey/Nexar lifecycle field at 'Active', and they are what force requalification at industrial and medtech OEMs. A PDN-only engine misses them. Catching them is also the one thing free lifecycle flags do not do, so it becomes the SaaS's lead differentiator. The extra MVP scope costs one month of launch, about $11k of m36 ARR on the Phase 4 inputs, and that cost is inside the revised BASE.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "PCN parsing (die revision, fab transfer, assembly site) added to MVP scope. Model: saas_launch_month 5->6, shared with RT-VC-DD2-05. The product claims 'PDN coverage only' until a 12-month back-test shows >=90% capture of die-revision PCNs from Micron, ISSI, Winbond and Nanya. K2b tests whether buyers missed such PCNs."
+  },
+  {
+   "id": "RT-VC-DD2-01",
+   "response": "Accepted as fatal to the index as designed. Your arithmetic reproduces: 5.8 accounts x 0.40 = 2.3 contributors at m9 and 4.7 at m12. The plan published at m9 with >=10 contributors and >=5 per cell, and it booked licence revenue from m12. With a 15-contributor gate on the Phase 4 funnel, publication slips to m23 (BASE) and m34 (GLUT). On the revised funnel (0.25 contributor share plus 5 seed contributors) the panel reaches only 14.2 by m36, so the index is never published in any scenario. Your remedy, >=10 non-subscriber contribution agreements, buys little. Ten seeds give publication at m20 and 1.8 licences at m36: BASE m36 ARR is $165,118 vs $149,629 without them. Ten seeds with a 10-contributor gate give 2.8 licences and $174,279. The SaaS-fed index is killed, and it was the leg the bundle existed to borrow its moat and cycle scores from. It survives only as an option that the revised K4 can re-open.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Named leg killed: the SaaS-fed index (C-86 as designed). Model: panel gate (panel_min_contributors 15, seed_contributors 5, contributor_share 0.25); seeded variants reported in model s10. K4 revised: >=10 signed contribution agreements independent of SaaS conversions, plus a cell map with >=3 cells reaching 5 contributors; otherwise the index option is closed for good. s0 verdicts and the recommendation rewritten."
+  },
+  {
+   "id": "RT-VC-DD2-02",
+   "response": "Accepted, with the one narrow refutation given under RT-HYP-DD2-02: for an SMB OEM passing its own memory cost to its customer, a distribution-price index is the correct basis. That narrow case is where the basis dilemma bites hardest. If the panel tracks TrendForce contract within +/-10%, it is redundant. If it does not, the larger counterparty says 'unrepresentative, use TrendForce', and the two European surcharges found (Unipi, KUNBUS) charge at cost with no index. The licence market that survives is small.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Your back-test adopted as a pre-licence requirement: before any licence, back-test the panel against TrendForce contract and spot prints for 2025-26 and publish the basis. K3 now requires that in at least one live contract both buyer and seller agree in writing to cite the index. Model: index_rate 0.60->0.40, contributor_share 0.40->0.25."
+  },
+  {
+   "id": "RT-VC-DD2-03",
+   "response": "Mostly accepted. The Octopart terms forbid historical price and inventory trend use and caching beyond 24 h, and they exclude software developers building applications for the distribution market. That blocks the per-part price history the buy/hold module implied, and DigiKey's display terms are still unknown. Part of the objection does not hold: market-level buy/hold signals can be built from public prints (the DXI headline, TrendForce press releases) and the contributed panel without per-part distributor history. That product is weaker than Supplyframe CIQ. I ran your variant. With the price-driven line deleted, Phase 4 BASE m36 ARR is $159,231, worse than your $250k estimate, and the salary is never covered. On the revised model it is $69,289 with a cash low of $947. Without data rights, the SaaS is not worth running.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: display_licence 1,000->2,000; new price_line_on switch; K5-fail variant reported in model s10. K5 tightened: written permission for in-app price/stock display plus a quote of <=$1,000/month by 2026-12-15. If K5 fails, the price line runs on public prints only and K1 is re-measured on a demo without distributor price display. If K1 then fails, the SaaS (and so DD2) is killed (s10, s11)."
+  },
+  {
+   "id": "RT-VC-DD2-04",
+   "response": "Accepted. The 6,000 was unsourced. My one attempt to source it found a third-party aggregator figure of 9,698 NAICS 334 firms of all sizes (Mewayz, via snippet). It has not been checked against Census, and the Census API was unreachable from this session. Taking ~35% with 20-499 staff, adding ~600 electronic medical-device firms, and keeping the ~70% that buy memory line-item gives ~2,400. I now use 3,000, range 2,000-4,500 [ESTIMATE]. That fails your >=4,000 bar. On the revised model, $1M ARR at m36 needs 3.3x the trial inflow and ~235 accounts, 7.8% of 3,000; $2M needs 6.4x and ~476 accounts, 15.9%. Pure SaaS needs 245 accounts per $1M at $4,083/yr. This confirms your reading: a low-ACV picks-and-shovels SaaS with a realistic 36-month ceiling of $0.15-0.3M ARR, not a venture.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: tam_us_smb_oems 6,000->3,000 with the derivation in the INPUTS basis; s8 penetration figures recomputed. Deep dive s2.4 and s14 state the $0.1-0.3M ARR side-business ceiling, and the recommendation is demoted from FALLBACK to side line. A Census CBP pull (NAICS 3341/3342/3345/3391, 20-499 employees) is logged as an open gap."
+  },
+  {
+   "id": "RT-VC-DD2-05",
+   "response": "Accepted. The plan built a prototype in kill-test week 1, before the written clearance that s6 itself required, and drew launch trials from day-job peers. A standard invention-assignment and moonlighting clause could let the employer claim the code or bar the business. The founder's procurement contacts are bound on PO prices, which is the very data the panel needs. If clearance is refused, the funnel and the panel lose their first source together, so this is a binary risk to DD2 for this founder.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "New gate K0: a written carve-out from the employer covering the product, the target industry and third-party PO contributions, signed before any code is written. If it is refused, DD2 is dead for this founder. The employer is no longer design partner #1 unless the carve-out names it. Model: trials_at_launch 6->4 (no day-job-peer trials) and saas_launch_month 5->6. DOABLE verdict made conditional on K0. Kill-test budget +$500 for the founder's own attorney to review the employment agreement."
+  },
+  {
+   "id": "RT-VC-DD2-06",
+   "response": "Accepted. At 15 h/week (~65 h/month), 25 one-hour demos plus follow-up leave too little time for the MVP, the PCN crawler, the panel and the monthly content. On the Phase 4 inputs the cap cut alone lowers m36 ARR from $421,548 to $392,865 and delays the salary from m23 to m25. In the revised model it is one of the four funnel changes (with conversion 0.10, 4 launch trials and the m6 launch) that together keep the founder part-time through m36. With the Phase 4 funnel restored, the revised model would pay the founder from m31.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: trials_cap_pt 25->20. Your test adopted as K6: the 25 qualified calls must be booked within 21 days from cold outreach outside the employer's network. If not, the part-time funnel volume is not reachable and DD2 stops (s10, s11)."
+  },
+  {
+   "id": "RT-VET-DD2-01",
+   "response": "Accepted. A meaningful cell is density x organization x speed x temperature grade x package x supplier class, and a 60-person OEM buys DRAM a few times a year, often as LTB or broker buys. With 10-20 contributors a monthly index measures who bought what, not price, on top of the spot/contract basis risk s5 already conceded. The model never reaches even the 15-contributor proxy in 36 months, and a 20-contributor gate changes nothing (still never published).",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Index made quarterly (more observations per cell) and limited to <=4 grade-homogeneous cells (see RT-PHY-DD2-02). Model: panel_min_contributors 15; 20-contributor variant in model s10. Your test replaces the old m9 gate: publish only if the K4 contributors' 24-month PO histories give >=3 cells with >=5 independent buyers in >=80% of quarters, and bootstrapped period-to-period noise below one-third of the TrendForce contract move over the same period."
+  },
+  {
+   "id": "RT-VET-DD2-02",
+   "response": "Accepted. Suppliers, module houses and large OEMs already negotiate against TrendForce/DRAMeXchange contract prints (8GB module base since 2019, TrendForce 2018-11-05, via snippet). In EMS, turnkey memory is normally passed through at invoice cost under open-book terms, which needs no index. A one-person index has to beat both, not a vacuum. The licence universe shrinks to OEM-to-customer surcharges where the end customer refuses open-book and TrendForce has no matching cell.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Tier-2/3 EMS (#10) removed as an index target (kept as a Pro SaaS prospect). s1/s5 rewritten. K3 commitments must be signed LOIs that state why neither TrendForce prints nor open-book pass-through serves that contract, for example because the end customer refuses open-book and TrendForce has no industrial-temperature DDR4 cell. Model: index_rate 0.60->0.40."
+  },
+  {
+   "id": "RT-VET-DD2-03",
+   "response": "Accepted. The 2016-18 tripling and the ~60% fall in 2018-19 produced no memory escalation index. My search for an index-linked down-adjustment in 2018-19 or 2023 found only contract-price reporting and no clause (TrendForce 2018-11-05; TechNews 2019-08-01, via snippet). In a crash the payer drops the surcharge, as Unipi's 'reduced once memory prices normalize' already says. On the Phase 4 inputs your mechanism cuts GLUT index revenue at m36 from $7,318 to $3,371/month (-54%, now below BASE's $3,859). GLUT m36 ARR falls by $87,082 to $246,895. That is larger than your -$54k estimate because the lost index revenue also delays the founder's full-time switch: the salary is covered at m30 instead of m23.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: vol_down_weight 1.0->0.0 (a falling move adds no demand beyond index_floor), index_churn_falling 0.008->0.03 (licences cancelled while prices fall >5% a quarter). The 'index earns more in a glut' claim is withdrawn from s0, s1 and s12, and the s12 module table is recomputed."
+  },
+  {
+   "id": "RT-VET-DD2-04",
+   "response": "Accepted. Distributor and franchised-supplier agreements commonly carry price-confidentiality terms. Medtech and defense-adjacent procurement leads cannot hand over 24 months of PO prices without legal sign-off, and a 10% discount ($25-65/month) is a poor trade for that risk. Combined with the panel gate, this is part of why the SaaS-fed index never publishes in the revised model.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: contributor_share 0.40->0.25. K4 commitments must be signed by each contributor's legal or contracts function and must state there is no supplier-confidentiality conflict. The discount is kept but no longer treated as the reason anyone contributes."
+  },
+  {
+   "id": "RT-VET-DD2-05",
+   "response": "Accepted. SPI NOR at 1-2 Gb for $1-5 has no F-RAM (a few Mb) or Toggle MRAM (16-32 Mb at $40+) replacement. EEPROMs are multi-sourced commodities that rarely go truly EOL, and F-RAM drop-ins cost 5-10x more. For medtech, any memory substitution is a design change under FDA design controls. The feature generates alerts, not swaps. C-29 carries no modelled revenue, so prospects are unchanged.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "C-29 demoted from the pitch to a parametric candidate filter, scoped to NVSRAM/battery-backed SRAM and high-write serial EEPROM sockets where F-RAM/MRAM is a genuine candidate. Medtech accounts see a design-control warning. Your test adopted at m3: unless the 5 design-partner BOMs show >=1 NVM part per BOM with an EOL notice and a pin-compatible F-RAM/MRAM alternate within 3x the price, the feature is dropped (s8)."
+  },
+  {
+   "id": "RT-VET-DD2-06",
+   "response": "Accepted. In 2026 suppliers took DDR4 LTB orders subject to allocation, so an 'optimal' quantity is moot when the supplier caps the fill. Micron's continuing DDR4/LP4 commitment (Manassas 1-alpha) also blunts the EOL panic for the largest DRAM line on SMB BOMs. Storage and solderability are handled under RT-PHY-DD2-04. LTB studies are excluded from ARR. Together, the attach and COGS changes lower the revised cash low by about $1.1k.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "LTB studies re-scoped to allocation split across sources, redesign timing and storage cost, not just quantity. Model: ltb_attach 0.015->0.0125, ltb_cogs_share 0.30->0.35. Kill-test calls now ask whether 2026 DRAM LTBs were filled at >=90% of the requested quantity."
+  }
+ ]
+}

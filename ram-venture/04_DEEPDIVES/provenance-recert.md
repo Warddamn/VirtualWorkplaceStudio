@@ -1,10 +1,12 @@
 # DD1 — Provenance & Recertified Memory (`provenance-recert`)
 
-**Author:** `p4w-provenance-recert` · **As of:** 2026-11-01 · **Model:** `models/provenance-recert.py` (re-run 2026-11-01, exit 0; output identical to `research/phase4/provenance-recert_model_output.md`) · **Notes:** `research/phase4/provenance-recert_notes.md` · **Judgment calls:** `research/assumptions/p4w-provenance-recert.md`
+**Author:** `p4w-provenance-recert`; Phase 5 red-team revision by `p5r-provenance-recert` · **As of:** 2026-11-01 · **Model:** `models/provenance-recert.py`, revised after the red team (RED-TEAM REVISIONS block), re-run 2026-11-01, exit 0; output in `research/phase4/provenance-recert_model_output.md` · **Notes:** `research/phase4/provenance-recert_notes.md` · **Red-team responses:** `research/phase5/responses_provenance-recert.json` · **Judgment calls:** `research/assumptions/p4w-provenance-recert.md`, `research/assumptions/p5r-provenance-recert.md`
+
+> **FINAL STATUS after the Phase 5 red team: KILLED** as a venture candidate (§14). Sections 0, 2, 10 and 11 carry the revised numbers, marked "(revised after red team)". Sections 1 and 3–9 describe the Phase 4 plan and are kept as the record; where the red team overturned a claim there, a note points to §14.
 
 **How to read the citations.**
-- **m§N** = section N of the model's printed output.
-- **INPUTS** = the model's INPUTS dict, where each input carries its own source.
+- **m§N** = section N of the model's printed output. m§0 lists every red-team input change; m§8 attributes the change and runs the variants.
+- **INPUTS** = the model's INPUTS dict, where each input carries its own source. Phase 5 changes are in RED_TEAM_REVISIONS.
 - **§2.6 variants** = re-runs of the same model, with the command given there.
 
 All external facts are search-snippet grade, so nothing is [VERIFIED] except the open-source tools that Phase 2 cloned.
@@ -26,9 +28,11 @@ All external facts are search-snippet grade, so nothing is [VERIFIED] except the
 | Folded | C-26 | Optane PMem salvage | VC: "fine as a C-62 SKU, uninvestable on its own." |
 | Folded | C-85 | DIMM-health + spares | Founder: "Sell it wholesale to TPMs or not at all." |
 
-**Capital tier: T0.** It starts on $40k of the founder's money (INPUTS `start_cash`; ASSUMPTIONS A-03). CleanBOM on its own would need about $47k: its cash dips to −$6,529 at m15 (m§4).
+**(revised after red team)** The bundle logic failed. Recert flow cannot supply die-source data for the at-risk population (RT-HYP-DD1-02, RT-PHY-DD1-01, RT-VC-DD1-02). The module-maker buyer already owns that data (the three FATALs). C-85's predictive subscription is dropped (RT-PHY-DD1-04). See §14.
 
-**Scores and ranks** (`scores.csv`, 40 concepts scored):
+**Capital tier: T0.** It starts on $40k of the founder's money (INPUTS `start_cash`; ASSUMPTIONS A-03). **(revised after red team)** The revised bundle needs about $46k: its cash dips to −$5,863 at m18, from operating losses, not working capital (m§3). CleanBOM on its own dips to −$10,164 (m§4).
+
+**Scores and ranks** (`scores.csv`, 40 concepts scored; Phase 3 scores, set before the red team):
 
 | ID | Default | Capital-constrained | Moonshot |
 |---|---|---|---|
@@ -37,18 +41,18 @@ All external facts are search-snippet grade, so nothing is [VERIFIED] except the
 | C-85 | 74.0 (#11) | 77.5 (#10) | 71.7 (#10) |
 | C-62 | 71.0 (#14) | 75.0 (#11) | 64.2 (#16) |
 
-**The honest summary: a small cash business, not a venture.**
-- **BASE result:** $445,543 ARR at m36, $610,097 cash, and $662,971 of cumulative EBITDA on $40k (m§3, m§4).
-- **Where the money comes from:** 85% of revenue is a moatless 15%-margin resale trade that dies in a glut.
-- **The glut-proof part is small:** CleanBOM reaches 23.5 subscribers. $1M ARR would need ~61 (m§6f).
-- **Its close rate, churn and price are all guesses,** and the proposed FAR rule lets sellers self-certify for free.
-- **Recert's buy price is unverified:** at 75% of resale instead of 65%, ARR at m36 falls to $250,221 (m§5).
+**The honest summary (revised after red team): killed as a venture, not even a reliable cash business.**
+- **The red team's three FATAL objections hold** (§14). The named core buyer, the OEM-compatible module maker, already knows its die source from POs, CoCs and package top marks. It may self-certify under the proposed FAR rule, and resellers may rely on that free certificate.
+- **The library moat is gone.** Recert flow samples old OEM DDR4 with roughly zero CXMT. A module part number does not fix die identity. And per-lot top-mark images are cheap for anyone to rebuild.
+- **The cash engine is gone at central inputs.** At a 0.70 buy fraction, 0.80× B2B pricing and 7% CE-inclusive fallout, recert earns **−$3 per module (−1%)**. It needs lots at ≤62% of resale for 8% (m§1a, m§6g).
+- **Revised BASE (revised after red team):** **$58,335 ARR at m36** (was $445,543), $23,270 cash, −$3,473 cumulative EBITDA, the founder **never** goes full-time, and there is no breakeven at a $10k salary (m§3).
+- **If both kill tracks pass** (lots ≤0.62 of resale, and a module maker that pays cash): $226,833 ARR at m36, full-time only at m32, and never in GLUT/SEVERE (m§8d).
 
-**POSSIBLE? — Yes.** Recert is an existing TRL-9 trade on free tools, and AS6171 die-ID is routine at 26 accredited labs. But the module assembler writes the SPD die bytes, so a scan proves nothing on its own. Only a lab-built cross-reference does.
+**POSSIBLE? — Yes, with corrections (revised after red team).** Recert is an existing TRL-9 trade. CXMT die is identifiable at die level: TechInsights analysed a CXMT G4 die inside a Powev-marked package. But a module-P/N cross-reference is physically invalid, memtest86+ burn-in misses ECC-corrected faults (CE logging plus a heated soak is required), and X-ray die outline is only triage.
 
-**PROFITABLE? — Marginal.** It makes money in BASE, GLUT and SEVERE, but only at lifestyle scale ($434–446k ARR at m36). The cash engine is a 15% margin on an unverified buy price, and the subscription needs willingness to pay that nobody has tested against a free self-certification option.
+**PROFITABLE? — No (revised after red team).** At post-red-team central inputs recert loses money per module, and CleanBOM reaches 5.3 subscribers ($58,335 ARR) by m36 in all three price decks. The best case, with both tracks passing, is a $227k-ARR lifestyle business.
 
-**DOABLE BY THIS FOUNDER? — Yes.** T0, startable part-time, and the software and operations work fits their background. The limits are working capital (cash at or near the $5k reserve in m6–m10; m§2) and a federal sales motion they have never run.
+**DOABLE BY THIS FOUNDER? — Mechanically yes, but not worth doing (revised after red team).** It is T0 and startable part-time. But no central-input version puts the founder full-time inside 36 months, and the federal sales motion they have never run is still the gating skill.
 
 ---
 
@@ -69,6 +73,8 @@ Optane PMem rides along as one extra SKU.
 - One result identifies the die source for every stick sharing that part number and date-code family.
 - Over time this builds a cross-reference ("part X, date codes Y–Z = Samsung die; part W = CXMT die") that nobody holds at module level.
 
+> **Withdrawn after red team (§14).** Module P/Ns are multi-sourced, and the module date code is the assembly week, so one decap covers one build lot, not a family (RT-PHY-DD1-02, RT-VET-DD1-02, RT-HYP-DD1-03, RT-VC-DD1-03). Recert lots are old OEM DDR4 with roughly zero CXMT (RT-PHY-DD1-01). The library is redesigned as per-lot package top-mark images keyed on DRAM marking codes, plus X-ray die-outline triage and exception decap on new third-party DDR5 RDIMMs bought at market. That is a validation cost, not a moat.
+
 **Line 3: CleanBOM-5949, the company.** From 2027-12-23, federal agencies may not buy products containing SMIC, CXMT or YMTC chips. Sellers must certify after a "reasonable inquiry" ([Federal Register, 2026-02-17](https://www.federalregister.gov/documents/2026/02/17/2026-03065/federal-acquisition-regulation-prohibition-on-certain-semiconductor-products-and-services)) [REPORTED]. The firms that write the *first* certification need to know what is inside the module: third-party "OEM-compatible" memory makers and white-box server builders.
 - **What CleanBOM sells them:** a subscription ($750 or $2,500 a month), per-SKU evidence packs ($900), and lab die-checks at cost × 1.6.
 - **How it is framed:** an evidence-based assessment, never a legal certification.
@@ -88,100 +94,135 @@ Optane PMem rides along as one extra SKU.
 
 The logic is timing: recert pays **now** and fades in the 2028 glut; CleanBOM's demand switches **on** in 2027 and ignores DRAM prices. Recert must fund the founder's time and the library before it dies.
 
+**(revised after red team)** Neither half of the timing logic survives at central inputs. Recert does not pay now: −1% per module at a 0.70 buy, 0.80× B2B and 7% fallout. CleanBOM's switched-on demand is mostly met by free supplier certifications (§14).
+
 ---
 
 ## 2. Cost and unit-economics model
 
+All figures in this section are **(revised after red team)** unless a column says "Phase 4". The model applies Phase 4 INPUTS plus the RED-TEAM REVISIONS block (m§0). `P_PHASE4` still reproduces the Phase 4 run exactly (m§8a, first row).
+
 ### 2.1 Unit economics
 
-| Line (per unit) | Today | GLUT (DDR5 −60%) | SEVERE (−90%) | Source |
+| Line (per unit) | Today | GLUT (DDR5 −60%) | SEVERE (−90%) | Phase 4 (today) | Source |
+|---|---|---|---|---|---|
+| Recert RDIMM, mixed channel (65% 32GB DDR4 / 32% 64GB DDR4 / 3% 64GB DDR5; buy 0.70; 7% fallout; 3% returns) | $191 → **−$3 (−1%)**. Buy+fallout $159, fees+ship $20, returns+labor $13 | $76 → −$8 (−10%) | $40 → −$9 (−23%) | $253 → $37 (15%) | m§1a |
+| … eBay only / B2B only (B2B at 0.80× eBay) | $4 (2%) / −$9 (−6%) | −$6 / −$9 | −$10 / −$9 | $36 / $38 | m§1a |
+| … by SKU, today | 32GB DDR4 −$6 (−5%); 64GB DDR4 $1 (0%); 64GB DDR5 $31 (3%), with $732 of cash tied up per unit | — | — | $12 / $43 / $167 | m§1a |
+| Optane PMem 128GB (10% locked/unsanitizable fallout, 5% returns) | $200 → $27 (14%) | $3 (4%) | −$9 (−46%) | $46 (23%) | m§1b |
+| CleanBOM, per subscriber-month (ARPA $925 + $384 lab pass-through; 90% on $750, 10% on $2,500) | **$958 GP (73%)**; a $900 pack earns ~88% | same | same | $1,295 (80%) | m§1c |
+| DIMM-health | **Dropped from the bundle** (RT-PHY-DD1-04) | — | — | 64% GM, 4.5× DIY | m§1d |
+
+- **Inventory lag:** selling a month into the glut loses $11 (−6%) per module (m§1a).
+- **CleanBOM CAC:** $5,100 at a 5% close (m§1e). The LTV/CAC ratio still rests on untested inputs, so do not quote it.
+- **Breakeven buy fraction:** 69% of realized resale on the m12 channel mix (72% eBay-only, 66% B2B-only). The 8% contribution that track A requires needs **≤62%** (≤64% eBay-only), and the model's 5% buy/no-buy line is 65% (m§6a, m§6g). Phase 4's breakeven was 78%.
+
+### 2.2 Scenario summary (bundle = recert + PMem + CleanBOM; m§3)
+
+| | BASE | GLUT | SEVERE | Phase 4 BASE |
 |---|---|---|---|---|
-| Recert RDIMM, mixed channel (60% 32GB DDR4 / 30% 64GB DDR4 / 10% 64GB DDR5) | $253 → **$37 (15%)**. Buy+fallout $183, fees+ship $22, returns+labor $11 | $101 → $9 (9%) | $45 → −$1 (−2%) | m§1a |
-| … eBay only / B2B only | $36 (13%) / $38 (16%) | $7 / $10 | −$3 / $0 | m§1a |
-| … by SKU, today | 32GB DDR4 $12 (10%); 64GB DDR4 $43 (15%); 64GB DDR5 $167 (17%), but ties up $679 of cash per unit | — | — | m§1a |
-| Optane PMem 128GB | $200 → $46 (23%) | $11 (14%) | −$7 (−34%) | m§1b |
-| CleanBOM, per subscriber-month (ARPA $1,362 + $256 lab pass-through) | **$1,295 GP (80%)**; a $900 pack earns ~88% | same | same | m§1c |
-| DIMM-health, per 1,200-DIMM customer-year | $8,640 revenue, 64% GM, priced at **4.5×** the buyer's DIY spares cost | 78%, 8.5× | 81%, 10.8× | m§1d |
+| ARR (recurring) m12 / m18 / m24 / m36 | $8,160 / **$23,067** / $36,274 / **$58,335** | same as BASE | same as BASE | $25,334 / $139,995 / $253,948 / $445,543 |
+| Total run-rate m18 / m36 | $61,244 / $150,124 | $57,244 / $101,676 | $54,844 / $94,884 | $1.88M / $1.75M |
+| Breakeven, founder unpaid | **m19 (May-28)** | m19 | m19 | m3 |
+| Breakeven with a $10k/month founder salary | **never** | never | never | m11 |
+| Founder goes full-time | **never** | never | never | m14 |
+| Cash low point | **−$5,863 at m18** (operating losses: CleanBOM fixed costs plus ISO at m15, with no recert profit) | −$6,061 | −$6,179 | $5,000 reserve at m10 |
+| Cash at m36 (+ inventory) | $23,270 (+$2,965) | $22,086 (+$890) | $21,588 (+$466) | $610,097 (+$70,850) |
+| Cumulative EBITDA (tax provision) | −$3,473 ($0) | −$7,852 ($0) | −$8,998 ($0) | $662,971 (no tax line) |
+| Gross margin: blended / recert+PMem / CleanBOM | 38% / 11% / 75% | 43% / 11% / 75% | 44% / 11% / 75% | 25% / 15% / 81% |
+| Recert+PMem share of cumulative revenue | 57% of $273,517 (only 356 recert modules sold; PMem is most of it) | 49% of $231,157 | 47% of $222,072 | 85% of $4.14M |
 
-- **Inventory lag:** selling a month into the glut still earns $25 (11%) per module (m§1a). The damage comes from volume and margin over time.
-- **CleanBOM CAC:** $2,550 at a 10% close (m§1e). Its "25× LTV/CAC" rests on untested inputs; do not quote it.
-
-### 2.2 Scenario summary (bundle, all four lines; m§3, m§4)
-
-| | BASE | GLUT | SEVERE |
-|---|---|---|---|
-| ARR (recurring) m12 / m18 / m24 / m36 | $25,334 / **$139,995** / $253,948 / **$445,543** | $25,334 / $139,232 / $250,679 / $434,012 | same as GLUT |
-| Total run-rate m18 / m36 | $1.88M / $1.75M | $1.44M / $0.89M | $1.20M / $0.54M |
-| Breakeven, founder unpaid | m3 (Jan-27) | m3 | m3 |
-| Breakeven with a $10k/month founder salary | **m11 (Sep-27)** | m11 | m11 |
-| Founder goes full-time | m14 (Dec-27) | m14 | m14 |
-| Cash low point | **$5,000 at m10** (inventory reserve floor; working capital, not losses) | same | same |
-| Cash at m36 (+ inventory) | $610,097 (+$70,850) | $392,118 (+$21,256) | $328,128 (+$953) |
-| Cumulative EBITDA | $662,971 | $389,580 | $303,874 |
-| Gross margin: blended / recert+PMem / CleanBOM | 25% / 15% / 81% | 30% / 13% / 81% | 36% / 13% / 81% |
-| Recert share of cumulative revenue | 85% of $4.14M | 75% of $2.55M | 67% of $1.89M |
+Recert buying drops to the 10% trickle from month 2, because expected contribution is below the 5% buy line. From Jan-28 to Feb-29 cash sits below the reserve, so nothing is bought at all.
 
 ### 2.3 Is the whole better than the parts? (BASE, m§4)
 
-| Configuration | ARR m36 | Cash m36 | Cumulative EBITDA |
-|---|---|---|---|
-| Full bundle | $445,543 | $610,097 | $662,971 |
-| Recert + CleanBOM | $384,530 | $580,439 | $619,489 |
-| Bundle without the library's close-rate lift (7% vs 10%) | $323,558 | $461,433 | $513,988 |
-| Bundle, founder never full-time | $199,038 | $480,218 | $501,841 |
-| CleanBOM standalone | $120,296 | $91,351 | $52,851 |
-| Recert + PMem only | $0 | $169,467 | $208,516 |
-| DIMM-health standalone | $27,187 | $583 | −$26,165 |
+| Configuration | ARR m36 | Cash m36 | Cumulative EBITDA | Phase 4 ARR m36 |
+|---|---|---|---|---|
+| Bundle (recert + PMem + CleanBOM) | $58,335 | $23,270 | −$3,473 | — |
+| Bundle + DIMM-health (Phase 4 line-up, revised inputs) | $85,522 | $34,121 | $16,811 | $445,543 |
+| Bundle without the library lift | $58,335 | $23,270 | −$3,473 | $323,558 |
+| Bundle, founder never full-time | $58,335 | $23,270 | −$3,473 | $199,038 |
+| CleanBOM standalone | $58,335 | $18,068 (low −$10,164) | −$20,432 | $120,296 |
+| Recert + PMem only | $0 | $4,815 | −$26,398 | $0 |
+| DIMM-health standalone | $27,187 | $83 | −$26,165 | $27,187 |
 
-**Reading the table:**
-- **The real synergy is recert cash buying founder time,** worth ~$247k of the ARR.
-- **The library is worth ~$122k,** and that rests on an unmeasured 3-point lift in close rate.
-- **DIMM-health adds ~$61k** and loses money on its own.
+**Reading the table (revised after red team):**
+- **No synergy is left.** Recert no longer buys founder time, because the founder never goes full-time in any configuration.
+- **The library lift is zero by construction.** Bundle and standalone close at the same 5%, and the bundle pays for its sample modules.
+- **The bundle beats CleanBOM standalone by only ~$5k of m36 cash.** That comes from PMem and the trickle, not from data.
 
 ### 2.4 Sensitivity (BASE, one input at a time; m§5)
 
 | Input moved | ARR m18 | ARR m36 | Cash m36 | Cash low |
 |---|---|---|---|---|
-| Base case | $139,995 | $445,543 | $610,097 | $5,000 |
-| Recert resale −30% | $76,629 | $381,840 | $366,995 | $5,000 |
-| Subscription price −30% | $97,997 | $311,880 | $461,565 | $5,000 |
-| Close rate −30% | $97,997 | $311,880 | $473,893 | $5,000 |
-| **COGS +30%** | $76,629 | $199,038 | $125,914 | **−$12,172** (needs more than $40k; breakeven m16) |
-| Final FAR rule slips 6 months | $35,990 | $372,904 | $458,278 | $6,101 |
-| **ITAD buy fraction 0.75** | $76,629 | **$250,221** | $163,673 | $6,469 |
-| ITAD buy fraction 0.55 | $183,332 | $475,880 | $1,047,669 | $21,650 |
+| Revised base | $23,067 | $58,335 | $23,270 | −$5,863 |
+| Recert resale −30% | $23,067 | $58,335 | $18,076 | −$10,251 |
+| Subscription price −30% | $16,147 | $40,835 | $4,862 | −$9,713 |
+| Close rate −30% | $16,147 | $40,835 | $4,634 | −$9,066 |
+| Close rate +30% | $29,988 | $75,836 | $43,198 | −$3,809 |
+| COGS −30% (buy, fees, lab, hosting) | $45,243 | $132,970 | $257,903 | $5,652 |
+| COGS +30% | $23,067 | $58,335 | −$7,748 | −$26,707 |
+| Final FAR rule slips 6 months | $8,160 | $47,972 | $3,240 | −$12,889 |
+| **ITAD buy fraction 0.62** (the track A pass line) | $23,067 | $58,335 | $41,777 | $5,000 |
+| ITAD buy fraction 0.55 | $23,067 | $58,335 | $134,797 | $5,000 |
+| ITAD buy fraction 0.75 | $23,067 | $58,335 | $19,750 | −$7,818 |
+| B2B price factor 0.88 (the Phase 4 value) | $23,067 | $58,335 | $26,013 | −$4,197 |
 
-The buy fraction (what an ITAD charges for a lot, as a share of resale) is the most important input. It has **no published source** (notes §3.1).
+The buy fraction is still the input that decides recert, and it still has **no published source**: a second search on 2026-11-01 found only asking prices. Even at 0.55, recert adds about $200k of cumulative EBITDA, but the founder never goes full-time. Monthly volume (capped at 300 part-time) times a $16–32 contribution never clears the $12k trigger.
 
-### 2.5 What must be true (m§6)
+### 2.5 What must be true (revised after red team; m§6)
 
-1. **Lots cost under 78% of realized resale.** Above that, recert contributes nothing.
-2. **Recert sells 364 good modules a month** to cover a $10k founder salary plus ~$3,450 of fixed opex. That needs ~$64,624 of inventory cash each month, and it only lasts until the 2028 turn.
-3. **CleanBOM has ~10 paying subscribers by the turn (m15–18).** The model reaches **7.5 at m18**. Hitting 10 needs a 25% close at 5 conversations a month, or 12 conversations a month at 10%.
-4. **$1M ARR needs ~61 subscribers.** The model reaches 23.5.
+1. **Lots cost ≤62% of realized resale** for 8% contribution (breakeven 69%). Phase 4 said under 78%.
+2. **Recert cannot cover a founder salary at any volume** at a 0.70 buy (m§6b).
+3. **CleanBOM has ~14 paying subscribers by the turn** at $958 GP each (m§6c). The model reaches **2.1 at m18 and 5.3 at m36**. Getting there needs a 34% close at 5 conversations a month, or 34 conversations a month at 5%.
+4. **$1M ARR needs ~90 subscribers** at the revised $925 ARPA (m§6f). Phase 4 said ~61.
 
-### 2.6 Variant runs (stress combinations the model does not print)
+### 2.6 Variant runs (m§8d; all revised after red team)
 
 | Variant | Scenario | Founder full-time | ARR m36 | Cash m36 |
 |---|---|---|---|---|
-| Turn arrives early (Oct-27, `turn_month=12`) | GLUT | m31 | $268,513 | $273,766 |
-| Turn arrives early (Oct-27) | SEVERE | m34 | $232,342 | $247,443 |
-| Buy fraction 0.75 | GLUT | m34 | $232,377 | $166,962 |
-| CleanBOM sells nothing (`cb_close_bundle=0, cb_close_standalone=0, cb_pack_rate=0`) | GLUT | never | $21,868 | $127,548 |
-| FAR rule slips 6 months (`_cb_delay=6`) | GLUT | m14; back at the day job by Feb-28 | $203,455 | $237,161 |
-| FAR slip + close −30% (`_close_mult=0.7`) | GLUT | m14; 2 months only | $115,358 | $222,394 |
+| Turn arrives early (Oct-27, `turn_month=12`) | GLUT | never | $58,335 | $20,740 |
+| FAR rule slips 6 months (`_cb_delay=6`) | BASE | never | $47,972 | $3,240 (low −$12,889) |
+| CleanBOM sells nothing | BASE | never | $0 | −$59,798 |
+| Track A passes (buy 0.62) | BASE / GLUT | never / never | $58,335 / $58,335 | $41,777 / $48,983 |
+| Track C passes (close 10%, high tier 35%, packs 15%: the Phase 4 CleanBOM inputs) | BASE | never (salary breakeven m30) | $171,852 | $128,084 |
+| **Tracks A (0.62) and C both pass** | BASE | **m32** | **$226,833** | $106,959 |
+| Tracks A and C both pass | GLUT / SEVERE | never / never | $171,852 / $171,852 | $150,359 / $148,278 |
 
-Reproduce from the repo root, swapping the parameters per row:
+**Attribution (m§8a, BASE, revision groups applied cumulatively from Phase 4's $445,543 / full-time m14):**
+
+| Step | ARR m36 | Founder full-time |
+|---|---|---|
+| + tax provision 30% (RT-VC-DD1-07) | $419,301 | m17 |
+| + cash cycle: eBay limits and holds, B2B net-30 (RT-VC-DD1-04) | $340,928 | m24 |
+| + buy 0.70, caps 300/450 (RT-HYP-DD1-04, RT-VC-DD1-05) | $308,396 | m26 |
+| + B2B 0.80, eBay share 0.50 (RT-HYP-DD1-05, RT-VET-DD1-05) | $250,221 | m33 |
+| + CE-logging protocol, 7%/3% (RT-VET-DD1-03, RT-PHY-DD1-03) | $237,798 | m34 |
+| + DDR5 3%; PMem fallout (RT-VET-DD1-04; RT-PHY-DD1-05, RT-VET-DD1-07) | $237,798 | m34 |
+| + DIMM-health dropped (RT-PHY-DD1-04) | $171,852 | never |
+| + library re-keyed and bought at market, lab $600 | $183,297 | m36 |
+| + CleanBOM demand: close 5%, high tier 10%, packs 10% (the three FATALs, RT-HYP-DD1-06, RT-HYP-DD1-07) | $58,335 | never |
+| + E&O $600/month (RT-HYP-DD1-08) | **$58,335** | **never** |
+
+Reproduce any row from the repo root, swapping the overrides:
 
 ```
 python3 -c "import importlib.util as u,sys;sys.path.insert(0,'models');s=u.spec_from_file_location('pr','models/provenance-recert.py');pr=u.module_from_spec(s);s.loader.exec_module(pr);print(pr.metrics(pr.simulate('GLUT',dict(pr.P0,turn_month=12))))"
 ```
 
-### 2.7 The honest read
+Use `pr.P_PHASE4` in place of `pr.P0` to reproduce Phase 4.
 
-**Generous in three places:** the unsourced buy fraction, while Iron Mountain's ALM revenue rose 88% YoY in Q2-26 as it kept the repricing ([MarketBeat, 2026-08-08](https://www.marketbeat.com/instant-alerts/iron-mountain-q2-earnings-call-highlights-2026-08-08/)) [REPORTED]; channel absorption of ~$70–100k of lots a month (m§2, "Inv buy"), never tested; and CleanBOM's close rate and churn. **Harsh in one:** no extra CleanBOM demand in a glut.
+### 2.7 The honest read (revised after red team)
 
-The result holds across all three price decks only because the founder goes full-time one month before the modeled turn. If the glut comes a quarter early, or the FAR rule slips, GLUT ARR at m36 falls 38–53%, from $434,012 to $268,513 or $203,455 (§2.6).
+Phase 4 was generous in exactly the places the red team hit:
+- the unsourced buy fraction;
+- a B2B price above what the B2B accounts pay for the same lots;
+- a burn-in that cannot see corrected errors;
+- a DDR5 slice that is not in 2026–27 lots;
+- a library sampled from the wrong population;
+- a close rate that assumed module makers need evidence they already hold.
+
+No single revision kills DD1. Together, they leave recert below zero margin and CleanBOM at 5 subscribers. The only path back runs through two cheap tests, and both pass conditions look unlikely (§10, §14).
 
 ---
 
@@ -189,7 +230,9 @@ The result holds across all three price decks only because the founder goes full
 
 **Who pays for CleanBOM.** The safe harbor moves liability upstream: whoever writes the first certification has to know the die source ([Mayer Brown, 2026-03-03](https://www.mayerbrown.com/en/insights/publications/2026/03/far-council-proposes-rule-to-prohibit-acquisition-of-semiconductors-from-china-and-countries-of-concern)) [REPORTED]. So the core buyer is the third-party "OEM-compatible" memory maker selling into federal channels, where CXMT is now the marginal open-market supplier. A U.S. reseller already markets a CXMT-made 64GB DDR5 RDIMM as compatible with Dell PowerEdge 16G and HPE Gen11 ([router-switch.com](https://www.router-switch.com/sw/faq/cxmt-ddr5-server-memory-cxmr4e464r8as-cb1c-dell-hpe-sizing.html)) [REPORTED, vendor claim].
 
-**Who pays for recert:** refurbishers and TPM spares desks.
+> **(revised after red team)** This buyer analysis is overturned (RT-HYP-DD1-01, RT-VC-DD1-01, RT-VET-DD1-01, all ACCEPTED-KILL). The module maker is the party that *already* knows its die source: from POs and CoCs that name the DRAM maker, and from package top marks. It may certify on its supplier declaration, and the resellers downstream may rely on it. What remains is refurb/odd-lot resellers and white-box builders. Customers #1–3 move from "$2,500 tier" to "track C test subjects": the pass condition is that one of them pays cash and states in writing that its ODM or supplier refuses a die-source declaration (§10).
+
+**Who pays for recert:** refurbishers and TPM spares desks. (revised after red team) They buy the same ITAD lots and test in-house, so they pay ~0.75–0.80× eBay, not 0.88× (RT-HYP-DD1-05, RT-VET-DD1-05).
 
 | # | Customer | Line | Why they buy | How to reach them |
 |---|---|---|---|---|
@@ -226,10 +269,10 @@ The result holds across all three price decks only because the founder goes full
 | Recert module, eBay / B2B | Realized resale (e.g., $125 for 32GB DDR4) / 0.88× that | INPUTS (amcompute midpoints) |
 | PMem 128GB | $200 | m§1b |
 | CleanBOM integrator/reseller tier | $750/month | Above SiliconExpert-class entry: Accuris prices 20% below SiliconExpert with a $6,000 minimum ACV ([Accuris](https://accuristech.com/siliconexpert-offer-terms/)) [REPORTED], which implies SiliconExpert ≈ $7.5k/yr [ESTIMATE: $6,000 ÷ 0.8] |
-| CleanBOM module-maker/ODM tier | $2,500/month (35% of customers) | m§1c |
+| CleanBOM high tier | $2,500/month. (revised after red team) White-box builders only, 10% of customers; module makers removed | m§1c |
 | Evidence pack (per SKU family) | $900 | m§1c |
-| Lab die-ID sample | Lab cost × 1.6 (≈$640) | INPUTS |
-| Spares + feed to TPMs | Set in kill track D ($0.60/DIMM-month placeholder) | m§1d |
+| Lab die-ID sample | Lab cost × 1.6 (≈$960 at the revised $600 all-in lab cost; revised after red team) | INPUTS / RED_TEAM_REVISIONS |
+| Spares + feed to TPMs | (revised after red team) Feed dropped (RT-PHY-DD1-04); tested spares sell as recert B2B | — |
 
 **Sales motion.**
 - **Recert** is transactional.
@@ -250,6 +293,8 @@ The result holds across all three price decks only because the founder goes full
 | 61–90 | Sell ~39 modules (m§2 Jan-27). Deliver free die-checks. Get ITAD downstream questionnaires in writing | ≥$15k revenue in month 3 (model $15.1k); ≥1 paid pack |
 
 CleanBOM subscriptions launch only in Aug-27 (m10, INPUTS `cb_launch`). Before then, the job is pre-selling.
+
+> **(revised after red team)** This 90-day plan is superseded by the staged resurrection test in §10. Stage 1 is track C plus free written quotes ($1.4k). The lot is bought only if Stage 1 passes.
 
 ---
 
@@ -283,6 +328,8 @@ CleanBOM subscriptions launch only in Aug-27 (m10, INPUTS `cb_launch`). Before t
 - OEMs drop CXMT from U.S. SKUs.
 
 The fraud evidence is also all consumer-channel. No case of CXMT die relabeled inside U.S. server RDIMMs was found (notes §2).
+
+> **(revised after red team)** Win condition 2 fails. The library comes from the wrong population, is keyed on module P/Ns that are multi-sourced, and its per-lot replacement is cheap for anyone to rebuild (§14). There is no data moat, so DD1 loses to Z2Data, SiliconExpert or plain self-certification on every axis except price.
 
 ---
 
@@ -342,12 +389,15 @@ The fraud evidence is also all consumer-channel. No case of CXMT die relabeled i
 - **Not for recert.** Its constraint is working capital, which its own cash flow funds.
 - **Consider a small raise only if all three hold by m18:** ≥10 paying subscribers, a data-licensing LOI from a compliance-data vendor, and a final rule that has not widened the safe harbor.
 - **The realistic exit is a dataset sale** to Z2Data, Accuris or OBSIDIA. $446k ARR does not support a priced round.
+- **(revised after red team)** There is no exit. A buyer will not pay more than the dataset's rebuild cost (~$25k or less; RT-VC-DD1-06), and revised m36 ARR is $58,335. The raise path is removed.
 
 ---
 
 ## 8. 18-month roadmap with milestones
 
-Model targets are BASE (m§2). Each gate must be met to continue.
+> **(revised after red team)** This roadmap is the Phase 4 plan, and its model targets are Phase 4 BASE figures. After the red team DD1 is KILLED (§14). If the staged resurrection test in §10 passes, re-plan from the m§8d "tracks A and C both pass" row: $67,956 ARR at m18, $226,833 at m36, full-time at m32.
+
+Model targets are BASE (m§2, Phase 4). Each gate must be met to continue.
 
 | Quarter | Do | Model target | Gate |
 |---|---|---|---|
@@ -367,7 +417,7 @@ Model targets are BASE (m§2). Each gate must be met to continue.
 | **Founder:** product, CleanBOM sales, operations, lot buying | Part-time (35 ops-h/month) m1–13; full-time from m14 | $10k/month once full-time (INPUTS; A-03) | — |
 | **Bench technician**, part-time, ESD-trained | From ~m6 | $25/h loaded (INPUTS); ~54 h/month at m18 (570 × 12 min − 60 founder-h) | Electronics programs at local community colleges; technicians from regional contract manufacturers; ServeTheHome and r/homelab members near the bench |
 | **Govcon counsel** (contract) | m1 setup; m9 templates | $2,500 + $6,000 (INPUTS) | A boutique govcon firm (big-firm authors in §7 set the reference view) |
-| **AS6171 lab partner** | m1, then 3 samples/month | $400/sample [ESTIMATE; track B quotes it] | ANAB list of 26 accredited labs ([ANSI](https://blog.ansi.org/anab/benefits-as-6171-suspect-counterfeit-eee-parts/)); SMT Corp; Integra and Micross (DMEA, 01_LANDSCAPE §7.3) |
+| **AS6171 lab partner** | m1, then 3 samples/month (revised after red team: 1/month, exception and validation only) | $400/sample [ESTIMATE; track B quotes it] (revised after red team: $600 all-in, including minimum-lot and report fees) | ANAB list of 26 accredited labs ([ANSI](https://blog.ansi.org/anab/benefits-as-6171-suspect-counterfeit-eee-parts/)); SMT Corp; Integra and Micross (DMEA, 01_LANDSCAPE §7.3) |
 | **E&O and liability broker** | m9 | $400 + $200/month (INPUTS) | Tech E&O brokers |
 | **ISO consultant + certification body** | m12–15 | $10k, plus $3k surveillance at m27 (INPUTS) | NQA |
 | **Federal channel advisor**, commission-only | m9–14 | No fixed cost [ESTIMATE] | Former SEWP/GSA reseller account managers (LinkedIn); NASA SEWP vendor days |
@@ -378,75 +428,81 @@ The founder's operations background fits receiving, test flow and supplier attes
 
 ---
 
-## 10. The cheapest experiment that could kill it
+## 10. The cheapest experiment that could kill it — now a staged resurrection test (revised after red team)
 
-**Budget:** ~$8,400 gross (itemized in the Spend column below), ~$3,000 net after resale; the server stays as the first test bed. With the lab at the $600/sample pass ceiling, the worst case is ~$9,200. **Hard cap: $9,500**; shrink the lot if a quote would breach it. **Time:** 29 days (day 1 = 2026-11-02, decision on 2026-11-30; notes §9). All thresholds are fixed now, before any data comes in.
+**Status:** DD1 is KILLED (§14). This test is **optional**. Run it only if the founder's primary pick leaves spare hours, because it is the only route by which the red team could be proved wrong. Phase 4 ran tracks A–D in parallel for ~$8,400. The revised test is **staged**: a $1.4k Stage 1 decides whether anything else is worth buying.
 
-**Days 1–3: line everything up.**
-- Request DDR4 RDIMM lot quotes, plus each firm's downstream questionnaire, from three ITADs: Iron Mountain/ITRenew (Sesame), Sims Lifecycle, and one regional R2 ITAD in NJ, PA or MD.
-- Buy one used Gen10 server.
-- From U.S. sellers, so delivery fits the window, buy two samples: a consumer DDR5 kit with CXMT die (KingBank or Lexar; [Outlook Respawn](https://respawn.outlookindia.com/gaming/gaming-news/pc-industry-turns-to-cxmt-as-dram-supply-crisis-persists)) [REPORTED], and the cheapest OEM-compatible RDIMM from AddOn, Axiom or Brute.
-- Get price and turnaround quotes from three AS6171 labs.
-- Draft a one-page sample evidence pack.
-- List 15 targets: 5 compatible-memory makers, 5 GSA/SEWP resellers including SHI, and 5 integrators.
+**Budget (revised after red team):** Stage 1 is ~$1,400. Stage 2 is ~$8,100, and runs only if Stage 1 passes. **Hard cap: $9,500 in total.** Shrink the lot if any quote would breach it.
 
-**Days 4–7: test and ship samples.**
-- Test a lot of ~35–40 modules with memtest86+ and stressapptest.
-- Log serials and SPD bytes: 320–321 and 350–351 on DDR4, 512–513 and 552–553 on DDR5.
-- **By day 7, ship 4 samples to the lab:** 2 from the lot, the CXMT kit, and the compatible RDIMM.
+**Time:** Stage 1 runs 29 days (day 1 = 2026-11-02, decision on 2026-11-30). Stage 2 runs days 30–60 (decision on 2026-12-31). All thresholds are fixed now, before any data comes in.
 
-**Days 5–24: test demand.**
-- Hold the 15 conversations. Show the sample pack and ask for a paid pilot at $750–2,500 a month or a $900 pack.
-- Sell half the lot on eBay and half to xByte, TechMikeNY or PCSP.
-- Ask the Park Place and Service Express spares desks whether they would buy spares plus an error-trend feed wholesale.
+### Stage 1: paper and conversations (~$1,400; days 1–29)
 
-**Days 25–29: decide.** Apply the thresholds below. No renegotiating. (15 business days from a day-7 lab shipment, with Thanksgiving off, ends on day 29, so track B has no slack.)
+**Days 1–3: line everything up (no spend except one module).**
+- **ITAD quotes, in writing** (RT-HYP-DD1-04, RT-VC-DD1-05). Ask Iron Mountain/ITRenew (Sesame), Sims Lifecycle and one regional R2 ITAD in NJ, PA or MD for: price as a share of trailing realized resale; **≥200 DDR4 RDIMMs a month with a 6-month supply commitment**; the share of 64GB DDR5 in each lot; manifests showing brand, DRAM package marks and date codes; downstream terms a non-R2 buyer can meet; and, for PMem, per-serial NIST SP 800-88 sanitization certificates.
+- **B2B price sheets, in writing** from xByte, TechMikeNY and PCSP for tested 32GB DDR4 (RT-HYP-DD1-05, RT-VET-DD1-05).
+- **AS6171 lab quotes, in writing, from 3 labs** (RT-VET-DD1-06). Each quote must be all-in: per-sample, minimum-lot and report charges, turnaround, and whether the lab holds CXMT DDR4/DDR5 reference die images.
+- **Federal-channel count** (RT-HYP-DD1-06). From GSA Advantage and the SEWP catalogs, list the firms selling non-OEM-branded server memory.
+- **One sample pack.** Buy the cheapest OEM-compatible DDR5 RDIMM from AddOn, Axiom or Brute (~$400). Build a one-page pack from its package top-mark images and SPD bytes (512–513 and 552–553). There is no lab work in Stage 1.
 
-| Track | Spend | Fail if… (decided now) |
-|---|---|---|
-| A. Buy side | ~$5,000, mostly recovered: one used Gen10 server without memory ~$1,500 [ESTIMATE: INPUTS `capex_m1` is $4,200 for two plus a bench] + a lot capped at $3,500 (~40 × 32GB DDR4 at the model's $81 buy, m§1a; fewer modules if it includes 64GB) | Best ITAD quote > **75%** of realized resale (breakeven 78%; m§6a), **or** measured lot contribution < **8%** |
-| B. Evidence | ~$2,400: 4 lab samples × ~$400 (INPUTS `lab_cost`) + ≤$800 for the CXMT kit and the compatible RDIMM [ESTIMATE: a 2×8GB DDR5 kit holds eight 16Gb chips, ~$430 at ~$54 spot (01_LANDSCAPE §0 item 1)] | Lab > **$600/sample**, > **15 business days**, or die source unidentifiable on ≥2 of 4 samples. An SPD-to-die mismatch becomes the lead sales asset |
-| C. Demand | ~$1,000 | Fewer than **3 of 15** sign an LOI or buy a pack, **or none of the three pays cash** [ESTIMATE: my tightening; an LOI costs the buyer nothing] |
-| D. Spares feed | $0 | Park Place and Service Express both say no → drop C-85 |
+**Days 4–29: track C′, 15 conversations.** Talk to 5 compatible-memory makers, 5 GSA/SEWP resellers including SHI, and 5 white-box/appliance builders. Ask for a paid pilot at $750–2,500 a month or a $900 pack. Ask every module maker in writing: "For what share of the SKUs you ship federally can you **not** obtain a die-source declaration from your ODM or component supplier, or establish die source from your purchase records plus top-mark inspection?"
 
-**Decision rule:**
+| Stage 1 track | Spend | Pass only if… (decided now) | Phase 4 rule |
+|---|---|---|---|
+| C′. Demand | ~$1,000 + $400 module | ≥3 of 15 sign an LOI or buy a pack, **and** ≥1 pays cash, **and** ≥1 **module maker** (not a reseller) pays cash and states in writing that for ≥20% of its federal SKUs it cannot get a die-source declaration (RT-HYP-DD1-01, RT-VC-DD1-01, RT-VET-DD1-01) | ≥3 of 15 LOIs and one cash payer |
+| A′ (paper). Buy side | $0 | Written quotes from 2 of 3 ITADs at **≤62%** of trailing realized resale for ≥200 modules/month with 6-month supply (breakeven is now 69%; m§6g). The B2B channel is planned only if 2 written offers come in at ≥0.85× eBay for ≥100 modules/month; otherwise recert is planned eBay-only | One spot quote ≤75% |
+| B′ (paper). Lab | $0 | ≥1 of 3 labs confirms in writing that it holds CXMT reference die images (or can identify CXMT die by logo or dimensions), with an all-in quote ≤$600/sample and ≤15 business days | Lab ≤$600/sample, ≤15 business days, die source identifiable |
+
+**Stage 1 decision rule (revised after red team):**
 
 | Outcome | What happens |
 |---|---|
-| A passes, C fails | Harvest recert through 2027-12-31. (GLUT "CleanBOM sells nothing" ends at $127,548 cash; §2.6) |
-| C passes, A fails | CleanBOM standalone (~$47k) |
-| Both pass | The sequenced bundle |
-| Both fail | Kill DD1 |
+| C′ fails | **DD1 stays dead.** If A′ passes, the founder may run recert as a hobby-scale side trade. At 0.62 it adds ~$71k of cumulative EBITDA over 36 months and never funds full-time (m§5). It is not a venture. |
+| C′ passes, A′ fails | Stage 2 runs track B only (~$3.6k). CleanBOM is planned standalone at the Phase 4 demand inputs. Standalone gives $171,852 ARR at m36, never full-time, salary breakeven at m31, and a cash low of $2,105 at m15 on $40k. The bundle row in m§8d is nearly identical ($3,326 low). |
+| C′ and A′ pass | Stage 2 runs tracks A and B (~$8.1k). Re-plan from the m§8d "both pass" row. |
 
-**Limits.** Four samples test lab cost, turnaround and feasibility, not library coverage (Phase 3 asked for 20; 03_SCORING §8). A 2–6 week turnaround ([Industrial Monitor Direct](https://industrialmonitordirect.com/blogs/knowledgebase/detecting-counterfeit-ics-in-industrial-electronics)) [REPORTED, weak] alone fails track B.
+### Stage 2: physical tests (~$8,100; days 30–60; only if Stage 1 passes)
+
+| Track | Spend | Fail if… (decided now) |
+|---|---|---|
+| A. Buy side and test escapes | ~$4,900: one used Gen10 server ~$1,500, a heated soak enclosure ~$500, and a lot capped at **$2,900** (~33 × 32GB DDR4 at the revised $88 buy) | Measured lot contribution < **8%**, **or** CE-inclusive fallout > **4%**. The test runs Linux stressapptest with rasdaemon/EDAC per-DIMM CE logging (any CE = reject) plus a 55–70°C soak (RT-VET-DD1-03, RT-PHY-DD1-03). 90-day returns ≤2% are tracked after the decision. For any PMem in the lot, ipmctl must read ≥90% "disabled/unlocked" (RT-VET-DD1-07, RT-PHY-DD1-05) |
+| B. Evidence | ~$3,200: 4 samples × ≤$600 all-in, plus a **known CXMT server RDIMM** (CXMR4E464R8AS-class or a 16–32GB CXMT DDR5 RDIMM, ~$800 [ESTIMATE]) as the positive control in place of the consumer kit (RT-PHY-DD1-06). The Stage 1 compatible RDIMM is reused | Lab > $600/sample all-in, > 15 business days, or the CXMT server control is not identified. **Samples ship by day 35.** An X-ray die-dimension screen runs before any decap. It is triage only: CXMT G4 is ~67–68 mm² against ~49 mm² for current Samsung, but 2021 first-generation big-3 16Gb dies were ~66–72 mm² ([3DNews citing TechInsights](https://3dnews.ru/1116172)) [REPORTED] |
+| D. Spares feed | — | **Retired.** The C-85 predictive subscription is killed (RT-PHY-DD1-04) |
+
+**Limits.**
+- The P/N-consistency tests the reviewers asked for need about 30 decaps (~$36k at $600 lab + $600 module): ≥3 samples per family across ≥10 families (RT-VC-DD1-03), or 3 lots of one third-party P/N (RT-VET-DD1-02).
+- That is beyond T0, which is one more reason the library cannot be a moat. Stage 2 tests 2 modules of one P/N from different sellers where possible.
 
 ---
 
-## 11. Explicit kill criteria
+## 11. Explicit kill criteria (revised after red team)
 
-Months are model months (m1 = Nov-26).
+Months are model months (m1 = Nov-26). Each criterion is marked "(revised after red team)" where it changed, "(unchanged)" where it did not, and "(new)" where the red team added it.
 
-1. **2026-11-30.** ITAD quote > 75% of resale, or lot contribution < 8% → stop recert. At 75%, ARR at m36 is $250,221 (m§5).
-2. **2026-11-30.** Fewer than 3 of 15 commit, or none pays cash → do not build CleanBOM; harvest recert.
-3. **2026-11-30.** Lab > $600/sample, > 15 business days, or die source unidentifiable → drop the lab library. Without the library's close-rate lift, ARR at m36 is $323,558 (m§4).
-4. **2027-04-30 (m6).** Trailing-3-month recert contribution < 12%, or < 150 good modules sold in April (model 155) → freeze recert scaling.
-5. **2027-07-31 (m9).** E&O cannot be bound at ≤ $400/month, or fewer than 3 LOIs are still live → do not launch attestations.
-6. **2027-10-31 (m12).** Fewer than 1 paying subscriber and fewer than 3 paid packs (model: 1.5 subscribers) → stop CleanBOM.
-7. **Full-time gate (from m13).** Quit the day job only if all three hold:
+1. **2026-11-30 (revised after red team).** No written ITAD quotes from 2 of 3 at **≤62%** of resale for ≥200 modules/month with 6-month supply → do not buy lots. Was ">75% or lot contribution <8%". At 0.70, recert earns −$3/module (m§1a).
+2. **2026-11-30 (revised after red team).** Fewer than 3 of 15 commit, or none pays cash, **or no module maker pays cash and states in writing that it cannot get die-source declarations for ≥20% of its federal SKUs** → do not build CleanBOM; DD1 stays killed.
+3. **2026-12-31 (revised after red team).** Lab > $600/sample all-in (including minimums and report fees), > 15 business days, no lab with CXMT reference images, or the CXMT server control is not identified → no lab-backed packs; packs carry top-mark images and SPD bytes only.
+4. **2027-04-30 (m6) (revised after red team).** Trailing-3-month recert contribution < **8%** (was 12%; the revised model at 0.62 earns 8%), or CE-inclusive fallout > 4%, or 90-day returns > 2% → stop recert.
+5. **2027-07-31 (m9) (revised after red team).** No bound E&O quote that covers government-contract reliance claims **with no regulatory exclusion** at ≤ **$600/month** (was ≤$400 with no exclusion test), or fewer than 3 LOIs still live → no assessments; sell raw evidence only (images, SPD bytes, lab reports), with no "no CXMT" language.
+6. **2027-10-31 (m12) (unchanged).** Fewer than 1 paying subscriber and fewer than 3 paid packs → stop CleanBOM.
+7. **Full-time gate (from m13) (unchanged rule; revised outcome).** Quit the day job only if all three hold:
    - trailing-3-month pre-salary EBITDA ≥ $12k;
-   - cash ≥ $25k;
-   - **≥ 5 paying CleanBOM subscribers** [ESTIMATE: my addition; the model uses only the first two].
+   - cash ≥ $25k, now tested **after** the tax provision;
+   - ≥ 5 paying CleanBOM subscribers.
 
-   Without the third condition, a FAR slip in a glut sends the founder back to the day job within two months (§2.6).
-8. **2028-04-30 (m18).** Fewer than **7** paying subscribers (model 7.5; must-be-true 10) → stop CleanBOM sales spend, return to the day job if full-time, harvest recert, and try to sell the dataset.
-9. **Any date.** The final FAR rule exempts COTS items or memory modules, or §5949 is pushed past 2028-12-31 → kill CleanBOM. If Z2Data or SiliconExpert ships a module-level CXMT flag under $750/month → license the dataset to them, or stop.
-10. **Any date.** Expected recert contribution < 5% (INPUTS `min_margin_to_buy`). On the GLUT path this happens near a price index of 0.55, which is a 32GB DDR4 realizing ≈ $69 vs $125 (m§2 GLUT, Sep-28) → stop buying lots; keep a 10% trickle.
-11. **2027-09-30.** Stop buying PMem ahead of vSphere 8 end of general support on 2027-10-11 ([Broadcom KB 459135](https://knowledge.broadcom.com/external/article/459135/end-of-general-support-for-vsphere-80.html); VCF 9 drops PMem, [KB 326910](https://knowledge.broadcom.com/external/article/326910)), unless trailing PMem contribution from non-VMware buyers is ≥ 20%.
-12. **2027-10-31.** No wholesale spares order from any TPM or MSP → drop C-85.
+   The revised model never meets this gate in any scenario. If both tracks pass, it is met at m32 in BASE only (m§8d).
+8. **2028-04-30 (m18) (revised after red team).** Fewer than **4** paying subscribers (the both-pass model has 4.2; was 7) → stop CleanBOM sales spend and harvest.
+9. **Any date (revised after red team).** The final FAR rule exempts COTS items or memory modules, or §5949 is pushed past 2028-12-31 → kill CleanBOM. A final rule that keeps reliance on supplier certifications for COTS memory confirms the red team; CleanBOM is then limited to refurb/odd-lot packs. If Z2Data or SiliconExpert ships a module-level CXMT flag under $750/month → stop. The dataset-licensing fallback is removed (RT-VC-DD1-06).
+10. **Any date (unchanged rule).** Expected recert contribution < 5% → stop buying lots and keep a 10% trickle. This now fires at any buy fraction above 65% at today's prices (m§6g).
+11. **2027-09-30 (revised after red team).** Stop buying PMem ahead of vSphere 8 end of general support on 2027-10-11 unless trailing PMem contribution from non-VMware buyers is ≥ 20%; **also** stop if >5% of any lot is passphrase-locked or unsanitizable.
+12. **(revised after red team)** Retired: C-85's predictive subscription is dropped (RT-PHY-DD1-04).
+13. **(new)** No exit value is assumed. A dataset-licensing LOI at ≥$100k/yr from a compliance-data vendor is the only thing that would reinstate one (RT-VC-DD1-06).
 
 ---
 
 ## 12. Cycle test
+
+> **(revised after red team)** The figures below are Phase 4's. After the red team, recert loses money in every deck (−1% today, −10% GLUT, −23% SEVERE per module). Revised ARR at m36 is $58,335 in BASE, GLUT and SEVERE alike, cash at m36 is $21.6–23.3k, and the founder is never full-time (m§3, m§7). DD1 is "glut-proof" only because it barely depends on recert any more, and that is no virtue. The closing claim "DD1 is glut-proof only if the subscription business is real by the end of 2027" still stands. The red team says it will not be real (§14).
 
 **GLUT (DDR5 −60% over 2028).** The used-price index falls from 1.0 to 0.40 (m§2 GLUT):
 
@@ -562,3 +618,108 @@ All URLs are logged in `research/sources/*.jsonl`, mainly `p4-provenance-recert.
 - https://sustainableelectronics.org/wp-content/uploads/2021/03/Steps-to-Getting-Certified-2021.03.pdf
 - https://www.nqa.com/certification/standards/as6081
 - https://amtivo.com/us/resources/insights/aerospace-certification-cost/
+
+**Phase 5 red-team sources** (logged in `research/sources/p5r-provenance-recert.jsonl`; snippet grade)
+- https://www.techinsights.com/blog/cxmt-g4-16gb-ddr5-dram-process-analysis
+- https://3dnews.ru/1117376/eksperti-izuchili-chipi-pamyati-ddr5-ot-cxmt
+- https://3dnews.ru/1116172
+- https://xenospectrum.com/ddr5-memory-chips-from-chinas-cxmt-40-larger-die-size-than-samsung-highlighting-challenges/
+- https://datacenterdisk.com/best/32gb-ddr4-server-ram
+- https://pcserverandparts.com/news/refurbished-ddr4-server-memory-2026-server-ram-price-crisis/
+- https://insureon.com/small-business-insurance/errors-omissions/cost
+- https://www.techinsurance.com/errors-omissions-insurance/cost
+- Reviewer sources cited in the responses: `research/sources/p5-HYP.jsonl`, `p5-PHY.jsonl`, `p5-VC.jsonl`, `p5-VET.jsonl` (Meta Vistara/CXL DDR4 reuse, memtest86+ ECC discussion #248, eBay new-seller limits and holds, Micron design-ID-agnostic DRAM)
+
+---
+
+## 14. Red-team outcome
+
+**Phase 5, agent `p5r-provenance-recert`, 2026-11-01.** Four adversarial reviewers raised 28 objections against DD1: VET (DRAM process veteran), VC (semiconductor VC), HYP (hyperscaler procurement lead) and PHY (condensed-matter physicist). The objections were 3 FATAL, 18 MAJOR and 7 MINOR. Every objection and its full response, verbatim, is in `research/phase5/responses_provenance-recert.json`. None is deleted.
+
+**Dispositions:**
+- **7 ACCEPTED-KILL.** Three legs die: CleanBOM as "the company" with its module-maker tier, the recert-fed die-source library, and the C-85 predictive subscription.
+- **16 ACCEPTED-DOWNGRADE.**
+- **5 ACCEPTED-MITIGATED.**
+- **0 REFUTED.** I could not defeat any objection with evidence. The closest partial rebuttals were two: TechInsights found CXMT die inside a "Powev"-marked package, so a top mark is not always the die maker; and the $400/month E&O premium already sits above published small-firm averages. Neither changes a disposition.
+
+| Objection | Severity | Disposition | Action |
+|---|---|---|---|
+| RT-HYP-DD1-01 | FATAL | ACCEPTED-KILL | Module makers already know die source and may self-certify; module-maker tier killed, track C tightened |
+| RT-VC-DD1-01 | FATAL | ACCEPTED-KILL | Same: the party with liability holds the data free; close 10%→5%; kill criterion 2 requires a cash-paying module maker |
+| RT-VET-DD1-01 | FATAL | ACCEPTED-KILL | Top mark + CoC is a $0 SOP; packs default to top-mark/SPD/X-ray triage, decap on exceptions only |
+| RT-HYP-DD1-02 | MAJOR | ACCEPTED-KILL | Recert flow has ~zero CXMT; library lift removed; bundle pays for samples |
+| RT-PHY-DD1-01 | MAJOR | ACCEPTED-KILL | Wrong population and $0 sample cost; samples are new DDR5 RDIMMs at $600; '63 part numbers' withdrawn |
+| RT-VC-DD1-02 | MAJOR | ACCEPTED-KILL | Same; lot manifests recorded in track A; library is a validation cost, not a moat |
+| RT-PHY-DD1-04 | MINOR | ACCEPTED-KILL | C-85 predictive subscription dropped (−$61k m36 ARR on Phase 4 inputs) |
+| RT-HYP-DD1-03 | MAJOR | ACCEPTED-DOWNGRADE | Die vendor switches lot by lot; library keyed per lot; packs cover only the sampled lot |
+| RT-PHY-DD1-02 | MAJOR | ACCEPTED-DOWNGRADE | Key changed to DRAM package marking + die outline; family inference withdrawn |
+| RT-VET-DD1-02 | MAJOR | ACCEPTED-DOWNGRADE | Brand = die for maker modules; per-lot top-mark library re-costed (1 sample/month) |
+| RT-VC-DD1-03 | MAJOR | ACCEPTED-DOWNGRADE | False-negative risk; no family inference; 30-sample consistency study unaffordable at T0 |
+| RT-HYP-DD1-04 | MAJOR | ACCEPTED-DOWNGRADE | buy 0.65→0.70, caps 400/600→300/450; track A needs ≤0.62 for ≥200/month with 6-month supply |
+| RT-VC-DD1-05 | MAJOR | ACCEPTED-DOWNGRADE | Same input change; recert reframed as an optional side trade |
+| RT-HYP-DD1-05 | MAJOR | ACCEPTED-DOWNGRADE | B2B 0.88→0.80, eBay share 0.40→0.50; B2B planned only on written offers ≥0.85× |
+| RT-VET-DD1-05 | MAJOR | ACCEPTED-DOWNGRADE | Same; signed POs or price sheets ≥0.85× required before B2B volume |
+| RT-VET-DD1-03 | MAJOR | ACCEPTED-DOWNGRADE | CE-logging protocol + 55–70°C soak; fallout 3→7%, returns 2→3%, 12→15 min, +$500 |
+| RT-PHY-DD1-03 | MAJOR | ACCEPTED-DOWNGRADE | Same protocol; test records state protocol, temperature and CE count |
+| RT-VET-DD1-04 | MAJOR | ACCEPTED-DOWNGRADE | DDR5 share 10%→3%; DDR5 bed bought only if quotes show DDR5 |
+| RT-VC-DD1-04 | MAJOR | ACCEPTED-DOWNGRADE | eBay new-seller caps, payout holds and B2B net-30 modeled; cash stays ≥$0 but full-time m14→m21 alone |
+| RT-VC-DD1-07 | MINOR | ACCEPTED-DOWNGRADE | 30% tax provision; full-time m14→m17 and m36 cash −$231k on Phase 4 inputs |
+| RT-HYP-DD1-06 | MAJOR | ACCEPTED-DOWNGRADE | High tier 35%→10% (white-box only); $1M path withdrawn; GSA/SEWP firm count added |
+| RT-HYP-DD1-07 | MINOR | ACCEPTED-DOWNGRADE | Pack redesigned to a commodity top-mark/SPD check; pack rate 15%→10% |
+| RT-VC-DD1-06 | MAJOR | ACCEPTED-DOWNGRADE | Dataset exit and raise path removed; ceiling is lifestyle at best |
+| RT-HYP-DD1-08 | MINOR | ACCEPTED-MITIGATED | E&O $400→$600; criterion 5 requires no government-claims exclusion, else raw evidence only |
+| RT-VET-DD1-06 | MAJOR | ACCEPTED-MITIGATED | Lab $400→$600 all-in; written CXMT reference-image confirmation; samples ship earlier |
+| RT-PHY-DD1-06 | MINOR | ACCEPTED-MITIGATED | CXMT server RDIMM control replaces the consumer kit; X-ray die-outline triage added (not proof) |
+| RT-PHY-DD1-05 | MINOR | ACCEPTED-MITIGATED | PMem fallout 0→10%, returns 2→5%; ipmctl security state and SP 800-88 certificates required |
+| RT-VET-DD1-07 | MINOR | ACCEPTED-MITIGATED | Same; platform generation listed; ≥90% unlocked test adopted |
+
+### 14.1 Changes made
+
+1. **Model** (`models/provenance-recert.py`). A RED-TEAM REVISIONS (Phase 5) block changes 29 inputs, old → new, each with its objection id:
+   - **buy side and channel:** buy 0.65→0.70, B2B 0.88→0.80, eBay share 0.40→0.50, caps 400/600→300/450;
+   - **test protocol and SKU mix:** fallout 3→7%, returns 2→3%, 12→15 min/module, capex +$500, DDR5 mix 10→3%;
+   - **cash cycle and tax:** eBay new-seller caps and holds, B2B net-30, 30% tax provision;
+   - **PMem:** fallout 10%, returns 5%;
+   - **library:** the bundle pays for samples, at $600 per module, 3→1 samples a month, lab $600;
+   - **CleanBOM demand:** close 10%/7%→5%, high tier 35→10%, packs 15→10%;
+   - **E&O:** $400→$600;
+   - **DIMM-health:** dropped from the bundle.
+
+   New mechanics: receivables, eBay ramp, tax with loss carry-forward, an optional ≥5-subscriber full-time gate. `P_PHASE4` reproduces Phase 4 exactly. Report sections 0 and 8 were added, and the model exits 0. The output is re-written to `research/phase4/provenance-recert_model_output.md`.
+2. **CleanBOM.** The module-maker $2,500 tier is gone, and the high tier is white-box builders only. The default pack is top-mark images, SPD bytes and X-ray die-outline triage; decap is an exception add-on. There is no family-level inference and no "no CXMT" language without E&O that has no government-claims exclusion.
+3. **Library.** It is re-keyed from module P/N + date code to per-lot DRAM package marking + die outline. Samples are new third-party DDR5 RDIMMs bought at market. The "63 lab-confirmed part numbers" and moat claims are withdrawn.
+4. **Recert.** It is reframed from "cash engine" to "optional side trade only if lots are ≤62% of resale". The burn-in now logs ECC-corrected errors (rasdaemon/EDAC, any CE = reject) with a 55–70°C soak. B2B volume is planned only on written offers ≥0.85×. PMem modules get ipmctl security-state checks and SP 800-88 certificates.
+5. **DIMM-health (C-85)** is killed, and track D is retired.
+6. **Exit.** The dataset-sale exit and the m18 raise path are removed.
+7. **Kill experiment** (§10). It is now a staged, optional resurrection test. Stage 1 ($1.4k) is track C′ with the HYP/VC/VET pass rule plus free written quotes. Stage 2 ($8.1k) is the physical tests. The CXMT server-RDIMM control replaces the consumer kit. The hard cap stays $9,500.
+8. **Kill criteria** (§11). Criteria 1, 2, 3, 4, 5, 8, 9 and 11 are revised, 12 is retired, and 13 is new.
+
+### 14.2 Revised headline economics (re-run model, m§3, m§8d)
+
+| | BASE | GLUT | SEVERE | Phase 4 BASE |
+|---|---|---|---|---|
+| ARR m18 | **$23,067** | $23,067 | $23,067 | $139,995 |
+| ARR m36 | **$58,335** | $58,335 | $58,335 | $445,543 |
+| Breakeven (founder unpaid) | m19 (May-28) | m19 | m19 | m3 |
+| Breakeven at a $10k founder salary | never | never | never | m11 |
+| Founder full-time | **never** | never | never | m14 |
+| Cash low / cash m36 | −$5,863 at m18 / $23,270 | −$6,061 / $22,086 | −$6,179 / $21,588 | $5,000 / $610,097 |
+| Cumulative EBITDA | −$3,473 | −$7,852 | −$8,998 | $662,971 |
+| **If tracks A (≤0.62) and C both pass** | $67,956 / **$226,833**; full-time **m32** | $171,852; never full-time | $171,852; never full-time | — |
+
+### 14.3 Revised verdicts
+
+- **POSSIBLE? — Yes, with corrections.** Recert is a TRL-9 trade. CXMT die is identifiable at die level ([TechInsights](https://www.techinsights.com/blog/cxmt-g4-16gb-ddr5-dram-process-analysis), snippet: a CXMT G4 16Gb die inside a Powev-marked package) [REPORTED]. But the module-P/N cross-reference is physically invalid, memtest86+ cannot see ECC-corrected faults, X-ray die outline is only triage, and ordinary AS6171 labs may lack CXMT reference images.
+- **PROFITABLE? — No.** At post-red-team central inputs recert earns −$3/module (−1%), and CleanBOM reaches 5.3 subscribers and $58,335 ARR at m36 in every price deck. Cumulative EBITDA is −$3,473, and there is no breakeven at a founder salary. The best case, with both tests passing, is $226,833 ARR at m36: lifestyle scale, and only in BASE.
+- **DOABLE BY THIS FOUNDER? — Mechanically yes, but not worth doing.** It is T0 and part-time, and the operations and software work fit them. But no central-input version gets them full-time inside the 36-month ceiling (both-pass BASE: m32), and the federal sale they have never run is still the gating skill.
+
+### 14.4 FINAL STATUS: **KILLED**
+
+**Reason.**
+- **The three FATAL objections hold.** The named core buyer already knows its die source and may self-certify for free, and resellers may rely on that certificate.
+- **The library cannot supply the missing moat.** It is sampled from the wrong population, keyed on multi-sourced P/Ns, and cheap to rebuild.
+- **Recert's cash engine has no margin.** The red team's sourced corrections (buy fraction, B2B price, CE-inclusive fallout, no DDR5 in lots), stacked together, remove it.
+- **What is left is not a venture.** The revised BASE ($58k ARR at m36, founder never full-time, cash below zero at m18) fails the founder's brief.
+- **Only one path back, and it is narrow.** Stage 1 of §10 must find a cash-paying module maker that cannot get die-source declarations. Even then, the best case is a $227k-ARR lifestyle business.
+
+**Role.** Drop it as a PRIMARY, FALLBACK or MOONSHOT candidate. At most, run the optional $1.4k Stage 1 probe as a side test if the primary pick leaves spare hours. Run recert only as hobby-scale side income, and only if written quotes come in at ≤62% of resale.

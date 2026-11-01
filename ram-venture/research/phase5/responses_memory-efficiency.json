@@ -1,0 +1,167 @@
+{
+ "dd": "DD4",
+ "slug": "memory-efficiency",
+ "title": "Memory Efficiency for On-Prem & Self-Hosted Fleets",
+ "final_status": "KILLED",
+ "status_reason": "After the accepted objections, the value-supported C-74 fee falls 77%, from $7.36 to $1.66 per node per month. The causes compound: Proxmox already runs KSM, fleets hold less DDR5, the saving is a rental equivalent rather than a purchase avoided, and the vendor's share of a counterfactual is smaller. Meanwhile credible 24/7 on-call plus E&O costs ~$2,900-3,400 a month. The re-run BASE never breaks even, burns through the $40k by M12 (2027-10), and ends at -$95.7k. Even a fully passed kill test ends at -$85.4k, so the ~$6k experiment is cancelled and C-74 is killed at $0. C-75 was already dropped, and C-73 is ~2 consulting audits a year, not a venture.",
+ "revised_verdicts": {
+  "possible": "Yes technically, but smaller and lumpier than claimed. Incremental reclaim over stock Proxmox (KSM already on) is ~5-7%, and ~0 on hugepage-backed or SEV-SNP/TDX hosts. On Kubernetes and HPC, schedulers allocate by request, so reclaim creates no usable capacity.",
+  "profitable": "No. The fee is $1.66/node/month at peak against $2,500-3,000/month on-call plus $400 E&O. Revised BASE ARR is $3.8k at M18 and $7.1k at M36; it never breaks even, cash is below $0 from M12, and cash is -$95.7k at M36 (GLUT -$90.8k, SEVERE -$90.9k). The kill test's best case still ends at -$85.4k.",
+  "doable": "No. It needs a 24/7 kernel responder with a 1-2 h SLA, which a part-time founder with a day job cannot be or afford. The only ceiling-changing route is a channel of >=4,500-7,900 pure-DDR5 nodes, and an operator that size has its own kernel staff."
+ },
+ "revised_economics": {
+  "arr_m18_base": 3797,
+  "arr_m36_base": 7098,
+  "arr_m36_glut": 2455,
+  "arr_m36_severe": 1166,
+  "founder_fulltime_month_base": "never",
+  "breakeven_month_base": "never"
+ },
+ "ev_note": "For this founder, pursuing DD4 now has negative expected value. Following the Phase 4 plan, they would spend ~$31k of their $40k before the first gate (2027-07-31, fee below $5/node) stopped them, and no path inside their constraints (part-time, <$50k, no kernel skills) turns C-74 profitable. Dropping it costs $0 and keeps the ~$6k the kill test would have spent. Role: DROP. It is not PRIMARY (no breakeven in any case). It is not FALLBACK: it is not a safe path to revenue, because C-74 loses money from its first customer. It is not a MOONSHOT candidate: the ceiling stays under $0.5M even with a channel. The only residue is ad-hoc fee-for-service memory audits (C-73, or a pre-purchase on-prem sizing review with no agent and no on-call) when a contact asks, worth perhaps ~$6k a year as side income. The only reopen trigger is unsolicited and costs nothing: by 2027-03-31, a written channel commitment for >=4,500 majority-DDR5 VM-host nodes plus a <=$1k/month kernel on-call retainer.",
+ "responses": [
+  {
+   "id": "RT-VET-DD4-01",
+   "response": "Valid on mechanism, partly wrong on the mean. Channel population is real: 2-socket SPR/EMR fill 16 channels and Genoa 24 at 1DPC, so a 512 GB node steps down to 384 GB (16x24 GB), a 25% step. But if a buyer's requirement lies anywhere between steps, P(dropping a step) ~ r x S_k/dS and the saving when it drops is dS, so E[saving] = r x S_k. Across many buyers the linear price is right on average; for any single buyer it is wrong. At the revised 6% reclaim, P ~ 0.06 x 384/128 = 18%: about 82% of DIMM-configuration buyers save $0 on their next PO and 18% save a full 128 GB step. Installed nodes never un-buy DIMMs. For memory-bound Proxmox hosts the lever is fewer whole nodes, at 1/N granularity. That also saves CPU, chassis and licences, an upside I did not model. So I model the step as lost conversion, not lost value: only pilots that show a PO change convert, and pilot_to_sub goes 0.60 -> 0.40. On Phase 4 inputs that change alone cuts BASE ARR M36 from $68.7k to $49.8k (model §0).",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: pilot_to_sub 0.60 -> 0.40. DD §2.1 documents step quantization as mean-neutral but bimodal. Reopen PASS (§10.3) now requires written 2027 quotes or POs showing a smaller DIMM configuration or fewer nodes because of measured reclaim."
+  },
+  {
+   "id": "RT-VET-DD4-02",
+   "response": "Valid. Proxmox forum sources (search, 2026-11-01, snippets only) say ksmtuned is enabled by default on ISO installs and starts merging at ~80% host RAM (KSM_THRES_COEF=20); I could not open the official wiki. On the beachhead the dedup slice is therefore either already harvested or, on multi-tenant hosts, should be off because of dedup side channels and Flip Feng Shui-style attacks. What remains is zswap plus proactive reclaim of guest memory, where Google's fleet figure is ~5%. I cut reclaim_frac from 0.10 to 0.06, counted as incremental over a stock baseline. On Phase 4 inputs that alone takes BASE ARR M36 from $68.7k to $46.0k and C-74 subscription GM from 37% to 2%.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: reclaim_frac 0.10 -> 0.06. Policy: never enable cross-tenant KSM on multi-tenant hosts. §10.3 uses the reviewer's bar: >=10% further reclaim from zswap and proactive reclaim on >=5 MSP Proxmox hosts at <=5% p99 regression, with KSM counted as already on (or off for security)."
+  },
+  {
+   "id": "RT-VET-DD4-03",
+   "response": "Valid. Slurm enforces per-job memory through cgroups at the requested size. Compute nodes typically run without swap. Bulk-synchronous MPI codes touch their working set every iteration and are sensitive to jitter, so cold anonymous memory is small and compression stalls appear in collectives. Pages reclaimed from a running job create no capacity the scheduler can resell unless the center oversubscribes memory, which HPC centers avoid. The ICER and UArizona price pain is real, but the lever for it is right-sizing job memory requests, which is free. Removing the segment narrows the scope to VM hosts. Its conversion effect is folded into scan_to_pilot 0.40 -> 0.30 (shared with RT-VC-DD4-05); on Phase 4 inputs that cut alone gives BASE ARR M36 $54.5k.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "DD §3: rows 4-7 dropped and row 8 (Advanced Clustering, an HPC channel) demoted. §10.3 target list: the 15 research-computing centers and 5 HPC integrators replaced by Proxmox/KVM MSPs and regional colo/hosting firms. Model: scan_to_pilot 0.40 -> 0.30."
+  },
+  {
+   "id": "RT-VET-DD4-04",
+   "response": "Valid, and fatal to C-74 as a business line. $750 a month buys ~4.3 contractor hours with no SLA. I reproduced the reviewer's run: on-call $3,000 in both tiers on Phase 4 inputs gives cash low -$11,544 at M20 and C-74 subscription GM -18%. I set on-call to $2,500 a month at 1-5 customers and $3,000 at 6+ (midpoint of HYP's $2,000 and the reviewer's ~$3,000). On the fully revised model an 80-node customer pays $133 a month against a $728 on-call allocation, a loaded GM of -473%. On-call plus E&O alone needs ~29-34 customers at ~$100 gross profit each; the model reaches 5.4 by M36. A part-time founder with a day job cannot be the night responder. Only a kernel cofounder on equity would remove this cost, and none is in hand.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Model: oncall_small $750 -> $2,500, oncall_large $2,000 -> $3,000. C-74 killed. A signed retainer of <=$1,000 a month with a <=2-hour 24/7 SLA, or an equity kernel cofounder, is now one of the two §10.2 reopen conditions."
+  },
+  {
+   "id": "RT-VET-DD4-05",
+   "response": "Valid. Reproduced: ddr5_share 0.30 gives a fee of $4.63/node, ARR M36 $47,664 and C-74 GM 6%; adding $3k on-call gives cash M36 -$18,734. The 60% was a targeting rule, not a measurement. Search (snippets): DDR5 was ~53% of server DRAM revenue in 2025 (Mordor Intelligence), a figure inflated by DDR5's higher $/GB, and DDR4 still carried the installed base in legacy enterprise and public sector in 2025-26 (Research and Markets). VMware-to-Proxmox migrations also usually reuse existing hosts. I set ddr5_share 0.60 -> 0.40, between the reviewers' 0.30 and Phase 4. On Phase 4 inputs that alone gives ARR M36 $54.7k.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: ddr5_share 0.60 -> 0.40. §10.3 PASS needs a census of >=10 responding fleets with >=50% of node-GB on DDR5 and 2027 server purchases planned."
+  },
+  {
+   "id": "RT-VC-DD4-01",
+   "response": "Valid; I accept the kill. The fully revised model shows no PASS outcome changes the ceiling. The kill test's best case (10% incremental reclaim, 60% DDR5) gives BASE ARR $7.8k at M18 and $14.8k at M36, with cash at -$85.4k at M36. Everything +30% gives $21.1k ARR and -$23.2k. The only route that changes the ceiling is the channel the reviewer names. Model §7 puts the bar at ~4,500 (10% reclaim) to ~7,900 (6% reclaim) pure-DDR5 VM-host nodes at a 25% revenue share, just to carry one $10k/month salary plus fixed ops at peak BASE prices, and ~43% more at M36 prices. An operator that size has its own kernel staff, so the condition contradicts the target buyer. Following the Phase 4 plan, the founder would spend ~$31.3k before the first gate (M9) stopped them. Cancelling the ~$6k test (cap $10k) saves 15-25% of their capital.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "§10 experiment cancelled; C-74 killed at $0 on 2026-11-01 (§11 criterion 0). §10.2 adds a $0 reopen watch to 2027-03-31: a partner commits in writing to >=4,500 majority-DDR5 VM-host nodes with PO-tied savings-share invoicing, AND a <=$1k/month on-call retainer is signed. Model §7 now prints the channel threshold."
+  },
+  {
+   "id": "RT-VC-DD4-02",
+   "response": "Valid in mechanism, wrong in magnitude. A recurring fee for a one-time deferral over-charges, and the Phase 4 model also re-billed the full value at every renewal. But the reviewer's own formula is not 'near zero in BASE'. BASE has a -30% turn over 2028, so price(now) - PV(price at M36) = 25.78 - 18.05/1.26 ~ $11.4/GB, which is 44% of the avoided value: deferring into a falling market is worth more, not less. The formula also ignores that DIMMs bought later have more life left. The right measure is the rental equivalent of 36 months of capacity: P0 - PV(residual value of 3-year-old DIMMs), which is ~68% (flat prices) to 78% (BASE) [ESTIMATE: 8%/yr, 40% residual]. I set value_realization 1.0 -> 0.75; on Phase 4 inputs that alone gives ARR M36 $54.5k. Cancellation once the purchase decision has passed is covered by the lower pilot-to-subscription rate.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: new input value_realization 1.0 -> 0.75, applied to the fee basis. DD §2.1/§4: 12-month contracts with a ledger tied to a named cancelled or reduced DIMM/server PO. §10.3 PASS requires those PO deltas."
+  },
+  {
+   "id": "RT-VC-DD4-03",
+   "response": "Valid; same finding as RT-HYP-DD4-02 and RT-VET-DD4-02. Proxmox's advice to disable KSM on multi-tenant hosting makes it worse: on hosting MSPs the KSM slice is either already harvested or should be off. Reproduced: 5% reclaim on Phase 4 inputs gives ARR M36 $40.3k. I set 6%, between Google's ~5% zswap fleet figure and HYP's 6% run; on Phase 4 inputs that gives $46.0k. With every other change applied, the fee is $1.66/node/month.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: reclaim_frac 0.10 -> 0.06. §10.3: >=10% incremental reclaim on production Proxmox MSP hosts, with KSM in its default state and no cross-tenant KSM enabled (the reviewer's condition, extended to >=5 hosts)."
+  },
+  {
+   "id": "RT-VC-DD4-04",
+   "response": "Valid; same as RT-VET-DD4-04 and RT-HYP-DD4-04. A 1-hour, 24/7 response needs at least two people in rotation; $750 buys a best-effort email. Revised costs: $2,500/$3,000 a month on-call plus $400 E&O. C-74 loaded GM moves from 37% to -473% on the revised model. Even with every other input at its Phase 4 value, on-call of $2,500 at 1-5 customers alone pushes the cash low to -$5.0k, breaching the $40k.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Model: oncall_small $750 -> $2,500, oncall_large $2,000 -> $3,000. C-74 killed. The reviewer's condition (a signed retainer of <=$1,000/month with a <=1-2 h SLA from a named contractor) is a §10.2 reopen condition."
+  },
+  {
+   "id": "RT-VC-DD4-05",
+   "response": "Valid. The real competitor is the in-house admin using free zswap, MGLRU and PSI reclaim plus Proxmox defaults. A 20-200-node shop with no kernel team is the least willing to let an outside agent change production memory without SOC 2. None of the four funnel rates has an on-prem benchmark; Phase 4 already tagged them ESTIMATE. Granulate (shut by Intel, Oct-2024) and MemVerge (pivoted 2025) are the precedent. I set scan_to_pilot 0.40 -> 0.30 and the SOC 2 trigger 5 -> 2 customers, so the $12k now lands at M18. On Phase 4 inputs, the conversion cut alone gives ARR M36 $54.5k, and the earlier SOC 2 alone gives a cash low of $4.3k.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: scan_to_pilot 0.40 -> 0.30; soc2_trigger_customers 5 -> 2. §10.3 LOI condition now requires that neither signer had zswap or tuned reclaim enabled before the scan, at >=$5/node/month from majority-DDR5 fleets."
+  },
+  {
+   "id": "RT-VC-DD4-06",
+   "response": "Valid. On Phase 4 inputs C-73 averaged ~$1k a month. The founder's network is in manufacturing, not cloud SaaS, and all 92 compared EC2 on-demand SKUs were unchanged from Sep-2025 to Oct-2026, so there is no tailwind. I cut c73_rate_pt 0.33 -> 0.17, about 2 audits a year. On Phase 4 inputs that alone moves the cash low from $10.4k to $8.1k and cash at M36 from $55.7k to $39.6k. C-73 bridges nothing.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: c73_rate_pt 0.33 -> 0.17. DD §0: C-73 is no longer called a cash bridge, only opportunistic consulting. New §11 criterion 3: fewer than 3 committed $3k audits from the founder's network by 2026-11-30 -> drop C-73."
+  },
+  {
+   "id": "RT-HYP-DD4-01",
+   "response": "Valid. ProsperOps and Zesty bill savings that appear on a cloud invoice. On-prem, installed DRAM is sunk and value appears only at growth or refresh purchases; the Phase 4 model billed every installed node from day 1. Reproduced: savings_share 0.20 on Phase 4 inputs gives ARR M36 $49.8k. I set savings_share 0.30 -> 0.20 and changed billing to invoice against a measurable event (a deferred PO or a smaller DIMM SKU on new nodes). Pilots with no such event do not convert (pilot_to_sub 0.40, shared with RT-PHY-DD4-01/RT-VET-DD4-01). With all accepted changes the fee is $1.66/node/month at peak. That is ~$20/node/year, about 4% of Ubuntu Pro's $500/server/year, which is where a procurement benchmark against existing support contracts would land anyway.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: savings_share 0.30 -> 0.20. DD §2.1/§4: billing tied to measured PO events on 12-month contracts. The reviewer's condition (pilot SOWs accepting a savings-share invoice tied to a deferred PO or smaller SKU) is in the §10.3 PASS."
+  },
+  {
+   "id": "RT-HYP-DD4-02",
+   "response": "Valid; same evidence as RT-VET-DD4-02 (Proxmox forum snippets: ksmtuned on by default and activating at ~80% host RAM). The 10% was measured against a non-default baseline. Reproduced: 6% reclaim on Phase 4 inputs gives ARR M36 $46.0k. I adopted 6% as the incremental figure.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: reclaim_frac 0.10 -> 0.06. §10.3 test hosts: (a) stock Proxmox (KSM on, ksmtuned defaults, ballooning on) as the baseline, (b) a multi-tenant host with KSM off, (c) a production MSP host. PASS requires >=10% incremental reclaim at the same p99."
+  },
+  {
+   "id": "RT-HYP-DD4-03",
+   "response": "Valid. kube-scheduler bin-packs on requests, not usage. Freed physical pages leave node allocatable unchanged, and with LimitedSwap the scheduler still packs on requests. Pod density rises only when requests drop. That is right-sizing, which belongs to ScaleOps, Kubecost and the free VPA/KRR, and Phase 4 already conceded it. Physical reclaim on K8s lowers OOM and eviction risk but creates no capacity a buyer would pay a savings share for.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "DD §3 buyer definition: on-prem Kubernetes removed. §5: Kubernetes segment exited now, no longer 'when ScaleOps adds swap'. §10.3: Kubernetes node removed from the test and K8s teams removed from targets. §11 criterion 10 updated. Scope is Proxmox/KVM VM hosts only."
+  },
+  {
+   "id": "RT-HYP-DD4-04",
+   "response": "Valid, and worse than stated. Reproduced: with C-75 off and C-73 at zero, the cash low is -$10.8k at M20 and M36 cash is -$9.4k. The reviewer's -$4.5k figure (with $2,000 on-call and $600 E&O) is for the full bundle with C-73 and C-75 on. For C-74 standalone, those costs give -$40.6k at M35 (my run). Search found small-tech E&O averaging $67-110 a month (Insureon) and a startup median of ~$308 a month (Vouch via QuoteSweep), so I set E&O to $400, not $600, with the uplift for limits that cover production-impact claims. I set on-call to $2,500/$3,000. I turned C-75 off in the headline because the DD itself recommends dropping it. Revised: the bundle ends at -$95.7k at M36, and C-74 standalone (C-73 at zero) at -$112.3k.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Model: oncall_small $750 -> $2,500, oncall_large $2,000 -> $3,000, insurance_pm $200 -> $400, c75_enabled 1 -> 0. Model §6 adds a 'C-74 standalone' row. C-74 killed. The reviewer's condition (signed SLA <=$750/month plus a bound E&O quote) is replaced by the §10.2 retainer condition."
+  },
+  {
+   "id": "RT-HYP-DD4-05",
+   "response": "Valid for GLUT and SEVERE, wrong for BASE. Kill criterion 9 fires at -40% from peak, not when the turn starts. BASE's turn is only -30%, so it never fires there. GLUT crosses at M22 (2028-08) and SEVERE at M20 (2028-06), which leaves 14-16 selling months after the agent is ready, not 8. But the Phase 4 model did not implement the stop at all, which was inconsistent with §11. It now does: GLUT ARR M36 is $2.5k and SEVERE $1.2k in the revised model. The revised BASE has ~1.05 C-74 subscriptions at 2027-12, far below the reviewer's bar of 5.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: new acq_stop_price_frac 0 -> 0.60, which stops new C-74 acquisition below 60% of peak while customers < 8; model §8 prints the stop month. New §11 criterion 8: fewer than 5 signed C-74 subscriptions by 2027-12-31 -> kill C-74."
+  },
+  {
+   "id": "RT-HYP-DD4-06",
+   "response": "Valid; same as RT-VET-DD4-05. Reproduced: ddr5_share 0.30 gives ARR M36 $47.7k and cash M36 $27.8k. 'Majority DDR5' is the right filter, but it will shrink the list. I set 0.40.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: ddr5_share 0.60 -> 0.40. §10.3 PASS adds the reviewer's census condition: >=15 of the 60 targets confirm majority-DDR5 fleets with 2027 purchase plans."
+  },
+  {
+   "id": "RT-PHY-DD4-01",
+   "response": "Valid on billing and churn; partly refuted on the mean. Using the reviewer's own formula, P(step) ~ r x S_k/dS, and the saving when it happens is dS, so E[saving] = r x S_k. Across a portfolio of buyers the linear value is right on average. The problem is the distribution. At the revised 6% reclaim and 1.33-1.5x steps, P ~ 12-18%, so most DIMM-configuration buyers realize $0 on their next PO and dispute a per-node bill. Installed nodes never un-buy. Memory-bound VM hosts that buy fewer whole nodes (1/N granularity) realize value more smoothly. Modeled as lost conversion (pilot_to_sub 0.60 -> 0.40) plus billing only at procurement events. On Phase 4 inputs the conversion cut alone gives ARR M36 $49.8k.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: pilot_to_sub 0.60 -> 0.40. DD §2.1 explains why step quantization averages out but splits buyers into winners and losers. §10.3 PASS requires the reviewer's evidence: pilot purchase quotes showing a changed DIMM SKU/count or node count."
+  },
+  {
+   "id": "RT-PHY-DD4-02",
+   "response": "Valid. MemFree rising after page cache is dropped (trivial on a CI runner) is not capacity saved, and it costs I/O. TMO's numbers are resident-memory reductions at PSI-bounded performance. I adopt the reviewer's definition. Reclaim is now the lowest cgroup memory.max (or VM balloon target) that holds p99 within 5% and PSI memory 'some' avg60 under a fixed bound for 14 days, compared with the same measure on the stock baseline and reported as an anonymous/file split. The 10% bar applies only to anonymous memory plus the cache the workload needs. The model's revised 6% already represents anonymous, compressible reclaim, so this change fixes the test without lowering prospects further.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "§10.3 metric redefined as above; workload (c), the CI runner, replaced by a second, multi-tenant Proxmox host with KSM off; the Kubernetes node removed. §11 criterion 6 uses the §10.3 metric. No model change."
+  },
+  {
+   "id": "RT-PHY-DD4-03",
+   "response": "Valid; same as RT-VET-DD4-03. Swapless compute nodes, whole-working-set MPI iterations, Slurm cgroup caps at the requested size, and purchases sized for the largest-memory job class: four of the first ten customers and 15 of the 60 targets were physically mismatched. I do not pursue the reviewer's condition (a center running zswap on compute nodes with >=10% cold anonymous memory). Even then, the scheduler would not resell freed memory without oversubscription.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "DD §3 rows 4-7 dropped; §10.3 targets have no research-computing centers. Model: scan_to_pilot 0.40 -> 0.30 (shared with RT-VC-DD4-05, RT-VET-DD4-03)."
+  },
+  {
+   "id": "RT-PHY-DD4-04",
+   "response": "Valid. KSM merges only 4 KiB anonymous pages. VMs backed by hugetlbfs or 1 GiB pages cannot be merged or swapped. SEV-SNP/TDX guests present ciphertext to the host, so host-side zswap compresses at ~1:1 and KSM finds nothing. KSM is also often off for side-channel reasons. A single fleet-wide average hides hosts where reclaim is zero.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "The scanner now reports, per host, hugepage/hugetlbfs backing, SEV-SNP/TDX status and KSM state. Such hosts are excluded from billable nodes and from the reclaim average (DD §1, §10.3). The revised 6% fleet figure [ESTIMATE] assumes these are a minority of SMB MSP hosts; the first 5 installs report them, as the reviewer asks. No further model change."
+  },
+  {
+   "id": "RT-PHY-DD4-05",
+   "response": "Valid. Writing back 100-200 GB/day to a ~1 DWPD 480 GB boot M.2 consumes 0.2-0.4 DWPD. The fix is a policy, not a COGS line. On boot-class media the agent runs zswap with writeback disabled: the cgroup v2 memory.zswap.writeback=0 knob comes from the 2023-24 upstream series (LKML RFC 2023-11), and older kernels do not apply it hierarchically (LKML 2024-08), so the agent sets it per leaf cgroup. Writeback goes only to a dedicated swap device with a TBW budget. Swap writes per day are logged against rated TBW, and a host falls back automatically to zswap-only above 0.1 DWPD. Disabling writeback lowers achievable reclaim, which the 6% already reflects. With no writeback to boot media there is no wear COGS.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "DD §1 and §10.3 policy: zswap-only on boot media, a dedicated swap device with a TBW budget otherwise, and write telemetry. New §11 criterion 5 (drive-wear rule). No model change."
+  },
+  {
+   "id": "RT-PHY-DD4-06",
+   "response": "Valid. The kernel hwpoison documentation says only LRU pages are recoverable and most kernel objects are not; zswap's zsmalloc pool is kernel memory. The 2025 'zswap: do not crash the kernel on decompression failure' patch covers detected corruption, not machine-check consumption in kernel context (merge status unconfirmed). Reproduced: 2,157 nodes x 1.3%/yr x 5% pool share ~ 1.4 panics a year. At the revised book (~456 nodes at M36, ~3% of RAM in the pool at 6% reclaim and 2:1) it is ~0.18 a year. Still, one such panic on a pilot host could have tripped the old two-incident kill.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "§11 criterion 4 and every SOW exclude node panics whose root cause is a hardware uncorrectable error logged by MCE/EDAC/rasdaemon, and require kdump on agent hosts so the cause can be proven (DD §7, §11)."
+  },
+  {
+   "id": "RT-PHY-DD4-07",
+   "response": "Valid. The arithmetic checks. Llama-3-70B KV = 80 layers x 8 KV heads x 128 x 2 x 2 B = 0.33 MB/token, or 10.7 GB per 32k-token prefix. Eight GPUs at ~55 GB/s each over PCIe Gen5 x16 pull ~440 GB/s, while a 12-channel DDR5-4800 socket peaks at 460.8 GB/s theoretical (~300-370 GB/s practical). Under concurrent prefix fetches the host-DRAM tier is bandwidth- and NUMA-bound, and sizing by capacity and reuse interval alone misprices it. C-75 was already being dropped apart from opportunistic consulting; this adds a technical reason.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: c75_enabled 1 -> 0 in the revised headline (C-75 on is only a sensitivity row, ARR M36 $17.7k). DD §12: any C-75 consulting sizing must include per-socket bandwidth and NUMA placement, checked on the customer's 8-GPU node under concurrent fetches."
+  }
+ ]
+}

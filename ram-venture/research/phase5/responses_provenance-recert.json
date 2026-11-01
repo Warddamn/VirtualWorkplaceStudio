@@ -1,0 +1,191 @@
+{
+ "dd": "DD1",
+ "slug": "provenance-recert",
+ "title": "Provenance & Recertified Memory",
+ "final_status": "KILLED",
+ "status_reason": "The three FATAL objections hold: the named core buyer (OEM-compatible module makers) already knows its die source from POs, CoCs and package top marks and may self-certify under the proposed FAR rule, and resellers may rely on that free certificate. The die-source library was sampled from the wrong population (old OEM DDR4), keyed wrongly (module P/N) and replicable, so the moat is gone; the C-85 predictive subscription is dropped. With all accepted revisions the recert 'cash engine' earns -1% per module (it needs lots at <=62% of resale for 8%), and the revised BASE reaches only $58k ARR at m36 with the founder never full-time; even if both kill tracks pass, BASE is $227k ARR with full-time at m32 and GLUT/SEVERE never pay the founder.",
+ "revised_verdicts": {
+  "possible": "Yes, with corrections. Recert is a TRL-9 trade, and CXMT die can be identified at die level (TechInsights analysed a CXMT G4 16Gb die even inside a Powev-marked package). But the module-P/N cross-reference is physically invalid (multi-sourced P/Ns, assembly-week date codes), memtest86+ burn-in cannot see ECC-corrected faults (CE logging plus a heated soak is required), X-ray die outline is only triage, and most AS6171 labs may lack CXMT reference images.",
+  "profitable": "No at post-red-team central inputs (revised after red team). Recert earns -$3/module (-1%) at buy 0.70 / B2B 0.80 / 7% fallout. CleanBOM reaches 5.3 subscribers and $58,335 ARR at m36 (same in BASE, GLUT and SEVERE), cumulative EBITDA is -$3,473, the cash low is -$5,863 at m18, and there is no breakeven at a $10k founder salary. If both kill tracks pass (lots <=0.62, a cash-paying module maker), the best case is $226,833 ARR at m36 and full-time at m32: lifestyle at best, and never full-time in GLUT/SEVERE.",
+  "doable": "Mechanically yes (T0, part-time, operations and software work the founder can do), but at central inputs there is nothing worth doing: no version puts the founder full-time inside the 36-month ceiling except the both-tracks-pass case (m32), and the federal sales motion they have never run is still the gating skill."
+ },
+ "revised_economics": {
+  "arr_m18_base": 23067,
+  "arr_m36_base": 58335,
+  "arr_m36_glut": 58335,
+  "arr_m36_severe": 58335,
+  "founder_fulltime_month_base": "never",
+  "breakeven_month_base": "m19"
+ },
+ "ev_note": "For this founder the expected value of DD1 after the red team is close to zero and slightly negative at central inputs: about -$3k of cumulative EBITDA over 36 months, about $58k of ARR, and no full-time switch. The upside needs two independent long shots. Track A (written ITAD quotes at <=62% of resale for >=200 modules/month) I put at ~20%. Track C (a module maker that pays cash and says in writing it cannot get die-source declarations) I put at ~10-15%. Both together (~3%) yield a $227k-ARR lifestyle business with full-time at m32, and only in BASE. With the kill rules applied (no CleanBOM unless track C passes), the probability-weighted m36 ARR is about $23k: 10% × $171,852 if only C passes, plus 2.5% × $226,833 if both pass. Phase 4 had $446k. Role: DROP as a primary, fallback or moonshot candidate. Keep at most a $1k, 29-day track-C probe (15 conversations, tightened pass rule) as an optional side test, only if the founder's primary experiment leaves spare hours. Run tracks A and B (~$8.5k) only if that probe passes. Recert alone is at best hobby-scale side income and never funds the founder's time.",
+ "responses": [
+  {
+   "id": "RT-HYP-DD1-01",
+   "response": "Correct, and I cannot defeat it. The named core buyers (AddOn, Axiom, Brute) buy DRAM components, or finished modules from an ODM, under POs and CoCs that name the DRAM maker. An un-remarked CXMT package carries CXMT's own marking. Under proposed 52.240-XX a reasonable inquiry may rest on that supplier declaration, and every SEWP/GSA reseller downstream may rely on the module maker's certificate at zero marginal cost. The only partial rebuttal I found is weak. TechInsights' CXMT G4 16Gb DDR5 analysis used a die from a package marked 'Powev H2G08SC522-6AF' on a Gloway module (snippet, 2026-11-01), so CXMT die can ship under a non-CXMT top mark. But that is a consumer-channel case, the module maker still knows what it bought, and I again found no case of CXMT die relabeled inside a U.S. server RDIMM. A search for a standard §5949 supplier declaration form also found none, which suggests a paperwork gap rather than a die-evidence gap. What remains is refurb/odd-lot resellers and white-box builders, the smallest and most price-sensitive segment. Model: removing the module-maker demand alone (close 10%→5%, high tier 35%→10%, packs 15%→10%) on Phase 4 inputs cuts m36 ARR from $445,543 to $187,670 (m§8b). In the full revised model CleanBOM reaches 5.3 subscribers and $58,335 ARR at m36.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Killed leg: CleanBOM as 'the company', and its $2,500 module-maker die-source tier. The high tier is now white-box builders only (cb_hi_share 0.35→0.10); cb_close 0.10→0.05; cb_pack_rate 0.15→0.10. Track C is tightened to HYP's own test: at least one module maker (not a reseller) pays cash and states in writing that its ODM or component supplier refuses a die-source declaration. Without that, CleanBOM is not built. DD §0, §2, §10, §11 #2 and §14 updated; final status KILLED."
+  },
+  {
+   "id": "RT-VC-DD1-01",
+   "response": "Same mechanism as RT-HYP-DD1-01, and it is valid. The party with the liability (the module maker) already holds die-source evidence for free: its DRAM invoices or its ODM's CoC. The proposed rule lets it certify on that, and lets downstream resellers rely on it. 01_LANDSCAPE §10.2 had already closed '§5949 die-level lab screening as the core product'. DD1 tried to escape that by making the lab-built library the moat, and the library objections (RT-PHY-DD1-01, RT-VC-DD1-02, RT-HYP-DD1-02) remove that escape. Holding demand flat at a 10% close was the model's single most generous CleanBOM input. Numbers: Phase 4 + CleanBOM demand revision alone gives $187,670 ARR at m36 (from $445,543). Revised full model: 5.3 subscribers, $58,335 ARR, founder never full-time. VC's would-change-my-mind test (3 of 5 compatible-memory makers state in writing they cannot get die-source certifications and will pay ≥$750/month) has not been run. My prior that it passes is low (about 10-15%).",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Same killed leg as RT-HYP-DD1-01. Kill criterion 2 now requires ≥1 cash-paying module maker plus a written statement that die-source declarations are unobtainable for ≥20% of federal SKUs, in addition to ≥3 of 15 committing. The revised resurrection test runs track C first and alone. Model close and tier inputs revised (RED-TEAM REVISIONS)."
+  },
+  {
+   "id": "RT-VET-DD1-01",
+   "response": "Valid. Whoever holds the module can read the package top mark: Samsung K4..., SK hynix H5..., Micron FBGA codes (decodable on micron.com), CXMT CXDB... Module makers also hold invoices and CoCs. For un-remarked parts a microscope and the SPD JEP106 bytes are a $0 internal SOP, which is exactly what 01_LANDSCAPE §0 item 8/F4 says. My only counter-evidence is the Powev-marked CXMT package (TechInsights, snippet): CXMT die does sometimes ship under a third-party package brand, so a top mark is not always the die maker. That helps a downstream reseller who cannot see the supply chain. But that reseller may rely on the upstream certificate. And it is a consumer case, with no U.S. server-RDIMM instance found. So decap adds information only for remarked or third-party-branded packages, which is exception testing that AS6171 labs already sell. The $2,500 tier sold module makers information they already own.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Killed leg: module-maker tier and the 'library is the moat' claim. The evidence pack is redesigned: default = package top-mark images + SPD bytes + X-ray die-outline triage; decap only on exceptions (third-party package brands, mismatches). Track C adds VET's test: 3 of 5 module makers or resellers state that for ≥20% of federal SKUs they cannot establish die source from purchase records plus top-mark inspection, and one pays for a $900 pack on such a SKU."
+  },
+  {
+   "id": "RT-HYP-DD1-02",
+   "response": "Valid. Servers decommissioned in 2026-27 are 2019-21 builds; their DDR4 is Samsung, SK hynix or Micron, and CXMT server RDIMMs only reached the U.S. 'compatible' channel in 2025-26. The bench will produce close to zero CXMT positives, and recovered DIMMs are barred from DoD deliverables anyway. The 3-point close-rate lift ($121,985 of Phase 4 m36 ARR) had no mechanism behind it. I ran HYP's second test: with cb_close_bundle equal to standalone and the bundle paying for samples, Phase 4 m36 ARR is $323,558 (the published 'no lift' row). With samples bought new at $1,000 it is $290,023, and subscribers at m18 fall to 2.9. The bundle hypothesis that 'recert is how CleanBOM gets die-source data' fails on sample selection.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Killed leg: the recert-fed die-source library and the bundle close-rate lift. Model: lib_bundle_pays_module False→True, lib_module_cost $150→$600 (new third-party DDR5 RDIMMs), cb_close_bundle = cb_close_standalone = 0.05. Library samples come from currently sold third-party DDR5 RDIMMs, not recert flow. DD §1, §2.3 and §14 updated."
+  },
+  {
+   "id": "RT-PHY-DD1-01",
+   "response": "Valid on both counts. (1) Population: 2026-27 ITAD lots are 2018-22 OEM-qualified DDR4, 90% of the Phase 4 mix, which predates CXMT server parts. The at-risk population is new third-party DDR5 RDIMMs, which recert never touches. (2) Cost: decap destroys the module, yet the model priced bundled samples at $0 (old line 323). Re-run on Phase 4 inputs with library modules at $1,000, bundled too: m36 ARR $290,023 and subscribers at m18 only 2.9. PHY's ≥10-subscriber condition fails, so the ~$122k 'library lift' is erased as PHY says. I chose $600 per sample (a 16-32GB new DDR5 RDIMM at ~$25/GB) and cut samples to 1/month, because the library is re-keyed to per-lot package markings (RT-PHY-DD1-02).",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Same killed leg as RT-HYP-DD1-02. The bundle now pays for every library module (lib_bundle_pays_module=True, lib_module_cost $600); lib_samples_early 3→1, lib_samples_late 1→0.5. The '63 lab-confirmed part numbers' claim is withdrawn (24 validation samples by m36, no coverage claim)."
+  },
+  {
+   "id": "RT-VC-DD1-02",
+   "response": "Valid. ITAD flow is 2017-22 Dell/HPE fleet DDR4, almost all big-3 OEM modules. The risky population (new CXMT-die DDR5 RDIMMs) will not show up in ITAD lots until about 2030 decommissions. The $121,985 credited to the library rested on an unmeasured 7%→10% lift from the wrong sample. VC's alternative test was to re-run with sample modules bought new at retail. Done: library modules charged at $600-1,000 even in the bundle, and the lift removed. The library no longer pays for itself as a moat. It survives only as a small validation cost inside CleanBOM ($1,200/month in m4-18, then $600).",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Same killed leg as RT-HYP-DD1-02. Track A additionally records lot manifests (brand, DRAM package marks, date codes) so that VC's '≥10% third-party DDR5 or post-2024 date codes' condition is measured, not assumed."
+  },
+  {
+   "id": "RT-HYP-DD1-03",
+   "response": "Valid. Third-party module makers multi-source DRAM under one module part number and switch die vendor lot by lot as supply allows. In a shortage where CXMT is the marginal open-market supplier, that switching is the expected behavior. One decap therefore covers one build lot, not a P/N plus date-code family. Lab cost scales with lots shipped, and '63 lab-confirmed part numbers' was never coverage. I have no data showing within-family stability (HYP's test: ≥2 P/Ns from ≥2 vendors stable across ≥3 date codes).",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Library re-keyed from module P/N + date code to per-lot DRAM package marking (FBGA/marking code) + die-outline fingerprint. Evidence packs state that they apply only to the lot sampled. Lab use is limited to exceptions and validation (lib_samples_early 3→1). Track B adds HYP's stability test when samples allow. The reusable cross-reference that justified a moat no longer exists."
+  },
+  {
+   "id": "RT-PHY-DD1-02",
+   "response": "Valid physics. OEM option P/Ns are filled by two or three DRAM vendors, and third-party makers change die vendor or revision without changing the module P/N. The module label date code is the assembly week, not the DRAM package lot. A decap reads one of 18-40 packages. So each lab result covers one build lot, and the cross-reference key must be the DRAM package marking plus a die fingerprint, exactly as PHY says. One caveat, from my own search: an X-ray die-outline fingerprint is only a triage screen. CXMT G4 16Gb DDR5 is ~67-68 mm² against ~49 mm² for current Samsung die, but first-generation (2021) big-3 16Gb DDR5 dies were ~66-72 mm² (3DNews citing TechInsights, snippet). The outline separates CXMT from current big-3 shrinks, not from old big-3 dies.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Library key changed to package marking + die outline. Per-lot evidence language added. The 'one result identifies the die source for every stick sharing that part number and date-code family' sentence is withdrawn in §14. Track B tests ≥3 modules of one P/N from different lots or sellers if budget allows."
+  },
+  {
+   "id": "RT-VET-DD1-02",
+   "response": "Valid. Memory-maker-branded modules (Samsung M393..., SK hynix HMA..., Micron MTA...) need no library, because brand = die. Third-party and OEM-relabeled P/Ns are multi-sourced, and the module date code is the assembly week. A P/N + date-code cross-reference would be wrong on exactly the modules that matter, which makes it a liability, not an asset. Against thousands of compatible-module P/Ns, 63 lab-confirmed P/Ns was a rounding error. VET's alternative is to redesign around per-lot top-mark images and re-cost it. I did that: per-lot images are cheap, but anyone can collect them, so they are no moat.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Library redesigned as per-lot package top-mark images keyed on DRAM marking codes, with decap only for exceptions. Re-costed in the model (1 sample/month at $600 lab + $600 module). The moat claim is withdrawn; CleanBOM competes on service and price only."
+  },
+  {
+   "id": "RT-VC-DD1-03",
+   "response": "Valid, and it is the worst case for liability. Compatible-memory makers qualify several die sources behind one SKU, and Micron itself sells 'design-ID-agnostic' server DRAM (Simms snippet). A maker that switches from Samsung to CXMT die partway through a family under an unchanged P/N would get a false-negative pack from a library sampling 3 modules a month. That is FCA-adjacent exposure, and the plan covered it with a $400 E&O policy and a $6k template. No within-family consistency data exist (VC's test: ≥90% consistency, ≥3 samples per family, ≥10 families, ≥2 compatible brands). That test would cost about 30 decaps (~$36k at $600 lab + $600 module), more than the founder's $40k reserve allows.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "No family-level inference in any pack: evidence covers only the lot sampled, states its sample basis, and avoids 'no CXMT' assessment language unless E&O without a government-claims exclusion is bound (kill criterion 5, revised). VC's 30-sample consistency study is listed as unaffordable at T0, which is one more reason the library cannot be a moat."
+  },
+  {
+   "id": "RT-HYP-DD1-04",
+   "response": "Valid. buy_frac 0.65 had no source; a second search on 2026-11-01 again found no ITAD buyback or lot price, only asking prices (cheapest 32GB DDR4 RDIMM listing $148.95 on 2026-08-19; median listing $7.49/GB, DatacenterDisk snippet). Hyperscalers are keeping DDR4: Meta runs retired DDR4 behind Vistara CXL, Marvell markets Structera X for DDR4 reuse, and Sims redeploys DDR4 (HYP's sources). A $3.5k-lot buyer is a broker's customer. Phase 4 + buy 0.70 + caps 300/450 alone gives $23/module (9%), m36 ARR $341,342 and full-time at m25. At all revised inputs, the 8% contribution that track A requires needs lots at ≤62% of realized resale; breakeven is 69% and the 5% buy line is 65% (m§6g).",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "buy_frac 0.65→0.70; units_cap_pt 400→300; units_cap_ft 600→450. Track A now needs written quotes at ≤0.62 of trailing realized resale for ≥200 modules/month with a 6-month supply commitment from 2 of the 3 named ITADs, on downstream terms a non-R2 buyer can meet. HYP's test was ≤0.70; mine is tighter because the other revisions moved breakeven down. Kill criterion 1 revised."
+  },
+  {
+   "id": "RT-VC-DD1-05",
+   "response": "Valid. The model's own INPUTS note shows an open-market lot (PCSP, 24×32GB) listed at ~$140/module, about realized resale: a buy fraction near 1.0. That leaves 0.65 as an assumption of direct ITAD allocation of $70-100k a month for a part-time newcomer with no R2 certificate, while Iron Mountain's ALM revenue rose 88% YoY because it keeps the spread. Phase 4 numbers at 0.75 are confirmed: $250,221 ARR and $163,673 cash at m36. In the revised model the input decides recert outright. At 0.70 recert earns −$3/module (−1%); at 0.62 it earns $16 (8%) and adds ~$71k of cumulative EBITDA, but the founder still never goes full-time.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Same input changes as RT-HYP-DD1-04. VC's quote condition (two written quotes ≤70% for ≥$20k/month) is adopted, tightened to ≤62% for ≥200 modules/month. Recert is reframed from 'cash engine' to 'optional side trade if track A passes'."
+  },
+  {
+   "id": "RT-HYP-DD1-05",
+   "response": "Valid. xByte, TechMikeNY, PCSP and the Park Place/Curvature desks buy ITAD lots and test in-house. Their ceiling is their own landed cost, about 0.75-0.80, not 0.88× eBay. Re-running HYP's numbers on Phase 4 inputs confirms each one: at 0.80, $391,481 ARR, full-time m20, $367,204 cash; at 0.75, $341,342 (m25), GLUT $232,377 (m34); 0.80 with buy 0.70 gives $250,221 (m33). With buy at 0.70, B2B at 0.80 earns −$9/module (−6%). B2B is a liquidity channel, not a margin channel, unless the founder buys cheaper than the accounts themselves.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "b2b_price_factor 0.88→0.80; ebay_share_m12 0.40→0.50 (volume shifts back to eBay). Track A adds HYP's test: two written B2B offers at ≥0.85× eBay realized for ≥100 modules/month. Without them, recert is planned eBay-only."
+  },
+  {
+   "id": "RT-VET-DD1-05",
+   "response": "Valid. It is the same point as RT-HYP-DD1-05 from the supply side: if the founder can buy at 65%, so can the B2B accounts. VET's run is confirmed exactly: at 0.75, unit contribution is $16.7 (7%), m36 ARR $341,342, full-time m25 (m34 in GLUT). With 60% of volume shifted to B2B by m12, the B2B price was a first-order input with no source.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Same changes as RT-HYP-DD1-05. Track A requires two signed POs or written price sheets at ≥0.85× eBay realized for tested 32GB DDR4 before any B2B volume is planned."
+  },
+  {
+   "id": "RT-VET-DD1-03",
+   "response": "Valid. On a Gen10 Xeon bed with ECC on, memtest86+ does not report corrected errors (discussion #248; v7 ECC is preliminary and AMD-only), so a stuck bit passes silently. Fleet DIMMs are over-represented among CE-threshold retirements, and a room-temperature bench misses retention and VRT fails. VET's run is confirmed: 8% fallout and 5% returns give $19.1/module (8%), $351,765 ARR and full-time m24. The fix is cheap: rasdaemon/EDAC logging under Linux stressapptest (any CE = reject) plus a 55-70°C soak. It raises fallout but cuts returns. I model 7% fallout, 3% returns and 15 minutes per module; alone on Phase 4 that gives $25/module (10%), $381,840 ARR and full-time m21.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Test protocol changed: Linux stressapptest with rasdaemon/EDAC per-DIMM CE logging, any CE = reject, plus a heated soak at 55-70°C ambient (+$500 enclosure). Model: fail_rate 0.03→0.07, return_rate 0.02→0.03, minutes_per_module 12→15, capex_m1 $4,200→$4,700. Track A pass condition: CE-inclusive fallout ≤4% on the lot and 90-day returns ≤2% tracked after the decision."
+  },
+  {
+   "id": "RT-PHY-DD1-03",
+   "response": "Valid physics. Corrected errors are invisible to memtest86+ on this bed, and stressapptest compares post-correction data. DDR5 on-die ECC hides single-cell faults from the host. Retention and VRT cells degrade steeply with temperature. And ITAD lots arrive with no CE history. The 3% fallout and 2% returns came from C_notes, not from a protocol able to measure them, so the per-serial test record certified less than buyers would assume. I adopted PHY's protocol, CE logging plus a heated soak; ≥70°C DIMM temperature is achievable in a 55-65°C ambient box under load.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Same protocol and model changes as RT-VET-DD1-03. Test records now state the protocol, temperature and CE count. DDR5 records carry a note that on-die ECC limits host visibility."
+  },
+  {
+   "id": "RT-VET-DD1-04",
+   "response": "Valid. DDR5 platforms shipped from Nov-2022 (Genoa) and Jan-2023 (Sapphire Rapids). On 5-6-year lives almost none are decommissioned before 2028, and operators extend lives in a shortage. The 10% DDR5 slice produced 45% of per-module contribution. VET's runs are confirmed: with no DDR5, $21.3/module, $372,010 ARR, $344,648 cash, full-time m22; adding 8%/5% and buy 0.70 gives −$0.4/module, $237,798 ARR and full-time m34. I keep a 3% residual (excess and new-pull stock), since amcompute does record used DDR5 sales.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "mix 0.60/0.30/0.10 → 0.65/0.32/0.03. Track A records the DDR5 share of each quoted lot (VET's test: ≥10% DDR5 at ≤70% of resale in 3 quotes). The DDR5 test bed (m6, $4k) is bought only if quotes show DDR5 volume."
+  },
+  {
+   "id": "RT-VC-DD1-04",
+   "response": "Valid as a modeling gap, and I modeled it as VC asked. eBay new-seller limits ramp over the first three selling months (20/50/100 units, excess sold B2B), eBay proceeds are held a month in those months, and B2B is collected net-30. Result on Phase 4 inputs: the cash low stays at the $5,000 reserve (m4), never below $0, because the operator simply buys fewer lots. By VC's own condition, the T0 claim survives. But the ramp slows: full-time moves m14→m21, m36 ARR $445,543→$381,840, m36 cash $610,097→$401,278. In the revised model the cash low is −$5,863 at m18. The cause is CleanBOM's fixed costs (E&O, tools, library, ISO at m15) with no recert profit, not the cash cycle.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: new inputs ebay_new_seller_caps (20,50,100), ebay_hold_selling_months 3, b2b_terms_months 1; receivables tracked (AR column). The T0 statement in §0 now says the revised bundle needs ~$46k, or ~$6k beyond the $40k, unless the CleanBOM fixed costs are deferred."
+  },
+  {
+   "id": "RT-VC-DD1-07",
+   "response": "Valid. A pass-through LLC owes federal, state and self-employment tax on profit even when the cash is recycled into inventory, and the Phase 4 full-time trigger tested pre-tax cash. With a 30% provision on positive taxable income (EBITDA after salary, capex expensed, losses carried forward) on Phase 4 inputs: full-time moves m14→m17, m36 ARR $445,543→$419,301, m36 cash $610,097→$378,961, and $181,150 of tax is provisioned. So the full-time trigger does not fire in the same month, which was VC's test. In the revised base no tax is due, because there is no cumulative profit.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: tax_rate 0.30 with loss carry-forward, paid monthly; Tax column added; the full-time trigger tests post-tax cash. Applies to DD1 only (other DD models are owned by other agents)."
+  },
+  {
+   "id": "RT-HYP-DD1-06",
+   "response": "Valid. Federal buyers mostly buy OEM-branded memory, because OEM support contracts cover OEM parts. Third-party makers in the federal channel number about ten, and Kingston and Crucial need no outside check. A 35% high-tier share of 23.5 subscribers meant about 8 module makers by m36, close to the whole universe. HYP's runs are confirmed: at 15%, $346,764 BASE and $335,234 GLUT. After accepting the FATALs, module makers leave the high tier entirely, so it holds only white-box and appliance builders. Revised ARPA is $925, and $1M ARR would need ~90 subscribers (m§6f) with no customer list behind it.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "cb_hi_share 0.35→0.10, and the high tier is redefined as white-box builders. Track C adds HYP's count: from GSA Advantage and the SEWP catalogs, list the firms selling non-OEM-branded server memory federally (target ≥25), with ≥3 of them among the 15 conversations. The $1M-ARR path is withdrawn."
+  },
+  {
+   "id": "RT-HYP-DD1-07",
+   "response": "Valid. In the non-counterfeit case a receiving-desk check (package top mark under a microscope plus SPD JEP106 bytes; CXMT 0x0A11) does the job, and decap is needed only for remarked or third-party-branded packages. DD1 found no case of relabeled CXMT die in U.S. server RDIMMs, and this search found none either. The one wrinkle, the Powev-marked CXMT package in TechInsights' analysis, argues for an exception tier, not routine decap. HYP's condition (a documented U.S. server-RDIMM relabeling case) is not met.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Evidence pack redesigned: default = top-mark images + SPD bytes + X-ray die-outline triage; decap priced as an exception add-on at lab cost × 1.6. cb_pack_rate 0.15→0.10. The pack is now a commodity service that any receiving desk can replicate."
+  },
+  {
+   "id": "RT-HYP-DD1-08",
+   "response": "Partly right. On price, the $400/month assumption is not obviously optimistic. Published small-firm tech E&O averages ~$67-110/month, with a range of ~$500 to over $9,000 a year (Insureon/TechInsurance snippets, undated), so $4,800/yr sits in the upper part of the range. On the exclusion, HYP is right and I have no evidence: generic policies commonly exclude fines and regulatory or government claims [UNVERIFIED-training], and a capped attestation is no basis for reliance by a hyperscaler legal team. The answer is to change the product, not the premium.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "opex_eo $400→$600/month. Kill criterion 5 revised: a bound quote that covers government-contract reliance claims with no regulatory exclusion at ≤$600/month, or CleanBOM sells raw evidence only (images, SPD bytes, lab reports) with no assessment or 'no CXMT' language."
+  },
+  {
+   "id": "RT-VET-DD1-06",
+   "response": "Mostly valid. My search supports VET's point on reference images: TechInsights holds CXMT G4 die analysis behind a paywall, and nothing shows that ordinary AS6171 labs hold CXMT DDR4/DDR5 reference die. Minimum lot and report charges are plausible, and the 2-6 week turnaround in the DD's own weak source would fail the 15-business-day rule. VET's run is confirmed: lab $1,200 with no lift gives $297,042 ARR and full-time m19. Two things soften the hit. The library is no longer a coverage asset, so the lab is used for ~1 validation sample a month plus customer pass-through at cost × 1.6. And the calendar problem is fixable by shipping samples by day 5.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "lab_cost $400→$600 (the track-B ceiling) in the model. Track B quotes must be all-in (minimum lot, report fees) and in writing from 3 labs, and at least one lab must confirm in writing that it holds CXMT DDR4/DDR5 reference die images (or can identify CXMT die by logo/dimension). Samples ship by day 5, not day 7. The 15-business-day and $600 thresholds are unchanged."
+  },
+  {
+   "id": "RT-PHY-DD1-06",
+   "response": "Valid. A consumer CXMT kit does not prove the lab can identify the server RDIMM die revision, and an X-ray die outline is a cheap nondestructive screen. I add both, with one correction from my search. The outline (CXMT G4 ~67-68 mm² vs ~49 mm² for current Samsung) separates CXMT from current big-3 shrinks, but it overlaps first-generation 2021 big-3 16Gb DDR5 dies (~66-72 mm²; 3DNews/TechInsights snippet). It is triage, not proof.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Track B: the consumer CXMT kit is replaced by a known CXMT server RDIMM (CXMR4E464R8AS-class, or a 16-32GB CXMT DDR5 RDIMM, ~$800 [ESTIMATE]) as the positive control. An X-ray die-dimension step is added before any decap. The lot is shrunk to ~$2,900 so the $9,500 hard cap holds. The written reference-image confirmation from RT-VET-DD1-06 applies."
+  },
+  {
+   "id": "RT-PHY-DD1-05",
+   "response": "Valid. PMem is non-volatile. Modules left with security enabled and a passphrase set may not unlock or secure-erase, and residual customer data creates a chain-of-custody duty. The Phase 4 model applied no fallout to PMem at all. It works only on 2nd/3rd-gen Xeon Scalable with matched firmware, and media wear should be logged. The line is small and sunsets with vSphere 8 (2027-10-11). Effect on Phase 4: m36 cash −$10.9k; PMem contribution today falls from 23% to 14% per module.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model: pmem_fail_rate 0→0.10, pmem_return_rate 0.02→0.05. Track A: read security state and 'percentage remaining' with ipmctl on every lot module, and require a per-serial NIST SP 800-88 sanitization certificate from the ITAD. Stop PMem buying if >5% of a lot is locked or unsanitizable (kill criterion 11 revised)."
+  },
+  {
+   "id": "RT-VET-DD1-07",
+   "response": "Valid and, as VET says, small. Passphrase-locked or security-frozen PMem 100/200 cannot be reprovisioned without the passphrase, short of an OEM RMA. PMem 100 runs only on Cascade Lake and PMem 200 only on Ice Lake, with BIOS dependencies, so mismatch returns will exceed 2%. Modeled together with RT-PHY-DD1-05. The verdict does not move.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Same model changes as RT-PHY-DD1-05. Listings state the platform generation (Cascade Lake vs Ice Lake). VET's track A test is adopted: ≥90% of 20 lot modules read 'disabled/unlocked' in ipmctl, and returns <5% on the first 50 sold."
+  },
+  {
+   "id": "RT-PHY-DD1-04",
+   "response": "Valid. The predictors cited (IBM, arXiv 2212.10441, Intel MFP) are trained on host-visible CE streams, and DDR5 on-die ECC absorbs most single-bit faults, leaving only coarse ECS counts. DDR4 fleets are being retired, and BMC-level prediction (Lenovo MPFA, Intel MFP in AMI/Insyde, ParkView) is free. DD1 quotes no precision or recall at any lead time, so the 4.5× DIY-cost price had no value anchor. I cannot run PHY's backtest (no TPM CE logs), so I take PHY's alternative: drop the predictive claim. Dropping the subscription from the bundle on Phase 4 inputs costs $61,013 of m36 ARR ($445,543→$384,530).",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Killed leg: C-85 DIMM-health predictive subscription (dh_in_bundle True→False). Tested spares are sold only through the recert B2B channel. Track D and kill criterion 12 are retired."
+  },
+  {
+   "id": "RT-VC-DD1-06",
+   "response": "Valid. The ceiling was already lifestyle-scale in Phase 4 (23.5 subscribers, ~$384k of CleanBOM ARR). After the red team, revised ARPA is $925, $1M ARR needs ~90 subscribers, and the model reaches 5.3. Even if track C passes, m36 ARR is $171,852-226,833 (m§8d). The dataset-sale exit fails on VC's logic: §5 itself priced replication at ~$25k, and after re-keying, per-lot top-mark images are cheaper still to rebuild. No buyer pays more than its rebuild cost. There is no LOI from a compliance-data vendor and no count of ≥150 entities that cannot rely on an upstream certificate.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Dataset-sale exit and the 'small raise at m18' path removed from §7/§14. Z2Data/Accuris move from 'customer #10/acquirer' to 'possible licensee only with a ≥$100k/yr LOI'. The concept is classed as at most a lifestyle side line, and the final status is KILLED as a venture candidate."
+  }
+ ]
+}

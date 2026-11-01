@@ -1,0 +1,18 @@
+# Assumptions and judgment calls: p5r-provenance-recert (Phase 5 red-team responses, DD1)
+
+- [p5r-provenance-recert] Central buy fraction moved 0.65 -> 0.70 of realized resale — basis: no published ITAD lot price (re-searched 2026-11-01, none found); open-market lots list near 1.0x resale (PCSP); Iron Mountain keeps the spread; hyperscalers redeploy DDR4 (RT-HYP-DD1-04). 0.70 is the reviewers' own test value; nothing found points below 0.65.
+- [p5r-provenance-recert] B2B price 0.88 -> 0.80 of eBay realized — basis: B2B accounts buy the same lots and test in-house; their ceiling is their landed cost (~0.75-0.80, RT-HYP-DD1-05). Top of the range because per-serial test records add some value.
+- [p5r-provenance-recert] eBay share at m12 0.40 -> 0.50 — basis: with B2B at 0.80 the operator keeps more volume on eBay; capped at 0.50 for single-seller absorption.
+- [p5r-provenance-recert] CE-reject protocol fallout 7%, returns 3%, 15 min/module, +$500 soak box — basis: between C_notes (3%/2%) and VET's 8%/5% (which applied to the old memtest-only protocol, where escapes become returns).
+- [p5r-provenance-recert] DDR5 share of lots 3% — basis: DDR5 servers shipped from Nov-22/Jan-23; 5-6-year lives; residual = excess/new-pull stock.
+- [p5r-provenance-recert] Monthly unit caps 300 part-time / 450 full-time — basis: HYP-04 supply retention; still above HYP's 200/month test threshold.
+- [p5r-provenance-recert] eBay new-seller caps 20/50/100 units in the first three selling months, eBay payout held one month in those months, B2B net-30 — basis: VC-04 snippets (nifty.ai, closo, auctionnudge).
+- [p5r-provenance-recert] Tax provision 30% on positive taxable income (EBITDA after salary, capex expensed, loss carry-forward), paid monthly — basis: VC-07; pass-through LLC with federal + state + SE tax.
+- [p5r-provenance-recert] PMem fallout 10%, returns 5% — basis: PHY-05/VET-07 (passphrase-locked modules, platform mismatch); no data.
+- [p5r-provenance-recert] Library samples must be NEW third-party DDR5 RDIMMs at ~$600 each (16-32GB at ~$25/GB contract), 1 sample/month m4-18 then 0.5 — basis: recert flow is OEM DDR4 with ~zero CXMT (PHY-01, HYP-02, VC-02); library re-keyed on package marking (PHY-02, VET-02).
+- [p5r-provenance-recert] Lab $600/sample all-in — basis: VET-06 minimum-lot and report charges; plan at the track-B ceiling until written quotes exist.
+- [p5r-provenance-recert] CleanBOM close 5% (both bundle and standalone), high tier 10%, packs 10% — basis: the three FATAL objections are accepted: the module-maker buyer already holds die source and may self-certify, so the remaining buyers are refurb/odd-lot resellers and white-box builders; no library lift remains.
+- [p5r-provenance-recert] E&O $600/month — basis: published tech E&O range ~$500-9,000+/yr (Insureon snippet); premium for government-reliance exposure without a regulatory exclusion is unquoted.
+- [p5r-provenance-recert] "Track C passes" variant restores the Phase 4 CleanBOM demand inputs (close 10%, high tier 35%, packs 15%); "track A passes" uses buy 0.62, the 8%-contribution line at revised inputs.
+- [p5r-provenance-recert] FINAL STATUS = KILLED as a venture candidate: at post-red-team central inputs recert earns -1%/module and CleanBOM reaches 5.3 subscribers ($58k ARR) by m36 with the founder never full-time; even if both kill tracks pass, BASE reaches $227k ARR with full-time only at m32, and GLUT/SEVERE never pay the founder.
+- [p5r-provenance-recert] X-ray die outline is triage only — basis: CXMT G4 16Gb DDR5 die ~67-68 mm2 vs current Samsung ~49 mm2, but 2021 first-generation big-3 16Gb DDR5 dies were ~66-72 mm2 (3DNews citing TechInsights, snippet).

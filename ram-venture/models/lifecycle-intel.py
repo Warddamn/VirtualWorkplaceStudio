@@ -8,6 +8,12 @@ forecast portal, a free feature; no co-op revenue), C-86 (Memory Cost Escalation
 Run from the repo root:  python3 models/lifecycle-intel.py
 Pure stdlib. Exits 0. Every input carries a source URL or "ESTIMATE: basis".
 Agent key: p4-lifecycle-intel. As of 2026-11-01. Month 1 of the model = 2026-12.
+
+Phase 5 (red team, agent p5r-lifecycle-intel, 2026-11-01): the inputs below are overridden by the
+"RED-TEAM REVISIONS (Phase 5)" block that follows INPUTS. Each revision records old -> new and the objection id
+(research/phase5/rt_*.json). Structural changes: the index can be published only when the contributed-price panel
+is big enough (panel gate), falling prices create less index demand than rising ones, and licences churn faster
+while prices fall. Section 10 of the output re-runs the Phase 4 inputs and every reviewer's variant for comparison.
 """
 import contextlib
 import io
@@ -120,7 +126,74 @@ INPUTS = {
     "base_end_2028": (0.85, "ESTIMATE: BASE turn in 2028, BofA -10% ASP (01_LANDSCAPE s.1 row 4b); -15% by Dec-2028"),
     "base_end_2029": (0.80, "ESTIMATE: BASE soft 2029"),
     "tam_us_smb_oems": (6_000, "ESTIMATE: U.S. hardware OEMs/EMS with $1-50M BOM spend and memory in BOM (NAICS 334 + 3345 + 3391 firms with ~20-500 staff); unsourced order-of-magnitude"),
+    # --- structural inputs added in Phase 5. The values HERE reproduce the Phase 4 model exactly; ------------
+    # --- the revised values are set in the RED-TEAM REVISIONS block below. -----------------------------------
+    "seed_contributors": (0, "Phase 4: panel fed only by SaaS accounts (contributor_share x accounts)"),
+    "seed_from_month": (3, "ESTIMATE: kill-test (K4) contributors deliver PO history after signed agreements and the antitrust opinion"),
+    "panel_min_contributors": (0, "Phase 4: no panel-size gate; index methodology published at index_methodology_month regardless"),
+    "index_lag_after_panel": (3, "ESTIMATE: first licence no earlier than 3 months after methodology publication (Phase 4: m9 -> m12)"),
+    "vol_down_weight": (1.0, "Phase 4: a falling 3-month move creates the same index demand as a rising one"),
+    "index_churn_falling": (0.008, "Phase 4: no extra licence churn while prices fall (same as index_churn)"),
+    "antitrust_opinion": (0.0, "Phase 4: no separate written antitrust opinion before collecting contributor data"),
+    "antitrust_opinion_month": (2, "ESTIMATE: written opinion on cell rules before seed contributors deliver data"),
+    "antitrust_compliance_month": (0.0, "Phase 4: no ongoing information-exchange compliance cost"),
+    "price_line_on": (1, "1 = buy/hold price-alert line sold (needs K5 data rights); 0 = K5-fail case, line deleted"),
 }
+P4 = {k: v[0] for k, v in INPUTS.items()}   # Phase 4 inputs, kept for the section-10 comparison
+
+# ----------------------------------------------------------------------------------------------
+# RED-TEAM REVISIONS (Phase 5)  -- (input, new value, objection ids, basis). Old value is read from INPUTS.
+# Objections: research/phase5/rt_VET.json, rt_VC.json, rt_HYP.json, rt_PHY.json. Responses:
+# research/phase5/responses_lifecycle-intel.json. Sources: research/sources/p5r-lifecycle-intel.jsonl.
+# ----------------------------------------------------------------------------------------------
+RED_TEAM_REVISIONS = [
+    ("contributor_share", 0.25, "RT-VET-DD2-04, RT-HYP-DD2-02, RT-VC-DD2-02",
+     "ESTIMATE: only accounts that buy memory line-item (not EMS-turnkey) AND whose legal function signs off despite "
+     "supplier-confidentiality terms; a 10% discount is a weak trade for that risk"),
+    ("seed_contributors", 5, "RT-VC-DD2-01, RT-HYP-DD2-01",
+     "ESTIMATE: revised K4 pass bar = >=10 signed contribution agreements outside the SaaS funnel; half deliver "
+     "usable 24-month line-item PO history"),
+    ("panel_min_contributors", 15, "RT-VC-DD2-01, RT-HYP-DD2-01, RT-VET-DD2-01, RT-PHY-DD2-02",
+     "ESTIMATE: publish only when >=3 grade-homogeneous cells (e.g. DDR4 8Gb x16 industrial-temp, 32-64GB eMMC, "
+     "128Mb SPI NOR) can each hold >=5 independent buyers per quarter; 15 is the minimum allowing cross-cell overlap"),
+    ("index_rate", 0.40, "RT-HYP-DD2-03, RT-VET-DD2-02, RT-VC-DD2-02",
+     "ESTIMATE: TrendForce contract prints (8GB module base since 2019, TrendForce 2018-11-05) and open-book "
+     "pass-through are the default; scope narrowed to SMB OEM->customer surcharges (EMS/federal no longer core)"),
+    ("vol_down_weight", 0.0, "RT-VET-DD2-03, RT-HYP-DD2-05",
+     "ESTIMATE: no index-linked memory down-adjustment found for the 2018-19 or 2023 downturns (TrendForce 2018-11-05; "
+     "TechNews 2019-08-01, via snippet); in a crash payers drop the surcharge (Unipi: 'reduced once memory prices "
+     "normalize') or re-bid, so a falling move adds NO demand beyond index_floor"),
+    ("index_churn_falling", 0.03, "RT-VET-DD2-03, RT-HYP-DD2-05",
+     "ESTIMATE: while the 3-month move is below -5%, surcharges are withdrawn and the licence is cancelled"),
+    ("trial_conversion", 0.10, "RT-HYP-DD2-04, RT-VC-DD2-04",
+     "ESTIMATE: free Octopart BOM tool + distributor PDN emails substitute for plain EOL alerts; 0.08 run as variant"),
+    ("trials_cap_pt", 20.0, "RT-VC-DD2-06",
+     "ESTIMATE: 15 h/wk = ~65 h/month; 20 one-hour demos leaves ~45 h for product, PCN crawler, panel and content"),
+    ("trials_at_launch", 4.0, "RT-VC-DD2-05",
+     "ESTIMATE: no day-job-peer trials unless the employer's written carve-out explicitly allows them"),
+    ("saas_launch_month", 6, "RT-VC-DD2-05, RT-PHY-DD2-05",
+     "ESTIMATE: written employer carve-out before any code (adds ~1 month) and PCN (die-revision) parsing in MVP scope"),
+    ("nexar_standard", 600.0, "RT-HYP-DD2-06, RT-VC-DD2-03",
+     "ESTIMATE: still unpublished (Nexar compare-plans, 2026-11-01); midpoint of Phase 4 $300 and HYP stress $1,000"),
+    ("nexar_pro", 2_000.0, "RT-HYP-DD2-06", "ESTIMATE: scaled with the Standard revision; unpublished"),
+    ("display_licence", 2_000.0, "RT-HYP-DD2-06, RT-VC-DD2-03",
+     "ESTIMATE: no quote exists; midpoint of Phase 4 $1,000 and HYP stress $2,500; replaced by K5 written quote"),
+    ("antitrust_opinion", 5_000.0, "RT-HYP-DD2-07",
+     "ESTIMATE: written opinion approving cell rules (>=5 contributors, >=1-quarter lag, no contributor >25% weight) "
+     "before data collection; on top of the $7k m8 review"),
+    ("antitrust_compliance_month", 400.0, "RT-HYP-DD2-07",
+     "ESTIMATE: ongoing counsel retainer + audit log for the information-exchange programme from index publication"),
+    ("ltb_cogs_share", 0.35, "RT-PHY-DD2-04, RT-VET-DD2-06",
+     "ESTIMATE: each study adds an MSL/J-STD-033 storage, bake-cycle, solderability and attrition section"),
+    ("ltb_attach", 0.0125, "RT-VET-DD2-06",
+     "ESTIMATE: 2026 DDR4 LTBs filled subject to allocation; Micron's ongoing DDR4 commitment blunts EOL panic"),
+    ("tam_us_smb_oems", 3_000, "RT-VC-DD2-04",
+     "ESTIMATE: NAICS 334 = 9,698 firms all sizes (Mewayz aggregator, via snippet, unverified vs Census) x ~35% with "
+     "20-499 staff + ~600 electronic medical-device firms, x ~70% with memory bought line-item = ~2,400; range 2,000-4,500"),
+]
+for _key, _new, _ids, _basis in RED_TEAM_REVISIONS:
+    _old, _src = INPUTS[_key]
+    INPUTS[_key] = (_new, "RED-TEAM Phase 5 [%s]: %g -> %g. %s || Phase 4 basis: %s" % (_ids, _old, _new, _basis, _src))
 P = {k: v[0] for k, v in INPUTS.items()}
 
 SCENARIOS = ("BASE", "GLUT", "SEVERE")
@@ -185,58 +258,74 @@ def pct(x):
 # ----------------------------------------------------------------------------------------------
 # Simulation
 # ----------------------------------------------------------------------------------------------
-def simulate(scen, price_m=1.0, conv_m=1.0, churn_m=1.0, cogs_m=1.0, trial_m=1.0):
-    team, pro = P["team_price"] * price_m, P["pro_price"] * price_m
-    arpa_list = (1 - P["pro_mix"]) * team + P["pro_mix"] * pro
-    arpa_net = arpa_list * (1 - P["contributor_share"] * P["contributor_discount"])
-    idx_annual = ((1 - P["index_ent_mix"]) * P["index_std_price"] + P["index_ent_mix"] * P["index_ent_price"]) * price_m
-    ltb_price = P["ltb_study_price"] * price_m
-    var_saas = (P["saas_hosting_per_acct"] + P["saas_data_per_acct"] + P["support_h_per_acct"] * P["support_rate"]) * cogs_m
-    var_idx = P["index_support_h"] * P["support_rate"] * cogs_m
+def simulate(scen, price_m=1.0, conv_m=1.0, churn_m=1.0, cogs_m=1.0, trial_m=1.0, ov=None):
+    """ov: dict of input overrides for variants (e.g. ov=P4 re-runs the Phase 4 model)."""
+    q = dict(P)
+    if ov:
+        q.update(ov)
+    team, pro = q["team_price"] * price_m, q["pro_price"] * price_m
+    arpa_list = (1 - q["pro_mix"]) * team + q["pro_mix"] * pro
+    arpa_net = arpa_list * (1 - q["contributor_share"] * q["contributor_discount"])
+    idx_annual = ((1 - q["index_ent_mix"]) * q["index_std_price"] + q["index_ent_mix"] * q["index_ent_price"]) * price_m
+    ltb_price = q["ltb_study_price"] * price_m
+    var_saas = (q["saas_hosting_per_acct"] + q["saas_data_per_acct"] + q["support_h_per_acct"] * q["support_rate"]) * cogs_m
+    var_idx = q["index_support_h"] * q["support_rate"] * cogs_m
 
     acc_L = acc_P = lic = 0.0
-    cash = P["founder_cash"]
+    cash = q["founder_cash"]
     ft = hired = False
-    ft_month = hire_month = None
+    ft_month = hire_month = pub_month = first_sale_month = None
     hist = []
     adds_total = mkt_spend_total = 0.0
-    for m in range(1, P["months"] + 1):
+    for m in range(1, q["months"] + 1):
         pm = price_mult(m, scen)
         prev = price_mult(m - 3, scen) if m > 3 else 1.0
         U = max(0.1, min(1.0, pm))                       # shortage urgency (1 = at/above 2026 peak)
-        V = abs(pm / prev - 1.0)                          # 3-month price move
-        cap_mult = (P["hire_capacity_mult"] if hired else 1.0)
+        move = pm / prev - 1.0                            # signed 3-month price move
+        V = abs(move)
+        cap_mult = (q["hire_capacity_mult"] if hired else 1.0)
         # --- SaaS acquisition and churn
         trials = 0.0
-        if m >= P["saas_launch_month"]:
-            cap = (P["trials_cap_ft"] if ft else P["trials_cap_pt"]) * cap_mult
-            raw = min(cap, P["trials_at_launch"] + P["trials_growth"] * (m - P["saas_launch_month"]))
+        if m >= q["saas_launch_month"]:
+            cap = (q["trials_cap_ft"] if ft else q["trials_cap_pt"]) * cap_mult
+            raw = min(cap, q["trials_at_launch"] + q["trials_growth"] * (m - q["saas_launch_month"]))
             trials = raw * trial_m
-        conv = P["trial_conversion"] * conv_m
-        new_L = trials * conv * P["lifecycle_floor"]
-        new_P = trials * conv * (1 - P["lifecycle_floor"]) * U
-        ch_L = P["churn_base"] * churn_m
-        ch_P = min(0.5, (P["churn_base"] + P["churn_glut_extra"] * (1 - U)) * churn_m)
+        conv = q["trial_conversion"] * conv_m
+        new_L = trials * conv * q["lifecycle_floor"]
+        new_P = trials * conv * (1 - q["lifecycle_floor"]) * U * q["price_line_on"]
+        ch_L = q["churn_base"] * churn_m
+        ch_P = min(0.5, (q["churn_base"] + q["churn_glut_extra"] * (1 - U)) * churn_m)
         acc_L = acc_L * (1 - ch_L) + new_L
         acc_P = acc_P * (1 - ch_P) + new_P
         accts = acc_L + acc_P
         adds_total += new_L + new_P
+        # --- contributed-price panel and index publication gate (Phase 5)
+        contrib = q["contributor_share"] * accts + (q["seed_contributors"] if m >= q["seed_from_month"] else 0.0)
+        if pub_month is None and m >= q["index_methodology_month"] and contrib >= q["panel_min_contributors"]:
+            pub_month = m
+        index_open = pub_month is not None and m >= max(q["index_first_sale_month"], pub_month + q["index_lag_after_panel"])
+        if index_open and first_sale_month is None:
+            first_sale_month = m
         # --- index licences
         new_lic = 0.0
-        if m >= P["index_first_sale_month"]:
-            vol_term = P["index_floor"] + (1 - P["index_floor"]) * min(1.0, V / P["vol_ref"])
-            new_lic = P["index_rate"] * conv_m * vol_term * (P["ft_capacity_index_mult"] if ft else 1.0) * cap_mult
-        ich = (P["index_churn_flat"] if (m > 24 and V < 0.02) else P["index_churn"]) * churn_m
+        if index_open:
+            v_eff = move if move > 0 else q["vol_down_weight"] * V
+            vol_term = q["index_floor"] + (1 - q["index_floor"]) * min(1.0, v_eff / q["vol_ref"])
+            new_lic = q["index_rate"] * conv_m * vol_term * (q["ft_capacity_index_mult"] if ft else 1.0) * cap_mult
+        if move < -0.05:
+            ich = q["index_churn_falling"] * churn_m
+        else:
+            ich = (q["index_churn_flat"] if (m > 24 and V < 0.02) else q["index_churn"]) * churn_m
         lic = lic * (1 - ich) + new_lic
         # --- LTB studies (EOL-driven)
         ltb = 0.0
-        if m >= P["saas_launch_month"]:
+        if m >= q["saas_launch_month"]:
             y, _ = cal(m)
             eolm = EOL_MULT[scen] if y >= 2028 else 1.0
-            ltb = min((P["ltb_cap_ft"] if ft else P["ltb_cap_pt"]) * cap_mult,
-                      (P["ltb_attach"] * accts + P["ltb_inbound"]) * eolm)
+            ltb = min((q["ltb_cap_ft"] if ft else q["ltb_cap_pt"]) * cap_mult,
+                      (q["ltb_attach"] * accts + q["ltb_inbound"]) * eolm)
         # --- revenue
-        dp = P["design_partner_arpa_factor"] if m <= P["design_partner_until"] else 1.0
+        dp = q["design_partner_arpa_factor"] if m <= q["design_partner_until"] else 1.0
         rev_saas = accts * arpa_net * dp
         rev_idx = lic * idx_annual / 12.0
         rev_ltb = ltb * ltb_price
@@ -244,38 +333,41 @@ def simulate(scen, price_m=1.0, conv_m=1.0, churn_m=1.0, cogs_m=1.0, trial_m=1.0
         mrr = rev_saas + rev_idx
         # --- COGS
         fixed = 0.0
-        if m >= P["saas_launch_month"]:
-            fixed += P["fixed_hosting"] + (P["nexar_pro"] if accts >= P["nexar_pro_trigger_accts"] else P["nexar_standard"])
-        if m >= P["display_licence_from"]:
-            fixed += P["display_licence"]
-        if m >= P["index_methodology_month"]:
-            fixed += P["dramx_silver_yr"] / 12.0
+        if m >= q["saas_launch_month"]:
+            fixed += q["fixed_hosting"] + (q["nexar_pro"] if accts >= q["nexar_pro_trigger_accts"] else q["nexar_standard"])
+        if m >= q["display_licence_from"] and q["price_line_on"]:
+            fixed += q["display_licence"]
+        if m >= q["index_methodology_month"]:
+            fixed += q["dramx_silver_yr"] / 12.0
         fixed *= cogs_m
-        cogs = accts * var_saas + lic * var_idx + rev_ltb * P["ltb_cogs_share"] * cogs_m + rev * P["payment_fee"] + fixed
+        cogs = accts * var_saas + lic * var_idx + rev_ltb * q["ltb_cogs_share"] * cogs_m + rev * q["payment_fee"] + fixed
         gp = rev - cogs
         # --- opex
-        mkt = (P["marketing_post"] if m >= P["saas_launch_month"] else P["marketing_pre"]) + trials * P["cost_per_trial"]
-        mkt_spend_total += mkt if m >= P["saas_launch_month"] else 0.0
-        opex_ns = P["tools"] + mkt + P["accounting"] + (P["insurance"] if m >= P["saas_launch_month"] else 0.0)
-        opex_ns += P["legal_onetime"] if m == P["legal_month"] else 0.0
-        opex_ns += P["travel"] if m in (10, 22, 34) else 0.0
-        salary = (P["founder_salary_ft"] if ft else 0.0) + (P["hire_cost"] if hired else 0.0)
+        mkt = (q["marketing_post"] if m >= q["saas_launch_month"] else q["marketing_pre"]) + trials * q["cost_per_trial"]
+        mkt_spend_total += mkt if m >= q["saas_launch_month"] else 0.0
+        opex_ns = q["tools"] + mkt + q["accounting"] + (q["insurance"] if m >= q["saas_launch_month"] else 0.0)
+        opex_ns += q["legal_onetime"] if m == q["legal_month"] else 0.0
+        opex_ns += q["antitrust_opinion"] if m == q["antitrust_opinion_month"] else 0.0
+        opex_ns += q["antitrust_compliance_month"] if (pub_month is not None and m >= pub_month) else 0.0
+        opex_ns += q["travel"] if m in (10, 22, 34) else 0.0
+        salary = (q["founder_salary_ft"] if ft else 0.0) + (q["hire_cost"] if hired else 0.0)
         net = gp - opex_ns - salary
         cash += net
         hist.append(dict(m=m, lab=label(m), pm=pm, U=U, V=V, trials=trials, accts=accts, acc_P=acc_P, acc_L=acc_L,
                          lic=lic, ltb=ltb, rev=rev, rev_saas=rev_saas, rev_idx=rev_idx, rev_ltb=rev_ltb, mrr=mrr,
                          cogs=cogs, fixed=fixed, gp=gp, opex=opex_ns, salary=salary, net=net, cash=cash,
-                         ft=ft, hired=hired, sal_cover=gp - opex_ns - P["founder_salary_ft"]))
+                         ft=ft, hired=hired, sal_cover=gp - opex_ns - q["founder_salary_ft"], contrib=contrib))
         # --- state transitions (take effect next month)
         if not ft and m >= 3:
             last3 = hist[-3:]
-            if sum(h["gp"] - h["opex"] for h in last3) / 3.0 >= P["founder_salary_ft"]:
+            if sum(h["gp"] - h["opex"] for h in last3) / 3.0 >= q["founder_salary_ft"]:
                 ft, ft_month = True, m + 1
-        if ft and not hired and mrr >= P["hire_trigger_mrr"]:
+        if ft and not hired and mrr >= q["hire_trigger_mrr"]:
             hired, hire_month = True, m + 1
     cac = mkt_spend_total / adds_total if adds_total else float("nan")
     return dict(hist=hist, ft_month=ft_month, hire_month=hire_month, arpa_list=arpa_list, arpa_net=arpa_net,
-                idx_annual=idx_annual, ltb_price=ltb_price, var_saas=var_saas, var_idx=var_idx, cac=cac)
+                idx_annual=idx_annual, ltb_price=ltb_price, var_saas=var_saas, var_idx=var_idx, cac=cac,
+                pub_month=pub_month, first_sale_month=first_sale_month)
 
 
 def sustained_first(hist, key, n=3):
@@ -292,7 +384,8 @@ def summarize(r):
     return dict(be_net=sustained_first(h, "net"), be_sal=sustained_first(h, "sal_cover"),
                 low=low["cash"], low_m=low["m"], arr=arr, ft=r["ft_month"], hire=r["hire_month"],
                 acc18=h[17]["accts"], acc36=h[35]["accts"], lic18=h[17]["lic"], lic36=h[35]["lic"],
-                cash36=h[35]["cash"])
+                cash36=h[35]["cash"], pub=r["pub_month"], first_sale=r["first_sale_month"],
+                con18=h[17]["contrib"], con36=h[35]["contrib"], idx36=h[35]["rev_idx"])
 
 
 def fm(x):
@@ -308,6 +401,17 @@ def main():
     print("  incumbent cost $%.2f/GB | Q4-2026 contract $%.2f/GB | glut $%.2f/GB | severe $%.2f/GB | 64GB RDIMM $%.1f/user-GB (glut $%.1f)"
           % (REF["cost_component_usd_per_gb"], P_Q4_2026, P_GLUT, P_SEVERE,
              REF["contract_rdimm64_usd_per_user_gb_q4_2026"], REF["glut_rdimm64_usd_per_user_gb"]))
+
+    section("0. RED-TEAM REVISIONS (Phase 5): changed inputs, old -> new, objection ids")
+    rows = []
+    for key, new, ids, basis in RED_TEAM_REVISIONS:
+        rows.append([key, "%g" % P4[key], "%g" % new, ids])
+    table(["input", "Phase 4", "revised", "objection ids"], rows, ["l", "r", "r", "l"])
+    print("Structural changes: (a) panel gate -- the index is published only once contributors (contributor_share x accounts")
+    print("  + seed_contributors) reach panel_min_contributors, and first sold index_lag_after_panel months later (never before")
+    print("  index_first_sale_month); (b) falling prices create vol_down_weight x the index demand of rising prices; (c) licence")
+    print("  churn is index_churn_falling while the 3-month move is below -5%; (d) antitrust opinion + monthly compliance cost;")
+    print("  (e) price_line_on switch for the K5-fail case. With ov=P4 the model reproduces the Phase 4 output exactly (section 10).")
 
     section("1. INPUTS (value | source or ESTIMATE basis)")
     rows = []
@@ -389,6 +493,12 @@ def main():
     table(["scenario", "accts m18", "accts m36", "licences m18", "licences m36", "m36 rev: price-driven SaaS",
            "lifecycle SaaS", "index", "LTB studies"], rows)
     print("ARR = 12 x (SaaS + index MRR); one-off LTB study revenue is excluded from ARR but included in P&L/cash.")
+    rows = []
+    for s in SCENARIOS:
+        z = sums[s]
+        rows.append([s, "%.1f" % z["con18"], "%.1f" % z["con36"], "%d" % P["panel_min_contributors"], fm(z["pub"]), fm(z["first_sale"])])
+    table(["scenario", "panel contributors m18", "panel contributors m36", "needed to publish", "index published",
+           "first licence"], rows)
     print("\nGlut behaviour by module: monthly revenue at m36 (%s) and change vs BASE" % label(36))
     rows = []
     xb = runs["BASE"]["hist"][35]
@@ -431,7 +541,8 @@ def main():
     print("   modelled BASE at m18 = %.0f accounts + %.1f licences -> founder %s (full-time switch %s)." % (
         sums["BASE"]["acc18"], sums["BASE"]["lic18"],
         "can go full-time" if (sums["BASE"]["ft"] or 99) <= 18 else "still part-time", fm(sums["BASE"]["ft"])))
-    print("   Kill-experiment gate implied: >= 5 paid deposits from 25 qualified conversations (20%) supports the 12% trial conversion.")
+    print("   Kill-experiment gate implied: >= 5 paid deposits from 25 qualified conversations (20%%) supports the %.0f%% trial conversion."
+          % (100 * P["trial_conversion"]))
     for target in (1_000_000, 2_000_000):
         lo, hi = 0.5, 40.0
         for _ in range(40):
@@ -455,9 +566,60 @@ def main():
     for s in SCENARIOS:
         z = sums[s]
         hh = runs[s]["hist"]
-        print("%-6s GM m18 %s, m36 %s | breakeven (unpaid) %s | covers $10k salary %s | cash low %s (m%d) | ARR m18 %s | ARR m36 %s"
+        print("%-6s GM m18 %s, m36 %s | breakeven (unpaid) %s | covers $10k salary %s | full-time %s | cash low %s (m%d) | ARR m18 %s | ARR m36 %s | index published %s"
               % (s, pct(hh[17]["gp"] / hh[17]["rev"]), pct(hh[35]["gp"] / hh[35]["rev"]), fm(z["be_net"]), fm(z["be_sal"]),
-                 money(z["low"]), z["low_m"], money(z["arr"][18]), money(z["arr"][36])))
+                 fm(z["ft"]), money(z["low"]), z["low_m"], money(z["arr"][18]), money(z["arr"][36]), fm(z["pub"])))
+
+    section("10. RED-TEAM VARIANTS (Phase 5): Phase 4 inputs, reviewer runs, and revised-model stress cases")
+    variants = (
+        ("Phase 4 inputs (all revisions reverted)", "-", dict(P4), SCENARIOS),
+        ("Phase 4, index_rate = 0", "HYP-05", dict(P4, index_rate=0.0), ("BASE", "GLUT")),
+        ("Phase 4, first licence m18", "HYP-01", dict(P4, index_first_sale_month=18), ("BASE",)),
+        ("Phase 4, trial conversion 0.08", "HYP-04", dict(P4, trial_conversion=0.08), ("BASE",)),
+        ("Phase 4, Nexar $1,000 + display $2,500", "HYP-06", dict(P4, nexar_standard=1000.0, display_licence=2500.0), ("BASE",)),
+        ("Phase 4, price-driven line deleted", "VC-03", dict(P4, price_line_on=0), ("BASE",)),
+        ("Phase 4 + panel gate only (15 contributors)", "VC-01", dict(P4, panel_min_contributors=15), ("BASE", "GLUT")),
+        ("REVISED (this model)", "-", {}, SCENARIOS),
+        ("Revised, index_rate = 0", "HYP-05", dict(index_rate=0.0), ("BASE", "GLUT")),
+        ("Revised, K5 fail: price line deleted", "VC-03", dict(price_line_on=0), ("BASE", "GLUT")),
+        ("Revised, trial conversion 0.08", "HYP-04", dict(trial_conversion=0.08), ("BASE",)),
+        ("Revised, Nexar $1,000 + display $2,500", "HYP-06", dict(nexar_standard=1000.0, display_licence=2500.0), ("BASE",)),
+        ("Revised, panel needs 20 contributors", "VET-01", dict(panel_min_contributors=20), ("BASE",)),
+        ("Revised, 0 seed contributors (SaaS-fed only)", "VC-01", dict(seed_contributors=0), ("BASE",)),
+        ("Revised, 10 seed contributors deliver", "VC-01", dict(seed_contributors=10), ("BASE", "GLUT")),
+        ("Revised, 10 seeds + panel gate 10", "VC-01", dict(seed_contributors=10, panel_min_contributors=10), ("BASE", "GLUT")),
+        ("Revised, funnel at Phase 4 (conv .12, cap 25, 6 at launch, m5)", "-",
+         dict(trial_conversion=0.12, trials_cap_pt=25.0, trials_at_launch=6.0, saas_launch_month=5), ("BASE", "GLUT")),
+        ("Revised, trial conversion 0.15 (K1 strong pass)", "-", dict(trial_conversion=0.15), ("BASE",)),
+    )
+    rows = []
+    for name, oid, ov, scens in variants:
+        for s in scens:
+            z = summarize(simulate(s, ov=ov))
+            rows.append([name, oid, s, money(z["arr"][18]), money(z["arr"][36]), fm(z["be_net"]), fm(z["be_sal"]), fm(z["ft"]),
+                         "%s @ m%d" % (money(z["low"]), z["low_m"]), "%.0f" % z["acc36"], fm(z["pub"]), "%.1f" % z["lic36"]])
+    table(["variant", "objection", "scen", "ARR m18", "ARR m36", "breakeven (unpaid)", "covers salary", "full-time",
+           "cash low", "accts m36", "index published", "licences m36"], rows,
+          ["l", "l", "l", "r", "r", "r", "r", "r", "r", "r", "r", "r"])
+    zb = summarize(simulate("BASE"))
+    lo, hi = 0.5, 40.0
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        if summarize(simulate("BASE", trial_m=mid))["be_sal"] is not None:
+            hi = mid
+        else:
+            lo = mid
+    print("Revised BASE: founder salary covered %s. Covering it inside 36 months needs SaaS trial inflow x%.2f the revised level"
+          % (fm(zb["be_sal"]), hi))
+    lo, hi2 = 0.5, 3.0
+    for _ in range(40):
+        mid = (lo + hi2) / 2
+        if summarize(simulate("BASE", conv_m=mid))["be_sal"] is not None:
+            hi2 = mid
+        else:
+            lo = mid
+    print("  (or trial conversion %.1f%% instead of %.0f%%, all else revised; conv_m also scales index close rate)."
+          % (100 * P["trial_conversion"] * hi2, 100 * P["trial_conversion"]))
     return 0
 
 

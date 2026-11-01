@@ -1,0 +1,17 @@
+# Assumptions — p5r-memory-efficiency (Phase 5 red-team response, DD4)
+
+- [p5r-memory-efficiency] Incremental reclaim over a stock Proxmox baseline (KSM on via ksmtuned, ballooning on) is 6% of installed RAM, not 10% — basis: KSM default-on on Proxmox (forum snippets); Google fleet zswap ~5%; HYP's 6% run; zswap-only on boot media and ~0 on hugepage/SEV/TDX hosts.
+- [p5r-memory-efficiency] Savings share negotiated to 20% (from 30%) — basis: on-prem "DIMMs not bought" is a counterfactual, not an invoice line; procurement benchmarks against Ubuntu Pro/RHEL support (RT-HYP-DD4-01).
+- [p5r-memory-efficiency] Value realization 0.75 of linear GB x $/GB — basis: rental-equivalent of 36 months of freed capacity = P0 - PV(40% residual of 3-yr-old DIMMs at P36) at 8%/yr = 68% (flat prices) to 78% (BASE -30% turn). VC's pure-deferral P0 - PV(P36) = 44% in BASE ignores the extra life of later-bought DIMMs.
+- [p5r-memory-efficiency] DIMM-step quantization is mean-neutral across buyers: with requirements uniform between steps, E[saving] = P(cross) x step = (r x S/dS) x dS = r x S. It is modeled as a conversion loss (pilot_to_sub 0.60 -> 0.40), not as a value cut.
+- [p5r-memory-efficiency] DDR5 share of node-GB at target fleets 0.40 (from 0.60) — basis: SMB MSP fleets on 4-6-yr refresh still mostly DDR4 in late 2026; DDR5 is ~40-65% of server DRAM *revenue* (higher $/GB), so installed GB share is lower; reviewers proposed 0.30.
+- [p5r-memory-efficiency] Credible on-call (named rotation, 1-2 h SLA) costs $2,500/mo at 1-5 customers and $3,000/mo at 6+ — basis: midpoint of HYP $2,000 and VET ~$3,000; no quote obtained.
+- [p5r-memory-efficiency] Tech E&O covering production-impact claims $400/mo — basis: Insureon $67-110/mo average, Vouch startup median $308/mo, x1.3 for higher limits; HYP's $600 treated as an upper bound.
+- [p5r-memory-efficiency] scan_to_pilot 0.30 (from 0.40) — basis: DIY admin with free upstream features is the competitor; no SOC 2; HPC segment removed (RT-VC-DD4-05, RT-PHY-DD4-03, RT-VET-DD4-03).
+- [p5r-memory-efficiency] SOC 2 Type I is asked for at 2 customers, not 5 (RT-VC-DD4-05).
+- [p5r-memory-efficiency] Kill criterion 9 (stop new C-74 acquisition below 60% of peak DDR5 price before 8 customers) is wired into the model; it fires at M22 in GLUT and M20 in SEVERE, never in BASE (-30% turn).
+- [p5r-memory-efficiency] C-75 is off in the revised headline because the DD's own recommendation drops it; shown as a sensitivity only.
+- [p5r-memory-efficiency] C-73 audits at 0.17/month part-time (~2/yr) from a manufacturing (not SaaS) network (RT-VC-DD4-06).
+- [p5r-memory-efficiency] Channel threshold: a partner would need ~4,500 (10% reclaim) to ~7,900 (6% reclaim) pure-DDR5 VM-host nodes at a 25% revenue share to carry one $10k/mo salary plus fixed ops at BASE peak prices — computed in models/memory-efficiency.py §7. An operator that large has its own kernel staff, so the condition contradicts the target buyer.
+- [p5r-memory-efficiency] Uncorrectable-error panics attributable to zswap: rate ~ nodes x 1.3%/yr (Schroeder 2009, per PHY) x pool share (3% of RAM at 6% reclaim, 2:1) = ~0.18/yr at the revised M36 book of ~456 nodes; ~1.4/yr at PHY's 2,157-node, 5% pool case.
+- [p5r-memory-efficiency] DD4 final status KILLED: the 29-day ~$6k experiment is cancelled because no PASS outcome changes the ceiling (revised model: kill-test best case BASE ARR M36 $14.8k, cash -$85.4k).
