@@ -1,0 +1,28 @@
+# Assumptions — agent A2-resources (NEW DRAM study, phase A2: materials and resources)
+
+As of 2026-11-01. Numbers live in `dram-moonshot/research/models/A2_resource_intensity.py` (each input carries base/low/high, a tag and a basis). Sources: `research/sources/A2-resources.jsonl`.
+
+- [A2-resources] Network limits: 25 WebSearch calls used (quota 25); no WebFetch attempted, because prior agents found the key hosts blocked. Every web fact comes from a search snippet and is tagged (via search snippet) in the source log — basis: task instructions.
+- [A2-resources] DDR5 anchors are reused, not re-derived: 1-beta 16Gb die 36.5 mm², 1,534 good dies/wafer (3,068 GB/wafer), $3,800 wafer, $1.48/GB, ~56% of wafer cost is depreciation — basis: `ram-venture/models/dram_cost_stack.py`, `ram-venture/01_LANDSCAPE.md` §4.
+- [A2-resources] DRAM fleet = 1.85M wafer starts/month (22.2M wafers/yr), range 1.7–2.0M — basis: 2023 1.7M wpm in `ram-venture/research/phase1/cost_inputs.json` (UNVERIFIED-PK) plus modest additions to 2026.
+- [A2-resources] Fab electricity 1,300 kWh per 300mm DRAM wafer (900–2,000) — basis: Micron company-wide 11 TWh/yr (2023 sustainability report, via news snippet) divided by ~7.2–8.4M Micron wafers/yr (DRAM 0.35M wpm from cost_inputs + NAND 0.25–0.35M wpm, UNVERIFIED-PK); cross-checked against Silicon Analysts' 800–1,500 kWh/wafer for advanced logic.
+- [A2-resources] Industrial power price $0.10/kWh (0.06–0.14) — basis: UNVERIFIED-PK tariffs (Idaho ~0.06, Taiwan ~0.10, Korea ~0.13).
+- [A2-resources] Literature DRAM embodied carbon of 63–65 gCO2e/GB is NOT used as the energy anchor. At 0.45 kgCO2/kWh it implies only ~0.1–0.15 kWh/GB, which is 3–4× below both company-total cross-checks. I flag the conflict and keep 0.42 kWh/GB (range 0.15–0.65) — basis: judgment; the vendor-derived 65 g/GB figure's provenance and node are unknown.
+- [A2-resources] Water 8 m³ gross withdrawal per 300mm wafer (5–25) — basis: the often-quoted ~2,200 gal/wafer incl. ~1,500 gal UPW (UNVERIFIED-PK), plus the Micron Clay cross-check (48 MGD ÷ an assumed 4 fabs × 60–150k wpm gives 12–25 m³).
+- [A2-resources] Water cost $2/m³ all-in, excluding capex — basis: UNVERIFIED-PK.
+- [A2-resources] 1-beta pillar capacitor: 28 nm outer diameter × 1.4 µm height; cell area 1.34e-3 µm² (0.447 Gb/mm² chip-level × 0.60 array efficiency). Gives ~92× surface enhancement and ~3.3 m² of capacitor dielectric per wafer — basis: UNVERIFIED-PK geometry plus my arithmetic.
+- [A2-resources] Capacitor dielectric today is a ZrO2-based stack ~6 nm thick; a ferroelectric HZO capacitor would be ~10 nm — basis: UNVERIFIED-PK.
+- [A2-resources] ALD precursor utilization 10% (5–30%); WF6 utilization 30%; sputter-target utilization 30%; germane epi utilization 20% — basis: UNVERIFIED-PK. These dominate the "consumed" vs "deposited" mass and are the largest uncertainty in the element table.
+- [A2-resources] Tungsten deposited ~2 g/wafer (1–4), from ~4 W levels × ~0.4 µm blanket-equivalent; copper ~2 g/wafer from 3 periphery levels — basis: ESTIMATE.
+- [A2-resources] World supply (t/yr): W 85,000 (REPORTED); Hf ~80; zircon 1.5 Mt; Ru ~35; refined Ge ~140; In ~1,050; primary Ga ~760; Sc ~20; Cu ~23 Mt; semi-grade polysilicon ~45 kt; tin ~300 kt — basis: UNVERIFIED-PK (USGS-style figures from memory), except W.
+- [A2-resources] Hafnium is treated as separation-limited, not geology-limited. Zircon carries ~1–2% Hf relative to Zr, so Hf contained in mined zircon is ~100× the separated supply — basis: UNVERIFIED-PK chemistry plus arithmetic.
+- [A2-resources] Prices: Hf $12,000/kg (Q2-2026, REPORTED); W ~$400/kg W from APT $3,185/mtu (ESTIMATE conversion: 1 mtu = 10 kg WO3, W = 79.3% of WO3); Ru $56.21/g (Mar-2026, REPORTED); Ge $3,000/kg (UNVERIFIED-PK); Cu $10/kg (UNVERIFIED-PK, 2× sensitivity).
+- [A2-resources] Use-phase DRAM power 0.15 W/GB (0.10–0.25) over 5 years — basis: UNVERIFIED-PK (~8–12 W per 64GB server RDIMM, average).
+- [A2-resources] EUV: 10.2 GWh/tool-yr (TechInsights, REPORTED) over 0.91M exposures/yr (ram-venture cost_stack.md §2.4) = ~11 kWh per exposure; 6 EUV layers for SK hynix 1c (REPORTED in ram-venture).
+- [A2-resources] EUV tin: 27 µm droplets at 50 kHz, 80% duty → ~95 kg Sn per tool-yr before recovery; ~300 EUV tools installed worldwide by 2026 — basis: UNVERIFIED-PK droplet size and installed base; 50 kHz from TechInsights.
+- [A2-resources] Hypothetical rows (Ru electrodes, HZO capacitors, 3D DRAM Si/SiGe, IGZO, AlScN) assume the ENTIRE DRAM fleet adopts the cell. They bound a concept's resource exposure at full scale; they do not describe today.
+- [A2-resources] 3D DRAM Si/SiGe stack: 100 pairs (32–200), 10 nm SiGe, 20% Ge — basis: ESTIMATE of published 3D DRAM directions (no specific vendor stack verified).
+- [A2-resources] China's one-year suspension of the 2025-10-09 rare-earth package is taken to lapse around 2026-11-10. The Ga/Ge/Sb US-ban suspension lapses 2026-11-27 (REPORTED) — basis: the 11-10 date is UNVERIFIED-PK; extension status as of 2026-11-01 is unknown.
+- [A2-resources] The April-2025 Chinese controls on medium/heavy rare earths are taken to include Sc and Y — basis: UNVERIFIED-PK. Their DRAM relevance (Y2O3/YF3 etch-chamber coatings; Sc in AlScN; CeO2 CMP slurry is a light RE) is also UNVERIFIED-PK.
+- [A2-resources] Helium status after June 2026 is unknown. No report of a DRAM output cut from helium was found. "Not binding so far" is therefore conditional on evidence through mid-2026 — basis: search results.
+- [A2-resources] Verdict rule: "binding" means the input has actually limited, or credibly will limit, DRAM wafer starts. A price shock below ~1% of wafer cost counts as not binding — basis: judgment.

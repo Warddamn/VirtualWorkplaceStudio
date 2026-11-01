@@ -1,0 +1,2211 @@
+{
+ "techniques": [
+  {
+   "id": "T01",
+   "name": "SCAMPER-Substitute",
+   "def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different."
+  },
+  {
+   "id": "T02",
+   "name": "SCAMPER-Combine",
+   "def": "Fuse two existing technologies/functions into one structure or system."
+  },
+  {
+   "id": "T03",
+   "name": "SCAMPER-Adapt",
+   "def": "Borrow a solution that already works in another industry and adapt it."
+  },
+  {
+   "id": "T04",
+   "name": "SCAMPER-Magnify/Minify",
+   "def": "Make something drastically bigger, smaller, faster, slower, more or fewer."
+  },
+  {
+   "id": "T05",
+   "name": "SCAMPER-Eliminate",
+   "def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...)."
+  },
+  {
+   "id": "T06",
+   "name": "SCAMPER-Reverse/Rearrange",
+   "def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute)."
+  },
+  {
+   "id": "T07",
+   "name": "TRIZ inventive principles",
+   "def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'."
+  },
+  {
+   "id": "T08",
+   "name": "Biomimicry",
+   "def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores)."
+  },
+  {
+   "id": "T09",
+   "name": "Cross-domain analogy",
+   "def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking)."
+  },
+  {
+   "id": "T10",
+   "name": "Forgotten-technology revival",
+   "def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools."
+  },
+  {
+   "id": "T11",
+   "name": "Assumption inversion",
+   "def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one."
+  },
+  {
+   "id": "T12",
+   "name": "First principles",
+   "def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch."
+  },
+  {
+   "id": "T13",
+   "name": "Random stimulus / forced connection",
+   "def": "Pick unrelated random objects or words and force a connection to memory."
+  },
+  {
+   "id": "T14",
+   "name": "Morphological box (Zwicky)",
+   "def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations."
+  },
+  {
+   "id": "T15",
+   "name": "Provocation (de Bono 'Po')",
+   "def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea."
+  },
+  {
+   "id": "T16",
+   "name": "Reverse brainstorming",
+   "def": "Ask how to make the RAM crisis WORSE, then flip each answer."
+  },
+  {
+   "id": "T17",
+   "name": "Perspective shift / personas",
+   "def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist."
+  },
+  {
+   "id": "T18",
+   "name": "Extreme users and edge cases",
+   "def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes."
+  },
+  {
+   "id": "T19",
+   "name": "Scale and time shifting",
+   "def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention)."
+  },
+  {
+   "id": "T20",
+   "name": "Failure mining",
+   "def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it."
+  },
+  {
+   "id": "T21",
+   "name": "Physical-effects walk",
+   "def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism."
+  },
+  {
+   "id": "T22",
+   "name": "Periodic-table walk",
+   "def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory."
+  },
+  {
+   "id": "T23",
+   "name": "Manufacturing analogies",
+   "def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation)."
+  },
+  {
+   "id": "T24",
+   "name": "Wishful thinking / ideal final result",
+   "def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable."
+  },
+  {
+   "id": "T25",
+   "name": "Scarcity and constraint as engine",
+   "def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint)."
+  }
+ ],
+ "facets": [
+  {
+   "id": "F01",
+   "name": "Bit storage element",
+   "def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...)."
+  },
+  {
+   "id": "F02",
+   "name": "Access device, leakage and refresh",
+   "def": "The switch that isolates the bit; retention; refresh energy and time."
+  },
+  {
+   "id": "F03",
+   "name": "Sensing and periphery",
+   "def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery."
+  },
+  {
+   "id": "F04",
+   "name": "Array architecture and 3D integration",
+   "def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count."
+  },
+  {
+   "id": "F05",
+   "name": "Materials and resource intensity",
+   "def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes."
+  },
+  {
+   "id": "F06",
+   "name": "Manufacturing, lithography and capital intensity",
+   "def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput."
+  },
+  {
+   "id": "F07",
+   "name": "System architecture: need less DRAM",
+   "def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks."
+  },
+  {
+   "id": "F08",
+   "name": "Interface, packaging and data movement",
+   "def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets."
+  },
+  {
+   "id": "F09",
+   "name": "Reliability, ECC and error tolerance",
+   "def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing."
+  },
+  {
+   "id": "F10",
+   "name": "Supply, industry and strategy",
+   "def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models."
+  }
+ ],
+ "constraints": [
+  "No EUV lithography allowed",
+  "No storage capacitor allowed",
+  "Max process temperature 400 C",
+  "No helium, neon or other rare gases",
+  "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)",
+  "Total budget $1M and 24 months",
+  "Must be buildable in a university nanofab",
+  "Zero refresh power",
+  "Must survive 125 C for 10 years",
+  "No PFAS or fluorinated chemistry",
+  "Must use only 1990s-era tools (>=180 nm)",
+  "Must be printable or roll-to-roll",
+  "Must cut water use 10x",
+  "No new fab: only existing trailing-node capacity",
+  "Must reach 10x density at the same cost",
+  "Energy per access 10x lower",
+  "Must be made entirely in the U.S.",
+  "Must be repairable/recyclable by design",
+  "Must work with today's DDR/HBM interfaces unchanged",
+  "Only one lithography mask added",
+  "No silicon wafer (other substrate)",
+  "Must be manufacturable by a 10-person team",
+  "Must tolerate 1% bit error rate at the cell",
+  "Must be 100x cheaper per GB, any other trade-off allowed",
+  "Data must survive power loss (non-volatile)"
+ ],
+ "ideas_per_cell": 46,
+ "cells": [
+  {
+   "cell": "T01-F01",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T01-F02",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T01-F03",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T01-F04",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T01-F05",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T01-F06",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T01-F07",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T01-F08",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T01-F09",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T01-F10",
+   "technique": "SCAMPER-Substitute",
+   "technique_def": "Swap one element (material, physics, carrier, substrate, signal, tool) for something different.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T02-F01",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T02-F02",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T02-F03",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T02-F04",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T02-F05",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T02-F06",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T02-F07",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T02-F08",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T02-F09",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T02-F10",
+   "technique": "SCAMPER-Combine",
+   "technique_def": "Fuse two existing technologies/functions into one structure or system.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T03-F01",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T03-F02",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T03-F03",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T03-F04",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T03-F05",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T03-F06",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T03-F07",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T03-F08",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T03-F09",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T03-F10",
+   "technique": "SCAMPER-Adapt",
+   "technique_def": "Borrow a solution that already works in another industry and adapt it.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T04-F01",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T04-F02",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T04-F03",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T04-F04",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T04-F05",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T04-F06",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T04-F07",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T04-F08",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T04-F09",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T04-F10",
+   "technique": "SCAMPER-Magnify/Minify",
+   "technique_def": "Make something drastically bigger, smaller, faster, slower, more or fewer.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T05-F01",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T05-F02",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T05-F03",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T05-F04",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T05-F05",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T05-F06",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T05-F07",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T05-F08",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T05-F09",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T05-F10",
+   "technique": "SCAMPER-Eliminate",
+   "technique_def": "Remove a part everyone assumes is required (capacitor, refresh, EUV, periphery, binary...).",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T06-F01",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T06-F02",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T06-F03",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T06-F04",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T06-F05",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T06-F06",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T06-F07",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T06-F08",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T06-F09",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T06-F10",
+   "technique": "SCAMPER-Reverse/Rearrange",
+   "technique_def": "Flip the order, direction, roles or layout (read/write, array/periphery, memory/compute).",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T07-F01",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T07-F02",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T07-F03",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T07-F04",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T07-F05",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T07-F06",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T07-F07",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T07-F08",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T07-F09",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T07-F10",
+   "technique": "TRIZ inventive principles",
+   "technique_def": "Apply TRIZ's 40 principles (segmentation, nesting, asymmetry, prior action, dynamics, periodic action, phase transition, self-service, etc.) and resolve a contradiction such as 'smaller cell but more charge'.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T08-F01",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T08-F02",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T08-F03",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T08-F04",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T08-F05",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T08-F06",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T08-F07",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T08-F08",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T08-F09",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T08-F10",
+   "technique": "Biomimicry",
+   "technique_def": "Copy how nature stores and retrieves information or energy (synapses, DNA, immune memory, ion channels, plants, slime mould, magnetotactic bacteria, chromatophores).",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T09-F01",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T09-F02",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T09-F03",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T09-F04",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T09-F05",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T09-F06",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T09-F07",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T09-F08",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T09-F09",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T09-F10",
+   "technique": "Cross-domain analogy",
+   "technique_def": "Map a working idea from another field (batteries, displays, solar, MEMS, optics, HDDs, vinyl, logistics, finance, cities, cooking).",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T10-F01",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T10-F02",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T10-F03",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T10-F04",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T10-F05",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T10-F06",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T10-F07",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T10-F08",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T10-F09",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T10-F10",
+   "technique": "Forgotten-technology revival",
+   "technique_def": "Revive and modernize abandoned memory tech (core, Williams tube, delay line, bubble, twistor, plated wire, early FeRAM, drum) with 2026 tools.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T11-F01",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T11-F02",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T11-F03",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T11-F04",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T11-F05",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T11-F06",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T11-F07",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T11-F08",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T11-F09",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T11-F10",
+   "technique": "Assumption inversion",
+   "technique_def": "List DRAM's hidden assumptions (charge storage, separate from compute, must be perfect, binary, uniform cells, 2D, silicon, synchronous, refreshed) and invert one.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T12-F01",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T12-F02",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T12-F03",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T12-F04",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T12-F05",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T12-F06",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T12-F07",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T12-F08",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T12-F09",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T12-F10",
+   "technique": "First principles",
+   "technique_def": "Derive from physical minima (kT, charge quanta, leakage physics, energy per bit moved) and rebuild from scratch.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T13-F01",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T13-F02",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T13-F03",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T13-F04",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T13-F05",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T13-F06",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T13-F07",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T13-F08",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T13-F09",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T13-F10",
+   "technique": "Random stimulus / forced connection",
+   "technique_def": "Pick unrelated random objects or words and force a connection to memory.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T14-F01",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T14-F02",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T14-F03",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T14-F04",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T14-F05",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T14-F06",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T14-F07",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T14-F08",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T14-F09",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T14-F10",
+   "technique": "Morphological box (Zwicky)",
+   "technique_def": "Combine one option per axis (storage medium x access device x sensing x integration x substrate x fab method) into non-obvious combinations.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T15-F01",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T15-F02",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T15-F03",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T15-F04",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T15-F05",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T15-F06",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T15-F07",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T15-F08",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T15-F09",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T15-F10",
+   "technique": "Provocation (de Bono 'Po')",
+   "technique_def": "Start from an absurd statement ('Po: memory that forgets on purpose', 'Po: chips grown not made') and extract a workable idea.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T16-F01",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T16-F02",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T16-F03",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T16-F04",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T16-F05",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T16-F06",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T16-F07",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T16-F08",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T16-F09",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T16-F10",
+   "technique": "Reverse brainstorming",
+   "technique_def": "Ask how to make the RAM crisis WORSE, then flip each answer.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T17-F01",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T17-F02",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T17-F03",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T17-F04",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T17-F05",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T17-F06",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T17-F07",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T17-F08",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T17-F09",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T17-F10",
+   "technique": "Perspective shift / personas",
+   "technique_def": "Think as a child, an alien, a 2050 engineer, a Soviet engineer under embargo, a farmer, an artist, or a biologist.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T18-F01",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T18-F02",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T18-F03",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T18-F04",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T18-F05",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T18-F06",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T18-F07",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T18-F08",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T18-F09",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T18-F10",
+   "technique": "Extreme users and edge cases",
+   "technique_def": "Design for extremes (space, cryo, 200C downhole, AI KV-cache, $1 IoT, 30-year industrial) and see what generalizes.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T19-F01",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T19-F02",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T19-F03",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T19-F04",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T19-F05",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T19-F06",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T19-F07",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T19-F08",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T19-F09",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T19-F10",
+   "technique": "Scale and time shifting",
+   "technique_def": "Jump across scales (molecule to wafer to rack to datacenter) and timescales (ns to s to years of retention).",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T20-F01",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T20-F02",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T20-F03",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T20-F04",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T20-F05",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T20-F06",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T20-F07",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T20-F08",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T20-F09",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T20-F10",
+   "technique": "Failure mining",
+   "technique_def": "Take a failed memory venture or tech (Optane, Z-RAM, T-RAM, bubble memory, Nantero, HPE memristor) and fix exactly what killed it.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T21-F01",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T21-F02",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T21-F03",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T21-F04",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T21-F05",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T21-F06",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T21-F07",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T21-F08",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T21-F09",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T21-F10",
+   "technique": "Physical-effects walk",
+   "technique_def": "Walk through physics phenomena (piezo, pyro, magnetostriction, Mott transition, Coulomb blockade, tunneling, spin Hall, electrochromism, photoconductivity, ion migration, thermal hysteresis) and turn each into a storage or sensing mechanism.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T22-F01",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T22-F02",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T22-F03",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T22-F04",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T22-F05",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "No PFAS or fluorinated chemistry"
+  },
+  {
+   "cell": "T22-F06",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must cut water use 10x"
+  },
+  {
+   "cell": "T22-F07",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Energy per access 10x lower"
+  },
+  {
+   "cell": "T22-F08",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T22-F09",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T22-F10",
+   "technique": "Periodic-table walk",
+   "technique_def": "Go element by element, favoring abundant ones (Si, Al, Ti, Fe, Zn, Sn, C, N, O, Na, Mg, Ca, S), and ask what each could do in memory.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T23-F01",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T23-F02",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T23-F03",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T23-F04",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T23-F05",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be made entirely in the U.S."
+  },
+  {
+   "cell": "T23-F06",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Only one lithography mask added"
+  },
+  {
+   "cell": "T23-F07",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must tolerate 1% bit error rate at the cell"
+  },
+  {
+   "cell": "T23-F08",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "No EUV lithography allowed"
+  },
+  {
+   "cell": "T23-F09",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "No helium, neon or other rare gases"
+  },
+  {
+   "cell": "T23-F10",
+   "technique": "Manufacturing analogies",
+   "technique_def": "Borrow fabrication methods (printing press, roll-to-roll, 3D printing, weaving, origami, self-assembly, crystal growth, casting, fermentation).",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be buildable in a university nanofab"
+  },
+  {
+   "cell": "T24-F01",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T24-F02",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T24-F03",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T24-F04",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "No silicon wafer (other substrate)"
+  },
+  {
+   "cell": "T24-F05",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be 100x cheaper per GB, any other trade-off allowed"
+  },
+  {
+   "cell": "T24-F06",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "No storage capacitor allowed"
+  },
+  {
+   "cell": "T24-F07",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Only Earth-abundant elements (no Hf, Ru, Co, W, Ta, In, Ga)"
+  },
+  {
+   "cell": "T24-F08",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Zero refresh power"
+  },
+  {
+   "cell": "T24-F09",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)"
+  },
+  {
+   "cell": "T24-F10",
+   "technique": "Wishful thinking / ideal final result",
+   "technique_def": "Describe the ideal memory ('free, infinite, instant, zero energy') and work backward to what is closest to achievable.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "No new fab: only existing trailing-node capacity"
+  },
+  {
+   "cell": "T25-F01",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must work with today's DDR/HBM interfaces unchanged"
+  },
+  {
+   "cell": "T25-F02",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must be manufacturable by a 10-person team"
+  },
+  {
+   "cell": "T25-F03",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Data must survive power loss (non-volatile)"
+  },
+  {
+   "cell": "T25-F04",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Max process temperature 400 C"
+  },
+  {
+   "cell": "T25-F05",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Total budget $1M and 24 months"
+  },
+  {
+   "cell": "T25-F06",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must survive 125 C for 10 years"
+  },
+  {
+   "cell": "T25-F07",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must be printable or roll-to-roll"
+  },
+  {
+   "cell": "T25-F08",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must reach 10x density at the same cost"
+  },
+  {
+   "cell": "T25-F09",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must be repairable/recyclable by design"
+  },
+  {
+   "cell": "T25-F10",
+   "technique": "Scarcity and constraint as engine",
+   "technique_def": "Necessity breeds ingenuity: impose a harsh limit and invent within it (fill every idea with the cell's forced constraint).",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "No silicon wafer (other substrate)"
+  }
+ ]
+}
