@@ -21,7 +21,7 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 
 ## Agent-logged assumptions
 
-1013 assumptions logged by 62 agents, merged from `research/assumptions/*.md` by `research/tools/merge_assumptions.py`. IDs are `A-<agent>-<n>`. Where a later phase revised an earlier assumption, the later entry notes it, and the canonical numbers live in the models (`models/dram_cost_stack.py` `ddr5_reference()`).
+1029 assumptions logged by 65 agents, merged from `research/assumptions/*.md` by `research/tools/merge_assumptions.py`. IDs are `A-<agent>-<n>`. Where a later phase revised an earlier assumption, the later entry notes it, and the canonical numbers live in the models (`models/dram_cost_stack.py` `ddr5_reference()`).
 
 ### Phase 1 — landscape
 
@@ -1301,7 +1301,40 @@ Every assumption this engagement makes beyond the Founder Profile in `research/M
 
 </details>
 
+### Phase 7 — verification gate
+
+<details><summary><b>p7-lens</b> (8)</summary>
+
+- **A-p7-lens-1** [p7-lens] "Services" (lab, audit, per-tapeout support) is not one of the eight §3E lenses. Where a concept is mostly services, BEST went to the lens that names its paying buyer (defense-first for C-13 and C-92) or its recurring layer (software/SaaS for C-84) — basis: mission §3E names only eight lenses, and the task requires exactly one BEST per row.
+- **A-p7-lens-2** [p7-lens] When a concept's product type and its market both match a lens (e.g., C-67/C-55/C-37 hardware sold to defense buyers), BEST goes to the product lens (module/appliance) and the market lens (defense-first) is marked VIABLE — basis: one BEST per row; the product lens decides who pays for what.
+- **A-p7-lens-3** [p7-lens] N/A means the lens cannot apply without turning the concept into a different one. When a lens re-shapes a concept into one that was already killed, the verdict is WEAK and the kill is cited, except for pure-software concepts with no silicon, where fabless→foundry is N/A and the killed re-shape is noted — basis: the task asks for N/A with a reason and asks for re-shapes to be tied to existing kills.
+- **A-p7-lens-4** [p7-lens] C-80, C-29 and C-61 were assessed as DD2 runs them after the red team (`04_DEEPDIVES/lifecycle-intel.md` §0/§14: $249/month SaaS, C-86 index only as an option, vault out), not as originally carded — basis: Phase 6 decision.json PRIMARY scope.
+- **A-p7-lens-5** [p7-lens] C-33 was assessed as the DD5 wedge only, with the C-32/C-22 T2 legs killed (`04_DEEPDIVES/open-memory-ip.md` §14) — basis: Phase 6 decision.json FALLBACK scope.
+- **A-p7-lens-6** [p7-lens] For the university/lab lens, every licence status is taken from `01_LANDSCAPE.md` §9 and `research/phase1/ip_landscape.md` §6 as already tagged there (mostly UNVERIFIED or snippet-grade). No portal was checked, because WebSearch was not allowed for this task — basis: task instruction.
+- **A-p7-lens-7** [p7-lens] Numbers in cell notes are copied from the concept cards (`research/phase2/concepts_master.json`), deep-dive §14 tables and 03_SCORING.md. No new numbers were computed — basis: rule 8 applies to new computations, and this task made none.
+- **A-p7-lens-8** [p7-lens] No external sources were opened, so no `research/sources/p7-lens.jsonl` file was written — basis: CONVENTIONS forbids logging URLs that were not opened.
+
+</details>
+
 ### Other
+
+<details><summary><b>g-decision-docs</b> (4)</summary>
+
+- **A-g-decision-docs-1** [g-decision-docs] The November 2026 DD2 kill-test spend ($1,950 planned) is booked in model month m1 (2026-12) in the new PLAN variants of `models/lifecycle-intel.py`, because the model starts at m1 and the decision falls on 2026-12-01 — basis: decision.json PRIMARY.spend; 04_DEEPDIVES/lifecycle-intel.md §10 line items ($500 + $100 + $1,250 + $100). Booking it a month earlier would not change any cash low after m1.
+- **A-g-decision-docs-2** [g-decision-docs] "PLAN" (index option closed) sets `seed_contributors` to 0 as well as deferring the $5k antitrust opinion and $1k consult, since K4 contributors exist only if K4 passes — basis: LI §11 #3; the model's own "0 seed contributors" variant shows this changes no BASE figure.
+- **A-g-decision-docs-3** [g-decision-docs] "PLAN + index option passes" charges $2,950 at m1 ($1,950 test + the $1,000 consult) and keeps BASE's $5,000 opinion at m2 and 5 seed contributors; the $7,000 m8 legal review stays in every row because DEC does not defer it — basis: decision.json PRIMARY.spend and MOONSHOT.spend.
+- **A-g-decision-docs-4** [g-decision-docs] Max founder draw = $40,000 founder_cash minus the lowest month-end cash in the run (the same definition behind the judges' "$33,900 draw" = $40,000 − $6,100) — basis: research/phase6/judge_ceiling.json, judge_integrity.json.
+
+</details>
+
+<details><summary><b>g-mission-critic</b> (4)</summary>
+
+- **A-g-mission-critic-1** [g-mission-critic] A MOONSHOT of "NONE honestly qualifies", with C-86 held as a labeled ~$0 option, satisfies mission Phase 6. The decision is explicit and reasoned, and Rule 10 bars softening a kill to fill a slot — basis: decision.json MOONSHOT entry; the three judges' confidence in NONE is 0.7–0.8.
+- **A-g-mission-critic-2** [g-mission-critic] §3A "every device concept" is read as every Branch-A card with a cell or device. Service/data cards C-13, C-14 and C-29 are excluded. Other-branch cards that reuse an existing device (C-52, C-53, C-70, C-96) are covered by reference rows — basis: device_cost_output.md §4 lists these exclusions and mappings.
+- **A-g-mission-critic-3** [g-mission-critic] "Available to us" in the 10× $/GB rule means makeable or buyable new by a T0–T2 entrant. T4 fab-scale rows, foundry-made DRAM (C-59) and salvaged Optane (C-26) fall outside it — basis: device_cost_compare.py §4 tiers and capital tiers.
+- **A-g-mission-critic-4** [g-mission-critic] The restored C-01, C-04 and C-16 card text uses the raw Phase 2 field (research/phase2/A1.json, A2.json) with the verify correction applied in place, not a rewrite — basis: verify_corrections recorded on each card.
+
+</details>
 
 <details><summary><b>v1-policy</b> (11)</summary>
 

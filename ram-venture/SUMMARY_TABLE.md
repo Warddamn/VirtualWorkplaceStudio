@@ -28,6 +28,197 @@ Every concept still alive after the Phase 3 kill pass, scoring, both Phase 5 red
 | C-55 | Analog CIM Edge Module (DRAM-free defense edge inference) | T1 | 58.0 (27) | 57.5 (27) | 56.7 (27) | 7 | 24 | 30% | yes | — (not selected) |  |  |
 | C-37 | Compute-in-SRAM vector-search appliance on GSI Gemini APU | T1 | 57.0 (29) | 60.0 (21) | 52.5 (33) | 7 | 21 | 30% | partially | — (not selected) |  |  |
 
+## Business-model lens matrix (mission §3E: every lens applied to every surviving concept)
+
+Verdicts per lens (★ BEST = the lens the concept should use). Full one-line assessments follow the table. Source: `research/phase6/lens_matrix.json`.
+
+| ID | fabless→foundry | IP licensing | module/appliance | recert/brokerage | software/SaaS | data product | defense-first | university/lab patent license |
+|---|---|---|---|---|---|---|---|---|
+| C-80 | n/a | weak | n/a | weak | ★ BEST | weak | weak | n/a |
+| C-29 | n/a | weak | weak | weak | ★ BEST | viable | viable | n/a |
+| C-61 | n/a | weak | weak | weak | ★ BEST | weak | viable | n/a |
+| C-33 | weak | viable | n/a | weak | ★ BEST | weak | weak | weak |
+| C-84 | n/a | weak | weak | weak | ★ BEST | weak | weak | n/a |
+| C-79 | n/a | n/a | weak | ★ BEST | weak | n/a | weak | n/a |
+| C-18 | weak | weak | weak | weak | weak | ★ BEST | viable | weak |
+| C-13 | n/a | weak | weak | weak | weak | weak | ★ BEST | weak |
+| C-36 | ★ BEST | weak | weak | weak | weak | weak | viable | n/a |
+| C-49 | weak | n/a | ★ BEST | weak | weak | weak | weak | n/a |
+| C-92 | n/a | n/a | n/a | viable | weak | weak | ★ BEST | weak |
+| C-45 | weak | n/a | ★ BEST | weak | weak | weak | weak | n/a |
+| C-67 | weak | weak | ★ BEST | weak | weak | n/a | viable | n/a |
+| C-55 | weak | n/a | ★ BEST | n/a | weak | weak | viable | weak |
+| C-37 | weak | n/a | ★ BEST | n/a | weak | n/a | viable | n/a |
+
+<details><summary><b>Lens-by-lens assessments for each surviving concept</b></summary>
+
+**C-80 DRAM Cost & Allocation Intelligence for SMB Hardware OEMs** — BEST = software/SaaS: the $249/month alert SaaS is the only lens that is T0, ships in 6 months and survived the red team. The card listed data product first, but its index leg (C-86) was killed by RT-VC-DD2-01, so the best lens differs from the card's lead lens.
+
+- *fabless→foundry* (N/A): No silicon: the product is BOM-exposure alerts built on the Nexar/DigiKey/Mouser APIs. Turning it into a chip makes it a different concept (fabless memory vendors C-19 and C-59 were killed R4, 02_CONCEPTS.md).
+- *IP licensing* (WEAK): A lifecycle incumbent (Z2Data, Lytica, Accuris, Supplyframe) pays to white-label the alert engine. Nothing is patentable and the code can be rebuilt from public APIs, so this is DD2's m18 exit route (decision.json post_pass_gates), not a business model.
+- *module/appliance* (N/A): No hardware anywhere in the value chain. OEMs manage memory exposure by buying parts, not an appliance.
+- *recert/brokerage* (WEAK): The OEM pays a take-rate when an alert triggers a broker or spot buy. That becomes the C-81 marketplace (R4: Mobius Materials already runs it on a $3M seed) and the C-72 buying co-op (R1-UNSUPPORTED, Phase 7 gate), and it destroys the tool's neutrality.
+- *software/SaaS* (BEST): The SMB OEM procurement lead pays $249/month (DD2) for EOL, PCN and allocation alerts. TRL 9, T0, first revenue m6. BASE ARR is $69.9k at m18 and $149.6k at m36, breakeven m17 with the founder unpaid, salary never covered (lifecycle-intel.md §14.3). It is best only because it is cheap and fits the founder: moat, competition and cycle all score 1.
+- *data product* (WEAK): OEMs and their customers license a contract-reference Memory Cost Escalation Index (C-86). The red team killed it as designed: the panel reaches 14 of the 15 contributors it needs by m36 (RT-VC-DD2-01 FATAL, lifecycle-intel.md §14). It survives only as a $0 option, squeezed between TrendForce/Counterpoint/Supplyframe CIQ above and free trackers below.
+- *defense-first* (WEAK): Defense-supplier OEMs pay for memory BOM flags that track §5949 and DFARS. The §5949 flag was relabelled brand-level only and dropped from the pitch (RT-PHY-DD2-01). Compliance sold as a product was already killed as C-64 (DD1, 05_REDTEAM.md) and C-93 (R4).
+- *university/lab patent license* (N/A): Price and PCN software uses no memory patent, so a lab licence adds nothing a buyer would pay for (ip_landscape.md §0 item 5, §8).
+
+**C-29 NVM-EOL Migration Finder (MRAM/FeRAM/ReRAM cross-reference SaaS)** — BEST = software/SaaS as a feature inside DD2's seat, not as a standalone product. Licensing the cross-reference table to an incumbent is the only other viable lens. Matches the card.
+
+- *fabless→foundry* (N/A): Cross-reference software for parts you can already buy. Designing an own F-RAM or MRAM part turns it into C-19, the fabless STT-MRAM vendor (R4-NO-WINNING-AXIS: Avalanche already ships 1–8 Gb; 02_CONCEPTS.md).
+- *IP licensing* (WEAK): Everspin or Infineon pays to license a white-label migration engine for its drop-in-replacement pages. There is no protectable IP: vendors already publish PTMs and drop-in marketing (card verify_reason), and patent exhaustion means no licence is needed to recommend a purchased part (ip_landscape.md §0).
+- *module/appliance* (WEAK): The OEM buys a drop-in F-RAM module to replace an NVSRAM or BBSRAM. That is C-12, killed with DD3: the revised BASE loses $29.8k over 36 months on a ~$0.62M/yr market (05_REDTEAM.md DD3).
+- *recert/brokerage* (WEAK): Distributors or vendors pay referral fees on migrated designs (the card's 'referral' lens). Volume is tiny: DD7's similar rep-commission line earned $8.6k of BASE ARR at m36 and never broke even (05_REDTEAM.md DD7). Taking referral fees also undermines the tool's neutrality.
+- *software/SaaS* (BEST): The OEM pays for this inside the DD2 $249/month seat. It suggests candidate NVSRAM and high-write-EEPROM to F-RAM/MRAM swaps with parametric checks (RT-PHY-DD2-03, RT-VET-DD2-05). Standalone it is too narrow (scorers: 'a feature for C-80'), so it lives as a DD2 feature with an m3 swap test and is dropped if that test fails.
+- *data product* (VIABLE): Nexar/Octopart (Renesas), SiliconExpert or Z2Data license the curated NVM-migration table as a data feed. The gap is real (no vendor cross-reference tool was found in 2026-11), but the slice is narrow and willingness to pay is STILL-UNVERIFIED. Plausible as a DD2 exit asset.
+- *defense-first* (VIABLE): DMSMS offices and defense/avionics OEMs facing NVSRAM/BBSRAM EOLs pay for migration studies filtered to U.S.-made Everspin Chandler parts. The pain is real, but the segment is small, sales cycles are long, and SiliconExpert/Z2Data already sell to DMSMS.
+- *university/lab patent license* (N/A): It recommends parts people buy, and patent exhaustion means no licence is needed. The university NVM listings (Stanford S18-116, WARF SOT-MRAM, UTRF STT-MRAM) are TRL ≤4–5 devices with no bearing on a cross-reference (01_LANDSCAPE.md §9.2).
+
+**C-61 DRAM Continuity Vault: consignment last-time-buy storage plus LTB-sizing software** — BEST = software/SaaS: the LTB sizer and paid studies inside DD2. The card's vault (a recert/brokerage-style storage service) loses money below ~8 OEMs, so the best lens differs from the card's revenue engine.
+
+- *fabless→foundry* (N/A): A storage and LTB-sizing service with no chip design. Re-making EOL DRAM is the territory of C-58 and C-59, killed R3 and R4 (02_CONCEPTS.md).
+- *IP licensing* (WEAK): Arrow/Avnet bonded-inventory programs or Rochester pay to white-label the LTB sizer. It is a forecasting model with no protectable IP, and distributors would build their own, so at best this is an exit.
+- *module/appliance* (WEAK): The OEM buys an N2 dry-cabinet kit and stores parts in-house, but Super Dry/Totech already sell ~$5k cabinets (card fatal_flaw). The other version, banking bare die, is C-91/C-65, killed in DD7: managing ~$52k of die costs a board OEM $186k–347k (05_REDTEAM.md DD7).
+- *recert/brokerage* (WEAK): This is the card's own revenue engine: the OEM pays ~4%/yr of consigned inventory value plus ~$12k/yr of software for vault storage, re-test and call-offs. Gross margin is negative below ~8 OEMs and ~27% at 10 OEMs ($7.5M under management). Rochester, Micross, Semitron and Astute are incumbents, and DD2 cut the vault (lifecycle-intel.md §0).
+- *software/SaaS* (BEST): The OEM pays for the LTB sizer inside DD2, plus paid LTB studies. After the red team: attach rate 1.25%, study COGS 35%, storage and attrition inputs added (RT-PHY-DD2-04, RT-VET-DD2-06). T0 and a good founder fit, with the vault dropped. This differs from the card, whose money was in the vault.
+- *data product* (WEAK): Selling an EOL/LTB demand dataset to memory makers and distributors needs a contributor panel. It hits the same panel gap that killed C-86 (RT-VC-DD2-01) and adds antitrust exposure (RT-HYP-DD2-07).
+- *defense-first* (VIABLE): Defense-supplier OEMs with 10–30-year field lives (avionics retrofit, rail signaling, grid relays) pay for LTB studies and AS6081-style custody. The DMSMS pain is real, but Micron Manassas DDR4 shrinks the LTB need for Micron parts, and no OEM hands $0.5–2M of stock to an uninsured startup vault (card).
+- *university/lab patent license* (N/A): No memory patent is involved in storage or LTB forecasting. The tech-transfer targets in 01_LANDSCAPE.md §9.2 are all devices.
+
+**C-33 OpenRAM macro service for U.S. open-PDK tapeouts (SkyWater S130)** — BEST = software/SaaS (subscription plus per-tapeout fee), as carded. Per-macro licensing is a viable second line, but every lens that turns it into owned memory IP or its own chips (C-32, C-22) was killed in DD5 §14.
+
+- *fabless→foundry* (WEAK): The founder buys one shuttle slot (ChipFoundry ~$15k per 100 sky130 chips; wafer.space GF180 $7–7.5k) only to characterize macros, so the shuttle is COGS, not revenue. Selling an own memory chip on S130 is C-22, the ReRAM chiplet the red team killed (RT-VET-DD5-05, RT-PHY-DD5-05; open-memory-ip.md §14).
+- *IP licensing* (VIABLE): Commercial and SBIR tapeout teams pay a $12k per-macro licence: nominal lot measured, corners simulated, warranty capped at a refund. The red team cut attach from 0.25 to 0.15 per account per year (RT-HYP-DD5-02), and the model carries a licences-off case. The BSD base means no exclusivity. Licensing gain-cell or ReRAM IP (the T2 legs C-32/C-22) was killed (open-memory-ip.md §14).
+- *module/appliance* (N/A): These are on-chip SRAM macros for ASICs; there is no module or box to sell.
+- *recert/brokerage* (WEAK): Resell MPW slots bundled with macros. ChipFoundry (holder of the ex-Efabless assets), wafer.space and the Cadence/SkyWater open MPW already broker shuttles and could bundle macros for free (card verify_reason).
+- *software/SaaS* (BEST): University labs, startups and SBIR teams pay a hosted-compiler subscription plus a per-tapeout fee for sky130/GF180 macros larger than 4 KB. 57% GM; BASE ARR $41.2k at m18 and $65.7k at m36; cash-positive from m12 with the founder unpaid; never pays a salary (open-memory-ip.md §14.3). Needs an exclusive contract memory engineer signed by m3.
+- *data product* (WEAK): Selling the silicon characterization data (Liberty files, measured results) on its own duplicates the licence deliverable. One nominal MPW lot cannot give measured PVT corners (RT-VET-DD5-02, RT-PHY-DD5-01).
+- *defense-first* (WEAK): DoD SBIR/STTR teams that need U.S.-only fab pay for macros. Only sky130 qualifies, because GF180 is fabbed in Singapore (RT-VET-DD5-04). The DoD licence channel was halved from 0.08 to 0.04 a month, and there is no radiation data (RT-PHY-DD5-07).
+- *university/lab patent license* (WEAK): OpenRAM is BSD-3 from UCSC, so no licence is needed. An option on Purdue In₂O₃ or GT 3T IWO gain-cell IP ($1–10k) turns it into C-01 (SCORE<55, ~48 months) or C-32 (killed: no density or leakage case on sky130, RT-PHY-DD5-03/04).
+
+**C-84 Embedded RAM-Diet Profiler for Small Hardware OEMs** — BEST = software/SaaS (audit first, CI subscription later), which matches the card's 'services→SaaS'. Every lens is weak because engineers can do the work free and the saving falls to ~$2.5/unit in a glut.
+
+- *fabless→foundry* (N/A): Footprint software and audits; there is no silicon.
+- *IP licensing* (WEAK): SoM vendors (Toradex-class) license the profiler for their BSPs. The tools are free upstream (smem, cgroups, zram), and Nordic bundles Memfault into nRF Cloud (card), so there is nothing defensible to license.
+- *module/appliance* (WEAK): Co-sell a lower-RAM SoM SKU with a SoM vendor. SoM vendors already offer RAM-step SKUs, and low-density 1GB parts carry a legacy $/GB premium (card verify_reason).
+- *recert/brokerage* (WEAK): Broker the LPDDR4/DDR4 that density step-downs free up. That becomes the C-81 excess-inventory marketplace (R4: Mobius already owns it).
+- *software/SaaS* (BEST): An OEM product line pays $5–20k for an audit, then a CI footprint-regression subscription. At 2026 prices ($8–21/GB) one step saves $160k–420k/yr on a 20k-unit line, but only ~$2.5/unit in a glut. Engineers can run the tools free (moat 1), and scorers call it 'a consulting gig with no recurring layer' (03_SCORING.md §6).
+- *data product* (WEAK): Sell SoM vendors a benchmark database of real footprints by SoC and BSP. There is no buyer evidence, and every OEM image differs.
+- *defense-first* (WEAK): Defense embedded boxes are rarely re-spun for BOM savings because re-qualification costs dominate (card fatal_flaw), so the defense niche is worse than commercial IoT.
+- *university/lab patent license* (N/A): zram, zswap and smem are upstream Linux; there is no patent to license.
+
+**C-79 TB-RAM Bare-Metal Rental from Recovered DDR4 Servers** — BEST = recert/brokerage (renting recertified DDR4), as carded. It is a cash-flow side hustle (~$0.14M/yr at 10 boxes), and its on-call load clashes with the day job.
+
+- *fabless→foundry* (N/A): Hosting on off-lease servers; there is no chip.
+- *IP licensing* (N/A): Commodity hosting; there is nothing to license.
+- *module/appliance* (WEAK): Sell the recertified 1.5 TB boxes outright to labs (~$7.5–10.4k cost each). Used-server dealers already do this, and a one-time sale gives up the rental spread that pays back in 9–12 months (card).
+- *recert/brokerage* (BEST): Genomics and EDA users pay ~$1,200/month per 1.5 TB box of recertified DDR4, about $0.78/GB-month against AWS x2idn at $4.75/GiB-month. GM ~47–53%, falling to 11–22% if a glut cuts rents 40%. Ten boxes make ~$0.14M/yr, and capex bought at peak DDR4 prices must pay back before end-2027 (card; 03_SCORING.md §6). DD1's recert-resale line was killed at −1% per module (05_REDTEAM.md DD1), but rental earns a different spread.
+- *software/SaaS* (WEAK): The self-serve big-memory job portal has to exist anyway. On its own, as a marketplace for other people's boxes, it has no supply edge over Hetzner/OVH auction servers, and academics get campus and ACCESS nodes free.
+- *data product* (N/A): Renting boxes produces no data a third party would pay for.
+- *defense-first* (WEAK): Government and defense users need FedRAMP/ITAR-grade hosting, which a colo tenant running used hardware cannot offer. No demand evidence.
+- *university/lab patent license* (N/A): No patent is involved.
+
+**C-18 NewSpace MRAM Radiation-Data & Upscreen Service** — BEST = data product (lot-specific radiation data), as carded. The upscreen and resale half was overtaken by Teledyne HiRel, and the device lenses recreate the killed C-06, C-19 and C-21.
+
+- *fabless→foundry* (WEAK): Making an own rad-tolerant MRAM part at a foundry turns it into C-19 (R4: Avalanche ships 1–8 Gb space-grade parts) or C-21 (FACT-COLLAPSE: Everspin's Microchip Gresham line already fills that slot) (02_CONCEPTS.md).
+- *IP licensing* (WEAK): License a lot-acceptance screening flow to a U.S. test house. The methods are standard NASA GSFC and ESA practice, so nothing is protectable.
+- *module/appliance* (WEAK): Smallsat builders buy a rad-tolerant MRAM memory board. Teledyne HiRel, Frontgrade, Honeywell and Avalanche own the flight heritage, and the board would inherit C-67's 20–35% module economics.
+- *recert/brokerage* (WEAK): Builders pay a 2–4x markup on upscreened ~$40–60 Toggle parts. From 4Q-2026 that is overtaken by Teledyne HiRel, Everspin's authorized PERSYST screening channel (03_SCORING.md §7.8). Certifying parts above ~500 krad can also trigger ECCN 3A001.a.1.
+- *software/SaaS* (WEAK): A subscription SEE-rate calculator. NASA GSFC/NEPP and ESA ESCIES data are free, so this is only a feature of the data product.
+- *data product* (BEST): LEO/GEO bus makers pay ~$5–25k per lot-specific TID/SEE report plus a database subscription. NASA and ESA confirm that results vary from lot to lot, which part-type data cannot cover. 30–50% GM and 15–21 months to revenue; needs a radiation-effects partner and ~$100–300k for beam time (card).
+- *defense-first* (VIABLE): Defense small-launch payload integrators pay for lot data. The export gate (ECCN 3A001.a.1, UNVERIFIED) favors a U.S. supplier, but Honeywell and Frontgrade already serve trusted defense MRAM.
+- *university/lab patent license* (WEAK): A Sandia HZO rad-hard FeRAM licence plus CRADA (availability unconfirmed) turns a data service into a device program, which is C-06 (SCORE<55, 54 months). LANL LANSCE sells beam time, not IP (ip_landscape.md §6.3).
+
+**C-13 U.S. independent emerging-memory test and qualification lab (HZO / IGZO / AlScN)** — BEST = defense-first: SBIR- and DoD-funded NVM programs are the only U.S. buyers with money that don't test in-house. The card led with 'services', which is not a mission lens.
+
+- *fabless→foundry* (N/A): A lab sells measurements, not chips, and customers own the wafers.
+- *IP licensing* (WEAK): License qualification flows to labs that own Radiant/aixACCT testers. JEDEC-style flows are public, so nothing is protectable.
+- *module/appliance* (WEAK): Build and sell ferroelectric or oxide test fixtures. That competes with the tester makers Radiant (Albuquerque) and aixACCT, whose RT66B-class units already sit in university shared facilities.
+- *recert/brokerage* (WEAK): Pivoting to test commodity memory lots for brokers lands in C-92's crowded AS6171 market (SMT Corp, Micross).
+- *software/SaaS* (WEAK): A reliability-data management SaaS for device startups. With only ~10–30 U.S. customers [ESTIMATE, card], the market is too small for software.
+- *data product* (WEAK): Sell a database of wake-up, fatigue and retention statistics. Customer data is confidential, and the device-parameter data product C-14 was killed as NOT-A-VENTURE because Stanford Memory Trends and NVMDB are free (02_CONCEPTS.md).
+- *defense-first* (BEST): SBIR/STTR performers, AFRL/DARPA programs and primes evaluating HZO/IGZO/AlScN NVM pay for independent wafer-level statistics, JEDEC-style qualification and radiation-test coordination. T1 (~$0.3–1M of used gear), 30–45% GM, 12–24 months; needs a full-time reliability engineer (card).
+- *university/lab patent license* (WEAK): Licensing a patent gives a lab nothing to sell. The realistic link is becoming the qualification partner for device teams holding Sandia, Penn or Stanford licences, and those programs (C-06, C-07) scored below 55.
+
+**C-36 U.S.-fabbed long-lifecycle SRAM second source (SkyWater Fab 25)** — BEST = fabless→foundry, as carded, with defense-first as its market. It is T2 ($5–15M), founder-fit 1, and fights Infineon in the same fab, so it stays parked.
+
+- *fabless→foundry* (BEST): Defense and industrial OEMs pay ~$10–40 per 4–64 Mb async/QDR SRAM made at SkyWater Fab 25 (16 Mb die ~$2.4 COGS at 65 nm) with a 15–20-year longevity commitment. T2 ($5–15M), 30–42 months, founder-fit 1. Infineon is the anchor customer of the same fab, and access to its bitcell/PDK is STILL-UNVERIFIED (card; 03_SCORING.md §7.8).
+- *IP licensing* (WEAK): License an SRAM family to SkyWater or Rochester for continuation. The licensor path takes 5–10 years (ip_landscape.md §5), and Renesas EOL260016 maps its 92 discontinued codes to Infineon, not to a startup.
+- *module/appliance* (WEAK): Sell SRAM inside hi-rel MCMs or modules. The DRAM version of that business (C-65) was killed with DD7 (05_REDTEAM.md DD7).
+- *recert/brokerage* (WEAK): Buy EOL SRAM die or wafers and resell them (the Rochester model). That becomes the C-91 die bank killed in DD7, where a bare-die bank costs 2.9–5.4x a packaged LTB.
+- *software/SaaS* (WEAK): A DMSMS SRAM cross-reference tool the founder could build. It overlaps C-29, and Renesas already publishes its Infineon mappings free.
+- *data product* (WEAK): SRAM obsolescence data, which SiliconExpert and Z2Data already own.
+- *defense-first* (VIABLE): DMSMS programs and defense primes value non-PRC supply (vs Ingenic-owned ISSI) and written longevity. But 'U.S.-fab' is not unique, because Infineon's wafers come from the same Fab 25, and no U.S.-origin premium is evidenced for COTS memory (01_LANDSCAPE.md §7.3).
+- *university/lab patent license* (N/A): The 6T SRAM cell is public PDK data (01_LANDSCAPE.md §9.1 SRAM row). No university or lab patent that would change the product is needed or available.
+
+**C-49 TB-Class CXL Node for EDA/Genomics/HANA** — BEST = module/appliance (VAR), as carded. Still weak at 15–25% GM against OEM incumbents, and its software and defense versions were already killed (C-97, DD4, C-56).
+
+- *fabless→foundry* (WEAK): An own CXL controller or expander card is a T2 hardware program (C-44 and C-47, both SCORE<55), and Marvell, Samsung, Micron and SK hynix already ship modules.
+- *IP licensing* (N/A): Tiering is upstream Linux (weighted interleave v6.9, DAMON, HMSDK/SMDK) and the modules are bought, so there is nothing to license.
+- *module/appliance* (BEST): EDA, genomics and HANA teams pay for a validated single-socket server with 8–16 E3.S CXL modules adding 2–4 TB. VAR margin 15–25%, 12–18 months. It loses on $/TB below ~6 TB per socket, and Penguin, Supermicro, Dell, HPE and Lenovo already sell the box (card; 03_SCORING.md §7.8).
+- *recert/brokerage* (WEAK): Fill the CXL tier with recovered DDR4. That is C-44 (SCORE<55), and Marvell Structera X only samples in Q1 2027. C-79 rents recovered DDR4 more simply.
+- *software/SaaS* (WEAK): A tiering tuning and telemetry subscription is C-97 (DUPLICATE: the services packaging of C-49). Fleet memory-efficiency software (DD4) was killed: the value-backed C-74 fee came to $1.66/node/month (05_REDTEAM.md DD4).
+- *data product* (WEAK): Sell per-workload CXL tiering benchmarks. Vendors and papers publish them free, and there is no buyer evidence.
+- *defense-first* (WEAK): A DoD/DOE HPC premium for U.S.-provenance CXL is C-56 TrustedCXL, killed R1-UNSUPPORTED because there is no U.S.-origin memory premium (01_LANDSCAPE.md §7.3).
+- *university/lab patent license* (N/A): No patent licence is involved: the software is open source and the modules are bought (patent exhaustion).
+
+**C-92 AS6171 counterfeit-detection and authentication lab for memory lots** — BEST = defense-first, as carded: DFARS creates the obligation to test. Recert/brokerage buyers are a viable second market, but the field is crowded and the lab loses money below 36 lots/month.
+
+- *fabless→foundry* (N/A): A test lab; no chip design.
+- *IP licensing* (N/A): AS6171 methods are a public SAE standard, and die-origin flagging uses the decap and die-marking methods incumbents already run (card fatal_flaw), so there is nothing to license.
+- *module/appliance* (N/A): A lab service with no hardware product.
+- *recert/brokerage* (VIABLE): AS6081 independent distributors and EMS firms buying broker DRAM pay ~$1,400 per lot; the lab is the trust layer of the broker chain. Becoming a broker itself would turn it into C-81 (R4, Mobius) or C-62 (killed with DD1).
+- *software/SaaS* (WEAK): Selling the LIMS and serialized web reports to other labs as SaaS fails because SMT Corp and Micross run their own systems. It is useful only as the founder's part of the lab.
+- *data product* (WEAK): Sell buyers a die-ID and test-report database. DD1's die-source library was killed (RT-VET-DD1-01 FATAL: wrong sample population, easy to replicate; 05_REDTEAM.md DD1), and ERAI/GIDEP already share counterfeit data.
+- *defense-first* (BEST): DFARS 252.246-7008 makes defense contractors pay for authentication whenever they buy outside authorized channels; the lab charges ~$1,400 per lot. $650k capex, $478k/yr fixed cost, breakeven at 36 lots/month, 41% GM at 60 (card). It is the best lens, but SMT Corp (CT, DLA QTSL) and Micross already hold this position nearby (03_SCORING.md §7.8).
+- *university/lab patent license* (WEAK): Option ASU's dendritic-PUF anti-counterfeit tags (Kozicki/Barnaby) to mark authenticated lots; ip_landscape.md §6.2 rates them 'med' for recertified memory. The option costs $1–10k and its status is unverified, and tags neither replace AS6171 tests nor win a DLA listing.
+
+**C-45 KV Pool Node (shared DRAM+CXL KV-cache appliance)** — BEST = module/appliance, as carded, and only as the least-bad lens: Penguin ships the identical box, and the SaaS version (C-75) was killed.
+
+- *fabless→foundry* (WEAK): An own CXL/KV memory card is T2 controller work (C-44 and C-47, both SCORE<55), and Penguin owns the SMART CXL card line.
+- *IP licensing* (N/A): Mooncake and LMCache are open source and the box is commodity, so there is nothing to license.
+- *module/appliance* (BEST): Neocloud and enterprise inference teams pay for a 2U node with 3–6 TB of DDR5 plus CXL running Mooncake/LMCache. Hardware GM 10–20% on ~$80–130k of DRAM per 4 TB node, and Penguin MemoryAI (launched 2026-03-16, 11 TB) already ships it (card). Best of bad options.
+- *recert/brokerage* (WEAK): Use recovered DDR4 for the KV tier: lower bandwidth and C-44 economics (SCORE<55), while warm KV already goes to BlueField-4 and SSD tiers.
+- *software/SaaS* (WEAK): A KV observability and tuning subscription is C-75, killed with DD4 (05_REDTEAM.md DD4); Tensormesh holds the recurring line (03_SCORING.md §6).
+- *data product* (WEAK): Sell KV-reuse telemetry benchmarks; there is no buyer evidence.
+- *defense-first* (WEAK): Air-gapped defense inference buys GPU-OEM stacks (the Dell/HPE/Supermicro CMX/STX references), and there is no evidence a startup node wins there.
+- *university/lab patent license* (N/A): No lab patent applies: open-source software on purchased hardware.
+
+**C-67 Rugged and new-form-factor memory modules built at a U.S. EMS (LPCAMM2/CAMM2, wide-temp coated SODIMM)** — BEST = module/appliance, with defense-first as the channel, as carded. The field is crowded by Virtium, SMART, ATP and Innodisk at 20–35% GM.
+
+- *fabless→foundry* (WEAK): Making own DRAM die through a foundry is C-59 (R4: Alliance Memory already is the fabless long-lifecycle DRAM brand).
+- *IP licensing* (WEAK): License rugged CAMM2/SODIMM raw-card designs to EMS firms. Innodisk and congatec already ship, and DDR5 modules carry Netlist PMIC-on-DIMM FTO risk (01_LANDSCAPE.md §9.1).
+- *module/appliance* (BEST): Rugged-computer makers (GMS, Crystal Group, Curtiss-Wright) pay 1.3–1.6x commodity for coated, screened, wide-temperature modules built at a U.S. Class-3 EMS. GM 20–35% (10–27% in a glut), ~24 months to revenue; needs a hardware/SI cofounder and die allocation (card).
+- *recert/brokerage* (WEAK): Rugged-rework recovered modules: FAR 52.246-26 treats used-as-new as counterfeit for defense, and DD1's recert line was killed (05_REDTEAM.md DD1).
+- *software/SaaS* (WEAK): Software fits only as a customer PCN/lifecycle portal, and that is DD2's product.
+- *data product* (N/A): Environmental qualification data covers only its own SKUs, and nobody buys it separately.
+- *defense-first* (VIABLE): The only opening the verifier found is a U.S.-assembled, MIL-environment variant for defense rugged-computer makers. But COTS memory carries no U.S.-origin premium (C-70, R1-UNSUPPORTED), and Manassas die covers DDR4/LPDDR4 only.
+- *university/lab patent license* (N/A): JEDEC CAMM2 is a published standard. The IP question is Netlist FTO, a licence from a litigant, not a university patent.
+
+**C-55 Analog CIM Edge Module (DRAM-free defense edge inference)** — BEST = module/appliance, with defense-first as the market, as carded. It reduces to a rugged integrator of someone else's chip.
+
+- *fabless→foundry* (WEAK): An own analog CIM chip is C-24 (R4: it duplicates TetraMem's product line) at T3 capital; Mythic reportedly raised ~$125M.
+- *IP licensing* (N/A): The CIM IP belongs to Mythic, EnCharge and Sagence; the integrator holds none.
+- *module/appliance* (BEST): Drone and ISR integrators pay for rugged M.2/PCIe modules on Mythic M1076 (DRAM-free only for models that fit on-chip) or EnCharge EN100 (carries up to 128 GB of LPDDR). 25–40% GM, 18–30 months. The vendors sell their own cards, so this is C-67's economics with a fragile chip vendor (card).
+- *recert/brokerage* (N/A): There is no secondary market for analog CIM parts; the modules are new-build only.
+- *software/SaaS* (WEAK): A model compile and deploy toolkit for Mythic parts: the vendor owns the toolchain, and Hailo-8 and Jetson have mature ones.
+- *data product* (WEAK): Environmental and radiation characterization of CIM parts for integrators: a tiny market, the C-18 model on a weaker vendor.
+- *defense-first* (VIABLE): UAS/ISR buyers value W per inference on U.S.-designed silicon. SBIR funds pilots, but grants are not revenue (A-04), and Mythic already ships to Lockheed Martin direct.
+- *university/lab patent license* (WEAK): Princeton's charge-domain CIM is likely licensed to EnCharge, and the RRAM-CIM lineages to TetraMem and Crossbar (ip_landscape.md §6.2). Licensing a leftover recreates C-24 (R4).
+
+**C-37 Compute-in-SRAM vector-search appliance on GSI Gemini APU** — BEST = module/appliance (VAR plus subscription), as carded. Defense-first is the only market where its energy advantage pays, but the vendor sells direct.
+
+- *fabless→foundry* (WEAK): An own compute-in-SRAM chip is C-39 (SCORE<55, T3, $150–400M). GSI itself is spending on Plato (tape-out early 2027).
+- *IP licensing* (N/A): The APU IP is GSI's; the reseller has none.
+- *module/appliance* (BEST): Air-gapped defense/IC and on-prem search buyers pay for an APU appliance plus an annual software subscription. Blended GM 20–40% (10–20% VAR margin on the hardware), 18–24 months. It depends on a single ~$25M/yr vendor that lost $5.4M last quarter and sells the same servers direct (card).
+- *recert/brokerage* (N/A): There is no secondary market for Gemini APU cards; APU revenue is too small to report separately.
+- *software/SaaS* (WEAK): A software-only FAISS/Milvus-compatible layer on GSI cards competes with GSI's own OpenSearch k-NN plugin (since 2021), and the installed base is tiny.
+- *data product* (N/A): It produces nothing a third party would buy.
+- *defense-first* (VIABLE): Energy per retrieval query (54–118x below an A6000, from a GSI-coauthored MICRO '25 paper) matters most for power-limited, air-gapped IC RAG. An ATO and a sponsor take 18–24 months, and GSI chases Gemini-II defense-edge wins itself.
+- *university/lab patent license* (N/A): The Cornell MICRO '25 study is a paper, not a licence, and university compute-in-SRAM IP (Princeton→EnCharge) is already taken.
+
+</details>
+
 ## Kill tally
 
 | Stage | Killed |
