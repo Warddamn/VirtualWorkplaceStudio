@@ -1,6 +1,6 @@
 # 02 — CONCEPTS
 
-**98 concept cards** generated in Phase 2 by parallel ideation agents (one per branch A–E; branch A split three ways because it is the largest), then deduplicated. Merges are noted on each card. Status after Phase 3 kill pass: **16 alive, 82 killed**. Scores are in `03_SCORING.md`. The machine-readable copy is `concepts.csv`. Device $/GB comparisons are in `models/device_cost_compare.py`.
+**98 concept cards** generated in Phase 2 by parallel ideation agents (one per branch A–E; branch A split three ways because it is the largest), then deduplicated. Merges are noted on each card. Current status (after the Phase 3 kill pass and scoring, both Phase 5 red-team rounds, and the Phase 7 gate): **15 alive, 83 killed**; each killed card shows its rule and reason. Scores are in `03_SCORING.md`. The machine-readable copy is `concepts.csv`. Device $/GB comparisons are in `models/device_cost_compare.py`.
 
 Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, T2 $2M–$50M, T3 $50M–$1B, T4 >$1B · materials sense: (a) material system, (b) process, (c) capital (mission rule 5).
 
@@ -946,7 +946,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 **Why it could work:** 2026 is an EOL wave (DDR3/DDR4 exits, serial EEPROM EOLs) during a shortage, and emerging-NVM parts are under-known by component engineers. The founder can build it with no hardware capital; device knowledge from this branch becomes the data moat (density, endurance, interface compatibility).
 
-**Evidence:** TRL 9 · Rule 1: SUPPORTED (EOL wave evidenced); willingness to pay for an NVM-only cross-reference STILL-UNVERIFIED
+**Evidence:** TRL 9 · Rule 1: SUPPORTED
   - [Renesas EOL plan: serial EEPROM products](https://www.renesas.cn/zh/document/gde/eol-plan-serial-eeprom-products) — company, 2025-11. Renesas serial EEPROM families EOL, last-time shipment 2026-10-31 (via search snippet)
   - [DDR4 reportedly leads legacy memory rally; DDR3 in tight supply](https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/) — industry, 2026-01. Makers exiting DDR4 in 2026; DDR3 supply tight (via search snippet)
   - [EM128LXQAB313IS2T DigiKey listing](https://punchouttest.digikey.hk/en/products/detail/everspin-technologies-inc/EM128LXQAB313IS2T/24375470) — industry, 2026. Everspin 128Mb xSPI MRAM manufacturer lead time 26 weeks (via search snippet)
@@ -2366,7 +2366,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* fabless->foundry, defense-first, university/lab patent license (capacitor module)
 
-### C-72 — Legacy-DRAM buying cooperative for mid-size U.S. OEMs
+### C-72 — Legacy-DRAM buying cooperative for mid-size U.S. OEMs — ☠ KILLED (R1-UNSUPPORTED (Phase 7 gate): As a standalone concept its core value claim — that Winbond/Nanya/Micron or franchised distributors will honor a multi-year allocation agreement with a no-title, no-credit buying co-op — has no evidence and no precedent in electronics (Phase 3 audit batch_10; 04_DEEPDIVES/lifecycle-intel.md §0 folds it in only as an unpriced feature plus three supplier calls). Under a strict Rule 1 it is killed as a concept; the three supplier calls remain a $0 test inside DD2's kill experiment.)
 
 *Sub-branch:* Supply-chain arbitrage (demand aggregation) · *Materials sense:* none
 
@@ -2374,7 +2374,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 **Why it could work:** In the shortage, allocation goes to strategic OEMs while module makers and small buyers are cut (TrendForce, Jan 2026); Nanya's long-term agreements expired in June 2026 and repriced >60%; firm, LC-backed, aggregated demand is what suppliers reward. Model: 40 members at $1.5M each = $60M pooled spend -> ~$1.9M revenue at ~85% gross margin (agency model).
 
-**Evidence:** TRL 9 · Rule 1: PARTIAL - buyer pain SUPPORTED; supplier acceptance of a co-op LTA (no title, no credit) UNVERIFIED
+**Evidence:** TRL 9 · Rule 1: UNSUPPORTED
   - [PC DRAM 1Q26: prices to surge over 80% on server supply prioritization (TrendForce abstract)](https://www.trendforce.com/research/download/RP260114IU) — industry, 2026-01-14. DRAM supply prioritized to strategic OEMs while module makers are limited (abstract only) (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)
   - [Nanya 3Q26 results (TrendForce News)](https://www.trendforce.com/news/?p=65146) — news, 2026-10-12. Nanya 3Q26 gross margin 85.7%, operating margin 80%; LTAs expired end-June 2026 and repriced >60% higher in July (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)
   - [Memory shortage watch: DDR3L/DDR4, May 2026 (Findchips)](https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/) — industry, 2026-05. Zero authorized stock of a mainstream Micron DDR4 part at Newark, Avnet and Mouser; only independent-market stock at a premium (CROSS-REFERENCE: URL seen in a sibling agent's search results; not opened by C)

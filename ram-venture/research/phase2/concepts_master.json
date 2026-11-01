@@ -2696,7 +2696,7 @@
    "survives_glut": "partially",
    "glut_reason": "EOLs continue in a glut, but shortage urgency and willingness to pay fall.",
    "fatal_flaw": "Incumbent lifecycle databases (one now owned by Renesas) already provide cross-references. The DRAM half of the pitch is false. The emerging-NVM slice is probably too narrow for standalone SaaS and fits better as lead-gen inside C-12 or C-80",
-   "rule1_status": "SUPPORTED (EOL wave evidenced); willingness to pay for an NVM-only cross-reference STILL-UNVERIFIED",
+   "rule1_status": "SUPPORTED",
    "business_model_lenses": "SaaS, data product, referral/brokerage",
    "founder_fit_note": "Yes — pure software, T0, day-job compatible; the risk is market size, not execution.",
    "possible": "yes",
@@ -2722,7 +2722,8 @@
    "rank_capital_constrained": 3,
    "rank_moonshot": 4,
    "deep_dive": "DD2",
-   "red_team_status": "DOWNGRADED"
+   "red_team_status": "DOWNGRADED",
+   "rule1_note": "SUPPORTED (EOL wave evidenced); willingness to pay for an NVM-only cross-reference STILL-UNVERIFIED"
   },
   {
    "tmp_id": "A3.01",
@@ -6805,7 +6806,7 @@
    "survives_glut": "partially",
    "glut_reason": "In a glut allocation is free, so the 2.5% fee must be justified on price alone against distributor volume pricing and EMS buying. Expect fees to compress to <=1% and members to churn. The network survives only if it has become the members' outsourced commodity desk.",
    "fatal_flaw": "Suppliers and franchised distributors may refuse an intermediary that takes neither title nor credit risk. Taking title needs $8-27M of working capital (T2). The value window is ~2027 only: allocation scarcity, the whole product, starts to ease in 2028 and is gone in a glut.",
-   "rule1_status": "PARTIAL - buyer pain SUPPORTED; supplier acceptance of a co-op LTA (no title, no credit) UNVERIFIED",
+   "rule1_status": "UNSUPPORTED",
    "business_model_lenses": "recert/brokerage (procurement), SaaS (forecast portal), data product",
    "founder_fit_note": "Marginal: the portal and operations fit the founder; supplier credibility needs an industry veteran cofounder.",
    "possible": "marginal - hinges on one supplier honoring a pooled LTA; untested",
@@ -6813,7 +6814,7 @@
    "doable_by_founder": "marginal - needs a memory-sales veteran",
    "branch": "C",
    "id": "C-72",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "time_to_first_revenue_months: Members will not pay $10k fees before any supplier or distributor LOI exists. The card's own kill experiment gates the first invoice.",
     "time_to_first_revenue_text: Matches the corrected months and the landscape timing.",
@@ -6832,7 +6833,10 @@
    "rank_capital_constrained": 19,
    "rank_moonshot": 15,
    "deep_dive": "DD2",
-   "red_team_status": "DOWNGRADED"
+   "red_team_status": "DOWNGRADED",
+   "rule1_note": "PARTIAL - buyer pain SUPPORTED; supplier acceptance of a co-op LTA (no title, no credit) UNVERIFIED",
+   "kill_rule": "R1-UNSUPPORTED (Phase 7 gate)",
+   "kill_reason": "As a standalone concept its core value claim — that Winbond/Nanya/Micron or franchised distributors will honor a multi-year allocation agreement with a no-title, no-credit buying co-op — has no evidence and no precedent in electronics (Phase 3 audit batch_10; 04_DEEPDIVES/lifecycle-intel.md §0 folds it in only as an unpriced feature plus three supplier calls). Under a strict Rule 1 it is killed as a concept; the three supplier calls remain a $0 test inside DD2's kill experiment."
   },
   {
    "branch": "D",

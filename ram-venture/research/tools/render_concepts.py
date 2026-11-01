@@ -55,7 +55,7 @@ def main():
         "",
         f"**{len(cards)} concept cards** generated in Phase 2 by parallel ideation agents (one per branch A–E; branch A split "
         "three ways because it is the largest), then deduplicated. Merges are noted on each card. "
-        f"Status after Phase 3 kill pass: **{alive} alive, {len(cards) - alive} killed**. "
+        f"Current status (after the Phase 3 kill pass and scoring, both Phase 5 red-team rounds, and the Phase 7 gate): **{alive} alive, {len(cards) - alive} killed**; each killed card shows its rule and reason. "
         "Scores are in `03_SCORING.md`. The machine-readable copy is `concepts.csv`. Device $/GB comparisons are in "
         "`models/device_cost_compare.py`.",
         "",

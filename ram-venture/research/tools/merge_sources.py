@@ -17,15 +17,18 @@ RV = Path(__file__).resolve().parents[2]
 SRC_DIR = RV / "research" / "sources"
 OUT = RV / "SOURCES.md"
 DELIVERABLE_GLOBS = ["*.md", "04_DEEPDIVES/*.md"]
-URL_RE = re.compile(r"https?://[^\s\)\]>\"'`|,]+")
+URL_RE = re.compile(r"https?://[^\s\)\]>\"'`|]+")
 
 
 def norm(url: str) -> str:
-    u = url.strip().rstrip(".;:")
+    u = url.strip().rstrip(".,;:")
     u = re.sub(r"#.*$", "", u)
     u = u.replace("http://", "https://")
     u = re.sub(r"^https://www\.", "https://", u)
     return u.rstrip("/").lower()
+
+
+internal = []
 
 
 def load_logs():
@@ -43,7 +46,7 @@ def load_logs():
                 continue
             url = str(r.get("url", "")).strip()
             if not url.startswith("http"):
-                bad.append(f"{f.name}:{i} (no url)")
+                internal.append(f"{agent}: {url or '(none)'} — {str(r.get('title', ''))[:120]} — {str(r.get('supports', ''))[:160]}")
                 continue
             k = norm(url)
             rec = records.setdefault(k, {
@@ -120,6 +123,8 @@ def main():
         for k, (u, files) in sorted(missing.items()):
             lines.append(f"- {u} — cited in {', '.join(sorted(files))}")
         lines.append("")
+    if internal:
+        lines += ["## Non-web references (local files, training-knowledge notes) — not counted as sources", ""] + [f"- {b}" for b in internal] + [""]
     if bad:
         lines += ["## Malformed log lines skipped", ""] + [f"- {b}" for b in bad] + [""]
     OUT.write_text("\n".join(lines), encoding="utf-8")
