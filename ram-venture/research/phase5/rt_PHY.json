@@ -1,0 +1,269 @@
+{
+  "persona": "PHY",
+  "persona_name": "Condensed-matter physicist (ferroelectrics, spintronics, oxide semiconductors, memory device reliability); IEDM and Nature Electronics reviewer",
+  "objections": [
+    {
+      "id": "RT-PHY-DD1-01",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§1 Line 2 / §2.3 library synergy / INPUTS: lib_module_cost",
+      "objection": "The recert bench samples the wrong population for a CXMT library: 2026-27 U.S. ITAD lots are 2018-22-vintage, OEM-qualified DDR4 (90% of the model mix, INPUTS mix_ddr4_32/64), which predates CXMT server parts and should be almost all Samsung, SK hynix or Micron die. The at-risk population is new third-party 'OEM-compatible' DDR5 RDIMMs sold into federal channels (§3, router-switch CXMT 64GB DDR5), which recert never touches. Decap also destroys the module, yet the model prices bundled library samples at $0 module cost (provenance-recert.py line 323) and standalone samples at $150 (INPUTS lib_module_cost). At $1,045 (used 64GB DDR5, INPUTS ddr5_64_price) to ~$3,000 (new, Fusion per DD4 §3), the 63 m36 samples cost ~$66-190k, not $0-9.5k. That erases the ~$122k 'library lift' that justifies the bundle.",
+      "would_change_my_mind": "Kill-track B or the first two ITAD lots turn up at least one CXMT die among 40 or more decommissioned modules. Or a re-run with library samples drawn from new compatible DDR5 RDIMMs at market price (lib_module_cost ≥ $1,000, bundled too) still reaches ≥10 subscribers by m18."
+    },
+    {
+      "id": "RT-PHY-DD1-02",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§1 Line 2 ('one result identifies the die source for every stick sharing that part number and date-code family') / §5 win condition 2",
+      "objection": "The step from one decap to a whole part-number and date-code family has no physical basis. OEM option P/Ns are routinely filled by modules from two or three DRAM vendors, and third-party module makers change DRAM vendor or die revision between builds without changing the module P/N. The module label date code is not the DRAM package date code, and a decap reads only one of the 18-40 packages on the stick. Each lab result therefore covers one build lot, so the '63 lab-confirmed part numbers' (m§3) overstate coverage by an unknown multiple. The cross-reference key must be the DRAM package FBGA/marking code plus a die fingerprint, not the module P/N.",
+      "would_change_my_mind": "Decap data on 3 or more modules of the same P/N and date-code family, from different lots or sellers, showing the same die vendor and revision. Or ≥90% within-family consistency across a 20-sample set."
+    },
+    {
+      "id": "RT-PHY-DD1-03",
+      "dd": "DD1",
+      "severity": "MAJOR",
+      "section": "§1 Line 1 step 2 / §10 track A test protocol / INPUTS: fail_rate, return_rate",
+      "objection": "The burn-in cannot see the faults that matter. memtest86+ does not report ECC-corrected errors (v7 ECC support is 'preliminary', on some Ryzen CPUs only: GitHub discussion #248; HotHardware 2024-01), so on a Gen10 Xeon bed with ECC on, a stuck bit is silently corrected and stressapptest, which compares post-correction data, passes it too. DDR5 on-die ECC (JESD79-5 SEC) hides single-cell faults from the host entirely. A room-temperature soak misses retention-weak and VRT cells, whose retention falls steeply with temperature and which surface in 85°C chassis; DIMMs with prior CEs are far likelier to error again (Schroeder et al., SIGMETRICS 2009), and ITAD lots arrive with no CE history. The 3% fallout and 2% returns (INPUTS) come from C_notes, not from a protocol able to measure them, so the per-serial test record (win condition 4) certifies less than buyers assume.",
+      "would_change_my_mind": "Lot-1 data from a protocol that logs per-DIMM CEs through Linux EDAC/rasdaemon under stressapptest (any CE = reject), or with ECC disabled for the memtest pass, plus a heated soak at ≥70°C DIMM temperature. It should show fallout ≤3% and 90-day returns ≤2%."
+    },
+    {
+      "id": "RT-PHY-DD1-04",
+      "dd": "DD1",
+      "severity": "MINOR",
+      "section": "§1 Line 4 / §6 'failure prediction' / INPUTS: dh_price",
+      "objection": "The corrected-error trend feed rests on host-visible CE streams, which is what the cited predictors are trained on (IBM; arXiv 2212.10441; Intel MFP at Tencent). On DDR5, on-die ECC absorbs most single-bit cell faults before the host sees them; only coarse ECS counts in mode registers remain, so CE-trend signal thins out. On DDR4 the fleets are being retired, and BMC-level prediction (Lenovo MPFA, Intel MFP in AMI/Insyde, ParkView) is already free. The DD quotes no precision or recall for any predictor at a useful lead time, so the '4.5× DIY cost' price has no physical value anchor.",
+      "would_change_my_mind": "A backtest on one TPM's DDR4 CE logs that beats MPFA/ParkView by a stated margin (e.g., ≥50% precision at ≥7-day lead), or dropping the predictive claim and selling only tested spares."
+    },
+    {
+      "id": "RT-PHY-DD1-05",
+      "dd": "DD1",
+      "severity": "MINOR",
+      "section": "§1 'Optane PMem rides along' / INPUTS: pmem_buy_frac, fail_rate",
+      "objection": "Optane PMem is non-volatile, so ITAD lots carry residual customer data. Modules left with security enabled and a passphrase set may not unlock or secure-erase without that passphrase. The model applies the generic 3% fallout and adds no sanitization or chain-of-custody cost for media that is still readable. PMem also works only on 2nd and 3rd-gen Xeon Scalable with matched firmware, and media wear ('percentage remaining' in ipmctl) should be logged and priced per module.",
+      "would_change_my_mind": "First-lot data showing ≤5% of PMem modules are locked or unsanitizable, plus a per-serial NIST SP 800-88 sanitization certificate from each ITAD."
+    },
+    {
+      "id": "RT-PHY-DD1-06",
+      "dd": "DD1",
+      "severity": "MINOR",
+      "section": "§10 track B (positive control and identifiability threshold)",
+      "objection": "Track B's only known-CXMT control is a consumer DDR5 kit (KingBank/Lexar). Counterfeit labs check die marks against reference images, and they may recognise a consumer CXMT die but not the server RDIMM die revision, so the test does not falsify identifiability for the at-risk population. The plan also skips a cheap nondestructive screen: X-ray die outline. The CXMT G4 16Gb die is 66.99 mm² versus 52.6 mm² for 1-alpha (01_LANDSCAPE §4), which could triage samples before any decap.",
+      "would_change_my_mind": "A known CXMT server RDIMM (e.g., CXMR4E464R8AS, §3) added as a second control, written confirmation from ≥2 of the 3 labs that they hold CXMT reference die images, and an X-ray die-dimension step costed in the protocol."
+    },
+    {
+      "id": "RT-PHY-DD2-01",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§1 step [2] / §10 step 1 (§5949 flag) / §3 customers #4-6",
+      "objection": "The §5949 flag is keyed on MPNs and the manufacturer field ('flags CXMT/YMTC manufacturers', §10), so it identifies the seller, not the die. Modules, eMMC, SSDs and MCPs sold under Kingston, ATP, Innodisk or SMART MPNs can contain CXMT DRAM or YMTC NAND die. DD1 itself establishes that SPD bytes are assembler-written and that only decap proves die source. The flag therefore gives false negatives in exactly the risky category. Yet §3 says to 'lead with the CXMT/YMTC flag' for Trenton, CP Tech and Core Systems, and a customer relying on a false negative carries FCA-adjacent exposure.",
+      "would_change_my_mind": "Measure the flag's recall on 20 module/eMMC MPNs of known die source (e.g., from DD1's lab results). Otherwise relabel it 'brand-level only, not die-level' and take it out of the pitch to #4-6."
+    },
+    {
+      "id": "RT-PHY-DD2-02",
+      "dd": "DD2",
+      "severity": "MAJOR",
+      "section": "§8 m9 gate ('≥10 contributors and ≥5 per DDR4/DDR5 cell') / §1 step [4] index design",
+      "objection": "Memory is not one commodity. Prices diverge by generation (DDR3/4/5/LPDDR4X), die density, width, package, speed bin and above all temperature grade (commercial vs industrial -40°C vs AEC-Q100). The §3 buyers (industrial PC, rugged, medtech) mostly buy industrial-grade, long-life DDR3/DDR4 components from Micron, ISSI, Alliance, Winbond or Nanya. Their 2026 price path is driven by EOL, not by the DDR5 contract path the model imports. Ten contributors at ≥5 per cell can fill only one or two broad cells, and those average across grades with large price spreads. The resulting basis risk lets any counterparty reject the index (§5 'use TrendForce').",
+      "would_change_my_mind": "Tabulate the memory lines in the 5 design partners' BOMs. If ≥70% of memory spend falls into ≤4 grade-homogeneous cells that each have ≥5 contributors, the design works."
+    },
+    {
+      "id": "RT-PHY-DD2-03",
+      "dd": "DD2",
+      "severity": "MINOR",
+      "section": "§1 step [2] C-29 ('this EEPROM can become an F-RAM') / §8 Q3 NVM cross-reference",
+      "objection": "Automated EEPROM/NOR→F-RAM/MRAM swap alerts are not drop-in recommendations. F-RAM reads are destructive and count toward endurance (FM18W08-class 1e14): a word polled at 1 MHz hits 1e14 in ~3.2 years. Many F-RAMs run at 2.0-3.6 V, versus 1.7-5.5 V for EEPROMs. F-RAM tops out around 8-16 Mbit, so it cannot replace 128 Mbit-2 Gbit NOR code storage. Everspin's 16 Mb parallel MRAM is rated to only 8,000 A/m (Everspin AN 02049). An unvalidated swap alert that a customer acts on becomes a design-failure liability.",
+      "would_change_my_mind": "Each cross-reference pair ships with automatic checks on voltage, density, endurance including reads, temperature grade, command set and magnetic rating, plus a counsel-reviewed 'engineering validation required' disclaimer."
+    },
+    {
+      "id": "RT-PHY-DD2-04",
+      "dd": "DD2",
+      "severity": "MINOR",
+      "section": "§1 C-61 LTB sizer / §2.1 LTB study",
+      "objection": "The LTB sizer ignores storage physics. Multi-year LTB stock of BGA DRAM and eMMC is typically MSL-3, so J-STD-033 floor-life and bake limits apply. Repeated bakes grow intermetallics and degrade solderability (J-STD-002 retest), and long holds need dry or N2 storage. Without an attrition and holding-cost term, the sizer systematically under-buys, and that error is only found at the reflow line years later.",
+      "would_change_my_mind": "The sizer exposes attrition, bake-cycle and storage-cost inputs anchored to die-bank practice (e.g., Rochester), and a back-test on one design partner's past LTB."
+    },
+    {
+      "id": "RT-PHY-DD2-05",
+      "dd": "DD2",
+      "severity": "MINOR",
+      "section": "§1 step [2] alerts / §10 step 1 lifecycle source (DigiKey lifecycle field, PDN crawler)",
+      "objection": "For DRAM, the event that forces requalification usually comes as a die-revision or fab-transfer PCN under an unchanged MPN, not as a PDN. Such a change can alter IDD, tRFC and refresh or retention behaviour. DigiKey and Nexar lifecycle status stays 'Active' through it. An alert engine keyed on PDNs and lifecycle fields therefore misses the change that actually costs an industrial or medtech OEM a requalification.",
+      "would_change_my_mind": "A 12-month back-test showing the crawler catches ≥90% of die-revision PCNs from Micron, ISSI, Winbond and Nanya."
+    },
+    {
+      "id": "RT-PHY-DD3-01",
+      "dd": "DD3",
+      "severity": "MAJOR",
+      "section": "§10 track B added magnetic test / §1 'reads/writes like SRAM' / §2.6 must-be-true #4",
+      "objection": "Everspin rates 16 Mb parallel Toggle MRAM at Hmax_write = 8,000 A/m (≈100 Oe ≈ 10 mT) (MR4A16B datasheet Rev 11.7; Everspin AN 02049). Machine shops are full of permanent magnets: dial-indicator magnetic bases, magnetic tool strips and part trays, magnetic chucks. These reach roughly 0.1-1 T at contact (80-800 kA/m) [ESTIMATE: typical ferrite/NdFeB surface fields], 10-100× over the limit. Over-limit exposure can flip bits, which is permanent loss of the very parameters the card exists to protect, a failure battery SRAM cards do not have. The planned '72 h beside a spindle motor' test measures stray fields of a few mT and is the wrong test.",
+      "would_change_my_mind": "Calibrated exposures with a gaussmeter at 10, 30 and 100 mT, in standby and during write, with full-array CRC verify. Then data retained after a 1-minute contact with a dial-indicator base and 10 cycles on a magnetic chuck, with a ≤$5 Ni-Fe shield inside the 3.3 mm Type I envelope (or a warning label plus a returns allowance in the model)."
+    },
+    {
+      "id": "RT-PHY-DD3-02",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§1 'Second product: DIP modules' / §2.1 NV-DIP rows / INPUTS: fm18w08_usd_our_qty, dip1m_cogs_parts_other_usd",
+      "objection": "§1 drops FM18W08 from the card because of the /CE-latch trap, then builds the DS1225/DS1230 DIP on the same part. FM18W08 latches the address on /CE falling and has a 130 ns cycle with tPC = 60 ns precharge (datasheet Rev 2.0), versus a 70 ns read cycle on DS1230Y-70. Hosts that hold /CE low across consecutive accesses, or run back-to-back cycles under 130 ns, read stale data. FM28V100 (the DS1245 SKU) is a 2.0-3.6 V part: the model includes $2.50 of translators, but the two added translator delays push past the access time of DS1245Y-70 sockets. 'Tested + CoC + warranty' is the DIP line's only claim over free adapters, so compatibility must be proven per host type.",
+      "would_change_my_mind": "Bench passes on ≥5 host types (e.g., HP 3458A, a Z80 or 6809 arcade board, a PLC), or a DIP redesign on a part with true asynchronous-SRAM timing."
+    },
+    {
+      "id": "RT-PHY-DD3-03",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§1 DIP modules as working RAM / §4 2-year warranty",
+      "objection": "Where DS1225/DS1230 parts serve as working RAM (stack and variables in arcade boards and instruments), F-RAM's destructive read consumes endurance on every access, row by row (FM18W08-class 1e14 read/write cycles). A hot row hit at ~1 M accesses/s reaches 1e14 in ~3.2 power-on years, and at 10 M/s in ~4 months. Long-held calibration constants at cabinet temperature also face ferroelectric imprint. A blanket warranty without screening the host's duty cycle is exposed.",
+      "would_change_my_mind": "Per-host access-rate measurement (logic analyser on /CE) showing hot-row rates ≤1e5/s, or warranty terms excluding working-RAM use."
+    },
+    {
+      "id": "RT-PHY-DD3-04",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§1 card block diagram ('3x 74LVC16245-class 5V-tolerant buffers 5V <-> 3.3V') / INPUTS: card_logic_2mb_usd",
+      "objection": "A single-supply 74LVC16245 at 3.3 V accepts 5 V inputs but drives only about 3 V onto the host data bus. That is fine for TTL-threshold hosts and out of spec for any 5 V CMOS-input host logic (VIH = 3.5 V). Dual-supply translators (74LVC16T245/74ALVC164245) with direction control from OE#/WE# are the correct parts. More importantly, PC Card 8-bit mode (CE1# low, CE2# high, A0 selecting the odd byte onto D0-D7) needs byte-lane steering from the x16 MR4A16B, and a '245 bank cannot do that without decode logic. The 'optional ≤$5 CPLD' is likely mandatory, and the $5 logic line understates it.",
+      "would_change_my_mind": "A schematic with dual-supply translators and steering logic that passes 8-bit and 16-bit access tests on the bench control, with logic COGS re-quoted."
+    },
+    {
+      "id": "RT-PHY-DD3-05",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§10 track B tests (100 power cycles) / §11 kill criterion 7",
+      "objection": "Technicians hot-remove PC Cards. Mid-write removal, when WE#/CE# glitch while VCC collapses through the regulator, is the real field abuse case, and the plan tests only 100 control power cycles. Everspin's datasheet requires E and W held high during power-up and power-down, so the supervisor must gate those lines on the MRAM side, with pull-ups to MRAM VDD and enough hold-up to finish an in-flight cycle. Hot removal is untested and unspecified.",
+      "would_change_my_mind": "Zero corruption outside the addressed word across ≥500 hot removals during active writes, with CRC checks of all non-addressed blocks."
+    },
+    {
+      "id": "RT-PHY-DD3-06",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§10 track B sample size / §2.6 must-be-true #4",
+      "objection": "Three to five hand-built cards on one control instance cannot predict field compatibility. Zero failures in 100 cycles bounds the per-cycle failure rate only at ≤3% (95%, rule of three). One 16i/18i control does not represent the 0/15/16/18/20/21/i-A/0i family span or its firmware revisions, and testing is at room temperature while control cabinets run 40-55°C. The >10% compatibility-return kill (§11 #7) is thus discovered on customers, not on the bench.",
+      "would_change_my_mind": "≥10 cards across ≥3 control families or firmware revisions, ≥1,000 cycles at 0-55°C, before the first 100-card lot."
+    },
+    {
+      "id": "RT-PHY-DD3-07",
+      "dd": "DD3",
+      "severity": "MINOR",
+      "section": "§1 and §2.7 C-16 mechanism ('MRAM journal replaces the DRAM cache and its hold-up supercapacitors')",
+      "objection": "Replacing the DRAM cache with MRAM removes the DRAM flush but not the hold-up energy needed to finish or safely abort in-flight NAND program and erase operations. In MLC, TLC and QLC, an interrupted upper-page program can corrupt previously written lower-page data (the paired-page problem), so either hold-up capacitance or a paired-page-aware FTL remains. The $12 supercap saving in INPUTS plp_supercap_bom_usd is therefore not fully realisable. The 1Gb pMTJ STT part's retention-at-temperature line should also be read before any claim (and that part is the ITC 337-TA-1487 target).",
+      "would_change_my_mind": "A controller vendor confirming that an MRAM-journal TLC design with no hold-up capacitors passes power-loss testing (JESD218-class) without data loss."
+    },
+    {
+      "id": "RT-PHY-DD4-01",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§2.1 value per node / §1 ledger ('51 GB freed = $883 of DDR5 you did not buy') / INPUTS: reclaim_frac, savings_share",
+      "objection": "Server DRAM is bought in channel-balanced steps, not by the GB. Full bandwidth needs every channel populated with identical DIMMs at 1DPC (12 channels on EPYC 9004/9005, 8 on Xeon 4th/5th gen), and 2DPC derates DDR5 speed. Per-socket capacity therefore moves in 1.33-1.5× steps (e.g., 12×{32,48,64,96} GB = 384/576/768/1152 GB). A 10% reclaim lets a homogeneous fleet drop a step only if its requirement sits within ~11% above that step: P ≈ 0.11 × S_k/(S_k+1 − S_k) ≈ 22-33%. Otherwise the deferral is $0, and installed nodes never 'un-buy' DIMMs. The per-node fee bills value that most 80-node customers will never realise, which is a dispute and churn driver the model does not carry.",
+      "would_change_my_mind": "Purchase quotes from 2-3 pilot customers where measured reclaim changed the DIMM SKU or count, or a re-run billing only at procurement events with step-crossing probability applied."
+    },
+    {
+      "id": "RT-PHY-DD4-02",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§10 PASS condition ('≥10% of installed RAM freed') / §11 kill 5",
+      "objection": "The core technical threshold is undefined in a way that can pass falsely. On Linux, idle RAM fills with page cache. 'Freeing' file cache, trivially on a CI runner (workload c), raises MemFree without reducing the capacity the node needs, and it costs I/O. TMO's 20-32% is a reduction in resident memory at PSI-bounded performance, much of it anonymous memory offloaded to zswap or SSD. On three replayed workloads chosen by the vendor, '10% freed' says nothing about DIMMs not bought.",
+      "would_change_my_mind": "Define reclaim as the lowest cgroup memory.max (or VM balloon target) that holds p99 and PSI 'some' within bounds, reported as an anonymous vs file split, with the PASS bar applied to anonymous plus required-cache reduction."
+    },
+    {
+      "id": "RT-PHY-DD4-03",
+      "dd": "DD4",
+      "severity": "MAJOR",
+      "section": "§3 customers #4-7 (MSU ICER, UArizona, Rutgers/UMBC/UIC, UCR) / §10 target list (15 research-computing centers)",
+      "objection": "HPC compute nodes normally run with no swap. MPI bulk-synchronous jobs touch their whole working set every iteration, so cold anonymous memory is small, and one rank's swap-in stalls every rank. Slurm already caps each job at its requested memory through cgroups. The real saving lever is right-sizing job memory requests (seff/XDMoD), not kernel reclaim, and node purchases are set by the largest-memory job class. Four of the ten named first customers, and 15 of the 60 kill-test targets, are physically mismatched to the product.",
+      "would_change_my_mind": "One research-computing center that runs swap or zswap on compute nodes and measures ≥10% cold anonymous memory on production jobs without wall-time regression."
+    },
+    {
+      "id": "RT-PHY-DD4-04",
+      "dd": "DD4",
+      "severity": "MINOR",
+      "section": "§1 mechanisms (zswap 2:1, KSM) / INPUTS: reclaim_frac",
+      "objection": "Common configurations defeat the mechanisms. KSM merges only 4 KiB pages, so VMs backed by hugetlbfs or 1 GiB hugepages (a standard Proxmox and DPDK tuning) cannot be merged, and hugetlbfs pages cannot be swapped. Confidential VMs (AMD SEV-SNP, Intel TDX) present ciphertext to the host, so host-side zswap compresses at about 1:1 and KSM finds nothing. KSM is also often disabled for cross-VM side-channel reasons. A single fleet-wide 10% reclaim_frac hides a per-configuration distribution that can be zero.",
+      "would_change_my_mind": "Scan results from the first 5 installs reporting hugepage, SEV/TDX and KSM status, with reclaim modelled per configuration."
+    },
+    {
+      "id": "RT-PHY-DD4-05",
+      "dd": "DD4",
+      "severity": "MINOR",
+      "section": "§7 swap safety / §2.2 COGS (no device-wear term)",
+      "objection": "Proactive reclaim with SSD writeback turns cold-page churn into flash writes. With 51 GB per node reclaimed and the cold set turning over 2-4 times a day, that is 100-200 GB/day. On a 480 GB boot M.2 rated around 1 DWPD [ESTIMATE: typical boot-class SKU; verify per platform], swap alone consumes 0.2-0.4 DWPD. Meta's TMO work treats device endurance as a constraint on offload. The model has no swap-device spec, no wear COGS, and no rule against swapping to boot media.",
+      "would_change_my_mind": "Pilot telemetry of swap write volume per node per day against the installed drive's rated TBW, plus a zswap-only (no writeback) policy where endurance is short."
+    },
+    {
+      "id": "RT-PHY-DD4-06",
+      "dd": "DD4",
+      "severity": "MINOR",
+      "section": "§11 kill 4 ('a second incident → kill C-74') / §2.2 loaded margin",
+      "objection": "zswap moves anonymous user pages into kernel-owned zsmalloc memory. A DRAM uncorrectable error in a user page is usually survivable through machine-check recovery (the process is killed). The same UE in kernel pool memory typically panics the node, unless the running kernel's MCE recovery covers zswap paths. Schroeder et al. (2009) report UEs on ~1.3% of machines per year. With ~5% of RAM in the pool (10% reclaim at 2:1), a 2,157-node book (the 27-customer salary case, §2.5) sees on the order of 1-2 agent-attributable panics a year, enough to trip the two-incident kill.",
+      "would_change_my_mind": "Confirmation that the target kernels recover from poisoned zswap/zsmalloc pages without panicking, or an incident definition that excludes hardware UEs, written into the SOW."
+    },
+    {
+      "id": "RT-PHY-DD4-07",
+      "dd": "DD4",
+      "severity": "MINOR",
+      "section": "§1 C-75 / §12 C-75 reuse-interval argument",
+      "objection": "A host-DRAM KV tier is bounded by bandwidth, not only capacity. Llama-3-70B KV is 80 layers × 8 KV heads × 128 × 2 × 2 B ≈ 0.33 MB/token, so a 32k-token prefix is ≈10.7 GB. Eight GPUs on PCIe Gen5 x16 can pull ~440 GB/s together (~55 GB/s each), while one socket of 12-channel DDR5-4800 peaks at 460.8 GB/s theoretical (practically ~300-370 GB/s). Concurrent fetches saturate host DRAM and cross NUMA. Sizing by capacity and break-even reuse interval alone misprices the tier.",
+      "would_change_my_mind": "A sizing method that includes per-socket bandwidth and NUMA placement, validated on one 8-GPU node under concurrent prefix fetches."
+    },
+    {
+      "id": "RT-PHY-DD5-01",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.3 line C 'Characterized licence: measured data, PVT corners, 12-month warranty' / INPUTS: license_warranty_reserve_share, license_contract_hours",
+      "objection": "An MPW slot gives die from one lot at one point in the process window, with no FF/SS/FS/SF corner-split wafers. 'Measured PVT corners' is therefore one measured point plus SPICE extrapolation, and the sky130 foundry bitcell uses 'core memory' rules with fixed OPC and DRC waivers (OpenRAM sky130 paper, NSF PAR 10495552), its least-validated part. For a 32 KB macro (262,144 bits) at 99% macro yield, per-bit failure must be below ~4e-8 (~5.4σ), and a few dozen MPW die cannot verify that. The 10% warranty reserve and the 30 'PVT corner check' hours rest on no data.",
+      "would_change_my_mind": "SkyWater or ChipFoundry confirm corner-split wafers for MPW slots, and the special SRAM device models carry Monte Carlo mismatch data. Or the licence is restated as 'measured at nominal lot X; corners simulated', with yield measured on ≥50 die and the warranty limited to re-spin support."
+    },
+    {
+      "id": "RT-PHY-DD5-02",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§8 m9-m13 characterization / §11 kill 3 ('access time > 1.5× simulated') / INPUTS: one_time m9 ($4k bench), m10/m13 ($5k, 40 h)",
+      "objection": "SRAM access time in the ns range cannot be measured through package pins or Caravel-class harness I/O running at tens of MHz. It needs on-chip BIST with programmable delay or ring-oscillator timing structures designed into the test chip, which the 60 h build-out does not include. Temperature characterization from -40 to 125°C needs thermal forcing, which neither the $4k 'FPGA carrier + PCB' bench nor the 40 h contractor provides. As budgeted, kill criterion 3 cannot be evaluated, and 'measured timing', the paid differentiator over free macros, cannot be produced.",
+      "would_change_my_mind": "A test-chip plan with on-chip BIST and delay-line timing measurement, plus a quote for thermal-forcing rental, both costed in the model with the cash low recomputed."
+    },
+    {
+      "id": "RT-PHY-DD5-03",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§2.1 gain-cell density row / §11 kill 10 (≥1.2× vs 1.896 µm²)",
+      "objection": "The 1.896 µm² sky130 6T cell is a foundry core-memory cell built on rules and DRC waivers that a startup's new 2T/3T/4T gain cell does not get. Unless SkyWater qualifies the cell (a foundry engagement, not an STTR deliverable), it must pass the standard logic deck, under which a gain cell is plausibly no smaller than the foundry 6T. The BIU 20-30% figure compares cells drawn under the same rules. Kill 10 is the right test, but it is scheduled after a $305k STTR when it is a two-day layout exercise.",
+      "would_change_my_mind": "A sky130 gain-cell layout that is clean on the standard DRC deck at ≤1.58 µm² (1.2× density), including its share of read-reference and refresh periphery, produced before the STTR proposal."
+    },
+    {
+      "id": "RT-PHY-DD5-04",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§1 'later options (T2)' gain cell / §11 kill 10 (density-only gate)",
+      "objection": "Gain-cell eDRAM earns its place at ≤28 nm, where 6T leakage dominates; RAAAM targets TSMC N2 and GF FDX. At 130 nm, 6T standby leakage is small, and a gain cell pays refresh energy and availability loss. Its retention, 'microseconds to milliseconds' in the DD's own words, is set by the worst-tail cell at maximum temperature, where subthreshold and junction leakage are many times their 25°C values. The C-32 gate checks density only, so a cell with tens of µs retention at 85°C passes.",
+      "would_change_my_mind": "Post-layout Monte Carlo or silicon showing ≥1 ms worst-bit retention at 85°C, and refresh plus leakage power below measured sky130 6T standby power at ≥16 KB, added to kill 10."
+    },
+    {
+      "id": "RT-PHY-DD5-05",
+      "dd": "DD5",
+      "severity": "MAJOR",
+      "section": "§1 C-22 axis ('magnet immunity') / §5 'ReRAM against Toggle MRAM' / §11 kill 11",
+      "objection": "The one axis on which ReRAM beats Toggle MRAM, magnet immunity, is shared by antifuse/eFuse OTP and charge-storage NVM, which are licence-free or foundry-standard. Key-storage sockets write rarely, at provisioning, so ReRAM's rewritability buys little over OTP. ReRAM also needs forming, write-verify and ECC for its resistance-distribution tails, and has retention drift at high temperature. Everspin 16 Mb parallel parts are rated to 8,000 A/m (AN 02049), so 'magnet immunity' matters only above ~10 mT, a requirement the DD attaches to no named buyer.",
+      "would_change_my_mind": "One named defense secure-boot program stating a magnetic-field requirement above 8,000 A/m and a rewrite need that rules out OTP or eFuse."
+    },
+    {
+      "id": "RT-PHY-DD5-06",
+      "dd": "DD5",
+      "severity": "MINOR",
+      "section": "§1 and §2.1 'banked 32-64 KB macro, 60% array efficiency, 316.5 kbit/mm²' (model §1)",
+      "objection": "The 60% array efficiency has no OpenRAM evidence behind it. The free macros reach 43-57.6 kbit/mm², about 8-11% of the 527.4 kbit/mm² cell limit. The sky130 foundry array also needs even row and column counts (OpenRAM issue #137) plus end, strap and dummy cells, all of which cut efficiency. Density is the pitch to FABulous-class buyers (§3 #5), so a 5.5× claim that turns into 2× changes the sale against DFFRAM.",
+      "would_change_my_mind": "The area of an OpenRAM-generated, DRC/LVS-clean 32 KB sky130 macro from the day 1-7 run, replacing the 60% assumption."
+    },
+    {
+      "id": "RT-PHY-DD5-07",
+      "dd": "DD5",
+      "severity": "MINOR",
+      "section": "§3 #7-8 (Sandia, DoD SBIR performers) / §10 PASS (ii) 'serious buyer'",
+      "objection": "The DoD and SBIR buyers who would meet the $10k 'serious buyer' bar usually need single-event-effects data (heavy-ion SEU cross-section, latch-up LET threshold) and TID data, and Mobile Semiconductor's RH90 compilers already serve that segment. Bulk sky130 latch-up behaviour is uncharacterized in the plan. A heavy-ion campaign (TAMU or LBNL beam time plus boards and travel) runs ~$10-30k [ESTIMATE] and is absent from the model. Gain cells, with fF storage nodes, would have a far worse soft-error rate than 6T.",
+      "would_change_my_mind": "Two of the targeted SBIR performers confirm they would buy macros without radiation data, or a funded SEE campaign is added to the model."
+    }
+  ],
+  "overall": {
+    "DD1": "Recert is physically a fine cash trade, but the bench samples old OEM DDR4, not the new third-party DDR5 that carries CXMT risk, and it cannot see ECC-masked faults. The 'die-source data moat' therefore has to be bought at DDR5 prices: downgrade the bundle synergy.",
+    "DD2": "Least physics exposure of the five, but the §5949 flag is die-blind and the index cannot fill grade-homogeneous cells with 10 contributors. Drop the flag from pitches and narrow the index before the kill test.",
+    "DD3": "Toggle MRAM is the right core, and nothing physical kills the card. The real risk is shop magnets far above the 8,000 A/m rating, which needs a calibrated test and shield. The DIP line reuses the F-RAM /CE trap §1 warned about.",
+    "DD4": "The 'DRAM not bought' ledger ignores DIMM step quantization and page-cache accounting, and the HPC half of the target list does not swap. Measured reclaim value is lower and lumpier than modeled, so the demote verdict stands.",
+    "DD5": "The wedge works at simulation level, but MPW silicon plus a $4k bench cannot deliver 'measured PVT corners + warranty'. On sky130, C-32 has no density or leakage case and C-22's magnet axis is shared by OTP: treat the T2 stage as dead on this PDK."
+  }
+}

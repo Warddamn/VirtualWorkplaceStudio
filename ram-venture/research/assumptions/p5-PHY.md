@@ -1,0 +1,8 @@
+- [p5-PHY] Shop-floor permanent magnets (dial-indicator bases, magnetic chucks, NdFeB trays) reach ~0.1-1 T (80-800 kA/m) at contact — basis: typical ferrite/NdFeB surface fields; not measured; compared with Everspin 16Mb parallel Hmax_write 8,000 A/m (AN 02049, via snippet).
+- [p5-PHY] 2026-27 U.S. ITAD RDIMM flow contains essentially no CXMT die — basis: 2018-22 server vintage, OEM DIMM qualification lists, CXMT server-grade parts arriving 2024-26; to be falsified by kill-track B.
+- [p5-PHY] Step-crossing probability for a 10% reclaim ≈ 22-33% for homogeneous fleets — basis: P ≈ r/(1−r) × S_k/(S_{k+1}−S_k) with 1.33-1.5× channel-balanced DIMM steps, uniform requirement within a step.
+- [p5-PHY] ~1-2 agent-attributable panics/yr on a 2,157-node book — basis: Schroeder et al. 2009 ~1.3% machines/yr with UEs × ~5% of RAM in the zswap pool (10% reclaim at 2:1).
+- [p5-PHY] Swap writeback 100-200 GB/day/node and ~1 DWPD boot M.2 — basis: 51 GB reclaimed × 2-4 cold-set turnovers/day; typical boot-class SSD rating (verify per SKU).
+- [p5-PHY] Heavy-ion SEE campaign ~$10-30k — basis: beam time at TAMU/LBNL plus boards and travel; order of magnitude only.
+- [p5-PHY] 32 KB macro at 99% yield needs per-bit failure <~4e-8 (~5.4σ) — basis: 1−0.99^(1/262,144).
+- [p5-PHY] Llama-3-70B KV ≈ 0.33 MB/token — basis: 80 layers × 8 KV heads × 128 dim × 2 (K,V) × 2 B (fp16).
