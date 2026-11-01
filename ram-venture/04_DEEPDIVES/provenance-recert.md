@@ -38,7 +38,7 @@ All external facts are search-snippet grade, so nothing is [VERIFIED] except the
 | C-62 | 71.0 (#14) | 75.0 (#11) | 64.2 (#16) |
 
 **The honest summary: a small cash business, not a venture.**
-- **BASE result:** $445,543 ARR at m36, $610,097 cash, and $662,971 of cumulative EBITDA on $40k (m§3).
+- **BASE result:** $445,543 ARR at m36, $610,097 cash, and $662,971 of cumulative EBITDA on $40k (m§3, m§4).
 - **Where the money comes from:** 85% of revenue is a moatless 15%-margin resale trade that dies in a glut.
 - **The glut-proof part is small:** CleanBOM reaches 23.5 subscribers. $1M ARR would need ~61 (m§6f).
 - **Its close rate, churn and price are all guesses,** and the proposed FAR rule lets sellers self-certify for free.
@@ -181,7 +181,7 @@ python3 -c "import importlib.util as u,sys;sys.path.insert(0,'models');s=u.spec_
 
 **Generous in three places:** the unsourced buy fraction, while Iron Mountain's ALM revenue rose 88% YoY in Q2-26 as it kept the repricing ([MarketBeat, 2026-08-08](https://www.marketbeat.com/instant-alerts/iron-mountain-q2-earnings-call-highlights-2026-08-08/)) [REPORTED]; channel absorption of ~$70–100k of lots a month (m§2, "Inv buy"), never tested; and CleanBOM's close rate and churn. **Harsh in one:** no extra CleanBOM demand in a glut.
 
-The result holds across all three price decks only because the founder goes full-time one month before the modeled turn. If the glut comes a quarter early, or the FAR rule slips, ARR at m36 roughly halves (§2.6).
+The result holds across all three price decks only because the founder goes full-time one month before the modeled turn. If the glut comes a quarter early, or the FAR rule slips, GLUT ARR at m36 falls 38–53%, from $434,012 to $268,513 or $203,455 (§2.6).
 
 ---
 
@@ -225,7 +225,7 @@ The result holds across all three price decks only because the founder goes full
 |---|---|---|
 | Recert module, eBay / B2B | Realized resale (e.g., $125 for 32GB DDR4) / 0.88× that | INPUTS (amcompute midpoints) |
 | PMem 128GB | $200 | m§1b |
-| CleanBOM integrator/reseller tier | $750/month | Above SiliconExpert-class entry: Accuris's $6,000 minimum ACV implies SiliconExpert ≈ $7.5k/yr ([Accuris](https://accuristech.com/siliconexpert-offer-terms/)) [REPORTED] |
+| CleanBOM integrator/reseller tier | $750/month | Above SiliconExpert-class entry: Accuris prices 20% below SiliconExpert with a $6,000 minimum ACV ([Accuris](https://accuristech.com/siliconexpert-offer-terms/)) [REPORTED], which implies SiliconExpert ≈ $7.5k/yr [ESTIMATE: $6,000 ÷ 0.8] |
 | CleanBOM module-maker/ODM tier | $2,500/month (35% of customers) | m§1c |
 | Evidence pack (per SKU family) | $900 | m§1c |
 | Lab die-ID sample | Lab cost × 1.6 (≈$640) | INPUTS |
@@ -245,7 +245,7 @@ The result holds across all three price decks only because the founder goes full
 
 | Days | Actions | Measurable output |
 |---|---|---|
-| 1–30 | The kill experiment (§10) | Go/no-go per line |
+| 1–30 | The kill experiment (§10; decision on day 29, 2026-11-30) | Go/no-go per line |
 | 31–60 | Buy the m2 lot (~$7.1k; m§2). Open an eBay store with per-serial test records. Pitch xByte, TechMikeNY and PCSP. Turn track C's yeses into design-partner LOIs | 2 B2B accounts; 3 signed LOIs |
 | 61–90 | Sell ~39 modules (m§2 Jan-27). Deliver free die-checks. Get ITAD downstream questionnaires in writing | ≥$15k revenue in month 3 (model $15.1k); ≥1 paid pack |
 
@@ -276,7 +276,7 @@ CleanBOM subscriptions launch only in Aug-27 (m10, INPUTS `cb_launch`). Before t
 4. **Recert discipline.** Per-serial records and strict "used" labeling, from an East Coast base.
 
 **Where you lose:**
-- Z2Data or SiliconExpert ships a module flag. A funded team could rebuild a ~63-part library in a quarter.
+- Z2Data or SiliconExpert ships a module flag. A funded team could rebuild a ~63-part library in a quarter [ESTIMATE: 63 lab samples × ~$400 ≈ $25k].
 - The final rule keeps the safe harbor, so most sellers self-certify for free.
 - OBSIDIA moves to modules.
 - ITADs keep the recert spread.
@@ -380,7 +380,7 @@ The founder's operations background fits receiving, test flow and supplier attes
 
 ## 10. The cheapest experiment that could kill it
 
-**Budget:** ~$8,000 gross, ~$3,000 net after resale. **Time:** 30 days (notes §9). All thresholds are fixed now, before any data comes in.
+**Budget:** ~$8,400 gross (itemized in the Spend column below), ~$3,000 net after resale; the server stays as the first test bed. With the lab at the $600/sample pass ceiling, the worst case is ~$9,200. **Hard cap: $9,500**; shrink the lot if a quote would breach it. **Time:** 29 days (day 1 = 2026-11-02, decision on 2026-11-30; notes §9). All thresholds are fixed now, before any data comes in.
 
 **Days 1–3: line everything up.**
 - Request DDR4 RDIMM lot quotes, plus each firm's downstream questionnaire, from three ITADs: Iron Mountain/ITRenew (Sesame), Sims Lifecycle, and one regional R2 ITAD in NJ, PA or MD.
@@ -400,12 +400,12 @@ The founder's operations background fits receiving, test flow and supplier attes
 - Sell half the lot on eBay and half to xByte, TechMikeNY or PCSP.
 - Ask the Park Place and Service Express spares desks whether they would buy spares plus an error-trend feed wholesale.
 
-**Days 25–30: decide.** Apply the thresholds below. No renegotiating.
+**Days 25–29: decide.** Apply the thresholds below. No renegotiating. (15 business days from a day-7 lab shipment, with Thanksgiving off, ends on day 29, so track B has no slack.)
 
 | Track | Spend | Fail if… (decided now) |
 |---|---|---|
-| A. Buy side | ~$5,000, mostly recovered | Best ITAD quote > **75%** of realized resale (breakeven 78%; m§6a), **or** measured lot contribution < **8%** |
-| B. Evidence | ~$2,000 | Lab > **$600/sample**, > **15 business days**, or die source unidentifiable on ≥2 of 4 samples. An SPD-to-die mismatch becomes the lead sales asset |
+| A. Buy side | ~$5,000, mostly recovered: one used Gen10 server without memory ~$1,500 [ESTIMATE: INPUTS `capex_m1` is $4,200 for two plus a bench] + a lot capped at $3,500 (~40 × 32GB DDR4 at the model's $81 buy, m§1a; fewer modules if it includes 64GB) | Best ITAD quote > **75%** of realized resale (breakeven 78%; m§6a), **or** measured lot contribution < **8%** |
+| B. Evidence | ~$2,400: 4 lab samples × ~$400 (INPUTS `lab_cost`) + ≤$800 for the CXMT kit and the compatible RDIMM [ESTIMATE: a 2×8GB DDR5 kit holds eight 16Gb chips, ~$430 at ~$54 spot (01_LANDSCAPE §0 item 1)] | Lab > **$600/sample**, > **15 business days**, or die source unidentifiable on ≥2 of 4 samples. An SPD-to-die mismatch becomes the lead sales asset |
 | C. Demand | ~$1,000 | Fewer than **3 of 15** sign an LOI or buy a pack, **or none of the three pays cash** [ESTIMATE: my tightening; an LOI costs the buyer nothing] |
 | D. Spares feed | $0 | Park Place and Service Express both say no → drop C-85 |
 
@@ -426,9 +426,9 @@ The founder's operations background fits receiving, test flow and supplier attes
 
 Months are model months (m1 = Nov-26).
 
-1. **2026-12-01.** ITAD quote > 75% of resale, or lot contribution < 8% → stop recert. At 75%, ARR at m36 is $250,221 (m§5).
-2. **2026-12-01.** Fewer than 3 of 15 commit, or none pays cash → do not build CleanBOM; harvest recert.
-3. **2026-12-01.** Lab > $600/sample, > 15 business days, or die source unidentifiable → drop the lab library. Without the library's close-rate lift, ARR at m36 is $323,558 (m§4).
+1. **2026-11-30.** ITAD quote > 75% of resale, or lot contribution < 8% → stop recert. At 75%, ARR at m36 is $250,221 (m§5).
+2. **2026-11-30.** Fewer than 3 of 15 commit, or none pays cash → do not build CleanBOM; harvest recert.
+3. **2026-11-30.** Lab > $600/sample, > 15 business days, or die source unidentifiable → drop the lab library. Without the library's close-rate lift, ARR at m36 is $323,558 (m§4).
 4. **2027-04-30 (m6).** Trailing-3-month recert contribution < 12%, or < 150 good modules sold in April (model 155) → freeze recert scaling.
 5. **2027-07-31 (m9).** E&O cannot be bound at ≤ $400/month, or fewer than 3 LOIs are still live → do not launch attestations.
 6. **2027-10-31 (m12).** Fewer than 1 paying subscriber and fewer than 3 paid packs (model: 1.5 subscribers) → stop CleanBOM.
@@ -484,7 +484,7 @@ That survival is conditional on three things:
   - cheap Samsung, SK hynix and Micron bits could pull OEMs off CXMT and shrink the problem;
   - cheap CXMT bits (already 9.5% of 2Q26 DRAM revenue; [Herald](https://biz.heraldcorp.com/article/10866656)) could gain share and grow it.
 
-**DD1 is glut-proof only if the subscription business is real by the end of 2027.** The day-30 test and the m18 gate exist to find that out before the founder quits their job.
+**DD1 is glut-proof only if the subscription business is real by the end of 2027.** The 29-day test and the m18 gate exist to find that out before the founder quits their job.
 
 ---
 

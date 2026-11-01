@@ -64,10 +64,7 @@
 
 A macro is like a pre-engineered roof truss. Someone has drawn it, checked it against the factory's rules and, ideally, built one and measured how fast it runs and when it fails. Big chip companies get these trusses free from their foundry, or they buy compilers from Synopsys or Cadence under NDA.
 
-**A second, open world now exists.** It has three parts:
-- **Public design rules (PDKs):** for SkyWater's 130nm fab in Bloomington, MN ("sky130") and for GlobalFoundries' 180nm process ("GF180").
-- **Cheap shared wafer runs ("shuttles"):** dozens of projects split one wafer for about $7–15k a slot.
-- **Volume:** about 300 full-chip projects a year use U.S.-fab open or academic shuttles (model §2).
+**A second, open world now exists.** Public design rules (PDKs) cover SkyWater's 130nm fab in Bloomington, MN ("sky130") and GlobalFoundries' 180nm process ("GF180"). Cheap shared wafer runs ("shuttles") let dozens of projects split one wafer at about $7–15k a slot. About 300 full-chip projects a year use U.S.-fab open or academic shuttles (model §2).
 
 **The free memory blocks for these processes are small:**
 - The largest are 4 KB on sky130 and 1 KB on GF180.
@@ -92,15 +89,15 @@ A macro is like a pre-engineered roof truss. Someone has drawn it, checked it ag
    pays: $200 or $800/month · $3k or $10k per tapeout · $20k characterized licence
 ```
 
-**Why pay for something built on free code?** A failed memory block wastes the whole $7–15k slot and 3–6 months. The customer buys confidence, not files.
+**Why pay when the code is free?** A failed block wastes the $7–15k slot and 3–6 months. The customer buys confidence.
 
 **The later options (T2):**
 - **A gain cell (C-32)** uses 2–3 transistors instead of SRAM's 6. It holds a tiny charge that leaks away in microseconds to milliseconds, so it must be rewritten ("refreshed") like DRAM. The payoff is lower idle leakage and 1.25–1.43× density in measured silicon ([BIU CRIS](https://cris.biu.ac.il/en/publications/4t-gain-cell-providing-unlimited-availability-through-hidden-refr/)) [REPORTED].
 - **ReRAM (C-22)** stores data by switching a thin oxide's resistance, so it keeps the data with the power off. Weebit Nano has already qualified a 256 Kb ReRAM block in SkyWater's 130nm process. We would license it to build a small key-storage chip.
 
-**Where it beats "RAM" (Rule 4).** Not on $/GB: sky130 SRAM costs about $1,330/GB in silicon, 73× DDR5's base-case price (model §1).
-- **Wedge axis: supply security and access.** That means the time and cost to get characterized on-chip memory into a U.S.-fabbed ASIC. The buyer is an open-shuttle team with no NDA compiler.
-- **C-22 axis: trusted U.S. flow plus magnet immunity.** The buyer is a defense secure-boot socket.
+**Where it beats "RAM" (Rule 4).** Not on $/GB: sky130 SRAM costs about $1,330/GB, 73× DDR5's base price (model §1).
+- **Wedge axis: supply security and access.** That is the time and cost to get characterized on-chip memory into a U.S.-fabbed ASIC, for open-shuttle teams with no NDA compiler.
+- **C-22 axis: a trusted U.S. flow plus magnet immunity,** for defense secure-boot sockets.
 
 ---
 
@@ -202,15 +199,15 @@ Every service and licence sale consumes contract VLSI hours. "SaaS" overstates i
 
 ### 2.7 What must be true (model §8)
 
-1. **Enough paying projects.** At least 36 a year: 298 projects × 30% need × 40% pay.
+1. **At least 36 paying projects a year:** 298 × 30% × 40%.
 2. **Prices hold.** At ×0.7 the founder is never paid.
-3. **Selling works.** Reply rate ≥25%, close rate ≥15%.
-4. **About 18 active paying accounts (≈11 academic + 7 commercial) by m18.** That is **25% of the 72-account cap**; BASE reaches 12.7. The equivalent is 2.0 commercial tapeout services a month, or 0.9 licences a month.
-5. **Large macros are buildable.** OpenRAM plus at most about 200 contract hours must yield timing-clean sky130 macros of 16 KB or more. This is untested [VERIFIED-git that only a log exists].
-6. **No free release.** No channel owner gives away silicon-characterized macros of 16 KB or more for at least 18 months.
+3. **Reply rate ≥25% and close rate ≥15%.**
+4. **About 18 active paying accounts (≈11 academic + 7 commercial) by m18.** That is **25% of the 72-account cap**; BASE reaches 12.7. The equivalent is 2.0 commercial services a month, or 0.9 licences a month.
+5. **Large macros can be built.** Timing-clean sky130 macros of 16 KB or more must take no more than ~200 contract hours. This is untested; only a log exists [VERIFIED-git].
+6. **No free release** of silicon-characterized macros of 16 KB or more for at least 18 months.
 7. **Shuttles keep running.**
-   - ChipFoundry runs a shuttle only if it is at least 50% full ([eeNews](https://www.eenewseurope.com/en/tiny-tapeout-sees-industrial-boost-as-it-recovers-from-efabless-closure/)) [REPORTED].
-   - wafer.space Run 3 is listed only as "coming soon" ([Crowd Supply](https://www.crowdsupply.com/wafer-space/gf180mcu-run-2)) [REPORTED].
+   - ChipFoundry runs a shuttle only when it is ≥50% full ([eeNews](https://www.eenewseurope.com/en/tiny-tapeout-sees-industrial-boost-as-it-recovers-from-efabless-closure/)).
+   - wafer.space Run 3 is "coming soon" ([Crowd Supply](https://www.crowdsupply.com/wafer-space/gf180mcu-run-2)) [REPORTED].
 
 ### 2.8 The T2 overlay: funding, not revenue (model §9)
 
@@ -241,10 +238,10 @@ Every service and licence sale consumes contract VLSI hours. "SaaS" overstates i
 
 | # | Customer | Why they buy | How to reach |
 |---|---|---|---|
-| 1 | **Brown University ENGN2912e (Saligane lab)**, project BRWN on wafer.space Run 1 ([ws-run1](https://github.com/wafer-space/ws-run1)) [VERIFIED-git] | A repeat course tapeout on GF180, where the largest free macro is 1 KB. East Coast; also an STTR PI candidate. | Email the instructor. Offer a course pack ($200/mo) plus a $3k service each term. |
-| 2 | **U.S. members of the Synopsys–GF GF180MCU university pilot** (40 universities) ([Synopsys](https://news.synopsys.com/2025-09-04-Synopsys-and-GlobalFoundries-Establish-Pilot-Program-to-Bring-Chip-Design-and-Manufacturing-to-University-Classrooms?asPDF=1)) | A tapeout every term; the largest free GF180 macro is 1 KB. | Course pages and GF University Partnership contacts. Offer a per-course licence. |
-| 3 | **Avalon Semiconductors** (AS03/AS04 multi-project dies with RISC-V cores and a DRAM controller) ([ws-run1](https://github.com/wafer-space/ws-run1), [ws-run2](https://github.com/wafer-space/ws-run2)) | A repeat commercial customer packing several designs per die, so area and confidence both matter. | Through the project listing. Commercial subscription plus a $10k service. |
-| 4 | **TinyQV / TQVE builders** (RISC-V SoC, 9.5 kB scratch RAM on GF180) ([ws-run2](https://github.com/wafer-space/ws-run2)) | Already beyond the free 1 KB macro. | GitHub and the Tiny Tapeout community. Offer a free preview to win the reference design. |
+| 1 | **Brown University ENGN2912e (Saligane lab)**, project BRWN on wafer.space Run 1 ([ws-run1](https://github.com/wafer-space/ws-run1)) [VERIFIED-git] | Repeat course tapeout on GF180 (free macros max out at 1 KB). East Coast, and an STTR PI candidate. | Email the instructor: a $200/mo course pack plus a $3k service each term. |
+| 2 | **U.S. members of the Synopsys–GF GF180MCU pilot** (40 universities) ([Synopsys](https://news.synopsys.com/2025-09-04-Synopsys-and-GlobalFoundries-Establish-Pilot-Program-to-Bring-Chip-Design-and-Manufacturing-to-University-Classrooms?asPDF=1)) | A tapeout every term, with the same 1 KB ceiling. | Course pages and GF University Partnership contacts; a per-course licence. |
+| 3 | **Avalon Semiconductors** (AS03/AS04 multi-project dies with RISC-V cores and a DRAM controller) ([ws-run1](https://github.com/wafer-space/ws-run1), [ws-run2](https://github.com/wafer-space/ws-run2)) | Repeat commercial customer; several designs share each die. | Through the project listing; commercial subscription plus a $10k service. |
+| 4 | **TinyQV / TQVE builders** (RISC-V SoC, 9.5 kB scratch RAM on GF180) ([ws-run2](https://github.com/wafer-space/ws-run2)) | Already past the free 1 KB macro. | GitHub and the Tiny Tapeout community; a free preview to win the reference design. |
 | 5 | **FABulous eFPGA (mole99)** ([ws-run2](https://github.com/wafer-space/ws-run2)) | FPGA configuration memory built from SRAM macros, so density is the product. | GitHub. Academic licence. |
 | 6 | **Cloneless** (tamper-resistant ASICs) and the **Tillitis/Zedulo eFUSE + SRAM** chip ([ws-run1](https://github.com/wafer-space/ws-run1)) | Secure key storage; the natural first C-22 ReRAM partners. | Project listings. Propose a joint Cadence ReRAM MPW block. |
 | 7 | **Sandia National Laboratories (MESA)**, which licensed Mobile Semiconductor's 180nm compilers ([D&R](https://us.design-reuse.com/news/45774/mobile-semiconductor-180nm-memory-compilers-sandia-national-laboratories.html)) [REPORTED] | Has already paid for trailing-node memory IP. | After sky130 silicon data exists (m13+). Procurement-led; a long shot. |
@@ -263,9 +260,9 @@ Both are also the likeliest free substitutes (§5).
 ## 4. Go-to-market
 
 **Channel**
-1. **Direct, named technical outreach** to the owners of public shuttle projects (they are listed in the wafer.space and Tiny Tapeout repositories).
-2. **Open-core distribution.** Free preview macros (LEF and a datasheet) go on GitHub and PyPI; characterized data and support are paid.
-3. **Listings and distributors.** Listings on ChipFoundry Marketplace and MOSIS 2.0. NSF Chip Design Hub awardees could distribute to academics ([NSF](https://www.nsf.gov/funding/opportunities/chip-design-hub-enabling-access-semiconductor-chip-ecosystem-design)).
+1. **Direct technical outreach** to named owners of public shuttle projects, taken from the wafer.space and Tiny Tapeout repositories.
+2. **Open core.** Free previews (LEF plus a datasheet) on GitHub and PyPI; characterized data and support are paid.
+3. **Listings.** ChipFoundry Marketplace and MOSIS 2.0, with NSF Chip Design Hub awardees as academic distributors ([NSF](https://www.nsf.gov/funding/opportunities/chip-design-hub-enabling-access-semiconductor-chip-ecosystem-design)).
 
 **Pricing (model §3)**
 
@@ -275,10 +272,10 @@ Both are also the likeliest free substitutes (§5).
 | Tapeout service: configuration, DRC/LVS, timing sign-off, integration review | $3,000 | $10,000 | 20–100% of a slot; the buyer is de-risking the whole spin |
 | Characterized licence: measured data, PVT corners, 12-month warranty | — | $20,000 | Below Weebit's ~$0.1M first-ever eNVM licence ([MST Access](https://www.weebit-nano.com/wp-content/uploads/2025/09/250901.-MST-Access-Report_WBT.AX-Not-just-play-money-090125.pdf)); Virage listed a compiler at $300k in 2001 ([Design World](https://www.designworldonline.com/synopsys-enters-embedded-memory-market/)) |
 
-**Sales motion**
-- **Founder-led and asynchronous, which fits the day job:** a technical email, a 20-minute call, then a deposit tied to a shuttle deadline.
-- **The next ChipFoundry or wafer.space submission date is the closing event.**
-- **Tiny Tapeout designers** get free macros, then convert to paid when they buy full-chip slots.
+**Sales motion:**
+- **Founder-led and asynchronous, so it fits the day job:** a technical email, a 20-minute call, then a deposit.
+- **The closing event is the next ChipFoundry or wafer.space submission date.**
+- **Tiny Tapeout designers** get free macros and convert when they move to full-chip slots.
 
 **First 90 days of selling** (from 2026-11-02, before the academic winter break; days 1–30 are the §10 experiment)
 
@@ -416,7 +413,7 @@ Dollar amounts are the model's one-time spends. The gates are this author's [EST
 | Role | When | Cost | Where to find |
 |---|---|---|---|
 | **Founder (CEO):** automation, CI, portal, sales, grant administration | m0 onward; 15 h/week until m20 | $0, then $10k/mo (A-03) | — |
-| **Contract memory/VLSI engineer:** macro review, timing sign-off, integration | m0 (16 h), m2–m3 (60 h), then 12–30 h per job | $125/h [ESTIMATE]; $22.5k of one-time build-out and characterization over 24 months, plus service COGS (model) | Open Circuit Design LLC; OpenRAM contributors and UCSC VLSIDA alumni; Chips4Makers; the FOSSi (ORConf, Latch-Up) and Tiny Tapeout communities; retired SRAM designers on the East Coast |
+| **Contract memory/VLSI engineer:** macro review, timing sign-off, integration | m0 (16 h), m2–m3 (60 h), then 12–30 h per job | $125/h [ESTIMATE]; $22.5k one-time over 24 months plus service COGS (model) | Open Circuit Design LLC; OpenRAM/UCSC VLSIDA alumni; Chips4Makers; the FOSSi (ORConf, Latch-Up) and Tiny Tapeout communities |
 | **Characterization contractor** with bench access | m10, m13, m24 | $5k each + $4k bench (model) | University labs (Brown; NEMC/NORDTECH members through PROPEL) |
 | **University STTR PI** | Writing m5–m9; award m15 | ≥30% of the award [UNVERIFIED] | UCSC VLSIDA, Stanford OpenGCRAM, Brown Saligane lab |
 | Bookkeeper and attorney (licence, warranty, export screening) | m1 onward | $350/mo inside $600/mo fixed opex (model) | Local small-business firms |
@@ -471,12 +468,12 @@ PASS (continue) only if **all four** hold:
 "Model" means the BASE value in `models/open-memory-ip.py`.
 
 1. **2026-12-01 (day 30).** The experiment fails (i), (iii) or (iv) → **kill DD5.**
-2. **2027-05-31 (m6).** Fewer than 2 paying accounts, or less than $8k invoiced in total (model: 2.5 and $15.9k) → **kill.**
-3. **2027-10-31 (m11).** On GF180 silicon, fewer than 2 of 3 macro sizes work on ≥80% of die, or access time is more than 1.5× simulated → **stop selling characterized licences.** Kill if operating cash cannot fund a re-spin.
-4. **2027-11-30 (m12).** ARR below $20k, or run-rate below $64k (about half of the model's $40.7k / $127.9k) → **kill**; it becomes a hobby.
-5. **2028-01-31 (m14).** The sky130 macro of 16 KB or more fails test #3 → **kill the sky130 line.** That is the only line with SBIR and DoD buyers.
-6. **Any date.** ChipFoundry, Cadence, UCSC VLSIDA, OCD or Chips4Makers releases free silicon-characterized macros of 16 KB or more for the same shuttle → **stop all one-time spend within 30 days.** The founder never goes full-time (model: ARR at m36 $50.0k). Harvest, or sell the contracts to the releaser.
-7. **2028-05-31 (m18).** Fewer than 9 paying accounts, or trailing-3-month GP below $8k/mo (model: 12.7 accounts and $12.2k; full-time needs about 18 and $11.85k) → **the founder does not quit**, and DD5 stays a side line permanently.
+2. **2027-05-31 (m6).** Fewer than 2 paying accounts, or under $8k invoiced (model: 2.5 accounts, $15.9k) → **kill.**
+3. **2027-10-31 (m11).** GF180 silicon: fewer than 2 of 3 sizes working on ≥80% of die, or access time more than 1.5× simulated → **stop selling licences**, and kill if operating cash cannot fund a re-spin.
+4. **2027-11-30 (m12).** ARR under $20k, or run-rate under $64k (about half the model's $40.7k / $127.9k) → **kill.**
+5. **2028-01-31 (m14).** The sky130 macro of 16 KB or more fails test #3 → **kill the sky130 line**, the only line with SBIR and DoD buyers.
+6. **Any date.** ChipFoundry, Cadence, UCSC, OCD or Chips4Makers releases free silicon-characterized macros of 16 KB or more → **stop one-time spend within 30 days.** The founder never goes full-time (model: ARR at m36 $50.0k). Harvest, or sell the contracts to the releaser.
+7. **2028-05-31 (m18).** Fewer than 9 paying accounts, or trailing-3-month GP under $8k/mo (model: 12.7 and $12.2k; full-time needs ~18 and $11.85k) → **the founder does not quit**, and DD5 stays a side line.
 8. **2027-08-31 (m9).** No STTR proposal submitted with a signed university PI → **drop C-32.**
 9. **2028-06-30 (m19).** No STTR Phase I award → **drop C-32.**
 10. **Before any C-32 spend beyond the STTR.** The FTO read flags a blocking claim, or the sky130 gain-cell macro measures below 1.2× density against the 1.896 µm² 6T cell → **kill C-32.**
@@ -508,14 +505,12 @@ PASS (continue) only if **all four** hold:
 
 (Model §1, §4 and §6. The percentages are computed from those values.)
 
-**What actually hurts is a glut combined with something else:**
-- **GLUT plus a free-bundle shock:** ARR at m36 is $39.1k, and the founder is never paid.
-- **SEVERE with all inputs 30% adverse:** cash bottoms at **−$14.7k**, which needs about $15k more than the founder has.
+**What hurts is the glut combined with something else.** GLUT plus a free-bundle shock leaves ARR at m36 at $39.1k, and the founder is never paid. SEVERE with every input 30% adverse takes cash down to **−$14.7k**, about $15k more than the founder has.
 
 **T2 in a glut:**
-- **Gain-cell IP is priced in die area.** But trailing-node royalties track wafer prices: eMemory's 8-inch royalties fell 15.9% year on year ([Yahoo Finance](https://finance.yahoo.com/markets/stocks/articles/ememory-technology-inc-roco-3529-030030531.html)) [REPORTED].
-- **Defense secure-NVM demand (C-22) is decoupled** from DRAM prices.
-- **A seed round is harder to raise in a downturn** [ESTIMATE].
+- **Gain cells:** priced in die area, but trailing-node royalties track wafer prices. eMemory's 8-inch royalties fell 15.9% year on year ([Yahoo Finance](https://finance.yahoo.com/markets/stocks/articles/ememory-technology-inc-roco-3529-030030531.html)) [REPORTED].
+- **C-22:** defense NVM demand is decoupled from DRAM.
+- **Seed money** is scarcer in a downturn [ESTIMATE].
 
 **Verdict: it survives the glut but not "free".** The DRAM cycle moves the founder's full-time date by 5–10 months. One free release by a channel owner ends the venture case.
 
