@@ -1,0 +1,74 @@
+{
+ "rule": "Each deep dive is anchored on a top-ranked concept and folds in adjacent survivors that the independent scorers themselves said should be run as a SKU/feeder/feature of it. Coverage: every concept in the top 10 under all three weightings is in a deep dive. Constraint check: >=1 T0/T1 (DD1-DD4) and >=1 T2+ (DD5, whose product stage C-22/C-32 is T2).",
+ "post_score_kill_rule": "Killed at scoring: default total < 55/100 AND not part of any deep-dive bundle (scorers were unanimous 'pass' on these).",
+ "deep_dives": [
+  {
+   "dd": "DD1",
+   "slug": "provenance-recert",
+   "title": "Provenance & Recertified Memory",
+   "anchor": "C-64",
+   "folded": [
+    "C-62",
+    "C-85",
+    "C-26"
+   ],
+   "tier": "T0"
+  },
+  {
+   "dd": "DD2",
+   "slug": "lifecycle-intel",
+   "title": "Memory Lifecycle & Cost Intelligence for OEMs",
+   "anchor": "C-80",
+   "folded": [
+    "C-29",
+    "C-86",
+    "C-61",
+    "C-72"
+   ],
+   "tier": "T0"
+  },
+  {
+   "dd": "DD3",
+   "slug": "nv-continuity-modules",
+   "title": "Drop-in Non-Volatile Continuity Modules",
+   "anchor": "C-12",
+   "folded": [
+    "C-16"
+   ],
+   "tier": "T0"
+  },
+  {
+   "dd": "DD4",
+   "slug": "memory-efficiency",
+   "title": "Memory Efficiency for On-Prem & Self-Hosted Fleets",
+   "anchor": "C-73",
+   "folded": [
+    "C-74",
+    "C-75"
+   ],
+   "tier": "T0/T1"
+  },
+  {
+   "dd": "DD5",
+   "slug": "open-memory-ip",
+   "title": "U.S. Open Memory IP (compiler service -> gain-cell & ReRAM macros)",
+   "anchor": "C-33",
+   "folded": [
+    "C-32",
+    "C-22"
+   ],
+   "tier": "T0 wedge -> T2 product"
+  }
+ ],
+ "killed_at_scoring": [
+  "C-01",
+  "C-06",
+  "C-07",
+  "C-28",
+  "C-39",
+  "C-44",
+  "C-47",
+  "C-51",
+  "C-52"
+ ]
+}

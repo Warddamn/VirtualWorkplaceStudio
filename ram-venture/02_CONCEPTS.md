@@ -1,6 +1,6 @@
 # 02 — CONCEPTS
 
-**98 concept cards** generated in Phase 2 by parallel ideation agents (one per branch A–E; branch A split three ways because it is the largest), then deduplicated. Merges are noted on each card. Status after Phase 3 kill pass: **40 alive, 58 killed**. Scores are in `03_SCORING.md`. The machine-readable copy is `concepts.csv`. Device $/GB comparisons are in `models/device_cost_compare.py`.
+**98 concept cards** generated in Phase 2 by parallel ideation agents (one per branch A–E; branch A split three ways because it is the largest), then deduplicated. Merges are noted on each card. Status after Phase 3 kill pass: **31 alive, 67 killed**. Scores are in `03_SCORING.md`. The machine-readable copy is `concepts.csv`. Device $/GB comparisons are in `models/device_cost_compare.py`.
 
 Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, T2 $2M–$50M, T3 $50M–$1B, T4 >$1B · materials sense: (a) material system, (b) process, (c) capital (mission rule 5).
 
@@ -15,7 +15,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 ## A. Device & materials (43 cards)
 
-### C-01 — OS-eDRAM: IGZO/IWO 2T0C gain-cell memory IP on a U.S. 200mm foundry
+### C-01 — OS-eDRAM: IGZO/IWO 2T0C gain-cell memory IP on a U.S. 200mm foundry — ☠ KILLED (SCORE<55: Scored 48.0/100 default (rank 36/40), 51.7 moonshot. Weakest: time to revenue 1/5 (48 months (36-60): 18-24 mo module development plus 12-18 mo PBTI/retention qualification before first NRE, past the 36-month hard ceiling.); founder-fit 1/5 (Process-module development and reliability qualification need a device/process CTO and a SkyWater JDA from day one; the founder only adds a ); tech feasibility 2/5 (TRL 4: imec 2T0C cells (IEDM 2020/21) only; PBTI reaches 5-yr at 95C in lab (IEDM 2025 snippet), no 10-yr lifetime, and IWO retention falls ). Scorer verdicts — founder: A $15-40M process-module science project with revenue around 2030 that a pure-CMOS gain cell undercuts; not this founder's venture. | vc: A process-module science project with $15-40M and 48 months to first revenue to win small 130nm royalties, while C-32 serves the same buyer with no new module: pass. | veteran: Real physics on the wrong substrate: no U.S. fab has an oxide module, contamination rules force a dedicated tool set, PBTI is still lab-grade, and a zero-mask Si gain cell serves the same buyer, so it's a 5-year)
 
 *Sub-branch:* Oxide-semiconductor DRAM (embedded gain cell) · *Materials sense:* mixed:a+b+c
 
@@ -174,7 +174,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* IP licensing (wrong side of the table); fabless->foundry (no foundry)
 
-### C-06 — U.S.-made HZO FeRAM family (1-16 Mb, rad-hard option) via SkyWater + Sandia
+### C-06 — U.S.-made HZO FeRAM family (1-16 Mb, rad-hard option) via SkyWater + Sandia — ☠ KILLED (SCORE<55: Scored 50.0/100 default (rank 34/40), 53.3 moonshot. Weakest: time to revenue 1/5 (54 months (42-72) to first industrial/eval sales; QML-V for the space buyer adds another 1-2 years.); founder-fit 1/5 (Needs a memory designer, a reliability engineer and $10-30M; the card itself rates founder-doability 'no'.); capital 2/5 (T2: an HZO module at SkyWater plus a memory design and reliability team, ~$10-30M before the first sale.). Scorer verdicts — founder: A third-source FeRAM chip company in an incumbent-owned niche whose 'onshore' pitch fails because Infineon's die is already made in Dallas; it cannot be funded from a day job. | vc: Optane-style capital burn for a third-source slot in a hundreds-of-$M niche where Infineon already ships U.S.-fabbed QML-V F-RAM and HZO still trails PZT on endurance and hot retention. | veteran: HZO is the right ferroelectric and the physics is sound, but the 'onshore second source' story collapses because Infineon's F-RAM is already fabbed in Dallas, and a 54-month T2 module build makes this a funded-t)
 
 *Sub-branch:* Ferroelectric (HfZrO 1T1C FeRAM) · *Materials sense:* mixed:a+c
 
@@ -211,7 +211,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* fabless->foundry; university/lab patent license (Sandia CRADA/license); defense-first
 
-### C-07 — AlScN ferro-diode memory for 500-600C electronics (Penn/AFRL license + STTR)
+### C-07 — AlScN ferro-diode memory for 500-600C electronics (Penn/AFRL license + STTR) — ☠ KILLED (SCORE<55: Scored 52.0/100 default (rank 33/40), 53.3 moonshot. Weakest: time to revenue 1/5 (42 months (36-48); AF254-D0806 and DV017 are both closed, and STTR money is funding, not revenue (A-04).); tech feasibility 2/5 (Diodes switch at 600C for >60 h (Nature Electronics 2024) and kB crossbars exist only as a preprint (arXiv 2506.05452), but 500C periphery (); founder-fit 2/5 (STTR lets the founder start part-time as CEO/BD with a Penn PI for <$50k, but a device CTO is required and revenue lands past 36 months.). Scorer verdicts — founder: The best-moated device card, but it is an STTR grant program with first sales around 2030: right for a professor's spinout, wrong for a founder who needs revenue in 18 months. | vc: Real physics in a tiny grant-shaped market with no 500C periphery and first sale near month 42: an SBIR mill, not a venture. | veteran: The most interesting physics in my chunk and a genuinely empty niche, but 60 hours at 600C with 1e6 read cycles and no 500C periphery is a DoD research program, not a product; at best a grant-shaped side bet.)
 
 *Sub-branch:* Ferroelectric (AlScN ferroelectric diode, extreme environment) · *Materials sense:* a-material
 
@@ -902,7 +902,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* IP licensing, fabless->foundry
 
-### C-28 — eMRAM-Unified-Memory Edge MCU (no external DRAM)
+### C-28 — eMRAM-Unified-Memory Edge MCU (no external DRAM) — ☠ KILLED (SCORE<55: Scored 45.0/100 default (rank 37/40), 45.8 moonshot. Weakest: time to revenue 1/5 (48 months: SoC design, AEC/industrial qualification and an ecosystem.); U.S. mfg 1/5 (GF 22FDX eMRAM is made in Dresden and TSMC RRAM in Taiwan; no U.S. line offers 22nm eNVM.); competition 1/5 (Renesas RA8P1, Infineon PSoC Edge (RRAM), ST STM32V8 (ePCM), SEMIFIVE/ICY Tech on Samsung 8nm eMRAM and Everspin UNISYST already do exactly ). Scorer verdicts — founder: Head-on against four MCU giants, fabbed offshore and four years from revenue: the worst founder fit in my chunk. | vc: Head-on against Renesas, ST, Infineon and NXP with a die-area trick that loses to $4 of LPDDR in a glut, fabbed in Dresden: the classic memory-startup graveyard pitch. | veteran: A me-too edge MCU against four incumbents that already ship eNVM AI parts, made offshore, with a differentiator a glut erases; no.)
 
 *Sub-branch:* Embedded NVM (eMRAM/RRAM/ePCM) SoC · *Materials sense:* mixed:a+b
 
@@ -1265,7 +1265,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* module/appliance maker — fails
 
-### C-39 — U.S.-fabbed SRAM-only LLM inference accelerator (Groq pattern)
+### C-39 — U.S.-fabbed SRAM-only LLM inference accelerator (Groq pattern) — ☠ KILLED (SCORE<55: Scored 45.0/100 default (rank 38/40), 44.2 moonshot. Weakest: capital 1/5 (The minimum path is ~$150-400M to first rack revenue (T3; Groq raised ~$300M by 2021, d-Matrix $110M+ in 2023).); time to revenue 1/5 (48-60 months: ~24-30 months to first silicon, then the compiler and rack integration; Groq took 4+ years to meaningful revenue.); competition 1/5 (Groq, NVIDIA (Groq license plus its founder), Cerebras, d-Matrix, SambaNova, Etched, MatX and Positron are all well funded and doing exactly). Scorer verdicts — founder: A $150-400M chip company against Groq, NVIDIA and Cerebras: impossible for this founder, and a poor bet for anyone entering on 12nm. | vc: Upper-T3 chip program against Groq, NVIDIA-with-Groq-IP and Cerebras with a 2-3x SRAM-density handicap on 12LP+: the textbook way to burn $300M; hard pass. | veteran: A $150-400M chip program entering a market where NVIDIA just licensed the leader's architecture, on a node 2-3x behind on SRAM density; dead for this founder.)
 
 *Sub-branch:* SRAM-instead-of-DRAM for inference · *Materials sense:* c-capital
 
@@ -1425,7 +1425,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 ## B. Architecture & systems (14 cards)
 
-### C-44 — DDR4 Second-Life CXL Expander
+### C-44 — DDR4 Second-Life CXL Expander — ☠ KILLED (SCORE<55: Scored 50.0/100 default (rank 35/40), 48.3 moonshot. Weakest: capital 2/5 (T2 ($2M+): board design, controller access, firmware/SI team and CXL compliance before the first tier-2 qualification.); time to revenue 2/5 (24 months (18-30): board, controller-vendor access and qualification at one tier-2 cloud.); margin 2/5 (15-30% on the card (mid 22%), i.e. ~$270-540 of gross profit per ~$1.8k card; it needs thousands of cards a year.). Scorer verdicts — founder: The buyer math works (+$7-14/GB in 4Q26), but it is a T2 hardware program that needs Marvell allocation and SI talent; this founder should resell the DDR4 instead (C-62). | vc: The buyer math works, but the vendor keeps ~$270-540 per card, Marvell sells the controller to hyperscalers that already do this in-house, and it needs a T2 hardware team: sub-scale hardware with no edge. | veteran: The unit economics flip positive once used DDR4 is valued at $3.9-5.8/GB resale, but a no-name cannot get Structera allocation or qualify mixed used DIMMs at 3 DPC on a T2 budget, and hyperscalers already do thi)
 
 *Sub-branch:* CXL memory expansion / DIMM reuse (Microsoft-Meta style DDR4 recycling) · *Materials sense:* mixed:b+c
 
@@ -1533,7 +1533,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* fabless->foundry (FPGA then ASIC); module/appliance
 
-### C-47 — Compressed CXL Expander (licensed inline compression IP)
+### C-47 — Compressed CXL Expander (licensed inline compression IP) — ☠ KILLED (SCORE<55: Scored 45.0/100 default (rank 39/40), 42.5 moonshot. Weakest: moat 1/5 (The compression IP is licensed non-exclusively (ZeroPoint sells to SoC makers), so the venture is a downstream FPGA integrator of IP its com); cycle-proofing 1/5 (Glut kills it: at the ~$8.1/GB RDIMM deck, 2x on 512 GB saves ~$4.2k, which no longer covers a $3-8k FPGA card plus the latency penalty.); founder-fit 1/5 (Needs a full-time RTL/FPGA team, CXL compliance expertise and a later ASIC tape-out; nothing about it is a part-time software job.). Scorer verdicts — founder: Merchant silicon (Structera X) and ZeroPoint's ASIC licensee already do this more cheaply, and the glut wipes out the savings; dead for this founder. | vc: An FPGA integrator of non-exclusive compression IP fighting Marvell's ASIC that already does the job, and the savings stop covering the card in a glut: dead on arrival. | veteran: An FPGA integrator of non-exclusive IP that Marvell already put in merchant silicon; the DRAM saving that pays for the card is gone at the $8.15 glut.)
 
 *Sub-branch:* Hardware memory compression · *Materials sense:* b-process
 
@@ -1662,7 +1662,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* module/appliance; fabless->foundry (switch)
 
-### C-51 — Persistent CXL Log Card (post-Optane PMem for WAL/journals)
+### C-51 — Persistent CXL Log Card (post-Optane PMem for WAL/journals) — ☠ KILLED (SCORE<55: Scored 53.0/100 default (rank 32/40), 50.8 moonshot. Weakest: capital 2/5 (T2: card design, power-fail firmware and CXL compliance (12-18 months), then OEM qualification.); time to revenue 2/5 (30-42 months (card 36): SMART needed ~10 months from sampling to compliance alone, and storage/DB OEM design-ins take another 12-24 months.); margin 2/5 (25-40% (mid 30%): DRAM dominates the BOM and an incumbent with Tier-1 OEM channels sets the persistence premium.). Scorer verdicts — founder: SMART/Penguin's NV-CMM already is this card, compliance-listed and sampling at Tier-1 OEMs; this would be a T2 entrant arriving 36 months late into the niche that killed Optane. | vc: Optane's >$7B write-off proves the market is tiny, and Penguin/SMART's NV-CMM is already compliance-listed and sampling to Tier-1 OEMs: an entrant 3 years late with FTO exposure; pass. | veteran: Optane's niche without Optane's volume, and SMART/Penguin's compliance-listed NV-CMM already is this card; a late entrant has nothing new to sell OEMs.)
 
 *Sub-branch:* Tiered memory - persistent CXL tier (NVDIMM-N/MRAM successor) · *Materials sense:* a-material · *Merged from:* B.08, A2.12
 
@@ -1697,7 +1697,7 @@ Legend: TRL = technology readiness level 1–9 · Tier T0 <$50k, T1 $50k–$2M, 
 
 *Business-model lenses:* module/appliance; IP licensing (firmware)
 
-### C-52 — LPDDR 'HBM-lite' Memory Chiplet (UCIe/AIB-attached)
+### C-52 — LPDDR 'HBM-lite' Memory Chiplet (UCIe/AIB-attached) — ☠ KILLED (SCORE<55: Scored 40.0/100 default (rank 40/40), 41.7 moonshot. Weakest: capital 1/5 (T3: a ~$50-90M program for architecture, tape-out, package qualification and the first design-in.); time to revenue 1/5 (36-48 months (card 42) to the first design-in revenue.); founder-fit 1/5 (A T3 silicon program that needs a veteran SoC, PHY and packaging team from day one.). Scorer verdicts — founder: A $50-90M silicon program selling an extra die-to-die hop that buyers already avoid by licensing LPDDR5X PHYs directly, at only 0.27-0.55 TB/s; not for this founder. | vc: A $50-90M chip program delivering 0.27-0.55 TB/s, under half an HBM3E stack, to buyers who already attach LPDDR5X with Synopsys/Cadence IP: no pull, no founder fit; hard pass. | veteran: A $50-90M chip program delivering under half an HBM3E stack of bandwidth to buyers who already bolt LPDDR5X on directly with Synopsys/Cadence IP; nothing here for this founder.)
 
 *Sub-branch:* HBM alternatives / chiplet memory · *Materials sense:* mixed:b+c
 

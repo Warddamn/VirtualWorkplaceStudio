@@ -1,0 +1,53 @@
+
+Top 15 — default
+   1. C-73    82.0  T0  Memory FinOps Audit for Cloud SaaS
+   2. C-12    80.0  T0  Battery-free NV-cache / NVSRAM-replacement modules from off-
+   3. C-33    80.0  T0  OpenRAM macro service for U.S. open-PDK tapeouts (SkyWater S
+   4. C-29    79.0  T0  NVM-EOL Migration Finder (MRAM/FeRAM/ReRAM cross-reference S
+   5. C-80    79.0  T0  DRAM Cost & Allocation Intelligence for SMB Hardware OEMs
+   6. C-64    78.0  T0  CleanBOM-5949: memory-provenance verification for federal IT
+   7. C-75    76.0  T0  KV-Cache Tier Integration & Tuning for Self-Hosted LLMs
+   8. C-86    75.0  T0  Memory Cost Escalation Index + EPA clause kit
+   9. C-26    74.0  T0  Optane PMem Salvage: Cheap Memory-Mode Capacity for Cascade/
+  10. C-74    74.0  T1  Fleet Memory-Reclaim Autopilot (TMO for on-prem)
+  11. C-85    74.0  T0  DIMM Health Subscription: predictive replacement + recovered
+  12. C-84    73.0  T0  Embedded RAM-Diet Profiler for Small Hardware OEMs
+  13. C-79    72.0  T1  TB-RAM Bare-Metal Rental from Recovered DDR4 Servers
+  14. C-62    71.0  T0  ProvenRAM: graded, serialized recovered server RDIMMs
+  15. C-48    70.0  T1  On-prem MoE Box (DRAM-instead-of-HBM inference appliance)
+
+Top 15 — capital_constrained
+   1. C-73    85.0  T0  Memory FinOps Audit for Cloud SaaS
+   2. C-12    82.5  T0  Battery-free NV-cache / NVSRAM-replacement modules from off-
+   3. C-29    82.5  T0  NVM-EOL Migration Finder (MRAM/FeRAM/ReRAM cross-reference S
+   4. C-80    82.5  T0  DRAM Cost & Allocation Intelligence for SMB Hardware OEMs
+   5. C-33    82.5  T0  OpenRAM macro service for U.S. open-PDK tapeouts (SkyWater S
+   6. C-64    81.7  T0  CleanBOM-5949: memory-provenance verification for federal IT
+   7. C-26    78.3  T0  Optane PMem Salvage: Cheap Memory-Mode Capacity for Cascade/
+   8. C-75    78.3  T0  KV-Cache Tier Integration & Tuning for Self-Hosted LLMs
+   9. C-86    78.3  T0  Memory Cost Escalation Index + EPA clause kit
+  10. C-85    77.5  T0  DIMM Health Subscription: predictive replacement + recovered
+  11. C-62    75.0  T0  ProvenRAM: graded, serialized recovered server RDIMMs
+  12. C-84    75.0  T0  Embedded RAM-Diet Profiler for Small Hardware OEMs
+  13. C-74    74.2  T1  Fleet Memory-Reclaim Autopilot (TMO for on-prem)
+  14. C-79    72.5  T1  TB-RAM Bare-Metal Rental from Recovered DDR4 Servers
+  15. C-48    71.7  T1  On-prem MoE Box (DRAM-instead-of-HBM inference appliance)
+
+Top 15 — moonshot
+   1. C-73    76.7  T0  Memory FinOps Audit for Cloud SaaS
+   2. C-33    76.7  T0  OpenRAM macro service for U.S. open-PDK tapeouts (SkyWater S
+   3. C-64    76.7  T0  CleanBOM-5949: memory-provenance verification for federal IT
+   4. C-29    75.8  T0  NVM-EOL Migration Finder (MRAM/FeRAM/ReRAM cross-reference S
+   5. C-80    75.8  T0  DRAM Cost & Allocation Intelligence for SMB Hardware OEMs
+   6. C-12    75.0  T0  Battery-free NV-cache / NVSRAM-replacement modules from off-
+   7. C-86    74.2  T0  Memory Cost Escalation Index + EPA clause kit
+   8. C-74    73.3  T1  Fleet Memory-Reclaim Autopilot (TMO for on-prem)
+   9. C-75    71.7  T0  KV-Cache Tier Integration & Tuning for Self-Hosted LLMs
+  10. C-85    71.7  T0  DIMM Health Subscription: predictive replacement + recovered
+  11. C-84    69.2  T0  Embedded RAM-Diet Profiler for Small Hardware OEMs
+  12. C-26    66.7  T0  Optane PMem Salvage: Cheap Memory-Mode Capacity for Cascade/
+  13. C-61    66.7  T1  DRAM Continuity Vault: consignment last-time-buy storage plu
+  14. C-79    66.7  T1  TB-RAM Bare-Metal Rental from Recovered DDR4 Servers
+  15. C-72    65.0  T1  Legacy-DRAM buying cooperative for mid-size U.S. OEMs
+
+scored 40 concepts from 3 scorers; 0 flags -> scores.csv, research/phase3/rankings.md

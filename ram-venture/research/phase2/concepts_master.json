@@ -111,7 +111,7 @@
    "profitable": "marginal - royalties on low-volume 130nm ASICs are small; the real money needs a 28nm-or-better foundry partner",
    "doable_by_founder": "no - process-module development and reliability qualification are far beyond <$50k and a day job",
    "id": "C-01",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "what_it_is: 30F2 at F=130nm is 0.51 um2 and a realistic 40-60F2 gain cell is 0.68-1.01 um2, against a verified 1.896 um2 sky130 SRAM cell. That is 1.9-3.7x, consistent with 01_LANDSCAPE 4.4 (250-490x less dense than DDR5 1b).",
     "wins_axis: The ReRAM comparison is what decides a design-in at SkyWater, and ReRAM endurance is orders of magnitude lower. That is the real winning axis.",
@@ -123,7 +123,15 @@
     "fatal_flaw: The flaw text was updated with 2025 PBTI data and the pure-CMOS alternative that undercuts the module."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is real. imec showed IGZO 2T0C cells at IEDM 2020/2021 (>1e3 s retention, >1e11 cycles), and a 2025 IEDM imec abstract reports a 5-year PBTI lifetime at 95C for eDRAM (via search snippet). The minimum path is T2 (~$10-30M module qualification), far below the $1B line. The card has a real winning axis against its named buyer's alternatives: standby power and ~2-4x density versus 130nm SRAM, and write endurance (1e11+) versus the SkyWater-qualified Weebit ReRAM. The card overstates density (claims 4-5x; sky130 SRAM 1.896 um2 vs a 30-60F2 gain cell gives 1.9-3.7x) and understates time to revenue. A search (2026-11) found no SkyWater oxide module. C-32 (Si gain-cell eDRAM IP) serves the same buyer with no new process module, so the scorer should weigh that."
+   "verify_reason": "The mechanism is real. imec showed IGZO 2T0C cells at IEDM 2020/2021 (>1e3 s retention, >1e11 cycles), and a 2025 IEDM imec abstract reports a 5-year PBTI lifetime at 95C for eDRAM (via search snippet). The minimum path is T2 (~$10-30M module qualification), far below the $1B line. The card has a real winning axis against its named buyer's alternatives: standby power and ~2-4x density versus 130nm SRAM, and write endurance (1e11+) versus the SkyWater-qualified Weebit ReRAM. The card overstates density (claims 4-5x; sky130 SRAM 1.896 um2 vs a 30-60F2 gain cell gives 1.9-3.7x) and understates time to revenue. A search (2026-11) found no SkyWater oxide module. C-32 (Si gain-cell eDRAM IP) serves the same buyer with no new process module, so the scorer should weigh that.",
+   "score_default": 48.0,
+   "score_capital_constrained": 45.8,
+   "score_moonshot": 51.7,
+   "rank_default": 36,
+   "rank_capital_constrained": 36,
+   "rank_moonshot": 34,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 48.0/100 default (rank 36/40), 51.7 moonshot. Weakest: time to revenue 1/5 (48 months (36-60): 18-24 mo module development plus 12-18 mo PBTI/retention qualification before first NRE, past the 36-month hard ceiling.); founder-fit 1/5 (Process-module development and reliability qualification need a device/process CTO and a SkyWater JDA from day one; the founder only adds a ); tech feasibility 2/5 (TRL 4: imec 2T0C cells (IEDM 2020/21) only; PBTI reaches 5-yr at 95C in lab (IEDM 2025 snippet), no 10-yr lifetime, and IWO retention falls ). Scorer verdicts — founder: A $15-40M process-module science project with revenue around 2030 that a pure-CMOS gain cell undercuts; not this founder's venture. | vc: A process-module science project with $15-40M and 48 months to first revenue to win small 130nm royalties, while C-32 serves the same buyer with no new module: pass. | veteran: Real physics on the wrong substrate: no U.S. fab has an oxide module, contamination rules force a dedicated tool set, PBTI is still lab-grade, and a zero-mask Si gain cell serves the same buyer, so it's a 5-year"
   },
   {
    "branch": "A",
@@ -523,7 +531,7 @@
    "profitable": "marginal - small, incumbent-dominated niche with a reliability gap to close",
    "doable_by_founder": "no - T2 chip company with qualification burden",
    "id": "C-06",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "trl: The 1Mb arrays (Sony/Fraunhofer) came from non-U.S. lines. Sandia's MESA work is capacitor/FTJ-level with circuitry still a planned follow-on (2026-05 snippet), and SkyWater has no HZO module. The card's U.S. path is lab-validated, not array-validated in a relevant environment.",
     "time_to_first_revenue_months: The module at SkyWater does not exist yet. Sandia circuitry is not done, and the named space/defense buyer needs QML or equivalent screening (+1-2 yr). Industrial samples alone don't make 36 months credible.",
@@ -535,7 +543,15 @@
     "rule1_status: Unchanged. IEDM 2023 arrays plus Sandia 200mm."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is supported. 1Mb HZO 1T1C arrays (IEDM 2023), hafnia heavy-ion hardness (Fraunhofer/JAP 2022) and Sandia's HZO FeRAM at 200mm in MESA (2026-05-13) all check out via snippet, and the path is T2. But the 'onshore' premise is weaker than the card says. Infineon's Excelon F-RAM die is made at TI Dallas DMOS6 (130nm, 300mm, per Infineon qual doc, via snippet), and U.S.-made toggle MRAM (Everspin, Chandler AZ) already serves space. RAMXEED is itself developing HZO for higher-capacity FeRAM, and Sandia's circuitry is still a planned follow-on. What survives is narrow: a third source plus density headroom above PZT's ~4-16Mb ceiling in a trusted flow. That is not R4, but TRL and time to revenue are optimistic."
+   "verify_reason": "The mechanism is supported. 1Mb HZO 1T1C arrays (IEDM 2023), hafnia heavy-ion hardness (Fraunhofer/JAP 2022) and Sandia's HZO FeRAM at 200mm in MESA (2026-05-13) all check out via snippet, and the path is T2. But the 'onshore' premise is weaker than the card says. Infineon's Excelon F-RAM die is made at TI Dallas DMOS6 (130nm, 300mm, per Infineon qual doc, via snippet), and U.S.-made toggle MRAM (Everspin, Chandler AZ) already serves space. RAMXEED is itself developing HZO for higher-capacity FeRAM, and Sandia's circuitry is still a planned follow-on. What survives is narrow: a third source plus density headroom above PZT's ~4-16Mb ceiling in a trusted flow. That is not R4, but TRL and time to revenue are optimistic.",
+   "score_default": 50.0,
+   "score_capital_constrained": 47.5,
+   "score_moonshot": 53.3,
+   "rank_default": 34,
+   "rank_capital_constrained": 35,
+   "rank_moonshot": 30,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 50.0/100 default (rank 34/40), 53.3 moonshot. Weakest: time to revenue 1/5 (54 months (42-72) to first industrial/eval sales; QML-V for the space buyer adds another 1-2 years.); founder-fit 1/5 (Needs a memory designer, a reliability engineer and $10-30M; the card itself rates founder-doability 'no'.); capital 2/5 (T2: an HZO module at SkyWater plus a memory design and reliability team, ~$10-30M before the first sale.). Scorer verdicts — founder: A third-source FeRAM chip company in an incumbent-owned niche whose 'onshore' pitch fails because Infineon's die is already made in Dallas; it cannot be funded from a day job. | vc: Optane-style capital burn for a third-source slot in a hundreds-of-$M niche where Infineon already ships U.S.-fabbed QML-V F-RAM and HZO still trails PZT on endurance and hot retention. | veteran: HZO is the right ferroelectric and the physics is sound, but the 'onshore second source' story collapses because Infineon's F-RAM is already fabbed in Dallas, and a 54-month T2 module build makes this a funded-t"
   },
   {
    "branch": "A",
@@ -630,7 +646,7 @@
    "profitable": "marginal - high ASP but very low volume; depends on DoD program pull",
    "doable_by_founder": "marginal - best founder-entry among device cards via STTR, but not an 18-month revenue path",
    "id": "C-07",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "time_to_first_revenue_months: No matching DoD topic is open now (AF254 and DV017 are both closed). The SBIR/STTR terms are unverified (01_LANDSCAPE 7.1), and a 500C packaged eval part needs high-temperature packaging plus a periphery solution. Realistic first paid eval-part sale is 36-48 months.",
     "time_to_first_revenue_text: Matches the corrected month figure.",
@@ -641,7 +657,15 @@
     "fatal_flaw: Sharpened with the topic deliverable and voltage facts."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The core physics is peer-reviewed. Pradhan et al., Nature Electronics 7, 348-355 (2024), show Al0.68Sc0.32N ferro-diodes switching at 600C for >60 h at <15 V (via snippet), and Penn/AFRL have a 2025 preprint on kilobyte-scale selector-free crossbar arrays (arXiv 2506.05452, title via snippet). TRL 4 holds. The buyer axis (no incumbent NVM works at 500C+) is real, and AFRL topic AF254-D0806 asks for 6-inch wafers of 500C kB-scale arrays. The path is T1 via STTR, and the card isn't killed. Its key unknown is still open: two searches found no Penn license or spin-out, and the AF254 performer is unknown, so a competitor may already hold the scale-up seat. Time to revenue and margin are optimistic."
+   "verify_reason": "The core physics is peer-reviewed. Pradhan et al., Nature Electronics 7, 348-355 (2024), show Al0.68Sc0.32N ferro-diodes switching at 600C for >60 h at <15 V (via snippet), and Penn/AFRL have a 2025 preprint on kilobyte-scale selector-free crossbar arrays (arXiv 2506.05452, title via snippet). TRL 4 holds. The buyer axis (no incumbent NVM works at 500C+) is real, and AFRL topic AF254-D0806 asks for 6-inch wafers of 500C kB-scale arrays. The path is T1 via STTR, and the card isn't killed. Its key unknown is still open: two searches found no Penn license or spin-out, and the AF254 performer is unknown, so a competitor may already hold the scale-up seat. Time to revenue and margin are optimistic.",
+   "score_default": 52.0,
+   "score_capital_constrained": 52.5,
+   "score_moonshot": 53.3,
+   "rank_default": 33,
+   "rank_capital_constrained": 32,
+   "rank_moonshot": 31,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 52.0/100 default (rank 33/40), 53.3 moonshot. Weakest: time to revenue 1/5 (42 months (36-48); AF254-D0806 and DV017 are both closed, and STTR money is funding, not revenue (A-04).); tech feasibility 2/5 (Diodes switch at 600C for >60 h (Nature Electronics 2024) and kB crossbars exist only as a preprint (arXiv 2506.05452), but 500C periphery (); founder-fit 2/5 (STTR lets the founder start part-time as CEO/BD with a Penn PI for <$50k, but a device CTO is required and revenue lands past 36 months.). Scorer verdicts — founder: The best-moated device card, but it is an STTR grant program with first sales around 2030: right for a professor's spinout, wrong for a founder who needs revenue in 18 months. | vc: Real physics in a tiny grant-shaped market with no 500C periphery and first sale near month 42: an SBIR mill, not a venture. | veteran: The most interesting physics in my chunk and a genuinely empty niche, but 60 hours at 600C with 1e6 read cycles and no 500C periphery is a DoD research program, not a product; at best a grant-shaped side bet."
   },
   {
    "branch": "A",
@@ -1011,7 +1035,14 @@
     "profitable: Puts a size on 'niche' so scorers do not inflate it."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The parts ship today (TRL 9), and the value claim has small but real evidence. Open-source DS1230-to-FM18W08 F-RAM adapters exist because sealed lithium NVSRAM cells die after 10-15 years (PCBWay, via snippet). RAMXEED/Fujitsu markets the 8Mbit parallel MB85R8M2T to remove SRAM backup batteries in industrial machinery (Radiolocman, via snippet). A Fanuc SRAM-card seller lists most capacities unavailable and says genuine PCMCIA SRAM cards are 'hard to get' (Memex, via snippet). Material (PZT F-RAM), part source, EMS route and buyer are all named, so QB is complete. But free designs already serve the easy DIP-module niche. The defensible product is a battery-free, controller-validated PCMCIA SRAM card for legacy Fanuc/Mitsubishi CNC, a product line with a low-$100ks/yr ceiling [ESTIMATE], and it should be scored that way."
+   "verify_reason": "The parts ship today (TRL 9), and the value claim has small but real evidence. Open-source DS1230-to-FM18W08 F-RAM adapters exist because sealed lithium NVSRAM cells die after 10-15 years (PCBWay, via snippet). RAMXEED/Fujitsu markets the 8Mbit parallel MB85R8M2T to remove SRAM backup batteries in industrial machinery (Radiolocman, via snippet). A Fanuc SRAM-card seller lists most capacities unavailable and says genuine PCMCIA SRAM cards are 'hard to get' (Memex, via snippet). Material (PZT F-RAM), part source, EMS route and buyer are all named, so QB is complete. But free designs already serve the easy DIP-module niche. The defensible product is a battery-free, controller-validated PCMCIA SRAM card for legacy Fanuc/Mitsubishi CNC, a product line with a low-$100ks/yr ceiling [ESTIMATE], and it should be scored that way.",
+   "score_default": 80.0,
+   "score_capital_constrained": 82.5,
+   "score_moonshot": 75.0,
+   "rank_default": 2,
+   "rank_capital_constrained": 2,
+   "rank_moonshot": 6,
+   "deep_dive": "DD3"
   },
   {
    "branch": "A",
@@ -1103,7 +1134,13 @@
     "doable_by_founder: Makes the dependency explicit."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The need is documented. Reliability gates HfO2 and IGZO memories: the 1Mb HZO array at IEDM 2023 holds 1-month retention at 85C, and imec's 2T0C PBTI lifetime is ~1 yr against a 5-yr target. FMC itself relies on an outside test partner (Neumonda). My search found no U.S. commercial contract lab for ferroelectric or oxide-memory reliability; Radiant Technologies (Albuquerque) sells testers, and no Radiant contract-testing service turned up (snippet). So the gap is plausible but STILL-UNVERIFIED. The card is optimistic on demand and margin. Radiant RT66B-class testers that run hysteresis, PUND, fatigue, retention and imprint already sit in university shared facilities, so only wafer-level statistics, JEDEC-style qualification and radiation coordination are worth outsourcing, and the U.S. pool for that is perhaps 10-30 customers [ESTIMATE]."
+   "verify_reason": "The need is documented. Reliability gates HfO2 and IGZO memories: the 1Mb HZO array at IEDM 2023 holds 1-month retention at 85C, and imec's 2T0C PBTI lifetime is ~1 yr against a 5-yr target. FMC itself relies on an outside test partner (Neumonda). My search found no U.S. commercial contract lab for ferroelectric or oxide-memory reliability; Radiant Technologies (Albuquerque) sells testers, and no Radiant contract-testing service turned up (snippet). So the gap is plausible but STILL-UNVERIFIED. The card is optimistic on demand and margin. Radiant RT66B-class testers that run hysteresis, PUND, fatigue, retention and imprint already sit in university shared facilities, so only wafer-level statistics, JEDEC-style qualification and radiation coordination are worth outsourcing, and the U.S. pool for that is perhaps 10-30 customers [ESTIMATE].",
+   "score_default": 66.0,
+   "score_capital_constrained": 64.2,
+   "score_moonshot": 63.3,
+   "rank_default": 18,
+   "rank_capital_constrained": 20,
+   "rank_moonshot": 17
   },
   {
    "branch": "A",
@@ -1385,7 +1422,14 @@
     "fatal_flaw: Adds the controller-vendor gatekeeping and the computed per-board MRAM cost at canonical street price."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism ships, so R1 passes. MRAM-as-PLP-journal runs in IBM FlashCore Modules, which used up to 128 MB of Toggle in FCM3, the 1Gb PERSYST in FCM4 (2024) and MRAM instead of capacitors in FCM5 (Blocks&Files 2026-10). Phison and Sage paired SSD controllers with Everspin 1Gb in 2019. The axis (lifecycle and no supercap aging) is real for the named buyer, and the card says honestly that it is not $/GB. The card's 'why now' is wrong: IBM did not 'move' to MRAM in Oct-2026, it has shipped MRAM journals for years. The card's bit-cost penalty also uses DRAM spot: at the canonical deck MRAM street ($821/GB) is ~51x the 4Q26 contract and ~128x the glut. A 2026-11-01 search found no public Everspin PLP reference design, so a gap for a packaged kit may exist. Willingness to pay a third party for it is STILL-UNVERIFIED."
+   "verify_reason": "The mechanism ships, so R1 passes. MRAM-as-PLP-journal runs in IBM FlashCore Modules, which used up to 128 MB of Toggle in FCM3, the 1Gb PERSYST in FCM4 (2024) and MRAM instead of capacitors in FCM5 (Blocks&Files 2026-10). Phison and Sage paired SSD controllers with Everspin 1Gb in 2019. The axis (lifecycle and no supercap aging) is real for the named buyer, and the card says honestly that it is not $/GB. The card's 'why now' is wrong: IBM did not 'move' to MRAM in Oct-2026, it has shipped MRAM journals for years. The card's bit-cost penalty also uses DRAM spot: at the canonical deck MRAM street ($821/GB) is ~51x the 4Q26 contract and ~128x the glut. A 2026-11-01 search found no public Everspin PLP reference design, so a gap for a packaged kit may exist. Willingness to pay a third party for it is STILL-UNVERIFIED.",
+   "score_default": 66.0,
+   "score_capital_constrained": 67.5,
+   "score_moonshot": 63.3,
+   "rank_default": 19,
+   "rank_capital_constrained": 18,
+   "rank_moonshot": 18,
+   "deep_dive": "DD3"
   },
   {
    "tmp_id": "A2.02",
@@ -1580,7 +1624,13 @@
     "fatal_flaw: Adds the authorized-channel competitor found 2026-11-01 and the EAR exposure the card omits."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The core value claim, that smallsat builders need lot-specific radiation data on COTS parts, is supported by NASA GSFC: COTS sensitivity varies more lot to lot, and one-time qualification is in doubt versus recurring lot acceptance testing. ESA guidance agrees (one lot's SEE result does not represent the next). The service is standard practice, so no kill rule applies. Half the card has been overtaken, though. From 4Q-2026 Teledyne HiRel (Milpitas CA) sells Everspin PERSYST 64/128/256Mb to satellite and mil/aero customers with screening flows, qualification documentation and obsolescence management, through the manufacturer's own authorized channel. Frontgrade (QML Toggle), Honeywell (1Mb and 16Mb rad-hard MRAM plus a 64Mb MCM) and Avalanche (1-8Gb space-grade) cover the rest, so independent 'upscreened serialized parts' is a crowded resale line. What survives is the lot-specific RLAT data and service. It is beam-time- and labor-heavy, and the margin and timing fields are optimistic."
+   "verify_reason": "The core value claim, that smallsat builders need lot-specific radiation data on COTS parts, is supported by NASA GSFC: COTS sensitivity varies more lot to lot, and one-time qualification is in doubt versus recurring lot acceptance testing. ESA guidance agrees (one lot's SEE result does not represent the next). The service is standard practice, so no kill rule applies. Half the card has been overtaken, though. From 4Q-2026 Teledyne HiRel (Milpitas CA) sells Everspin PERSYST 64/128/256Mb to satellite and mil/aero customers with screening flows, qualification documentation and obsolescence management, through the manufacturer's own authorized channel. Frontgrade (QML Toggle), Honeywell (1Mb and 16Mb rad-hard MRAM plus a 64Mb MCM) and Avalanche (1-8Gb space-grade) cover the rest, so independent 'upscreened serialized parts' is a crowded resale line. What survives is the lot-specific RLAT data and service. It is beam-time- and labor-heavy, and the margin and timing fields are optimistic.",
+   "score_default": 67.0,
+   "score_capital_constrained": 68.3,
+   "score_moonshot": 62.5,
+   "rank_default": 17,
+   "rank_capital_constrained": 17,
+   "rank_moonshot": 21
   },
   {
    "tmp_id": "A2.04",
@@ -1954,7 +2004,14 @@
     "rule1_status: Qualified 256Kb module in S130; radiation evidence is 16-kbit gamma only"
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The core IP is real and accessible. Weebit's 1T1R ReRAM module is qualified in SkyWater S130 (JEDEC 3 lots, 125C) and marked 'ready for production'. SkyWater holds a non-exclusive license, Weebit earns fees plus royalties, and SkyWater remains an open foundry under IonQ (closed 2026-07-31) and a DMEA Trusted Foundry (2022 snippet logged by another agent). So R1 passes for the non-rad product, and the path is T1/T2, not T4. The card keeps a narrow winning axis against its buyer's alternatives for secure-boot and key storage: a trusted-foundry flow plus magnetic-field immunity versus Toggle MRAM, and no stored charge versus floating-gate EEPROM. Three claims are overstated. Radiation: only 16-kbit arrays were gamma-tested (UF/CEA-Leti 2023), with no heavy-ion data, and S130 periphery is bulk CMOS, not rad-hard by process. FPGA configuration: 1-4 Mb is too small for most FPGA bitstreams. Timing and capital: SBIR is not customer revenue, and a full mask set plus qualification costs ~$1.5-3M. C-06 (HZO FeRAM on SkyWater) targets the same buyer slot, and C-22 carries less device risk. The scorer should advance at most one of them."
+   "verify_reason": "The core IP is real and accessible. Weebit's 1T1R ReRAM module is qualified in SkyWater S130 (JEDEC 3 lots, 125C) and marked 'ready for production'. SkyWater holds a non-exclusive license, Weebit earns fees plus royalties, and SkyWater remains an open foundry under IonQ (closed 2026-07-31) and a DMEA Trusted Foundry (2022 snippet logged by another agent). So R1 passes for the non-rad product, and the path is T1/T2, not T4. The card keeps a narrow winning axis against its buyer's alternatives for secure-boot and key storage: a trusted-foundry flow plus magnetic-field immunity versus Toggle MRAM, and no stored charge versus floating-gate EEPROM. Three claims are overstated. Radiation: only 16-kbit arrays were gamma-tested (UF/CEA-Leti 2023), with no heavy-ion data, and S130 periphery is bulk CMOS, not rad-hard by process. FPGA configuration: 1-4 Mb is too small for most FPGA bitstreams. Timing and capital: SBIR is not customer revenue, and a full mask set plus qualification costs ~$1.5-3M. C-06 (HZO FeRAM on SkyWater) targets the same buyer slot, and C-22 carries less device risk. The scorer should advance at most one of them.",
+   "score_default": 57.0,
+   "score_capital_constrained": 54.2,
+   "score_moonshot": 59.2,
+   "rank_default": 31,
+   "rank_capital_constrained": 29,
+   "rank_moonshot": 24,
+   "deep_dive": "DD5"
   },
   {
    "tmp_id": "A2.08",
@@ -2339,7 +2396,14 @@
     "rule1_status: The hinge claim, previously UNVERIFIED, is now partly evidenced. Listing dates are unknown and volume/month is STILL-UNVERIFIED"
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The parts exist and the hinge price gap is real. Undated search-result listings show used PMem 128GB at ~$65-380 ($0.5-3/GB) and 256GB at ~€150-$250 (~$0.6-1/GB). That is a ~16x+ gap to $15.99/GB DDR4/DDR5 contract and wider to DDR4 spot, so R1 and R4 pass. But the card's lead buyer is wrong. Broadcom KB 326910 says PMem support (Memory Mode and App Direct) is discontinued from VCF 9.0, and vSphere 8 general support ends 2027-10-11 (Broadcom KB 459135), so VMware SMB/MSP demand has a hard sunset before the glut. KVM/Proxmox/Linux, HPC and SAP HANA buyers remain; SAP still supports PMem under Notes 2618154/2954515 per its 2022 update. Refurb sellers (ITCreations, Uvation marketplace) and many eBay sellers already list PMem, and health data is free via ipmctl, so margin and moat are thin. This is effectively a SKU of C-62 (same ITAD sourcing, test bench and channels). The scorer should treat it as a C-62 product line, not a separate venture."
+   "verify_reason": "The parts exist and the hinge price gap is real. Undated search-result listings show used PMem 128GB at ~$65-380 ($0.5-3/GB) and 256GB at ~€150-$250 (~$0.6-1/GB). That is a ~16x+ gap to $15.99/GB DDR4/DDR5 contract and wider to DDR4 spot, so R1 and R4 pass. But the card's lead buyer is wrong. Broadcom KB 326910 says PMem support (Memory Mode and App Direct) is discontinued from VCF 9.0, and vSphere 8 general support ends 2027-10-11 (Broadcom KB 459135), so VMware SMB/MSP demand has a hard sunset before the glut. KVM/Proxmox/Linux, HPC and SAP HANA buyers remain; SAP still supports PMem under Notes 2618154/2954515 per its 2022 update. Refurb sellers (ITCreations, Uvation marketplace) and many eBay sellers already list PMem, and health data is free via ipmctl, so margin and moat are thin. This is effectively a SKU of C-62 (same ITAD sourcing, test bench and channels). The scorer should treat it as a C-62 product line, not a separate venture.",
+   "score_default": 74.0,
+   "score_capital_constrained": 78.3,
+   "score_moonshot": 66.7,
+   "rank_default": 9,
+   "rank_capital_constrained": 7,
+   "rank_moonshot": 12,
+   "deep_dive": "DD1"
   },
   {
    "tmp_id": "A2.13",
@@ -2530,7 +2594,7 @@
    "doable_by_founder": "no",
    "branch": "A",
    "id": "C-28",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "what_it_is: Endurance of ~5e5 cycles rules out eMRAM as working RAM",
     "trl: eMRAM ships (TRL 8-9) in 1-few-MB MCU macros. A 128-512 Mb macro on 22FDX is not shown in the cited sources",
@@ -2539,7 +2603,15 @@
     "glut_reason: LPDDR4X ~$21/GB mobile LTA (batch_12 C-84 verdict) with A-05 -60% [ESTIMATE]"
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "Foundry eMRAM is real and open to fabless designers: GF AutoPro150 on 22FDX (Dresden, PDK self-serve), TSMC 22ULL eMRAM and 22RRAM. R1 passes, and the T2 path is far below $1B. But 'weights and working data' in eMRAM is wrong. At the card's ~5e5-cycle endurance, working data and activations must stay in on-die SRAM, so the eMRAM holds weights and code only. The space is already occupied. Renesas RA8P1 ships up to 1MB of eMRAM on TSMC 22ULL with an NPU for edge AI. Infineon PSoC Edge uses RRAM, ST STM32V8 uses ePCM, SEMIFIVE/ICY Tech taped out an edge-AI SoC on Samsung 8nm eMRAM, and Everspin's UNISYST sells standalone unified code+data MRAM. The only differentiator left is 16-64MB on-die (~15-60 mm2 of array, ~$1.3-5.2 of silicon at the device model's $82.9/GB). That is a niche BOM/standby-power axis against ~$10.5 of 512MB LPDDR4X now and ~$4 in a glut."
+   "verify_reason": "Foundry eMRAM is real and open to fabless designers: GF AutoPro150 on 22FDX (Dresden, PDK self-serve), TSMC 22ULL eMRAM and 22RRAM. R1 passes, and the T2 path is far below $1B. But 'weights and working data' in eMRAM is wrong. At the card's ~5e5-cycle endurance, working data and activations must stay in on-die SRAM, so the eMRAM holds weights and code only. The space is already occupied. Renesas RA8P1 ships up to 1MB of eMRAM on TSMC 22ULL with an NPU for edge AI. Infineon PSoC Edge uses RRAM, ST STM32V8 uses ePCM, SEMIFIVE/ICY Tech taped out an edge-AI SoC on Samsung 8nm eMRAM, and Everspin's UNISYST sells standalone unified code+data MRAM. The only differentiator left is 16-64MB on-die (~15-60 mm2 of array, ~$1.3-5.2 of silicon at the device model's $82.9/GB). That is a niche BOM/standby-power axis against ~$10.5 of 512MB LPDDR4X now and ~$4 in a glut.",
+   "score_default": 45.0,
+   "score_capital_constrained": 43.3,
+   "score_moonshot": 45.8,
+   "rank_default": 37,
+   "rank_capital_constrained": 37,
+   "rank_moonshot": 37,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 45.0/100 default (rank 37/40), 45.8 moonshot. Weakest: time to revenue 1/5 (48 months: SoC design, AEC/industrial qualification and an ecosystem.); U.S. mfg 1/5 (GF 22FDX eMRAM is made in Dresden and TSMC RRAM in Taiwan; no U.S. line offers 22nm eNVM.); competition 1/5 (Renesas RA8P1, Infineon PSoC Edge (RRAM), ST STM32V8 (ePCM), SEMIFIVE/ICY Tech on Samsung 8nm eMRAM and Everspin UNISYST already do exactly ). Scorer verdicts — founder: Head-on against four MCU giants, fabbed offshore and four years from revenue: the worst founder fit in my chunk. | vc: Head-on against Renesas, ST, Infineon and NXP with a die-area trick that loses to $4 of LPDDR in a glut, fabbed in Dresden: the classic memory-startup graveyard pitch. | veteran: A me-too edge MCU against four incumbents that already ship eNVM AI parts, made offshore, with a differentiator a glut erases; no."
   },
   {
    "tmp_id": "A2.15",
@@ -2630,7 +2702,14 @@
     "fatal_flaw: As above"
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "Pure software (TRL 9, T0), and the EOL wave is evidenced (Renesas serial EEPROM last-time ship 2026-10-31; DDR3/DDR4 exits), so no kill rule is clearly violated. A 2026-11 search found no vendor cross-reference tool for MRAM/F-RAM migrations, only training modules and 'drop-in replacement' marketing, so a narrow gap exists. But half the pitch is false: no emerging NVM replaces DDR3/DDR4. Everspin's largest part is a 1Gb ST-DDR4 die, not JEDEC-pin-compatible, at ~$821/GB street, ~32x DDR3 4Gb spot ($3.19/Gb ≈ $25.5/GB). The product reduces to NVM-to-NVM migrations (EEPROM/NOR/NVSRAM to F-RAM/MRAM). Incumbents are stronger than the card says: Octopart/Nexar sit inside Altium, a wholly owned Renesas subsidiary since 2024-08-01 that is building component lifecycle management. The scorer should floor moat and competition and consider folding this into C-12 or C-80 as lead-gen."
+   "verify_reason": "Pure software (TRL 9, T0), and the EOL wave is evidenced (Renesas serial EEPROM last-time ship 2026-10-31; DDR3/DDR4 exits), so no kill rule is clearly violated. A 2026-11 search found no vendor cross-reference tool for MRAM/F-RAM migrations, only training modules and 'drop-in replacement' marketing, so a narrow gap exists. But half the pitch is false: no emerging NVM replaces DDR3/DDR4. Everspin's largest part is a 1Gb ST-DDR4 die, not JEDEC-pin-compatible, at ~$821/GB street, ~32x DDR3 4Gb spot ($3.19/Gb ≈ $25.5/GB). The product reduces to NVM-to-NVM migrations (EEPROM/NOR/NVSRAM to F-RAM/MRAM). Incumbents are stronger than the card says: Octopart/Nexar sit inside Altium, a wholly owned Renesas subsidiary since 2024-08-01 that is building component lifecycle management. The scorer should floor moat and competition and consider folding this into C-12 or C-80 as lead-gen.",
+   "score_default": 79.0,
+   "score_capital_constrained": 82.5,
+   "score_moonshot": 75.8,
+   "rank_default": 4,
+   "rank_capital_constrained": 3,
+   "rank_moonshot": 4,
+   "deep_dive": "DD2"
   },
   {
    "tmp_id": "A3.01",
@@ -2891,7 +2970,14 @@
     "rule1_status: Card's Si gain-cell citation had no URL; now replaced"
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is SUPPORTED by credible industry sources. RAAAM's 3T Si gain cell (GCRAM) is reported in foundry silicon from 180nm to 5nm, GF and RAAAM have taped out a GCRAM test vehicle on FDX with lead-customer design access in early 2027, and RAAAM raised a $17.5M Series A led by NXP (all via search snippets). It wins on bits/mm2 and leakage vs 6T SRAM for named buyers, so no kill rule applies. But the card badly understates the incumbent. RAAAM is funded, foundry-partnered (GF, TSMC 2nm qualification) and silicon-proven down to 180nm, so it can port to SkyWater S130 at will, and its patent estate is an FTO gate for a zero-silicon entrant. What remains is a thin U.S.-trailing-node / trusted-ASIC niche, and profitability and founder-fit are downgraded."
+   "verify_reason": "The mechanism is SUPPORTED by credible industry sources. RAAAM's 3T Si gain cell (GCRAM) is reported in foundry silicon from 180nm to 5nm, GF and RAAAM have taped out a GCRAM test vehicle on FDX with lead-customer design access in early 2027, and RAAAM raised a $17.5M Series A led by NXP (all via search snippets). It wins on bits/mm2 and leakage vs 6T SRAM for named buyers, so no kill rule applies. But the card badly understates the incumbent. RAAAM is funded, foundry-partnered (GF, TSMC 2nm qualification) and silicon-proven down to 180nm, so it can port to SkyWater S130 at will, and its patent estate is an FTO gate for a zero-silicon entrant. What remains is a thin U.S.-trailing-node / trusted-ASIC niche, and profitability and founder-fit are downgraded.",
+   "score_default": 59.0,
+   "score_capital_constrained": 55.8,
+   "score_moonshot": 60.8,
+   "rank_default": 25,
+   "rank_capital_constrained": 28,
+   "rank_moonshot": 22,
+   "deep_dive": "DD5"
   },
   {
    "tmp_id": "A3.04",
@@ -3004,7 +3090,14 @@
     "profitable: No evidence of paid demand found; free substitutes in the same channel"
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The core facts hold. A git check (2026-11-01) confirms the OpenRAM sky130 macro README still lists only 1, 2 and 4 KB; a 16 KB directory holds only a generation log. Published OpenRAM first silicon verified only a 1 KB dual-port macro (NSF PAR paper). So the gap for larger, silicon-characterized macros is real. The shuttle channel survived Efabless's 2025 shutdown: ChipFoundry (Umbralogic) took over its assets and MPWs, and a Cadence/SkyWater SKY130 open MPW ran in 2026. It is a T0 software/services business on a named PDK, fab and buyer set, so no kill rule applies. Willingness to pay is STILL-UNVERIFIED, and the margin and fragility fields are optimistic: a funnel controlled by IonQ-owned SkyWater, ChipFoundry and Cadence can bundle free macros at any time."
+   "verify_reason": "The core facts hold. A git check (2026-11-01) confirms the OpenRAM sky130 macro README still lists only 1, 2 and 4 KB; a 16 KB directory holds only a generation log. Published OpenRAM first silicon verified only a 1 KB dual-port macro (NSF PAR paper). So the gap for larger, silicon-characterized macros is real. The shuttle channel survived Efabless's 2025 shutdown: ChipFoundry (Umbralogic) took over its assets and MPWs, and a Cadence/SkyWater SKY130 open MPW ran in 2026. It is a T0 software/services business on a named PDK, fab and buyer set, so no kill rule applies. Willingness to pay is STILL-UNVERIFIED, and the margin and fragility fields are optimistic: a funnel controlled by IonQ-owned SkyWater, ChipFoundry and Cadence can bundle free macros at any time.",
+   "score_default": 80.0,
+   "score_capital_constrained": 82.5,
+   "score_moonshot": 76.7,
+   "rank_default": 3,
+   "rank_capital_constrained": 5,
+   "rank_moonshot": 2,
+   "deep_dive": "DD5"
   },
   {
    "tmp_id": "A3.05",
@@ -3253,7 +3346,13 @@
     "time_to_first_revenue_text: Card's 30-36 assumed no respin and immediate design-in"
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The premise survives verification. SkyWater closed on Fab 25 (2025-06-30; ~400k wafer starts/yr, 65-130nm, memory listed as a target market) and still runs it as an open foundry under IonQ ownership (closed 2026-07-31). Demand-side lifecycle stress is real: Renesas EOL260016 (2026-06-01) discontinued 92 async SRAM codes (third-party blog snippet). The card wins on lifecycle length and non-PRC supply (vs Ingenic-owned ISSI) for named defense/industrial buyers, so no kill rule applies. Two things are overstated. 'U.S.-fab' is not unique, because Infineon still sells a 256K-64M async SRAM line and gets its U.S. wafers from the same fab, and Renesas EOLs map customers to Infineon codes, not to a startup. Whether SkyWater offers outside customers a characterized high-density 6T bitcell/PDK at 65nm (Cypress-proprietary heritage) is STILL-UNVERIFIED and is the gating diligence question."
+   "verify_reason": "The premise survives verification. SkyWater closed on Fab 25 (2025-06-30; ~400k wafer starts/yr, 65-130nm, memory listed as a target market) and still runs it as an open foundry under IonQ ownership (closed 2026-07-31). Demand-side lifecycle stress is real: Renesas EOL260016 (2026-06-01) discontinued 92 async SRAM codes (third-party blog snippet). The card wins on lifecycle length and non-PRC supply (vs Ingenic-owned ISSI) for named defense/industrial buyers, so no kill rule applies. Two things are overstated. 'U.S.-fab' is not unique, because Infineon still sells a 256K-64M async SRAM line and gets its U.S. wafers from the same fab, and Renesas EOLs map customers to Infineon codes, not to a startup. Whether SkyWater offers outside customers a characterized high-density 6T bitcell/PDK at 65nm (Cypress-proprietary heritage) is STILL-UNVERIFIED and is the gating diligence question.",
+   "score_default": 62.0,
+   "score_capital_constrained": 57.5,
+   "score_moonshot": 63.3,
+   "rank_default": 21,
+   "rank_capital_constrained": 26,
+   "rank_moonshot": 20
   },
   {
    "tmp_id": "A3.08",
@@ -3369,7 +3468,13 @@
     "profitable: Corrected margin and competition."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "No rule is violated. GSI is alive and the APU ships. Q1 FY2027 (Jun-2026) revenue was $6.3M, flat YoY, with a $5.4M operating loss, and Plato tape-out is now early 2027 (via search snippet). The energy axis now has a source: Cornell's MICRO '25 paper (GSI co-author) reports A6000-class RAG retrieval throughput at 54-118x less energy. The card overstates two things. First, 'DRAM GB per QPS': the 10-200 GB corpora still sit in DRAM. Second, the open software gap: GSI already sells Gemini-I APU servers and has had an OpenSearch k-NN plugin since 2021, so the founder's layer competes with the vendor's own. After 4+ years, APU revenue is still too small to report separately."
+   "verify_reason": "No rule is violated. GSI is alive and the APU ships. Q1 FY2027 (Jun-2026) revenue was $6.3M, flat YoY, with a $5.4M operating loss, and Plato tape-out is now early 2027 (via search snippet). The energy axis now has a source: Cornell's MICRO '25 paper (GSI co-author) reports A6000-class RAG retrieval throughput at 54-118x less energy. The card overstates two things. First, 'DRAM GB per QPS': the 10-200 GB corpora still sit in DRAM. Second, the open software gap: GSI already sells Gemini-I APU servers and has had an OpenSearch k-NN plugin since 2021, so the founder's layer competes with the vendor's own. After 4+ years, APU revenue is still too small to report separately.",
+   "score_default": 57.0,
+   "score_capital_constrained": 60.0,
+   "score_moonshot": 52.5,
+   "rank_default": 29,
+   "rank_capital_constrained": 21,
+   "rank_moonshot": 33
   },
   {
    "tmp_id": "A3.09",
@@ -3518,7 +3623,7 @@
    "doable_by_founder": "no",
    "branch": "A",
    "id": "C-39",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "who_is_already_doing_this: The NVIDIA-Groq deal is now verified via search snippets (Constellation Research, ITdaily). The pattern's leading IP sits inside NVIDIA's roadmap.",
     "why_it_could_work: Upgrade one claim and leave the other flagged.",
@@ -3532,7 +3637,15 @@
     "profitable: Market structure after the NVIDIA-Groq deal."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism ships (Groq LPU, TRL 9). The minimum viable path (~$150-400M to first rack revenue [ESTIMATE: Groq ~$300M raised by 2021; d-Matrix $110M+ in 2023]) is T3, not >$1B. It wins tokens/s/user for latency-bound decode, so no kill rule applies. The competitive premise is now verified and worse than the card implies. On ~2025-12-24, NVIDIA took a non-exclusive license to Groq's inference technology and hired its founder and president (~$20B per CNBC, via search snippet), and Groq continues independently under CEO Simon Edwards. A GF 12LP+ entrant would also give up ~2-3x SRAM density to 4-5nm rivals. Scoring should drive it to the bottom (capital 1, ttr 1, founder 1)."
+   "verify_reason": "The mechanism ships (Groq LPU, TRL 9). The minimum viable path (~$150-400M to first rack revenue [ESTIMATE: Groq ~$300M raised by 2021; d-Matrix $110M+ in 2023]) is T3, not >$1B. It wins tokens/s/user for latency-bound decode, so no kill rule applies. The competitive premise is now verified and worse than the card implies. On ~2025-12-24, NVIDIA took a non-exclusive license to Groq's inference technology and hired its founder and president (~$20B per CNBC, via search snippet), and Groq continues independently under CEO Simon Edwards. A GF 12LP+ entrant would also give up ~2-3x SRAM density to 4-5nm rivals. Scoring should drive it to the bottom (capital 1, ttr 1, founder 1).",
+   "score_default": 45.0,
+   "score_capital_constrained": 40.8,
+   "score_moonshot": 44.2,
+   "rank_default": 38,
+   "rank_capital_constrained": 39,
+   "rank_moonshot": 38,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 45.0/100 default (rank 38/40), 44.2 moonshot. Weakest: capital 1/5 (The minimum path is ~$150-400M to first rack revenue (T3; Groq raised ~$300M by 2021, d-Matrix $110M+ in 2023).); time to revenue 1/5 (48-60 months: ~24-30 months to first silicon, then the compiler and rack integration; Groq took 4+ years to meaningful revenue.); competition 1/5 (Groq, NVIDIA (Groq license plus its founder), Cerebras, d-Matrix, SambaNova, Etched, MatX and Positron are all well funded and doing exactly). Scorer verdicts — founder: A $150-400M chip company against Groq, NVIDIA and Cerebras: impossible for this founder, and a poor bet for anyone entering on 12nm. | vc: Upper-T3 chip program against Groq, NVIDIA-with-Groq-IP and Cerebras with a 2-3x SRAM-density handicap on 12LP+: the textbook way to burn $300M; hard pass. | veteran: A $150-400M chip program entering a market where NVIDIA just licensed the leader's architecture, on a node 2-3x behind on SRAM density; dead for this founder."
   },
   {
    "tmp_id": "A3.11",
@@ -3943,7 +4056,7 @@
    "profitable": "marginal: the buyer case is positive (+$7-14/GB in 4Q26, +$4-5/GB in the glut), but the vendor keeps only 15-30% of a ~$1.8k card (~$270-540 per card), so profit needs thousands of cards a year",
    "doable_by_founder": "no: hardware/firmware team and controller allocation required",
    "id": "C-44",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "why_it_could_work: B's model used DDR4 chip spot ($25/$12 per GB) as the opportunity cost of a used x4 RDIMM. Used 64GB DDR4 RDIMMs sold for $250-370 (amcompute, Aug-2026) and refurbished 512 GB lots for $2,300-5,500 (PCSP).",
     "profitable: The card's 'computed negative in every scenario' result comes from the chip-spot error above.",
@@ -3953,7 +4066,15 @@
     "who_is_already_doing_this: Structera X DDR4 support and inline compression confirmed (Marvell 2024-07-30 release and product brief)."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "No kill rule holds once the card's sell-vs-reuse model is fixed. It priced the owner's DDR4 at chip spot ($25/GB in 4Q26, $12 in the glut), which 01_LANDSCAPE 10.4 #4 bars as a base case. Used 64GB DDR4 RDIMMs actually sold for $250-370 (~$3.9-5.8/GB, amcompute through Aug-2026), and refurbished 512 GB lots for $2,300-5,500 (~$4.5-10.7/GB). At those prices card ($2.34/GB) plus resale beats a $20.31/GB DDR5 RDIMM by ~$7-14/GB in 4Q26 and by ~$4.3-5.3/GB in the glut; reuse loses only at a 2023-style trough (-$0.3 to -0.8/GB) [ESTIMATE, audit07 calc]. The controller exists: Marvell Structera X 2404 runs 12 DDR4-3200 DIMMs (3 DPC) behind CXL 2.0 x16 with four inline LZ4 engines and has sampled since Q4 2024 (via search snippet). Marvell sells it to hyperscalers, though, so the real flaws are controller access and qualifying mixed used DIMMs, which are scored next."
+   "verify_reason": "No kill rule holds once the card's sell-vs-reuse model is fixed. It priced the owner's DDR4 at chip spot ($25/GB in 4Q26, $12 in the glut), which 01_LANDSCAPE 10.4 #4 bars as a base case. Used 64GB DDR4 RDIMMs actually sold for $250-370 (~$3.9-5.8/GB, amcompute through Aug-2026), and refurbished 512 GB lots for $2,300-5,500 (~$4.5-10.7/GB). At those prices card ($2.34/GB) plus resale beats a $20.31/GB DDR5 RDIMM by ~$7-14/GB in 4Q26 and by ~$4.3-5.3/GB in the glut; reuse loses only at a 2023-style trough (-$0.3 to -0.8/GB) [ESTIMATE, audit07 calc]. The controller exists: Marvell Structera X 2404 runs 12 DDR4-3200 DIMMs (3 DPC) behind CXL 2.0 x16 with four inline LZ4 engines and has sampled since Q4 2024 (via search snippet). Marvell sells it to hyperscalers, though, so the real flaws are controller access and qualifying mixed used DIMMs, which are scored next.",
+   "score_default": 50.0,
+   "score_capital_constrained": 48.3,
+   "score_moonshot": 48.3,
+   "rank_default": 35,
+   "rank_capital_constrained": 34,
+   "rank_moonshot": 36,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 50.0/100 default (rank 35/40), 48.3 moonshot. Weakest: capital 2/5 (T2 ($2M+): board design, controller access, firmware/SI team and CXL compliance before the first tier-2 qualification.); time to revenue 2/5 (24 months (18-30): board, controller-vendor access and qualification at one tier-2 cloud.); margin 2/5 (15-30% on the card (mid 22%), i.e. ~$270-540 of gross profit per ~$1.8k card; it needs thousands of cards a year.). Scorer verdicts — founder: The buyer math works (+$7-14/GB in 4Q26), but it is a T2 hardware program that needs Marvell allocation and SI talent; this founder should resell the DDR4 instead (C-62). | vc: The buyer math works, but the vendor keeps ~$270-540 per card, Marvell sells the controller to hyperscalers that already do this in-house, and it needs a T2 hardware team: sub-scale hardware with no edge. | veteran: The unit economics flip positive once used DDR4 is valued at $3.9-5.8/GB resale, but a no-name cannot get Structera allocation or qualify mixed used DIMMs at 3 DPC on a T2 budget, and hyperscalers already do thi"
   },
   {
    "tmp_id": "B.02",
@@ -4074,7 +4195,13 @@
     "gross_margin_mid_pct: Midpoint of the corrected hardware range."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The value claim is evidenced and no rule kills the card. Mooncake (FAST '25) reports that Kimi handles 75% more requests within SLO by pooling KV in DRAM across nodes, and free per-server host-DRAM offload does not give that benefit. The exact product already ships, though. Penguin Solutions launched the MemoryAI KV cache server on 2026-03-16: dual EPYC, 3 TB DDR5 plus up to 8x1 TB SMART CXA-8F2W CXL cards (11 TB), Dynamo-compatible (via search snippet). Penguin owns the SMART CXL card line a new entrant would buy from. NVIDIA's BlueField-4 ICMS (CES 2026, renamed CMX/STX, shipping 2H26 via Dell, HPE, IBM, VAST, WEKA and others) takes warm KV. Over 2x400G RDMA (~100 GB/s), 8 Gen5 SSDs (~12 GB/s each by B's own 1.79 s/20 GiB figure) reload a context about as fast, so DRAM's edge narrows to hot, high-churn KV."
+   "verify_reason": "The value claim is evidenced and no rule kills the card. Mooncake (FAST '25) reports that Kimi handles 75% more requests within SLO by pooling KV in DRAM across nodes, and free per-server host-DRAM offload does not give that benefit. The exact product already ships, though. Penguin Solutions launched the MemoryAI KV cache server on 2026-03-16: dual EPYC, 3 TB DDR5 plus up to 8x1 TB SMART CXA-8F2W CXL cards (11 TB), Dynamo-compatible (via search snippet). Penguin owns the SMART CXL card line a new entrant would buy from. NVIDIA's BlueField-4 ICMS (CES 2026, renamed CMX/STX, shipping 2H26 via Dell, HPE, IBM, VAST, WEKA and others) takes warm KV. Over 2x400G RDMA (~100 GB/s), 8 Gen5 SSDs (~12 GB/s each by B's own 1.79 s/20 GiB figure) reload a context about as fast, so DRAM's edge narrows to hot, high-churn KV.",
+   "score_default": 59.0,
+   "score_capital_constrained": 58.3,
+   "score_moonshot": 52.5,
+   "rank_default": 24,
+   "rank_capital_constrained": 24,
+   "rank_moonshot": 32
   },
   {
    "tmp_id": "B.03",
@@ -4254,7 +4381,7 @@
    "profitable": "no: squeezed between free CPU/controller compression and a glut",
    "doable_by_founder": "no",
    "id": "C-47",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "trl: Inline CXL memory compression is in merchant silicon sampling (Structera X, Q4 2024) and licensed into 5nm SoCs (DenseMem). Only the venture's own FPGA card is at TRL 5-6.",
     "who_is_already_doing_this: Marvell inline LZ4 and ZeroPoint licensing were UNVERIFIED-T.",
@@ -4266,7 +4393,15 @@
     "glut_reason: Recomputed on the 01_LANDSCAPE 4.3 deck instead of $8-13/GB."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is real and further along than the card's TRL says. IBM MXT shipped hardware main-memory compression in 2001 [training knowledge]. ZeroPoint licensed DenseMem CXL Type-3 compression IP (2-4x claimed, implemented in TSMC 5nm) to an unnamed 'major global semiconductor manufacturer' in Mar-2024. Marvell's Structera X 2404 puts four inline LZ4 engines in a merchant CXL controller, sampling Q4 2024 (both via search snippet). The card keeps one axis against its buyer's real alternatives, so R4 does not strictly hold: in the 4Q26 deck 2x on 512 GB saves ~$10.4k of DRAM against a $3-8k FPGA card, at cache-line latency rather than zswap's page-fault path, and no GA Structera-based card sold to mid-size operators was found. Everything else is worse than stated: a merchant ASIC does the same job, ZeroPoint states 24-36 month sales cycles, and at the $8.12 glut deck the saving (~$4.2k) no longer covers the card."
+   "verify_reason": "The mechanism is real and further along than the card's TRL says. IBM MXT shipped hardware main-memory compression in 2001 [training knowledge]. ZeroPoint licensed DenseMem CXL Type-3 compression IP (2-4x claimed, implemented in TSMC 5nm) to an unnamed 'major global semiconductor manufacturer' in Mar-2024. Marvell's Structera X 2404 puts four inline LZ4 engines in a merchant CXL controller, sampling Q4 2024 (both via search snippet). The card keeps one axis against its buyer's real alternatives, so R4 does not strictly hold: in the 4Q26 deck 2x on 512 GB saves ~$10.4k of DRAM against a $3-8k FPGA card, at cache-line latency rather than zswap's page-fault path, and no GA Structera-based card sold to mid-size operators was found. Everything else is worse than stated: a merchant ASIC does the same job, ZeroPoint states 24-36 month sales cycles, and at the $8.12 glut deck the saving (~$4.2k) no longer covers the card.",
+   "score_default": 45.0,
+   "score_capital_constrained": 43.3,
+   "score_moonshot": 42.5,
+   "rank_default": 39,
+   "rank_capital_constrained": 38,
+   "rank_moonshot": 39,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 45.0/100 default (rank 39/40), 42.5 moonshot. Weakest: moat 1/5 (The compression IP is licensed non-exclusively (ZeroPoint sells to SoC makers), so the venture is a downstream FPGA integrator of IP its com); cycle-proofing 1/5 (Glut kills it: at the ~$8.1/GB RDIMM deck, 2x on 512 GB saves ~$4.2k, which no longer covers a $3-8k FPGA card plus the latency penalty.); founder-fit 1/5 (Needs a full-time RTL/FPGA team, CXL compliance expertise and a later ASIC tape-out; nothing about it is a part-time software job.). Scorer verdicts — founder: Merchant silicon (Structera X) and ZeroPoint's ASIC licensee already do this more cheaply, and the glut wipes out the savings; dead for this founder. | vc: An FPGA integrator of non-exclusive compression IP fighting Marvell's ASIC that already does the job, and the savings stop covering the card in a glut: dead on arrival. | veteran: An FPGA integrator of non-exclusive IP that Marvell already put in merchant silicon; the DRAM saving that pays for the card is gone at the $8.15 glut."
   },
   {
    "tmp_id": "B.05",
@@ -4372,7 +4507,13 @@
     "gross_margin_mid_pct: Matches the card's own BOM model."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The core claim checks out in the KTransformers repo (HEAD 2026-10-28, opened via git). Kimi-K2.5 needs >=600 GB RAM, 48 GB VRAM and an AVX512F CPU. DeepSeek-V4-Flash needs >=200 GB plus one RTX 5090 for '20+ tok/s' decode. The axis ($/GB of model-resident memory, ~$20/GB DDR5 vs ~$180-250/GB HBM-in-GPU) is real for the named regulated buyer, so no rule applies. Performance and BOM are optimistic. KTransformers' dual-socket mode keeps a weight copy per NUMA node (DeepSeek-R1: 382 GB single-socket vs 1 TB dual-socket), and measured decode gained only 29% (8.73 -> 11.26 tok/s on 2x Xeon 6454S). Scaled to 12-channel DDR5-6400, that is ~20 tok/s on one socket and ~26 on two, not 23/46, and the two-socket figure needs ~1.5 TB of DRAM ($31k at $20.31/GB). Fast CPU prefill (255-286 tok/s) depends on Intel AMX, which EPYC lacks, so long RAG prompts are slow on the card's AMD platform."
+   "verify_reason": "The core claim checks out in the KTransformers repo (HEAD 2026-10-28, opened via git). Kimi-K2.5 needs >=600 GB RAM, 48 GB VRAM and an AVX512F CPU. DeepSeek-V4-Flash needs >=200 GB plus one RTX 5090 for '20+ tok/s' decode. The axis ($/GB of model-resident memory, ~$20/GB DDR5 vs ~$180-250/GB HBM-in-GPU) is real for the named regulated buyer, so no rule applies. Performance and BOM are optimistic. KTransformers' dual-socket mode keeps a weight copy per NUMA node (DeepSeek-R1: 382 GB single-socket vs 1 TB dual-socket), and measured decode gained only 29% (8.73 -> 11.26 tok/s on 2x Xeon 6454S). Scaled to 12-channel DDR5-6400, that is ~20 tok/s on one socket and ~26 on two, not 23/46, and the two-socket figure needs ~1.5 TB of DRAM ($31k at $20.31/GB). Fast CPU prefill (255-286 tok/s) depends on Intel AMX, which EPYC lacks, so long RAG prompts are slow on the card's AMD platform.",
+   "score_default": 70.0,
+   "score_capital_constrained": 71.7,
+   "score_moonshot": 63.3,
+   "rank_default": 15,
+   "rank_capital_constrained": 15,
+   "rank_moonshot": 19
   },
   {
    "tmp_id": "B.06",
@@ -4441,7 +4582,13 @@
     "time_to_first_revenue_text: See above."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The hardware ships (Samsung CMM-D, Micron CZ-series, SK hynix CMM) and tiering is upstream, so R1 holds. The node does win TB and bandwidth per socket above the native slot ceiling, so R4 does not strictly apply. The premise is overstated, though. A 2-socket EPYC 9005 already takes up to ~6 TB per socket at 2 DIMMs per channel [UNVERIFIED-T], so 4-socket boxes are not the alternative below ~6-12 TB per node. Below that ceiling a CXL module carries the same DRAM plus a controller, so it loses on $/TB and adds latency. Penguin Solutions already sells CXL memory-expansion servers (product page seen in search) next to Supermicro, Dell, HPE and Lenovo. Buyer and hardware overlap C-97 (CXL tiering practice) and C-79 (TB-RAM rental); this card is the VAR packaging of the same opportunity, and the scorer should weigh it that way."
+   "verify_reason": "The hardware ships (Samsung CMM-D, Micron CZ-series, SK hynix CMM) and tiering is upstream, so R1 holds. The node does win TB and bandwidth per socket above the native slot ceiling, so R4 does not strictly apply. The premise is overstated, though. A 2-socket EPYC 9005 already takes up to ~6 TB per socket at 2 DIMMs per channel [UNVERIFIED-T], so 4-socket boxes are not the alternative below ~6-12 TB per node. Below that ceiling a CXL module carries the same DRAM plus a controller, so it loses on $/TB and adds latency. Penguin Solutions already sells CXL memory-expansion servers (product page seen in search) next to Supermicro, Dell, HPE and Lenovo. Buyer and hardware overlap C-97 (CXL tiering practice) and C-79 (TB-RAM rental); this card is the VAR packaging of the same opportunity, and the scorer should weigh it that way.",
+   "score_default": 60.0,
+   "score_capital_constrained": 59.2,
+   "score_moonshot": 55.0,
+   "rank_default": 22,
+   "rank_capital_constrained": 22,
+   "rank_moonshot": 28
   },
   {
    "tmp_id": "B.07",
@@ -4615,7 +4762,7 @@
     "A2.12"
    ],
    "id": "C-51",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "trl: The exact product category (CXL 2.0 DRAM+NAND+energy-source module) is sampling to Tier-1 OEMs and passed CXL compliance (Penguin/SMART, 2026-01). NVDIMM-N is TRL 9.",
     "who_is_already_doing_this: The card tagged SMART [UNVERIFIED-T]. Search confirms the incumbent already ships this card.",
@@ -4630,7 +4777,15 @@
     "glut_reason: Computed BOM at the canonical decks."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "No kill rule applies, because the mechanism ships. NVDIMM-N is TRL 9, and Penguin/SMART's NV-CMM is this card's variant 1 as a product: CXL 2.0, E3.S 2T, DDR4 that saves to NAND on an onboard energy source. It has been sampling to Tier-1 OEMs since 2025-03 and has been on the CXL Integrators List since 2026-01 (via search snippet). The axis (durable commit latency for WAL/journals) is real, but the card is a late copy of a product an incumbent already ships and has had compliance-listed. The MRAM variant costs ~$821/GB, so 1-4 GB of MRAM alone is $821-3,284. Storage OEMs build MRAM journals in-house: IBM has used Everspin MRAM in FlashCore since 2018 and FCM5 carries a few hundred MB. The card overstates margin and understates TRL and the incumbent list."
+   "verify_reason": "No kill rule applies, because the mechanism ships. NVDIMM-N is TRL 9, and Penguin/SMART's NV-CMM is this card's variant 1 as a product: CXL 2.0, E3.S 2T, DDR4 that saves to NAND on an onboard energy source. It has been sampling to Tier-1 OEMs since 2025-03 and has been on the CXL Integrators List since 2026-01 (via search snippet). The axis (durable commit latency for WAL/journals) is real, but the card is a late copy of a product an incumbent already ships and has had compliance-listed. The MRAM variant costs ~$821/GB, so 1-4 GB of MRAM alone is $821-3,284. Storage OEMs build MRAM journals in-house: IBM has used Everspin MRAM in FlashCore since 2018 and FCM5 carries a few hundred MB. The card overstates margin and understates TRL and the incumbent list.",
+   "score_default": 53.0,
+   "score_capital_constrained": 50.8,
+   "score_moonshot": 50.8,
+   "rank_default": 32,
+   "rank_capital_constrained": 33,
+   "rank_moonshot": 35,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 53.0/100 default (rank 32/40), 50.8 moonshot. Weakest: capital 2/5 (T2: card design, power-fail firmware and CXL compliance (12-18 months), then OEM qualification.); time to revenue 2/5 (30-42 months (card 36): SMART needed ~10 months from sampling to compliance alone, and storage/DB OEM design-ins take another 12-24 months.); margin 2/5 (25-40% (mid 30%): DRAM dominates the BOM and an incumbent with Tier-1 OEM channels sets the persistence premium.). Scorer verdicts — founder: SMART/Penguin's NV-CMM already is this card, compliance-listed and sampling at Tier-1 OEMs; this would be a T2 entrant arriving 36 months late into the niche that killed Optane. | vc: Optane's >$7B write-off proves the market is tiny, and Penguin/SMART's NV-CMM is already compliance-listed and sampling to Tier-1 OEMs: an entrant 3 years late with FTO exposure; pass. | veteran: Optane's niche without Optane's volume, and SMART/Penguin's compliance-listed NV-CMM already is this card; a late entrant has nothing new to sell OEMs."
   },
   {
    "tmp_id": "B.10",
@@ -4697,7 +4852,7 @@
    "profitable": "marginal at best: buyers integrate LPDDR IP directly and IP giants own the PHY/controller market",
    "doable_by_founder": "no",
    "id": "C-52",
-   "status": "ALIVE",
+   "status": "KILLED",
    "verify_corrections": [
     "what_it_is: Computed: 8.533 GT/s x 64 bit / 8 = 68.3 GB/s per package. The card's 0.5-1 TB/s overstates by up to ~2x.",
     "trl: The product has never been built. The components (UCIe/AIB IP, LPDDR5X PHY) are TRL 9, but an LPDDR memory-controller chiplet behind UCIe is unproven as a merchant part.",
@@ -4710,7 +4865,15 @@
     "profitable: Unchanged in direction, sharpened."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "No kill rule applies. Every component exists: UCIe/AIB die-to-die IP and LPDDR5X controller/PHY IP are commercial, NVIDIA Grace proves 512-bit LPDDR5X at ~546 GB/s, and the minimum path (~$50-90M [ESTIMATE]) is T3, far below $1B. The headline bandwidth is wrong. 4-8 x64 LPDDR5X-8533 packages give 0.27-0.55 TB/s (68.3 GB/s each, computed), not 0.5-1 TB/s. 1 TB/s needs ~15 packages or LPDDR6, which is under half an HBM3E stack (~1.2 TB/s) but 4-14x its capacity. A winning axis remains: capacity and bandwidth per dollar without HBM allocation, plus moving the memory PHY off expensive leading-edge die area. But the named buyers already attach LPDDR directly with licensed IP (Qualcomm AI200, d-Matrix Corsair [UNVERIFIED-T]), and Amkor Arizona is anchor-customer-only, so packaging is offshore."
+   "verify_reason": "No kill rule applies. Every component exists: UCIe/AIB die-to-die IP and LPDDR5X controller/PHY IP are commercial, NVIDIA Grace proves 512-bit LPDDR5X at ~546 GB/s, and the minimum path (~$50-90M [ESTIMATE]) is T3, far below $1B. The headline bandwidth is wrong. 4-8 x64 LPDDR5X-8533 packages give 0.27-0.55 TB/s (68.3 GB/s each, computed), not 0.5-1 TB/s. 1 TB/s needs ~15 packages or LPDDR6, which is under half an HBM3E stack (~1.2 TB/s) but 4-14x its capacity. A winning axis remains: capacity and bandwidth per dollar without HBM allocation, plus moving the memory PHY off expensive leading-edge die area. But the named buyers already attach LPDDR directly with licensed IP (Qualcomm AI200, d-Matrix Corsair [UNVERIFIED-T]), and Amkor Arizona is anchor-customer-only, so packaging is offshore.",
+   "score_default": 40.0,
+   "score_capital_constrained": 36.7,
+   "score_moonshot": 41.7,
+   "rank_default": 40,
+   "rank_capital_constrained": 40,
+   "rank_moonshot": 40,
+   "kill_rule": "SCORE<55",
+   "kill_reason": "Scored 40.0/100 default (rank 40/40), 41.7 moonshot. Weakest: capital 1/5 (T3: a ~$50-90M program for architecture, tape-out, package qualification and the first design-in.); time to revenue 1/5 (36-48 months (card 42) to the first design-in revenue.); founder-fit 1/5 (A T3 silicon program that needs a veteran SoC, PHY and packaging team from day one.). Scorer verdicts — founder: A $50-90M silicon program selling an extra die-to-die hop that buyers already avoid by licensing LPDDR5X PHYs directly, at only 0.27-0.55 TB/s; not for this founder. | vc: A $50-90M chip program delivering 0.27-0.55 TB/s, under half an HBM3E stack, to buyers who already attach LPDDR5X with Synopsys/Cadence IP: no pull, no founder fit; hard pass. | veteran: A $50-90M chip program delivering under half an HBM3E stack of bandwidth to buyers who already bolt LPDDR5X on directly with Synopsys/Cadence IP; nothing here for this founder."
   },
   {
    "tmp_id": "B.11",
@@ -4941,7 +5104,13 @@
     "us_manufacturability: Sets the rubric level."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "No kill rule applies, because analog CIM silicon ships. Mythic's M1076 (25 TOPS at ~3 W, weights on-chip, no external DRAM) has shipped to customers, including Lockheed Martin per an earlier report, and Mythic reportedly raised $125M in 2025-12. EnCharge EN100 (200+ TOPS at 8.25 W, M.2) was announced 2025-05 (via search snippets). But the card's 'DRAM-free' premise is only half true. EN100 carries up to 128 GB of LPDDR at 272 GB/s, so only Mythic-class parts are DRAM-free, and only for models that fit on-chip. Both vendors sell M.2/PCIe cards themselves, so the venture reduces to a rugged-module integrator of someone else's chip. Its real axis is W/inference on U.S.-designed silicon, not 'no DRAM'."
+   "verify_reason": "No kill rule applies, because analog CIM silicon ships. Mythic's M1076 (25 TOPS at ~3 W, weights on-chip, no external DRAM) has shipped to customers, including Lockheed Martin per an earlier report, and Mythic reportedly raised $125M in 2025-12. EnCharge EN100 (200+ TOPS at 8.25 W, M.2) was announced 2025-05 (via search snippets). But the card's 'DRAM-free' premise is only half true. EN100 carries up to 128 GB of LPDDR at 272 GB/s, so only Mythic-class parts are DRAM-free, and only for models that fit on-chip. Both vendors sell M.2/PCIe cards themselves, so the venture reduces to a rugged-module integrator of someone else's chip. Its real axis is W/inference on U.S.-designed silicon, not 'no DRAM'.",
+   "score_default": 58.0,
+   "score_capital_constrained": 57.5,
+   "score_moonshot": 56.7,
+   "rank_default": 27,
+   "rank_capital_constrained": 27,
+   "rank_moonshot": 27
   },
   {
    "tmp_id": "B.14",
@@ -5477,7 +5646,14 @@
     "profitable: Matches the card's own model."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "No kill rule applies. Long-term consignment storage of components is an established practice with a standard (IEC 62435; Part 4 covers nitrogen storage), the EOL pain is documented, and the venture needs no fab or die. The field is more crowded than the card says: Semitron and Astute sell nitrogen long-term storage that accepts customer-supplied stock, Micross publishes long-term-storage guidance next to its die banking, and Super Dry/Totech sells dry-storage systems OEMs install in-house (all via search snippets). The card's own model loses money below ~8 OEMs and earns ~27% GM at 10 OEMs ($7.5M under management), so a 50% mid margin overstates years 1-3. Micron's Manassas DDR4 targets the same long-lifecycle buyers (01_LANDSCAPE 0 item 11), which shrinks LTB demand for Micron-designed parts and leaves mainly Samsung/SK hynix DDR4 and DDR3 EOLs."
+   "verify_reason": "No kill rule applies. Long-term consignment storage of components is an established practice with a standard (IEC 62435; Part 4 covers nitrogen storage), the EOL pain is documented, and the venture needs no fab or die. The field is more crowded than the card says: Semitron and Astute sell nitrogen long-term storage that accepts customer-supplied stock, Micross publishes long-term-storage guidance next to its die banking, and Super Dry/Totech sells dry-storage systems OEMs install in-house (all via search snippets). The card's own model loses money below ~8 OEMs and earns ~27% GM at 10 OEMs ($7.5M under management), so a 50% mid margin overstates years 1-3. Micron's Manassas DDR4 targets the same long-lifecycle buyers (01_LANDSCAPE 0 item 11), which shrinks LTB demand for Micron-designed parts and leaves mainly Samsung/SK hynix DDR4 and DDR3 EOLs.",
+   "score_default": 70.0,
+   "score_capital_constrained": 70.8,
+   "score_moonshot": 66.7,
+   "rank_default": 16,
+   "rank_capital_constrained": 16,
+   "rank_moonshot": 13,
+   "deep_dive": "DD2"
   },
   {
    "tmp_id": "C.05",
@@ -5596,7 +5772,14 @@
     "profitable: Matches the corrected glut case."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "This is an existing U.S. trade (TRL 9, T0) under a real price umbrella, so no kill rule applies. Used 64GB DDR4 RDIMMs ran $250-370 over the 12 months to Aug-2026 ($3.9-5.8/GB; amcompute, per p3-audit-11), above the landscape's $2/GB O3 kill line. But the 32GB PC4-2933Y asking prices I found run from $24 to $319 per module (~$0.75-10/GB), so the sold-price median, the O3 kill test, has still not been pulled. The glut claim is too kind: the card's 13-28% glut contribution assumes buy prices reprice instantly, while 01_LANDSCAPE 10.1 puts resale contribution at 1-6% in a glut. The 'serialized test record' moat is thin, because SPD already carries an assembly serial number that decode-dimms prints."
+   "verify_reason": "This is an existing U.S. trade (TRL 9, T0) under a real price umbrella, so no kill rule applies. Used 64GB DDR4 RDIMMs ran $250-370 over the 12 months to Aug-2026 ($3.9-5.8/GB; amcompute, per p3-audit-11), above the landscape's $2/GB O3 kill line. But the 32GB PC4-2933Y asking prices I found run from $24 to $319 per module (~$0.75-10/GB), so the sold-price median, the O3 kill test, has still not been pulled. The glut claim is too kind: the card's 13-28% glut contribution assumes buy prices reprice instantly, while 01_LANDSCAPE 10.1 puts resale contribution at 1-6% in a glut. The 'serialized test record' moat is thin, because SPD already carries an assembly serial number that decode-dimms prints.",
+   "score_default": 71.0,
+   "score_capital_constrained": 75.0,
+   "score_moonshot": 64.2,
+   "rank_default": 14,
+   "rank_capital_constrained": 11,
+   "rank_moonshot": 16,
+   "deep_dive": "DD1"
   },
   {
    "tmp_id": "C.06",
@@ -5834,7 +6017,14 @@
     "who_is_already_doing_this: Adds the advisory incumbents that buyers will hear from first."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The statute and its date are confirmed. FAR Case 2023-008 was proposed in the Federal Register on 2026-02-17, takes effect 2027-12-23 and covers SMIC, CXMT and YMTC plus products that incorporate their chips. Comments closed 2026-04-20, and no final rule was found (via search snippets). But the card's fatal flaw has largely materialized. The proposed rule is a certification (52.240-XX/-YY) after a 'reasonable inquiry', with no third-party audit, no affirmative duty to prove compliance, and a safe harbor for reasonable reliance on supplier certifications under 5949(h). That moves paid demand away from lab attestations for GSA/SEWP resellers, who can rely on OEM certifications, toward OEM/ODM and module suppliers who must actually know the die source. The scan tool is not a moat either: coreboot already reads the DDR4 DRAM-manufacturer bytes 350-351, and decode-dimms prints 'DRAM Manufacturer'."
+   "verify_reason": "The statute and its date are confirmed. FAR Case 2023-008 was proposed in the Federal Register on 2026-02-17, takes effect 2027-12-23 and covers SMIC, CXMT and YMTC plus products that incorporate their chips. Comments closed 2026-04-20, and no final rule was found (via search snippets). But the card's fatal flaw has largely materialized. The proposed rule is a certification (52.240-XX/-YY) after a 'reasonable inquiry', with no third-party audit, no affirmative duty to prove compliance, and a safe harbor for reasonable reliance on supplier certifications under 5949(h). That moves paid demand away from lab attestations for GSA/SEWP resellers, who can rely on OEM certifications, toward OEM/ODM and module suppliers who must actually know the die source. The scan tool is not a moat either: coreboot already reads the DDR4 DRAM-manufacturer bytes 350-351, and decode-dimms prints 'DRAM Manufacturer'.",
+   "score_default": 78.0,
+   "score_capital_constrained": 81.7,
+   "score_moonshot": 76.7,
+   "rank_default": 6,
+   "rank_capital_constrained": 6,
+   "rank_moonshot": 3,
+   "deep_dive": "DD1"
   },
   {
    "tmp_id": "C.08",
@@ -5940,7 +6130,13 @@
     "profitable: Separates possibility from entrant economics."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "Hi-rel DDR MCMs ship today (TRL 9) and are assembled at U.S. OSATs from open KGD, so no kill rule applies, but the flagship SKU already exists. Teledyne e2v's DDR4T04G72 is a 4GB/8GB, 72-bit (64+8 ECC) DDR4 multi-chip package of Micron die in 15x20 mm. It is rated -55 to 125 C at NASA Level 1 / ECSS Class 1 and has shipped since 2020 (via search snippets), alongside Micross, DDC, Mercury, Frontgrade and 3D Plus. The card's DoD-funding evidence is misapplied: DARPA DV017 funds extreme-environment non-volatile memory, not DRAM MCM packaging. The only plausible opening is a cheaper, U.S.-assembled, non-NASA-Level-1 part for NewSpace and rugged industrial buyers, and qualification plus design-in puts first revenue nearer 36 months."
+   "verify_reason": "Hi-rel DDR MCMs ship today (TRL 9) and are assembled at U.S. OSATs from open KGD, so no kill rule applies, but the flagship SKU already exists. Teledyne e2v's DDR4T04G72 is a 4GB/8GB, 72-bit (64+8 ECC) DDR4 multi-chip package of Micron die in 15x20 mm. It is rated -55 to 125 C at NASA Level 1 / ECSS Class 1 and has shipped since 2020 (via search snippets), alongside Micross, DDC, Mercury, Frontgrade and 3D Plus. The card's DoD-funding evidence is misapplied: DARPA DV017 funds extreme-environment non-volatile memory, not DRAM MCM packaging. The only plausible opening is a cheaper, U.S.-assembled, non-NASA-Level-1 part for NewSpace and rugged industrial buyers, and qualification plus design-in puts first revenue nearer 36 months.",
+   "score_default": 57.0,
+   "score_capital_constrained": 53.3,
+   "score_moonshot": 57.5,
+   "rank_default": 30,
+   "rank_capital_constrained": 31,
+   "rank_moonshot": 25
   },
   {
    "tmp_id": "C.09",
@@ -6130,7 +6326,13 @@
     "fatal_flaw: Adds the verified incumbent and the U.S.-content limit."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "This is a real, shipping category (TRL 9) with named buyers and a U.S. EMS path, so no kill rule applies. Crowding, die allocation and a 20-35% GM are for scoring, not for a kill. Two premises are too optimistic. First, rugged CAMM-class supply is not thin. Innodisk launched screw-lock DDR5 and LPDDR5X CAMM2 modules for rugged industrial use in Aug-2025, and congatec lists a -40 to +85 C COM Express module with screw-locked LPCAMM2 (Apr-2026). Second, Manassas makes only DDR4/LPDDR4, so the DDR5 SODIMM and LPCAMM2 SKUs carry imported die. A new entrant also needs authorized die allocation while distributors show zero Micron DDR4 stock (Findchips, May-2026). That pushes first revenue toward ~24 months."
+   "verify_reason": "This is a real, shipping category (TRL 9) with named buyers and a U.S. EMS path, so no kill rule applies. Crowding, die allocation and a 20-35% GM are for scoring, not for a kill. Two premises are too optimistic. First, rugged CAMM-class supply is not thin. Innodisk launched screw-lock DDR5 and LPDDR5X CAMM2 modules for rugged industrial use in Aug-2025, and congatec lists a -40 to +85 C COM Express module with screw-locked LPCAMM2 (Apr-2026). Second, Manassas makes only DDR4/LPDDR4, so the DDR5 SODIMM and LPCAMM2 SKUs carry imported die. A new entrant also needs authorized die allocation while distributors show zero Micron DDR4 stock (Findchips, May-2026). That pushes first revenue toward ~24 months.",
+   "score_default": 58.0,
+   "score_capital_constrained": 57.5,
+   "score_moonshot": 55.0,
+   "rank_default": 26,
+   "rank_capital_constrained": 25,
+   "rank_moonshot": 29
   },
   {
    "tmp_id": "C.11",
@@ -6590,7 +6792,14 @@
     "glut_reason: More specific about what survives."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The buyer pain is real and sourced: allocation goes to strategic OEMs, Nanya's LTAs repriced >60% higher, and authorized DDR4 stock is zero. The agency model needs no fab or die, so no kill rule applies. The core mechanism is STILL-UNVERIFIED: that Winbond, Nanya, Micron or a franchised distributor will honor a pooled LTA from a co-op that holds neither title nor credit. A 2026-11-01 search found no electronics GPO or pooled-demand program, and authorized distributors follow the makers' allocation rules (Suntsu, via snippet). Timing is tighter than the card says. Members are unlikely to pay fees before any supplier LOI exists, and a first pooled allocation at 12-18 months lands in late 2027-2028, as the landscape's price turn begins (F2). Run the card's own kill experiment (three supplier calls) before giving it scoring weight."
+   "verify_reason": "The buyer pain is real and sourced: allocation goes to strategic OEMs, Nanya's LTAs repriced >60% higher, and authorized DDR4 stock is zero. The agency model needs no fab or die, so no kill rule applies. The core mechanism is STILL-UNVERIFIED: that Winbond, Nanya, Micron or a franchised distributor will honor a pooled LTA from a co-op that holds neither title nor credit. A 2026-11-01 search found no electronics GPO or pooled-demand program, and authorized distributors follow the makers' allocation rules (Suntsu, via snippet). Timing is tighter than the card says. Members are unlikely to pay fees before any supplier LOI exists, and a first pooled allocation at 12-18 months lands in late 2027-2028, as the landscape's price turn begins (F2). Run the card's own kill experiment (three supplier calls) before giving it scoring weight.",
+   "score_default": 64.0,
+   "score_capital_constrained": 65.8,
+   "score_moonshot": 65.0,
+   "rank_default": 20,
+   "rank_capital_constrained": 19,
+   "rank_moonshot": 15,
+   "deep_dive": "DD2"
   },
   {
    "branch": "D",
@@ -6742,7 +6951,14 @@
     "fatal_flaw: Adds the security-review gate and the precise scope of the 2026 AWS price actions."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is standard FinOps right-sizing (TRL 9). The value claim rests on primary AWS price-list data and wins on $/GiB-month of rented RAM for a named SaaS buyer, so no kill rule applies. The 'why now' is weaker than it looks: AWS's only 2026 increases hit EC2 Capacity Blocks for ML (~15% in Jan-2026, ~20% from Jul-2026), and other EC2 prices were reported unchanged. That matches D's 92-SKU diff, so this is a 2024-vintage business with no shortage tailwind. Intel closed Granulate in Oct-2024, not 2025 (Globes). A standing read-only IAM role into production AWS triggers vendor security review (SOC 2), which pushes the subscription well past the first consulting audit."
+   "verify_reason": "The mechanism is standard FinOps right-sizing (TRL 9). The value claim rests on primary AWS price-list data and wins on $/GiB-month of rented RAM for a named SaaS buyer, so no kill rule applies. The 'why now' is weaker than it looks: AWS's only 2026 increases hit EC2 Capacity Blocks for ML (~15% in Jan-2026, ~20% from Jul-2026), and other EC2 prices were reported unchanged. That matches D's 92-SKU diff, so this is a 2024-vintage business with no shortage tailwind. Intel closed Granulate in Oct-2024, not 2025 (Globes). A standing read-only IAM role into production AWS triggers vendor security review (SOC 2), which pushes the subscription well past the first consulting audit.",
+   "score_default": 82.0,
+   "score_capital_constrained": 85.0,
+   "score_moonshot": 76.7,
+   "rank_default": 1,
+   "rank_capital_constrained": 1,
+   "rank_moonshot": 1,
+   "deep_dive": "DD4"
   },
   {
    "branch": "D",
@@ -6856,7 +7072,14 @@
     "profitable: The value depends on fleet generation, which the card ignores."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is production-proven. Meta's TMO paper (ASPLOS 2022) reports 20-32% of total memory saved across millions of servers (confirmed via search snippet; the card had it as UNVERIFIED-T), and every component is upstream Linux, so R1 passes. The buyer pain is real: Hetzner raised cloud and dedicated prices by up to 37% from 2026-04-01, naming RAM and NVMe costs. But the card values deferred DRAM at DDR5 prices ($15-32/GB). The named buyers (Proxmox MSPs, regional hosts, university HPC) often run DDR4-era fleets that can add used 64GB DDR4 RDIMMs at $250-370 each ($3.9-5.8/GB, amcompute). For them the reference 10 TB is worth ~$40-59k, close to the card's own glut figure, not $154-328k."
+   "verify_reason": "The mechanism is production-proven. Meta's TMO paper (ASPLOS 2022) reports 20-32% of total memory saved across millions of servers (confirmed via search snippet; the card had it as UNVERIFIED-T), and every component is upstream Linux, so R1 passes. The buyer pain is real: Hetzner raised cloud and dedicated prices by up to 37% from 2026-04-01, naming RAM and NVMe costs. But the card values deferred DRAM at DDR5 prices ($15-32/GB). The named buyers (Proxmox MSPs, regional hosts, university HPC) often run DDR4-era fleets that can add used 64GB DDR4 RDIMMs at $250-370 each ($3.9-5.8/GB, amcompute). For them the reference 10 TB is worth ~$40-59k, close to the card's own glut figure, not $154-328k.",
+   "score_default": 74.0,
+   "score_capital_constrained": 74.2,
+   "score_moonshot": 73.3,
+   "rank_default": 10,
+   "rank_capital_constrained": 13,
+   "rank_moonshot": 8,
+   "deep_dive": "DD4"
   },
   {
    "branch": "D",
@@ -6946,7 +7169,14 @@
     "time_to_first_revenue_text: Matches the corrected month count."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is shipping open source (LMCache, NVIDIA Dynamo KVBM, Mooncake in production at Kimi), so R1 passes and the axis (TTFT and $/token for self-hosted 70B buyers) is real. The card's recurring line, hit-rate/TTFT/$-per-token monitoring, is now the GA product of Tensormesh, the LMCache creators. Tensormesh raised a $20M seed extension on 2026-05-27 (total $24.5M) from NVIDIA NVentures, AMD Ventures and CoreWeave, and advertises real-time cache hit rate, KV usage ratio and token-level cost breakdowns. That is direct, vendor-backed competition, not a rule violation, so it is scored rather than killed. The integration-services gap is real today but closing faster than the card's 12-18 months."
+   "verify_reason": "The mechanism is shipping open source (LMCache, NVIDIA Dynamo KVBM, Mooncake in production at Kimi), so R1 passes and the axis (TTFT and $/token for self-hosted 70B buyers) is real. The card's recurring line, hit-rate/TTFT/$-per-token monitoring, is now the GA product of Tensormesh, the LMCache creators. Tensormesh raised a $20M seed extension on 2026-05-27 (total $24.5M) from NVIDIA NVentures, AMD Ventures and CoreWeave, and advertises real-time cache hit rate, KV usage ratio and token-level cost breakdowns. That is direct, vendor-backed competition, not a rule violation, so it is scored rather than killed. The integration-services gap is real today but closing faster than the card's 12-18 months.",
+   "score_default": 76.0,
+   "score_capital_constrained": 78.3,
+   "score_moonshot": 71.7,
+   "rank_default": 7,
+   "rank_capital_constrained": 8,
+   "rank_moonshot": 9,
+   "deep_dive": "DD4"
   },
   {
    "branch": "D",
@@ -7258,7 +7488,13 @@
     "fatal_flaw: Adds the payback deadline and the subsidized academic alternative."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "This is plain hosting (TRL 9) under a real price umbrella. AWS x2idn.16xlarge costs $4,868/month on-demand (D, primary data) against ~$0.78/GB-month here. The main low-cost competitor's restocking also got dearer: Hetzner raised prices by up to 37% from 2026-04-01, citing RAM/NVMe. The capex input checks out: used 64GB DDR4 RDIMMs ran $250-370 over the 12 months to Aug-2026 (amcompute), i.e. $3.9-5.8/GB, so a 1.5 TB box costs ~$7.5-10.4k. But the card's 55-70% margin is optimistic. With $250 colo, $100/month for IPs and spares, and 36-month depreciation, gross margin is ~47-53% (audit11 calc). It falls to ~11-22% if a glut forces rents down 40% as Hetzner and OVH reverse their increases."
+   "verify_reason": "This is plain hosting (TRL 9) under a real price umbrella. AWS x2idn.16xlarge costs $4,868/month on-demand (D, primary data) against ~$0.78/GB-month here. The main low-cost competitor's restocking also got dearer: Hetzner raised prices by up to 37% from 2026-04-01, citing RAM/NVMe. The capex input checks out: used 64GB DDR4 RDIMMs ran $250-370 over the 12 months to Aug-2026 (amcompute), i.e. $3.9-5.8/GB, so a 1.5 TB box costs ~$7.5-10.4k. But the card's 55-70% margin is optimistic. With $250 colo, $100/month for IPs and spares, and 36-month depreciation, gross margin is ~47-53% (audit11 calc). It falls to ~11-22% if a glut forces rents down 40% as Hetzner and OVH reverse their increases.",
+   "score_default": 72.0,
+   "score_capital_constrained": 72.5,
+   "score_moonshot": 66.7,
+   "rank_default": 13,
+   "rank_capital_constrained": 14,
+   "rank_moonshot": 14
   },
   {
    "branch": "D",
@@ -7358,7 +7594,14 @@
     "profitable: Neither the ceiling nor the glut exposure supports a standalone business. D itself rated it best as a free lead-gen front end for C-64."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The value claim holds. TrendForce reports DRAM supply going first to strategic OEMs, and the Nexar/DigiKey/Mouser APIs plus free spot trackers provide every input, so the product is buildable (TRL 9, T0) and no kill rule applies. The card understates the incumbents. Supplyframe Commodity IQ (Siemens) already sells rolling four-quarter DRAM/SRAM/specialty-memory price and lead-time forecasts, and Counterpoint publishes a monthly Memory Price Tracker and Forecast (both via search snippet), so the gap is price point, not product. An MVP around May 2027 sells into the 4Q26-2Q27 peak and meets the 2028 turn 12-18 months later. The only module that survives a glut (EOL/lifecycle) is the core product of SiliconExpert and Z2Data. Not a duplicate of C-86: this sells one-sided buy/hold alerts, C-86 licenses a two-sided contract index."
+   "verify_reason": "The value claim holds. TrendForce reports DRAM supply going first to strategic OEMs, and the Nexar/DigiKey/Mouser APIs plus free spot trackers provide every input, so the product is buildable (TRL 9, T0) and no kill rule applies. The card understates the incumbents. Supplyframe Commodity IQ (Siemens) already sells rolling four-quarter DRAM/SRAM/specialty-memory price and lead-time forecasts, and Counterpoint publishes a monthly Memory Price Tracker and Forecast (both via search snippet), so the gap is price point, not product. An MVP around May 2027 sells into the 4Q26-2Q27 peak and meets the 2028 turn 12-18 months later. The only module that survives a glut (EOL/lifecycle) is the core product of SiliconExpert and Z2Data. Not a duplicate of C-86: this sells one-sided buy/hold alerts, C-86 licenses a two-sided contract index.",
+   "score_default": 79.0,
+   "score_capital_constrained": 82.5,
+   "score_moonshot": 75.8,
+   "rank_default": 5,
+   "rank_capital_constrained": 4,
+   "rank_moonshot": 5,
+   "deep_dive": "DD2"
   },
   {
    "branch": "D",
@@ -7662,7 +7905,13 @@
     "doable_by_founder: The card's own founder note says credibility needs embedded-Linux expertise."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is upstream and proven (zram/zswap kernel docs, smem PSS; TRL 9). The value claim holds at 2026 prices: LPDDR4X rose 70-75% QoQ in 2Q26 and mobile LTAs sit near $21/GB, so one density step is worth ~$8-21 per unit. It wins on $/unit BOM for the named buyer, and no kill rule applies. The economics are overstated. Audits need an embedded-Linux engineer, which the founder is not, so margin is contractor-labor margin, not 70-85%. Low-density (8Gb/1GB) LPDDR4/DDR4 parts are legacy, under EOL pressure and carry a higher $/GB, so savings are less than linear. Memfault, the closest device-observability SaaS, has been owned by Nordic Semiconductor since Jun-2025 (Nordic news, via search snippet). Revenue is one audit per product line with no proven recurring layer."
+   "verify_reason": "The mechanism is upstream and proven (zram/zswap kernel docs, smem PSS; TRL 9). The value claim holds at 2026 prices: LPDDR4X rose 70-75% QoQ in 2Q26 and mobile LTAs sit near $21/GB, so one density step is worth ~$8-21 per unit. It wins on $/unit BOM for the named buyer, and no kill rule applies. The economics are overstated. Audits need an embedded-Linux engineer, which the founder is not, so margin is contractor-labor margin, not 70-85%. Low-density (8Gb/1GB) LPDDR4/DDR4 parts are legacy, under EOL pressure and carry a higher $/GB, so savings are less than linear. Memfault, the closest device-observability SaaS, has been owned by Nordic Semiconductor since Jun-2025 (Nordic news, via search snippet). Revenue is one audit per product line with no proven recurring layer.",
+   "score_default": 73.0,
+   "score_capital_constrained": 75.0,
+   "score_moonshot": 69.2,
+   "rank_default": 12,
+   "rank_capital_constrained": 12,
+   "rank_moonshot": 11
   },
   {
    "branch": "E",
@@ -7760,7 +8009,14 @@
     "profitable: The customer-side ROI is weak, which limits conversion more than the card admits."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The mechanism is well supported, and TRL 9 holds. rasdaemon logs per-DIMM CE/UE events with row/page thresholds. Predicting DIMM failure from corrected errors is published work: IBM Research 'Memory Loss in Commodity Hardware', arXiv 2212.10441 'First CE Matters', and an SC22 CE-to-UE study, plus the US8468422 patent family (all via search snippet). No kill rule applies, but the value claim is weaker than the card says. On E's own inputs (1.5%/DIMM-yr replacements, 32GB at $4.7/GB), a 2,400-DIMM fleet can self-spare for ~$6.1k/yr plus a one-time ~$7.2k pool, against a $21.6k/yr subscription (~3.6x). Park Place has sold ParkView predictive hardware fault detection with automatic ticketing, bundled into its TPM contracts, since 2017 (company PR, via search snippet). A memory-only predictive subscription may be new, but predictive DIMM replacement already exists inside whole-server TPM."
+   "verify_reason": "The mechanism is well supported, and TRL 9 holds. rasdaemon logs per-DIMM CE/UE events with row/page thresholds. Predicting DIMM failure from corrected errors is published work: IBM Research 'Memory Loss in Commodity Hardware', arXiv 2212.10441 'First CE Matters', and an SC22 CE-to-UE study, plus the US8468422 patent family (all via search snippet). No kill rule applies, but the value claim is weaker than the card says. On E's own inputs (1.5%/DIMM-yr replacements, 32GB at $4.7/GB), a 2,400-DIMM fleet can self-spare for ~$6.1k/yr plus a one-time ~$7.2k pool, against a $21.6k/yr subscription (~3.6x). Park Place has sold ParkView predictive hardware fault detection with automatic ticketing, bundled into its TPM contracts, since 2017 (company PR, via search snippet). A memory-only predictive subscription may be new, but predictive DIMM replacement already exists inside whole-server TPM.",
+   "score_default": 74.0,
+   "score_capital_constrained": 77.5,
+   "score_moonshot": 71.7,
+   "rank_default": 11,
+   "rank_capital_constrained": 10,
+   "rank_moonshot": 10,
+   "deep_dive": "DD1"
   },
   {
    "branch": "E",
@@ -7871,7 +8127,14 @@
     "profitable: Unchanged substance; names what 'becoming the reference' requires."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The legal hook is real (FAR 16.203-1 and 52.216-4, opened by E). The pain is documented: a May-2026 Lewis Silkin note says most IT contracts' price-variation clauses were written for 3-5% annual moves, not 35-50% jumps (via search snippet). BLS publishes no DRAM-specific PPI; FRED surfaced only the semiconductor-wide and IC-package series. A memory index therefore fills a real gap, and no kill rule applies. The card misses a federal adoption barrier. DLAD 16.203-4 tells contracting officers to pick the most appropriate BLS index, coordinate with the pricing office, and document why each BLS index is unsuitable before using any other (acquisition.gov, via search snippet). Federal adoption is therefore a slow, case-by-case pricing-office decision, and commercial counterparties still default to TrendForce. An index built from distributor list quotes also carries basis risk against the contract prices integrators actually pay."
+   "verify_reason": "The legal hook is real (FAR 16.203-1 and 52.216-4, opened by E). The pain is documented: a May-2026 Lewis Silkin note says most IT contracts' price-variation clauses were written for 3-5% annual moves, not 35-50% jumps (via search snippet). BLS publishes no DRAM-specific PPI; FRED surfaced only the semiconductor-wide and IC-package series. A memory index therefore fills a real gap, and no kill rule applies. The card misses a federal adoption barrier. DLAD 16.203-4 tells contracting officers to pick the most appropriate BLS index, coordinate with the pricing office, and document why each BLS index is unsuitable before using any other (acquisition.gov, via search snippet). Federal adoption is therefore a slow, case-by-case pricing-office decision, and commercial counterparties still default to TrendForce. An index built from distributor list quotes also carries basis risk against the contract prices integrators actually pay.",
+   "score_default": 75.0,
+   "score_capital_constrained": 78.3,
+   "score_moonshot": 74.2,
+   "rank_default": 8,
+   "rank_capital_constrained": 9,
+   "rank_moonshot": 7,
+   "deep_dive": "DD2"
   },
   {
    "branch": "E",
@@ -8360,7 +8623,13 @@
     "fatal_flaw: Names the specific incumbent coverage of DRAM."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "No kill rule applies. The DFARS mechanism is verified: this auditor opened 252.246-7008 and 246.870-2, which require contractors to buy first from OCMs, authorized suppliers or 'authorized aftermarket manufacturers'. Rochester proves the model at scale: the world's largest wafer bank (>10B die, expanding to ~30B), 'authorized by over 70' OCMs, and DRAM from SDRAM to DDR5 plus LPDDR4x through an Intelligent Memory partnership (via search snippets). So the business is possible and profitable, but for incumbents. The card's own model sells 90% of a bank in years 3-8, which pushes first revenue out, and whether any Winbond, ESMT, Etron or Nanya OCM would authorize a startup is STILL-UNVERIFIED. Score it low on capital, time to revenue, competition and founder fit rather than killing it."
+   "verify_reason": "No kill rule applies. The DFARS mechanism is verified: this auditor opened 252.246-7008 and 246.870-2, which require contractors to buy first from OCMs, authorized suppliers or 'authorized aftermarket manufacturers'. Rochester proves the model at scale: the world's largest wafer bank (>10B die, expanding to ~30B), 'authorized by over 70' OCMs, and DRAM from SDRAM to DDR5 plus LPDDR4x through an Intelligent Memory partnership (via search snippets). So the business is possible and profitable, but for incumbents. The card's own model sells 90% of a bank in years 3-8, which pushes first revenue out, and whether any Winbond, ESMT, Etron or Nanya OCM would authorize a startup is STILL-UNVERIFIED. Score it low on capital, time to revenue, competition and founder fit rather than killing it.",
+   "score_default": 57.0,
+   "score_capital_constrained": 53.3,
+   "score_moonshot": 59.2,
+   "rank_default": 28,
+   "rank_capital_constrained": 30,
+   "rank_moonshot": 23
   },
   {
    "branch": "E",
@@ -8480,7 +8749,13 @@
     "profitable: Was 'marginal'. The model's own low-volume rows are negative."
    ],
    "verify_verdict": "KEEP_WITH_CORRECTIONS",
-   "verify_reason": "The demand mechanism is verified (opened by this auditor). DFARS 252.246-7008(c)(2) makes the contractor 'responsible for inspection, testing, and authentication' when traceability fails, and FAR 52.246-26 treats used-as-new as counterfeit. The methods are routine (TRL 9), so no kill rule applies. The market is crowded, though, including inside the card's own East Coast corridor. SMT Corp in Sandy Hook CT holds ANAB ISO/IEC 17025 + AS6171 HRL2, is DLA QTSL-recognized and expanded to the UK in Dec 2025. Micross Clearwater FL is 17025/AS6171/AS6081 accredited with a RAM tester and offers full-lot AS6171 in about 2 weeks. A2 Global (FL), Vyrian (Houston) and White Horse Labs (Cleveland, DLA-approved) also compete (all via search snippets). Margin and time to revenue are optimistic: the card's 41% margin assumes 60 lots/month, 1.7x breakeven, while its own model shows -34% at 20 lots/month and 22% at 40."
+   "verify_reason": "The demand mechanism is verified (opened by this auditor). DFARS 252.246-7008(c)(2) makes the contractor 'responsible for inspection, testing, and authentication' when traceability fails, and FAR 52.246-26 treats used-as-new as counterfeit. The methods are routine (TRL 9), so no kill rule applies. The market is crowded, though, including inside the card's own East Coast corridor. SMT Corp in Sandy Hook CT holds ANAB ISO/IEC 17025 + AS6171 HRL2, is DLA QTSL-recognized and expanded to the UK in Dec 2025. Micross Clearwater FL is 17025/AS6171/AS6081 accredited with a RAM tester and offers full-lot AS6171 in about 2 weeks. A2 Global (FL), Vyrian (Houston) and White Horse Labs (Cleveland, DLA-approved) also compete (all via search snippets). Margin and time to revenue are optimistic: the card's 41% margin assumes 60 lots/month, 1.7x breakeven, while its own model shows -34% at 20 lots/month and 22% at 40.",
+   "score_default": 60.0,
+   "score_capital_constrained": 59.2,
+   "score_moonshot": 56.7,
+   "rank_default": 23,
+   "rank_capital_constrained": 23,
+   "rank_moonshot": 26
   },
   {
    "branch": "E",
