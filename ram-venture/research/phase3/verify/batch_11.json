@@ -1,0 +1,540 @@
+{
+ "batch": "11",
+ "auditor": "p3-audit-11",
+ "verdicts": [
+  {
+   "id": "C-73",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is standard FinOps right-sizing (TRL 9). The value claim rests on primary AWS price-list data and wins on $/GiB-month of rented RAM for a named SaaS buyer, so no kill rule applies. The 'why now' is weaker than it looks: AWS's only 2026 increases hit EC2 Capacity Blocks for ML (~15% in Jan-2026, ~20% from Jul-2026), and other EC2 prices were reported unchanged. That matches D's 92-SKU diff, so this is a 2024-vintage business with no shortage tailwind. Intel closed Granulate in Oct-2024, not 2025 (Globes). A standing read-only IAM role into production AWS triggers vendor security review (SOC 2), which pushes the subscription well past the first consulting audit.",
+   "evidence_check": [
+    {
+     "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/20261029175634/us-east-1/index.csv",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "D opened this primary file. My search snippets corroborate it indirectly: tech-insider says the Jul-2026 AWS change hit Capacity Blocks only and other EC2 prices are unchanged."
+    },
+    {
+     "url": "https://github.com/robusta-dev/krr",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "D opened it. The Sysdig 18%-unused figure is second-hand (a vendor quoted in a README)."
+    },
+    {
+     "url": "https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/1287-in-place-update-pod-resources/kep.yaml",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "D opened it. In-place resize going GA in v1.35 matches my own knowledge."
+    },
+    {
+     "url": "https://github.com/castai",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Shows only that CAST AI is active, which is all the card claims."
+    },
+    {
+     "url": "https://tech-insider.org/aws-ec2-capacity-blocks-price-hike-2026",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Capacity Blocks +~20% from 2026-07-01; AWS says other EC2 prices are unchanged."
+    },
+    {
+     "url": "https://en.globes.co.il/en/article-intel-closes-granulate-lays-off-dozens-1001492599",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "Granulate closure confirmed, but the date is Oct-2024 (support through Q1-2025), not 2025 as the card says."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "CAST AI, ScaleOps, StormForge (CloudBolt), Kubecost/OpenCost (IBM [UNVERIFIED-T]), PerfectScale (DoiT [UNVERIFIED-T]), Sedai, Densify, plus free tools: AWS Compute Optimizer, Robusta KRR, K8s VPA, Goldilocks. Intel closed Granulate (Tiber App-Level Optimization) in Oct-2024 after failing to find a buyer for a ~$650M acquisition (Globes, via search snippet).",
+     "why": "Granulate's closure is now confirmed and dated (Oct-2024, not 2025). It is a warning sign: a $650M acquirer could not make standalone optimization pay. The IBM and DoiT deals were still unconfirmed after my search."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "AWS's 2026 increases hit only EC2 Capacity Blocks for ML (+~15% Jan-2026, +~20% Jul-2026), and other EC2 prices were reported unchanged, matching D's 92-SKU diff. Savings therefore do not depend on DRAM prices, so a glut changes nothing. The flip side is that the shortage gives no new 'why now'. Analyst forecasts of 5-10% memory-instance increases are unconfirmed.",
+     "why": "Adds the verified 2026 AWS price actions so the glut test rests on dated facts."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 6,
+     "why": "The founder has a day job, and Series A-C SaaS buyers put a vendor with standing read access to production AWS through security review. The first audit has to be done as NDA consulting, so 4 months is optimistic."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "4-8 months to a first fixed-fee audit ($3-8k), done as NDA consulting in the founder's network. A recurring monitoring subscription needs SOC 2-style assurance before buyers grant a standing IAM role, so expect it at ~9-12 months.",
+     "why": "Separates one-off consulting revenue from the recurring revenue the founder wants."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "60-80% (the audit phase is founder labor; the software subscription runs 80%+)",
+     "why": "Early revenue is services delivered with the founder's own hours, not software margin."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 70,
+     "why": "Blends services-heavy year 1 with a SaaS tail."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Crowded category with a free floor (Compute Optimizer, KRR, VPA, OpenCost). The DRAM shortage never reached general EC2 list prices (only ML Capacity Blocks rose), so buyers feel no new urgency. A report-only product churns once the savings are booked, and standing read access to customer AWS accounts gates the subscription behind SOC 2 (cost and time not modeled).",
+     "why": "Adds the security-review gate and the precise scope of the 2026 AWS price actions."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "AWS raises GPU prices 15% on a Saturday",
+     "url": "https://www.theregister.com/2026/01/05/aws_price_increase/",
+     "type": "news",
+     "date": "2026-01-05",
+     "shows": "AWS's Jan-2026 increase hit EC2 Capacity Blocks for ML (GPU reservations), not general EC2 (via search snippet)."
+    },
+    {
+     "title": "AWS EC2 Capacity Blocks price hike 2026",
+     "url": "https://tech-insider.org/aws-ec2-capacity-blocks-price-hike-2026",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "Capacity Blocks up ~20% from 2026-07-01; AWS says other EC2 prices are unchanged (via search snippet)."
+    },
+    {
+     "title": "Intel closes Granulate, lays off dozens",
+     "url": "https://en.globes.co.il/en/article-intel-closes-granulate-lays-off-dozens-1001492599",
+     "type": "news",
+     "date": "2024-10",
+     "shows": "Intel shut Granulate (Tiber App-Level Optimization) after failing to sell it (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-74",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is production-proven. Meta's TMO paper (ASPLOS 2022) reports 20-32% of total memory saved across millions of servers (confirmed via search snippet; the card had it as UNVERIFIED-T), and every component is upstream Linux, so R1 passes. The buyer pain is real: Hetzner raised cloud and dedicated prices by up to 37% from 2026-04-01, naming RAM and NVMe costs. But the card values deferred DRAM at DDR5 prices ($15-32/GB). The named buyers (Proxmox MSPs, regional hosts, university HPC) often run DDR4-era fleets that can add used 64GB DDR4 RDIMMs at $250-370 each ($3.9-5.8/GB, amcompute). For them the reference 10 TB is worth ~$40-59k, close to the card's own glut figure, not $154-328k.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/facebookincubator/senpai",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "D opened it. It is the open-source userspace half of TMO; the mechanism is not in doubt."
+    },
+    {
+     "url": "https://par.nsf.gov/servlets/purl/10332477",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "TMO, ASPLOS 2022 (DOI 10.1145/3503222.3507731): 'saves 20-32% of the total memory' across millions of servers; upstreamed into Linux."
+    },
+    {
+     "url": "https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/2400-node-swap/kep.yaml",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "D opened it. Swap GA in v1.34 matches my own knowledge (LimitedSwap, Burstable pods only)."
+    },
+    {
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "DDR5 RDIMM contract prices. They apply to DDR5 fleets, not the DDR4 fleets many of the named buyers run."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "why_it_could_work",
+     "new_value": "On-prem buyers pay for DRAM directly: DDR5 RDIMMs cost $14-16/GB at contract and ~$32/GB street, and used 64GB DDR4 RDIMMs cost $250-370 ($3.9-5.8/GB, amcompute 12-month data to Aug-2026). Take a 200-server x 512GB fleet with 20% cold memory at ~2:1 compression: it frees ~10 TB. That defers $154k (DDR5 contract) to $328k (DDR5 street) of purchases, but only ~$40-59k on a DDR4 fleet topped up with used DIMMs. Kubernetes container swap went GA in v1.34. Meta's TMO saves 20-32% of total memory fleet-wide (ASPLOS 2022, confirmed via snippet). Hetzner's 2026 price increases (up to 37% from Apr-1, citing RAM/NVMe) show hosting providers feel the cost.",
+     "why": "Confirms the TMO number and adds the DDR4-fleet value, which cuts the headline savings 3-8x for much of the named buyer set."
+    },
+    {
+     "field": "capital_tier",
+     "new_value": "T1",
+     "why": "The card itself requires a kernel-savvy contractor. ~300 h at $150-200/h is ≈$45-60k, plus test hosts, which crosses the $50k T0 line unless a co-founder works for equity [ESTIMATE]."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 12,
+     "why": "Path: 3-4 months to a guarded agent with a contractor, a 2-week volunteer-host kill test, then a 60-90-day paid pilot. Conservative ops buyers will not pay before seeing SLO data, and the founder is part-time."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "9-15 months: build the guarded agent, run the volunteer-host SLO test, then a paid pilot with a Proxmox MSP or regional host ($500-2k/month for 50-200 nodes).",
+     "why": "Matches the corrected month count."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "75-85%",
+     "why": "Per-node SaaS that changes production memory behavior carries incident support and on-call cost."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 80,
+     "why": "Same reason."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "The deferred-DRAM value of the reference fleet falls from ~$154k to ~$61k at -60% for DDR5 fleets. DDR4 fleets that can buy used RDIMMs at $3.9-5.8/GB are already near that level (~$40-59k) today. Density value remains but becomes a nice-to-have, and the price story behind the sale disappears.",
+     "why": "Adds the DDR4 case."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal - real savings mainly for DDR5 fleets; DDR4 fleets can add used RDIMMs at ~$4-6/GB, buyers can DIY with free upstream features, and the pain halves in a glut",
+     "why": "The value depends on fleet generation, which the card ignores."
+    },
+    {
+     "field": "founder_fit_note",
+     "new_value": "Marginal. The control plane is easy for the founder; safe Linux memory-management tuning needs a kernel-savvy contractor or co-founder.",
+     "why": "Gendered reference to the founder removed (they/them)."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "TMO: Transparent Memory Offloading in Datacenters (ASPLOS 2022, Meta)",
+     "url": "https://par.nsf.gov/servlets/purl/10332477",
+     "type": "conference",
+     "date": "2022-02-28",
+     "shows": "Saves 20-32% of total memory across millions of Meta servers; PSI-based offloading upstreamed into Linux (via search snippet)."
+    },
+    {
+     "title": "Hetzner increases prices from April 1",
+     "url": "https://heise.de/-11185981",
+     "type": "news",
+     "date": "2026-02",
+     "shows": "Hetzner announced increases of up to 37% on cloud, dedicated and object storage from 2026-04-01; setup fees rose earlier, citing RAM and NVMe costs (via search snippet)."
+    },
+    {
+     "title": "DDR4 64GB RDIMM server memory appraisal",
+     "url": "https://www.amcompute.com/appraisals/ddr4-64gb-rdimm",
+     "type": "industry",
+     "date": "2026-08",
+     "shows": "Used 64GB DDR4 RDIMM ~$250-370 over the last 12 months, up ~285% YoY (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-75",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is shipping open source (LMCache, NVIDIA Dynamo KVBM, Mooncake in production at Kimi), so R1 passes and the axis (TTFT and $/token for self-hosted 70B buyers) is real. The card's recurring line, hit-rate/TTFT/$-per-token monitoring, is now the GA product of Tensormesh, the LMCache creators. Tensormesh raised a $20M seed extension on 2026-05-27 (total $24.5M) from NVIDIA NVentures, AMD Ventures and CoreWeave, and advertises real-time cache hit rate, KV usage ratio and token-level cost breakdowns. That is direct, vendor-backed competition, not a rule violation, so it is scored rather than killed. The integration-services gap is real today but closing faster than the card's 12-18 months.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/LMCache/LMCache",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "D opened it. Snippets confirm LMCache is Apache-2.0 with ~8-12k stars."
+    },
+    {
+     "url": "https://github.com/ai-dynamo/dynamo",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "D opened it. The 2x TTFT figure is a vendor/partner claim (Baseten)."
+    },
+    {
+     "url": "https://github.com/kvcache-ai/Mooncake",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "D opened it. Kimi's '75% more requests' is a vendor figure."
+    },
+    {
+     "url": "https://pypi.org/pypi/tensormesh/json",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Understated. Tensormesh is not just an SDK: it is a $24.5M-funded company with a GA inference product (snippets below)."
+    },
+    {
+     "url": "https://pulse2.com/tensormesh-20-million-raised-to-scale-kv-caching-infrastructure-for-enterprise-ai-inference/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "$20M raised, total $24.5M; Tensormesh Inference GA; real-time cache hit rate, KV usage ratio and token-level cost breakdowns."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Tensormesh (the LMCache creators): $4.5M seed Oct-2025 plus a $20M extension 2026-05-27 from NVIDIA NVentures, AMD Ventures and CoreWeave; Tensormesh Inference is GA with cache-hit-rate, KV-usage and token-cost dashboards. Also NVIDIA (Dynamo/KVBM, free), Moonshot (Mooncake), Red Hat llm-d [UNVERIFIED-T], WEKA Augmented Memory Grid, Pliops, VAST [UNVERIFIED-T], Phison aiDAPTIV+ (flash KV tier, 2026), Kove:SDM (pitches remote-DRAM KV tiering), and hosted inference providers (Baseten, Together, Fireworks).",
+     "why": "Tensormesh's 2026 funding and GA product are verified via snippets. They directly overlap the card's monitoring revenue line."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "The LMCache company itself (Tensormesh, $24.5M, backed by NVIDIA/AMD/CoreWeave) sells the exact hit-rate/$-per-token observability this card wants as recurring revenue. NVIDIA and the vLLM/SGLang maintainers keep folding KV tiering into defaults, so the integration gap closes within ~12 months. Buyers are paying for GPU-infra credibility the founder does not have.",
+     "why": "Names the funded direct competitor instead of a generic trend."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal-to-no - services margin only. The SaaS monitoring line competes with Tensormesh Inference (GA May-2026, NVIDIA/AMD/CoreWeave-backed) and free NVIDIA tooling",
+     "why": "The recurring line is already a funded vendor's product."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 12,
+     "why": "The founder has no GPU-serving track record. They need a public benchmark on rented GPUs (~$5-15k) and a reference deployment before a $15-40k engagement closes, while working part-time."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "9-15 months: publish a vLLM+LMCache/Dynamo benchmark on rented 8xH100, land one discounted reference deployment, then a $15-40k integration engagement and a monitoring retainer.",
+     "why": "Matches the corrected month count."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Tensormesh: $20 Million Raised To Scale KV Caching Infrastructure For Enterprise AI Inference",
+     "url": "https://pulse2.com/tensormesh-20-million-raised-to-scale-kv-caching-infrastructure-for-enterprise-ai-inference/",
+     "type": "news",
+     "date": "2026-05-27",
+     "shows": "$20M extension (total $24.5M) from AMD Ventures, CoreWeave, NVentures and others; Tensormesh Inference GA with cache-hit and token-cost visibility (via search snippet)."
+    },
+    {
+     "title": "Tensormesh taps Nvidia, AMD, CoreWeave funding to fix LLM memory problems",
+     "url": "https://siliconangle.com/2026/05/27/tensormesh-taps-nvidia-amd-coreweave-funding-fix-llm-memory-problems/",
+     "type": "news",
+     "date": "2026-05-27",
+     "shows": "Same round, independent coverage (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-76",
+   "verdict": "KILL",
+   "kill_rule": "DUPLICATE",
+   "reason": "This is the same idea as C-50 (Rack-Scale CXL Pooling Appliance): pool DRAM across hosts through a CXL 2.0/3.x switch (XConn class) plus orchestration software to recover stranded memory, sold on fleet $/GB. C-76 is the software-license packaging aimed at an HPC buyer, which is a business-model lens, not a separate concept. Its 'RDMA today' path is exactly Kove:SDM, which is alive and selling: Redis/Valkey benchmarks announced Sep-2025 and a Supermicro solution brief. So the card's 'category is dead, prior entrants pivoted' premise is half wrong: MemVerge pivoted, Kove did not. Upstream Linux still scores CXL Dynamic Capacity and multi-host sharing [0], and the card's own verdicts are possible: marginal, profitable: no, doable: no.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/MemVerge",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows that MemVerge pivoted (D opened it). It does not show the category is dead, because Kove is still active."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Via B: DCD and multi-host sharing scored [0] upstream."
+    },
+    {
+     "url": "https://www.storagenewsletter.com/2025/09/12/software-defined-memory-kove-announces-benchmarks/",
+     "status": "snippet",
+     "supports": "no",
+     "note": "Contradicts the card's 'pioneers left' framing: Kove announced SDM benchmarks in Sep-2025 (vendor claims of Redis/Valkey on remote memory beating local DRAM in most cases)."
+    },
+    {
+     "url": "https://www.Supermicro.com/solutions/Solution_Brief_KoveSDM.pdf",
+     "status": "snippet",
+     "supports": "no",
+     "note": "A Supermicro Kove:SDM solution brief exists, so the incumbent has an OEM channel."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Kove (Kove:SDM, Chicago): active, with Sep-2025 Redis/Valkey benchmarks, a Supermicro solution brief, and AI-infra conference sponsorship. MemVerge moved to AI/GPU cluster management. Also Liqid, GigaIO, Unifabrix, Panmnesia, and free upstream Linux tiering (TPP, DAMON, weighted interleave).",
+     "why": "Kove's status is verified as alive via snippets. The category is occupied, not dead."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no - one prior entrant (MemVerge) pivoted out, and the survivor (Kove) already holds the RDMA software-defined-memory position with OEM distribution; ~7-10% stranded-memory savings do not carry CXL switch and integration cost",
+     "why": "The card's 'prior entrants pivoted out' is only half true."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Software-Defined Memory: Kove Announces Benchmarks",
+     "url": "https://www.storagenewsletter.com/2025/09/12/software-defined-memory-kove-announces-benchmarks/",
+     "type": "news",
+     "date": "2025-09-12",
+     "shows": "Kove:SDM active in 2025; vendor benchmarks for Redis/Valkey on pooled remote memory (via search snippet)."
+    },
+    {
+     "title": "Supermicro Solution Brief: KoveSDM",
+     "url": "https://www.Supermicro.com/solutions/Solution_Brief_KoveSDM.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Kove:SDM sold through a Supermicro solution brief (via search result title/snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-77",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The pitch is $/GB, with NAND standing in for DRAM, to in-memory analytics users. But the same capacity at NAND prices is already free through Linux swap plus zswap writeback on the same NVMe (and Kubernetes LimitedSwap, GA in v1.34), so a paid license wins no axis against the buyer's real alternative. Meanwhile NAND reads (~50-100 us) run ~1000x slower than DRAM (~100 ns). The card's TRL 9 belongs to Intel IMDT, which ran on Optane media that Intel wrote off ($559M impairment, Q2-2022). The one place flash-as-memory has traction in 2026, AI working memory and KV cache, is being productized by Phison (aiDAPTIV+ bundled with its own Pascari SSDs; GTC Mar-2026, Computex 2026) and is covered on the hardware side by C-46 and C-53.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/zswap.rst",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows the free upstream alternative. That supports the kill, not the product."
+    },
+    {
+     "url": "https://github.com/kubernetes/website/blob/main/content/en/docs/concepts/cluster-administration/swap-memory-management.md",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Swap caveats; again evidence for the free baseline."
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Via A2 (sec.gov is blocked). The Optane $559M impairment supports the 'media is gone' point."
+    },
+    {
+     "url": "https://www.storagenewsletter.com/2026/03/17/nvidia-gtc-2026-phison-rescales-local-ai-inferencing-with-flash-memory-expansion/",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "Phison is shipping flash-as-AI-memory-tier, a vendor-bundled product for a different buyer. It shows the one live niche is taken."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Intel IMDT (Optane-only, end-of-life with Optane [UNVERIFIED-T]), ScaleMP (acquired by SAP [UNVERIFIED-T]), free Linux swap + zswap writeback, Phison aiDAPTIV+ (SSD-backed AI memory extension bundled with Pascari SSDs; KV-cache extension Jan-2026, GTC Mar-2026), and Kove:SDM (remote DRAM, not flash).",
+     "why": "Adds the 2026 vendor actually selling flash-as-memory."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes on Optane media (IMDT 2017-2022); on NAND only as swap-class paging, which Linux already does for free",
+     "why": "TRL 9 applied to Optane-backed IMDT, not to the NAND version this card proposes."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Nvidia GTC 2026: Phison Rescales Local AI Inferencing with Flash Memory Expansion",
+     "url": "https://www.storagenewsletter.com/2026/03/17/nvidia-gtc-2026-phison-rescales-local-ai-inferencing-with-flash-memory-expansion/",
+     "type": "news",
+     "date": "2026-03-17",
+     "shows": "aiDAPTIV extends AI working memory across GPU memory, system RAM and Pascari flash (vendor claims; via search snippet)."
+    },
+    {
+     "title": "Phison extends aiDAPTIV+ to boost AI inference on PCs",
+     "url": "https://www.blocksandfiles.com/ai-ml/2026/01/07/phison-extends-aidaptiv-to-boost-ai-inference-on-pcs/4090377",
+     "type": "news",
+     "date": "2026-01-07",
+     "shows": "aiDAPTIV+ moved from small-scale training to KV-cache workloads (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-78",
+   "verdict": "KILL",
+   "kill_rule": "R1-UNSUPPORTED",
+   "reason": "The core value claim, an app that 'adds RAM' beyond what the OS already does, has no evidence. Windows 10+ memory compression, macOS compressed memory (since 10.9) and Android/ChromeOS zram already do this by default [training knowledge]. The only mechanism source cited (Linux zram docs) documents the OS feature, not a third-party gain. The card itself marks rule1_status UNSUPPORTED and wins_axis 'none real'. Selling it would mean a misleading consumer claim with the SoftRAM 95 FTC precedent [UNVERIFIED-T], and it dies the moment 32GB kits fall back toward $100-180.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/blockdev/zram.rst",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "Shows an OS-native mechanism. It is evidence against a paid add-on, not for one."
+    },
+    {
+     "url": "https://www.digitalcitizen.life/ddr5-ram-prices-surge-in-2026-as-32gb-kits-reach-450-amid-global-memory-shortage/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows demand-side pain (32GB kit ~$450), not product efficacy."
+    },
+    {
+     "url": "https://www.techradar.com/pro/good-news-ram-prices-seem-to-have-finally-stabilized-bad-news-its-probably-because-memory-prices-are-so-high-that-its-forcing-most-of-us-to-give-up-buying-anything",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Demand destruction only."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "founder_fit_note",
+     "new_value": "Technically trivial for the founder, but they should not build it.",
+     "why": "Gendered reference to the founder removed (they/them)."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-79",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "This is plain hosting (TRL 9) under a real price umbrella. AWS x2idn.16xlarge costs $4,868/month on-demand (D, primary data) against ~$0.78/GB-month here. The main low-cost competitor's restocking also got dearer: Hetzner raised prices by up to 37% from 2026-04-01, citing RAM/NVMe. The capex input checks out: used 64GB DDR4 RDIMMs ran $250-370 over the 12 months to Aug-2026 (amcompute), i.e. $3.9-5.8/GB, so a 1.5 TB box costs ~$7.5-10.4k. But the card's 55-70% margin is optimistic. With $250 colo, $100/month for IPs and spares, and 36-month depreciation, gross margin is ~47-53% (audit11 calc). It falls to ~11-22% if a glut forces rents down 40% as Hetzner and OVH reverse their increases.",
+   "evidence_check": [
+    {
+     "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/20261029175634/us-east-1/index.csv",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "D opened it. The x2idn price is unchanged, and snippets confirm 2026 AWS increases were limited to Capacity Blocks. Savings Plan and Spot discounts on x2idn were not checked, so the umbrella is narrower than on-demand implies."
+    },
+    {
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "This is chip spot pricing, not used-RDIMM module pricing. Replaced by amcompute module appraisal data."
+    },
+    {
+     "url": "https://www.tweaktown.com/news/112541/even-ddr4-ram-is-not-safe-from-the-rampocalypse-prices-rose-over-50-percent-in-q3-2026/index.html?type=News",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Context only."
+    },
+    {
+     "url": "https://www.amcompute.com/appraisals/ddr4-64gb-rdimm",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Used 64GB DDR4 RDIMM ~$250-370 (12 months to Aug-2026) = $3.9-5.8/GB, inside the card's $3-8/GB."
+    },
+    {
+     "url": "https://heise.de/-11185981",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "Hetzner increases of up to 37% from Apr-1-2026. Secondary blogs report further waves and very large RAM add-on increases [UNVERIFIED]."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "45-55% at $1,200/month rent with 3-year depreciation; ~10-25% if a glut cuts rents 40%",
+     "why": "audit11 calc: capex $7.5-10.4k at verified used-RDIMM prices, depreciation $208-288/month, colo $250, misc $100, so COGS is $558-638 per $1,200."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 50,
+     "why": "Midpoint of the computed 47-53%."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "AWS charges $6.669/h for 1 TiB (x2idn.16xlarge, unchanged since 2025) = $4,868/month, or $4.75/GiB-month on-demand. A 1.5 TB box (24 x 64GB used DDR4 RDIMM at $250-370 each, amcompute) costs ~$7.5-10.4k. Renting at $1,200/month against $250 colo and ~$100/month for IPs and spares pays back in ~9-12 months. Hetzner's 2026 increases (up to 37%, citing RAM/NVMe) raise the low-cost competitor's restocking cost while DRAM stays tight.",
+     "why": "Replaces the $3-8/GB assumption with verified module pricing and adds the competitor price movement."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "The AWS on-demand umbrella ($4.75/GiB-month) did not move in the spike and will not move in a glut. But the real competitors are Hetzner/OVH-class hosts, which raised prices in 2026 on RAM costs and will restock cheaply and cut prices when DRAM falls. A 40% rent cut drops gross margin to ~11-22%. DDR4 bought at $3.9-5.8/GB in 2026 is worth a fraction of that in 2028, and the DDR4-era boxes age out on power and CPU.",
+     "why": "The card compared only against AWS on-demand. The glut hits through the cheap-host competitors and through stranded DDR4 capex."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Hetzner (dedicated and auction servers; 2026 increases of up to 37% citing RAM/NVMe) and OVHcloud dedicated servers (US: VA/OR), PhoenixNAP, Latitude.sh, Cherry Servers, Vultr bare metal, used-server dealers. For academic buyers: campus HPC centers and NSF ACCESS allocations provide large-memory nodes free or subsidized [UNVERIFIED-T]. AWS x2idn on Savings Plans/Spot is well below on-demand [UNVERIFIED].",
+     "why": "The named genomics/academic buyer often has free or subsidized alternatives, and the AWS comparison should not stop at on-demand."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Commodity hosting against established low-cost players, with a hardware-failure and on-call burden incompatible with a day job (remote-hands fees eat margin). Capex is bought at peak DDR4 prices: each box must pay back before end-2027 (landscape F2), and a 2028 glut compresses rents while Hetzner/OVH restock cheaply. Academic buyers often have free campus or ACCESS big-memory nodes.",
+     "why": "Adds the payback deadline and the subsidized academic alternative."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "DDR4 64GB RDIMM server memory appraisal",
+     "url": "https://www.amcompute.com/appraisals/ddr4-64gb-rdimm",
+     "type": "industry",
+     "date": "2026-08",
+     "shows": "Used 64GB DDR4 RDIMM ~$250-370 over the last 12 months, up ~285% YoY (via search snippet)."
+    },
+    {
+     "title": "Hetzner increases prices from April 1",
+     "url": "https://heise.de/-11185981",
+     "type": "news",
+     "date": "2026-02",
+     "shows": "Up to 37% on cloud, dedicated and object storage from 2026-04-01, citing RAM/NVMe costs (via search snippet)."
+    },
+    {
+     "title": "Hetzner Price Increase 2026 (Capital & Compute)",
+     "url": "https://capitalandcompute.net/blog/hetzner-price-increase-2026/",
+     "type": "blog",
+     "date": "2026",
+     "shows": "Hetzner raised prices in several 2026 waves (via search snippet; per-SKU figures UNVERIFIED)."
+    }
+   ]
+  }
+ ]
+}

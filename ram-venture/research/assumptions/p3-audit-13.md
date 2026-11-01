@@ -1,0 +1,8 @@
+# Assumptions: p3-audit-13 (Phase 3 kill pass, batch 13: C-87 to C-92)
+
+- [p3-audit-13] C-87 is killed under R1-UNSUPPORTED because its value claim (that hedgers will trade a DRAM derivative) is contradicted by failed precedents (SGX 2003, Semicon Exchange, SFX, CBOT/NYMEX/PSE studies). The SGX contract's actual fate is unconfirmed — basis: Risk.net, Mondo Visione and EDN search snippets; no 2026 DRAM price contract surfaced.
+- [p3-audit-13] C-88 and C-89 are killed as NOT-A-VENTURE because their P&L is a pure function of the DRAM price path (a short call and a long spot position) — basis: e_estimates sections 2-3; Black-76 ATM premium reproduced by hand (2N(0.22)-1 = 17.4% before discounting).
+- [p3-audit-13] C-90 is killed under R4 because the lessor has no allocation and a higher cost of capital than the GPU-backed lenders that already finance neocloud servers, memory included — basis: 2026 CoreWeave, Lambda, Nebius and Sharon AI facilities (search snippets); the card's 14% lessor IRR.
+- [p3-audit-13] C-90's "15% gross margin" was an IRR. Re-estimated at ~8% net spread from the e_estimates section 4 inputs ($1,600 buy, $48.83 x 36, $260 residual) and an assumed ~10% startup facility cost — basis: [ESTIMATE].
+- [p3-audit-13] C-91 and C-92 are kept because founder-fit, capital and crowding are scoring matters, not kill rules (task instruction). Whether a Taiwanese specialty OCM would authorize a startup as an aftermarket manufacturer is STILL-UNVERIFIED.
+- [p3-audit-13] C-92's planning volume is 20-40 lots/month in years 1-2 (mid GM 22%), not 60 — basis: entrenched accredited incumbents (SMT Corp CT, Micross FL) and e_estimates section 6 volume rows.

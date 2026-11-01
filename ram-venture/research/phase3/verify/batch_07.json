@@ -1,0 +1,654 @@
+{
+ "batch": "07",
+ "auditor": "p3-audit-07",
+ "verdicts": [
+  {
+   "id": "C-44",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "No kill rule holds once the card's sell-vs-reuse model is fixed. It priced the owner's DDR4 at chip spot ($25/GB in 4Q26, $12 in the glut), which 01_LANDSCAPE 10.4 #4 bars as a base case. Used 64GB DDR4 RDIMMs actually sold for $250-370 (~$3.9-5.8/GB, amcompute through Aug-2026), and refurbished 512 GB lots for $2,300-5,500 (~$4.5-10.7/GB). At those prices card ($2.34/GB) plus resale beats a $20.31/GB DDR5 RDIMM by ~$7-14/GB in 4Q26 and by ~$4.3-5.3/GB in the glut; reuse loses only at a 2023-style trough (-$0.3 to -0.8/GB) [ESTIMATE, audit07 calc]. The controller exists: Marvell Structera X 2404 runs 12 DDR4-3200 DIMMs (3 DPC) behind CXL 2.0 x16 with four inline LZ4 engines and has sampled since Q4 2024 (via search snippet). Marvell sells it to hyperscalers, though, so the real flaws are controller access and qualifying mixed used DIMMs, which are scored next.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/vtess/Pond",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Repo not opened. The paper result (7% DRAM saving at 16 sockets, emulated on Azure traces) was confirmed through the arXiv 2203.00241 snippet. It covers pooling, not DDR4 reuse."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened via git sparse clone (HEAD 2026-10-31): DCD [0], multi-host sharing [0], fabrics/G-FAM [0], switch CCI [0], LD hotplug [1], switch enumeration [2]."
+    },
+    {
+     "url": "https://github.com/skhynix/hmsdk",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Branch B opened it. Upstream weighted interleave (v6.9) and DAMON (v6.11) were not re-checked."
+    },
+    {
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "DDR4 8Gb chip spot ($44/GB) is the wrong asset for valuing a retired x4 RDIMM. Chip spot must not be the base case (01_LANDSCAPE 10.4 #4)."
+    },
+    {
+     "url": "https://www.trendforce.com/price_dram.html",
+     "status": "unreachable",
+     "supports": "partial",
+     "note": "Host on the session block list; not attempted. Host blocked. Chip spot, not used-module resale."
+    },
+    {
+     "url": "https://finance.technews.tw/2026/10/13/the-shortage-of-memory-chips-may-continue-for-another-two-years/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "DDR4/DDR5 chip inversion. Irrelevant to used-RDIMM resale."
+    },
+    {
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical 2023-trough anchor in 01_LANDSCAPE 4.3."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "why_it_could_work",
+     "new_value": "Reuse beats buying DDR5 for any owner at used-RDIMM resale values, not only at hyperscaler scale. Card $2.34/GB plus recovered DDR4 $4-11/GB = $6.3-13.3/GB against a $20.31/GB DDR5 RDIMM (4Q26 canonical), a +$7-14/GB advantage. In the glut it is $2.84-3.84 against $8.12, a +$4.3-5.3/GB advantage. Structera X 2404 runs 12 DDR4-3200 DIMMs (3 DPC) with inline LZ4 (sampling since Q4 2024).",
+     "why": "B's model used DDR4 chip spot ($25/$12 per GB) as the opportunity cost of a used x4 RDIMM. Used 64GB DDR4 RDIMMs sold for $250-370 (amcompute, Aug-2026) and refurbished 512 GB lots for $2,300-5,500 (PCSP)."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal: the buyer case is positive (+$7-14/GB in 4Q26, +$4-5/GB in the glut), but the vendor keeps only 15-30% of a ~$1.8k card (~$270-540 per card), so profit needs thousands of cards a year",
+     "why": "The card's 'computed negative in every scenario' result comes from the chip-spot error above."
+    },
+    {
+     "field": "survives_glut",
+     "new_value": "partially",
+     "why": "Reuse still wins ~$4.3-5.3/GB at the $8.12/GB glut RDIMM deck with recovered DDR4 at $0.5-1.5/GB (01_LANDSCAPE 5.2). It loses only at the 2023-style severe deck."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "At glut prices (DDR5 RDIMM $8.12/user-GB; recovered DDR4 $0.5-1.5/GB) reuse still saves ~$4.3-5.3/GB. At a 2023-style trough ($2.32/GB) it loses $0.3-0.8/GB. The larger glut risk is that DDR5 allocation frees up and buyers stop tolerating a CXL latency tier, so volumes shrink even though the unit case holds.",
+     "why": "Recomputed with module resale values instead of chip spot."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Controller access and qualification, not unit economics. Marvell Structera X sells to hyperscalers that already run in-house DDR4 reuse, and Microchip SMC 2000 DDR4 support is UNVERIFIED. A small vendor must qualify mixed used DIMMs at 3 DPC and pass CXL compliance on a T2 budget. The buyer set (tier-2 operators with >=10k retired DDR4 RDIMMs and DDR5-only new servers) is narrow, and selling those DIMMs into the hot recert market (C-62) is the easy alternative.",
+     "why": "The previous fatal flaw rested on the chip-spot opportunity cost."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Marvell Structera X 2404 [VERIFIED via search snippet: DDR4-3200, 12 DIMMs at 3 DPC, four inline LZ4 engines, CXL 2.0 x16, sampling Q4 2024]; Microchip SMC 2000 [UNVERIFIED-T]; Astera Labs Leo [UNVERIFIED-T]; Penguin Solutions/SMART CXL add-in cards (CXA-8F2W, 1 TB class; DDR type UNVERIFIED); Microsoft/Meta in-house DDR4 reuse [UNVERIFIED-T]",
+     "why": "Structera X DDR4 support and inline compression confirmed (Marvell 2024-07-30 release and product brief)."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Marvell Introduces Breakthrough Structera CXL Product Line",
+     "url": "https://investor.marvell.com/2024-07-30-Marvell-Introduces-Breakthrough-Structera-CXL-Product-Line-to-Address-Server-Memory-Bandwidth-and-Capacity-Challenges-in-Cloud-Data-Centers",
+     "type": "company-IR",
+     "date": "2024-07-30",
+     "shows": "(via search snippet) Structera X 2404 supports DDR4 at 3 DPC (12 DIMMs per controller), with four inline LZ4 engines at full DDR4-3200 bandwidth; CXL 2.0 x16 or x8+x8 dual host; samples in Q4 2024."
+    },
+    {
+     "title": "Marvell Structera X 2404 memory expansion controller product brief",
+     "url": "https://www.marvell.com/content/dam/marvell/en/public-collateral/assets/marvell-structera-x-2404-memory-expansion-controller-product-brief.pdf",
+     "type": "company-IR",
+     "date": "2024",
+     "shows": "(via search snippet) Product brief for the DDR4 CXL expander controller."
+    },
+    {
+     "title": "DDR4 64GB RDIMM server memory appraisal",
+     "url": "https://www.amcompute.com/appraisals/ddr4-64gb-rdimm",
+     "type": "market-research",
+     "date": "2026-08",
+     "shows": "CROSS-REF (sources/v3-backend.jsonl, search snippet). Used 64GB DDR4 RDIMMs sold for ~$250-370 over the trailing 12 months (~$3.9-5.8/GB)."
+    },
+    {
+     "title": "Refurbished DDR4 server memory 2026: server RAM price crisis",
+     "url": "https://pcserverandparts.com/news/refurbished-ddr4-server-memory-2026-server-ram-price-crisis/",
+     "type": "blog",
+     "date": "2026",
+     "shows": "CROSS-REF (sources/v3-backend.jsonl, search snippet). 512 GB of refurbished DDR4 costs $2,300-5,500 in modules (~$4.5-10.7/GB)."
+    }
+   ]
+  },
+  {
+   "id": "C-45",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The value claim is evidenced and no rule kills the card. Mooncake (FAST '25) reports that Kimi handles 75% more requests within SLO by pooling KV in DRAM across nodes, and free per-server host-DRAM offload does not give that benefit. The exact product already ships, though. Penguin Solutions launched the MemoryAI KV cache server on 2026-03-16: dual EPYC, 3 TB DDR5 plus up to 8x1 TB SMART CXA-8F2W CXL cards (11 TB), Dynamo-compatible (via search snippet). Penguin owns the SMART CXL card line a new entrant would buy from. NVIDIA's BlueField-4 ICMS (CES 2026, renamed CMX/STX, shipping 2H26 via Dell, HPE, IBM, VAST, WEKA and others) takes warm KV. Over 2x400G RDMA (~100 GB/s), 8 Gen5 SSDs (~12 GB/s each by B's own 1.79 s/20 GiB figure) reload a context about as fast, so DRAM's edge narrows to hot, high-churn KV.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/kvcache-ai/Mooncake",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "'75% more requests' matches the FAST '25 abstract [training knowledge]. Branch B opened the README."
+    },
+    {
+     "url": "https://www.usenix.org/system/files/fast25-qin.pdf",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Peer-reviewed production design. PDF not opened."
+    },
+    {
+     "url": "https://github.com/LMCache/LMCache/blob/dev/docs/source/kv_cache/storage_backends/dax.rst",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Branch B opened it (CXL /dev/dax arena)."
+    },
+    {
+     "url": "https://github.com/vllm-project/vllm/blob/main/docs/features/kv_offloading_usage.md",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Shows host DRAM is the free per-server alternative."
+    },
+    {
+     "url": "https://github.com/ai-dynamo/dynamo",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Corroborated by Blocks & Files 2026-01-06 (NVIDIA standardizes KV offload to NVMe) and the NVIDIA BlueField-4 release (snippets)."
+    },
+    {
+     "url": "https://github.com/meta-llama/llama-models",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "320 KiB/token arithmetic re-derived: 2x80x8x128x2 B."
+    },
+    {
+     "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "MLA arithmetic consistent."
+    },
+    {
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Same source 01_LANDSCAPE 4.3 uses for the canonical $1,300 RDIMM deck."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Penguin Solutions MemoryAI KV cache server [VERIFIED via snippet: launched 2026-03-16 at GTC; dual EPYC, 3 TB DDR5 + up to 8x1 TB SMART CXA-8F2W CXL AICs = 11 TB; Dynamo-compatible; part of OriginAI]; NVIDIA BlueField-4 ICMS -> CMX/STX reference (CES 2026; GTC Mar-2026; ships 2H26; Dell, HPE, IBM, VAST, WEKA, DDN, Pure, Supermicro, Nutanix, Hitachi Vantara, Cloudian, AIC) [VERIFIED via snippet]; WEKA; VAST; Pliops; Hammerspace; Moonshot/Mooncake in-house; Tensormesh",
+     "why": "The card had Penguin and NVIDIA ICMS as UNVERIFIED-T. Both are confirmed, and Penguin sells this exact appliance."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "The identical product already ships from Penguin Solutions (MemoryAI, Mar-2026), and Penguin owns the SMART CXL card line, so a new entrant buys its key part from a competitor and has no cost or capability edge. Beyond that, it is a commodity server plus open-source software (Mooncake/LMCache) that OEM reference designs replicate. A 4 TB node ties up ~$80-130k of DRAM at 4Q26 prices for reseller margin, and NVIDIA's BlueField-4 flash tier plus 8-SSD nodes match its reload bandwidth over 2x400G for warm KV.",
+     "why": "Verified incumbent product plus the network-bound reload arithmetic from B's own numbers."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no for a new entrant: Penguin sells the same box with captive CXL card supply, leaving 10-20% reseller margin on ~$100k of DRAM per node; the subscription attach is unproven",
+     "why": "Competition with an incumbent vertically integrated into the CXL module."
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "no: ~$100k DRAM working capital per node exceeds T0, and neocloud buyers want GPU-infrastructure credibility the founder lacks (the same gap noted on C-75)",
+     "why": "Working capital and channel. Prepayment from unknown vendors is unlikely when Penguin and the OEMs ship the same box."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 15,
+     "why": "A first design win against Penguin MemoryAI and OEM boxes takes longer than 12 months for an unknown integrator."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "12-18 months: demo node, then 1-2 design wins against Penguin MemoryAI and OEM reference boxes",
+     "why": "See above."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "10-20% hardware (CXL modules bought at a competitor's or memory maker's price); 60%+ on a subscription if one ever attaches",
+     "why": "Penguin integrates its own SMART AICs, which caps an integrator's markup."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 15,
+     "why": "Midpoint of the corrected hardware range."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Penguin Solutions Introduces Industry's First Production-Ready CXL-Based KV Cache Server",
+     "url": "https://www.businesswire.com/news/home/20260316416248/en/penguin-solutions-introduces-industrys-first-production-ready-cxl-based-kv-cache-server",
+     "type": "news",
+     "date": "2026-03-16",
+     "shows": "(via search snippet) MemoryAI KV cache server: Altus 4U, dual AMD EPYC, up to 11 TB (3 TB DDR5 + 8x1 TB SMART CXA-8F2W CXL AICs); Dynamo-compatible; vendor claims of 3.8x vs RDMA and 10x vs NVMe are unverified."
+    },
+    {
+     "title": "NVIDIA BlueField-4 Powers New Class of AI-Native Storage Infrastructure",
+     "url": "https://nvidianews.nvidia.com/news/nvidia-bluefield-4-powers-new-class-of-ai-native-storage-infrastructure-for-the-next-frontier-of-ai",
+     "type": "company-IR",
+     "date": "2026-01",
+     "shows": "(via search snippet) Inference Context Memory Storage platform on BlueField-4; early builders AIC, Cloudian, DDN, Dell, HPE, Hitachi Vantara, IBM, Nutanix, Pure Storage, Supermicro, VAST, WEKA."
+    },
+    {
+     "title": "Nvidia standardizes GPU cluster KV cache offload to NVMe SSDs",
+     "url": "https://blocksandfiles.com/2026/01/06/nvidia-standardizes-gpu-cluster-kv-cache-offload-to-nvme-ssds/",
+     "type": "news",
+     "date": "2026-01-06",
+     "shows": "(via search snippet) BlueField-4 and ICMS expected to ship 2H26. Dell, IBM, VAST and WEKA said they will support it."
+    }
+   ]
+  },
+  {
+   "id": "C-46",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's named axes ($/GB-month of warm KV, TTFT on long-context reuse) come from NAND flash, not from the card, and the buyer already gets them free. Dynamo KVBM's GDS disk tier, LMCache and 3FS run on plain NVMe, and the card's own fatal_flaw concedes they 'capture most of the benefit without a special card'. The one hardware-specific gain, an offloaded KV engine, already ships in Pliops' custom XDP Pro1 ASIC plus SSD array, integrated with vLLM and Dynamo (StorageReview; Blocks & Files 2025-05-14), and an FPGA card loses to that ASIC on BOM and power. NVIDIA has since made the flash KV tier a reference architecture (BlueField-4 ICMS at CES 2026, renamed CMX/STX at GTC 2026, shipping 2H26 with 12+ storage vendors). Against every alternative its buyer can actually get, free or purchasable, the FPGA card wins no axis. That is the same test that killed C-77.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/ai-dynamo/dynamo",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Corroborated by Blocks & Files 2026-01-06 (NVIDIA standardizes KV offload to NVMe) and the NVIDIA BlueField-4 release (snippets)."
+    },
+    {
+     "url": "https://siliconangle.com/2025/11/20/nvidia-weka-kv-cache-solution-ai-inferencing-sc25/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with WEKA being a named NVIDIA BlueField-4 storage partner (snippet)."
+    },
+    {
+     "url": "https://github.com/LMCache/LMCache",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Free tiering to SSD and 3FS. It supports the kill: a free alternative delivers the card's axis."
+    },
+    {
+     "url": "https://tech-insider.org/dram-record-high-nand-flat-21-months-october-2026/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "NAND price trend. Does not affect the verdict."
+    },
+    {
+     "url": "https://www.trendforce.com/presscenter/news/20260730-13158.html",
+     "status": "unreachable",
+     "supports": "unknown",
+     "note": "Host on the session block list; not attempted. Host blocked."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "what_it_is",
+     "new_value": "Pliops XDP LightningAI uses a custom XDP (Pro1) ASIC card plus an SSD array served over NVMe-oF, not an FPGA, so an FPGA-based U.S. entrant starts a silicon generation behind on cost and power.",
+     "why": "StorageReview / Blocks & Files snippets."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Pliops XDP LightningAI [VERIFIED via snippet: ASIC + SSDs, vLLM and Dynamo integration, Dell Tech World 2025 showcase]; NVIDIA BlueField-4 ICMS -> CMX/STX [VERIFIED via snippet; ships 2H26] with Dell, HPE, IBM, VAST, WEKA, DDN, Pure, Supermicro, Nutanix, Hitachi Vantara, Cloudian, AIC; IBM Storage Scale + Dynamo; DeepSeek 3FS; LMCache/Dynamo KVBM on plain NVMe (free)",
+     "why": "Pliops and NVIDIA ICMS were UNVERIFIED-T."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 35,
+     "why": "An FPGA BOM priced against an ASIC incumbent and a free software alternative cannot hold 50%."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "FPGA prototype, NIXL plugin and design-ins against a 12-vendor NVIDIA reference ecosystem. This is at the 36-month ceiling."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no: a late FPGA entrant against a shipping ASIC, NVIDIA's reference architecture and free NVMe tiering",
+     "why": "Verified competitive set."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Pliops XDP LightningAI supercharges KV cache to optimize LLM inference with NVIDIA Dynamo",
+     "url": "https://www.storagereview.com/review/pliops-xdp-lightningai-supercharges-kv-cache-to-optimize-llm-inference-with-nvidia-dynamo",
+     "type": "news",
+     "date": "2025",
+     "shows": "(via search snippet) Dedicated appliance with a PCIe card powered by a custom XDP ASIC and an array of SSDs; FusIOnX KV Store over NVMe-oF; Dynamo integration."
+    },
+    {
+     "title": "Pliops bypasses HBM limits for GPU servers",
+     "url": "https://blocksandfiles.com/2025/05/14/pliops-bypasses-hbm-limits-for-gpu-servers/",
+     "type": "news",
+     "date": "2025-05-14",
+     "shows": "(via search snippet) Pliops KV-cache memory tier below HBM is a shipping product."
+    },
+    {
+     "title": "Nvidia standardizes GPU cluster KV cache offload to NVMe SSDs",
+     "url": "https://blocksandfiles.com/2026/01/06/nvidia-standardizes-gpu-cluster-kv-cache-offload-to-nvme-ssds/",
+     "type": "news",
+     "date": "2026-01-06",
+     "shows": "(via search snippet) NVIDIA ICMS on BlueField-4 standardizes flash KV offload; ships 2H26."
+    }
+   ]
+  },
+  {
+   "id": "C-47",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is real and further along than the card's TRL says. IBM MXT shipped hardware main-memory compression in 2001 [training knowledge]. ZeroPoint licensed DenseMem CXL Type-3 compression IP (2-4x claimed, implemented in TSMC 5nm) to an unnamed 'major global semiconductor manufacturer' in Mar-2024. Marvell's Structera X 2404 puts four inline LZ4 engines in a merchant CXL controller, sampling Q4 2024 (both via search snippet). The card keeps one axis against its buyer's real alternatives, so R4 does not strictly hold: in the 4Q26 deck 2x on 512 GB saves ~$10.4k of DRAM against a $3-8k FPGA card, at cache-line latency rather than zswap's page-fault path, and no GA Structera-based card sold to mid-size operators was found. Everything else is worse than stated: a merchant ASIC does the same job, ZeroPoint states 24-36 month sales cycles, and at the $8.12 glut deck the saving (~$4.2k) no longer covers the card.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/crypto/iaa/iaa-crypto.rst",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Hardware DEFLATE under zswap ships in Xeons. This is the free alternative, which shows the mechanism and also undercuts the venture."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/zswap.rst",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Free OS-level compression."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened via git sparse clone (HEAD 2026-10-31): DCD [0], multi-host sharing [0], fabrics/G-FAM [0], switch CCI [0], LD hotplug [1], switch enumeration [2]."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "trl",
+     "new_value": 7,
+     "why": "Inline CXL memory compression is in merchant silicon sampling (Structera X, Q4 2024) and licensed into 5nm SoCs (DenseMem). Only the venture's own FPGA card is at TRL 5-6."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Marvell Structera X 2404 four inline LZ4 engines [VERIFIED via snippet; sampling Q4 2024] (compression on other Structera parts [UNVERIFIED-T]); ZeroPoint DenseMem [VERIFIED via snippet: licensed to an unnamed major semiconductor maker Mar-2024, TSMC 5nm, licenses IP and drivers to SoC makers]; Intel IAA + zswap (upstream); Meta TMO / Google zswap far memory (software); Rambus (CXL controller IP)",
+     "why": "Marvell inline LZ4 and ZeroPoint licensing were UNVERIFIED-T."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "The job is already done in merchant silicon (Structera X with four inline LZ4 engines) and in licensed ASIC IP. ZeroPoint licenses to SoC makers, so the venture would be a downstream FPGA integrator of IP its competitors put in ASICs at lower cost and power. Free CPU compression (IAA + zswap) covers colder pages. The hottest 'need more RAM' data (FP8/INT4 weights, KV) barely compresses, and at glut prices the DRAM saved (~$4.2k per 512 GB card) no longer pays for a $3-8k FPGA BOM.",
+     "why": "Verified merchant and licensor activity."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "ZeroPoint states 24-36 month sales processes before the FPGA card and operator qualification even start."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "30-42 months: IP license (24-36 month licensor cycle), FPGA card, CXL compliance, qualification with one cache operator",
+     "why": "See above."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "20-40% (FPGA BOM $3-8k against ~$10.4k of DRAM saved in 4Q26; priced against Structera-based ASIC cards)",
+     "why": "An FPGA card cannot price at the full DRAM saving when an ASIC alternative exists."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 30,
+     "why": "Midpoint of the corrected range."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "At the canonical glut deck ($8.12/GB RDIMM), 2x on 512 GB saves ~$4.2k of DRAM, which no longer covers a $3-8k FPGA card plus the latency penalty.",
+     "why": "Recomputed on the 01_LANDSCAPE 4.3 deck instead of $8-13/GB."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "ZeroPoint Technologies Signs Global Customer to Bring Hardware-Accelerated Compression to Hyperscale Data Centers",
+     "url": "https://us.design-reuse.com/news/55960/zeropoint-hardware-accelerated-compression-hyperscale-data-centers.html",
+     "type": "news",
+     "date": "2024-03-26",
+     "shows": "(via search snippet) DenseMem CXL Type-3 compression IP licensed to an unnamed 'major global semiconductor manufacturer'."
+    },
+    {
+     "title": "ZeroPoint aims to tackle AI memory bottlenecks with compression IP",
+     "url": "https://www.blocksandfiles.com/ai-ml/2024/09/09/zeropoint-aims-to-tackle-ai-memory-bottlenecks-with-compression-ip/1617379",
+     "type": "news",
+     "date": "2024-09-09",
+     "shows": "(via search snippet) ZeroPoint earns royalties licensing IP cores and drivers to SoC customers; 24-36 month sales processes."
+    },
+    {
+     "title": "ZeroPoint's DenseMem compression saves power in the datacenter",
+     "url": "https://www.eenewseurope.com/en/zeropoints-densemem-compression-saves-power-in-the-datacenter/",
+     "type": "news",
+     "date": "2024",
+     "shows": "(via search snippet) DenseMem gives 2-4x effective capacity on CXL Type-3; implemented in TSMC 5nm; vendor claims ~50% better perf/W."
+    },
+    {
+     "title": "Marvell Introduces Breakthrough Structera CXL Product Line",
+     "url": "https://investor.marvell.com/2024-07-30-Marvell-Introduces-Breakthrough-Structera-CXL-Product-Line-to-Address-Server-Memory-Bandwidth-and-Capacity-Challenges-in-Cloud-Data-Centers",
+     "type": "company-IR",
+     "date": "2024-07-30",
+     "shows": "(via search snippet) Inline LZ4 compression engines in merchant CXL memory controllers; sampling Q4 2024."
+    }
+   ]
+  },
+  {
+   "id": "C-48",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The core claim checks out in the KTransformers repo (HEAD 2026-10-28, opened via git). Kimi-K2.5 needs >=600 GB RAM, 48 GB VRAM and an AVX512F CPU. DeepSeek-V4-Flash needs >=200 GB plus one RTX 5090 for '20+ tok/s' decode. The axis ($/GB of model-resident memory, ~$20/GB DDR5 vs ~$180-250/GB HBM-in-GPU) is real for the named regulated buyer, so no rule applies. Performance and BOM are optimistic. KTransformers' dual-socket mode keeps a weight copy per NUMA node (DeepSeek-R1: 382 GB single-socket vs 1 TB dual-socket), and measured decode gained only 29% (8.73 -> 11.26 tok/s on 2x Xeon 6454S). Scaled to 12-channel DDR5-6400, that is ~20 tok/s on one socket and ~26 on two, not 23/46, and the two-socket figure needs ~1.5 TB of DRAM ($31k at $20.31/GB). Fast CPU prefill (255-286 tok/s) depends on Intel AMX, which EPYC lacks, so long RAG prompts are slow on the card's AMD platform.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/kvcache-ai/ktransformers",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Sparse git clone 2026-11-01 (HEAD 2026-10-28): doc/en/Kimi-K2.5.md (>=600 GB RAM, 2x4090 48 GB, AVX512F), DeepSeek-V4-Flash.md (>=200 GB, 1x RTX 5090, 20+ tok/s), DeepseekR1_V3_tutorial.md (382 GB vs 1 TB dual-socket; 8.73/11.26 tok/s decode)."
+    },
+    {
+     "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "KV arithmetic only. Not central here."
+    },
+    {
+     "url": "https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "HBM die price is irrelevant because HBM can only be bought inside GPUs. The $180-250/GB GPU figure is a B estimate."
+    },
+    {
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Same source 01_LANDSCAPE 4.3 uses for the canonical $1,300 RDIMM deck."
+    },
+    {
+     "url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Street price (~$32/GB) is above the canonical $20.31/GB contract deck. Use the deck."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "why_it_could_work",
+     "new_value": "Decode estimate from measured KTransformers data, not the roofline: DeepSeek-R1 Q4 ran 8.73 tok/s (1 socket) and 11.26 tok/s (2 sockets) on Xeon 6454S with 8ch DDR5-4800. Scaled to 12ch DDR5-6400 and 32B active, that is ~20 tok/s (1 socket) and ~26 tok/s (2 sockets, which needs a second weight copy and ~1.5 TB). DRAM: 768 GB = $15.6k and 1.5 TB = $31.2k at the $20.31/GB 4Q26 deck; $6.2k/$12.5k in the glut.",
+     "why": "The card's ~46 tok/s 'NUMA-aware' figure ignores KTransformers' per-NUMA weight duplication (382 GB vs 1 TB in the R1 tutorial) and the measured 29% dual-socket gain."
+    },
+    {
+     "field": "what_it_is",
+     "new_value": "Prefer 1-2 socket Intel Xeon 6 (AMX; 12ch DDR5-6400/MRDIMM) or accept slow CPU prefill on EPYC. Size 1.5 TB if Kimi-K2.5 must run in dual-socket mode, or 768 GB and run single-socket.",
+     "why": "KTransformers' 255-286 tok/s prefill comes from its AMX kernel, and AMX is Intel-only (doc/en/AMX.md)."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Commodity integration with thin hardware margin. NVIDIA DGX Station, Apple unified-memory machines and big OEMs can undercut it. Measured-scaled decode is ~20-26 tok/s single-stream, and the published Kimi-K2.5 multi-user reference used 8x L20 GPUs for ~24.5 tok/s decode at 48-way concurrency (via snippet, unverified). A 1-2 GPU box therefore serves only a handful of concurrent users, and long RAG prompts wait on CPU prefill. The only moat is service quality. It is a reseller business, not a memory venture.",
+     "why": "Concurrency and prefill limits from the KTransformers data."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 10,
+     "why": "Regulated buyers (CMMC/HIPAA/legal) run 3-6 month security and procurement reviews after a demo."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "8-14 months: demo unit and published benchmark, then build-to-order with 50% deposits after buyer security review",
+     "why": "See above."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "18-25% hardware (the card's own model prices at 22%); 60-80% on a subscription whose attach rate is unproven",
+     "why": "The blended 25-35% assumed an attach rate with no evidence."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 22,
+     "why": "Matches the card's own BOM model."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "KTransformers Kimi-K2.5 tutorial (hardware requirements)",
+     "url": "https://github.com/kvcache-ai/ktransformers/blob/main/doc/en/Kimi-K2.5.md",
+     "type": "other",
+     "date": "2026-10",
+     "shows": "Opened via git. Minimum: 2x RTX 4090 (48 GB VRAM), AVX512F x86 CPU, >=600 GB system RAM, ~600 GB native INT4 weights."
+    },
+    {
+     "title": "KTransformers DeepSeek-V4-Flash tutorial",
+     "url": "https://github.com/kvcache-ai/ktransformers/blob/main/doc/en/DeepSeek-V4-Flash.md",
+     "type": "other",
+     "date": "2026-10",
+     "shows": "Opened via git. 1x RTX 5090 (32 GB), >=200 GB RAM; decode 20+ tok/s on a single RTX 5090."
+    },
+    {
+     "title": "KTransformers DeepSeek-R1/V3 tutorial",
+     "url": "https://github.com/kvcache-ai/ktransformers/blob/main/doc/en/DeepseekR1_V3_tutorial.md",
+     "type": "other",
+     "date": "2025-02",
+     "shows": "Opened via git. Single socket 382 GB DRAM vs dual socket 1 TB DRAM. Decode 8.73 (32 cores) -> 11.26 (2x32 cores) -> 13.69 tok/s. Prefill 54 -> 74 -> 255-286 tok/s with the AMX kernel, on Xeon Gold 6454S with 8x DDR5-4800 per socket."
+    },
+    {
+     "title": "Kimi-K2.5 deploy guidance (Hugging Face mirror)",
+     "url": "https://huggingface.co/SinterForge/Kimi-K2.5/blob/main/docs/deploy_guidance.md",
+     "type": "other",
+     "date": "2026",
+     "shows": "(via search snippet; third-party mirror) KTransformers+SGLang on 8x L20 + 2x Xeon 6454S: ~640 tok/s prefill, ~24.5 tok/s decode at 48-way concurrency."
+    }
+   ]
+  },
+  {
+   "id": "C-49",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The hardware ships (Samsung CMM-D, Micron CZ-series, SK hynix CMM) and tiering is upstream, so R1 holds. The node does win TB and bandwidth per socket above the native slot ceiling, so R4 does not strictly apply. The premise is overstated, though. A 2-socket EPYC 9005 already takes up to ~6 TB per socket at 2 DIMMs per channel [UNVERIFIED-T], so 4-socket boxes are not the alternative below ~6-12 TB per node. Below that ceiling a CXL module carries the same DRAM plus a controller, so it loses on $/TB and adds latency. Penguin Solutions already sells CXL memory-expansion servers (product page seen in search) next to Supermicro, Dell, HPE and Lenovo. Buyer and hardware overlap C-97 (CXL tiering practice) and C-79 (TB-RAM rental); this card is the VAR packaging of the same opportunity, and the scorer should weigh it that way.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/skhynix/hmsdk",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Branch B opened it. Upstream weighted interleave (v6.9) and DAMON (v6.11) were not re-checked."
+    },
+    {
+     "url": "https://github.com/OpenMPDK/SMDK",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Branch B reports the last commit was 2024-12-09, so Samsung's SDK is stale. Upstream tiering is the real stack."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened via git sparse clone (HEAD 2026-10-31): DCD [0], multi-host sharing [0], fabrics/G-FAM [0], switch CCI [0], LD hotplug [1], switch enumeration [2]."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "wins_axis",
+     "new_value": "TB and memory bandwidth per socket above the native slot ceiling (~3 TB/socket at 1 DPC with 256 GB RDIMMs; ~6 TB at 2 DPC on EPYC 9005 [UNVERIFIED-T]). Below that, plain RDIMMs are cheaper per TB and lower-latency.",
+     "why": "The '$/TB vs 4-socket' framing is outdated. CXL modules carry the same DRAM plus a controller."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "CXL adds capacity and bandwidth beyond the 1-DPC slot ceiling without dropping to 2-DPC speeds, and weighted interleave (Linux v6.9) uses the extra bandwidth. Single-host Type-3 enumeration works in mainline Linux. It matters only for jobs above ~3-6 TB per socket, or for bandwidth-bound single-socket nodes.",
+     "why": "Narrows the claim to where it is true."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Penguin Solutions CXL memory expansion servers (product page seen via search; Altus 4U line, SMART CXL AICs); Supermicro, Dell, HPE, Lenovo CXL-ready platforms; Colfax, Silicon Mechanics; AWS/Azure high-memory instances [UNVERIFIED-T]",
+     "why": "Penguin product line seen in search results."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 15,
+     "why": "An unknown VAR selling through EDA/genomics channels against incumbent OEM relationships."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "12-18 months: two validated reference configs, then first sale through EDA/genomics channels against OEM incumbents",
+     "why": "See above."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Penguin Solutions: CXL memory expansion servers",
+     "url": "https://www.penguinsolutions.com/products/cxl-memory-expansion-servers",
+     "type": "company-IR",
+     "date": "2026",
+     "shows": "(via search snippet; title and URL only) Penguin markets CXL memory-expansion servers built on SMART CXL add-in cards."
+    }
+   ]
+  },
+  {
+   "id": "C-50",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's only axis is fleet $/GB from recovering stranded memory, and its own literature says a switch-based design loses money on that axis. Pond (ASPLOS '23) gets ~7% gross DRAM saving at 16 sockets (7-9% on the poster), from emulation on Azure traces, and uses an external memory controller specifically to avoid switch latency. Octopus (Azure plus universities, arXiv 2501.09020) finds CXL switches produce a net server-cost increase and only 3-5.4% net saving for the best switchless topology. Google's HotNets '23 'A Case Against CXL Memory Pooling' argues cabling and switching cost more than multiplexing saves (all via search snippet). For a 16-socket, 12 TB pod, 7-9% is ~$17-22k at the 4Q26 deck and ~$7-9k in the glut, before switch, controllers, cables and a 1-5% slowdown [ESTIMATE]. Mainline Linux (opened, 2026-10-31) still scores Dynamic Capacity, multi-host sharing and fabrics [0], so the dynamic reallocation the saving depends on is unsupported. C-76 was already killed as a duplicate of this card, so this verdict covers the pooling idea in both forms.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/vtess/Pond",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Repo not opened. The paper result (7% DRAM saving at 16 sockets, emulated on Azure traces) was confirmed through the arXiv 2203.00241 snippet. It covers pooling, not DDR4 reuse."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened via git sparse clone (HEAD 2026-10-31): DCD [0], multi-host sharing [0], fabrics/G-FAM [0], switch CCI [0], LD hotplug [1], switch enumeration [2]."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "possible",
+     "new_value": "marginal: switches exist (XConn, Panmnesia), but dynamic multi-host capacity has no mainline OS support (DCD/sharing [0]) and switch-based pooling is net-cost-negative in Azure's own Octopus analysis",
+     "why": "Octopus and HotNets '23 findings."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "Pond showed ~7% gross DRAM saving at 16 sockets (emulated), using a switchless EMC design; switch-based pooling is a net cost increase (Octopus).",
+     "why": "The card cited Pond for a switch-based 16-32 host design that Pond itself avoided."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Pond: CXL-Based Memory Pooling Systems for Cloud Platforms (arXiv)",
+     "url": "https://arxiv.org/pdf/2203.00241",
+     "type": "conference",
+     "date": "2023-03",
+     "shows": "(via search snippet) Reduces DRAM needs by 7% with a pool spanning 16 sockets; 8-16 sockets capture most of the benefit; emulation on Azure production servers."
+    },
+    {
+     "title": "Octopus: Scalable Low-Cost CXL Memory Pooling",
+     "url": "https://arxiv.org/html/2501.09020v1",
+     "type": "peer-reviewed",
+     "date": "2025-01",
+     "shows": "(via search snippet) In simulation, Octopus gives 3-5.4% net server cost savings, while CXL switches give a net cost increase."
+    },
+    {
+     "title": "A Case Against CXL Memory Pooling (HotNets '23)",
+     "url": "https://research.google/pubs/a-case-against-cxl-memory-pooling/",
+     "type": "conference",
+     "date": "2023-11",
+     "shows": "(via search snippet) Pooling's multiplexing savings are outweighed by the cost of the required cabling and switching, plus complexity and limited utility."
+    },
+    {
+     "title": "Linux CXL maturity map",
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "type": "other",
+     "date": "2026-10-31",
+     "shows": "Opened via git sparse clone. Multi-host memory DCD [0], Sharing [0], Fabrics/G-FAM [0], Switch CCI [0], LD hotplug [1]."
+    }
+   ]
+  }
+ ]
+}

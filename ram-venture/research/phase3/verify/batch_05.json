@@ -1,0 +1,573 @@
+{
+ "batch": "05",
+ "auditor": "p3-audit-05",
+ "verdicts": [
+  {
+   "id": "C-30",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's own model puts the cell at 0.031 Gb/mm2 (14x below 1b DRAM's 0.436) and ~$24/GB. That is 1.5x the $15.99/GB 4Q26 contract, 3.8x the canonical $6.40 glut and ~15x the $1.64 incumbent cost; the card's 'below $27 spot' framing compares against spot, not contract. The named buyer (legacy DDR3/DDR4 industrial) can already buy foundry DDR3 costing ~$4.12/GB (LANDSCAPE s4.1) and U.S.-made Micron Manassas DDR4. The cell still refreshes (ms-class retention at 85C), so it offers no retention, non-volatility or latency edge behind a DDR interface. The LLC-macro variant serves the same buyer as C-32 with a worse integration path (SOI-only, impact-ionization writes).",
+   "evidence_check": [
+    {
+     "url": "https://www.storagenewsletter.com/2026/05/13/neo-semiconductor-demonstrates-3d-x-dram-proof-of-concept-secures-strategic-investment-to-advance-ai-memory/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "NEO 3D X-DRAM is an IGZO/3D-NAND-style capacitor-less cell, not Si floating body; it shows interest in capacitor-less DRAM, not this mechanism (and it is C-05's card)"
+    },
+    {
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Density reference only (1b ~0.436 Gb/mm2); not mechanism evidence"
+    },
+    {
+     "url": "",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Z-RAM/Toshiba FBC ISSCC/IEDM 2002-2008 citation still has no URL; mechanism plausibly real at 128Mb test-chip scale [UNVERIFIED-training]; no search spent because the kill does not depend on it"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "glut_reason",
+     "new_value": "Computed ~$24/GB vs canonical glut $6.40/GB (3.8x), 4Q26 contract $15.99/GB (1.5x) and incumbent cost $1.64/GB (~15x). Dies in the glut and is already underwater at today's contract.",
+     "why": "Card used $10-12 glut, $2.7 cost and $27 spot; 01_LANDSCAPE s4.3/s10.4 makes the $6.40 contract deck canonical"
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "None. $/GB loses even at the 2026 contract price; still needs refresh; latency advantage is irrelevant behind DDR3/DDR4 I/O.",
+     "why": "The 'below today's spot' claim was against $26.96 spot, not the $15.99 contract"
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED-WEAK (training-only citation, no URL verified in Phase 3)",
+     "why": "Only mechanism citation has an empty URL"
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-31",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The only variant that beats DRAM on $/GB (Kilopass VLT 4F2, 'DRAM cost minus 45%') was never shown in an array, so it is UNSUPPORTED. Planar TCCT computes to ~$18/GB: above the $15.99 contract today, 2.8x the $6.40 glut and ~11x the $1.64 incumbent cost, and its 1-2 ns read is erased behind a DDR interface. The cache-macro variant has no real buyer at the U.S. nodes named. GF's U.S. SOI flows are RF-SOI and SkyWater 90nm FD-SOI is a rad-hard flow, neither of which hosts cache-hungry SoCs, and neither offers the 2-4-mask thyristor module. GF/AMD's own patent (US7630235) records TCCT-DRAM write-0 charge-loss disturb. A buyer who wants denser-than-SRAM cache at a U.S. node gets it with zero masks from gain cells (C-32), which RAAAM is now qualifying with GF.",
+   "evidence_check": [
+    {
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Density reference only; not mechanism evidence"
+    },
+    {
+     "url": "",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "T-RAM/AMD/GF/Kilopass history still has no URL; replaced below by patents found in Phase 3"
+    },
+    {
+     "url": "https://patents.google.com/patent/US7630235",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "Shows TCCT TRAM and TCCT-DRAM cells exist at patent level (GF/AMD assignee) and flags write-0 disturb/charge loss"
+    },
+    {
+     "url": "https://patents.google.com/patent/US6778435",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "T-RAM TCCT memory-architecture patent; mechanism documented, array data not shown in snippet"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED for planar TCCT (patents; test arrays [UNVERIFIED-training]); UNSUPPORTED for the VLT 4F2 variant",
+     "why": "Card marked the whole concept SUPPORTED, but the only $/GB-winning version has no array evidence"
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "~$18/GB planar TCCT vs canonical glut $6.40/GB (2.8x) and 4Q26 contract $15.99/GB; VLT parity claim is unsupported marketing.",
+     "why": "Card used the $10-12 glut; canonical deck is $6.40 (01_LANDSCAPE s4.3)"
+    },
+    {
+     "field": "buyer",
+     "new_value": "None identified: U.S. SOI flows (GF RF-SOI, SkyWater 90nm FD-SOI) serve RF and rad-hard parts, not cache-limited SoCs",
+     "why": "'SoC cache designers (if it worked)' is not a named buyer"
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "US7630235B2 Memory cells, memory devices and integrated circuits incorporating the same",
+     "url": "https://patents.google.com/patent/US7630235",
+     "type": "patent",
+     "date": "2009",
+     "shows": "GF/AMD TCCT-based TRAM and access-less TCCT-DRAM cells; TCCT-DRAM suffers disturbance such as charge loss during write-zero (via search snippet)"
+    },
+    {
+     "title": "US6778435B1 Memory architecture for TCCT-based memory cells",
+     "url": "https://patents.google.com/patent/US6778435",
+     "type": "patent",
+     "date": "2004",
+     "shows": "T-RAM Semiconductor TCCT cell architecture (current-mode bit line) (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-32",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is SUPPORTED by credible industry sources. RAAAM's 3T Si gain cell (GCRAM) is reported in foundry silicon from 180nm to 5nm, GF and RAAAM have taped out a GCRAM test vehicle on FDX with lead-customer design access in early 2027, and RAAAM raised a $17.5M Series A led by NXP (all via search snippets). It wins on bits/mm2 and leakage vs 6T SRAM for named buyers, so no kill rule applies. But the card badly understates the incumbent. RAAAM is funded, foundry-partnered (GF, TSMC 2nm qualification) and silicon-proven down to 180nm, so it can port to SkyWater S130 at will, and its patent estate is an FTO gate for a zero-silicon entrant. What remains is a thin U.S.-trailing-node / trusted-ASIC niche, and profitability and founder-fit are downgraded.",
+   "evidence_check": [
+    {
+     "url": "https://www.imec-int.com/en/articles/disrupting-dram-roadmap-capacitor-less-igzo-dram-technology",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "IGZO 2T0C topology; analogous to Si gain cell but not Si evidence"
+    },
+    {
+     "url": "https://past.date-conference.com/proceedings-archive/2026/DATA/154.pdf",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Hybrid IGZO/Si gain cells; supports the speed argument for Si read devices"
+    },
+    {
+     "url": "https://www.skywatertechnology.com/weebit-nano-reram-ip-achieves-high-temperature-qualification-in-skywater-s130-process/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Precedent for third-party memory IP in S130 (also cited in 01_LANDSCAPE s6.1)"
+    },
+    {
+     "url": "https://gf.com/gf-press-release/globalfoundries-acquires-renesas-non-volatile-resistive-ram-technology-to-proliferate-iot-and-5g-applications/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Foundries buy differentiated eNVM; note GF chose RAAAM for gain cells (2026)"
+    },
+    {
+     "url": "https://hg.gatech.edu/node/675050",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Oxide-channel 3T eDRAM, not Si"
+    },
+    {
+     "url": "https://github.com/VLSIDA/OpenRAM",
+     "status": "opened",
+     "supports": "partial",
+     "note": "git ls-remote reachable 2026-11-01; compiler infrastructure only, no gain-cell support"
+    },
+    {
+     "url": "",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Intel/Teman/Giterman Si gain-cell papers still lack URLs; superseded by RAAAM/GF industry sources below"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "RAAAM Memory Technologies (Israel/Switzerland): $17.5M Series A led by NXP (2025); GF strategic collaboration with a GCRAM test vehicle taped out on FDX and lead-customer design access in early 2027; moving toward TSMC 2nm qualification; GCRAM reported from 180nm to 5nm (via search snippets). Academic groups at Bar-Ilan/EPFL (RAAAM's lineage) and Georgia Tech (oxide 3T). Incumbent SRAM compilers from Synopsys/Arm. C-01 covers oxide gain cells and C-43 covers cryo gain cells.",
+     "why": "Card listed RAAAM as [UNVERIFIED-training] with a vague '~2x density' claim; it is now a funded, foundry-partnered incumbent"
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "RAAAM already holds the commercial Si gain-cell position, with NXP money, GF and TSMC programs and silicon down to 180nm, and can address SkyWater S130 whenever it chooses. A new entrant starts with no silicon and must clear FTO against RAAAM/Bar-Ilan/EPFL patents. Trailing-node royalty pools are small (MoSys precedent), and 85-125C retention of ~10-100 us forces refresh that erodes the power claim.",
+     "why": "Card's 'RAAAM got there first' understated the scale of the head start and omitted the patent/FTO gate"
+    },
+    {
+     "field": "trl",
+     "new_value": 5,
+     "why": "Si gain cells are proven in foundry silicon (RAAAM), but this venture's macro does not exist on SkyWater S130/S90 or GF 12LP+, and even GF's own GCRAM program is at test-vehicle tape-out (2026)"
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "Two MPW spins at ~6-month SkyWater fab turns (Cadence/SkyWater 2026 run: Jan submission, July die) plus design and characterization before any paid evaluation license"
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "30-42 months (design 6-9 mo; two MPW spins at ~6-month turns; characterization; first evaluation license). Foundry IP-catalog listing needs qualification data, which comes later.",
+     "why": "Card's 24-36 months assumed faster shuttles and immediate licensing"
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "SkyWater (an IonQ subsidiary since 2026-07-31; says it continues serving all foundry customers): Bloomington MN S130 / 90nm FD-SOI and Fab 25 Austin (65-130nm). GF Fab 8 Malta NY (12LP+). Test chips via ChipFoundry (buyer of Efabless's assets) or the Cadence/SkyWater open MPW. GF's own gain-cell program (RAAAM) is on FDX, which is made in Dresden, not the U.S.",
+     "why": "Adds the SkyWater ownership change and the post-Efabless shuttle route; flags that GF's gain-cell work is not on a U.S. node"
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "SRAM scaling has stalled. 6T SRAM silicon costs ~$55-72/GB at 7-28nm, ~$195/GB at 65nm and ~$1,330/GB at SkyWater 130nm (01_LANDSCAPE s4.4), so a gain cell at ~50-60% of 6T area saves ~40% of memory area. Foundries pay for differentiated embedded memory (GF-RAAAM 2026; SkyWater-Weebit).",
+     "why": "Card's $80-120/GB 'every node' figure includes test and contradicts the canonical s4.4 numbers; trailing nodes are much more expensive per SRAM bit, which strengthens the U.S.-trailing-node case"
+    },
+    {
+     "field": "profitable",
+     "new_value": "no to marginal: high-margin IP, but a small trailing-node royalty pool contested by a funded incumbent with foundry partnerships",
+     "why": "Incumbent strength now verified"
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "no: needs a full-time memory-circuit cofounder, ~$2-5M and an FTO opinion before the founder's compiler/web tooling matters",
+     "why": "Founder adds nothing on the critical path (silicon, patents, foundry relationship)"
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED (industry sources: RAAAM/GF GCRAM, via search snippets)",
+     "why": "Card's Si gain-cell citation had no URL; now replaced"
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "GlobalFoundries and RAAAM: GCRAM technology and test chip on the FDX platform",
+     "url": "https://silicon-saxony.de/en/globalfoundries-and-raaam-memory-technologies-development-of-next-generation-gcram-technology-and-a-test-chip-on-the-fdx-platform/",
+     "type": "news",
+     "date": "2026",
+     "shows": "GF-RAAAM collaboration to develop and qualify Si gain-cell RAM; GCRAM test vehicle taped out on GF FDX; lead-customer design access early 2027; projected ~40% area / up to 60% power reduction vs SRAM (via search snippet)"
+    },
+    {
+     "title": "RAAAM moving toward 2nm qualification at TSMC",
+     "url": "https://techtime.news/2025/11/05/raaam/",
+     "type": "news",
+     "date": "2025-11-05",
+     "shows": "RAAAM heading to TSMC 2nm qualification; search summary reports $17.5M Series A led by NXP and GCRAM demonstrated from 180nm to 5nm FinFET (via search snippet; page not opened, figure attribution within result set unconfirmed)"
+    },
+    {
+     "title": "Memory startup pitches space-efficient GCRAM as SRAM drop-in",
+     "url": "https://www.allaboutcircuits.com/news/memory-startup-pitches-space-efficient-gcram-as-sram-drop-in/",
+     "type": "news",
+     "date": "unknown",
+     "shows": "3T gain cell with background refresh positioned as SRAM drop-in (via search snippet)"
+    },
+    {
+     "title": "IonQ Completes Acquisition of SkyWater Technology",
+     "url": "https://thequantuminsider.com/2026/07/31/ionq-completes-skywater-acquisition-quantum-manufacturing/",
+     "type": "news",
+     "date": "2026-07-31",
+     "shows": "SkyWater is now a wholly owned IonQ subsidiary; states it continues serving all foundry customers; MN/FL/TX sites stay active (via search snippet)"
+    },
+    {
+     "title": "Cadence and SkyWater Detail Next Open Multi-Project Wafer Shuttle Program",
+     "url": "https://www.electronics-lab.com/cadence-and-skywater-detail-next-open-multi-project-wafer-shuttle-program/",
+     "type": "news",
+     "date": "2025",
+     "shows": "SKY130 open MPW: submissions to 2026-01-16, die July 2026 (~6-month fab turn) (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-33",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The core facts hold. A git check (2026-11-01) confirms the OpenRAM sky130 macro README still lists only 1, 2 and 4 KB; a 16 KB directory holds only a generation log. Published OpenRAM first silicon verified only a 1 KB dual-port macro (NSF PAR paper). So the gap for larger, silicon-characterized macros is real. The shuttle channel survived Efabless's 2025 shutdown: ChipFoundry (Umbralogic) took over its assets and MPWs, and a Cadence/SkyWater SKY130 open MPW ran in 2026. It is a T0 software/services business on a named PDK, fab and buyer set, so no kill rule applies. Willingness to pay is STILL-UNVERIFIED, and the margin and fragility fields are optimistic: a funnel controlled by IonQ-owned SkyWater, ChipFoundry and Cadence can bundle free macros at any time.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/VLSIDA/OpenRAM",
+     "status": "opened",
+     "supports": "yes",
+     "note": "git ls-remote reachable 2026-11-01 (A3 read v1.2.50, 2026-10-27)"
+    },
+    {
+     "url": "https://pypi.org/pypi/openram/json",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "A3 opened; release 1.2.50"
+    },
+    {
+     "url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "A3 opened; 1.896 um2 bitcell (VERIFIED primary PDK data per 01_LANDSCAPE s4.4)"
+    },
+    {
+     "url": "https://github.com/VLSIDA/sky130_sram_macros",
+     "status": "opened",
+     "supports": "yes",
+     "note": "README: 'Currently supported sizes are 1kbytes, 2kbytes and 4kbytes'; 16 KB dir has only a .log; last commit 2024-07-12"
+    },
+    {
+     "url": "https://github.com/chipfoundry/caravel_user_project",
+     "status": "opened",
+     "supports": "yes",
+     "note": "git ls-remote reachable 2026-11-01; ChipFoundry also confirmed as Efabless asset acquirer (Tampere slides, snippet)"
+    },
+    {
+     "url": "https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9372047",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "IEDM 2020 open-source SRAM DTCO; background only"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "VLSIDA/UC Santa Cruz (OpenRAM, free; first sky130 silicon verified a 1 KB dual-port macro); ChipFoundry (Umbralogic Technologies dba ChipFoundry, which bought Efabless's assets in 2025 and runs Caravel/Caravan/OpenFrame MPWs plus a marketplace); Cadence + SkyWater open SKY130 MPW (2026 run), where an EDA vendor could bundle memory; Synopsys/Arm commercial compilers; standard-cell RAM generators such as DFFRAM [UNVERIFIED-training].",
+     "why": "Adds the verified post-Efabless operator and the Cadence/SkyWater channel, either of which could bundle macros for free"
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "55-75% (per-tapeout support, contract layout/characterization labor and shuttle slots are COGS; SaaS share small early)",
+     "why": "Card's 70-85% treats a services-heavy mix as pure software"
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 65,
+     "why": "Same as above"
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "Customer silicon is made at SkyWater Bloomington MN (S130; SkyWater has been an IonQ subsidiary since 2026-07-31 and says it keeps serving foundry customers) via ChipFoundry MPW or the Cadence/SkyWater open MPW (2026: Jan submission, July die). The venture itself is U.S. software/services.",
+     "why": "Ownership change and second shuttle channel verified (via search snippets)"
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "9-15 months: paid macro generation/support can start before silicon, but silicon-characterized libraries arrive at ~month 12-15 given ~6-month SkyWater MPW turns. One shuttle slot cost ~$9,750 for 10 mm2 in 2021 (chipIgnite); current ChipFoundry pricing is UNVERIFIED.",
+     "why": "Anchors the shuttle-cost and turnaround assumptions to sources"
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Tiny market (hundreds of MPW projects/yr) with low willingness to pay for BSD-licensed macros. The funnel is fragile: Efabless already failed financially in 2025, and SkyWater's new owner is a quantum company. ChipFoundry, Cadence/SkyWater or UCSC could bundle larger macros for free. It is on-chip memory IP, not 'RAM' in the mission's main sense.",
+     "why": "Adds the verified Efabless failure and the SkyWater ownership change"
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal to no: likely <$0.5-1M ARR ceiling unless it becomes a broader open-PDK IP/characterization house (gf180mcu, IHP, gain-cell IP)",
+     "why": "No evidence of paid demand found; free substitutes in the same channel"
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "VLSIDA sky130_sram_macros README and tree",
+     "url": "https://github.com/VLSIDA/sky130_sram_macros",
+     "type": "other",
+     "date": "2024-07-12",
+     "shows": "Opened via git: only 1/2/4 KB macros supported; 16 KB attempt has a log but no LEF/GDS"
+    },
+    {
+     "title": "OpenRAM SkyWater 130nm test chips (NSF PAR)",
+     "url": "https://par.nsf.gov/servlets/purl/10495552",
+     "type": "peer-reviewed",
+     "date": "unknown",
+     "shows": "First sky130 OpenRAM silicon verified a 32-bit 1 KB dual-port SRAM; IO-limited testing (via search snippet)"
+    },
+    {
+     "title": "Caravel lecture slides (Tampere University, spring 2026)",
+     "url": "https://plus.tuni.fi/graderA/static/compce250-compce250-spring-2026/lec/survey/5-Caravel.pdf",
+     "type": "other",
+     "date": "2026",
+     "shows": "Umbralogic Technologies LLC dba ChipFoundry acquired Efabless assets after Efabless shut down (2025); ChipFoundry continues MPW shuttles (Caravel/Caravan/OpenFrame) (via search snippet; secondary)"
+    },
+    {
+     "title": "Cadence and SkyWater Detail Next Open Multi-Project Wafer Shuttle Program",
+     "url": "https://www.electronics-lab.com/cadence-and-skywater-detail-next-open-multi-project-wafer-shuttle-program/",
+     "type": "news",
+     "date": "2025",
+     "shows": "SKY130 open MPW: submissions to 2026-01-16, die July 2026 (~6-month fab turn) (via search snippet)"
+    },
+    {
+     "title": "IonQ Completes Acquisition of SkyWater Technology",
+     "url": "https://thequantuminsider.com/2026/07/31/ionq-completes-skywater-acquisition-quantum-manufacturing/",
+     "type": "news",
+     "date": "2026-07-31",
+     "shows": "SkyWater is now a wholly owned IonQ subsidiary; states it continues serving all foundry customers; MN/FL/TX sites stay active (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-34",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "Even at depreciated cash-cost wafers the card computes ~$20/GB standalone (~$50/GB at a normal wafer price). That compares with the $15.99 contract, the $6.40 glut and the $1.64 incumbent cost, because density is 0.026 vs 0.436 Gb/mm2 (17x). Its one axis, a ~2 ns macro cycle, disappears behind a DDR interface for the standalone die (the C-35 logic). The LLC-chiplet buyer is self-labeled 'hypothetical', and SRAM chiplets and 3D-stacked SRAM already serve it. There is also no host: IBM moved POWER10/z16 to Samsung 7nm without eDRAM, East Fishkill is an onsemi fab, and GF no longer offers 14HP [UNVERIFIED-training], so a restart is a T3 process rebuild with the tool set and know-how dispersed.",
+   "evidence_check": [
+    {
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Density reference"
+    },
+    {
+     "url": "https://xenospectrum.com/dram-n2-wafer-price-comparison/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Logic-process memory cannot match DRAM bits per wafer dollar; supports the kill"
+    },
+    {
+     "url": "",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "IBM IEDM 2014 0.0174 um2 14nm SOI eDRAM is a real paper [UNVERIFIED-training, no URL]; no search spent because the kill does not depend on it"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "glut_reason",
+     "new_value": "~$20/GB at cash-cost wafers and ~$50/GB at normal wafer prices vs canonical glut $6.40/GB (3-8x), 4Q26 contract $15.99/GB and incumbent cost $1.64/GB (12-30x).",
+     "why": "Card used the $10-12 glut and $2.7 cost; canonical deck is 01_LANDSCAPE s4.3"
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "None for a real buyer. Latency is lost behind DDR I/O, and the LLC-chiplet buyer is hypothetical and served by SRAM/3D-SRAM.",
+     "why": "The card's only axis does not survive the interface"
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "No U.S. line runs deep-trench eDRAM (East Fishkill is onsemi's; GF 14HP not offered [UNVERIFIED-training]). Would require a T3 module rebuild.",
+     "why": "Card listed sites that do not host the capability"
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-35",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card itself names no winning axis and no buyer. SRAM silicon is ~$55-72/GB at 7-28nm (01_LANDSCAPE s4.4), or ~$80-120/GB with test per A3. That is 3.5-7.5x the $15.99/GB contract, 9-19x the $6.40 glut and 35-70x the $1.64 incumbent cost. Refresh-free operation and latency are lost behind a DDR4/CXL controller (~50-100 ns). A 1 Gb SRAM die needs ~181 mm2 at 28nm, and the only U.S. option (GF Malta 12/14nm) does not change the cost floor.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "A3 opened; 1.896 um2 sky130 bitcell, which makes the cost floor worse at U.S. 130nm (~$1,330/GB)"
+    },
+    {
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Density reference"
+    },
+    {
+     "url": "https://xenospectrum.com/dram-n2-wafer-price-comparison/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Logic wafers cannot match DRAM bits per wafer dollar"
+    },
+    {
+     "url": "",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Published 6T cell sizes [UNVERIFIED-training]; kill holds even at +/-30% cell area"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "glut_reason",
+     "new_value": "COGS ~$60-120/GB (7-40nm) vs 4Q26 contract $15.99/GB, glut $6.40/GB and incumbent cost $1.64/GB.",
+     "why": "Card compared against $27 spot and the $10-12 glut; canonical deck is 01_LANDSCAPE s4.3"
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": -400,
+     "why": "At ~$80/GB COGS vs the $15.99 contract (not $27 spot), GM = (15.99-80)/15.99 = about -400%"
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-36",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The premise survives verification. SkyWater closed on Fab 25 (2025-06-30; ~400k wafer starts/yr, 65-130nm, memory listed as a target market) and still runs it as an open foundry under IonQ ownership (closed 2026-07-31). Demand-side lifecycle stress is real: Renesas EOL260016 (2026-06-01) discontinued 92 async SRAM codes (third-party blog snippet). The card wins on lifecycle length and non-PRC supply (vs Ingenic-owned ISSI) for named defense/industrial buyers, so no kill rule applies. Two things are overstated. 'U.S.-fab' is not unique, because Infineon still sells a 256K-64M async SRAM line and gets its U.S. wafers from the same fab, and Renesas EOLs map customers to Infineon codes, not to a startup. Whether SkyWater offers outside customers a characterized high-density 6T bitcell/PDK at 65nm (Cypress-proprietary heritage) is STILL-UNVERIFIED and is the gating diligence question.",
+   "evidence_check": [
+    {
+     "url": "https://www.businesswire.com/news/home/20250226773415/en/SkyWater-to-Acquire-Infineons-Austin-Fab-and-Establish-Strategic-Partnership-to-Expand-U.S.-Foundry-Capacity-for-Foundational-Chips",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Superseded by the 2025-06-30 close PR (snippet) confirming 65-130nm and ~400k starts/yr"
+    },
+    {
+     "url": "https://marklapedus.substack.com/p/skywater-acquires-infineons-200mm",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with close PR and 01_LANDSCAPE s6.1 row 7"
+    },
+    {
+     "url": "https://new-origin.infineon.com/cms/en/about-infineon/press/press-releases/2025/INFXX202502-066.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Infineon supply agreement; also confirms Infineon is the incumbent at the same fab"
+    },
+    {
+     "url": "https://us.design-reuse.com/news/41552/cypress-minnesota-wafer-fabrication-facility-sale.html",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Historical context only"
+    },
+    {
+     "url": "https://www.frontgrade.com/news/new-case-study-touts-everspins-toggle-mram-highly-reliable-memory-technology-space",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Hi-rel channel precedent (MRAM, not SRAM)"
+    },
+    {
+     "url": "https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Host blocked; trusted-memory buyer existence only"
+    },
+    {
+     "url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "S130 bitcell 1.896 um2 (A3 opened); a 16Mb part at 130nm would be ~45 mm2 of cells, so 65-90nm Fab 25 flows are needed for the COGS claim"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "us_manufacturability",
+     "new_value": "SkyWater Fab 25 Austin TX (200mm, 65-130nm, ~400k wafer starts/yr; SkyWater has been an IonQ subsidiary since 2026-07-31 and says it keeps serving all foundry customers) and SkyWater Bloomington MN. STILL-UNVERIFIED: whether Fab 25 offers outside customers a characterized high-density 6T SRAM bitcell and 65nm PDK, since the SRAM flows were Cypress/Infineon-proprietary. The rad-tolerant 90nm FD-SOI option is DoD-program-linked [UNVERIFIED].",
+     "why": "Nodes and ownership verified (snippets); the SRAM-bitcell availability is the gating unknown and was not flagged"
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Infineon (ex-Cypress; still markets async SRAM 256K-64M and QDR; U.S. wafers via SkyWater Fab 25), Renesas (EOL260016, 2026-06-01, discontinued 92 async SRAM codes with mappings to Infineon parts), ISSI (Ingenic-owned), GSI Technology (TSMC-fabbed), Alliance Memory, Rochester Electronics (licensed EOL continuation). Rad-hard: Honeywell, BAE Systems, Frontgrade [UNVERIFIED-training for current status].",
+     "why": "Adds the verified 2026 Renesas exit and Infineon's continuing line (via search snippets)"
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "Lifecycle length (written 15-20-year commitments beyond Infineon's) and non-PRC ownership vs ISSI. 'U.S.-fab' alone is not unique, because Infineon is supplied from the same fab. Not $/GB.",
+     "why": "Card implied U.S. fabrication was a differentiator vs the incumbent"
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Infineon is the incumbent and the anchor customer of the same fab, and Renesas EOLs funnel customers to Infineon's existing parts. The standalone SRAM market is small and shrinking. Revenue needs 2-3 years of design and qualification, and SkyWater's new quantum-company parent adds capacity-priority risk.",
+     "why": "Adds the verified Renesas-to-Infineon migration path and the ownership change"
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "Design (9-12 mo), 65-90nm masks and first silicon (3-4 mo), likely respin (~6 mo), then JEDEC/AEC-Q100 qualification (~6 mo) before production orders. QML/defense design-in adds 12+ months."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "30-42 months to first production revenue (industrial grade first; defense/QML later)",
+     "why": "Card's 30-36 assumed no respin and immediate design-in"
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "SkyWater Completes Acquisition of Fab 25",
+     "url": "https://www.businesswire.com/news/home/20250630358336/en/SkyWater-Completes-Acquisition-of-Fab-25-Expanding-U.S.-Pure-Play-Foundry-Capacity-for-Critical-Semiconductor-Technologies",
+     "type": "company-IR",
+     "date": "2025-06-30",
+     "shows": "Fab 25: ~400k wafer starts/yr, 65-130nm, ~1,000 staff; memory listed among target markets (via search snippet)"
+    },
+    {
+     "title": "IonQ Completes Acquisition of SkyWater Technology",
+     "url": "https://thequantuminsider.com/2026/07/31/ionq-completes-skywater-acquisition-quantum-manufacturing/",
+     "type": "news",
+     "date": "2026-07-31",
+     "shows": "SkyWater is now a wholly owned IonQ subsidiary; states it continues serving all foundry customers; MN/FL/TX sites stay active (via search snippet)"
+    },
+    {
+     "title": "Renesas SRAM EOL 2026",
+     "url": "https://globx.eu/blog/component-lifecycle/renesas-sram-eol-2026",
+     "type": "blog",
+     "date": "2026-06",
+     "shows": "Renesas EOL260016 (2026-06-01) discontinues 92 async SRAM codes, mapping some to Infineon codes (via search snippet; notice not opened)"
+    },
+    {
+     "title": "Infineon SRAM (Static RAM) product page",
+     "url": "https://infineon.com/cms/en/product/memories/sram-static-ram",
+     "type": "company-IR",
+     "date": "2026",
+     "shows": "Infineon still markets async SRAM 256K-64M and QDR SRAM; no 2025-26 Infineon SRAM EOL found (via search snippet)"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,625 @@
+{
+ "batch": "14",
+ "auditor": "p3-audit-14",
+ "verdicts": [
+  {
+   "id": "C-93",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's only differentiator, 'compliant memory', is something every reseller of Samsung, SK hynix, Micron or Kingston product already meets at no cost. TAA treats Korean, Taiwanese and Japanese memory as equal above $174k (FAR 25.402). The BAA component test is waived for COTS (FAR 25.001). The FAR Council's proposed rule (FAR Case 2023-008, FR 2026-03065, 2026-02-17; not final; statutory effect 2027-12-23) puts the same duty on every offeror and offers a disclosure safe harbor (law-firm alerts, via search snippet). So compliance is a feature everyone has, not a product. Against CDW-G, Carahsoft and the 2,115 SEWP VI holders (awarded Jun-2026, ordering from 2026-11-01, no on-ramp schedule found), a new entrant has no SEWP seat, no MAS track record and no volume pricing. It loses on price and access and only ties on compliance and small-business status, so it wins no axis. Whatever §5949 creates that buyers would pay for is verification (C-64), not resale margin.",
+   "evidence_check": [
+    {
+     "url": "https://xenospectrum.com/en/apple-china-memory-federal-procurement-ban-2027/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Confirms the 2027-12-23 date. Superseded on rule status by the Feb-2026 proposed rule."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "E opened it. The snapshot runs through FAC 2025-06, so it predates the 2026-02-17 proposed rule, and proposed rules never appear in FAR text anyway. The card's line that the FAR has 'no §5949 text' is technically true but misleading."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-DFARS",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Same caveat. Implementation is happening through the FAR case, not the DFARS."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/4.2101.dita",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The §889 'reasonable inquiry' precedent. The §5949 proposed rule adds its own disclosure and safe-harbor mechanism, which does not create a reseller premium either."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/25.402.dita",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "E opened it. WTO GPA threshold $174k."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/25.001.dita",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "E opened it. COTS waiver of the component test."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/25.106.dita",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "E opened it. The 30% small-business BAA factor applies only below the TAA threshold, and every small-business VAR already gets it."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/52.211-5.dita",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "E opened it."
+    },
+    {
+     "url": "https://www.federalregister.gov/documents/2026/02/17/2026-03065/federal-acquisition-regulation-prohibition-on-certain-semiconductor-products-and-services",
+     "status": "unreachable",
+     "supports": "yes",
+     "note": "The proposed rule exists (search result title and law-firm alerts). WebFetch failed: federalregister.gov is not in the session's allowed network domains."
+    },
+    {
+     "url": "https://www.govinfo.gov/content/pkg/FR-2026-02-17/html/2026-03065.htm",
+     "status": "unreachable",
+     "supports": "yes",
+     "note": "Same document (FR Vol 91 No 31). WebFetch failed: govinfo.gov is not in the session's allowed network domains."
+    },
+    {
+     "url": "https://www.crowell.com/en/insights/client-alerts/section-5949-proposed-rule-puts-the-far-councils-chips-on-the-table",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: a law-firm analysis of the Section 5949 proposed rule."
+    },
+    {
+     "url": "https://www.mayerbrown.com/en/insights/publications/2026/03/far-council-proposes-rule-to-prohibit-acquisition-of-semiconductors-from-china-and-countries-of-concern",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: the rule is proposed, comments were due 2026-04-20, and it is expected to take effect 2027-12-23. Snippets say it would cover COTS and micro-purchases, with a safe harbor for timely disclosure. Snippets disagree on whether YMTC and CXMT are designated in the rule text; the statute names them [UNVERIFIED: FR text not opened]."
+    },
+    {
+     "url": "https://federalnewsnetwork.com/contractsawards/2026/06/more-sewp-for-contractors-as-nasa-expands-total-awards/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: NASA expanded SEWP VI awards (Jun-2026). Snippet summary: 2,115 awardees, $60B ceiling, ordering 2026-11-01 to 2036-10-31."
+    },
+    {
+     "url": "https://www.sewp.nasa.gov/documents/SEWPVvsVI_slidedeck.pdf",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: SEWP VI allows on-ramps and off-ramps, but no on-ramp date or solicitation was found."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "fatal_flaw",
+     "new_value": "No winning axis. §5949 rewards 'not Chinese', and every Samsung, SK hynix, Micron or Kingston reseller already meets it. The FAR Council's proposed rule (FAR Case 2023-008, 2026-02-17; not final; effective 2027-12-23 by statute) puts the same duty on every offeror and gives a disclosure safe harbor. TAA lets allied memory compete equally above $174k (FAR 25.402), and the BAA component test is waived for COTS (FAR 25.001). SEWP VI was awarded to 2,115 holders in Jun-2026 and is closed to a newcomer until an unscheduled on-ramp. The result is a 6-10% VAR margin with no vehicle and no price edge: $1.5-2.5M of sales per $150k of gross profit (e_estimates §7).",
+     "why": "The card says the FAR/DFARS contain no §5949 text. A proposed rule was published in Feb-2026, and SEWP VI awards closed the main vehicle."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 20,
+     "why": "SEWP VI is closed to new entrants until an on-ramp. GSA MAS normally wants 2 years of corporate experience, or a Startup Springboard waiver [UNVERIFIED-training], and first task orders follow the award."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "18-24 months: GSA MAS only (SEWP VI awarded Jun-2026, no on-ramp scheduled), then first small-business set-aside orders against hundreds of incumbent small-business VARs",
+     "why": "Reflects SEWP VI status."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "2,115 NASA SEWP VI contract holders (awarded Jun-2026, ordering from 2026-11-01; via search snippet), including many small, 8(a), SDVOSB and HUBZone VARs; CDW-G, Carahsoft and GSA MAS IT schedule holders [UNVERIFIED-training]; Micron and Kingston through their channels",
+     "why": "Quantifies the incumbent field the entrant must beat."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes - standard VAR model, but SEWP VI is closed to newcomers until an on-ramp and MAS needs a track record",
+     "why": "Vehicle access is the gate."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED for VAR mechanics; the core value claim (a compliance premium) is contradicted by FAR 25.402/25.001 and the 2026 proposed rule",
+     "why": "The mechanism is real. The value claim is not."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Federal Acquisition Regulation: Prohibition on Certain Semiconductor Products and Services (FAR Case 2023-008, proposed rule)",
+     "url": "https://www.federalregister.gov/documents/2026/02/17/2026-03065/federal-acquisition-regulation-prohibition-on-certain-semiconductor-products-and-services",
+     "type": "government",
+     "date": "2026-02-17",
+     "shows": "Proposed FAR 40.20X with a solicitation provision and contract clause implementing NDAA FY2023 §5949. Not final. Statutory effective date 2027-12-23 (via search snippet; page not reachable)."
+    },
+    {
+     "title": "FAR Council Proposes Rule to Prohibit Acquisition of Semiconductors from China and Countries of Concern (Mayer Brown)",
+     "url": "https://www.mayerbrown.com/en/insights/publications/2026/03/far-council-proposes-rule-to-prohibit-acquisition-of-semiconductors-from-china-and-countries-of-concern",
+     "type": "other",
+     "date": "2026-03-03",
+     "shows": "Comments due 2026-04-20. Applies to COTS and micro-purchases. Safe harbor for timely, accurate disclosure. Prospective, with no rip-and-replace (via search snippet)."
+    },
+    {
+     "title": "Section 5949 Proposed Rule Puts the FAR Council's Chips on the Table (Crowell)",
+     "url": "https://www.crowell.com/en/insights/client-alerts/section-5949-proposed-rule-puts-the-far-councils-chips-on-the-table",
+     "type": "other",
+     "date": "2026-02",
+     "shows": "Law-firm analysis of the proposed rule, including disclosure duties that extend to non-federal customers (via search snippet)."
+    },
+    {
+     "title": "More SEWP for contractors as NASA expands total awards (Federal News Network)",
+     "url": "https://federalnewsnetwork.com/contractsawards/2026/06/more-sewp-for-contractors-as-nasa-expands-total-awards/",
+     "type": "news",
+     "date": "2026-06",
+     "shows": "SEWP VI awarded to ~2,115 holders, $60B ceiling, ordering 2026-11-01 to 2036-10-31. SEWP V extended while protests resolved (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-94",
+   "verdict": "KILL",
+   "kill_rule": "DUPLICATE",
+   "reason": "The card itself says C-06 (Sandia HZO FeRAM) and C-07 (Penn/AFRL AlScN license plus STTR) card the device plays, and both survived audit (batch_01, KEEP_WITH_CORRECTIONS). This vehicle options the same technologies, bids the same topics (DARPA DV017, AF254-D0806) and sells to the same buyers (AFRL/DARPA program offices, space primes). The portfolio wrapper adds no product a buyer pays for. Revenue arrives only when one of those device plays reaches Phase III, ~46 months out, and A-04 does not count grants as revenue. The Purdue In2O3 option is a TRL 3-4 research result that belongs with C-01. The one transferable insight should be folded into C-06/C-07 as their funding structure: STTR lets the lab or university PI lead while the founder keeps their day job. SBIR/STTR has been reauthorized through 2031-09-30 (S.3971, signed 2026-04-13, via search snippet), so that structure is live.",
+   "evidence_check": [
+    {
+     "url": "https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Verified via snippet in batch_01 (C-06) and in 01_LANDSCAPE 6.1 row 14. sandia.gov is blocked."
+    },
+    {
+     "url": "https://www.engineering.upenn.edu/stories/turning-up-the-heat-on-data-storage/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "batch_01 (C-07) confirmed Pradhan et al., Nature Electronics 7, 348-355 (2024) via snippet."
+    },
+    {
+     "url": "https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows 200mm In2O3 tiers (01_LANDSCAPE row 16). It is a research platform, not a licensable memory product."
+    },
+    {
+     "url": "https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "The topic is listed in 01_LANDSCAPE 7.1 and closed 2026-08-19. It is the same topic C-07 targets."
+    },
+    {
+     "url": "https://www.sbir.gov/topics/12036",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "AF254-D0806 (2025, closed). The same topic C-07 targets."
+    },
+    {
+     "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Defense memory money goes to an incumbent with a fab, which cuts against a fabless option vehicle."
+    },
+    {
+     "url": "https://www.washington.edu/federalrelations/2026/04/14/trump-signs-sbir-sttr-reauthorization-bill-into-law/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: SBIR/STTR reauthorization signed 2026-04-13, through 2031-09-30."
+    },
+    {
+     "url": "https://www.mondaq.com/unitedstates/government-contracts-procurement-ppp/1774902/sbirsttr-programs-reauthorized-after-six-month-lapse",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: the programs were reauthorized after a ~6-month lapse (from 2025-09-30). Annual proposal caps arrive in FY2027 (via snippet)."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "why_it_could_work",
+     "new_value": "STTR lets the PI be employed by the research institution (Penn and Purdue as universities; Sandia as an FFRDC [UNVERIFIED-training that FFRDCs qualify]), so the founder can keep their day job while the vehicle wins non-dilutive money. SBIR/STTR were reauthorized through 2031-09-30 (S.3971, signed 2026-04-13, after a ~6-month lapse). Defense topics for exotic NVM exist: DARPA DV017 (~$1.2M Direct-to-Phase-II, 2026) and USAF AF254-D0806 (500 C NVM). Options cost ~$1-10k (p1-ip), and Phase III awards can be sole-source. Sandia's HZO FeRAM is at 200mm wafer scale (TRL ~4-5).",
+     "why": "Fixes the gendered reference and replaces 'authority evidently restored' with the verified reauthorization."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "It duplicates C-06 and C-07, and it is the grant farm the founder says they do not want. The chance of customer revenue is ~3% per topic attempt and ~15% after five (e_estimates §8). First revenue lands ~46 months out, past the 36-month ceiling. STTR also requires the small business itself to perform >=40% of the work [UNVERIFIED-training], so the vehicle needs its own technical staff or paid lab time, not just a lab PI. It depends on a PI and a fab it does not control.",
+     "why": "States the duplicate basis, fixes the gendered reference, and adds the STTR work-share constraint."
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "marginal - they can run the company shell and proposals, not the science or the small business's required >=40% work share",
+     "why": "Gendered reference fixed. The work-share rule limits a no-staff vehicle."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 46,
+     "why": "Unchanged. Already past the 36-month ceiling (ttr score 1)."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Trump signs SBIR/STTR reauthorization bill into law (UW Federal Relations)",
+     "url": "https://www.washington.edu/federalrelations/2026/04/14/trump-signs-sbir-sttr-reauthorization-bill-into-law/",
+     "type": "other",
+     "date": "2026-04-14",
+     "shows": "Small Business Innovation and Economic Security Act (S.3971) signed 2026-04-13, reauthorizing SBIR/STTR through 2031-09-30 (via search snippet)."
+    },
+    {
+     "title": "SBIR/STTR programs reauthorized after six-month lapse (Mondaq)",
+     "url": "https://www.mondaq.com/unitedstates/government-contracts-procurement-ppp/1774902/sbirsttr-programs-reauthorized-after-six-month-lapse",
+     "type": "other",
+     "date": "2026-04",
+     "shows": "Lapse from 2025-09-30. Agencies resumed solicitations. Annual proposal caps in FY2027 (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-95",
+   "verdict": "KILL",
+   "kill_rule": "NOT-A-VENTURE",
+   "reason": "On the card's own terms ($4.2M price = 3.5x $1.2M shortage EBITDA, 90% SBA 7(a) debt, ~$612k/yr debt service), DSCR is 1.96 in 2026, 0.65 in a normal year and 0.33 in the glut (e_estimates §9). The loan is repaid only if shortage pricing lasts most of a 10-year term. That makes it a leveraged, personally guaranteed long position on DRAM prices, not a venture with a product axis, and no software upside closes a 0.65 DSCR. It also fails QB-INCOMPLETE: no target is named or confirmed for sale. Under SOP 50 10 8/8.1 the 10% injection (~$420k) may draw at most half from 'limited sources' such as full-standby seller notes and <20% minority investors (via search snippet). The founder, with under $50k, would therefore need a controlling co-buyer bringing ~$210k+ cash and a guarantee. Buying the same business at trough multiples in 2028-29 would be a different, later concept.",
+   "evidence_check": [
+    {
+     "url": "https://www.storagenewsletter.com/2025/12/05/micron-announces-exit-from-crucial-consumer-business/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with training knowledge of the 2025-12-03 announcement. Irrelevant to the server-reseller targets the card names."
+    },
+    {
+     "url": "https://www.guru3d.com/story/ddr4-memory-prices-now-also-rise-as-dram-supply-shortages-intensify-through-2028/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows that 2026 earnings are a price windfall. This supports the kill, not the deal."
+    },
+    {
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "The trough anchor (~60-65% peak-to-trough) behind the glut DSCR."
+    },
+    {
+     "url": "https://www.kucoin.com/blog/2027-memory-chip-boom-sk-hynix-samsung",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "An aggregator blog, so a weak source. Landscape 10.4 #11 gives the house cycle view."
+    },
+    {
+     "url": "https://starfieldsmith.com/2025/05/best-practices-a-review-of-equity-injection-requirements-under-sop-50-10-8/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: minimum injection is 10% of total project cost for a complete change of ownership. A seller note covers at most half and must sit on full standby for the loan term."
+    },
+    {
+     "url": "https://www.liveoak.bank/blog/navigating-the-sbas-new-sop-50-10-8",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: SOP 50 10 8 took effect 2025-06-01 and brought back stricter equity rules."
+    },
+    {
+     "url": "https://beancount.io/blog/2026/09/23/sba-sop-50-10-8-1-change-of-ownership-equity-dscr-qoe-guide",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New, secondary blog: SOP 50 10 8.1 (issued 2026-08-14, effective 2026-10-01) makes equity from <20% non-controlling investors a 'limited source' sharing the 50% cap. Not checked against SBA text."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "founder_fit_note",
+     "new_value": "No. It needs ~$420k of injection when the founder has under $50k, and at least half must be the buyer's or a controlling owner's own cash under SOP 50 10 8/8.1. It also needs an SBA personal guarantee, at the worst point in the cycle. Revisit in the 2028-29 trough, when the same business sells for trough multiples.",
+     "why": "Fixes the gendered reference ('he has ~$40k') and adds the SOP limit on co-investor and seller-note equity."
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "no - equity gap (SOP 50 10 8.1 caps seller notes plus minority-investor equity at half the 10% injection) and guarantee risk",
+     "why": "The founder cannot fill the injection with friendly minority money."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no - at 2026 prices the deal cannot service its debt even in a normal year (DSCR 0.65); maybe yes if bought at trough multiples",
+     "why": "Makes the cycle dependence explicit."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "N/A (financial structure); the value claim depends on shortage EBITDA persisting",
+     "why": "Rule 1 is about mechanisms. The real issue here is the cycle bet."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Best practices: a review of equity injection requirements under SOP 50 10 8 (Starfield & Smith)",
+     "url": "https://starfieldsmith.com/2025/05/best-practices-a-review-of-equity-injection-requirements-under-sop-50-10-8/",
+     "type": "other",
+     "date": "2025-05",
+     "shows": "10% minimum injection of total project cost for changes of ownership. Seller note at most half, on full standby for the loan term (via search snippet)."
+    },
+    {
+     "title": "SBA SOP 50 10 8.1 change-of-ownership equity, DSCR and QoE guide (Beancount blog)",
+     "url": "https://beancount.io/blog/2026/09/23/sba-sop-50-10-8-1-change-of-ownership-equity-dscr-qoe-guide",
+     "type": "blog",
+     "date": "2026-09-23",
+     "shows": "SOP 50 10 8.1, effective 2026-10-01, keeps the 10% injection and treats <20% non-controlling investor equity as a limited source under the shared 50% cap (via search snippet; secondary)."
+    }
+   ]
+  },
+  {
+   "id": "C-96",
+   "verdict": "KILL",
+   "kill_rule": "R3-FAB/T4",
+   "reason": "The card concedes that IP without a line is worthless. The only XPoint line (Lehi) went to TI in 2021 for $900M cash plus ~$600M of tools and now runs analog. Micron quit, citing 'insufficient market validation' after ~$545M of underutilization charges, and Intel lost >$7B. Any product path therefore needs a new 20nm-class crosspoint PCM fab, which is >$1B (T4, A-11). The licensing-only path fails on its premise. There is no single estate to buy: the IP reportedly passed to Micron with royalty-free licenses to Intel, and an Ovshinsky bankruptcy trust sued both over title in 2020 (Blocks & Files, via snippet). A 2026 search found no revival or licensing activity. At the canonical $6.40/GB glut the cost gap that sank Optane closes again.",
+   "evidence_check": [
+    {
+     "url": "https://www.nasdaq.com/press-release/micron-updates-data-center-portfolio-strategy-to-address-growing-opportunity-for",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with training knowledge (Micron 3D XPoint exit, 2021-03-16)."
+    },
+    {
+     "url": "https://www.theregister.com/2021/03/17/micron_pulls_the_plug_on/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Cross-ref. The underutilization charges are consistent with training knowledge."
+    },
+    {
+     "url": "https://www.anandtech.com/show/16800",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Lehi sold to TI. Also cited in 01_LANDSCAPE 6.1 row 9."
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "sec.gov is blocked. The $559M Optane impairment is consistent with training knowledge."
+    },
+    {
+     "url": "https://www.snia.org/sites/default/files/2025-05/SNIA-SDC22-Coughlin-Handy-Persistent-Memories-Without-Optane-Where-Would-We-Be.pdf",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Handy/Coughlin estimate of >$7B in Optane losses."
+    },
+    {
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nano-expands-licensing-agreements-with-key-customers-three-customer-chip-designs-taped-out-to-date/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Licensing-timeline benchmark. The FY26 revenue figure is unverified."
+    },
+    {
+     "url": "https://blocksandfiles.com/2020/10/05/3d-xpoint-patent-suit-intel-micron/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: an Ovshinsky bankruptcy trust sued Intel and Micron over 3D XPoint IP and royalties, alleging IP was transferred to Micron with royalty-free licenses to Intel (an allegation, not a finding). Title is clouded."
+    },
+    {
+     "url": "https://koutoupis.com/2022/02/21/intel-optane-a-restrictive-licensing-model-and-the-half-billion-dollar-operating-loss-in-2020/",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: commentary that Intel/Micron's restrictive licensing model was part of why Optane failed. No 2026 revival found in the same search."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "capital_tier",
+     "new_value": "T4",
+     "why": "The only revenue path is a new crosspoint PCM line. Lehi alone changed hands at ~$1.5B (cash plus tools) as a used fab, so the minimum viable path is >$1B (A-11)."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Nobody. A 2026-11-01 search found no XPoint revival or licensing program. SanDisk's 3D-matrix/HBF work and imec selector-only-memory research are the nearest descendants (see C-25, C-53).",
+     "why": "Fixes the duplicated 'C-25, C-25' cross-reference and adds the search result."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "IP without a line is worthless, and the line is T4. No fab runs XPoint: Lehi went to TI and was converted. There is no clean estate to buy, because the IP sits with Micron with royalty-free licenses to Intel, and an Ovshinsky bankruptcy trust contested title in 2020. Micron and Intel both exited. Out-licensing memory IP takes a decade even for the best-run licensor.",
+     "why": "Adds the title cloud and the T4 basis."
+    },
+    {
+     "field": "possible",
+     "new_value": "marginal - the technology shipped (2017-22), but there is no clean estate for sale and no line to use it on without a >$1B fab",
+     "why": "'The IP could be bought' is unsupported: ownership is split and contested."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "3D XPoint patent suit against Intel and Micron (Blocks & Files)",
+     "url": "https://blocksandfiles.com/2020/10/05/3d-xpoint-patent-suit-intel-micron/",
+     "type": "news",
+     "date": "2020-10-05",
+     "shows": "Ovshinsky estate trust lawsuit alleging Intel lacks rights to core 3D XPoint IP and that IP was moved to Micron with royalty-free licenses to Intel. The estate's title is contested (via search snippet)."
+    },
+    {
+     "title": "Intel Optane: A Restrictive Licensing Model and the Half Billion Dollar Operating Loss in 2020 (Koutoupis)",
+     "url": "https://koutoupis.com/2022/02/21/intel-optane-a-restrictive-licensing-model-and-the-half-billion-dollar-operating-loss-in-2020/",
+     "type": "blog",
+     "date": "2022-02-21",
+     "shows": "Restrictive licensing contributed to Optane's failure (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-97",
+   "verdict": "KILL",
+   "kill_rule": "DUPLICATE",
+   "reason": "This is the services packaging of C-49 (TB-Class CXL Node, KEEP_WITH_CORRECTIONS in batch_07). It has the same buyers (EDA, genomics, SAP HANA/in-memory DB, HPC), the same hardware (Samsung CMM-D, Micron CZ122, SK hynix CMM-DDR5) and the same tuning stack (weighted interleave, DAMON, HMSDK). Its own lens list includes 'module/appliance (VAR)', and batch_07 already flagged the overlap. The cheaper-capacity leg is C-44 (DDR4 second-life CXL expander). DDR5 CXL modules carry the same DRAM plus a controller, so they do not win on $/GB. Marvell's DDR4-reuse Structera X 3406 only samples in Q1 2027 (HPCwire 2026-10-12, via snippet). This follows the C-76/C-50 precedent, where a different packaging of the same opportunity is a duplicate. C-49 should take the assessment and managed-tuning subscription as its T0 entry path and recurring line.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows CXL integration gaps (no Dynamic Capacity, no multi-host sharing in mainline). Evidence of difficulty, not of paying demand."
+    },
+    {
+     "url": "https://github.com/skhynix/hmsdk",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Free vendor tooling, shared with C-49."
+    },
+    {
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "RDIMM price driver (matches the landscape $1,300 4Q26 deck)."
+    },
+    {
+     "url": "https://hpcwire.com/off-the-wire/marvell-unveils-2nd-gen-structera-x-with-six-channel-cxl-3-2-memory-expanders-for-ai-inference",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: Structera X 3406 (DDR4, up to 18 RDIMMs/9 TB) and 3506 (DDR5) announced 2026-10-12, sampling Q1 2027. The DDR4-reuse controller is not yet in production for mid-market buyers."
+    },
+    {
+     "url": "https://futurumgroup.com/insights/marvell-scales-ai-memory-to-48tb-behind-a-single-cxl-switch-at-fms-2026/",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: Marvell pitches DDR4 reuse behind CXL at a fraction of new DDR5 cost (vendor-sourced, FMS 2026). No named production deployments."
+    },
+    {
+     "url": "https://catalog.redhat.com/hardware/components/detail/259267",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: Micron CZ122 256GB E3.S CXL 2.0 expander is in Red Hat's certified hardware catalog. Enterprise-available hardware."
+    },
+    {
+     "url": "https://xenospectrum.com/en/cxl-controller-outsourcing-memory-vendors/",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: Jul-2026 report that Samsung, SK hynix and Micron scaled back in-house CXL controller development (unofficial). A weak demand signal."
+    },
+    {
+     "url": "https://rutab.net/b/hardware/2026/05/13/samsung-nachnet-massovoe-proizvodstvo-moduley-pamyati-cxl-31-v-chetvertom-kvartale-2026-goda.html",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: Samsung plans CMM-D CXL 3.1 mass production in 4Q26. CMM-D 2.0 samples went to hyperscalers and OEMs from 2023."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "wins_axis",
+     "new_value": "Capacity and bandwidth per node above the native DIMM-slot ceiling, plus reuse of already-owned DDR4 once Structera-class cards reach non-hyperscaler buyers (3406 samples Q1 2027). Not $/GB for new CXL DRAM, which costs the same DRAM plus a controller.",
+     "why": "The card's '$/GB of usable capacity' holds only for reused DIMMs, consistent with the C-49 audit."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Penguin Solutions (CXL memory-expansion servers, SMART CXL AICs; per batch_07); Supermicro, Dell, HPE and Lenovo professional services; Marvell, Astera, Samsung, Micron and SK hynix field engineers (free, to sell silicon); Red Hat certified CXL hardware (CZ122); Colfax, Silicon Mechanics; MemVerge [UNVERIFIED-T for the rest]",
+     "why": "Adds the vendors and integrators verified in this and the batch_07 audit."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "It duplicates C-49, and demand is thin. Memory makers reportedly scaled back CXL controller development (Jul-2026). The DDR4-reuse controller for mid-market buyers only samples in Q1 2027. Vendors give integration away to sell hardware. Every billable hour is kernel or platform work the founder cannot do.",
+     "why": "States the duplicate basis and the 2026 demand signals."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 12,
+     "why": "First the practice must recruit a CXL/kernel cofounder and stand up a reference lab before a first paid assessment. The DDR4-reuse offer waits for 2027 samples."
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "no as a solo founder; marginal only with a kernel/CXL cofounder who delivers all billable work",
+     "why": "The founder cannot bill $225/h for CXL tuning."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Marvell unveils 2nd-gen Structera X with six-channel CXL 3.2 memory expanders for AI inference (HPCwire)",
+     "url": "https://hpcwire.com/off-the-wire/marvell-unveils-2nd-gen-structera-x-with-six-channel-cxl-3-2-memory-expanders-for-ai-inference",
+     "type": "news",
+     "date": "2026-10-12",
+     "shows": "Structera X 3406 (DDR4, 18 RDIMMs/9 TB) and 3506 (DDR5, 6 TB) sample in Q1 2027 (via search snippet)."
+    },
+    {
+     "title": "Marvell Scales AI Memory to 48TB Behind a Single CXL Switch at FMS 2026 (Futurum)",
+     "url": "https://futurumgroup.com/insights/marvell-scales-ai-memory-to-48tb-behind-a-single-cxl-switch-at-fms-2026/",
+     "type": "market-research",
+     "date": "2026-08",
+     "shows": "Structera X 2404 pitched for reusing existing DDR4 at a fraction of new DDR5 cost. Architecture figures, not deployments (via search snippet)."
+    },
+    {
+     "title": "Micron CMM CZ122 256GB E3.S CXL2.0 Memory Expander (Red Hat certified hardware catalog)",
+     "url": "https://catalog.redhat.com/hardware/components/detail/259267",
+     "type": "other",
+     "date": "2026",
+     "shows": "CXL Type-3 expander certified for RHEL. Enterprise-available hardware (via search snippet)."
+    },
+    {
+     "title": "Memory vendors outsource/scale back CXL controller development (XenoSpectrum)",
+     "url": "https://xenospectrum.com/en/cxl-controller-outsourcing-memory-vendors/",
+     "type": "news",
+     "date": "2026-07",
+     "shows": "Samsung, SK hynix and Micron reportedly scaled back in-house CXL expander controller work; not officially announced (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-98",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's only axis is cheaper FTO and litigation monitoring, and free tools already win it. Unified Patents' Portal offers free PTAB and district-court search plus free daily litigation alerts, and its data has been in Google Patents since 2019 (via search snippet). Google Patents and USPTO Patent Center also show status, maintenance fees and anticipated expiry free [UNVERIFIED-training]. Precision for counsel sits with Docket Navigator, Lex Machina and RPX. What the named buyers actually need, a reliable FTO opinion, must come from an attorney ($10-30k), and a dashboard cannot give legal reliance. The card's own evidence (ITC 337-TA-1487; Everspin's $6.0M litigation quarter) shows demand for counsel, not for a $4.8k/yr memory dashboard. The card calls itself 'likely a feature ... or an internal tool', consistent with the C-14 kill of a curated public-data subscription.",
+   "evidence_check": [
+    {
+     "url": "https://www.usitc.gov/press_room/news_release/2026/er0227_68226.htm",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The case exists (01_LANDSCAPE 7.2, target ~2027-07). It shows a defendant needing counsel, not a monitoring subscription."
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/0001438423/000162828026067890/mram-20260930xexx991.htm",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "sec.gov is blocked. The $6.0M litigation quarter is cross-ref only and shows spend on counsel, not on data."
+    },
+    {
+     "url": "https://support.unifiedpatents.com/hc/en-us/articles/360019405153-Free-patent-litigation-alerts-now-available-via-Unified-s-Portal",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: Unified Patents offers free patent-litigation alerts through its Portal."
+    },
+    {
+     "url": "https://www.unifiedpatents.com/news/2019/3/7/google-patents-integrates-unifieds-ptab-and-district-court-litigation-data",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: Google Patents integrates Unified's PTAB and district-court litigation data (2019)."
+    },
+    {
+     "url": "https://support.unifiedpatents.com/hc/en-us/articles/360001307233-District-court-litigation-now-available-on-Unified-s-Public-Portal",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: district-court litigation is available on Unified's free public Portal. ITC coverage was not confirmed."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Unified Patents Portal (free PTAB and district-court search plus free daily litigation alerts; data integrated into Google Patents since 2019, via search snippet); Google Patents and USPTO Patent Center (free status, maintenance-fee and expiry data [UNVERIFIED-training]); Docket Navigator, Lex Machina, RPX, PatSnap, LexisNexis PatentSight (paid) [UNVERIFIED-training]",
+     "why": "The free tier the card underrates is verified."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "No winning axis. Litigation and PTAB monitoring is free (Unified Portal, Google Patents), expiry and maintenance status is free (USPTO, Google Patents), and the deliverable with real value, a relied-upon FTO opinion, must come from counsel. The memory-only niche (~25 subscribers x $4.8k = $120k ARR, with no demand evidence) cannot outspend free tools or entrenched paid platforms.",
+     "why": "States the R4 basis with the free-tool evidence."
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "yes - T0, but at most an internal FTO-gate tool for this study's hardware concepts, not a business",
+     "why": "The card cited 'a feature of C-86' (the escalation index), which is the wrong host for patent data. Corrected to its real use."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no - free tools cover monitoring, and counsel captures the FTO spend",
+     "why": "Sharper basis."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Free patent litigation alerts now available via Unified's Portal (Unified Patents support)",
+     "url": "https://support.unifiedpatents.com/hc/en-us/articles/360019405153-Free-patent-litigation-alerts-now-available-via-Unified-s-Portal",
+     "type": "other",
+     "date": "2019-03",
+     "shows": "Free daily alerts on every new PTAB and district-court case (via search snippet)."
+    },
+    {
+     "title": "Google Patents now includes Unified PTAB and District Court litigation data (Unified Patents)",
+     "url": "https://www.unifiedpatents.com/news/2019/3/7/google-patents-integrates-unifieds-ptab-and-district-court-litigation-data",
+     "type": "other",
+     "date": "2019-03-07",
+     "shows": "Litigation and PTAB data shown free on Google Patents patent pages (via search snippet)."
+    }
+   ]
+  }
+ ]
+}

@@ -64,6 +64,7 @@ _IGOR = ("https://www.igorslab.de/en/dram-and-nand-remain-more-expensive-trendfo
 _TECHNEWS_2Q = ("https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-"
                 "increase-csps-lock-supply-long-term-deals/")
 _BARCLAYS = "https://finance.technews.tw/2026/10/13/the-shortage-of-memory-chips-may-continue-for-another-two-years/"
+_CP_APR = "https://counterpointresearch.com/de/reports/memory-price-tracker-april-2026"
 _PK = "[UNVERIFIED-PK]"
 
 _SPEC = [
@@ -131,18 +132,20 @@ _SPEC = [
     ("tsv_process_wafer_adder_usd", "tsv_process_wafer_adder_usd", 650, 450, 1000, "USD/wafer", "ESTIMATE",
      "ESTIMATE: via-middle TSV, thinning, backside reveal, microbumps on HBM core wafer"),
     # --- die size / bits ------------------------------------------------------------------------
-    ("die_ddr5_16gb_1alpha_mm2", "die_ddr5_16gb_1alpha_mm2", 53.3, 48.5, 57.1, "mm2", "ESTIMATE",
-     "ESTIMATE: 16Gb / 0.30 Gb/mm2 " + _PK),
-    ("die_ddr5_16gb_1beta_mm2", "die_ddr5_16gb_1beta_mm2", 41.0, 36.4, 48.5, "mm2", "ESTIMATE",
-     "ESTIMATE: 16Gb / 0.39 Gb/mm2; high-density bound 0.436 Gb/mm2 (Kurnal via KitGuru, REPORTED)"),
-    ("die_ddr5_24gb_1beta_mm2", "die_ddr5_24gb_1beta_mm2", 61.5, 54.5, 72.7, "mm2", "ESTIMATE",
-     "ESTIMATE: 24Gb / 0.39 Gb/mm2"),
-    ("die_ddr5_32gb_1beta_mm2", "die_ddr5_32gb_1beta_mm2", 80.0, 72.7, 97.0, "mm2", "ESTIMATE",
-     "ESTIMATE: 32Gb at ~0.40 Gb/mm2; Samsung 12nm-class 32Gb DDR5 (2023-09) " + _PK),
-    ("die_ddr5_16gb_1gamma_mm2", "die_ddr5_16gb_1gamma_mm2", 33.3, 29.1, 36.4, "mm2", "ESTIMATE",
-     "ESTIMATE: 16Gb / 0.48 Gb/mm2"),
-    ("die_ddr5_32gb_1gamma_mm2", "die_ddr5_32gb_1gamma_mm2", 66.7, 58.2, 72.7, "mm2", "ESTIMATE",
-     "ESTIMATE: 32Gb / 0.48 Gb/mm2"),
+    # Die sizes revised by v4-cost (Phase 1b, 2026-11-01): TechInsights Micron D1b 16Gb DDR5 35.83 mm2 and
+    # Samsung D1b 16Gb LPDDR5X 36.68 mm2 (via search snippets); 1-gamma from Micron's >30% bits/wafer claim.
+    ("die_ddr5_16gb_1alpha_mm2", "die_ddr5_16gb_1alpha_mm2", 53.3, 48.5, 57.1, "mm2", "REPORTED-P",
+     "ESTIMATE: 16Gb / 0.30 Gb/mm2; SK hynix D1a EUV 16Gb DDR5 52.61 mm2 (TechInsights, via search snippet)"),
+    ("die_ddr5_16gb_1beta_mm2", "die_ddr5_16gb_1beta_mm2", 36.5, 35.8, 41.0, "mm2", "ESTIMATE",
+     "ESTIMATE: 16Gb / 0.438 Gb/mm2; low = Micron D1b 35.83 mm2 (TechInsights, via search snippet)"),
+    ("die_ddr5_24gb_1beta_mm2", "die_ddr5_24gb_1beta_mm2", 54.8, 53.7, 61.5, "mm2", "ESTIMATE",
+     "ESTIMATE: 24Gb / 0.438 Gb/mm2"),
+    ("die_ddr5_32gb_1beta_mm2", "die_ddr5_32gb_1beta_mm2", 73.0, 71.6, 80.0, "mm2", "ESTIMATE",
+     "ESTIMATE: 32Gb / 0.438 Gb/mm2; Samsung 12nm-class 32Gb DDR5 (ISSCC 2024 13.2), die area not public"),
+    ("die_ddr5_16gb_1gamma_mm2", "die_ddr5_16gb_1gamma_mm2", 29.1, 27.6, 33.3, "mm2", "ESTIMATE",
+     "ESTIMATE: 16Gb / 0.55 Gb/mm2; Micron 1-gamma >30% bits/wafer vs 1-beta (Micron brief, via snippet)"),
+    ("die_ddr5_32gb_1gamma_mm2", "die_ddr5_32gb_1gamma_mm2", 58.2, 55.2, 66.7, "mm2", "ESTIMATE",
+     "ESTIMATE: 32Gb / 0.55 Gb/mm2"),
     ("die_ddr5_16gb_cxmt_mm2", "die_ddr5_16gb_cxmt_mm2", 66.99, 66.99, 66.99, "mm2", "REPORTED",
      "https://semiwiki.com/forum/threads/chinas-cxmts-ddr5-reveals-3-year-technology-gap.23270/latest"),
     ("die_hbm3e_24gb_core_mm2", "die_hbm3e_24gb_core_mm2", 110, 95, 125, "mm2", "UNVERIFIED",
@@ -197,20 +200,23 @@ _SPEC = [
     ("module_assembly_test_udimm_usd", "module_assembly_test_udimm_usd", 1.5, 0.8, 2.5, "USD", "UNVERIFIED",
      "ESTIMATE: " + _PK + " SMT + module test"),
     # --- market prices ------------------------------------------------------------------------------
-    ("contract_64gb_rdimm_4q26_usd", None, 1300, 1200, 1586, "USD/module", "ESTIMATE",
-     "ESTIMATE: p1-model -- Counterpoint 64GB RDIMM 2Q26 ~$1,000 (" + _EET + ") x TrendForce 3Q26 +15.5% (" +
-     _IGOR + ") x 4Q26 +12.5% (" + _TF0930 + "); high = Citi 4Q26F $1,586 [UNVERIFIED]; low = p1-cost low"),
-    ("price_64gb_rdimm_contract_4q26f_usd", "price_64gb_rdimm_contract_4q26f_usd", 1586, 1200, 1586,
-     "USD/module", "UNVERIFIED", "ESTIMATE: [UNVERIFIED] Citi note (May 2026) per p1-market; page not identified"),
-    ("price_64gb_rdimm_contract_1q26_usd", "price_64gb_rdimm_contract_1q26_usd", 900, 900, 1000, "USD/module",
-     "REPORTED", _EET),
+    # v4-cost (2026-11-01): the 4Q26 anchor moved from $1,300 to $1,650. Counterpoint (Apr-2026) put 1Q26 at $927
+    # and expected ~$1,500 in 3Q26; TrendForce 4Q26 +10-15%; Citi 4Q26F $1,586 (secondary relay).
+    ("contract_64gb_rdimm_4q26_usd", "price_64gb_rdimm_contract_4q26_est_usd", 1650, 1500, 1930, "USD/module",
+     "ESTIMATE",
+     "ESTIMATE: v4-cost -- Counterpoint 64GB RDIMM 3Q26F ~$1,500 (" + _CP_APR + ") x TrendForce 4Q26 +10-15% (" +
+     _TF0930 + "); Citi 4Q26F $1,586; low = 3Q26 flat; high = 1Q26 $927 x TrendForce 2Q-4Q QoQ"),
+    ("price_64gb_rdimm_contract_4q26f_usd", "price_64gb_rdimm_contract_4q26f_usd", 1586, 1586, 1586,
+     "USD/module", "REPORTED", "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026"),
+    ("price_64gb_rdimm_contract_1q26_usd", "price_64gb_rdimm_contract_1q26_usd", 927, 873, 1135, "USD/module",
+     "REPORTED-P", _CP_APR),
     ("price_64gb_rdimm_contract_4q25_usd", "price_64gb_rdimm_contract_4q25_usd", 450, 450, 450, "USD/module",
      "REPORTED", _EET),
     ("contract_dram_qoq_2q26", None, 0.605, 0.58, 0.63, "fraction", "REPORTED", _TECHNEWS_2Q),
     ("contract_dram_qoq_3q26", None, 0.155, 0.13, 0.18, "fraction", "REPORTED", _IGOR),
-    ("contract_dram_qoq_4q26f", "contract_dram_qoq_4q26f", 0.125, 0.10, 0.15, "fraction", "REPORTED", _TF0930),
-    ("price_ddr5_16gb_contract_4q26_derived_usd", "price_ddr5_16gb_contract_4q26_derived_usd", 30.7, 22.0,
-     39.1, "USD/chip", "ESTIMATE", "ESTIMATE: p1-cost, backed out of RDIMM contract (cost_stack.md s7)"),
+    ("contract_dram_qoq_4q26f", "contract_dram_qoq_4q26f", 0.125, 0.10, 0.20, "fraction", "REPORTED", _TF0930),
+    ("price_ddr5_16gb_contract_4q26_derived_usd", "price_ddr5_16gb_contract_4q26_derived_usd", 40.7, 37.0,
+     47.7, "USD/chip", "ESTIMATE", "ESTIMATE: (4Q26 RDIMM anchor - $20.6 non-DRAM) / 40 dies (cost_stack.md s7)"),
     ("price_ddr5_16gb_spot_2026_08_31_usd", "price_ddr5_16gb_spot_2026_08_31_usd", 53.92, 37.2, 67.5,
      "USD/chip", "REPORTED", "https://www.buysellram.com/blog/ram-market-update/"),
     ("price_ddr5_16gb_spot_2023_trough_usd", "price_ddr5_16gb_spot_2023_trough_usd", 3.2, 2.8, 3.6,
@@ -270,7 +276,7 @@ def _load_inputs():
             try:
                 url = rec.get("source_url") or ""
                 rtag = rec.get("tag") or rec.get("confidence") or "ESTIMATE"
-                if url.startswith("http") and rtag in ("VERIFIED", "REPORTED"):
+                if url.startswith("http") and rtag in ("VERIFIED", "REPORTED", "REPORTED-P"):
                     source = url
                 else:
                     source = "ESTIMATE: " + _clean_basis(rec.get("basis")) + (" | ref: " + url if url else "")
@@ -676,9 +682,11 @@ def report():
         (1 + p["contract_dram_qoq_3q26"]) * (1 + p["contract_dram_qoq_4q26f"])
     rows = [
         ["64GB RDIMM contract 4Q26 (model base) $/module", "%.0f" % mk["rdimm_module"],
-         "Counterpoint 2Q26 ~$1,000 x TrendForce 3Q +15.5%, 4Q +12.5% [ESTIMATE]"],
-        ["  cross-check: Citi 4Q26F $/module", "%.0f" % p["price_64gb_rdimm_contract_4q26f_usd"], "[UNVERIFIED]"],
-        ["  cross-check: 1Q26 $900 x TrendForce 2Q-4Q $/module", "%.0f" % q2, "[ESTIMATE] upper bound"],
+         "Counterpoint 3Q26F ~$1,500 x TrendForce 4Q +10-15% [ESTIMATE]"],
+        ["  cross-check: Citi 4Q26F $/module", "%.0f" % p["price_64gb_rdimm_contract_4q26f_usd"],
+         "[REPORTED] secondary relay"],
+        ["  cross-check: 1Q26 $%.0f x TrendForce 2Q-4Q $/module" % p["price_64gb_rdimm_contract_1q26_usd"],
+         "%.0f" % q2, "[ESTIMATE] upper bound"],
         ["DDR5 component contract 4Q26, $/raw GB", f2(mk["ddr5"]["today"]),
          "(RDIMM - $%.1f non-DRAM)/80 GB raw" % mk["rdimm_nondram"]],
         ["  cross-check: p1-cost derived 16Gb chip $%.1f -> $/GB" % p["price_ddr5_16gb_contract_4q26_derived_usd"],
@@ -787,7 +795,9 @@ def report():
 
     print("\n(e) Input low/high ranges from cost_inputs.json, DDR5 16Gb 1-beta component $/GB")
     rng = [("Wafer cost 1-beta ($3.2k-5.5k)", {"wafer_cost_1beta_usd": None}),
-           ("Die size 16Gb 1-beta (36.4-48.5 mm2)", {"die_ddr5_16gb_1beta_mm2": None}),
+           ("Die size 16Gb 1-beta (%g-%g mm2)" % (INPUTS["die_ddr5_16gb_1beta_mm2"]["low"],
+                                                  INPUTS["die_ddr5_16gb_1beta_mm2"]["high"]),
+            {"die_ddr5_16gb_1beta_mm2": None}),
            ("Mature die yield (0.95-0.85)", {"dram_die_yield_mature": "rev"}),
            ("Back-end per die (probe+pkg+test)", {"probe_sort_cost_per_die_usd": None,
                                                   "fbga_assembly_cost_per_die_usd": None,
@@ -843,7 +853,7 @@ def interpretation(r):
     gmg = [gm(mk["ddr5"]["glut"], v) for _, _, a, b in sens for v in (a, b)]
     return f"""## Interpretation (p1-model, {AS_OF})
 
-All numbers below come from `models/dram_cost_stack.py` and are **[ESTIMATE]**. The inputs come from `research/phase1/cost_inputs.json` (agent p1-cost). This agent could not reach the web: the WebSearch budget was spent, and trendforce.com, eetasia.com and buysellram.com failed DNS on {AS_OF}. Every market price is therefore **[REPORTED]** through other agents' search snippets, or **[UNVERIFIED]**.
+All numbers below come from `models/dram_cost_stack.py` and are **[ESTIMATE]**. The inputs come from `research/phase1/cost_inputs.json` (agent p1-cost). This agent could not reach the web: the WebSearch budget was spent, and trendforce.com, eetasia.com and buysellram.com failed DNS on {AS_OF}. Every market price is therefore **[REPORTED]** through other agents' search snippets, or **[UNVERIFIED]**. Phase-1b verifier `v4-cost` then re-checked die sizes, the RDIMM contract anchor and HBM prices through its own searches; see `research/phase1/verify_v4-cost.md`.
 
 1. **Making DDR5 costs about ${ref:.2f}/GB at the component level** (16Gb, 1-beta, mature yield, fully loaded wafer of ${p['wafer_cost_1beta_usd']:,.0f}).
    - 1-gamma costs ${c['ddr5_16g_1c_ramp']['component_gb']:.2f}/GB during its 2026 ramp and ${c['ddr5_16g_1c']['component_gb']:.2f}/GB once mature.
@@ -852,7 +862,7 @@ All numbers below come from `models/dram_cost_stack.py` and are **[ESTIMATE]**. 
    - Front-end silicon is {100 * c[REF_CASE]['wafer_gb'] / ref:.0f}% of component cost. Non-DRAM module parts plus assembly are ${rd['bom'] + rd['assy']:.0f} per RDIMM.
 2. **Contract price today (Q4-2026) is about ${mk['ddr5']['today']:.2f}/GB at the component level and ${mk['rdimm']['today']:.2f} per user-GB on a 64GB RDIMM** (${mk['rdimm_module']:,.0f} per module).
    - Implied gross margin is **{g(mk['ddr5']['today'], ref):.0f}%** for components and {g(mk['rdimm']['today'], rd['per_gb']):.0f}% for the RDIMM.
-   - That agrees with the reported Micron (~87%) and Nanya (85.7%) gross margins, which is the main check that the cost stack is roughly right.
+   - That sits {g(mk['ddr5']['today'], ref) - 100 * p['gross_margin_micron_fq4_26_nongaap']:.0f} pp above Micron's reported ~87% and {g(mk['ddr5']['today'], ref) - 100 * p['gross_margin_nanya_3q26']:.0f} pp above Nanya's 85.7% gross margin. Those reported margins trail the Q4 price and include HBM, NAND and older nodes. This is the main check that the cost stack is roughly right. A gap above ~5 pp hints that the 1-beta wafer cost may be understated.
 3. **In the A-05 glut (−60% from the 2026 peak), DDR5 sells for ${mk['ddr5']['glut']:.2f}/GB** (${mk['rdimm']['glut']:.2f} per user-GB on an RDIMM).
    - That price is still **{mk['ddr5']['glut'] / ref:.1f}× full cost**, so incumbent gross margin stays at about **{g(mk['ddr5']['glut'], ref):.0f}%**.
    - Prices would have to fall **{100 * (1 - ref / mk['ddr5']['today']):.0f}%** before 1-beta full cost bites, and **{100 * (1 - cash / mk['ddr5']['today']):.0f}%** before cash cost does.
@@ -870,9 +880,9 @@ All numbers below come from `models/dram_cost_stack.py` and are **[ESTIMATE]**. 
    - Using the input low/high ranges instead, wafer cost ($3.2–5.5k) dominates (section 10e).
    - Margin barely moves: across all ±20% cost cases, GM stays within {100 * min(gms):.0f}–{100 * max(gms):.0f}% at the Q4-2026 price and {100 * min(gmg):.0f}–{100 * max(gmg):.0f}% in the glut. **Margin is set by price, not cost.**
 8. **The weakest inputs:**
-   - **Die sizes** for 1-beta and 1-gamma 16/24/32Gb are ESTIMATEs from density; the only teardown anchor is CXMT/Micron 1z.
-   - **Fully loaded wafer cost** rests on UNVERIFIED capex-per-wpm rules of thumb.
-   - **The Q4-2026 contract level** is not public at chip level. It is anchored on Counterpoint's 1Q/2Q26 RDIMM figures compounded with TrendForce QoQ forecasts, and the Citi $1,586 figure is UNVERIFIED.
+   - **Die sizes:** 1-beta 16Gb is now anchored on TechInsights teardowns seen via search snippets (Micron D1b DDR5 35.83 mm², Samsung D1b LPDDR5X 36.68 mm²; v4-cost, 2026-11-01). 1-gamma and the 24/32Gb dies are still ESTIMATEs from density and Micron's >30% bits-per-wafer claim.
+   - **Fully loaded wafer cost** rests on UNVERIFIED capex-per-wpm rules of thumb. v4-cost found no public 1a/1b/1c DRAM wafer-cost estimate (2026-11-01).
+   - **The Q4-2026 contract level** is not public at chip level. It is anchored on Counterpoint's 1Q26 actual ($927) and 3Q26 forecast (~$1,500) for the 64GB RDIMM, compounded with TrendForce's 4Q26 +10–15%. The Citi $1,586 figure is REPORTED through a secondary relay only.
    - **The 2023 DDR5 trough** ($3.2/chip) is UNVERIFIED prior knowledge.
    - **The DDR4 4Q26 contract** is assumed at DDR5 parity.
    - **HBM core die size and stack yield** are UNVERIFIED.

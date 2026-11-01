@@ -1,0 +1,6 @@
+- [p3-audit-05] Canonical decks for all batch-05 $/GB comparisons: contract $15.99/GB, glut $6.40/GB, incumbent cost $1.64/GB; A3's $10-12 glut, $2.7 cost and $27 spot framings were corrected. Basis: 01_LANDSCAPE s4.3, s10.4 #1.
+- [p3-audit-05] A latency advantage of a standalone die (C-30/C-31/C-34/C-35) is treated as nil behind a DDR/CXL interface (~50-100 ns controller path). Basis: A3 card C-35 reasoning.
+- [p3-audit-05] C-31 cache-macro variant has no buyer at the named U.S. SOI flows (GF RF-SOI, SkyWater 90nm FD-SOI rad-hard), and dense-cache buyers get zero-mask gain cells (C-32). Judgment call that tipped C-31 to KILL under R4.
+- [p3-audit-05] RAAAM figures ($17.5M NXP-led Series A; 180nm-5nm silicon; GF FDX test vehicle; early-2027 design access; TSMC 2nm qualification) taken from search snippets only; WebFetch to techtime.news and anysilicon.com failed DNS.
+- [p3-audit-05] C-32/C-36 time-to-revenue raised to 36 months on ~6-month SkyWater MPW turns (Cadence/SkyWater 2026 run: Jan submission, July die) plus respin and qualification.
+- [p3-audit-05] C-36 gating unknown: whether SkyWater offers outside customers a characterized high-density 6T bitcell/PDK at Fab 25 65nm (Cypress-proprietary heritage). Left STILL-UNVERIFIED.

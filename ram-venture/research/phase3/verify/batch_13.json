@@ -1,0 +1,549 @@
+{
+ "batch": "13",
+ "auditor": "p3-audit-13",
+ "verdicts": [
+  {
+   "id": "C-87",
+   "verdict": "KILL",
+   "kill_rule": "R1-UNSUPPORTED",
+   "reason": "The core value claim is that OEMs, clouds and makers will trade a cash-settled DRAM contract and so supply liquidity. No evidence supports that, and the precedents point the other way. SGX announced the 'world's first DRAM futures' for 1Q, then 2Q, 2003 (contract cut from 10,000 to 1,000 pieces). Semicon Exchange and Semiconductor Futures Exchange tried the same in 2003, and CBOT, NYMEX and the Pacific Stock Exchange studied memory-chip futures in the late 1980s and early 1990s. No traded DRAM price contract surfaced in a 2026 search (Risk.net, Mondo Visione, EDN, via search snippets). The card itself concedes there is no settlement-grade index, and the incumbent hedge is physical LTAs that simply re-price. The only path below T3 is licensing an index to an existing exchange, and that collapses into C-86 (Memory Cost Escalation Index).",
+   "evidence_check": [
+    {
+     "url": "https://www.sammyfans.com/2026/10/28/sk-hynix-q3-margin-hits-record-80-secures-14-ltas-with-memory-supply-booked-to-2029/amp/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Cross-reference from a sibling log; not opened by E or by this auditor. The LTA claim is consistent with the landscape but unverified here"
+    },
+    {
+     "url": "https://www.trendforce.com/news/?p=65146",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "trendforce.com is fetch-blocked; Nanya LTA re-pricing claim is cross-reference only"
+    },
+    {
+     "url": "https://www.trendforce.com/price_dram.html",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Not opened (blocked). The point that the public reference is proprietary survey and spot data is uncontroversial"
+    },
+    {
+     "url": "https://www.ycombinator.com/companies/mobius-materials",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Not opened; 01_LANDSCAPE.md 10.1 (O6) cites the same page for Mobius as a physical marketplace"
+    },
+    {
+     "url": "https://press.trendforce.com/node/view/3173.html",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "2018 contract-price anchor; cross-reference only, not opened"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "No traded DRAM price contract was found in 2026, but the idea has repeatedly failed: SGX announced DRAM futures for 1Q to 2Q 2003 (USD, 1,000-piece contract); Semicon Exchange and Semiconductor Futures Exchange (SFX) attempted DRAM futures and hedging platforms in 2003; CBOT, NYMEX and the Pacific Stock Exchange studied memory-chip futures in the late 1980s and early 1990s. The SGX contract's fate is unconfirmed. 'DRAMUSDT' perpetuals listed on KuCoin and BloFin in 2026 are stock-index crypto contracts, not DRAM price contracts. The working hedge is physical LTAs with prepayment (SK hynix: 14 LTAs to 2029).",
+     "why": "This replaces the [UNVERIFIED-training] line with search evidence. The failed precedents are the kill."
+    },
+    {
+     "field": "possible",
+     "new_value": "no as a liquid market: the instrument type is standard, but at least four exchange attempts since the late 1980s left no lasting DRAM contract",
+     "why": "Was 'marginal'. The precedent shows the liquidity problem is not new or unsolved by accident."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "UNSUPPORTED (value claim): no evidence that hedgers will trade a DRAM derivative, and prior SGX, Semicon Exchange, SFX and CBOT/NYMEX/PSE efforts did not produce one",
+     "why": "Was 'SUPPORTED'. For a non-device card the value claim must be supported, and it is contradicted."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "No settlement-grade, manipulation-resistant index exists (TrendForce contract data is proprietary and survey-based, and spot is thin at ~1.7x contract). Big players already hedge physically through LTAs that re-price (Nanya +60%). Exchanges have tried DRAM futures since the late 1980s (SGX 2003 most visibly) without creating a market. A DCM or SEF route is T3; the T1 index-licensing route is C-86.",
+     "why": "Adds the failed precedent and names the duplicate low-capital path."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "SGX to launch world's first DRAM futures",
+     "url": "https://www.risk.net/exchanges/1505681/sgx-launch-worlds-first-dram-futures",
+     "type": "news",
+     "date": "2002",
+     "shows": "SGX planned a DRAM futures contract after consulting chip makers and users (via search snippet)"
+    },
+    {
+     "title": "Singapore Exchange to launch world's first DRAM futures in first quarter 2003",
+     "url": "https://mondovisione.com/media-and-resources/news/singapore-exchange-to-launch-worlds-first-dram-futures-in-first-quarter-2003-2011124/",
+     "type": "news",
+     "date": "2002-09",
+     "shows": "USD-denominated contract of 10,000 DRAM pieces planned for 1Q 2003 (via search snippet)"
+    },
+    {
+     "title": "SGX to launch DRAM futures in 2Q of this year",
+     "url": "https://mondovisione.com/news/sgx-to-launch-dram-futures-in-2q-of-this-year-2011124/",
+     "type": "news",
+     "date": "2003-03",
+     "shows": "Launch slipped to 2Q 2003 and contract size was cut to 1,000 pieces (via search snippet)"
+    },
+    {
+     "title": "EDN coverage of DRAM futures efforts (one of three EDN results)",
+     "url": "https://www.edn.com/?p=4043711",
+     "type": "news",
+     "date": "2003",
+     "shows": "An analyst said the idea 'just doesn't work'; SFX offered DRAM hedging software and Semicon Exchange planned DRAM futures; CBOT, PSE and NYMEX explored memory futures in the late 1980s and early 1990s (via search snippet; attribution among the three EDN results not confirmed)"
+    },
+    {
+     "title": "KuCoin Futures will list DRAMUSDT and HIMSUSDT stock index perpetual contracts",
+     "url": "https://www.kucoin.com/announcement/en-kucoin-futures-will-list-dramusdt-and-himsusdt-stock-index-perpetual-contracts-2026-05-11",
+     "type": "other",
+     "date": "2026-05-11",
+     "shows": "The 2026 'DRAM' crypto perpetuals are stock-index contracts, not DRAM price futures (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-88",
+   "verdict": "KILL",
+   "kill_rule": "NOT-A-VENTURE",
+   "reason": "The venture's whole P&L is a short call on the DRAM contract price. Fair premium for a 12-month at-the-money cap is 16.7-20.7% of capped spend (Black-76 at 44-55% volatility; reproduced by hand: 2N(0.22)-1 = 17.4% before discounting). The 99th-percentile loss is $1.5-2.1M per $1M capped, so profit depends only on which way the price moves. Buyers self-select: they buy caps when they expect increases and skip them when they expect falls, so the product disappears in the 2028 turn. The allocation-guarantee leg needs physical stock the venture can only buy at spot (~1.7x contract), which is C-89's negative-EV trade. This is a financial bet on the cycle that needs a fronting insurer or swap dealer, not an operating business.",
+   "evidence_check": [
+    {
+     "url": "https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-increase-csps-lock-supply-long-term-deals/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Cross-reference only; not opened"
+    },
+    {
+     "url": "https://www.trendforce.com/research/download/RP260114IU",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "trendforce.com is fetch-blocked; paywalled report abstract"
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "sec.gov is fetch-blocked; 01_LANDSCAPE.md 6.1 cites the same 10-K [REPORTED-P]"
+    },
+    {
+     "url": "https://www.sammyfans.com/2026/10/28/sk-hynix-q3-margin-hits-record-80-secures-14-ltas-with-memory-supply-booked-to-2029/amp/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Cross-reference only"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 24,
+     "why": "A startup cannot write insurance itself. It needs a licensed fronting carrier and state form filings, or a swap-dealer partner and ISDA documents, plus risk capital of about 1.5-2x the capped spend. 12-18 months is optimistic."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "18-30 months: fronting carrier or swap-dealer partner, regulatory filings, and $1.5-2.1M of risk capital per $1M of capped spend before the first policy",
+     "why": "Matches the corrected months and the card's own 99th-percentile capital figure."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "The writer is short a call. The fair ATM 12-month premium is ~17-21% of capped spend (9-13% for a cap at 1.25x), which buyers will not pay, and the 99th-percentile year costs $1.5-2.1M per $1M capped. Buyers adversely select on their own price view. The allocation-guarantee leg requires inventory bought at spot (~1.7x contract), i.e. C-89. As indemnity it is state-regulated insurance; as a price swap it falls under CFTC rules.",
+     "why": "Adds adverse selection and the hidden dependence on C-89's inventory trade."
+    },
+    {
+     "field": "possible",
+     "new_value": "marginal: only as a reinsurer-backed product at premiums buyers reject",
+     "why": "Unchanged in substance; kept for clarity."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-89",
+   "verdict": "KILL",
+   "kill_rule": "NOT-A-VENTURE",
+   "reason": "This is pure price-cycle speculation with no recurring revenue and no moat; the card's own title says so. A newcomer without allocation buys at spot (~$27/GB on 2026-08-31, about 1.69x the $15.99/GB contract). The QoQ contract increase has slowed from +95.5% (1Q26) to +12.5% (4Q26F), so the expected 12-month net return is -46% (-22% if the spot premium persists). A 24-month hold into the A-05 glut ($6.40/GB) loses 108% after carry (e_estimates section 3). The mission names exactly this category, speculation on the price cycle, as never the venture.",
+   "evidence_check": [
+    {
+     "url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "trendforce.com is fetch-blocked; the +10-15% 4Q26 figure is the landscape's canonical number (01_LANDSCAPE.md 10.4 #10)"
+    },
+    {
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Not opened by this auditor; 01_LANDSCAPE.md 6.1 row 33 and sibling assumptions use the same $53.92 DDR5 16Gb average"
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "sec.gov is fetch-blocked; landscape cites it"
+    },
+    {
+     "url": "https://www.kucoin.com/blog/2027-memory-chip-boom-sk-hynix-samsung",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Aggregator summary of a Bloomberg Intelligence bear case; weak source"
+    },
+    {
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Not opened; the landscape uses the same 2023 trough anchor"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "founder_fit_note",
+     "new_value": "Mechanically trivial, but it stakes the founder's <$50k on a bet skewed against them.",
+     "why": "Removes the gendered reference ('him')."
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "no: mechanically doable, but negative expected value at the only price the founder can buy (spot)",
+     "why": "Was 'marginal'. A trade with -46% expected return is not doable in the mission's sense."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-90",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The lessor has no allocation, so it buys the same street-priced RDIMMs the lessee could buy (the model assumes $1,600 against $1,300 contract and $2,064 street). Its only product is money, and the named buyers already get that money more cheaply inside server-level financing. In 2026 CoreWeave closed an $8.5B A3-rated GPU-backed facility, Lambda a $926M Baa2 term loan (reported at about SOFR+3%), Nebius $775M, and Sharon AI $356M at 9.95% fixed, all at ~60-70% LTV (via search snippets). That is below the card's 14% lessor IRR, and these loans already fund the DRAM inside the servers. A memory-only lessor would therefore lose on $/GB-month, offer no supply security, and match cash-flow timing only at a higher price. It would also be left with the weakest credits that cannot raise GPU-backed debt. On top of that it holds peak-priced residuals into the glut (-29% to -58% IRR if lessees walk at months 18 or 12) and is exposed to a reported neocloud refinancing wall in 2026-28.",
+   "evidence_check": [
+    {
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Not opened; the landscape's $1,300 4Q26 RDIMM figure traces to Counterpoint x TrendForce (10.4 #2)"
+    },
+    {
+     "url": "https://www.servnetuk.com/research/ddr5-server-memory-price-tracker-2026",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Street $2,064 cross-reference only"
+    },
+    {
+     "url": "https://technews.tw/2026/03/31/ai-server-demand-drives-2q26-memory-contract-price-increase-csps-lock-supply-long-term-deals/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Cross-reference only"
+    },
+    {
+     "url": "https://www.trendforce.com/research/download/RP260114IU",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "trendforce.com is fetch-blocked"
+    },
+    {
+     "url": "https://www.kedglobal.com/korean-chipmakers/newsView/ked202310040013",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Trough anchor used across the study; not opened"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "GPU-backed lenders finance neocloud servers, memory included: CoreWeave $8.5B A3-rated facility (2026-03-31), Lambda $926M Baa2 senior secured term loan B (Sep 2026, reported ~SOFR+3%), Nebius $775M senior secured facility, Sharon AI $356M SPV at 9.95% fixed, Nscale multiple 2026 facilities; LTVs ~60-70% (search snippets). OEM captive finance (Dell Financial Services, HPE Financial Services) leases whole servers [training].",
+     "why": "Was [UNVERIFIED-training]. Confirmed, and it shows the buyer already has cheaper financing for the same DRAM."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "none against incumbents: server-level GPU-backed debt at ~SOFR+3% to ~10% already funds the DRAM inside the server, below the card's 14% lessor IRR. With no allocation the lessor has no supply-security edge.",
+     "why": "The $/GB-month and cash-flow axes are already served more cheaply by the named buyer's existing lenders."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 8,
+     "why": "The card's 15 was a lessor IRR, not a margin. Over 36 months, lease receipts ($1,758) plus residual ($260) against a $1,600 buy price give ~21% before cost of funds and roughly 5-10% after a startup facility at ~10% [ESTIMATE from e_estimates section 4 inputs]."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "~21% of lease receipts before cost of funds; ~5-10% net spread after a ~10% facility; scenario lessor IRR -58% to +15%",
+     "why": "Separates margin from IRR."
+    },
+    {
+     "field": "trl",
+     "new_value": 9,
+     "why": "Equipment leasing is a mature, shipping practice; the card itself says 'IT leasing is mature'."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "Once the glut makes a new 64GB RDIMM ~$520, a lessee facing 18 more payments ($879) has every reason to walk or renegotiate, and lessor IRR falls to -29% (walk at month 18) or -58% (month 12). Credit risk is correlated: analysts flag a neocloud refinancing wall for 2026-28 just as the glut would arrive.",
+     "why": "Adds the correlated-credit point (Capacity, via search snippet)."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Lambda Closes $926 Million Senior Secured Term Loan B Facility",
+     "url": "https://www.storagenewsletter.com/2026/09/22/lambda-closes-926-million-senior-secured-term-loan-b-facility-backing-gpu-deployment-for-an-investment-grade-customer/",
+     "type": "news",
+     "date": "2026-09-22",
+     "shows": "GPU-server-secured term loan for a neocloud (via search snippet)"
+    },
+    {
+     "title": "Lambda Secures $926 Million GPU Term Loan With Baa2 Investment-Grade Rating",
+     "url": "https://pulse2.com/lambda-secures-926-million-gpu-term-loan-with-baa2-investment-grade-rating/",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "Baa2 rating; reported maturity 2030-12-31 at SOFR+3% (via search snippet; terms conflict across sources)"
+    },
+    {
+     "title": "Lambda, Sharon AI raise $1.36B in GPU-backed debt on same day",
+     "url": "https://baxtel.com/news/lambda-sharon-ai-raise-1-36b-in-gpu-backed-debt-on-same-day",
+     "type": "news",
+     "date": "2026",
+     "shows": "Sharon AI US$356M GPU-backed SPV facility at 9.95% fixed (via search snippet)"
+    },
+    {
+     "title": "GPU Cluster Financing Data Room (2026)",
+     "url": "https://www.peony.ink/blog/gpu-cluster-financing-data-room",
+     "type": "blog",
+     "date": "2026",
+     "shows": "CoreWeave $8.5B A3-rated facility closed 2026-03-31, described as the first investment-grade GPU-backed financing (via search snippet; vendor blog)"
+    },
+    {
+     "title": "CoreWeave's debt hits $35bn",
+     "url": "https://capacityglobal.com/news/coreweaves-debt-hits-35bn/",
+     "type": "news",
+     "date": "2026",
+     "shows": "LTVs ~60-70% on GPU-backed facilities; 'neocloud refinancing wall' 2026-2028; residual values drive amortization (via search snippet)"
+    },
+    {
+     "title": "Nvidia 9.3% stake in Nebius; GPU-backed debt 2026",
+     "url": "https://noqta.tn/en/news/nvidia-9-3-percent-stake-nebius-gpu-backed-debt-2026",
+     "type": "news",
+     "date": "2026",
+     "shows": "Nebius $775M senior secured facility backed by GPUs it operates (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-91",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "No kill rule applies. The DFARS mechanism is verified: this auditor opened 252.246-7008 and 246.870-2, which require contractors to buy first from OCMs, authorized suppliers or 'authorized aftermarket manufacturers'. Rochester proves the model at scale: the world's largest wafer bank (>10B die, expanding to ~30B), 'authorized by over 70' OCMs, and DRAM from SDRAM to DDR5 plus LPDDR4x through an Intelligent Memory partnership (via search snippets). So the business is possible and profitable, but for incumbents. The card's own model sells 90% of a bank in years 3-8, which pushes first revenue out, and whether any Winbond, ESMT, Etron or Nanya OCM would authorize a startup is STILL-UNVERIFIED. Score it low on capital, time to revenue, competition and founder fit rather than killing it.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-DFARS/blob/master/dita/252.246-7008.dita",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened by this auditor (raw GitHub): AAM definition; contractors 'First obtain' parts from OCMs, authorized suppliers or AAMs; if traceability fails the contractor is 'responsible for inspection, testing, and authentication'"
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-DFARS/blob/master/dita/246.870-2.dita",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened by this auditor: same source hierarchy at all tiers"
+    },
+    {
+     "url": "https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Cross-reference only; zero authorized DDR4 stock claim not re-verified"
+    },
+    {
+     "url": "https://www.advantech.com/en/resources/news/response-measures-to-samsung-ddr4-ic-eol-announcement",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Cross-reference only"
+    },
+    {
+     "url": "https://micross.com/uploads/05827c98-1b61-4d4d-bb3c-04dc1b207e5a/Die_and_Wafer_Flyer_Rev_1_WEB.pdf",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Batch 10 (p3-audit-10) confirmed via snippet: Micross authorized die/wafer, DRAM on line card, Apopka probe capacity"
+    },
+    {
+     "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Not opened; 01_LANDSCAPE.md 6.1 row 2 relies on it for Manassas 1-alpha DDR4/LP4 since 2026-05-22"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Rochester Electronics (Newburyport MA): world's largest wafer/die bank (>10B die, expansion to ~30B), described as authorized by 70+ OCMs, 15B devices and 200k part numbers in stock; legacy DRAM (SDRAM to DDR5, LPDDR4x) through an Intelligent Memory partnership and legacy NAND through SkyHigh Memory (2023). Micross (authorized die/wafer distributor, DRAM on line card, its own AS6171 lab). Intelligent Memory and Alliance Memory (long-lifecycle DRAM OCM brands). Micron Manassas long-lifecycle DDR4/LP4 via distribution since 2026-05-22. Distributors' bonded stock.",
+     "why": "Replaces [UNVERIFIED-training] with search-snippet evidence. The incumbent already covers legacy DRAM specifically, not just logic."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "No startup precedent for winning an OCM aftermarket authorization was found. The card's own base case sells nothing in years 1-2 and 90% in years 3-8 (e_estimates section 5). 24 months is optimistic. The rubric puts this at the 19-36 boundary (score 2), and slippage puts it above 36."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "30-48 months: 6-18 months to win an OCM authorization (unproven for a startup) and an AS9120/AS6496 quality system; then banked die sell only after OCM and distributor stock runs out (base case: years 3-8)",
+     "why": "Matches the card's own sales curve."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "Die from Taiwanese specialty makers (Winbond, ESMT, Etron, Nanya KGD programs, open per 01_LANDSCAPE.md 6.1 row 29). Banking, packaging and test in the U.S. at Integra (KS), QP Technologies (CA) or Micross (Apopka FL, verified in batch 10), though Micross is also a direct competitor in authorized die.",
+     "why": "Flags that the named OSAT competes for the same buyer."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "Demand is driven by EOL and requalification cost, not DDR5 prices, and a glut cheapens LTB wafers. But a glut also lowers the independent-market price that caps aftermarket pricing (DMSMS aftermarket at 1.5-5x, 01_LANDSCAPE.md 7.3) and brings more authorized DDR4 (Micron Manassas, Winbond). The main risk is inventory that never sells (bear IRR -7%).",
+     "why": "Adds the second-order glut effect on price realization."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "OCMs grant aftermarket authorization to proven firms with capital and quality systems. Rochester already holds >10B banked die, 70+ OCM authorizations and a legacy-DRAM partnership with Intelligent Memory, so it is the firm OCMs call first. A startup can neither win the authorization nor fund $0.6M per part ($2M+ for a portfolio). Without authorization the venture is just an independent distributor, which DFARS ranks last.",
+     "why": "Names the specific incumbent coverage of DRAM."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "The world's largest wafer bank has tripled in size at Rochester Electronics",
+     "url": "https://www.electronicspecifier.com/around-the-industry/the-worlds-largest-wafer-bank-has-tripled-in-size-at-rochester-electronics",
+     "type": "news",
+     "date": "unknown",
+     "shows": ">10B die in stock on 2-12 inch wafers back to 1968; expansion to ~30B die capacity (via search snippet)"
+    },
+    {
+     "title": "Rochester Electronics and Intelligent Memory ensure the availability of legacy storage solutions",
+     "url": "https://www.silicon.co.uk/press-release/rochester-electronics-and-intelligent-memory-ensure-the-availability-of-legacy-storage-solutions",
+     "type": "news",
+     "date": "unknown",
+     "shows": "Partnership covers DRAM ICs and modules from SDRAM to DDR5 plus LPDDR4(x) and managed NAND for industrial use (via search snippet)"
+    },
+    {
+     "title": "Rochester Electronics and SkyHigh Memory: continued support for legacy NAND",
+     "url": "https://www.businesswire.com/news/home/20230815306980/en",
+     "type": "company",
+     "date": "2023-08-15",
+     "shows": "Rochester focuses on 100% authorized legacy/EOL semiconductors; agreement with SkyHigh for mature NAND (via search snippet)"
+    },
+    {
+     "title": "Rochester Electronics Ltd company profile (ADS Group)",
+     "url": "https://www.adsgroup.org.uk/members/rochester-electronics-ltd-2//",
+     "type": "other",
+     "date": "unknown",
+     "shows": "Described as authorized by over 70 leading semiconductor manufacturers (via search snippet; directory self-description)"
+    }
+   ]
+  },
+  {
+   "id": "C-92",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The demand mechanism is verified (opened by this auditor). DFARS 252.246-7008(c)(2) makes the contractor 'responsible for inspection, testing, and authentication' when traceability fails, and FAR 52.246-26 treats used-as-new as counterfeit. The methods are routine (TRL 9), so no kill rule applies. The market is crowded, though, including inside the card's own East Coast corridor. SMT Corp in Sandy Hook CT holds ANAB ISO/IEC 17025 + AS6171 HRL2, is DLA QTSL-recognized and expanded to the UK in Dec 2025. Micross Clearwater FL is 17025/AS6171/AS6081 accredited with a RAM tester and offers full-lot AS6171 in about 2 weeks. A2 Global (FL), Vyrian (Houston) and White Horse Labs (Cleveland, DLA-approved) also compete (all via search snippets). Margin and time to revenue are optimistic: the card's 41% margin assumes 60 lots/month, 1.7x breakeven, while its own model shows -34% at 20 lots/month and 22% at 40.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-DFARS/blob/master/dita/252.246-7008.dita",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened by this auditor: (c)(2) 'responsible for inspection, testing, and authentication, in accordance with existing applicable industry standards' and (c)(3) documentation duty"
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/52.246-26.dita",
+     "status": "opened",
+     "supports": "yes",
+     "note": "Opened by this auditor: counterfeit/unauthorized substitution 'includes used items represented as new, or the false identification of grade, serial number, lot number, date code'"
+    },
+    {
+     "url": "https://blog.findchips.com/memory-shortage-watch-ddr3l-ddr4-may-2026/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Cross-reference only"
+    },
+    {
+     "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Not opened; 01_LANDSCAPE.md 6.1 row 33 cites the same release"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "SMT Corp (Sandy Hook CT, 72,000 sq ft; ANAB ISO/IEC 17025 + AS6171 HRL2; DLA QTSL-recognized; UK lab accredited Dec 2025). Micross Clearwater FL (17025, AS6171, AS6081, ITAR; RAM tester in its electrical scope; full-lot AS6171 in ~2 weeks). A2 Global Electronics (FL/Singapore/Netherlands; AS6171/7 ATE electrical). Vyrian (Houston/Hong Kong 17025 lab, at-speed AS6171 flows). White Horse Laboratories (Cleveland; DLA-approved Qualified Commercial Test Laboratory for FSC 5961/5962). Integra Technologies and Alter Technology [UNVERIFIED-training]. Mobius Materials' ML authentication; the ERAI/GIDEP ecosystem.",
+     "why": "Replaces [UNVERIFIED-training] with search-snippet evidence. An accredited, DLA-recognized incumbent sits inside the target NJ/PA/MD/CT corridor."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "-34% at 20 lots/month, 22% at 40, 41% at 60, 54% at 90 (e_estimates section 6)",
+     "why": "The card quoted only the 40-90 band."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 22,
+     "why": "A new lab against SMT and Micross should plan on 20-40 lots/month in years 1-2. 40 lots/month, still above the 36/month breakeven, gives 22%."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 15,
+     "why": "ANAB 17025 + AS6171 scope assessment needs an operating quality system and proficiency-test records first, and defense buyers want the accredited scope (APC reports DLA has mandated AS6171 since Jan 2022). 12-18 months is realistic; broker-only revenue could start earlier."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "12-18 months: equipment install, quality system, proficiency testing and ANAB 17025/AS6171 scope assessment; first broker/EMS lots; DLA listing later",
+     "why": "Matches the corrected months."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Crowded, accreditation-heavy services market. SMT Corp (CT, AS6171 HRL2, DLA QTSL) is in the target corridor and Micross offers full-lot AS6171 with RAM test in ~2 weeks. Below 36 lots/month the lab loses money (-34% GM at 20). The founder cannot run it without a hired AS6171 test engineer and ~$650k; at-speed DDR5 component test equipment could push capex higher [STILL-UNVERIFIED]. Die-origin flagging uses standard AS6171 decap/die-marking methods incumbents already run, so it is not a moat.",
+     "why": "Names the incumbents and why the differentiator is weak."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal-to-no: loses money below 36 lots/month and must take share from accredited, DLA-recognized incumbents",
+     "why": "Was 'marginal'. The model's own low-volume rows are negative."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "SMT Corp expands ISO/IEC 17025 and SAE AS6171 accreditations to UK laboratory",
+     "url": "https://www.newswire.ca/news-releases/smt-corp-expands-iso-iec-17025-and-sae-as6171-accreditations-to-uk-laboratory-strengthening-global-counterfeit-detection-capabilities-831055324.html",
+     "type": "company",
+     "date": "2025-12-08",
+     "shows": "Sandy Hook CT lab: ANAB 17025 + AS6171 HRL2; DLA QTSL-recognized; UK lab MRL2 (via search snippet; company release)"
+    },
+    {
+     "title": "Micross Clearwater FL ISO/IEC 17025:2017 AS6171 accreditation",
+     "url": "https://www.micross.com/uploads/817a2759-d1b0-4f06-a3ea-1512595fd67d/Clearwater-FL_ISO-IEC-17025-20170-AS6171.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Scope includes a 'RAM Tester' under electrical test (AS6171/7, AS6081) (via search snippet)"
+    },
+    {
+     "title": "Micross Counterfeit Mitigation",
+     "url": "https://www.micross.com/advanced-services/counterfeit-mitigation",
+     "type": "company",
+     "date": "unknown",
+     "shows": "ITAR-registered lab, 17025/AS6171/AS6081; full-lot AS6171 testing as fast as 2 weeks (via search snippet)"
+    },
+    {
+     "title": "A2 Global Electronics USA AS6171 / ISO/IEC 17025 scope",
+     "url": "https://a2globalelectronics.com/wp-content/uploads/2025/12/A2GlobalElectronicsUSACertScope22Dec2027.pdf",
+     "type": "company",
+     "date": "2025-12",
+     "shows": "Accredited AS6171 lab incl. AS6171/7 electrical test with ATE (via search snippet)"
+    },
+    {
+     "title": "Vyrian (CB Insights profile)",
+     "url": "https://www.cbinsights.com/company/vyrian",
+     "type": "other",
+     "date": "unknown",
+     "shows": "ISO 17025 lab in Houston and Hong Kong running at-speed AS6171 test flows (via search snippet)"
+    },
+    {
+     "title": "White Horse Laboratories Cleveland facility achieves DLA certification",
+     "url": "https://www.emsnow.com/?p=45202",
+     "type": "news",
+     "date": "unknown",
+     "shows": "DoD/DLA Qualified Commercial Test Laboratory for AS6171 counterfeit testing on FSC 5961/5962 (via search snippet)"
+    },
+    {
+     "title": "APC Technology Group and SMT Corp: component procurement and testing to AS6171",
+     "url": "https://apctech.com/news/apc-technology-and-smt-corp.html",
+     "type": "company",
+     "date": "unknown",
+     "shows": "AS6171 mandated by DLA since January 2022 (via search snippet)"
+    }
+   ]
+  }
+ ]
+}

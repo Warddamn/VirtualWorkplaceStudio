@@ -1,0 +1,580 @@
+{
+ "batch": "01",
+ "auditor": "p3-audit-01",
+ "verdicts": [
+  {
+   "id": "C-01",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is real. imec showed IGZO 2T0C cells at IEDM 2020/2021 (>1e3 s retention, >1e11 cycles), and a 2025 IEDM imec abstract reports a 5-year PBTI lifetime at 95C for eDRAM (via search snippet). The minimum path is T2 (~$10-30M module qualification), far below the $1B line. The card has a real winning axis against its named buyer's alternatives: standby power and ~2-4x density versus 130nm SRAM, and write endurance (1e11+) versus the SkyWater-qualified Weebit ReRAM. The card overstates density (claims 4-5x; sky130 SRAM 1.896 um2 vs a 30-60F2 gain cell gives 1.9-3.7x) and understates time to revenue. A search (2026-11) found no SkyWater oxide module. C-32 (Si gain-cell eDRAM IP) serves the same buyer with no new process module, so the scorer should weigh that.",
+   "evidence_check": [
+    {
+     "url": "https://www.eenewseurope.com/news/imec-shows-capacitor-free-dram",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "IEDM 2020 claims match imec's own article that surfaced in search; not opened"
+    },
+    {
+     "url": "https://techxplore.com/news/2021-12-capacitor-less-igzo-based-dram-cell-excellent.html",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Snippet confirms PBTI TTF improved ~20 days -> ~1 yr against a 5-yr target (IEDM 2021, Chasin et al.)"
+    },
+    {
+     "url": "https://investigadores.uandes.cl/en/publications/double-gate-w-doped-amorphous-indium-oxide-transistors-for-monoli/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "IWO retention 300 ms at 85C means refresh is mandatory at temperature"
+    },
+    {
+     "url": "https://hg.gatech.edu/node/675050",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://past.date-conference.com/proceedings-archive/2026/DATA/154.pdf",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Card itself notes the low-mobility speed penalty"
+    },
+    {
+     "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12191135",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "FTO signal only; assignee unverified"
+    },
+    {
+     "url": "https://www.businesswire.com/news/home/20250226773415/en/SkyWater-to-Acquire-Infineons-Austin-Fab-and-Establish-Strategic-Partnership-to-Expand-U.S.-Foundry-Capacity-for-Foundational-Chips",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Corroborated by 01_LANDSCAPE.md 6.1 row 7 (LaPedus)"
+    },
+    {
+     "url": "https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Corroborated by 01_LANDSCAPE.md 6.1 row 16"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "what_it_is",
+     "new_value": "Replace '~4-5x the bit density of 130nm SRAM' with '~2-4x the bit density of 130nm SRAM'",
+     "why": "30F2 at F=130nm is 0.51 um2 and a realistic 40-60F2 gain cell is 0.68-1.01 um2, against a verified 1.896 um2 sky130 SRAM cell. That is 1.9-3.7x, consistent with 01_LANDSCAPE 4.4 (250-490x less dense than DDR5 1b)."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "standby power per bit vs SRAM; ~2-4x on-die density vs 130nm SRAM; write endurance (>1e11) and write energy vs SkyWater-qualified ReRAM for scratchpad/activation memory",
+     "why": "The ReRAM comparison is what decides a design-in at SkyWater, and ReRAM endurance is orders of magnitude lower. That is the real winning axis."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 48,
+     "why": "No foundry has an oxide module (no SkyWater module found, 2026-11 search). In/Ga contamination policy needs dedicated BEOL tools ($4-10M, 01_LANDSCAPE 6.2) before any customer NRE. 48 months is past the 36-month hard ceiling."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "36-60 months: dedicated BEOL tool set and module development at SkyWater (18-24 mo), test chip and 5-10 yr PBTI/retention qualification (12-18 mo), then first NRE/license from an edge-AI or defense ASIC customer",
+     "why": "Matches the new month figure and the qualification burden."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "65-85% blended (early revenue is NRE/test-chip support at lower margin; royalties on 130nm volumes come later)",
+     "why": "Pure-royalty 85% ignores that early revenue is NRE and that the foundry, not the IP vendor, captures the wafer adder."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 75,
+     "why": "Blended NRE plus royalty."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "SkyWater Bloomington MN (S130) or Fab 25 Austin TX (130-65nm), 200mm. No oxide-semiconductor module exists at either (no announcement found 2026-11). Needs dedicated IGZO sputter or In2O3 ALD tools (~$4-10M) because of In/Ga/Zn contamination policy. Prototyping at Purdue Birck (200mm oxide BEOL, 2026-09) or NY CREATES Albany.",
+     "why": "The card omitted the dedicated-tool and contamination cost that sets the T2 floor."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "No U.S. foundry offers an oxide-semiconductor module. Adding one means dedicated tools ($4-10M) plus ~$10-30M and 3+ years of qualification [ESTIMATE]. PBTI is improving (imec IEDM 2025 abstract: 5-yr lifetime at 95C, 1.2 V overdrive, via snippet), but no 10-yr lifetime is shown, and IWO retention falls to ~300 ms at 85C, so refresh is mandatory. ASIC teams can already pick qualified Weebit ReRAM on S130, or a pure-CMOS Si gain cell (C-32) that needs no new module. SEL's estate is an FTO risk. Royalties on 130nm volumes are small.",
+     "why": "The flaw text was updated with 2025 PBTI data and the pure-CMOS alternative that undercuts the module."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "imec IEDM 2025 IGZO PBTI paper record (H/O anneal; 5-yr lifetime at 95C, 1.2 V overdrive for eDRAM)",
+     "url": "https://imec-publications.be/handle/20.500.12860/59908",
+     "type": "conference",
+     "date": "2025-12",
+     "shows": "PBTI lifetime reaches the 5-yr target at 95C in lab (via search snippet; attribution of the abstract to this handle is likely but not confirmed; fetch blocked)"
+    },
+    {
+     "title": "imec: Capacitor-less IGZO-based DRAM cell with excellent retention, endurance and gate length scaling",
+     "url": "https://www.imec-int.com/en/articles/capacitor-less-igzo-based-dram-cell-excellent-retention-endurance-and-gate-length-scaling",
+     "type": "industry",
+     "date": "2021-12",
+     "shows": "Primary imec write-up of the IEDM 2021 2T0C results (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-02",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's own model puts standalone 4-tier IGZO 2T0C on 130nm at ~$336/GB. Against the canonical decks that is 21x the 4Q26 DDR5 contract price ($15.99), 52x the glut price ($6.40) and ~205x incumbent cost ($1.64). The card's '12x' used $27 spot. Its named buyer (industrial/legacy DDR4) pays for $/GB, and the card's wins_axis is 'none'. It would also take T3 capital to try. Even the hypothetical 300mm 28nm 4-tier version ($11.8/GB) is 1.8x the glut price and 7x incumbent cost, on a line no U.S. foundry offers.",
+   "evidence_check": [
+    {
+     "url": "https://techxplore.com/news/2021-12-capacitor-less-igzo-based-dram-cell-excellent.html",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Cell physics supported; the economics kill it, not the physics"
+    },
+    {
+     "url": "https://www.ithome.com/0/966/543.htm",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://www.kitguru.net/channel/generaltech/joao-silva/new-dram-value%E2%80%91per%E2%80%91area-chart-draws-attention-amid-rising-memory-prices/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "0.436 Gb/mm2 1b density is consistent with 01_LANDSCAPE 4.1 die sizes"
+    },
+    {
+     "url": "https://semiwiki.com/forum/threads/chinas-cxmts-ddr5-reveals-3-year-technology-gap.23270/latest",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Same anchor used by 01_LANDSCAPE 4.5"
+    },
+    {
+     "url": "https://past.date-conference.com/proceedings-archive/2026/DATA/154.pdf",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    }
+   ],
+   "corrections": [
+    {
+     "field": "glut_reason",
+     "new_value": "At ~$336/GB it is 21x the 4Q26 contract price ($15.99/GB) and 52x the canonical glut price ($6.40/GB), against an incumbent cost of $1.64/GB (~205x).",
+     "why": "The card used $27 spot, an ~$11 glut and a $2.7 cost. 01_LANDSCAPE 4.3 makes the contract deck canonical."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no - $/GB ~21x the DDR5 contract price today, ~52x the glut price, ~205x incumbent cost",
+     "why": "Canonical decks."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-03",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card's own scratch model gives ~2.3 GB per Gen 8.5 sheet and ~$266/GB before bonding, with microsecond access. That is 17x the 4Q26 contract price and 42x the glut price, and the card lists wins_axis 'none for RAM' and buyer 'none'. The premise also collapses in the U.S.: there is no Gen-scale LCD/OLED/oxide-TFT panel fab (01_LANDSCAPE 6.1 row 17; Foxconn Wisconsin never built), so 'idle display fab' means an Asian fab. That is a secondary FACT-COLLAPSE.",
+   "evidence_check": [
+    {
+     "url": "https://dc.engconfintl.org/ulsic_tft_vii/34",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Leakage claim is plausible and doesn't change the verdict"
+    },
+    {
+     "url": "https://www.sixteen-nine.net/?p=20827",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with 01_LANDSCAPE 6.1 row 17 (no U.S. display fab)"
+    },
+    {
+     "url": "https://upnorthnewswi.com/2020/10/22/state-report-foxconns-project-cant-possibly-be-a-factory",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Same"
+    },
+    {
+     "url": "https://www.semiconductor-today.com/news_items/2024/mar/pragmatic-280324.shtml",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://telecomlead.com/electronics/display-panel-industry-faces-utilization-decline-amid-tariff-uncertainty-120613",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Idle capacity is in Asia"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "glut_reason",
+     "new_value": "~$266/GB before bonding is 17x the 4Q26 contract price ($15.99) and 42x the glut price ($6.40), with microsecond latency.",
+     "why": "The card said '~10x'. Canonical deck per 01_LANDSCAPE 4.3."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-04",
+   "verdict": "KILL",
+   "kill_rule": "R3-FAB/T4",
+   "reason": "OCTRAM is a 4F2 IGZO transistor built on a high-aspect-ratio DRAM capacitor, so it needs a DRAM capacitor process. In the U.S. only Micron (Boise, Manassas, Clay) has one, and all of it is captive (01_LANDSCAPE 6.1 rows 1-3). The card itself sets capital at T4 and 84+ months, and Kioxia/Nanya do not offer the IP for license. Even at demo pitch the card's $8.4/GB is 5.1x incumbent cost ($1.64) and 1.3x the glut price.",
+   "evidence_check": [
+    {
+     "url": "https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Device is real; kill is on fab/capital, not physics"
+    },
+    {
+     "url": "https://blocksandfiles.com/2024/10/22/kioxia-developing-new-dram-scm-and-nand-tech/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+     "status": "unreachable",
+     "supports": "unknown",
+     "note": "trendforce.com is blocked for fetch; not retried"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "why_it_could_work",
+     "new_value": "Replace '~3x DDR5's estimated ~$2.7/GB cost' with '~5.1x incumbent DDR5 1-beta cost ($1.64/GB) and 1.3x the $6.40 glut price'",
+     "why": "Canonical cost deck, 01_LANDSCAPE 4.1/4.3."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-05",
+   "verdict": "KILL",
+   "kill_rule": "R3-FAB/T4",
+   "reason": "Producing 3D X-DRAM needs a 3D-NAND-class fab ($10B-class, T4). No volume 3D NAND fab operates in the U.S., and NEO licenses to memory makers, so a startup cannot take the licensee seat. The evidence is also weak on R1. It is a single-cell, company-reported PoC (NYCU/TSRI test chips) with no peer-reviewed array data, and measured retention (>1 s at 85C) is ~450x below NEO's own earlier TCAD claim (>450 s).",
+   "evidence_check": [
+    {
+     "url": "https://www.storagenewsletter.com/2026/05/13/neo-semiconductor-demonstrates-3d-x-dram-proof-of-concept-secures-strategic-investment-to-advance-ai-memory/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Company-reported PoC only, per card and A1 notes"
+    },
+    {
+     "url": "https://www.eenewseurope.com/en/neo-semiconductor-adds-igzo-to-3d-dram-designs/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "TCAD simulation, not silicon"
+    },
+    {
+     "url": "https://trendforce.com/news/?p=10820",
+     "status": "unreachable",
+     "supports": "unknown",
+     "note": "trendforce blocked"
+    },
+    {
+     "url": "https://www.vlsisymposium.org/wp-content/uploads/2026/04/2026-VLSI-Technical-Tipsheet-REVISED-FINAL-NO-IMAGES-4.24.26.docx",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    }
+   ],
+   "corrections": [
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED-WEAK (company-reported single-cell PoC; no peer-reviewed array data)",
+     "why": "Calling NEO's own press claims 'SUPPORTED' overstates the evidence."
+    },
+    {
+     "field": "possible",
+     "new_value": "unproven - single-cell PoC only; the 10x-density claim rests on unbuilt multi-layer arrays",
+     "why": "'Marginal' understates how far from arrays it is."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-06",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is supported. 1Mb HZO 1T1C arrays (IEDM 2023), hafnia heavy-ion hardness (Fraunhofer/JAP 2022) and Sandia's HZO FeRAM at 200mm in MESA (2026-05-13) all check out via snippet, and the path is T2. But the 'onshore' premise is weaker than the card says. Infineon's Excelon F-RAM die is made at TI Dallas DMOS6 (130nm, 300mm, per Infineon qual doc, via snippet), and U.S.-made toggle MRAM (Everspin, Chandler AZ) already serves space. RAMXEED is itself developing HZO for higher-capacity FeRAM, and Sandia's circuitry is still a planned follow-on. What survives is narrow: a third source plus density headroom above PZT's ~4-16Mb ceiling in a trusted flow. That is not R4, but TRL and time to revenue are optimistic.",
+   "evidence_check": [
+    {
+     "url": "https://fis.tu-dresden.de/portal/en/publications/a-highly-reliable-18-v-1-mb-hf05zr05o2based-1t1c-feram-array-with-3d-capacitors%28e6411421-d8d0-4f39-97d3-03a6d18e3513%29.html",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Related TU Dresden HZO array records surfaced in search (10-yr retention at 85C reported for a 1T1C HZO array in research)"
+    },
+    {
+     "url": "https://www.sandia.gov/research/news/evolving-semiconductor-technology-for-national-security-applications/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "2026-05-13: HfO2/HZO rad-hard FeRAM folded into MESA, 200mm FeRAM, binary and 32-state FTJs; supporting circuitry is a planned follow-on, so it is not yet an array product"
+    },
+    {
+     "url": "https://publica.fraunhofer.de/handle/publica/456991",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "2022 JAP heavy-ion study: hafnia FE NVM ideal where radiation hardness is mandatory"
+    },
+    {
+     "url": "https://infineon.com/cms/en/product/memories/radiation-hardened-high-reliability-memories/space-memories/5962r1821601vxc",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Fab location of the QML-V part not established"
+    },
+    {
+     "url": "https://infineon.com/cms/en/product/memories/f-ram-ferroelectric-ram/excelon-f-ram",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "Excelon family confirmed via distributor pages"
+    },
+    {
+     "url": "https://newelectronics.co.uk/content/features/fram-set-to-save-energy-in-write-intensive-mcu-applications",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://community.infineon.com/gfawx74859/attachments/gfawx74859/NonVolatileRAM/1143/1/002-18474_00_V.pdf",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Appeared in search alongside an Infineon qual doc listing die fab TI Dallas DMOS6 (300mm, 130nm). That means the incumbent is already U.S.-fabbed."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "trl",
+     "new_value": 4,
+     "why": "The 1Mb arrays (Sony/Fraunhofer) came from non-U.S. lines. Sandia's MESA work is capacitor/FTJ-level with circuitry still a planned follow-on (2026-05 snippet), and SkyWater has no HZO module. The card's U.S. path is lab-validated, not array-validated in a relevant environment."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 54,
+     "why": "The module at SkyWater does not exist yet. Sandia circuitry is not done, and the named space/defense buyer needs QML or equivalent screening (+1-2 yr). Industrial samples alone don't make 36 months credible."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "42-72 months: Sandia CRADA/license plus SkyWater HZO module (24 mo), product design and samples (12 mo), first industrial/eval sales ~month 48-54; QML-V adds 1-2 years for the space buyer",
+     "why": "Matches the corrected month figure."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "second/third source in the rad-hard NVM niche, plus density headroom above PZT F-RAM's ~4-16Mb ceiling, in a DMEA-trusted flow. Not 'onshore': the incumbent Excelon die is already U.S.-fabbed (TI Dallas DMOS6), and Everspin toggle MRAM is U.S.-made.",
+     "why": "Infineon qual doc via snippet. 01_LANDSCAPE 6.1 rows 4, 26."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Infineon (PZT F-RAM incl. QML-V rad-hard; Excelon die at TI Dallas DMOS6 300mm/130nm), RAMXEED (ex-Fujitsu; PZT 10-yr at 125C; active HZO R&D aimed at Gb-class FeRAM), TI (embedded FRAM), CEA-Leti (16-kb HZO FeRAM at 130nm; eFeRAM on 22nm FD-SOI, IEDM 2024), FMC (Germany), Sony/Fraunhofer/NaMLab, Sandia (MESA HZO). U.S.-made rad-tolerant alternatives: Everspin toggle MRAM (Chandler AZ) in Frontgrade modules; Honeywell/BAE trusted MRAM/SRAM.",
+     "why": "The incumbents chasing the same HZO density axis and the U.S.-made MRAM substitutes were missing."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "SkyWater Bloomington MN (S130; DMEA trusted [UNVERIFIED]) or Fab 25 Austin (historic Cypress alternate fab for small PZT F-RAM); no HZO module at either. Sandia MESA for rad-hard pilot (CRADA/SPP, Ltd access). Note that the incumbent's Excelon die is already made in Dallas TX (TI DMOS6).",
+     "why": "U.S. manufacturing is not a differentiator against Infineon."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "HZO still trails PZT on what F-RAM buyers pay for. Research arrays reach ~1e11 cycles and ~10-yr retention at 85C, versus 1e13-1e14 cycles and 10 yr at 125C (RAMXEED) or >100 yr at 85C (Infineon). The 'onshore second source' story is weak because Infineon's F-RAM die is already U.S.-fabbed (TI Dallas DMOS6) and U.S.-made toggle MRAM serves space. RAMXEED and CEA-Leti are pursuing HZO density themselves. The niche is ~hundreds of $M/yr [ESTIMATE] and incumbent-dominated.",
+     "why": "Updated with the 2026-11 snippets (TI DMOS6 fab, RAMXEED HZO R&D, 10-yr/85C research retention)."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED",
+     "why": "Unchanged. IEDM 2023 arrays plus Sandia 200mm."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Infineon qualification document (F-RAM die fab: Texas Instruments Dallas DMOS6, 130nm, 300mm)",
+     "url": "https://community.infineon.com/gfawx74859/attachments/gfawx74859/NonVolatileRAM/1505/1/INF224203.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Incumbent F-RAM die is fabbed in the U.S. at TI Dallas DMOS6 (via search snippet; doc attribution between this and the 002-18474 PCN is not certain)"
+    },
+    {
+     "title": "RAMXEED: Research and Development of HZO FeRAM for Higher-Capacity FeRAM",
+     "url": "https://www.ramxeed.com/tech-column/hzo-feram-development-for-high-capacity/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "The incumbent FeRAM maker is developing HZO for higher capacity (6.4Gb illustrative on 5mm chip; cites 1e14 HZO capacitor endurance, VLSI 2021) (via search snippet)"
+    },
+    {
+     "title": "RAMXEED: high-reliability FeRAM 125C 10 years",
+     "url": "https://www.ramxeed.com/tech-column/high-reliability-feram-125c-10-years/",
+     "type": "company",
+     "date": "unknown",
+     "shows": "PZT FeRAM guarantees 10-yr retention at continuous 125C; 4Mb MB85RS4MTY (via search snippet)"
+    },
+    {
+     "title": "CEA-Leti demonstrates embedded FeRAM platform compatible with 22nm FD-SOI node (IEDM 2024)",
+     "url": "https://www.eejournal.com/industry_news/cea-leti-demonstrates-embedded-feram-platform-compatible-with-22nm-fd-soi-node/",
+     "type": "news",
+     "date": "2024-12",
+     "shows": "HZO FeRAM: 16-kbit arrays at 130nm and an embedded platform at 22nm FD-SOI, so competitors are on the same path (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-07",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The core physics is peer-reviewed. Pradhan et al., Nature Electronics 7, 348-355 (2024), show Al0.68Sc0.32N ferro-diodes switching at 600C for >60 h at <15 V (via snippet), and Penn/AFRL have a 2025 preprint on kilobyte-scale selector-free crossbar arrays (arXiv 2506.05452, title via snippet). TRL 4 holds. The buyer axis (no incumbent NVM works at 500C+) is real, and AFRL topic AF254-D0806 asks for 6-inch wafers of 500C kB-scale arrays. The path is T1 via STTR, and the card isn't killed. Its key unknown is still open: two searches found no Penn license or spin-out, and the AF254 performer is unknown, so a competitor may already hold the scale-up seat. Time to revenue and margin are optimistic.",
+   "evidence_check": [
+    {
+     "url": "https://physicstoday.aip.org/news/new-memory-circuit-can-handle-the-heat",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "45-nm AlScN ferro-diode, 600C operation"
+    },
+    {
+     "url": "https://www.engineering.upenn.edu/stories/turning-up-the-heat-on-data-storage/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with techxplore/Physics Today coverage of Nature Electronics 2024"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2309.04555",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "arXiv abs surfaced in search; APS March 2025 abstract repeats: 1e6 read cycles, On/Off >1 for >60 h at 600C, <15 V. arxiv.org fetch blocked in this session."
+    },
+    {
+     "url": "https://arxiv.org/pdf/2504.13283",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Preprint; not peer-reviewed. The card's 'peer-reviewed' type is wrong for arXiv."
+    },
+    {
+     "url": "https://www.darpa.mil/research/programs/non-volatile-memory-extreme-environments",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "DPA26BZ04-DV017 exists. The snippet gives responses due 2026-08-20 vs the card's 'closed 2026-08-19' (1-day discrepancy)."
+    },
+    {
+     "url": "https://www.sbir.gov/topics/12036",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "AF254-D0806 closed; deliverables include 6-inch wafers with 500C memory arrays; references the Penn Nature Electronics paper"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 42,
+     "why": "No matching DoD topic is open now (AF254 and DV017 are both closed). The SBIR/STTR terms are unverified (01_LANDSCAPE 7.1), and a 500C packaged eval part needs high-temperature packaging plus a periphery solution. Realistic first paid eval-part sale is 36-48 months."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "36-48 months: Penn option + STTR Phase I in the next DoD/NASA cycle (6-12 mo), Phase II arrays + HT packaging (24 mo), then first paid eval-part sales to primes/downhole OEMs; STTR money is funding, not revenue (A-04)",
+     "why": "Matches the corrected month figure."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "40-60% on early low-volume prototype/eval lots (fab-lot and HT-packaging costs dominate); 55-70% only once qualified parts ship",
+     "why": "First revenue is small-lot eval parts, and SBIR Phase III work is often cost-plus."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 50,
+     "why": "Early-revenue blended margin."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "Prototype at Penn Singh Center (open to industry users per 01_LANDSCAPE 6.1 row 16, $75-250/tool-hr); scale on a U.S. 200mm line with AlN/AlScN sputter (MEMS/RF foundries; which U.S. foundry offers AlScN to outsiders today is [UNVERIFIED]); high-temperature ceramic packaging from U.S. hybrid houses.",
+     "why": "Landscape confirms Singh Center external access."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Penn (Jariwala, Olsson) + AFRL (Moore); unknown performer(s) on AF254-D0806 and DPA26BZ04-DV017 (no award found, 2026-11); Univ. of Florida (AlScN ferroelectrics for in-memory compute); SiC high-temperature IC efforts (NASA Glenn JFET ICs) [UNVERIFIED]. No Penn spin-out or license found (2 searches, 2026-11).",
+     "why": "The open competitor seats need to be visible to the scorer."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "A tiny, grant-shaped market that can easily turn into an SBIR mill (the mission bars grant farming). It needs a 500C periphery that barely exists commercially (SiC CMOS/JFET ICs are lab or program-only) and drive voltages of ~10-15 V at temperature. Penn's licensing status is unknown, and AFRL has already solicited a manufacturing scale-up performer (AF254-D0806) who may own the commercial seat. Revenue comes after the 18-month target and close to the 36-month ceiling.",
+     "why": "Sharpened with the topic deliverable and voltage facts."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Kilobyte-Scale, Selector-Free, Temperature-Hard AlScN Ferroelectric Diode Crossbar Arrays (Pradhan, Moore et al.)",
+     "url": "https://arxiv.org/pdf/2506.05452",
+     "type": "preprint",
+     "date": "2025-06",
+     "shows": "Array-level (kB) AlScN ferro-diode crossbars from the Penn/AFRL group, supporting TRL 4 (title/authors via search snippet only; details not verified)"
+    },
+    {
+     "title": "APS March Meeting 2025: A scalable ferroelectric non-volatile memory operating at high temperature",
+     "url": "https://archive.aps.org/smt/2025/mar-t20/12",
+     "type": "conference",
+     "date": "2025-03",
+     "shows": "600C operation, 1e6 read cycles, On/Off >1 for >60 h, <15 V (via search snippet)"
+    },
+    {
+     "title": "TechXplore: storage memory device paves way for AI in extreme environments",
+     "url": "https://techxplore.com/news/2024-04-storage-memory-device-paves-ai.html",
+     "type": "news",
+     "date": "2024-04",
+     "shows": "Nature Electronics 7, 348-355 (2024), DOI 10.1038/s41928-024-01148-6 (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-08",
+   "verdict": "KILL",
+   "kill_rule": "R3-FAB/T4",
+   "reason": "A 32Gb-class HZO 1T1C NVDRAM die needs a DRAM-class capacitor process. In the U.S. only Micron has one, and it is captive (01_LANDSCAPE 6.1). The card itself sets T4 and 'never for a startup'. The one company that built the die (Micron, IEDM 2023) never made it a product, and Optane's ~$576M 2020 loss plus $559M impairment show the persistent tier fails on cost absorption. The remaining startup-scale angles are covered by C-09 (FMC DRAM+ design-in) and C-51 (persistent CXL log card).",
+   "evidence_check": [
+    {
+     "url": "https://www.eenewseurope.com/en/iedm-micron-to-present-dram-like-non-volatile-memory-for-ai/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Device existence uncontested"
+    },
+    {
+     "url": "https://blocksandfiles.com/2024/01/09/micron-nvdram-might-never-become-a-product/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": ""
+    },
+    {
+     "url": "https://www.design-reuse.com/news/202501939-ferroelectric-ram-looking-rusty-and-stuck-/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://www.anandtech.com/show/17515",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://www.techtarget.com/it-infrastructure/news/252523339/Intel-pulls-the-plug-on-Optane",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    },
+    {
+     "url": "https://heise.de/-11151026",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": ""
+    }
+   ],
+   "corrections": [],
+   "new_evidence": []
+  }
+ ]
+}

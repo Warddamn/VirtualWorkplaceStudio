@@ -7,7 +7,7 @@
 ====================================================================================================
 DRAM COST STACK -- American Memory, Phase 1 (models/dram_cost_stack.py)   as of 2026-11-01
 ====================================================================================================
-Inputs: loaded 219 records from research/phase1/cost_inputs.json; 74 of 87 INPUTS taken from it.
+Inputs: loaded 224 records from research/phase1/cost_inputs.json; 75 of 87 INPUTS taken from it.
 All outputs are [ESTIMATE]. Market prices are [REPORTED] via other agents' search snippets, or
 [UNVERIFIED]. Component $/GB = per raw GB; module $/GB = per user GB (RDIMM carries +25% ECC bits).
 
@@ -47,12 +47,12 @@ wafer_cost_legacy_dram_depreciated_usd       1300      1000-1800  USD/wafer (c  
 wafer_cost_legacy_dram_new_line_usd          2800      2300-3500  USD/wafer     ESTIMATE    ESTIMATE: [ESTIMATE] new-build 2x/1x-nm DRAM line (DUV onl..
 psmc_dram_foundry_wafer_usd                  1600      1200-2200  USD/wafer     UNVERIFIED  ESTIMATE: [UNVERIFIED-PK] Powerchip (PSMC) 25/38nm-class D..
 tsv_process_wafer_adder_usd                   650       450-1000  USD/wafer     ESTIMATE    ESTIMATE: [ESTIMATE] TSV etch/liner/fill (via-middle), thi..
-die_ddr5_16gb_1alpha_mm2                     53.3      48.5-57.1  mm2           ESTIMATE    ESTIMATE: [ESTIMATE] 16Gb / density_ddr5_1alpha             
-die_ddr5_16gb_1beta_mm2                        41      36.4-48.5  mm2           ESTIMATE    ESTIMATE: [ESTIMATE] 16Gb / density_ddr5_1beta              
-die_ddr5_24gb_1beta_mm2                      61.5      54.5-72.7  mm2           ESTIMATE    ESTIMATE: [ESTIMATE] 24Gb / density_ddr5_1beta (24Gb non-b..
-die_ddr5_32gb_1beta_mm2                        80        72.7-97  mm2           ESTIMATE    ESTIMATE: [ESTIMATE] 32Gb at ~0.40 Gb/mm2 (larger die, sli..
-die_ddr5_16gb_1gamma_mm2                     33.3      29.1-36.4  mm2           ESTIMATE    ESTIMATE: [ESTIMATE] 16Gb / density_ddr5_1gamma             
-die_ddr5_32gb_1gamma_mm2                     66.7      58.2-72.7  mm2           ESTIMATE    ESTIMATE: [ESTIMATE] 32Gb / density_ddr5_1gamma             
+die_ddr5_16gb_1alpha_mm2                     53.3      48.5-57.1  mm2           REPORTED-P  https://www.techinsights.com/blog/sk-hynix-d1a-euv-16-gb-d..
+die_ddr5_16gb_1beta_mm2                      36.5        35.8-41  mm2           ESTIMATE    ESTIMATE: [v4-cost 2026-11-01] CORRECTED from 41.0 (36.4-4..
+die_ddr5_24gb_1beta_mm2                      54.8      53.7-61.5  mm2           ESTIMATE    ESTIMATE: [v4-cost 2026-11-01] CORRECTED from 61.5 (54.5-7..
+die_ddr5_32gb_1beta_mm2                        73        71.6-80  mm2           ESTIMATE    ESTIMATE: [v4-cost 2026-11-01] CORRECTED from 80.0 (72.7-9..
+die_ddr5_16gb_1gamma_mm2                     29.1      27.6-33.3  mm2           ESTIMATE    ESTIMATE: [v4-cost 2026-11-01] CORRECTED from 33.3 (29.1-3..
+die_ddr5_32gb_1gamma_mm2                     58.2      55.2-66.7  mm2           ESTIMATE    ESTIMATE: [v4-cost 2026-11-01] CORRECTED from 66.7 (58.2-7..
 die_ddr5_16gb_cxmt_mm2                      66.99    66.99-66.99  mm2           REPORTED    https://semiwiki.com/forum/threads/chinas-cxmts-ddr5-revea..
 die_hbm3e_24gb_core_mm2                       110         95-125  mm2           UNVERIFIED  ESTIMATE: [UNVERIFIED-PK] HBM3E 24Gb core die on 1b/1-beta..
 die_ddr4_8gb_1x_mm2                            55          50-62  mm2           UNVERIFIED  ESTIMATE: [UNVERIFIED-PK] 1x (18-19nm, 2016-17), ~0.13-0.1..
@@ -81,21 +81,21 @@ passives_udimm_usd                            0.5        0.3-0.8  USD           
 module_assembly_test_rdimm_asia_usd           3.5            2-6  USD           UNVERIFIED  ESTIMATE: [UNVERIFIED-PK] SMT + at-speed module test + bur..
 module_assembly_test_rdimm_us_usd              12           8-15  USD           ESTIMATE    ESTIMATE: [ESTIMATE] p1-backend U.S.-labor figure (researc..
 module_assembly_test_udimm_usd                1.5        0.8-2.5  USD           UNVERIFIED  ESTIMATE: [UNVERIFIED-PK] SMT + module test                 
-contract_64gb_rdimm_4q26_usd                 1300      1200-1586  USD/module    ESTIMATE    ESTIMATE: p1-model -- Counterpoint 64GB RDIMM 2Q26 ~$1,000..
-price_64gb_rdimm_contract_4q26f_usd          1586      1200-1586  USD/module    UNVERIFIED  ESTIMATE: [UNVERIFIED] Citi note (May 2026) per p1-market;..
-price_64gb_rdimm_contract_1q26_usd            900       900-1000  USD/module    REPORTED    https://www.eetasia.com/memory-prices-surging-by-90-from-4..
+contract_64gb_rdimm_4q26_usd                 1650      1500-1930  USD/module    ESTIMATE    ESTIMATE: [v4-cost 2026-11-01] NEW model anchor (replaces ..
+price_64gb_rdimm_contract_4q26f_usd          1586      1586-1586  USD/module    REPORTED    https://www.servnetuk.com/research/ddr5-server-memory-pric..
+price_64gb_rdimm_contract_1q26_usd            927       873-1135  USD/module    REPORTED-P  https://counterpointresearch.com/de/reports/memory-price-t..
 price_64gb_rdimm_contract_4q25_usd            450        450-450  USD/module    REPORTED    https://www.eetasia.com/memory-prices-surging-by-90-from-4..
 contract_dram_qoq_2q26                      0.605      0.58-0.63  fraction      REPORTED    https://technews.tw/2026/03/31/ai-server-demand-drives-2q2..
 contract_dram_qoq_3q26                      0.155      0.13-0.18  fraction      REPORTED    https://www.igorslab.de/en/dram-and-nand-remain-more-expen..
-contract_dram_qoq_4q26f                     0.125       0.1-0.15  fraction QoQ  REPORTED    https://www.trendforce.com/presscenter/news/20260930-13258..
-price_ddr5_16gb_contract_4q26_derived_usd    30.7        22-39.1  USD/chip      ESTIMATE    ESTIMATE: [ESTIMATE] backed out of 64GB RDIMM contract $90..
+contract_dram_qoq_4q26f                     0.125        0.1-0.2  fraction QoQ  REPORTED    https://www.trendforce.com/presscenter/news/20260930-13258..
+price_ddr5_16gb_contract_4q26_derived_usd    40.7        37-47.7  USD/chip      ESTIMATE    ESTIMATE: [v4-cost 2026-11-01] CORRECTED from 30.7 (22.0-3..
 price_ddr5_16gb_spot_2026_08_31_usd         53.92      37.2-67.5  USD/chip (2G  REPORTED    https://www.buysellram.com/blog/ram-market-update/          
 price_ddr5_16gb_spot_2023_trough_usd          3.2        2.8-3.6  USD/chip      UNVERIFIED  ESTIMATE: [UNVERIFIED-PK] DDR5 16Gb spot low in 2Q-3Q23 (~..
 price_ddr4_8gb_contract_2023_09_usd           1.3        1.3-1.3  USD/chip (1G  REPORTED    https://www.kedglobal.com/korean-chipmakers/newsView/ked20..
 price_ddr4_8gb_spot_2026_08_31_usd          44.37        23.8-76  USD/chip (1G  REPORTED    https://www.buysellram.com/blog/ram-market-update/          
 price_ddr3_4gb_spot_2026_07_usd_per_gb      25.52    25.52-25.52  USD/GB        REPORTED    https://wccftech.com/memory-shortages-drive-ddr4-prices-ov..
 legacy_contract_vs_ddr5_ratio                   1       0.8-1.65  x             ESTIMATE    ESTIMATE: p1-model -- no 4Q26 DDR4 contract level found; B..
-price_hbm3e_usd_per_gb_2026                    12          12-12  USD/GB        REPORTED    https://www.sammyfans.com/2026/10/02/samsung-seeks-more-th..
+price_hbm3e_usd_per_gb_2026                    12      8.33-12.8  USD/GB        REPORTED    https://www.sammyfans.com/2026/10/02/samsung-seeks-more-th..
 price_hbm4_usd_per_gb_2027f                    36          32-40  USD/GB        REPORTED    https://siliconanalysts.com/market/samsung-hbm4-2027-prici..
 price_ddr5_retail_usd_per_gb_2026_09        18.04       13-18.04  USD/GB        REPORTED    https://rampricesusa.com/insights/monthly/2026-09           
 price_ddr5_32gb_kit_retail_2026_usd           450        409-470  USD/kit       REPORTED    https://www.digitalcitizen.life/ddr5-ram-prices-surge-in-2..
@@ -120,13 +120,13 @@ Other wafer inputs: 1z-class $3000 | legacy depreciated (cash) $1300 | legacy NE
 case                                         wafer $  die mm2  Gb/mm2  GDPW  yield  D0eff/cm2  good dies  GB/wafer
 -------------------------------------------  -------  -------  ------  ----  -----  ---------  ---------  --------
 DDR5 16Gb 1-alpha (mature)                      3400     53.3   0.300  1158  0.900       0.20       1042      2084
-DDR5 16Gb 1-beta (BASE)                         3800     41.0   0.390  1514  0.900       0.26       1363      2726
-DDR5 16Gb 1-beta cash cost only                 1650     41.0   0.390  1514  0.900       0.26       1363      2726
-DDR5 24Gb 1-beta                                3800     61.5   0.390   999  0.854       0.26        854      2561
-DDR5 32Gb 1-beta                                3800     80.0   0.400   761  0.815       0.26        620      2482
-DDR5 16Gb 1-gamma (2026 ramp)                   4300     33.3   0.480  1872  0.800       0.68       1497      2995
-DDR5 16Gb 1-gamma (mature 2027+)                4300     33.3   0.480  1872  0.900       0.32       1684      3369
-DDR5 32Gb 1-gamma (mature 2027+)                4300     66.7   0.480   919  0.811       0.32        745      2980
+DDR5 16Gb 1-beta (BASE)                         3800     36.5   0.438  1705  0.900       0.29       1534      3069
+DDR5 16Gb 1-beta cash cost only                 1650     36.5   0.438  1705  0.900       0.29       1534      3069
+DDR5 24Gb 1-beta                                3800     54.8   0.438  1125  0.854       0.29        961      2883
+DDR5 32Gb 1-beta                                3800     73.0   0.438   837  0.811       0.29        679      2715
+DDR5 16Gb 1-gamma (2026 ramp)                   4300     29.1   0.550  2146  0.800       0.78       1717      3433
+DDR5 16Gb 1-gamma (mature 2027+)                4300     29.1   0.550  2146  0.900       0.36       1931      3863
+DDR5 32Gb 1-gamma (mature 2027+)                4300     58.2   0.550  1058  0.811       0.36        858      3430
 HBM3E 12-high 36GB (1-beta + TSV)               4450    110.0   0.218   546  0.800       0.21        437       983
 Trailing: DDR5 16Gb 1z-class (CXMT G4 die)      3000     67.0   0.239   915  0.900       0.16        823      1647
 DDR4 16Gb 1y, depreciated line                  1300     88.0   0.182   689  0.875       0.15        604      1207
@@ -141,80 +141,80 @@ D0eff = unrepairable defect density calibrated to the stated yield on the node's
 case                                         wafer $/GB  +probe/test  +package  +fallout  COMPONENT $/GB  $/die|stack
 -------------------------------------------  ----------  -----------  --------  --------  --------------  -----------
 DDR5 16Gb 1-alpha (mature)                         1.63         0.14      0.09      0.02            1.88         3.76
-DDR5 16Gb 1-beta (BASE)                            1.39         0.14      0.09      0.02            1.64         3.28
-DDR5 16Gb 1-beta cash cost only                    0.61         0.14      0.09      0.01            0.84         1.69
-DDR5 24Gb 1-beta                                   1.48         0.12      0.06      0.02            1.68         5.03
-DDR5 32Gb 1-beta                                   1.53         0.10      0.04      0.02            1.70         6.79
-DDR5 16Gb 1-gamma (2026 ramp)                      1.44         0.15      0.09      0.02            1.69         3.38
-DDR5 16Gb 1-gamma (mature 2027+)                   1.28         0.14      0.09      0.02            1.52         3.04
-DDR5 32Gb 1-gamma (mature 2027+)                   1.44         0.10      0.04      0.02            1.61         6.43
+DDR5 16Gb 1-beta (BASE)                            1.24         0.14      0.09      0.01            1.48         2.97
+DDR5 16Gb 1-beta cash cost only                    0.54         0.14      0.09      0.01            0.78         1.55
+DDR5 24Gb 1-beta                                   1.32         0.12      0.06      0.02            1.51         4.53
+DDR5 32Gb 1-beta                                   1.40         0.10      0.04      0.02            1.56         6.26
+DDR5 16Gb 1-gamma (2026 ramp)                      1.25         0.15      0.09      0.02            1.50         3.01
+DDR5 16Gb 1-gamma (mature 2027+)                   1.11         0.14      0.09      0.01            1.36         2.71
+DDR5 32Gb 1-gamma (mature 2027+)                   1.25         0.10      0.04      0.01            1.42         5.67
 HBM3E 12-high 36GB (1-beta + TSV)                  3.40         0.05      1.11      1.52            6.08        18.23
 Trailing: DDR5 16Gb 1z-class (CXMT G4 die)         1.82         0.14      0.09      0.02            2.07         4.15
 DDR4 16Gb 1y, depreciated line                     1.08         0.13      0.06      0.01            1.28         2.57
 Trailing: DDR4 8Gb 1x, NEW U.S.-style line         2.94         0.19      0.12      0.03            3.28         3.28
 Trailing: DDR3 4Gb 25nm, PSMC-class foundry        3.47         0.37      0.24      0.04            4.12         2.06
 HBM3E: 'package' column = base die $15 + stacking/stack test $25 per stack; fallout = stack yield 0.75.
-  Stack cost $219 (36 GB) = $6.08/GB, 3.7x DDR5 1-beta. Wafer trade ratio (DDR5 GB/wafer / HBM GB/wafer)
-  = 2.77x vs Micron's reported ~3:1 (Tom's Hardware 2026) -> model penalty is consistent.
+  Stack cost $219 (36 GB) = $6.08/GB, 4.1x DDR5 1-beta. Wafer trade ratio (DDR5 GB/wafer / HBM GB/wafer)
+  = 3.12x vs Micron's reported ~3:1 (Tom's Hardware 2026) -> model penalty is consistent.
 
 ====================================================================================================
 5. MODULES  (component $/GB x raw GB + non-DRAM BOM + assembly/test) / module yield 0.985
 ====================================================================================================
 module                                 devices  raw GB  DRAM $  BOM $  assy $  yld loss  MODULE $  $/user-GB
 -------------------------------------  -------  ------  ------  -----  ------  --------  --------  ---------
-64GB RDIMM 2Rx4, 16Gb 1-beta                40      80  131.28  17.10    3.50      2.31    154.19       2.41
-64GB RDIMM 16Gb 1-beta, U.S. assembly       40      80  131.28  17.10   12.00      2.44    162.82       2.54
-64GB RDIMM 2Rx4, 16Gb 1-gamma ramp          40      80  135.22  17.10    3.50      2.37    158.20       2.47
-64GB RDIMM 1Rx4, 32Gb 1-beta                20      80  135.74  17.10    3.50      2.38    158.72       2.48
-64GB RDIMM 1Rx4, 32Gb 1-gamma mature        20      80  128.63  17.10    3.50      2.27    151.50       2.37
-96GB RDIMM 2Rx4, 24Gb 1-beta                40     120  201.37  17.10    3.50      3.38    225.35       2.35
-32GB UDIMM 2Rx8, 16Gb 1-beta                16      32   52.51   4.20    1.50      0.89     59.10       1.85
-32GB UDIMM 1Rx8, 32Gb 1-gamma mature         8      32   51.45   4.20    1.50      0.87     58.02       1.81
-48GB UDIMM 2Rx8, 24Gb 1-beta                16      48   80.55   4.20    1.50      1.31     87.56       1.82
-U.S. module assembly adds $8.63 per 64GB RDIMM (+5.6% of module cost; 0.7% of a $1300 contract module).
+64GB RDIMM 2Rx4, 16Gb 1-beta                40      80  118.69  17.10    3.50      2.12    141.41       2.21
+64GB RDIMM 16Gb 1-beta, U.S. assembly       40      80  118.69  17.10   12.00      2.25    150.04       2.34
+64GB RDIMM 2Rx4, 16Gb 1-gamma ramp          40      80  120.40  17.10    3.50      2.15    143.14       2.24
+64GB RDIMM 1Rx4, 32Gb 1-beta                20      80  125.12  17.10    3.50      2.22    147.94       2.31
+64GB RDIMM 1Rx4, 32Gb 1-gamma mature        20      80  113.31  17.10    3.50      2.04    135.95       2.12
+96GB RDIMM 2Rx4, 24Gb 1-beta                40     120  181.25  17.10    3.50      3.07    204.93       2.13
+32GB UDIMM 2Rx8, 16Gb 1-beta                16      32   47.48   4.20    1.50      0.81     53.99       1.69
+32GB UDIMM 1Rx8, 32Gb 1-gamma mature         8      32   45.32   4.20    1.50      0.78     51.80       1.62
+48GB UDIMM 2Rx8, 24Gb 1-beta                16      48   72.50   4.20    1.50      1.19     79.39       1.65
+U.S. module assembly adds $8.63 per 64GB RDIMM (+6.1% of module cost; 0.5% of a $1650 contract module).
 
 ====================================================================================================
 6. MARKET PRICE DECKS ($/GB)  -- glut = A-05: -60% from 2026 peak (Q4-2026); severe = -90%
 ====================================================================================================
-price point                                                         $  basis                                                                 
-------------------------------------------------------  -------------  ----------------------------------------------------------------------
-64GB RDIMM contract 4Q26 (model base) $/module                   1300  Counterpoint 2Q26 ~$1,000 x TrendForce 3Q +15.5%, 4Q +12.5% [ESTIMATE]
-  cross-check: Citi 4Q26F $/module                               1586  [UNVERIFIED]                                                          
-  cross-check: 1Q26 $900 x TrendForce 2Q-4Q $/module             1877  [ESTIMATE] upper bound                                                
-DDR5 component contract 4Q26, $/raw GB                          15.99  (RDIMM - $20.6 non-DRAM)/80 GB raw                                    
-  cross-check: p1-cost derived 16Gb chip $30.7 -> $/GB          15.35  cost_inputs.json                                                      
-DDR5 component, GLUT (A-05)                                      6.40  x (1 - 0.60)                                                          
-DDR5 component, severe glut                                      1.60  x (1 - 0.90)                                                          
-DDR5 16Gb 2023 trough (spot)                                     1.60  [UNVERIFIED-PK] $3.2/chip                                             
-64GB RDIMM 4Q26 contract, $/user GB                             20.31                                                                        
-64GB RDIMM GLUT, $/user GB                                       8.12                                                                        
-64GB RDIMM at 2023 trough chip price, $/user GB                  2.32  [ESTIMATE] derived                                                    
-32GB UDIMM contract-equivalent 4Q26, $/GB                       16.17  chip contract + client BOM                                            
-Legacy DDR4/DDR3 contract 4Q26, $/GB                            15.99  DDR5 x 1.00 [ESTIMATE]                                                
-DDR4 8Gb contract, Sep-2023 trough, $/GB                         1.30  KED Global [REPORTED]                                                 
-HBM3E 2026 contract / HBM4 2027F, $/GB                  12.00 / 36.00  [REPORTED]                                                            
-Reference: DDR5 16Gb spot 2026-08-31, $/GB                      26.96  DRAMeXchange via BuySellRAM [REPORTED]                                
-Reference: DDR4 8Gb spot 2026-08-31 / DDR3 spot Jul-26  44.37 / 25.52  [REPORTED]                                                            
-Reference: DDR5 retail Sep-26 / 32GB kit $450           18.04 / 14.06  rampricesusa / Digital Citizen [REPORTED]                             
+price point                                                         $  basis                                                        
+------------------------------------------------------  -------------  -------------------------------------------------------------
+64GB RDIMM contract 4Q26 (model base) $/module                   1650  Counterpoint 3Q26F ~$1,500 x TrendForce 4Q +10-15% [ESTIMATE]
+  cross-check: Citi 4Q26F $/module                               1586  [REPORTED] secondary relay                                   
+  cross-check: 1Q26 $927 x TrendForce 2Q-4Q $/module             1933  [ESTIMATE] upper bound                                       
+DDR5 component contract 4Q26, $/raw GB                          20.37  (RDIMM - $20.6 non-DRAM)/80 GB raw                           
+  cross-check: p1-cost derived 16Gb chip $40.7 -> $/GB          20.35  cost_inputs.json                                             
+DDR5 component, GLUT (A-05)                                      8.15  x (1 - 0.60)                                                 
+DDR5 component, severe glut                                      2.04  x (1 - 0.90)                                                 
+DDR5 16Gb 2023 trough (spot)                                     1.60  [UNVERIFIED-PK] $3.2/chip                                    
+64GB RDIMM 4Q26 contract, $/user GB                             25.78                                                               
+64GB RDIMM GLUT, $/user GB                                      10.31                                                               
+64GB RDIMM at 2023 trough chip price, $/user GB                  2.32  [ESTIMATE] derived                                           
+32GB UDIMM contract-equivalent 4Q26, $/GB                       20.55  chip contract + client BOM                                   
+Legacy DDR4/DDR3 contract 4Q26, $/GB                            20.37  DDR5 x 1.00 [ESTIMATE]                                       
+DDR4 8Gb contract, Sep-2023 trough, $/GB                         1.30  KED Global [REPORTED]                                        
+HBM3E 2026 contract / HBM4 2027F, $/GB                  12.00 / 36.00  [REPORTED]                                                   
+Reference: DDR5 16Gb spot 2026-08-31, $/GB                      26.96  DRAMeXchange via BuySellRAM [REPORTED]                       
+Reference: DDR4 8Gb spot 2026-08-31 / DDR3 spot Jul-26  44.37 / 25.52  [REPORTED]                                                   
+Reference: DDR5 retail Sep-26 / 32GB kit $450           18.04 / 14.06  rampricesusa / Digital Citizen [REPORTED]                    
 
 ====================================================================================================
 7. COST vs MARKET: implied gross margin (component level)
 ====================================================================================================
 case                                         cost   4Q26   GM  GLUT  GM glut  glut/cost  2023  GM 2023
 -------------------------------------------  ----  -----  ---  ----  -------  ---------  ----  -------
-DDR5 16Gb 1-alpha (mature)                   1.88  15.99  88%  6.40      71%       3.4x  1.60     -18%
-DDR5 16Gb 1-beta (BASE)                      1.64  15.99  90%  6.40      74%       3.9x  1.60      -3%
-DDR5 16Gb 1-beta cash cost only              0.84  15.99  95%  6.40      87%       7.6x  1.60      47%
-DDR5 24Gb 1-beta                             1.68  15.99  90%  6.40      74%       3.8x  1.60      -5%
-DDR5 32Gb 1-beta                             1.70  15.99  89%  6.40      73%       3.8x  1.60      -6%
-DDR5 16Gb 1-gamma (2026 ramp)                1.69  15.99  89%  6.40      74%       3.8x  1.60      -6%
-DDR5 16Gb 1-gamma (mature 2027+)             1.52  15.99  90%  6.40      76%       4.2x  1.60       5%
-DDR5 32Gb 1-gamma (mature 2027+)             1.61  15.99  90%  6.40      75%       4.0x  1.60       0%
+DDR5 16Gb 1-alpha (mature)                   1.88  20.37  91%  8.15      77%       4.3x  1.60     -18%
+DDR5 16Gb 1-beta (BASE)                      1.48  20.37  93%  8.15      82%       5.5x  1.60       7%
+DDR5 16Gb 1-beta cash cost only              0.78  20.37  96%  8.15      90%      10.5x  1.60      52%
+DDR5 24Gb 1-beta                             1.51  20.37  93%  8.15      81%       5.4x  1.60       6%
+DDR5 32Gb 1-beta                             1.56  20.37  92%  8.15      81%       5.2x  1.60       2%
+DDR5 16Gb 1-gamma (2026 ramp)                1.50  20.37  93%  8.15      82%       5.4x  1.60       6%
+DDR5 16Gb 1-gamma (mature 2027+)             1.36  20.37  93%  8.15      83%       6.0x  1.60      15%
+DDR5 32Gb 1-gamma (mature 2027+)             1.42  20.37  93%  8.15      83%       5.8x  1.60      11%
 HBM3E 12-high 36GB (1-beta + TSV)            6.08  12.00  49%  4.80     -27%       0.8x   n/a      n/a
-Trailing: DDR5 16Gb 1z-class (CXMT G4 die)   2.07  15.99  87%  6.40      68%       3.1x  1.60     -30%
-DDR4 16Gb 1y, depreciated line               1.28  15.99  92%  6.40      80%       5.0x  1.30       1%
-Trailing: DDR4 8Gb 1x, NEW U.S.-style line   3.28  15.99  79%  6.40      49%       1.9x  1.30    -153%
-Trailing: DDR3 4Gb 25nm, PSMC-class foundry  4.12  15.99  74%  6.40      36%       1.6x  1.30    -217%
+Trailing: DDR5 16Gb 1z-class (CXMT G4 die)   2.07  20.37  90%  8.15      75%       3.9x  1.60     -30%
+DDR4 16Gb 1y, depreciated line               1.28  20.37  94%  8.15      84%       6.3x  1.30       1%
+Trailing: DDR4 8Gb 1x, NEW U.S.-style line   3.28  20.37  84%  8.15      60%       2.5x  1.30    -153%
+Trailing: DDR3 4Gb 25nm, PSMC-class foundry  4.12  20.37  80%  8.15      49%       2.0x  1.30    -217%
 Prices in $/GB. DDR5 cases use the DDR5 deck; DDR4/DDR3 use the legacy deck (4Q26 = DDR5 parity [ESTIMATE];
 2023 = DDR4 8Gb contract $1.30). HBM glut applies -60% only for illustration (HBM is sold on annual LTAs).
 Note: GM at 4Q26 also equals the price fall from 4Q26 needed to reach breakeven on full cost.
@@ -222,17 +222,17 @@ Note: GM at 4Q26 also equals the price fall from 4Q26 needed to reach breakeven 
 ====================================================================================================
 8. COST vs MARKET: modules ($/user GB)
 ====================================================================================================
-module                                 cost/GB  cost $   4Q26   GM  GLUT  GM glut  2023  GM 2023
--------------------------------------  -------  ------  -----  ---  ----  -------  ----  -------
-64GB RDIMM 2Rx4, 16Gb 1-beta              2.41     154  20.31  88%  8.12      70%  2.32      -4%
-64GB RDIMM 16Gb 1-beta, U.S. assembly     2.54     163  20.31  87%  8.12      69%  2.32     -10%
-64GB RDIMM 2Rx4, 16Gb 1-gamma ramp        2.47     158  20.31  88%  8.12      70%  2.32      -6%
-64GB RDIMM 1Rx4, 32Gb 1-beta              2.48     159  20.31  88%  8.12      69%  2.32      -7%
-64GB RDIMM 1Rx4, 32Gb 1-gamma mature      2.37     152  20.31  88%  8.12      71%  2.32      -2%
-96GB RDIMM 2Rx4, 24Gb 1-beta              2.35     225  20.31  88%  8.12      71%  2.32      -1%
-32GB UDIMM 2Rx8, 16Gb 1-beta              1.85      59  16.17  89%  6.47      71%  1.78      -4%
-32GB UDIMM 1Rx8, 32Gb 1-gamma mature      1.81      58  16.17  89%  6.47      72%  1.78      -2%
-48GB UDIMM 2Rx8, 24Gb 1-beta              1.82      88  16.11  89%  6.44      72%  1.72      -6%
+module                                 cost/GB  cost $   4Q26   GM   GLUT  GM glut  2023  GM 2023
+-------------------------------------  -------  ------  -----  ---  -----  -------  ----  -------
+64GB RDIMM 2Rx4, 16Gb 1-beta              2.21     141  25.78  91%  10.31      79%  2.32       5%
+64GB RDIMM 16Gb 1-beta, U.S. assembly     2.34     150  25.78  91%  10.31      77%  2.32      -1%
+64GB RDIMM 2Rx4, 16Gb 1-gamma ramp        2.24     143  25.78  91%  10.31      78%  2.32       4%
+64GB RDIMM 1Rx4, 32Gb 1-beta              2.31     148  25.78  91%  10.31      78%  2.32       0%
+64GB RDIMM 1Rx4, 32Gb 1-gamma mature      2.12     136  25.78  92%  10.31      79%  2.32       9%
+96GB RDIMM 2Rx4, 24Gb 1-beta              2.13     205  25.78  92%  10.31      79%  2.32       8%
+32GB UDIMM 2Rx8, 16Gb 1-beta              1.69      54  20.55  92%   8.22      79%  1.78       5%
+32GB UDIMM 1Rx8, 32Gb 1-gamma mature      1.62      52  20.55  92%   8.22      80%  1.78       9%
+48GB UDIMM 2Rx8, 24Gb 1-beta              1.65      79  20.49  92%   8.19      80%  1.72       4%
 RDIMM prices: 64GB contract anchor per user GB (applied to the 96GB module too). UDIMM: contract-equivalent
 = DDR5 chip contract x GB + client BOM (no public PC-module contract series in inputs); U.S. retail Sep-26
 was $14.06-18.04/GB.
@@ -242,8 +242,8 @@ was $14.06-18.04/GB.
 ====================================================================================================
 metric                                                 value
 -----------------------------------------------------  -----
-Model GM, DDR5 1-beta at 4Q26 contract                   90%
-Model GM, DDR5 1-beta at 3Q26 contract (4Q26 / 1.125)    88%
+Model GM, DDR5 1-beta at 4Q26 contract                   93%
+Model GM, DDR5 1-beta at 3Q26 contract (4Q26 / 1.125)    92%
 Micron FQ4-26 non-GAAP GM (all products) [REPORTED]      87%
 Nanya 3Q26 GM (commodity DRAM) [REPORTED]                86%
 SK hynix 3Q26 operating margin [REPORTED]                80%
@@ -253,63 +253,63 @@ a pure 1-beta DDR5 component GM. A model GM within ~5 pp is consistent.
 ====================================================================================================
 10. SENSITIVITY: +/-20% on wafer cost, yield, die size (reference: DDR5 16Gb 1-beta)
 ====================================================================================================
-(a) Component cost, $/GB (base 1.641). '-' and '+' refer to the driver moving -20% / +20%.
-Driver                         at -   at +  swing  1.330 .. 2.007  ('|' = base 1.641)  
+(a) Component cost, $/GB (base 1.484). '-' and '+' refer to the driver moving -20% / +20%.
+Driver                         at -   at +  swing  1.208 .. 1.810  ('|' = base 1.484)  
 ----------------------------  -----  -----  -----  ------------------------------------
-Die size +/-20% (GDPW+yield)  1.330  1.967  0.636  [===============|================  ]
-Wafer cost +/-20%             1.359  1.923  0.563  [ ==============|==============    ]
-Die yield +/-20% (cap 0.99)   2.007  1.508  0.499  [         ======|==================]
-Back-end cost +/-20%          1.594  1.688  0.093  [             ==|==                ]
+Die size +/-20% (GDPW+yield)  1.208  1.772  0.564  [===============|================  ]
+Wafer cost +/-20%             1.233  1.734  0.500  [ ==============|==============    ]
+Die yield +/-20% (cap 0.99)   1.810  1.365  0.446  [         ======|==================]
+Back-end cost +/-20%          1.437  1.530  0.093  [             ==|===               ]
 
-(b) 64GB RDIMM cost, $/user GB (base 2.409)
-Driver                         at -   at +  swing  2.015 .. 2.874  ('|' = base 2.409)  
+(b) 64GB RDIMM cost, $/user GB (base 2.210)
+Driver                         at -   at +  swing  1.860 .. 2.624  ('|' = base 2.210)  
 ----------------------------  -----  -----  -----  ------------------------------------
-Die size +/-20% (GDPW+yield)  2.015  2.823  0.807  [===============|================  ]
-Wafer cost +/-20%             2.052  2.767  0.715  [ ==============|==============    ]
-Die yield +/-20% (cap 0.99)   2.874  2.240  0.633  [         ======|==================]
-Back-end cost +/-20%          2.350  2.468  0.118  [             ==|==                ]
+Die size +/-20% (GDPW+yield)  1.860  2.576  0.716  [===============|================  ]
+Wafer cost +/-20%             1.892  2.527  0.635  [ ==============|==============    ]
+Die yield +/-20% (cap 0.99)   2.624  2.059  0.565  [         ======|==================]
+Back-end cost +/-20%          2.150  2.269  0.118  [             ==|===               ]
 
-(c) Implied GM at 4Q26 contract (base 90%)
-Driver                        at -  at +  swing  87% .. 92%  ('|' = base 90%)        
+(c) Implied GM at 4Q26 contract (base 93%)
+Driver                        at -  at +  swing  91% .. 94%  ('|' = base 93%)        
 ----------------------------  ----  ----  -----  ------------------------------------
-4Q26 contract price +/-20%     87%   91%     4%  [===================|============  ]
-Die size +/-20% (GDPW+yield)   92%   88%     4%  [    ===============|==============]
-Wafer cost +/-20%              92%   88%     4%  [      =============|============= ]
-Die yield +/-20% (cap 0.99)    87%   91%     3%  [  =================|======        ]
-Back-end cost +/-20%           90%   89%     1%  [                 ==|==            ]
+4Q26 contract price +/-20%     91%   94%     3%  [===================|============= ]
+Die size +/-20% (GDPW+yield)   94%   91%     3%  [    ===============|==============]
+Wafer cost +/-20%              94%   91%     2%  [      =============|============= ]
+Die yield +/-20% (cap 0.99)    91%   93%     2%  [  =================|======        ]
+Back-end cost +/-20%           93%   92%     0%  [                 ==|==            ]
 
-(d) Implied GM in the A-05 GLUT (base 74%)
-Driver                        at -  at +  swing  68% .. 79%  ('|' = base 74%)        
+(d) Implied GM in the A-05 GLUT (base 82%)
+Driver                        at -  at +  swing  77% .. 85%  ('|' = base 82%)        
 ----------------------------  ----  ----  -----  ------------------------------------
-Glut price +/-20%              68%   79%    11%  [===================|============  ]
-Die size +/-20% (GDPW+yield)   79%   69%    10%  [    ===============|==============]
-Wafer cost +/-20%              79%   70%     9%  [      =============|============= ]
-Die yield +/-20% (cap 0.99)    69%   76%     8%  [  =================|======        ]
-Back-end cost +/-20%           75%   74%     1%  [                 ==|==            ]
+Glut price +/-20%              77%   85%     8%  [===================|============= ]
+Die size +/-20% (GDPW+yield)   85%   78%     7%  [    ===============|==============]
+Wafer cost +/-20%              85%   79%     6%  [      =============|============= ]
+Die yield +/-20% (cap 0.99)    78%   83%     5%  [  =================|======        ]
+Back-end cost +/-20%           82%   81%     1%  [                 ==|==            ]
 
 (e) Input low/high ranges from cost_inputs.json, DDR5 16Gb 1-beta component $/GB
-Driver                                 at -   at +  swing  1.419 .. 2.271  ('|' = base 1.641)  
-------------------------------------  -----  -----  -----  ------------------------------------
-Wafer cost 1-beta ($3.2k-5.5k)        1.419  2.271  0.852  [=========|========================]
-Die size 16Gb 1-beta (36.4-48.5 mm2)  1.480  1.905  0.425  [  =======|==========              ]
-Back-end per die (probe+pkg+test)     1.537  1.821  0.283  [     ====|=======                 ]
-Mature die yield (0.95-0.85)          1.564  1.727  0.163  [      ===|===                     ]
-Scribe lane (60-200 um)               1.632  1.695  0.063  [        =|==                      ]
-Edge exclusion (2-5 mm)               1.621  1.681  0.060  [        =|=                       ]
-Final-test yield (0.995-0.97)         1.633  1.675  0.042  [        =|=                       ]
-All-favourable / all-unfavourable combined: $1.10 / $3.21 per GB (base $1.64).
+Driver                               at -   at +  swing  1.286 .. 2.043  ('|' = base 1.484)  
+----------------------------------  -----  -----  -----  ------------------------------------
+Wafer cost 1-beta ($3.2k-5.5k)      1.286  2.043  0.757  [=========|========================]
+Back-end per die (probe+pkg+test)   1.380  1.663  0.283  [    =====|=======                 ]
+Die size 16Gb 1-beta (35.8-41 mm2)  1.459  1.641  0.182  [        =|======                  ]
+Mature die yield (0.95-0.85)        1.415  1.561  0.146  [      ===|===                     ]
+Scribe lane (60-200 um)             1.475  1.535  0.060  [        =|==                      ]
+Edge exclusion (2-5 mm)             1.466  1.519  0.053  [        =|=                       ]
+Final-test yield (0.995-0.97)       1.476  1.514  0.038  [        =|=                       ]
+All-favourable / all-unfavourable combined: $1.08 / $2.78 per GB (base $1.48).
 
 (f) +/-20% by case: component $/GB at driver -20% / +20%
 case                                         base    wafer -/+    yield -/+      die -/+
 -------------------------------------------  ----  -----------  -----------  -----------
 DDR5 16Gb 1-alpha (mature)                   1.88  1.55 / 2.21  2.31 / 1.73  1.52 / 2.26
-DDR5 16Gb 1-beta (BASE)                      1.64  1.36 / 1.92  2.01 / 1.51  1.33 / 1.97
-DDR5 16Gb 1-beta cash cost only              0.84  0.72 / 0.97  1.01 / 0.78  0.71 / 0.99
-DDR5 24Gb 1-beta                             1.68  1.38 / 1.98  2.29 / 1.47  1.33 / 2.05
-DDR5 32Gb 1-beta                             1.70  1.39 / 2.01  2.54 / 1.43  1.33 / 2.10
-DDR5 16Gb 1-gamma (2026 ramp)                1.69  1.40 / 1.98  2.07 / 1.44  1.34 / 2.07
-DDR5 16Gb 1-gamma (mature 2027+)             1.52  1.26 / 1.78  1.86 / 1.40  1.24 / 1.82
-DDR5 32Gb 1-gamma (mature 2027+)             1.61  1.32 / 1.90  2.43 / 1.35  1.26 / 1.99
+DDR5 16Gb 1-beta (BASE)                      1.48  1.23 / 1.73  1.81 / 1.36  1.21 / 1.77
+DDR5 16Gb 1-beta cash cost only              0.78  0.67 / 0.88  0.93 / 0.72  0.66 / 0.90
+DDR5 24Gb 1-beta                             1.51  1.24 / 1.78  2.05 / 1.33  1.20 / 1.84
+DDR5 32Gb 1-beta                             1.56  1.28 / 1.85  2.36 / 1.31  1.23 / 1.93
+DDR5 16Gb 1-gamma (2026 ramp)                1.50  1.25 / 1.76  1.84 / 1.28  1.20 / 1.83
+DDR5 16Gb 1-gamma (mature 2027+)             1.36  1.13 / 1.58  1.65 / 1.25  1.11 / 1.62
+DDR5 32Gb 1-gamma (mature 2027+)             1.42  1.16 / 1.67  2.13 / 1.19  1.11 / 1.74
 HBM3E 12-high 36GB (1-beta + TSV)            6.08  5.17 / 6.98  7.23 / 5.31  4.98 / 7.28
 Trailing: DDR5 16Gb 1z-class (CXMT G4 die)   2.07  1.71 / 2.44  2.55 / 1.90  1.66 / 2.50
 DDR4 16Gb 1y, depreciated line               1.28  1.07 / 1.50  1.77 / 1.16  1.03 / 1.55
@@ -324,22 +324,22 @@ key                                                                           va
 as_of                                                                    2026-11-01
 source                                                    models/dram_cost_stack.py
 basis                                       raw GB, packaged component unless noted
-cost_component_usd_per_gb                                                     1.641
-cost_component_usd_per_gb_1gamma_2026_ramp                                     1.69
-cost_component_usd_per_gb_1gamma_mature                                       1.522
-cost_cash_only_usd_per_gb                                                     0.844
-cost_rdimm64_usd_per_user_gb                                                  2.409
-contract_component_usd_per_gb_q4_2026                                        15.993
-contract_rdimm64_usd_per_user_gb_q4_2026                                     20.312
-glut_component_usd_per_gb                                                     6.397
-glut_rdimm64_usd_per_user_gb                                                  8.125
-severe_glut_component_usd_per_gb                                              1.599
+cost_component_usd_per_gb                                                     1.484
+cost_component_usd_per_gb_1gamma_2026_ramp                                    1.505
+cost_component_usd_per_gb_1gamma_mature                                       1.357
+cost_cash_only_usd_per_gb                                                     0.776
+cost_rdimm64_usd_per_user_gb                                                   2.21
+contract_component_usd_per_gb_q4_2026                                        20.367
+contract_rdimm64_usd_per_user_gb_q4_2026                                     25.781
+glut_component_usd_per_gb                                                     8.147
+glut_rdimm64_usd_per_user_gb                                                 10.312
+severe_glut_component_usd_per_gb                                              2.037
 trough_2023_ddr5_usd_per_gb                                                     1.6
 trough_2023_ddr4_usd_per_gb                                                     1.3
 spot_ddr5_usd_per_gb_2026_08_31                                               26.96
-gm_component_q4_2026                                                         0.8974
-gm_component_glut                                                            0.7435
-gm_component_trough_2023                                                    -0.0256
+gm_component_q4_2026                                                         0.9272
+gm_component_glut                                                            0.8179
+gm_component_trough_2023                                                     0.0727
 hbm3e_cost_usd_per_gb                                                         6.077
 hbm3e_price_usd_per_gb_2026                                                    12.0
 ddr4_new_us_line_cost_usd_per_gb                                              3.283
@@ -348,36 +348,36 @@ ddr4_depreciated_cost_usd_per_gb                                              1.
 
 ## Interpretation (p1-model, 2026-11-01)
 
-All numbers below come from `models/dram_cost_stack.py` and are **[ESTIMATE]**. The inputs come from `research/phase1/cost_inputs.json` (agent p1-cost). This agent could not reach the web: the WebSearch budget was spent, and trendforce.com, eetasia.com and buysellram.com failed DNS on 2026-11-01. Every market price is therefore **[REPORTED]** through other agents' search snippets, or **[UNVERIFIED]**.
+All numbers below come from `models/dram_cost_stack.py` and are **[ESTIMATE]**. The inputs come from `research/phase1/cost_inputs.json` (agent p1-cost). This agent could not reach the web: the WebSearch budget was spent, and trendforce.com, eetasia.com and buysellram.com failed DNS on 2026-11-01. Every market price is therefore **[REPORTED]** through other agents' search snippets, or **[UNVERIFIED]**. Phase-1b verifier `v4-cost` then re-checked die sizes, the RDIMM contract anchor and HBM prices through its own searches; see `research/phase1/verify_v4-cost.md`.
 
-1. **Making DDR5 costs about $1.64/GB at the component level** (16Gb, 1-beta, mature yield, fully loaded wafer of $3,800).
-   - 1-gamma costs $1.69/GB during its 2026 ramp and $1.52/GB once mature.
-   - Cash cost alone, the glut floor, is $0.84/GB.
-   - A 64GB RDIMM costs **$154, or $2.41 per user-GB**.
-   - Front-end silicon is 85% of component cost. Non-DRAM module parts plus assembly are $21 per RDIMM.
-2. **Contract price today (Q4-2026) is about $15.99/GB at the component level and $20.31 per user-GB on a 64GB RDIMM** ($1,300 per module).
-   - Implied gross margin is **90%** for components and 88% for the RDIMM.
-   - That agrees with the reported Micron (~87%) and Nanya (85.7%) gross margins, which is the main check that the cost stack is roughly right.
-3. **In the A-05 glut (−60% from the 2026 peak), DDR5 sells for $6.40/GB** ($8.12 per user-GB on an RDIMM).
-   - That price is still **3.9× full cost**, so incumbent gross margin stays at about **74%**.
-   - Prices would have to fall **90%** before 1-beta full cost bites, and **95%** before cash cost does.
-   - **A 60% glut hurts high-cost entrants, not incumbents.** A concept whose $/GB is above about $6 loses its price umbrella.
-4. **At the 2023 trough (DDR5 about $1.60/GB; DDR4 $1.30/GB), 1-beta DDR5 runs at -3% gross margin on full cost and is cash-positive only at 47%.** That is consistent with SK hynix's −67% operating margin in 1Q23.
-5. **HBM3E 12-high costs about $6.08/GB** (3.7× DDR5).
-   - The model's wafer trade ratio is 2.8:1, against Micron's reported ~3:1.
+1. **Making DDR5 costs about $1.48/GB at the component level** (16Gb, 1-beta, mature yield, fully loaded wafer of $3,800).
+   - 1-gamma costs $1.50/GB during its 2026 ramp and $1.36/GB once mature.
+   - Cash cost alone, the glut floor, is $0.78/GB.
+   - A 64GB RDIMM costs **$141, or $2.21 per user-GB**.
+   - Front-end silicon is 83% of component cost. Non-DRAM module parts plus assembly are $21 per RDIMM.
+2. **Contract price today (Q4-2026) is about $20.37/GB at the component level and $25.78 per user-GB on a 64GB RDIMM** ($1,650 per module).
+   - Implied gross margin is **93%** for components and 91% for the RDIMM.
+   - That sits 6 pp above Micron's reported ~87% and 7 pp above Nanya's 85.7% gross margin. Those reported margins trail the Q4 price and include HBM, NAND and older nodes. This is the main check that the cost stack is roughly right. A gap above ~5 pp hints that the 1-beta wafer cost may be understated.
+3. **In the A-05 glut (−60% from the 2026 peak), DDR5 sells for $8.15/GB** ($10.31 per user-GB on an RDIMM).
+   - That price is still **5.5× full cost**, so incumbent gross margin stays at about **82%**.
+   - Prices would have to fall **93%** before 1-beta full cost bites, and **96%** before cash cost does.
+   - **A 60% glut hurts high-cost entrants, not incumbents.** A concept whose $/GB is above about $8 loses its price umbrella.
+4. **At the 2023 trough (DDR5 about $1.60/GB; DDR4 $1.30/GB), 1-beta DDR5 runs at 7% gross margin on full cost and is cash-positive only at 52%.** That is consistent with SK hynix's −67% operating margin in 1Q23.
+5. **HBM3E 12-high costs about $6.08/GB** (4.1× DDR5).
+   - The model's wafer trade ratio is 3.1:1, against Micron's reported ~3:1.
    - At a 2026 price of $12/GB the margin is about **49%**, below DDR5. HBM4 at about $36/GB in 2027 restores the premium.
 6. **Legacy and trailing-node DRAM:**
    - DDR4 16Gb on a depreciated 1y line costs $1.28/GB.
    - DDR4 8Gb on a *new* U.S.-style 1x line costs **$3.28/GB**. That is profitable today and in the glut if DDR4 holds parity with DDR5, but at the 2023 trough of $1.30 it runs at **-153% gross margin**.
    - **A new U.S. legacy line is a shortage-only business.**
 7. **Sensitivity:**
-   - At ±20%, the 1-beta cost drivers rank as: die size $1.33 to $1.97; wafer cost $1.36 to $1.92; die yield $1.51 to $2.01 per GB. Die size ranks first because it moves both GDPW and the negative-binomial yield.
+   - At ±20%, the 1-beta cost drivers rank as: die size $1.21 to $1.77; wafer cost $1.23 to $1.73; die yield $1.36 to $1.81 per GB. Die size ranks first because it moves both GDPW and the negative-binomial yield.
    - Using the input low/high ranges instead, wafer cost ($3.2–5.5k) dominates (section 10e).
-   - Margin barely moves: across all ±20% cost cases, GM stays within 87–92% at the Q4-2026 price and 69–79% in the glut. **Margin is set by price, not cost.**
+   - Margin barely moves: across all ±20% cost cases, GM stays within 91–94% at the Q4-2026 price and 78–85% in the glut. **Margin is set by price, not cost.**
 8. **The weakest inputs:**
-   - **Die sizes** for 1-beta and 1-gamma 16/24/32Gb are ESTIMATEs from density; the only teardown anchor is CXMT/Micron 1z.
-   - **Fully loaded wafer cost** rests on UNVERIFIED capex-per-wpm rules of thumb.
-   - **The Q4-2026 contract level** is not public at chip level. It is anchored on Counterpoint's 1Q/2Q26 RDIMM figures compounded with TrendForce QoQ forecasts, and the Citi $1,586 figure is UNVERIFIED.
+   - **Die sizes:** 1-beta 16Gb is now anchored on TechInsights teardowns seen via search snippets (Micron D1b DDR5 35.83 mm², Samsung D1b LPDDR5X 36.68 mm²; v4-cost, 2026-11-01). 1-gamma and the 24/32Gb dies are still ESTIMATEs from density and Micron's >30% bits-per-wafer claim.
+   - **Fully loaded wafer cost** rests on UNVERIFIED capex-per-wpm rules of thumb. v4-cost found no public 1a/1b/1c DRAM wafer-cost estimate (2026-11-01).
+   - **The Q4-2026 contract level** is not public at chip level. It is anchored on Counterpoint's 1Q26 actual ($927) and 3Q26 forecast (~$1,500) for the 64GB RDIMM, compounded with TrendForce's 4Q26 +10–15%. The Citi $1,586 figure is REPORTED through a secondary relay only.
    - **The 2023 DDR5 trough** ($3.2/chip) is UNVERIFIED prior knowledge.
    - **The DDR4 4Q26 contract** is assumed at DDR5 parity.
    - **HBM core die size and stack yield** are UNVERIFIED.

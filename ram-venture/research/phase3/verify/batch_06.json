@@ -1,0 +1,534 @@
+{
+ "batch": "06",
+ "auditor": "p3-audit-06",
+ "verdicts": [
+  {
+   "id": "C-37",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "No rule is violated. GSI is alive and the APU ships. Q1 FY2027 (Jun-2026) revenue was $6.3M, flat YoY, with a $5.4M operating loss, and Plato tape-out is now early 2027 (via search snippet). The energy axis now has a source: Cornell's MICRO '25 paper (GSI co-author) reports A6000-class RAG retrieval throughput at 54-118x less energy. The card overstates two things. First, 'DRAM GB per QPS': the 10-200 GB corpora still sit in DRAM. Second, the open software gap: GSI already sells Gemini-I APU servers and has had an OpenSearch k-NN plugin since 2021, so the founder's layer competes with the vendor's own. After 4+ years, APU revenue is still too small to report separately.",
+   "evidence_check": [
+    {
+     "url": "https://www.forbes.com/sites/karlfreund/2022/06/21/d-matrix-ai-chip-promises-efficient-transformer-processing/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Category evidence only (d-Matrix compute-in-SRAM); says nothing about GSI or vector search."
+    },
+    {
+     "url": "https://www.eetimes.com/document.asp?doc_id=1334947",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Category evidence only (Areanna, 2019); irrelevant to the GSI value claim."
+    },
+    {
+     "url": "",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "NOURL GSI/Cornell entry is now resolved. The MICRO '25 paper and the GSI PR of 2025-10-20 exist (see new_evidence). Revenue ~$25M/yr and loss-making confirmed via 8-K and IR snippets. WebFetch of arxiv.org failed DNS, so the paper itself was not opened."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "evidence",
+     "new_value": "Replace the NOURL GSI entry with the MICRO '25 PDF (csl.cornell.edu/~zhiruz/pdfs/apu-micro2025.pdf) and the GSI IR release of 2025-10-20; add the OpenSearch partner page and GSI 8-K/IR results",
+     "why": "These sources exist and support the energy claim. Mark the paper GSI-coauthored, i.e. not independent."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "Energy per retrieval query at matched throughput (54-118x below an NVIDIA A6000 on RAG retrieval, MICRO '25, GSI-coauthored). NOT DRAM GB per QPS.",
+     "why": "The measured corpora (10-200 GB) are held in board/host DRAM. Index DRAM is set by quantization, which CPUs/GPUs can do too (binary/RaBitQ in Milvus, Qdrant, Weaviate). Only the energy axis has evidence."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "GSI revenue is ~$6.1-6.3M per quarter (~$25M/yr) in FY2026-27 with rising losses, not '~$20M'. The 2025 Cornell study is MICRO '25 (GSI co-author).",
+     "why": "Updated from 2026 8-K/IR snippets."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "GSI Technology itself: production Gemini-I APU servers plus an OpenSearch neural/k-NN plugin (OpenSearch partner since 2021). Its 2026 APU focus is Gemini-II defense-edge design wins and Plato (tape-out early 2027). Also GPU/CPU vector search (NVIDIA cuVS/CAGRA, quantized CPU search in Milvus/Zilliz, Qdrant, Weaviate, Pinecone), d-Matrix (LLM), Areanna (historical).",
+     "why": "The vendor already sells the appliance and the plugin the card proposes to build, so the founder's value-add is integration and channel only."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 21,
+     "why": "Eval-card resale can be fast. A first air-gapped defense/IC pilot needs a prime sponsor and an ATO. GSI's own direct vector-search sales have not converted since 2021."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "18-24 months (eval units early; first paid defense/enterprise pilot needs a sponsor and an ATO)",
+     "why": "Same as above."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "20-40% blended (APU card/server resale at ~10-20% VAR margin; subscription small in years 1-2)",
+     "why": "The hardware is resold from a vendor that sells the same servers direct, so the reseller margin is thin. Software is a minor share early."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 30,
+     "why": "Midpoint of the corrected range."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "The DRAM-savings pitch was never the real win (the index stays in DRAM) and vanishes at the $6.40/GB glut. The energy and air-gap pitch does not depend on DRAM price. Vendor-survival risk rises if GSI's SRAM base weakens in a downturn.",
+     "why": "Aligns with the canonical glut deck (01_LANDSCAPE §4.3) and the corrected wins_axis."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Single-source dependence on a ~$25M/yr vendor losing ~$5M+ per quarter (Q1 FY2027 operating loss $5.4M) and spending on Plato. The vendor already sells the same servers and plugin direct, so the reseller adds a thin layer. The energy win is GSI-coauthored, and GPU/CPU quantized search improves yearly. In RAG, retrieval energy is a small share next to LLM inference on GPUs.",
+     "why": "Replaces the [UNVERIFIED-training] wording with 2026 figures, and adds the vendor-competes-with-you and small-share-of-system-power problems."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal-to-no — thin VAR margin on a vendor that sells the same product direct",
+     "why": "Corrected margin and competition."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Characterizing and Optimizing Realistic Workloads on a Commercial Compute-in-SRAM Device (MICRO '25)",
+     "url": "https://www.csl.cornell.edu/~zhiruz/pdfs/apu-micro2025.pdf",
+     "type": "conference",
+     "date": "2025-10",
+     "shows": "(via search snippet) Cornell-led team measured GSI Gemini-I APU on RAG retrieval over 10-200 GB corpora: throughput comparable to an NVIDIA A6000 at 54.4-117.9x lower energy; retrieval 4.8-6.6x faster than an optimized CPU baseline. One co-author is a GSI employee (not independent)."
+    },
+    {
+     "title": "Compute-In-Memory APU Achieves GPU-Class AI Performance at a Fraction of the Energy Cost (GSI press release)",
+     "url": "https://ir.gsitechnology.com/news-releases/news-release-details/compute-memory-apu-achieves-gpu-class-ai-performance-fraction",
+     "type": "company-IR",
+     "date": "2025-10-20",
+     "shows": "(via search snippet) GSI announcement of the Cornell MICRO '25 result; claims >98% less energy than a GPU on RAG at comparable throughput"
+    },
+    {
+     "title": "GSI Technology Form 8-K Ex. 99.1 earnings release (2026 filing)",
+     "url": "https://www.sec.gov/Archives/edgar/data/0001126741/000117184326005079/exh_991.htm",
+     "type": "primary-filing",
+     "date": "2026",
+     "shows": "(via search snippet; filing-to-quarter mapping inferred) Q1 FY2027 (quarter to Jun-2026) net revenue $6.3M vs $6.3M a year earlier; GM 53.4% (58.1%); opex $8.8M (5.8M); operating loss $5.4M; Q2 FY2027 guide $5.7-6.5M"
+    },
+    {
+     "title": "GSI Technology Inc Announces Third Quarter Fiscal 2026 Results",
+     "url": "https://www.globenewswire.com/news-release/2026/01/29/3229090/0/en/GSI-Technology-Inc-Announces-Third-Quarter-Fiscal-2026-Results.html",
+     "type": "company-IR",
+     "date": "2026-01-29",
+     "shows": "(via search snippet) Q3 FY2026 revenue $6.1M (+12% YoY), net loss $3.0M; SRAM business funds APU development"
+    },
+    {
+     "title": "GSI Technology Q4 earnings call: key points",
+     "url": "https://finance.yahoo.com/markets/stocks/articles/gsi-technology-q4-earnings-call-021329121.html",
+     "type": "news",
+     "date": "2026-05",
+     "shows": "(via search snippet) Q4 FY2026 revenue $6.3M at 52.4% GM; opex mostly Plato APU R&D; Plato tape-out targeted early 2027; Gemini-II pursuing initial defense design wins"
+    },
+    {
+     "title": "OpenSearch partner page: GSI Technology",
+     "url": "https://www.opensearch.org/partners/gsi-technology.html",
+     "type": "other",
+     "date": "2021-2026",
+     "shows": "(via search snippet) GSI offers an OpenSearch neural/k-NN search plugin on the Gemini APU (since the OpenSearch 1.0 launch, 2021). The vendor already sells the software layer C-37 proposes to build."
+    },
+    {
+     "title": "GSI Technology Announces Production Release of Two Gemini-I APU Servers",
+     "url": "https://ir.gsitechnology.com/news-releases/news-release-details/gsi-technology-announces-production-release-two-gemini-ir-apu",
+     "type": "company-IR",
+     "date": "unknown",
+     "shows": "(via search snippet; date not shown) GSI sells complete Gemini-I APU servers itself, i.e. it already offers the appliance form factor"
+    }
+   ]
+  },
+  {
+   "id": "C-38",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The card itself names no winning axis and no buyer. A 28nm memory-only wafer holds ~27 GB at ~$111/GB in silicon and ~$1,000/GB packaged. That is ~63x the $15.99/GB 4Q26 DDR5 contract price and ~156x the $6.40/GB glut. On-wafer bandwidth must leave through an ~860 mm perimeter of SerDes/CXL, so the host sees CXL-class latency and bandwidth: no latency, bandwidth or density gain. It even holds less SRAM than Cerebras WSE-3 (44 GB, with compute on the same wafer). Wafer-scale yield via redundancy is real (Cerebras), but that is not the issue.",
+   "evidence_check": [
+    {
+     "url": "https://www.anandtech.com/show/16626/cerebras-unveils-wafer-scale-engine-two-wse2-26-trillion-transistors-100-yield",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Supports wafer-scale yield through redundancy (accepted). Does not support any memory-only product or buyer."
+    },
+    {
+     "url": "https://www.cerebras.net/press-release/cerebras-unveils-andromeda-a-13.5-million-core-ai-supercomputer-that-delivers-near-perfect-linear-scaling-for-large-language-models",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Compute+SRAM systems. The value comes from co-locating compute, which a memory-only wafer gives up."
+    },
+    {
+     "url": "https://techcrunch.com/2019/11/19/the-cerebras-cs-1-computes-deep-learning-ai-problems-by-being-bigger-bigger-and-bigger-than-any-other-chip/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "CS-1 launch; irrelevant to a memory-only wafer."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "us_manufacturability",
+     "new_value": "No U.S. 28nm host. GF Malta offers 12/14nm FinFET (higher wafer cost). U.S. wafer-scale packaging is unproven [UNVERIFIED].",
+     "why": "The card mixes '28nm-class' with GF Malta 12/14nm, which are different nodes and costs."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "~$1,000/GB packaged vs $6.40/GB glut DDR5 (~156x) and $1.60/GB severe; dies in any market.",
+     "why": "Use the canonical 01_LANDSCAPE §4.3 deck ($6.40 glut), not $10-27."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-39",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism ships (Groq LPU, TRL 9). The minimum viable path (~$150-400M to first rack revenue [ESTIMATE: Groq ~$300M raised by 2021; d-Matrix $110M+ in 2023]) is T3, not >$1B. It wins tokens/s/user for latency-bound decode, so no kill rule applies. The competitive premise is now verified and worse than the card implies. On ~2025-12-24, NVIDIA took a non-exclusive license to Groq's inference technology and hired its founder and president (~$20B per CNBC, via search snippet), and Groq continues independently under CEO Simon Edwards. A GF 12LP+ entrant would also give up ~2-3x SRAM density to 4-5nm rivals. Scoring should drive it to the bottom (capital 1, ttr 1, founder 1).",
+   "evidence_check": [
+    {
+     "url": "https://www.eetimes.com/groq-demos-fast-llms-on-4-year-old-silicon/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Mechanism (SRAM-only LPU, Llama-2 70B at 240 tok/s/user). Widely corroborated."
+    },
+    {
+     "url": "https://www.forbes.com/sites/amyfeldman/2021/04/14/ai-chip-startup-groq-founded-by-ex-googlers-raises-300-million-to-power-autonomous-vehicles-and-data-centers/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Capital intensity (T3)."
+    },
+    {
+     "url": "https://www.forbes.com/sites/karlfreund/2022/06/21/d-matrix-ai-chip-promises-efficient-transformer-processing/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Competitor existence."
+    },
+    {
+     "url": "https://www.reuters.com/technology/ai-chip-startup-d-matrix-raises-110-mln-with-backing-microsoft-2023-09-06/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Competitor capital."
+    },
+    {
+     "url": "https://www.eetimes.com/graphcore-supercharges-ipu-with-wafer-on-wafer/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "SRAM-heavy competitor (now SoftBank)."
+    },
+    {
+     "url": "https://venturebeat.com/2021/07/20/untether-ai-nabs-125m-for-ai-acceleration-chips/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Attrition example (team reportedly absorbed by AMD, 2025 [UNVERIFIED-training])."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Groq (independent under CEO Simon Edwards; GroqCloud), NVIDIA (non-exclusive license to Groq inference tech plus the Groq founder/president, ~2025-12-24, ~$20B reported), Cerebras, d-Matrix, SambaNova, Etched, MatX, Positron; attrition: Graphcore (SoftBank), Untether AI.",
+     "why": "The NVIDIA-Groq deal is now verified via search snippets (Constellation Research, ITdaily). The pattern's leading IP sits inside NVIDIA's roadmap."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "NVIDIA-Groq licensing deal is verified (Dec-2025, ~$20B reported, non-exclusive). 'Groq v1 at GF 14nm Malta' remains [UNVERIFIED-training]; a search for it returned nothing.",
+     "why": "Upgrade one claim and leave the other flagged."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 54,
+     "why": "A new accelerator needs ~24-30 months to first silicon plus a compiler stack and rack integration. Groq took ~4+ years from 2016 founding to meaningful revenue [UNVERIFIED-training]."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "48-60 months",
+     "why": "Same as above."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "20-50% even for a winner (hundreds of SRAM dies per model; token pricing set by GPU clouds)",
+     "why": "A 70B 8-bit model needs ~300+ Groq-v1-class dies (~$375/GB SRAM chip-level vs HBM3E ~$12/GB price, $6.08 cost). Capex per token is high, and GroqCloud-style token prices are set against GPU clouds."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 35,
+     "why": "Midpoint of the corrected range."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "GF Fab 8 Malta NY (12LP+/14nm; takes outside customers, Trusted) plus U.S. OSAT. 'U.S.-fabbed' is not unique: Groq's next gen was announced for Samsung Taylor TX 4nm [UNVERIFIED-training]. GF 12LP+ costs ~2-3x SRAM density vs 4-5nm rivals [ESTIMATE].",
+     "why": "Removes the implied U.S.-made moat."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "The latency premium persists for agents and voice, but in a glut ($6.40/GB DDR5, cheaper HBM) SRAM at ~$375/GB chip-level is ~30x+ HBM-class price, so the 'no DRAM needed' cost story inverts.",
+     "why": "Aligns with the A3 device table ($375/GB) and the canonical deck."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Upper-T3 capital against 5+ funded incumbents, with NVIDIA now licensing Groq's architecture and hiring its leaders. A 70B 8-bit model needs ~300+ SRAM dies, and a 12nm U.S. entrant starts 2-3x behind on SRAM density.",
+     "why": "Adds the verified NVIDIA deal and the node penalty."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no for a new entrant — marginal only for the category winner",
+     "why": "Market structure after the NVIDIA-Groq deal."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Nvidia's Groq deal: Acquisition, acquihire or creative licensing deal?",
+     "url": "https://www.constellationr.com/insights/news/nvidias-groq-deal-acquisition-acquihire-or-creative-licensing-deal",
+     "type": "news",
+     "date": "2025-12",
+     "shows": "(via search snippet) Groq announced a non-exclusive license of its inference technology to NVIDIA; founder Jonathan Ross, president Sunny Madra and team join NVIDIA; Groq stays independent under CEO Simon Edwards, GroqCloud continues; ~$20B per CNBC reporting"
+    },
+    {
+     "title": "Nvidia closes licensing agreement with Groq for 20 billion dollars",
+     "url": "https://itdaily.com/news/security/nvidia-closes-licensing-agreement-with-groq",
+     "type": "news",
+     "date": "2025-12",
+     "shows": "(via search snippet) ~$20B NVIDIA-Groq licensing deal, announced ~2025-12-24"
+    }
+   ]
+  },
+  {
+   "id": "C-40",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "For the card's own buyer (space primes buying rad-hard NVM), a 1T1R NRAM in SkyWater S130 wins no axis. The cell's claimed high-temperature and radiation tolerance is hidden behind the bulk-CMOS access transistor and periphery (~125-150 C, not rad-hard-by-process). On density, speed and endurance it at best ties qualified Toggle MRAM, rad-hard F-RAM and Weebit 1T1R ReRAM, which is already qualified in the same S130 process (C-22), while being ~48 months and a T2 qualification program behind. The licensor looks dormant. Two searches found no Nantero product, license or funding news after the 2016 Fujitsu/Mie Fujitsu deal, whose end-2018 product never appeared. The 'DDR-class' pitch is ~$31/GB even at a hypothetical 28nm (no U.S. host), vs $6.40/GB glut DDR5.",
+   "evidence_check": [
+    {
+     "url": "https://www.skywatertechnology.com/weebit-nano-reram-ip-achieves-high-temperature-qualification-in-skywater-s130-process/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Venue precedent only (host blocked; the same fact is verified in 01_LANDSCAPE §6 via weebit-nano.com). Shows a COMPETING qualified 1T1R NVM at the same fab, not NRAM."
+    },
+    {
+     "url": "https://www.frontgrade.com/news/new-case-study-touts-everspins-toggle-mram-highly-reliable-memory-technology-space",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "Shows the incumbent (Toggle MRAM) the card must displace; no NRAM evidence."
+    },
+    {
+     "url": "",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "NOURL Nantero entry: the 2015 AnandTech coverage and the 2016 Fujitsu license exist (see new_evidence). That is industry-claim-level evidence (TRL 4-5), with no qualified product and no 2024-2026 activity found."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "evidence",
+     "new_value": "Add AnandTech 2015 (Nantero exits stealth), design-reuse 2016 (Fujitsu/Mie Fujitsu license, product target end-2018) and eeNews (> $110M funding)",
+     "why": "Replaces the NOURL entry. The mechanism is supported only by company claims."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Nantero (no public license, product or funding news found for 2024-2026; STILL-UNVERIFIED whether operating). Fujitsu/Mie Fujitsu licensees (2016; no product). Same-fab competitor: Weebit ReRAM qualified in SkyWater S130 (C-22). Rad-hard incumbents: Everspin Toggle MRAM via Frontgrade, Infineon rad-hard F-RAM, Honeywell/BAE.",
+     "why": "Adds the dormant-licensor finding and the same-fab substitute."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "None verified. Claimed CNT temperature and radiation tolerance cannot be exploited in a bulk-CMOS 1T1R; density and endurance tie Toggle MRAM/ReRAM at 130nm.",
+     "why": "Device physics: in a 1T1R the periphery and access transistor set the temperature and SEE/TID limits."
+    },
+    {
+     "field": "trl",
+     "new_value": 4,
+     "why": "Only company claims and a licensee program that never shipped; no qualified product or independent array data found."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Nantero exits stealth: carbon nanotubes for non-volatile memory with DRAM performance, unlimited endurance (AnandTech)",
+     "url": "https://at-web1.www.anandtech.com/show/9314/nantero-exits-stealth-using-carbon-nanotubes-for-nonvolatile-memory-with-dram-performance-unlimited-endurance",
+     "type": "news",
+     "date": "2015-06",
+     "shows": "(via search snippet) Nantero's NRAM claims and licensing-only model; the mechanism is shown only at company/industry-claim level"
+    },
+    {
+     "title": "Fujitsu Semiconductor and Mie Fujitsu Semiconductor license Nantero NRAM",
+     "url": "https://us.design-reuse.com/news/40435/fujitsu-nantero-nram.html",
+     "type": "news",
+     "date": "2016-08",
+     "shows": "(via search snippet) 2016 license; Fujitsu planned an NRAM-embedded custom LSI product by end-2018 (no shipment found)"
+    },
+    {
+     "title": "Nantero takes funding above $110 million (eeNews Europe)",
+     "url": "https://www.eenewseurope.com/en/nantero-takes-funding-above-110-million/",
+     "type": "news",
+     "date": "unknown",
+     "shows": "(via search snippet; undated in results) cumulative funding >$110M"
+    },
+    {
+     "title": "Nantero timeline (IDTechEx)",
+     "url": "https://www.idtechex.com/en/timeline/nantero/c36003",
+     "type": "market-research",
+     "date": "unknown",
+     "shows": "(via search snippet) profile still describes NRAM development; two 2026-11-01 searches found NO Nantero license, product, funding or shutdown news dated 2024-2026"
+    }
+   ]
+  },
+  {
+   "id": "C-41",
+   "verdict": "KILL",
+   "kill_rule": "QB-INCOMPLETE",
+   "reason": "The card names no buyer ('None until TRL 6+') and no production partner. Penn State 2DCC and NY CREATES are research venues, and neither gap can be closed within the >96-month horizon. The card also misreads its evidence. Fudan's 400 ps PoX (Nature 641:90-97, 2025) is a graphene-channel flash, not MoS2/WSe2. Its Oct-2025 2D-flash+CMOS chip is a small demonstrator (94.3% cell yield) with MB scale targeted in 3-5 years, at a Chinese university. Mechanism evidence exists at device and small-array scale (TRL 3-4), so R1 is not the reason. The reason is no buyer, no U.S. fab and no shown axis over IGZO 2T0C (R4 also applies).",
+   "evidence_check": [
+    {
+     "url": "https://nachrichten.idw-online.de/2025/05/16/ny-creates-and-fraunhofer-ipms-announce-joint-development-agreement-to-advance-memory-devices-at-300mm-wafer-scale",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "Venue evidence only (HfO2 FE JDA); says nothing about 2D memory."
+    },
+    {
+     "url": "",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "NOURL literature entry: Fudan PoX (Nature 2025) and the Oct-2025 2D-flash/CMOS chip confirmed via search snippets. PoX is graphene, not TMD. No array-scale 2D gain-cell DRAM found."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "trl",
+     "new_value": 3,
+     "why": "Device-level 2D flash (Nature 2025) plus a kb-scale 2D-flash/CMOS chip at Fudan (Oct-2025) put 2D flash at TRL 3-4. A U.S. MoS2 gain-cell product sits at TRL 3."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED at device/small-array scale; UNSUPPORTED at product scale",
+     "why": "Lab mechanism evidence exists; product-scale evidence does not."
+    },
+    {
+     "field": "evidence",
+     "new_value": "Add Fudan PoX (Nature 641:90-97, 2025; graphene channel) and the Fudan Oct-2025 2D-flash+CMOS chip (Nature s41586-025-09621-8)",
+     "why": "Replaces the NOURL entry and corrects the material."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "World's fastest flash memory, writable in 400 picoseconds (Gigazine, on Fudan Nature 641:90-97, 2025)",
+     "url": "https://gigazine.net/gsc_news/en/20250422-fastest-flash-memory",
+     "type": "news",
+     "date": "2025-04-22",
+     "shows": "(via search snippet) Fudan 'PoX' 400 ps 2D flash is a Dirac GRAPHENE-channel device (Nature 641, 90-97, 2025), not MoS2/WSe2"
+    },
+    {
+     "title": "Breakthrough in 2D flash chip achieved (Fudan University news)",
+     "url": "https://shuangyiliu.fudan.edu.cn/syl/a4/66/c29574a762982/page.htm",
+     "type": "other",
+     "date": "2025-10",
+     "shows": "(via search snippet) 2D flash integrated with Si CMOS, taped out; 8-bit instruction ops, 32-bit parallel ops, random access; 94.3% cell yield; small-scale chip (Nature s41586-025-09621-8); MB-level system targeted in 3-5 years; pilot line planned"
+    },
+    {
+     "title": "Fudan University 2D flash chip breakthrough (Interesting Engineering)",
+     "url": "https://interestingengineering.com/energy/fudan-university-2d-flash-chip-breakthrough",
+     "type": "news",
+     "date": "2025-10",
+     "shows": "(via search snippet) coverage of the Oct-2025 Fudan 2D-flash/CMOS chip"
+    }
+   ]
+  },
+  {
+   "id": "C-42",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "~$4x10^7/GB by label cost (A3 model) is ~6.8 orders of magnitude above $6.40/GB glut DDR5. It also has ms latency, 10^3-10^5 endurance and high-voltage programming. It wins no axis any RAM buyer pays for. Its only market is anti-counterfeit labels storing a few bits, which is not memory. The pioneer (Thin Film Electronics) left printed memory for NFC and then microbatteries as Ensurge [UNVERIFIED-training; not re-checked, quota spent on survival-relevant cards]. The mechanism is real for bit-level labels, so the rule is R4, not R1.",
+   "evidence_check": [
+    {
+     "url": "",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "NOURL Thinfilm entry not re-checked; the kill does not depend on it (the $/GB, latency and endurance gaps are structural)."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED for few-bit printed labels (TRL 8 as labels); UNSUPPORTED for any RAM role",
+     "why": "Separates the label mechanism from the RAM claim."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "~$4e7/GB vs $6.40/GB glut (~6e6x); irrelevant to any DRAM price.",
+     "why": "Canonical glut deck."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-43",
+   "verdict": "KILL",
+   "kill_rule": "DUPLICATE",
+   "reason": "Same idea as C-32: a zero-extra-mask Si 2T/3T gain-cell eDRAM compiler/IP on SkyWater S90 FD-SOI and GF 12LP+, licensed for NRE plus royalty. The only difference is a 4 K characterization deck and a quantum-controller buyer list. That is a C-32 product line costing ~$50-150k of dilution-fridge time [ESTIMATE], not a separate venture, and its market is a few dozen quantum teams, most designing in-house. Physics is better than the card says (TRL 4): a 16 Kb 4T gain cell keeps >16.6 s at 4.2 K (ISCAS 2023 / US 12412613), a 4 Kb 40nm cell keeps 66.5 s (arXiv 2311.11572), and a 28nm 3T1C runs at 4 K (ISOCC 2024). If C-32 is killed elsewhere, re-score C-43 as KEEP_WITH_CORRECTIONS with the corrections below; it does not fail on physics.",
+   "evidence_check": [
+    {
+     "url": "https://www.imec-int.com/en/articles/disrupting-dram-roadmap-capacitor-less-igzo-dram-technology",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Topology analogy only (2T0C); not cryogenic."
+    },
+    {
+     "url": "https://github.com/VLSIDA/OpenRAM",
+     "status": "opened",
+     "supports": "no",
+     "note": "Opened by A3: an SRAM compiler. Does not show cryogenic gain-cell behaviour."
+    },
+    {
+     "url": "",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "NOURL cryo literature entry now resolved: several silicon-measured 4 K gain-cell eDRAM arrays exist (see new_evidence)."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "trl",
+     "new_value": 4,
+     "why": "Silicon-measured 4-16 Kb gain-cell eDRAM arrays at ~4 K (ISCAS 2023, arXiv 2311.11572, ISOCC 2024)."
+    },
+    {
+     "field": "evidence",
+     "new_value": "Add US 12412613 / ISCAS 2023 (16 Kb, 16.67 s at 4.2 K), arXiv 2311.11572 (4 Kb 40nm, 66.5 s), ShanghaiTech ISOCC 2024 (28nm 3T1C at 4 K), Bar-Ilan/BGU 'Gain-Cell eDRAM under Cryogenic Operation - A First Study'",
+     "why": "Replaces the NOURL entry."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "In-house cryo-CMOS teams (Intel Horse Ridge, IBM, Google, imec); academic cryo gain-cell groups (ShanghaiTech and other Chinese groups; Bar-Ilan/BGU, the academic lineage of RAAAM [UNVERIFIED-training]); SEEQC (SFQ). RAAAM, the C-32 competitor, is the natural owner of this extension.",
+     "why": "Named groups from the search; the nearest commercial competitor is shared with C-32."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no as a standalone company — the market is a few dozen teams",
+     "why": "Market size."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Energy-efficient memory for cryogenic computing (US patent 12412613)",
+     "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12412613",
+     "type": "patent",
+     "date": "unknown",
+     "shows": "(via search snippet) 16 Kb 4T gain-cell eDRAM; data retention time 16.67 s at 4.2 K (2.6x prior cryo eDRAM); same chip reported at ISCAS 2023 (>16.6 s, 49.23 uW/Kb)"
+    },
+    {
+     "title": "CQS-eDRAM: cryogenic 4T transmission-gate gain-cell eDRAM, 4 Kb, 40 nm (arXiv 2311.11572)",
+     "url": "https://arxiv.org/pdf/2311.11572",
+     "type": "peer-reviewed",
+     "date": "2023-11",
+     "shows": "(via search snippet) measured retention 66.5 s at cryogenic temperature (exact T not confirmed from snippet)"
+    },
+    {
+     "title": "A 28-nm 10.4-fJ/b Cryogenic embedded DRAM with 3T1C Gain Cell and MBIST at 4-Kelvin (ISOCC 2024)",
+     "url": "https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/452410?mode=full",
+     "type": "conference",
+     "date": "2024",
+     "shows": "(via search snippet) 28nm 3T1C gain-cell eDRAM at 4 K for qubit readout; median retention 4.8 ms, refresh eliminated; 61.4 Gb/s"
+    },
+    {
+     "title": "Gain-Cell Embedded DRAM under Cryogenic Operation - A First Study (Bar-Ilan / BGU)",
+     "url": "https://cris.biu.ac.il/en/publications/gain-cell-embedded-dram-under-cryogenic-operation-a-first-study/",
+     "type": "peer-reviewed",
+     "date": "2021",
+     "shows": "(via search snippet) Bar-Ilan gain-cell group's cryogenic study; transistor models measured down to 77 K"
+    }
+   ]
+  }
+ ]
+}

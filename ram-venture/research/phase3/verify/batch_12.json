@@ -1,0 +1,602 @@
+{
+ "batch": "12",
+ "auditor": "p3-audit-12",
+ "verdicts": [
+  {
+   "id": "C-80",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The value claim holds. TrendForce reports DRAM supply going first to strategic OEMs, and the Nexar/DigiKey/Mouser APIs plus free spot trackers provide every input, so the product is buildable (TRL 9, T0) and no kill rule applies. The card understates the incumbents. Supplyframe Commodity IQ (Siemens) already sells rolling four-quarter DRAM/SRAM/specialty-memory price and lead-time forecasts, and Counterpoint publishes a monthly Memory Price Tracker and Forecast (both via search snippet), so the gap is price point, not product. An MVP around May 2027 sells into the 4Q26-2Q27 peak and meets the 2028 turn 12-18 months later. The only module that survives a glut (EOL/lifecycle) is the core product of SiliconExpert and Z2Data. Not a duplicate of C-86: this sells one-sided buy/hold alerts, C-86 licenses a two-sided contract index.",
+   "evidence_check": [
+    {
+     "url": "https://www.trendforce.com/research/download/RP260114IU",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Paywalled abstract relayed by p1-micron; trendforce.com is blocked. Allocation to strategic OEMs is consistent with 01_LANDSCAPE.md."
+    },
+    {
+     "url": "https://github.com/NexarDeveloper",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Shows only that the Nexar API exists. Commercial pricing and redistribution terms not checked [UNVERIFIED]."
+    },
+    {
+     "url": "https://github.com/search?q=dram+price&type=repositories",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Supports the fatal flaw (a free scraped layer), not the value claim."
+    },
+    {
+     "url": "https://github.com/nwfella/memory-price-index",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "A free index competitor. D opened it."
+    },
+    {
+     "url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Gated free report used as lead-gen. Mobius confirmed active (Dec-2025 seed coverage, via search snippet)."
+    },
+    {
+     "url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "The 4Q26 +10-15% figure matches the canonical number in 01_LANDSCAPE.md 10.4 #10."
+    },
+    {
+     "url": "https://intelligence.supplyframe.com/commodities-analyzed-sram-dram-specialty",
+     "status": "snippet",
+     "supports": "no",
+     "note": "New: CIQ tracks and forecasts DRAM/SRAM/specialty-memory prices and lead times (rolling four quarters). A direct paid competitor the card omits."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Paid memory price/lead-time intelligence: Supplyframe Commodity IQ (Siemens; rolling four-quarter DRAM/SRAM/specialty forecasts, via search snippet), Counterpoint Memory Price Tracker and Forecast (monthly, via search snippet), TrendForce/DRAMeXchange, InSpectrum, TechInsights, Omdia, Gartner. BOM-risk and EOL platforms: SiliconExpert (Arrow), Z2Data, Lytica [UNVERIFIED-T]. Free: Mobius Materials report (marketplace lead-gen), rampricesusa, RamRadar, Servnet, nwfella index, 37+ GitHub scrapers.",
+     "why": "Supplyframe CIQ and Counterpoint already sell the forecast layer the card says SMBs lack. The real gap is price point ($150-300/mo vs analyst seats), not capability."
+    },
+    {
+     "field": "survives_glut",
+     "new_value": "no",
+     "why": "The card admits nobody pays for shortage alerts in a glut. The one surviving module (EOL/lifecycle) is the core product of SiliconExpert and Z2Data, so it gives this venture no glut revenue. The rubric scores shortage-driven trackers at 1-2."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "In a 2028-29 glut (DDR5 contract at ~$6.40/GB) buy/hold alerts lose their value and churn spikes. The EOL/lifecycle feature that keeps value is an incumbent commodity (SiliconExpert, Z2Data), so the revenue line dies with the shortage.",
+     "why": "Ties the glut test to the incumbents that own the residual feature."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "70-85%. COGS is API fees plus a likely commercial licence: Nexar/Octopart and distributor API terms are written for buyers, not for re-display of pricing inside a third-party SaaS [UNVERIFIED-T].",
+     "why": "A redistribution-grade data licence is the main margin risk, and the card does not price it."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 75,
+     "why": "Moves the midpoint down for data-licence risk [ESTIMATE]."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "4-8 months to an MVP on the Nexar/DigiKey APIs, with 5-10 design-partner OEMs from the founder's network at $150-300/month. First revenue lands around 2Q27, near the forecast price peak, which leaves ~12-18 months of shortage-driven demand before the 2028 turn.",
+     "why": "Adds the timing window from 01_LANDSCAPE.md 0.4 and F2. Price-driven revenue must be cash-positive by end-2027."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "There is no proprietary data and the forecast layer is already sold. Free trackers cover spot and retail. Supplyframe CIQ and Counterpoint sell memory price and lead-time forecasts. TrendForce/InSpectrum contract data cannot be redistributed. SMB willingness to pay is low and falls with the cycle, and revenue starts near the peak with ~12-18 months before the 2028 turn.",
+     "why": "Adds the paid incumbents and the timing window."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal-to-no - an ~$24k MRR ceiling (80 accounts x $300) during the shortage, paid incumbents above, free trackers below, churn at the 2028 turn",
+     "why": "Neither the ceiling nor the glut exposure supports a standalone business. D itself rated it best as a free lead-gen front end for C-64."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Supplyframe Intelligence: commodities analyzed - SRAM, DRAM, specialty memory",
+     "url": "https://intelligence.supplyframe.com/commodities-analyzed-sram-dram-specialty",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Commodity IQ tracks and forecasts DRAM/SRAM/specialty-memory market dynamics, prices and lead times on rolling four-quarter horizons (via search snippet)."
+    },
+    {
+     "title": "Counterpoint Memory Price Tracker and Forecast, July 2026",
+     "url": "https://counterpointresearch.com/en/reports/memory-price-tracker-and-forecast-july-2026",
+     "type": "market-research",
+     "date": "2026-07",
+     "shows": "A paid monthly memory price tracker and forecast. Q3-26 DRAM forecast raised to +10-20% QoQ (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-81",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "Mobius Materials already runs every differentiator on this card as a live product: B2B listing of excess components, authentication, a take-rate model and a spot market for OEMs and CMs. Mobius is in Richmond VA, closed a $3M seed led by Spero Ventures in Dec-2025, reports hundreds of OEM/CM users, and physically inspects every batch at its own Virginia and Hong Kong facilities (Digital Commerce 360, via search snippet). The named buyer pays a marketplace for liquidity and trust, and a cold-start entrant has neither. Its outsourced third-party AS6081 labs are slower and costlier than Mobius's in-house inspection, and Sourcengine, Fusion Worldwide and NetComponents hold the broker flow, so it wins no axis for that buyer. In the shortage the sell side is thin because OEMs hoard, and in a glut the flow turns into a falling-price dump. The only live variant is supplying authentication or data to Mobius, which C-92 (AS6171 lab) and C-86 (index) already cover.",
+   "evidence_check": [
+    {
+     "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Same release surfaced on mobiusmaterials.com and Digital Commerce 360 in my search: $3M seed, Spero Ventures lead, hundreds of OEM/CM users. It confirms the incumbent and so supports the kill."
+    },
+    {
+     "url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Mobius uses DRAM content as lead-gen for the same marketplace."
+    },
+    {
+     "url": "https://github.com/nwfella/memory-price-index",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The DDR4 spot record shows price stress, not marketplace demand."
+    },
+    {
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Another incumbent buyer of used/excess RAM."
+    },
+    {
+     "url": "https://www.digitalcommerce360.com/2025/12/16/b2b-marketplace-mobius-materials-3-million-funding/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: in-house inspection of every batch in Virginia and Hong Kong; secondary semiconductor market sized at ~$25B by Mobius."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Mobius Materials (Richmond VA; $3M seed led by Spero Ventures, Dec-2025; hundreds of OEM/CM users; in-house inspection of every batch in Virginia and Hong Kong; ML-authentication patent filed), plus Sourceability/Sourcengine, Fusion Worldwide, America II, Smith, NetComponents, BrokerForum, ICsource, eBay [UNVERIFIED-T for the brokers].",
+     "why": "Mobius's status and in-house inspection are now confirmed (Digital Commerce 360, via search snippet). Its inspection is stronger than the card's outsourced-lab plan."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "An identical, funded incumbent (Mobius) operates in the same region with in-house inspection and hundreds of users. A new marketplace has zero liquidity, which is the only thing its buyer pays for, plus counterfeit liability and two-sided cold-start costs. It wins no axis.",
+     "why": "States the R4 kill basis."
+    },
+    {
+     "field": "survives_glut",
+     "new_value": "no",
+     "why": "In a 2028-29 glut, sellers dump into falling prices. GMV drops ~60% while counterfeit risk rises, and Mobius plus the brokers absorb the remaining flow."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "B2B marketplace Mobius Materials raises $3 million",
+     "url": "https://www.digitalcommerce360.com/2025/12/16/b2b-marketplace-mobius-materials-3-million-funding/",
+     "type": "news",
+     "date": "2025-12-16",
+     "shows": "Spero Ventures-led $3M seed; hundreds of OEMs/CMs trade excess parts; every batch inspected at Mobius facilities in Virginia and Hong Kong (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-82",
+   "verdict": "KILL",
+   "kill_rule": "NOT-A-VENTURE",
+   "reason": "This is an affiliate/SEO content property that monetizes shortage traffic. The mission allows that only as a bridge revenue line, never the venture, and the card itself says 'no business at the end' and 'side income at best'. At ~$3-6 per affiliate sale [UNVERIFIED-T rates], $10k/month needs ~1,700-3,300 attributed sales a month, while retail demand is being destroyed (TechRadar) at ~$18/GB DDR5 retail (rampricesusa, Sep-2026). It also has no winning axis for its user. PCPartPicker already gives free multi-retailer price history, alerts and compatibility filtering [UNVERIFIED-T], Kingston runs a system configurator, and rampricesusa, RamRadar and 37+ GitHub trackers cover price. Whether Crucial's System Scanner/Advisor stopped after the Feb-2026 exit is still unverified, so even the 'gap' is unproven.",
+   "evidence_check": [
+    {
+     "url": "https://www.storagenewsletter.com/2025/12/05/micron-announces-exit-from-crucial-consumer-business/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Supports the Crucial exit. It does not show that the Crucial advisor/scanner was switched off [STILL-UNVERIFIED]."
+    },
+    {
+     "url": "https://rampricesusa.com/insights/monthly/2026-09",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "A free competitor already doing consumer price tracking."
+    },
+    {
+     "url": "https://github.com/nwfella/memory-price-index",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "A free competitor."
+    },
+    {
+     "url": "https://github.com/search?q=dram+price&type=repositories",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "A crowded free layer."
+    },
+    {
+     "url": "https://www.techradar.com/pro/good-news-ram-prices-seem-to-have-finally-stabilized-bad-news-its-probably-because-memory-prices-are-so-high-that-its-forcing-most-of-us-to-give-up-buying-anything",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "Undercuts the demand claim: buyers stopped buying."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "profitable",
+     "new_value": "no - affiliate side income; ~1,700-3,300 attributed sales/month for $10k/month",
+     "why": "Computed from the card's own $3-6 per sale."
+    },
+    {
+     "field": "survives_glut",
+     "new_value": "no",
+     "why": "Traffic and commissions both scale with panic and ASP. A 60% ASP drop plus lower search interest removes most revenue, and the rubric scores shortage-driven trackers at 1-2."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-83",
+   "verdict": "KILL",
+   "kill_rule": "NOT-A-VENTURE",
+   "reason": "The card is a paid newsletter and podcast that labels itself 'bridge only'. The mission says content and education around the shortage is 'a bridge revenue line, never the venture'. Its own numbers ($2-6k MRR at 200-500 subscribers) and its glut answer ('the topic dies') confirm it cannot be the primary pick. The free and paid substitutes are strong: TrendForce press releases, Mobius's free DRAM report, BuySellRAM's DRAMeXchange-based updates, Counterpoint's monthly Memory Price Tracker, SemiAnalysis and Objective Analysis. If used at all, it belongs as a customer-discovery funnel attached to the chosen venture (e.g. C-64), not as a scored concept.",
+   "evidence_check": [
+    {
+     "url": "https://www.mobiusmaterials.com/whitepapers/dram-market-report-2026",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "A free competitor report. It shows the content is given away, not paid for."
+    },
+    {
+     "url": "https://www.buysellram.com/blog/ram-market-update/",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "Free lead-gen content."
+    },
+    {
+     "url": "https://github.com/nwfella/memory-price-index",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "Free analysis dated 2026-11-01."
+    },
+    {
+     "url": "https://www.trendforce.com/presscenter/news/20260930-13258.html",
+     "status": "not-checked",
+     "supports": "no",
+     "note": "The primary forecast is a free press release."
+    },
+    {
+     "url": "https://counterpointresearch.com/en/reports/memory-price-tracker-and-forecast-july-2026",
+     "status": "snippet",
+     "supports": "no",
+     "note": "New: paid monthly memory tracker from an established analyst."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "profitable",
+     "new_value": "no - $2-6k MRR bridge income that disappears in a glut",
+     "why": "The card's own numbers. Content is excluded as a venture by mission §3E."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-84",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is upstream and proven (zram/zswap kernel docs, smem PSS; TRL 9). The value claim holds at 2026 prices: LPDDR4X rose 70-75% QoQ in 2Q26 and mobile LTAs sit near $21/GB, so one density step is worth ~$8-21 per unit. It wins on $/unit BOM for the named buyer, and no kill rule applies. The economics are overstated. Audits need an embedded-Linux engineer, which the founder is not, so margin is contractor-labor margin, not 70-85%. Low-density (8Gb/1GB) LPDDR4/DDR4 parts are legacy, under EOL pressure and carry a higher $/GB, so savings are less than linear. Memfault, the closest device-observability SaaS, has been owned by Nordic Semiconductor since Jun-2025 (Nordic news, via search snippet). Revenue is one audit per product line with no proven recurring layer.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/blockdev/zram.rst",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Upstream docs; the ~2:1 compression expectation matches my knowledge of the zram docs."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/admin-guide/mm/zswap.rst",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Upstream docs."
+    },
+    {
+     "url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "The LPDDR4X +70-75% QoQ figure is consistent with the 01_LANDSCAPE price series."
+    },
+    {
+     "url": "https://wccftech.com/mobile-dram-prices-expected-to-increase-by-100-quarter-over-quarter-as-long-term-agreements-now-getting-signed-at-prices-as-high-as-21-gb/amp/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "$21/GB is a phone-OEM LTA price. Small OEMs buy legacy LPDDR4 through distribution at different (likely higher) $/GB."
+    },
+    {
+     "url": "https://www.tweaktown.com/news/112541/even-ddr4-ram-is-not-safe-from-the-rampocalypse-prices-rose-over-50-percent-in-q3-2026/index.html?type=News",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Consistent with 01_LANDSCAPE 3.3 (DDR4 ~+50% QoQ in 3Q26)."
+    },
+    {
+     "url": "https://www.nordicsemi.com/Nordic-news/2025/06/Nordic-Semiconductor-acquires-Memfault",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: Memfault now belongs to a chip vendor's chip-to-cloud platform. Whether its Linux SDK covers memory-footprint analysis is not verified."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Memfault, acquired by Nordic Semiconductor in Jun-2025 and folded into nRF Cloud as a chip-to-cloud observability/OTA platform (via search snippet). Embedded consultancies (Bootlin, Witekio, Toradex services) [UNVERIFIED-T]. SoM vendor application engineers. Free tooling: Yocto buildhistory, smem, /proc/pressure, upstream zram/zswap.",
+     "why": "The Memfault acquisition is now confirmed and dated. The closest SaaS is bundled by a silicon vendor."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "45-65%. Audits are delivered by a contracted embedded-Linux engineer at ~$120-180/h [ESTIMATE]; the founder supplies access, tooling and the report.",
+     "why": "The founder cannot credibly run worst-case footprint audits alone (the card says credibility needs embedded expertise), so COGS is skilled labor."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 55,
+     "why": "Services margin with contractor delivery."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 12,
+     "why": "Recruiting an embedded contractor and winning engineering buy-in at OEMs runs alongside a day job. BOM savings land only at the next build or SoM order, so 9 months is optimistic."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "9-15 months: line up an embedded-Linux contractor, then sell 2-3 paid footprint audits ($5-20k) through the founder's manufacturing network. A SaaS tier comes only after repeat audits show demand.",
+     "why": "Separates one-off services from the recurring revenue the founder wants."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Re-qualification cost and buyer type. A density step-down needs re-validation, including regulatory re-validation for medical. A board re-spin is needed unless the design uses a SoM with a lower-RAM SKU [UNVERIFIED-T]. Low-density (1GB/8Gb) LPDDR4/DDR4 parts are legacy, EOL-pressured and priced at a $/GB premium, so savings are less than linear. Embedded engineers decide, they can run smem/zram themselves for free, and they rarely buy from non-engineers. Revenue is one audit per product line.",
+     "why": "Adds the legacy-density premium and the free-DIY substitute, and softens the blanket re-spin claim where SoM SKUs exist."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no as a standalone - one-off $5-20k audits per product line, no proven recurring layer, and demand vanishes at glut prices (~$2.5/unit per 1GB step)",
+     "why": "Lumpy services with no subscription mechanism and no glut survival."
+    },
+    {
+     "field": "doable_by_founder",
+     "new_value": "marginal-to-no - needs an embedded-Linux contractor or cofounder to be credible; the day-job network provides access only",
+     "why": "The card's own founder note says credibility needs embedded-Linux expertise."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Nordic Semiconductor acquires Memfault",
+     "url": "https://www.nordicsemi.com/Nordic-news/2025/06/Nordic-Semiconductor-acquires-Memfault",
+     "type": "company",
+     "date": "2025-06",
+     "shows": "Memfault (embedded device observability + OTA) acquired and integrated into Nordic's nRF Cloud chip-to-cloud platform (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-85",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism is well supported, and TRL 9 holds. rasdaemon logs per-DIMM CE/UE events with row/page thresholds. Predicting DIMM failure from corrected errors is published work: IBM Research 'Memory Loss in Commodity Hardware', arXiv 2212.10441 'First CE Matters', and an SC22 CE-to-UE study, plus the US8468422 patent family (all via search snippet). No kill rule applies, but the value claim is weaker than the card says. On E's own inputs (1.5%/DIMM-yr replacements, 32GB at $4.7/GB), a 2,400-DIMM fleet can self-spare for ~$6.1k/yr plus a one-time ~$7.2k pool, against a $21.6k/yr subscription (~3.6x). Park Place has sold ParkView predictive hardware fault detection with automatic ticketing, bundled into its TPM contracts, since 2017 (company PR, via search snippet). A memory-only predictive subscription may be new, but predictive DIMM replacement already exists inside whole-server TPM.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/mchehab/rasdaemon",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "E cloned it. CE/UE logging and per-page/per-row thresholds match my knowledge of rasdaemon."
+    },
+    {
+     "url": "https://www.guru3d.com/story/ddr4-memory-prices-now-also-rise-as-dram-supply-shortages-intensify-through-2028/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Demand driver only, cross-referenced. Consistent with 01_LANDSCAPE 3.3."
+    },
+    {
+     "url": "https://www.eetasia.com/memory-prices-surging-by-90-from-4q-2025/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The RDIMM $450 -> >$900 figure is consistent with 01_LANDSCAPE (Counterpoint)."
+    },
+    {
+     "url": "https://research.ibm.com/publications/memory-loss-in-commodity-hardware-predicting-dimm-failures-with-machine-learning",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: ML prediction of DIMM failures from error logs."
+    },
+    {
+     "url": "https://arxiv.org/pdf/2212.10441",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: CE history predicts memory failures; long-term CE properties matter."
+    },
+    {
+     "url": "https://prnewswire.co.uk/news-releases/park-place-technologies-launches-parkview-platform-for-automated-hardware-triage-support-662036543.html",
+     "status": "snippet",
+     "supports": "no",
+     "note": "New: an incumbent predictive-detection plus auto-ticket service bundled with TPM, which weakens the differentiation."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Park Place Technologies ParkView Hardware Monitoring / Automated Support (since 2017): 24/7 predictive fault detection with ML and automatic ticket creation, integrated with Park Place maintenance agreements across server OEMs (company PR, via search snippet). Service Express and other TPMs bundle DIMM swaps [UNVERIFIED-T]. Dell iDRAC and HPE iLO raise correctable-error-threshold alerts on in-band hardware [UNVERIFIED-T]. Hyperscalers retire DIMMs on CE trends in-house (IBM, arXiv 2212.10441, SC22 literature). No memory-only predictive subscription found.",
+     "why": "ParkView is confirmed. Predictive detection plus replacement already exists, bundled into whole-server TPM."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "It costs more than doing it yourself and loses to bundling. On E's own inputs a 2,400-DIMM fleet self-spares for ~$6.1k/yr (36 x 32GB at $4.7/GB plus shipping) plus a one-time ~$7.2k pool, against a $21.6k/yr fee (~3.6x). rasdaemon and BMC alerts make the predictive layer free, and Park Place ParkView bundles predictive detection and replacement into whole-server TPM, which also covers the disks, PSUs and fans that fail more often than DIMMs.",
+     "why": "Quantifies the self-sparing alternative from the card's own model and names the confirmed bundled competitor."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "59% at 2026 spares prices, 82% in a glut. Assumes 1.5%/DIMM-yr replacements including predictive pulls [ESTIMATE]; field studies put uncorrectable errors near ~0.2%/DIMM-yr [UNVERIFIED-T].",
+     "why": "The margin depends on an unverified replacement rate. A lower real rate raises margin but shrinks the value the customer sees."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 9,
+     "why": "Building the agent and console, stocking and burning in a spares pool, and passing university/colo procurement plus security review for an agent on production nodes take longer than 6 months part-time."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "6-12 months: build the agent and console, burn in an initial spares pool on 4-6 used servers, then run paid pilots with 2-3 regional colo or university research-computing fleets. Universities buy on slow procurement cycles.",
+     "why": "Part-time founder plus institutional procurement."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal-to-no - 59-82% GM, but ~$22k ACV is ~3.6x the buyer's DIY spares cost, and ParkView-bundled TPM caps price",
+     "why": "The customer-side ROI is weak, which limits conversion more than the card admits."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Memory Loss in Commodity Hardware: Predicting DIMM Failures with Machine Learning (IBM Research)",
+     "url": "https://research.ibm.com/publications/memory-loss-in-commodity-hardware-predicting-dimm-failures-with-machine-learning",
+     "type": "peer-reviewed",
+     "date": "unknown",
+     "shows": "DIMM failures can be predicted from error logs with ML (via search snippet)."
+    },
+    {
+     "title": "First CE Matters: On the Importance of Long Term Properties on Memory Failure Prediction",
+     "url": "https://arxiv.org/pdf/2212.10441",
+     "type": "peer-reviewed",
+     "date": "2022-12",
+     "shows": "Correctable-error history, including long-term properties, predicts memory failures (arXiv preprint, via search snippet)."
+    },
+    {
+     "title": "From Correctable Memory Errors to Uncorrectable Memory Errors: What Error Bits Tell (SC22)",
+     "url": "https://sc22.supercomputing.org/presentation/index-423.htm",
+     "type": "conference",
+     "date": "2022-11",
+     "shows": "CE bit patterns indicate which DIMMs progress to UEs (via search snippet)."
+    },
+    {
+     "title": "US8468422B2 Prediction and prevention of uncorrectable memory errors",
+     "url": "https://patents.google.com/patent/US8468422",
+     "type": "patent",
+     "date": "unknown",
+     "shows": "Patent family on predicting UEs from CEs (via search snippet). An FTO check is needed for a predictive-replacement product."
+    },
+    {
+     "title": "Park Place Technologies launches ParkView platform for automated hardware triage support",
+     "url": "https://prnewswire.co.uk/news-releases/park-place-technologies-launches-parkview-platform-for-automated-hardware-triage-support-662036543.html",
+     "type": "company",
+     "date": "2017",
+     "shows": "Predictive fault detection plus auto-ticketing, integrated with Park Place TPM contracts (via search snippet)."
+    }
+   ]
+  },
+  {
+   "id": "C-86",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The legal hook is real (FAR 16.203-1 and 52.216-4, opened by E). The pain is documented: a May-2026 Lewis Silkin note says most IT contracts' price-variation clauses were written for 3-5% annual moves, not 35-50% jumps (via search snippet). BLS publishes no DRAM-specific PPI; FRED surfaced only the semiconductor-wide and IC-package series. A memory index therefore fills a real gap, and no kill rule applies. The card misses a federal adoption barrier. DLAD 16.203-4 tells contracting officers to pick the most appropriate BLS index, coordinate with the pricing office, and document why each BLS index is unsuitable before using any other (acquisition.gov, via search snippet). Federal adoption is therefore a slow, case-by-case pricing-office decision, and commercial counterparties still default to TrendForce. An index built from distributor list quotes also carries basis risk against the contract prices integrators actually pay.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/16.203-1.dita",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "E opened it. Consistent with PGI/DLAD 16.203-4 text seen in my search."
+    },
+    {
+     "url": "https://github.com/GSA/GSA-Acquisition-FAR/blob/master/dita/52.216-4.dita",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "E opened it."
+    },
+    {
+     "url": "https://www.trendforce.com/price_dram.html",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows the incumbent reference counterparties will default to. trendforce.com is blocked."
+    },
+    {
+     "url": "https://news.samsungsemiconductor.com/global/samsung-electronics-announces-third-quarter-2026-results/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Downstream margin squeeze, cross-referenced."
+    },
+    {
+     "url": "https://www.techinsights.com/blog/slides-dram-market-report-q2-2026",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows the paid data tier. A TechInsights Q2-2026 slides page surfaced in search."
+    },
+    {
+     "url": "https://www.prnewswire.com/news-releases/mobius-materials-raises-3m-to-combat-one-of-manufacturings-biggest-issues-amid-us-china-trade-tariffs-302643403.html",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Mobius exists (confirmed via Digital Commerce 360 snippet), but its willingness to license transaction data to an outside index is unverified. It gives its own DRAM report away as lead-gen."
+    },
+    {
+     "url": "https://www.acquisition.gov/index%2ephp/dlad/subpart-16.2-%E2%80%93-fixed%E2%80%93price-contracts",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "New: a BLS-first rule for index selection; a non-BLS index is allowed with a documented justification."
+    },
+    {
+     "url": "https://www.lewissilkin.com/insights/2026/05/11/when-hardware-costs-spike-what-your-tech-contracts-should-say",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: existing price-variation clauses were not built for 35-50% hardware cost jumps. WebFetch failed (host not allowed)."
+    },
+    {
+     "url": "https://fred.stlouisfed.org/series/PCU334413334413",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "New: the BLS semiconductor PPI is industry-wide. No DRAM-specific BLS series surfaced, which justifies a non-BLS memory index."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "TrendForce/DRAMeXchange (public spot board plus paid contract data; the default reference), InSpectrum, TechInsights, Omdia, Supplyframe Commodity IQ and Counterpoint Memory Price Tracker (paid forecasts, via search snippet). BLS PPI covers semiconductors only at the industry level (PCU334413334413), with no DRAM-specific series found. No memory-specific escalation-clause or index-licensing product found [still UNVERIFIED: one targeted search]. Closest analogues are metals surcharge indexes (CRU, Fastmarkets/AMM) [UNVERIFIED-T].",
+     "why": "Adds the BLS gap (which helps) and the paid trackers (which compete for 'reference' status)."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Credibility and adoption mechanics. Commercial counterparties default to TrendForce/DRAMeXchange. Federal contracting officers must pick the most appropriate BLS index first, coordinate with the pricing office, and document why each BLS index is unsuitable (DLAD 16.203-4), so every federal adoption is a case-by-case decision. An index built from distributor list quotes carries basis risk against contract prices and is easy to dismiss or game. Mobius transaction data is a hope, not a deal. Licensing real contract data for redistribution may cost more than early revenue.",
+     "why": "Adds the verified BLS-first federal rule and the basis-risk point."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 12,
+     "why": "Each license requires both contract parties' legal and procurement teams, and federally a pricing office, to accept a new index. Back-filling 12+ months of history comes first, so 9 months is optimistic."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "9-15 months: back-fill 12+ months of index history and publish the methodology, then sign first paid licenses with 2-3 commercial integrators/EMS houses. Federal use follows contract by contract after pricing-office review (DLAD 16.203-4).",
+     "why": "Commercial adoption is the faster path; federal adoption is gated by the BLS-first rule."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal - high GM but a ~$0.3M ARR ceiling unless it becomes the reference index, which requires displacing TrendForce in contract language",
+     "why": "Unchanged substance; names what 'becoming the reference' requires."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "DLAD Subpart 16.2 Fixed-Price Contracts (index selection for EPA)",
+     "url": "https://www.acquisition.gov/index%2ephp/dlad/subpart-16.2-%E2%80%93-fixed%E2%80%93price-contracts",
+     "type": "government",
+     "date": "2026",
+     "shows": "The contracting officer selects the most appropriate BLS index after coordinating with the pricing office. A non-BLS index needs documentation of why BLS indices were unsuitable. Combining indices is allowed (via search snippet)."
+    },
+    {
+     "title": "PGI 216.2 Fixed-Price Contracts (216.203-4 EPA guidance)",
+     "url": "https://www.acquisition.gov/index%2ephp/dfarspgi/pgi-216.2-fixed-price-contracts",
+     "type": "government",
+     "date": "2026-05",
+     "shows": "EPA clauses should be simple, use trigger bands, and name the index revision used. COs should use caution because EPA can cause large unanticipated increases (via search snippet)."
+    },
+    {
+     "title": "When hardware costs spike: what your tech contracts should say (Lewis Silkin)",
+     "url": "https://www.lewissilkin.com/insights/2026/05/11/when-hardware-costs-spike-what-your-tech-contracts-should-say",
+     "type": "other",
+     "date": "2026-05-11",
+     "shows": "Most IT procurement price-variation clauses contemplate 3-5% annual moves, not 35-50% jumps. Undefined 'reasonable increase' clauses give vendors latitude (via search snippet)."
+    },
+    {
+     "title": "FRED: PPI by Industry, Semiconductor and Related Device Manufacturing (PCU334413334413)",
+     "url": "https://fred.stlouisfed.org/series/PCU334413334413",
+     "type": "government",
+     "date": "2026",
+     "shows": "The BLS semiconductor PPI exists only at industry and broad product level. No DRAM-specific BLS series surfaced (via search snippet)."
+    }
+   ]
+  }
+ ]
+}

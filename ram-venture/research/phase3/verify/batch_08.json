@@ -1,0 +1,539 @@
+{
+ "batch": "08",
+ "auditor": "p3-audit-08",
+ "verdicts": [
+  {
+   "id": "C-51",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "No kill rule applies, because the mechanism ships. NVDIMM-N is TRL 9, and Penguin/SMART's NV-CMM is this card's variant 1 as a product: CXL 2.0, E3.S 2T, DDR4 that saves to NAND on an onboard energy source. It has been sampling to Tier-1 OEMs since 2025-03 and has been on the CXL Integrators List since 2026-01 (via search snippet). The axis (durable commit latency for WAL/journals) is real, but the card is a late copy of a product an incumbent already ships and has had compliance-listed. The MRAM variant costs ~$821/GB, so 1-4 GB of MRAM alone is $821-3,284. Storage OEMs build MRAM journals in-house: IBM has used Everspin MRAM in FlashCore since 2018 and FCM5 carries a few hundred MB. The card overstates margin and understates TRL and the incumbent list.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The card says it was opened. It shows the software path (PMEM GPF/dirty shutdown [3]) only, not demand."
+    },
+    {
+     "url": "https://www.blocksandfiles.com/flash/2026/10/05/ibm-using-everspin-mram-in-5th-gen-flashcore-modules/5300966",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "Logged snippet (A2): FCM5 uses a few hundred MB of MRAM as write cache/journal. That proves an OEM builds this in-house, not that a merchant card has a buyer."
+    },
+    {
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "$102.60 @500 for 1Gb (~$821/GB) is canonical in 01_LANDSCAPE 4.4."
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086322000030/intc-20220702.htm",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "sec.gov is fetch-blocked. The Optane wind-down is well known, and it argues against demand."
+    },
+    {
+     "url": "https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Same figures as 01_LANDSCAPE 4.4."
+    },
+    {
+     "url": "https://www.anandtech.com/show/13174",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "IBM chose MRAM over supercaps in 2018. That contradicts the card's framing that FCM5 'replaced capacitors' in Oct 2026: IBM's MRAM use is 8 years old."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "trl",
+     "new_value": 7,
+     "why": "The exact product category (CXL 2.0 DRAM+NAND+energy-source module) is sampling to Tier-1 OEMs and passed CXL compliance (Penguin/SMART, 2026-01). NVDIMM-N is TRL 9."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Penguin Solutions/SMART Modular NV-CMM: CXL 2.0, E3.S 2T, DDR4 with NAND backup and an onboard Energy Source Module, AES-256. 32GB listed, 128GB variant reported. Sampling to Tier-1 OEMs since 2025-03; on the CXL Consortium Integrators List since 2026-01 [REPORTED via snippet]. Samsung CMM-H [UNVERIFIED-T]. NVDIMM-N history at Netlist, Micron, Viking and SMART. IBM builds its own Everspin-MRAM journal into FlashCore (since 2018; FCM5 2026). Kioxia XL-Flash.",
+     "why": "The card tagged SMART [UNVERIFIED-T]. Search confirms the incumbent already ships this card."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "25-40%",
+     "why": "DRAM dominates the BOM: 32-64 GB is $512-1,023 at the $15.99/GB 4Q26 contract. Margin is only the persistence premium, and an incumbent with Tier-1 OEM channels sets the price."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 30,
+     "why": "Matches the corrected range."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "It takes 12-18 months to reach a compliance-listed sample, and design-ins at storage/DB OEMs take another 12-24 months. SMART needed ~10 months from sampling to compliance alone."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "30-42 months: card, power-fail firmware and CXL compliance (12-18), then OEM qualification against an incumbent already on the Integrators List (12-24)",
+     "why": "Matches the corrected months."
+    },
+    {
+     "field": "why_it_could_work",
+     "new_value": "Linux CXL PMEM GPF/dirty-shutdown support is mature [3], so the software path exists. Storage OEMs pay for persistent journal memory: IBM has put Everspin MRAM in every FlashCore generation since 2018, including FCM5 (2026-10). Sub-microsecond durable commits beat NVMe flush latency by 10-100x.",
+     "why": "The card said FCM5 newly 'replaced capacitors' in Oct-2026. IBM has used MRAM since 2018 (the card's own AnandTech source)."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "SMART/Penguin's NV-CMM already is this product (CXL 2.0, DRAM+NAND+energy source, compliance-listed 2026-01, Tier-1 OEM sampling), so an entrant arrives 3+ years late with no OEM qualification and worse DRAM purchasing. The market is tiny: Optane PMem died for lack of volume (>$7B losses), and NVMe with power-loss protection plus group commit is good enough for most WAL. Storage OEMs build journals in-house (IBM FCM MRAM). MRAM at ~$821/GB caps the MRAM variant at a few GB ($821-3,284 of MRAM for 1-4 GB).",
+     "why": "Adds the confirmed incumbent product."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes: SMART/Penguin NV-CMM (CXL 2.0 E3.S, DRAM+NAND+energy source) passed CXL compliance in 2026-01",
+     "why": "Replaces 'demos exist' with a compliance-listed product."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no for a new entrant: the incumbent ships the same card through Tier-1 OEMs, and demand is capped at the Optane PMem niche",
+     "why": "The card's 'marginal' ignored the shipping incumbent."
+    },
+    {
+     "field": "glut_reason",
+     "new_value": "Value is persistence, not $/GB, so the price per card holds. A glut lowers the DRAM BOM (64GB: $1,023 at 4Q26 vs $410 at the $6.40 glut) for the incumbent as much as for an entrant. Volume stays tiny.",
+     "why": "Computed BOM at the canonical decks."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "SMART Modular Technologies Introduces its Non-Volatile CXL E3.S Memory Module",
+     "url": "https://www.nasdaq.com/press-release/smart-modular-technologies-introduces-its-non-volatile-cxl-e3s-memory-module-2025-03",
+     "type": "company",
+     "date": "2025-03",
+     "shows": "NV-CMM E3.S 2T CXL module sampling to Tier-1 OEMs and offered to enterprise customers and integrators (via search snippet)"
+    },
+    {
+     "title": "Penguin Solutions SMART Modular CXL NV-CMM E3.S 2T Memory Module Achieves CXL Compliance",
+     "url": "https://www.businesswire.com/news/home/20260114434969/en/Penguin-Solutions-SMART-Modular-CXL-NV-CMM-E3.S-2T-Memory-Module-Achieves-CXL-Compliance",
+     "type": "company",
+     "date": "2026-01-14",
+     "shows": "NV-CMM passed CXL compliance testing and is listed on the CXL Consortium Integrators List (via search snippet; ir.penguinsolutions.com DNS-blocked)"
+    },
+    {
+     "title": "CXL Memory Module NV-CMM E3.S (product page)",
+     "url": "https://www.penguinsolutions.com/products/smart-modular/cxl-memory-module-nv-cmm-e3s",
+     "type": "company",
+     "date": "2026",
+     "shows": "CXL 2.0 x8 controller, 2Rx4 DDR4, onboard Energy Source Module that backs DRAM up to NAND on power loss, AES-256, 32GB (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-52",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "No kill rule applies. Every component exists: UCIe/AIB die-to-die IP and LPDDR5X controller/PHY IP are commercial, NVIDIA Grace proves 512-bit LPDDR5X at ~546 GB/s, and the minimum path (~$50-90M [ESTIMATE]) is T3, far below $1B. The headline bandwidth is wrong. 4-8 x64 LPDDR5X-8533 packages give 0.27-0.55 TB/s (68.3 GB/s each, computed), not 0.5-1 TB/s. 1 TB/s needs ~15 packages or LPDDR6, which is under half an HBM3E stack (~1.2 TB/s) but 4-14x its capacity. A winning axis remains: capacity and bandwidth per dollar without HBM allocation, plus moving the memory PHY off expensive leading-edge die area. But the named buyers already attach LPDDR directly with licensed IP (Qualcomm AI200, d-Matrix Corsair [UNVERIFIED-T]), and Amkor Arizona is anchor-customer-only, so packaging is offshore.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/chipsalliance/aib-phy-hardware",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "The card says it was opened. It shows open D2D PHY RTL exists. It does not show a memory chiplet."
+    },
+    {
+     "url": "https://technews.tw/?p=1565421",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Cross-ref snippet. Supports the HBM wafer-share motive only."
+    },
+    {
+     "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Cross-ref snippet; motive only."
+    },
+    {
+     "url": "https://www.sammyfans.com/2026/10/02/samsung-seeks-more-than-3x-hbm3e-pricing-for-hbm4/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Cross-ref snippet; HBM4 pricing motive."
+    },
+    {
+     "url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "LPDDR5X contract +78-83% QoQ in 2Q26. That undercuts the 'at LPDDR prices' cheapness claim in the shortage."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "what_it_is",
+     "new_value": "Same, but performance is ~0.27-0.55 TB/s and 128-512 GB per package: 4-8 x64 LPDDR5X-8533 packages at 68.3 GB/s each, the same 512-bit width as NVIDIA Grace (~546 GB/s). 1 TB/s needs ~15 x64 LPDDR5X packages or ~23 LPDDR6 x24 channels at 14.4 Gb/s.",
+     "why": "Computed: 8.533 GT/s x 64 bit / 8 = 68.3 GB/s per package. The card's 0.5-1 TB/s overstates by up to ~2x."
+    },
+    {
+     "field": "trl",
+     "new_value": 5,
+     "why": "The product has never been built. The components (UCIe/AIB IP, LPDDR5X PHY) are TRL 9, but an LPDDR memory-controller chiplet behind UCIe is unproven as a merchant part."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "GlobalFoundries Malta NY can fab a 12nm-class controller die (rubric 4 at best for the die). Amkor Peoria AZ is logic 2.5D with anchor customers, production ~early 2028, and not open to a small customer (01_LANDSCAPE 6.1 row 21), so packaging and LPDDR5X dies are offshore in practice.",
+     "why": "The card implied U.S. advanced packaging was available."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "IP vendors selling UCIe plus LPDDR5X controller/PHY: Synopsys, Cadence, Alphawave (Qualcomm). Eliyan (NuLink D2D). Marvell (custom memory/HBM base dies). Buyers integrating LPDDR directly: Qualcomm AI200 (LPDDR per card), d-Matrix Corsair (LPDDR5X), NVIDIA Grace (512-bit LPDDR5X). Tenstorrent (GDDR6). All [UNVERIFIED-T] except Grace's published width.",
+     "why": "Shows the target buyers already get LPDDR bandwidth without a third-party chiplet."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "40-60% (chiplet at low volume)",
+     "why": "A sub-scale chiplet seller carries package/test cost and competes with IP royalties. 50-65% is IP-licensing territory."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 50,
+     "why": "Matches the corrected range."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Serious ASIC teams already integrate LPDDR5X with licensed controller/PHY IP (Synopsys, Cadence, Alphawave), and Qualcomm AI200 and d-Matrix show LPDDR inference without a third-party chiplet [UNVERIFIED-T]. A separate chiplet adds a die-to-die hop and package cost. Its real bandwidth (0.27-0.55 TB/s) is below half an HBM3E stack. A startup needs a ~$50-90M program for a handful of customers, and Amkor AZ is closed to it.",
+     "why": "Adds the corrected bandwidth and the buyer-integrates-directly evidence."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes: all components ship. The chiplet itself is unbuilt (TRL 5)",
+     "why": "Separates component readiness from product readiness."
+    },
+    {
+     "field": "profitable",
+     "new_value": "marginal at best: buyers integrate LPDDR IP directly and IP giants own the PHY/controller market",
+     "why": "Unchanged in direction, sharpened."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-53",
+   "verdict": "KILL",
+   "kill_rule": "FACT-COLLAPSE",
+   "reason": "The card's product, accelerator boards or appliances that pair a GPU/ASIC with HBF stacks, has no attach point open to an outsider. The SanDisk/SK hynix HBF spec (published via OCP in 2026) connects 512GB-class stacks to the processor over UCIe inside the package, at 0.4-3.0 TB/s grades (via search snippet), the same way HBM attaches. Only package owners can integrate it, and those are the card's own named buyers (NVIDIA, AMD, hyperscaler ASIC teams), who buy HBF directly from SanDisk/SK hynix. Samples were promised for 2H26 (no shipment confirmed as of 2026-11) and devices for early 2027. The only way in is a custom accelerator ASIC with CoWoS-class packaging (T3, 48+ months), and the card concedes 'no socket for a small company'.",
+   "evidence_check": [
+    {
+     "url": "https://quartr.com/events/sandisk-corporation-sndk-investor-day-2026_F6lVAkBS",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Cross-ref snippet about 3D Matrix Memory, not HBF. Says nothing about outside integration."
+    },
+    {
+     "url": "https://tech-insider.org/dram-record-high-nand-flat-21-months-october-2026/",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "NAND pricing only."
+    },
+    {
+     "url": "https://www.trendforce.com/presscenter/news/20260730-13158.html",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "trendforce.com is fetch-blocked. NAND surplus 2H27 is consistent with 01_LANDSCAPE 0 item 4."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "SanDisk and SK hynix (MoU to standardize HBF, 2025-08-06; samples 2H26, first AI-inference devices early 2027; spec published via OCP with UCIe attach, up to 512GB 8/16-high, 0.4-3.0 TB/s) [REPORTED]. Samsung and Kioxia reported. Integration only by GPU/ASIC package owners.",
+     "why": "Drops the [UNVERIFIED-T] tags: BusinessWire release and spec coverage via search snippet."
+    },
+    {
+     "field": "trl",
+     "new_value": 4,
+     "why": "Spec published, but samples are unconfirmed as of 2026-11. TRL 4-5 stands."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes for memory makers and GPU/ASIC package owners. No for a board or appliance integrator, because attach is in-package over UCIe",
+     "why": "The spec's UCIe attach removes the board-level product."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED (mechanism); the business premise collapses (no outsider integration seat)",
+     "why": "Separates physics from the business premise."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Sandisk to Collaborate with SK hynix to Drive Standardization of High Bandwidth Flash Memory Technology",
+     "url": "https://www.businesswire.com/news/home/20250806259749/en/Sandisk-to-Collaborate-with-SK-hynix-to-Drive-Standardization-of-High-Bandwidth-Flash-Memory-Technology",
+     "type": "company",
+     "date": "2025-08-06",
+     "shows": "HBF MoU. Samples 2H26, first AI-inference devices early 2027 (via search snippet)"
+    },
+    {
+     "title": "SK hynix and SanDisk reveal first specs for High Bandwidth Flash",
+     "url": "https://techradar.com/pro/sk-hynix-and-sandisk-reveal-first-specs-for-high-bandwidth-flash-but-dont-get-too-excited-you-probably-wont-be-able-to-buy-it-anytime-soon",
+     "type": "news",
+     "date": "2026",
+     "shows": "Spec via OCP: up to 512GB packages (8/16-high), 0.4-3.0 TB/s grades, UCIe connection to the processor; not buyable soon (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-54",
+   "verdict": "KILL",
+   "kill_rule": "FACT-COLLAPSE",
+   "reason": "The integrator needs a merchant PIM supplier, and none is selling. UPMEM, the only vendor that ever sold PIM DIMMs, was acquired by Qualcomm in 2025-06: CB Insights lists it as acquired, and an Oct-2025 arXiv paper calls the platform 'recently acquired by Qualcomm' (both via search snippet). No evidence was found that the DDR4 PIM DIMMs are still sold to third parties. SK hynix still described AiMX as an 'accelerator card prototype' at CES 2026, with no price, launch or named customer (via search snippet). Samsung HBM-PIM and LPDDR5X-PIM are not open-market parts [UNVERIFIED-T]. The card itself rated profitability 'no: no commercial pull beyond research'. The active PrIM repo shows academic use of legacy boards, not a supply chain.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/CMU-SAFARI/prim-benchmarks",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The card says it was opened. It proves real PIM hardware was characterized (mechanism SUPPORTED), not that the hardware can still be bought."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "UPMEM (Grenoble) was acquired by Qualcomm in 2025-06 [REPORTED via snippet: CB Insights; arXiv 2510.15927]; no evidence of continued merchant sales. SK hynix AiMX is still a prototype (CES 2026). Samsung HBM-PIM/LPDDR5X-PIM are not open-market [UNVERIFIED-T]. NeuroBlade [UNVERIFIED-T]. GSI Gemini APU (see C-37).",
+     "why": "The card left UPMEM's status unverified. It is resolved: acquired."
+    },
+    {
+     "field": "possible",
+     "new_value": "no as a business: research hardware exists, but there is no merchant PIM supply to integrate",
+     "why": "Supply premise collapsed."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "n/a: no supplier",
+     "why": "No vendor sells PIM DIMMs or cards to integrators."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "UPMEM company profile (CB Insights)",
+     "url": "https://www.cbinsights.com/company/upmem",
+     "type": "industry",
+     "date": "2026",
+     "shows": "Lists UPMEM as acquired by Qualcomm, June 2025; total raised ~$13.55M (via search snippet)"
+    },
+    {
+     "title": "UPMEM Unleashed: Software Secrets for Speed (arXiv 2510.15927)",
+     "url": "https://arxiv.org/html/2510.15927v1",
+     "type": "peer-reviewed",
+     "date": "2025-10",
+     "shows": "Describes the UPMEM platform as recently acquired by Qualcomm (via search snippet; arxiv.org DNS-blocked in this session; preprint, not peer-reviewed)"
+    },
+    {
+     "title": "News posts matching #AiMX (TechPowerUp)",
+     "url": "https://techpowerup.com/news-tags/AiMX",
+     "type": "news",
+     "date": "2024",
+     "shows": "AiMX shown as an upgraded prototype at OCP 2024. A search summary also described AiMX at CES 2026 as an 'accelerator card prototype' without naming the page (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-55",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "No kill rule applies, because analog CIM silicon ships. Mythic's M1076 (25 TOPS at ~3 W, weights on-chip, no external DRAM) has shipped to customers, including Lockheed Martin per an earlier report, and Mythic reportedly raised $125M in 2025-12. EnCharge EN100 (200+ TOPS at 8.25 W, M.2) was announced 2025-05 (via search snippets). But the card's 'DRAM-free' premise is only half true. EN100 carries up to 128 GB of LPDDR at 272 GB/s, so only Mythic-class parts are DRAM-free, and only for models that fit on-chip. Both vendors sell M.2/PCIe cards themselves, so the venture reduces to a rugged-module integrator of someone else's chip. Its real axis is W/inference on U.S.-designed silicon, not 'no DRAM'.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/IBM/aihwkit",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "IBM's research toolkit being 'beta' says nothing about EnCharge/Mythic products. It understates TRL for this integration concept."
+    },
+    {
+     "url": "https://wantrich.chinatimes.com/news/20260515900291-420101",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "LPDDR price spike is real, but EN100 itself needs LPDDR, so the BOM-avoidance argument applies only to Mythic-class parts."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "what_it_is",
+     "new_value": "Rugged M.2/PCIe edge-AI modules built on U.S.-designed analog CIM accelerators (Mythic M1076/M2000, EnCharge EN100, Sagence), sold to U.S. drone/ISR integrators with U.S. assembly and environmental qualification. External DRAM is eliminated only on Mythic-class parts running models that fit on-chip. EnCharge EN100 modules carry up to 128 GB of LPDDR (272 GB/s).",
+     "why": "EN100 spec (BusinessWire 2025-05-29, via snippet) contradicts 'little or no external LPDDR'."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "W per inference on U.S.-designed silicon (EnCharge claims up to ~20x perf/W, a vendor claim). DRAM-free BOM only for small CNN-class models on Mythic M1076-class parts.",
+     "why": "Narrows the DRAM-free claim to where it is true."
+    },
+    {
+     "field": "trl",
+     "new_value": 7,
+     "why": "Mythic M1076 has shipped to customers including Lockheed Martin (via snippet). EN100 developer kits were targeted for Q3-2025 (shipment unconfirmed). Integration risk only."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Mythic (Austin) sells M.2/PCIe M1076 cards directly. It reportedly raised $125M in 2025-12 and reportedly acquired videantis in 2026-05 [UNVERIFIED]. EnCharge AI (EN100 M.2 and 4-NPU PCIe card). Sagence AI. IBM Research. Digital DRAM-free competitor Hailo-8 (M.2, no external DRAM) [UNVERIFIED-T]. NVIDIA Jetson, Qualcomm. Rugged-module houses (Aitech, Curtiss-Wright, Mercury) [UNVERIFIED-T].",
+     "why": "Adds that the chip vendors already sell modules, and names the digital DRAM-free alternative."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "The chip vendors already sell M.2/PCIe modules (Mythic ships to Lockheed Martin), so the integrator adds only ruggedization and qualification: C-67's rugged-module economics with a different chip, and not a memory business. 'DRAM-free' holds only on Mythic-class parts for small models. EN100 needs LPDDR. Digital NPUs with mature toolchains (Hailo-8, Jetson) own edge AI, and the integrator depends on venture-funded chip vendors (Mythic nearly folded in 2022-23).",
+     "why": "Corrects the premise and adds vendor channel conflict."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes: Mythic M1076 shipping; EnCharge EN100 announced 2025-05",
+     "why": "Replaces '[UNVERIFIED-T]' with search-snippet evidence."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "Chips designed in the U.S. (Mythic Austin, EnCharge Santa Clara), die fabbed offshore [UNVERIFIED-T], module assembly and environmental test at a U.S. EMS (rubric 3: U.S. assembly of imported die).",
+     "why": "Sets the rubric level."
+    },
+    {
+     "field": "founder_fit_note",
+     "new_value": "Marginal: an integration/software role is plausible, but SBIR needs a >50%-employed PI (not the founder while employed) and delivery needs a ruggedization engineer. It depends on a venture-funded chip vendor that already sells modules.",
+     "why": "Adds the SBIR PI rule (01_LANDSCAPE 7.1)."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "EnCharge AI Announces EN100, First-of-its-Kind AI Accelerator for On-Device Computing",
+     "url": "https://www.businesswire.com/news/home/20250529108055/en",
+     "type": "company",
+     "date": "2025-05-29",
+     "shows": "EN100 M.2: 200+ TOPS in 8.25 W. PCIe: 4 NPUs, ~1 POPS. Up to 128 GB LPDDR at 272 GB/s (via search snippet)"
+    },
+    {
+     "title": "Mythic to challenge AI's GPU pantheon with energy efficiency and oversubscribed $125M raise",
+     "url": "https://www.hpcwire.com/off-the-wire/mythic-to-challenge-ais-gpu-pantheon-with-energy-efficiency-and-oversubscribed-125m-raise/",
+     "type": "company",
+     "date": "2025-12",
+     "shows": "Mythic oversubscribed $125M raise. The date comes from aggregators; the body was not seen (via search snippet)"
+    },
+    {
+     "title": "Mythic Launches Second AI Chip",
+     "url": "https://www.eetasia.com/mythic-launches-second-ai-chip/",
+     "type": "news",
+     "date": "2021",
+     "shows": "M1076: 25 TOPS INT8 at ~3 W, weights held on-chip (via search snippet)"
+    },
+    {
+     "title": "Mythic Raises $13 Million to Bring Its Next generation Analog Computing Solution to Market",
+     "url": "https://www.businesswire.com/news/home/20230309005131/en/Mythic-Raises-$13-Million-to-Bring-Its-Next-generation-Analog-Computing-Solution-to-Market",
+     "type": "company",
+     "date": "2023-03-09",
+     "shows": "Rescue round after running out of cash in Nov-2022; M2000 next-gen. Search summary says M1076 shipped to customers including Lockheed Martin; page attribution unconfirmed (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-56",
+   "verdict": "KILL",
+   "kill_rule": "R1-UNSUPPORTED",
+   "reason": "The core value claim has no evidence. The card says DoD HPCMP centers and NNSA labs will pay a premium for CXL expanders because they carry U.S.-fabbed Manassas DDR4. C-70 was killed for this same claim (batch_10, R1). The canonical landscape finds no U.S.-origin memory premium: TAA treats Korean, Taiwanese and Japanese DRAM as compliant, COTS is BAA-exempt, and memory pays 0% under Section 232 (01_LANDSCAPE 0 item 7, 7.3). The card's buyer evidence is misread. The Everspin $40M deal is an Amentum subcontract to stand up on-shore Toggle-MRAM process capability, not a premium on COTS DRAM. The provenance is thin too. Micron's back-end hubs are Malaysia and India, the controller is TSMC-made, Manassas output goes first to Micron's auto Strategic Customer Agreements (logged snippets), and SMART/Penguin already ships DDR4 behind CXL. Bandwidth-bound HPC nodes are the worst fit for a DDR4-over-CXL tier.",
+   "evidence_check": [
+    {
+     "url": "https://www.hpcwire.com/off-the-wire/micron-advances-made-in-america-memory-with-manufacturing-expansion-in-virginia",
+     "status": "snippet",
+     "supports": "partial",
+     "note": "Confirmed in batch_10 via Electropages/Tom's copies: Manassas 1-alpha DDR4/LP4 exists. It shows supply, not outside access, a fab-of-origin SKU, or a buyer premium."
+    },
+    {
+     "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+     "status": "snippet",
+     "supports": "no",
+     "note": "Logged snippets (A2, mram-info): a $40M, 2.5-year subcontract with Amentum for Toggle-MRAM process tech and foundry services. DoD pays for capability, not for U.S.-origin COTS DRAM in HPC."
+    },
+    {
+     "url": "https://github.com/torvalds/linux/blob/master/Documentation/driver-api/cxl/maturity-map.rst",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows the Type-3 software path only."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "rule1_status",
+     "new_value": "UNSUPPORTED (value claim): no evidence any HPC/defense buyer pays a premium for U.S.-fabbed DRAM. 01_LANDSCAPE 7.3 finds none",
+     "why": "Non-device core value claim without evidence. Same ruling as C-70."
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "U.S. wafer only. Micron's assembly/test hubs are Malaysia and India (TrendForce 2026-05-27, via snippet), so Manassas die are very likely packaged offshore. The controller is TSMC-made. Module assembly could be U.S.",
+     "why": "The card implied an end-to-end U.S. chain apart from the controller."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Micron (direct to defense; Manassas output committed to Strategic Customer Agreements with auto Tier-1s first, via Counterpoint snippet). SMART/Penguin (NV-CMM already puts DDR4 behind a CXL 2.0 controller in E3.S; defense memory line). Mercury, Netlist. Microchip SMC 2000 [UNVERIFIED-T].",
+     "why": "A U.S.-HQ DDR4-on-CXL module already exists."
+    },
+    {
+     "field": "possible",
+     "new_value": "unknown: Micron sells Manassas parts only through distribution, with no public fab-of-origin SKU [UNVERIFIED]. Output prioritized to SCA customers",
+     "why": "Supply-side gate, as in C-70."
+    },
+    {
+     "field": "profitable",
+     "new_value": "no: no evidenced premium, tiny FAR-paced volume",
+     "why": "Follows from R1."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-57",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The only independent product of this kind is gone. Enfabrica's ACF-S/EMFASYS used CXL controllers to pool up to 18 TB behind an Ethernet SuperNIC, and NVIDIA took it in 2025-09 for a reported >$900M in cash and stock, hiring the CEO and staff and licensing the technology (Blocks & Files, StorageNewsletter, via search snippet). For the named buyer (hyperscalers and GPU clouds), a new custom ASIC wins no axis. Commodity RDMA NICs, open-source Mooncake Transfer Engine/NIXL and CXL-backed memory servers already deliver GPU-reachable capacity per dollar (the card's own evidence, productized as C-45). NVIDIA owns the silicon version and bundles it with ConnectX/BlueField and Dynamo. An entrant spends a T3 (~$50M+) program and 4+ years just to reach parity. None of the card's three sources shows the silicon mechanism; all are software.",
+   "evidence_check": [
+    {
+     "url": "https://github.com/kvcache-ai/Mooncake",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "The card says it was opened. It supports the commodity-RDMA software alternative, which argues against the card."
+    },
+    {
+     "url": "https://github.com/vllm-project/vllm/blob/main/docs/features/kv_offloading_usage.md",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Host DRAM as the KV tier. Software path, not custom silicon."
+    },
+    {
+     "url": "https://github.com/meta-llama/llama-models",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "320 KiB/token KV for Llama-3.1-70B BF16 is correct arithmetic (80 x 8 x 128 x 2 x 2 B)."
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Enfabrica (EMFASYS, up to 18 TB of CXL-pooled memory). Team hired and technology licensed by NVIDIA for a reported >$900M, 2025-09 [REPORTED via snippet]. NVIDIA (ConnectX/BlueField + Dynamo). Astera Labs, Broadcom, Marvell. Mooncake Transfer Engine/NIXL over standard RDMA.",
+     "why": "Drops the [UNVERIFIED-T] tag on the NVIDIA deal."
+    },
+    {
+     "field": "possible",
+     "new_value": "yes: EMFASYS was announced and demonstrated before NVIDIA absorbed it",
+     "why": "Confirmed via snippet."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED (mechanism, via Enfabrica's EMFASYS announcement); none of the card's own cited evidence covers the silicon",
+     "why": "Evidence hygiene."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Nvidia buys Enfabrica",
+     "url": "https://blocksandfiles.com/2025/09/19/nvidia-buys-enfabrica/",
+     "type": "news",
+     "date": "2025-09-19",
+     "shows": "NVIDIA hires CEO Rochan Sankar and staff and licenses Enfabrica technology for >$900M cash and stock; EMFASYS pools up to 18 TB via CXL controllers (via search snippet)"
+    },
+    {
+     "title": "Nvidia swallowed Enfabrica for $900 million",
+     "url": "https://www.storagenewsletter.com/2025/09/30/nvidia-swallowed-enfabrica-for-900-million/",
+     "type": "news",
+     "date": "2025-09-30",
+     "shows": "Corroborates the ~$900M deal (via search snippet)"
+    }
+   ]
+  }
+ ]
+}

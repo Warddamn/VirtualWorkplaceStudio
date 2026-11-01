@@ -1,0 +1,596 @@
+{
+ "batch": "03",
+ "auditor": "p3-audit-03",
+ "verdicts": [
+  {
+   "id": "C-16",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The mechanism ships, so R1 passes. MRAM-as-PLP-journal runs in IBM FlashCore Modules, which used up to 128 MB of Toggle in FCM3, the 1Gb PERSYST in FCM4 (2024) and MRAM instead of capacitors in FCM5 (Blocks&Files 2026-10). Phison and Sage paired SSD controllers with Everspin 1Gb in 2019. The axis (lifecycle and no supercap aging) is real for the named buyer, and the card says honestly that it is not $/GB. The card's 'why now' is wrong: IBM did not 'move' to MRAM in Oct-2026, it has shipped MRAM journals for years. The card's bit-cost penalty also uses DRAM spot: at the canonical deck MRAM street ($821/GB) is ~51x the 4Q26 contract and ~128x the glut. A 2026-11-01 search found no public Everspin PLP reference design, so a gap for a packaged kit may exist. Willingness to pay a third party for it is STILL-UNVERIFIED.",
+   "evidence_check": [
+    {
+     "url": "https://www.blocksandfiles.com/flash/2026/10/05/ibm-using-everspin-mram-in-5th-gen-flashcore-modules/5300966",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Confirms FCM5 PLP via MRAM, but also says IBM has used MRAM in FCMs for several years (FCM3 Toggle, FCM4 PERSYST). This contradicts the card's 'moved in Oct-2026' framing."
+    },
+    {
+     "url": "https://businesswire.com/news/home/20240430370312/en/Next-Generation-IBM-FlashCore-Modules-Feature-Everspins-PERSYST-1-Gigabit-STT-MRAM-Enhancing-Reliability",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "FCM4 design-in of EMD4E001G surfaced in this audit's search"
+    },
+    {
+     "url": "https://www.anandtech.com/show/13174",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "2018 IBM/Everspin MRAM-instead-of-supercap rationale; corroborated by the Blocks&Files snippet"
+    },
+    {
+     "url": "https://www.3dtested.com/news/phison-ssd-controller-everspin-mram,40022.html",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "2019 Phison/Everspin announcement. It may not reflect current Phison products."
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408xexx991.htm",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "sec.gov blocked; matches 01_LANDSCAPE 6.1 row 5"
+    },
+    {
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "$102.60 @500 is the canonical MRAM street price in 01_LANDSCAPE 4.4"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "why_it_could_work",
+     "new_value": "Replace 'IBM moved its 5th-gen FlashCore Module to Everspin MRAM instead of capacitors (Oct-2026)' with 'IBM has used Everspin MRAM as the FCM write cache/journal for several generations (FCM3 up to 128 MB Toggle; FCM4 1Gb PERSYST, 2024; FCM5 MRAM-instead-of-capacitors, reported 2026-10)'. Replace '~30x $/bit penalty (~$100/Gb street vs ~$3/Gb DRAM)' with '~51x the 4Q26 DDR5 contract ($821 vs $15.99/GB) and ~128x the $6.40 glut price'.",
+     "why": "The Blocks&Files snippet shows a multi-year in-house IBM design, not a 2026 switch. Canonical decks are contract and glut (01_LANDSCAPE 4.3), not spot."
+    },
+    {
+     "field": "trl",
+     "new_value": 9,
+     "why": "MRAM PLP journals ship in production systems: IBM FCM3/4/5, and Broadcom/LSI RAID per the card."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 20,
+     "why": "A contract EE must first build and validate the reference board (6-9 months). Then SSD/logger OEMs run 6-12-month evaluation cycles before paying for design-in, and royalties need the OEM to ship (30+ months)."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "18-24 months to the first paid design-in (services) after a 6-9-month reference-board build; royalties 30-42 months, only if an OEM ships",
+     "why": "As above. Part-time founder plus contract EE."
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 40,
+     "why": "Revenue in years 1-3 is design services, which the card itself puts at ~40%. The high-margin package and royalty lines are speculative and late."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "35-45% for years 1-3 (services-dominated); 60%+ only if royalties materialize after year 3",
+     "why": "As above"
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "IBM (in-house FCM MRAM journals since FCM3), Phison and Sage Microelectronics (SSD controllers paired with Everspin 1Gb, 2019), Broadcom/LSI RAID journals, Everspin application engineering (no public PLP reference design found in a 2026-11-01 search), and Teledyne HiRel (Everspin PERSYST plus screening and qualification support for mil/aero from 4Q-2026) for the rugged/defense variant",
+     "why": "Search 2026-11-01 (Sage, Teledyne HiRel); the card's claim that Everspin gives away reference designs is unverified."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "PLP architecture is chosen by the SSD controller vendor (Phison, Sage, Marvell, Microchip) or done in-house (IBM). A third-party kit sits between them and Everspin with no IP, and new PLP designs per year number in the dozens, so the kit caps below ~$1M/yr. 1Gb ST-DDR4 is single-source Everspin, made on GF Singapore CMOS, and exposed to an ITC 337-TA-1487 exclusion order (~Jul-2027). At ~$51-410 of MRAM per board (64-512 MB at $821/GB), most enterprise SSDs keep supercaps.",
+     "why": "Adds the controller-vendor gatekeeping and the computed per-board MRAM cost at canonical street price."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "IBM using Everspin MRAM in 5th-gen FlashCore Modules",
+     "url": "https://www.blocksandfiles.com/flash/2026/10/05/ibm-using-everspin-mram-in-5th-gen-flashcore-modules/5300966",
+     "type": "news",
+     "date": "2026-10-05",
+     "shows": "FCM5 uses MRAM instead of capacitors for PLP. IBM has used a few hundred MB of Everspin MRAM in FCMs for several years: FCM3 up to 128 MB Toggle, FCM4 1Gb PERSYST (via search snippet)"
+    },
+    {
+     "title": "Sage Microelectronics and Everspin partner to bring STT-MRAM to next-generation enterprise SSD devices",
+     "url": "https://dev007.embeddedcomputing.com/technology/storage/sage-microelectronics-and-everspin-partner-to-bring-spin-transfer-torque-mram-to-next-generation-enterprise-ssd-devices",
+     "type": "news",
+     "date": "2019",
+     "shows": "A second SSD-controller vendor (Sage) paired its controller ASIC with Everspin 1Gb STT-MRAM, in addition to Phison (via search snippet)"
+    },
+    {
+     "title": "Teledyne HiRel Semiconductors and Everspin Technologies Partner to Accelerate MRAM Adoption in Aerospace and Defense Applications",
+     "url": "https://www.teledyne-ade.com/en-us/news/Pages/Teledyne-HiRel-Semiconductors-and-Everspin-Technologies-Partner-to-Accelerate-MRAM-Adoption-in-Aerospace-and-Defense-Applic.aspx",
+     "type": "company",
+     "date": "2026-09-02",
+     "shows": "Teledyne HiRel (Milpitas CA) will sell Everspin PERSYST 256/128/64Mb STT-MRAM to mil/aero and satellite customers with screening flows, qualification documentation, procurement support and obsolescence management; availability expected 4Q-2026 (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-17",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "The named buyer, an industrial, medical or rail OEM facing a DDR3 EOL, pays for continuity at the lowest respin cost, and MRAM loses on every axis of that purchase. On price, 1Gb ST-DDR4 sells at ~$821/GB street ($102.60 @500), ~32x DDR3 4Gb spot (~$25.5/GB). Modeled silicon is ~$95/GB, ~23x the $4.12/GB foundry DDR3 cost (01_LANDSCAPE 4.1). On density, one die is 1Gb. On compatibility, ST-DDR4 is not pin- or protocol-compatible with DDR3 (the card says so itself), so the 'swap' is a full respin, and a respin to DDR4/LPDDR4 is cheaper. That respin target is now U.S.-made: Micron Manassas 1-alpha DDR4, shipping since 2026-05-22, is aimed at exactly the long-lifecycle buyer and takes away the card's 'U.S. vendor roadmap' axis. Non-volatility is not needed for working DRAM; where it is needed (battery-backed SRAM), C-12 F-RAM or xSPI MRAM is the right part. The card itself says profitable: no.",
+   "evidence_check": [
+    {
+     "url": "https://www.trendforce.com/news/2026/01/19/news-ddr4-reportedly-leads-legacy-memory-rally-with-q1-prices-up-to-50-ddr3-in-tight-supply/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "trendforce.com blocked; legacy tightness is consistent with the TrendForce 2026-08-07 Winbond LTA snippet found in this audit"
+    },
+    {
+     "url": "https://wccftech.com/memory-shortages-drive-ddr4-prices-over-50-in-q3-2026-ddr3-also-impacted-by-higher-costs/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Source of the $3.19/Gb DDR3 spot figure used in the 32x computation"
+    },
+    {
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical MRAM street price (01_LANDSCAPE 4.4)"
+    },
+    {
+     "url": "https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "1Gb die 105.1 mm2, 0.0095 Gb/mm2 (01_LANDSCAPE 4.4)"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "survives_glut",
+     "new_value": "no",
+     "why": "Unchanged and correct: at the $6.40 glut, MRAM street is ~128x DDR5 and the forced-respin motive disappears."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Micron Manassas (U.S.-made 1-alpha DDR4 for long-lifecycle buyers since 2026-05-22), Rochester/Alliance/Intelligent Memory (legacy DDR3 continuity), Everspin FAEs",
+     "why": "01_LANDSCAPE 0 item 11 and 6.1 rows 2 and 30. The U.S.-made respin target already exists."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Winbond says customers seek LTAs through 2030; ADATA expects even tighter DRAM supply in 2027",
+     "url": "https://www.trendforce.com/news/2026/08/07/news-winbond-says-customers-seek-ltas-through-2030-adata-expects-even-tighter-dram-supply-in-2027/",
+     "type": "industry",
+     "date": "2026-08-07",
+     "shows": "Legacy-DRAM buyers are chasing multi-year LTAs; Winbond capacity sold out; no DDR3-specific supply pledge found (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-18",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The core value claim, that smallsat builders need lot-specific radiation data on COTS parts, is supported by NASA GSFC: COTS sensitivity varies more lot to lot, and one-time qualification is in doubt versus recurring lot acceptance testing. ESA guidance agrees (one lot's SEE result does not represent the next). The service is standard practice, so no kill rule applies. Half the card has been overtaken, though. From 4Q-2026 Teledyne HiRel (Milpitas CA) sells Everspin PERSYST 64/128/256Mb to satellite and mil/aero customers with screening flows, qualification documentation and obsolescence management, through the manufacturer's own authorized channel. Frontgrade (QML Toggle), Honeywell (1Mb and 16Mb rad-hard MRAM plus a 64Mb MCM) and Avalanche (1-8Gb space-grade) cover the rest, so independent 'upscreened serialized parts' is a crowded resale line. What survives is the lot-specific RLAT data and service. It is beam-time- and labor-heavy, and the margin and timing fields are optimistic.",
+   "evidence_check": [
+    {
+     "url": "https://www.frontgrade.com/news/new-case-study-touts-everspins-toggle-mram-highly-reliable-memory-technology-space",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Corroborated by 01_LANDSCAPE 6.1 row 26; Honeywell's 16Mb datasheet independently shows 1e6 rad(Si) for Toggle-class MRAM"
+    },
+    {
+     "url": "https://www.marketbeat.com/instant-alerts/everspin-tech-q2-earnings-call-highlights-2026-08-05/",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Astro Digital GEO pick not re-verified"
+    },
+    {
+     "url": "https://futureelectronics.com/p/semiconductors--memory--RAM--nvram--mram/em064lxoab320is1t-everspin-technologies-4175573",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Lead-time claim logged by A2 via snippet"
+    },
+    {
+     "url": "https://punchouttest.digikey.hk/en/products/detail/everspin-technologies-inc/EM128LXQAB313IS2T/24375470",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "26-week lead time logged by A2 via snippet"
+    },
+    {
+     "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Cross-referenced by six agents; used in 01_LANDSCAPE 9.1"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "what_it_is",
+     "new_value": "Lead with (a), the lot-specific radiation (TID/SEE/proton) test campaigns and the subscription database with SEE-rate tooling. Demote (b), upscreened serialized parts, to an optional add-on for Toggle parts not covered by Teledyne HiRel's PERSYST program.",
+     "why": "Teledyne HiRel now offers authorized screening and qualification documentation for PERSYST from 4Q-2026 (Teledyne release 2026-09-02, via snippet). An independent upscreener of the same parts competes with the manufacturer's own hi-rel channel."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Teledyne HiRel (Milpitas CA; screened PERSYST 64-256Mb with qualification docs from 4Q-2026), Frontgrade (ex-Cobham/Aeroflex, QML Toggle MRAM on Everspin BEOL), Honeywell Plymouth MN (DoD-trusted 1Mb/16Mb rad-hard MRAM and a 64Mb MCM, BEOL by Everspin), Avalanche (1-8Gb space-grade STT-MRAM, UMC 22nm), Everspin HR line, NASA GSFC/NEPP and ESA ESCIES (free radiation data), and European lot-qualified COTS services such as TRAD R2COTS (via search snippet)",
+     "why": "Search 2026-11-01. The card left out Teledyne HiRel and Honeywell."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 18,
+     "why": "The first campaign needs a contracted rad-effects engineer, delidded test boards and heavy-ion beam time booked months ahead at TAMU or LBNL [ESTIMATE; U.S. beam-time oversubscription is UNVERIFIED in this session]. One paid report also usually needs prior data to establish credibility."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "15-21 months: first paid lot-acceptance campaign or report for a smallsat bus maker, after a self-funded seed campaign",
+     "why": "As above"
+    },
+    {
+     "field": "gross_margin_mid_pct",
+     "new_value": 40,
+     "why": "A heavy-ion campaign costs ~$30-70k (8-16 beam-hours, boards, rad engineer, travel) [ESTIMATE] against $5-25k reports [card ESTIMATE]. Margin depends on reselling each dataset 3+ times, and RLAT data is lot-specific, which limits resale."
+    },
+    {
+     "field": "gross_margin_estimate",
+     "new_value": "30-50% (campaign costs are pass-through-heavy; higher only if datasets resell across many buyers)",
+     "why": "As above"
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Credibility and channel: NASA/ESA publish part-type data free, Teledyne HiRel and Frontgrade sell screened MRAM with heritage through authorized channels, and a non-engineer founder has no radiation-effects reputation. Export control is a second gate: parts rated or certified to >=5e3 Gy(Si) (500 krad) TID fall under ECCN 3A001.a.1 [training knowledge, UNVERIFIED], so certifying Toggle MRAM to >1 Mrad can turn screened parts and some data into licensed exports to non-U.S. smallsat builders.",
+     "why": "Adds the authorized-channel competitor found 2026-11-01 and the EAR exposure the card omits."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Teledyne HiRel Semiconductors and Everspin Technologies Partner to Accelerate MRAM Adoption in Aerospace and Defense Applications",
+     "url": "https://www.teledyne-ade.com/en-us/news/Pages/Teledyne-HiRel-Semiconductors-and-Everspin-Technologies-Partner-to-Accelerate-MRAM-Adoption-in-Aerospace-and-Defense-Applic.aspx",
+     "type": "company",
+     "date": "2026-09-02",
+     "shows": "Teledyne HiRel (Milpitas CA) will sell Everspin PERSYST 256/128/64Mb STT-MRAM to mil/aero and satellite customers with screening flows, qualification documentation, procurement support and obsolescence management; availability expected 4Q-2026 (via search snippet)"
+    },
+    {
+     "title": "Partnership to accelerate MRAM adoption in aerospace and defence applications",
+     "url": "https://www.electropages.com/2026/09/partnership-accelerate-mram-adoption-aerospace-and-defence-applications",
+     "type": "news",
+     "date": "2026-09",
+     "shows": "Trade coverage of the Teledyne HiRel / Everspin PERSYST partnership (via search snippet)"
+    },
+    {
+     "title": "HXNV01600 16 Megabit Non-Volatile Magneto-Resistive RAM datasheet (Honeywell)",
+     "url": "https://static6.arrow.com/aropdfconversion/c3d384dea67007fda227b1cda3ffb5a81ac3da9c/hxnv01600_16_megabit_non-volatile_magneto-resistive_ram.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Honeywell 16Mb rad-hard MRAM on 150nm SOI: 1e6 rad(Si) TID, no latch-up, 15-yr retention at 105C (via search snippet)"
+    },
+    {
+     "title": "What is MRAM and why is it critical to mission success (Honeywell Aerospace blog)",
+     "url": "https://www.honeywellaerospace.com/us/en/about-us/blogs/what-is-mram-why-is-it-critical-to-mission-success",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Honeywell offers 1Mb and 16Mb rad-hard monolithic MRAM and a 64Mb rad-hard MRAM MCM; 64Mb monolithic planned (via search snippet)"
+    },
+    {
+     "title": "Radiation Effects and COTS Parts in SmallSats (NASA GSFC)",
+     "url": "https://s3vi.ndc.nasa.gov/ssri-kb/static/resources/Radiation%20Effects%20and%20COTS%20Parts%20in%20SmallSats.pdf",
+     "type": "government",
+     "date": "unknown",
+     "shows": "COTS radiation sensitivity can vary more lot to lot, and COTS traceability is often missing, which casts doubt on one-time qualification versus recurring lot acceptance testing (via search snippet)"
+    },
+    {
+     "title": "ESA activity 4000135313 (laser SEE screening of COTS lots)",
+     "url": "https://activities.esa.int/4000135313",
+     "type": "government",
+     "date": "unknown",
+     "shows": "A SEE test on one COTS procurement lot is not representative of the next lot, so per-lot screening is needed (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-19",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "A me-too fabless STT-MRAM vendor at best ties the incumbents on every axis its named buyer pays for, and it loses on qualification heritage, lead time and scale. Its one possible differentiator, density above Everspin's 1Gb, is already sold. Avalanche (Fremont CA) ships 1, 2, 4 and 8Gb space-grade STT-MRAM on UMC 22nm with >1e16 endurance and 10-yr/125C retention (2024 release, via snippet), and has U.S.-government money to scale the MTJ further (2026-03). The card's flagship 4Gb is half of what is already on the market. Everspin (64Mb-1Gb, IBM/Teledyne HiRel heritage) and Netsol (Samsung 28FDS) cover the NOR/FRAM/PLP sockets, and the card's own model puts a 4Gb 14nm die at ~$72/GB, only ~24% below Everspin's modeled ~$95/GB. Arriving 42 months out, with no U.S. MRAM foundry and FTO exposure to the live Avalanche v. Everspin patent war (ITC 337-TA-1487), it gives a buyer no reason to switch. Same logic as the C-40 kill.",
+   "evidence_check": [
+    {
+     "url": "https://pc.watch.impress.co.jp/docs/column/semicon/1649812.html",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "IEDM 2024 Samsung eMRAM cell sizes; R&D cells, not a startup-accessible offering"
+    },
+    {
+     "url": "https://mram-info.com/netsol-launches-stand-alone-stt-mram-product-fabricated-samsung-foundrys-28nm-fdsoi-process",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "Netsol precedent"
+    },
+    {
+     "url": "https://www.techinsights.com/blog/avalanche-as301g208-umc-22-nm-512mb-mram-process-analysis",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "UMC 22nm production confirmed by Avalanche's own 2023-11 release; Avalanche now ships up to 8Gb"
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/0001438423/000162828026067890/mram-20260930xexx991.htm",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "sec.gov blocked"
+    },
+    {
+     "url": "https://www.usitc.gov/press_room/news_release/2026/er0227_68226.htm",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Corroborated by bgov 2026-06 snippet (ALJ denied Everspin early termination; target ~Jul-2027)"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "trl",
+     "new_value": 7,
+     "why": "128Mb-1Gb discrete STT-MRAM ships (TRL 9), but the card's 4Gb SKU on a 14/16nm foundry module has never been a product, so the product as specified is lower than TRL 9."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Avalanche (Fremont CA; 1-8Gb space-grade STT-MRAM on UMC 22nm, U.S.-gov-funded MTJ scaling), Everspin (64Mb-1Gb PERSYST; Teledyne HiRel aerospace channel), Netsol (Samsung 28FDS), Honeywell and Frontgrade (rad-hard MRAM), Renesas/Infineon",
+     "why": "Search 2026-11-01. The card lists Avalanche only at 512Mb."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Avalanche Technology: two new densities of 3rd-gen space-grade parallel x32 P-SRAM",
+     "url": "https://storagenewsletter.com/2024/04/05/avalanche-technology-two-new-densities-of-3rd-gen-space-grade-parallel-asynchronous-x32-interface-high-reliability-p-sram-memory-devices",
+     "type": "news",
+     "date": "2024-04-05",
+     "shows": "Avalanche space-grade STT-MRAM family in 1, 2, 4 and 8Gb; 45 ns read/write; >1e16 write endurance; 10-yr retention at 125C; -40 to 125C (via search snippet)"
+    },
+    {
+     "title": "Avalanche Technology and UMC announce 22nm production of high-density MRAM-based devices for aerospace",
+     "url": "https://www.avalanche-technology.com/?p=3491",
+     "type": "company",
+     "date": "2023-11",
+     "shows": "Avalanche high-density MRAM in production on UMC 22nm (via search snippet)"
+    },
+    {
+     "title": "Avalanche Technology phase-one milestone: magnetic cell scaling for space-grade MRAM for the US government",
+     "url": "https://www.avalanche-technology.com/avalanche-technology-phase-one-magnetic-cell-scaling-space-grade-mram-us-government/",
+     "type": "company",
+     "date": "2026-03-02",
+     "shows": "U.S.-government-funded MTJ scaling at 22nm (40 nm CD, <=100 nm pitch) toward higher-density space-grade MRAM (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-20",
+   "verdict": "KILL",
+   "kill_rule": "R4-NO-WINNING-AXIS",
+   "reason": "Main memory is bought on $/GB, density, bandwidth and W/GB, and MRAM loses all four. The device model (models/device_cost_compare.py) gives ~$94.9/GB silicon+package. That is 5.9x the $15.99 4Q26 DDR5 contract, 14.8x the $6.40 glut and ~58x incumbent cost ($1.64). Street price ($821/GB) is ~51x contract. Density is 0.0095 vs ~0.40-0.44 Gb/mm2 (~42-46x), so a 32GB RDIMM needs 256 1Gb dies (~26,900 mm2 of silicon). The card itself lists buyer 'none at scale' and wins_axis 'non-volatility only'. The persistence buyer is better served by C-51 (persistent CXL log card), which needs MRAM only for the journal.",
+   "evidence_check": [
+    {
+     "url": "https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical density input (01_LANDSCAPE 4.4)"
+    },
+    {
+     "url": "https://www.lcsc.com/product-image/C20342497.html",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Canonical street price"
+    },
+    {
+     "url": "https://www.buysellram.com/?p=20058",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Spot reference; canonical comparison uses contract and glut decks instead"
+    },
+    {
+     "url": "https://pc.watch.impress.co.jp/docs/column/semicon/1649812.html",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "16nm hypothetical case; still ~$72/GB"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "Never at a price any main-memory buyer pays",
+     "why": "Price is above the 4Q26 contract at every modeled node, even before margin."
+    }
+   ],
+   "new_evidence": []
+  },
+  {
+   "id": "C-21",
+   "verdict": "KILL",
+   "kill_rule": "FACT-COLLAPSE",
+   "reason": "The card's concept, a second U.S. MTJ line in a depreciated 200mm fab for DoD, is already being built by the incumbent in the obvious host. Everspin's 10-year agreement puts 8-inch MRAM/TMR/STT wafers in Microchip Fab 4, Gresham OR (first products 2H-2027, up to 1,300 wafers/qtr), and bars Microchip from making TMR devices for Everspin's competitors. DoD's onshore Toggle need is funded through Everspin's $40M/2.5-yr DIB subcontract. Honeywell Plymouth, one of two U.S. rad-hard foundries with DoD Accreditation of Trust, already sells 1Mb/16Mb rad-hard MRAM and a 64Mb MCM (MTJ BEOL by Everspin). The demand gap and the host are taken, and no MTJ process-IP source is open to a startup: Everspin is the competitor, and Avalanche is fabless at UMC and in litigation with Everspin. The card also names no host fab ('an idle 200mm line in the Northeast or Texas'), which would separately fail QB-INCOMPLETE.",
+   "evidence_check": [
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/1438423/000162828026024696/mram-20260408xexx991.htm",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "sec.gov blocked; terms match 01_LANDSCAPE 6.1 row 5 (No outside customers; TMR exclusivity)"
+    },
+    {
+     "url": "https://electronics360.globalspec.com/article/23702/everspin-earns-40-million-mram-deal-for-defense-memory-services",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Cross-referenced by six agents"
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/1438423/000162828026014733/mram-20251231.htm",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "01_LANDSCAPE 6.1 row 4"
+    },
+    {
+     "url": "https://www.sec.gov/Archives/edgar/data/0001438423/000162828026067890/mram-20260930xexx991.htm",
+     "status": "not-checked",
+     "supports": "unknown",
+     "note": "sec.gov blocked"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Everspin (Chandler AZ BEOL in NXP's fab, plus the Microchip Fab 4 Gresham OR 200mm second line from 2H-2027, Everspin-exclusive for TMR), Honeywell Plymouth MN (DoD-trusted rad-hard MRAM, BEOL by Everspin), foundry eMRAM offshore (GF Dresden, TSMC, Samsung, UMC)",
+     "why": "Search 2026-11-01 (Honeywell datasheet, MilAero, NASA NTRS). The 'second U.S. line' already exists."
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Honeywell develops non-volatile magnetic solid-state memory for strategic space applications",
+     "url": "https://www.militaryaerospace.com/computers/article/16724564/honeywell-develops-nonvolatile-magnetic-solidstate-memory-for-strategic-space-applications",
+     "type": "news",
+     "date": "2007",
+     "shows": "Honeywell Plymouth MN is one of two U.S. rad-hard wafer foundries with DoD Accreditation of Trust (0.15/0.35/0.8 um) (via search snippet)"
+    },
+    {
+     "title": "HXNV01600 16 Megabit Non-Volatile Magneto-Resistive RAM datasheet (Honeywell)",
+     "url": "https://static6.arrow.com/aropdfconversion/c3d384dea67007fda227b1cda3ffb5a81ac3da9c/hxnv01600_16_megabit_non-volatile_magneto-resistive_ram.pdf",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Honeywell 16Mb rad-hard MRAM on 150nm SOI: 1e6 rad(Si) TID, no latch-up, 15-yr retention at 105C (via search snippet)"
+    },
+    {
+     "title": "What is MRAM and why is it critical to mission success (Honeywell Aerospace blog)",
+     "url": "https://www.honeywellaerospace.com/us/en/about-us/blogs/what-is-mram-why-is-it-critical-to-mission-success",
+     "type": "company",
+     "date": "unknown",
+     "shows": "Honeywell offers 1Mb and 16Mb rad-hard monolithic MRAM and a 64Mb rad-hard MRAM MCM; 64Mb monolithic planned (via search snippet)"
+    },
+    {
+     "title": "NASA NTRS 20140011394 (MRAM reliability study)",
+     "url": "https://ntrs.nasa.gov/api/citations/20140011394/downloads/20140011394.pdf",
+     "type": "government",
+     "date": "2014",
+     "shows": "Everspin Chandler AZ does the back-end magnetic processing for both Aeroflex (Frontgrade) and Honeywell MRAM (via search snippet)"
+    }
+   ]
+  },
+  {
+   "id": "C-22",
+   "verdict": "KEEP_WITH_CORRECTIONS",
+   "kill_rule": "",
+   "reason": "The core IP is real and accessible. Weebit's 1T1R ReRAM module is qualified in SkyWater S130 (JEDEC 3 lots, 125C) and marked 'ready for production'. SkyWater holds a non-exclusive license, Weebit earns fees plus royalties, and SkyWater remains an open foundry under IonQ (closed 2026-07-31) and a DMEA Trusted Foundry (2022 snippet logged by another agent). So R1 passes for the non-rad product, and the path is T1/T2, not T4. The card keeps a narrow winning axis against its buyer's alternatives for secure-boot and key storage: a trusted-foundry flow plus magnetic-field immunity versus Toggle MRAM, and no stored charge versus floating-gate EEPROM. Three claims are overstated. Radiation: only 16-kbit arrays were gamma-tested (UF/CEA-Leti 2023), with no heavy-ion data, and S130 periphery is bulk CMOS, not rad-hard by process. FPGA configuration: 1-4 Mb is too small for most FPGA bitstreams. Timing and capital: SBIR is not customer revenue, and a full mask set plus qualification costs ~$1.5-3M. C-06 (HZO FeRAM on SkyWater) targets the same buyer slot, and C-22 carries less device risk. The scorer should advance at most one of them.",
+   "evidence_check": [
+    {
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nanos-reram-ip-now-fully-qualified-in-skywater-technologys-s130-process/",
+     "status": "snippet",
+     "supports": "yes",
+     "note": "Qualification at industrial temperature on S130 reconfirmed in this audit's search (Weebit product page and TipRanks)"
+    },
+    {
+     "url": "https://www.skywatertechnology.com/weebit-nano-reram-ip-achieves-high-temperature-qualification-in-skywater-s130-process/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "Host blocked; 01_LANDSCAPE 6.1 row 6"
+    },
+    {
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nano-secures-a-license-agreement-with-texas-instruments/",
+     "status": "not-checked",
+     "supports": "yes",
+     "note": "01_LANDSCAPE 6.1 row 9; shows Weebit licenses commercially, though TI is an IDM, not a startup"
+    },
+    {
+     "url": "https://www.renesas.cn/zh/document/gde/eol-plan-serial-eeprom-products",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "An EOL at one vendor does not remove serial EEPROM from the market; many vendors, including U.S.-headquartered Microchip, still sell it [training knowledge]"
+    },
+    {
+     "url": "https://investor.tsmc.com/static/annualReports/2025/english/pdf/2025_tsmc_ar_e_ch5.pdf",
+     "status": "not-checked",
+     "supports": "partial",
+     "note": "Shows ReRAM is commercially qualified elsewhere; says nothing about S130"
+    }
+   ],
+   "corrections": [
+    {
+     "field": "trl",
+     "new_value": 6,
+     "why": "The qualified module is 256Kb. A 1-4 Mb product needs new or larger macros and requalification, and the rad-tolerant variant is TRL 3-4 (16-kbit gamma-only data, no heavy-ion SEE)."
+    },
+    {
+     "field": "wins_axis",
+     "new_value": "Supply security (DMEA-trusted U.S. foundry flow), magnetic-field immunity versus MRAM and no stored charge versus floating-gate EEPROM for secure-boot/key storage, and EOL replacement. Radiation tolerance is STILL-UNVERIFIED at array level. Not $/GB.",
+     "why": "Weebit radiation data is 16-kbit gamma only (Embedded Computing Design, 2023, via snippet), and S130 bulk-CMOS periphery sets the TID/SEL limit (same logic as the C-40 kill)."
+    },
+    {
+     "field": "buyer",
+     "new_value": "DoD primes and subsystem makers needing trusted NVM for secure boot, key storage, parameter/config storage for small FPGAs and CPLDs, and anti-tamper modules; rugged industrial board makers",
+     "why": "1-4 Mb cannot hold most modern FPGA bitstreams (tens to hundreds of Mb) [training knowledge]; Toggle and xSPI MRAM (16-256 Mb) own that socket."
+    },
+    {
+     "field": "capital_tier",
+     "new_value": "T2",
+     "why": "Two S130 MPW iterations (~$30-120k) plus a production mask set (~$0.5-0.6M, 01_LANDSCAPE 6.2), JEDEC qualification lots and packaging (~$0.3-0.5M), and 2-3 years of an IC designer plus test engineer (~$0.6-1M), plus a Weebit license fee (unknown; its first-ever fee was US$100k). That is ~$1.5-3M before production revenue [ESTIMATE]."
+    },
+    {
+     "field": "time_to_first_revenue_months",
+     "new_value": 36,
+     "why": "SBIR is not customer revenue (A-04). Design 6-9 months, then MPW 4-6 months, then a production run, then 12-18 months of characterisation and qualification (Weebit's own figure for its customers, 2026-07), then defense design-in. Engineering-sample sales at ~24-30 months would be negligible."
+    },
+    {
+     "field": "time_to_first_revenue_text",
+     "new_value": "~36 months to production revenue; token engineering-sample sales possible at 24-30 months; SBIR Phase I/II funds design but does not count",
+     "why": "As above"
+    },
+    {
+     "field": "us_manufacturability",
+     "new_value": "SkyWater Technology (IonQ subsidiary since 2026-07-31), Bloomington MN, S130 200mm 130nm with Weebit ReRAM in the PDK; DMEA Trusted Foundry status per 2022 DoD award coverage (via snippet). U.S. OSAT: Integra, Promex/QP Technologies, or SkyWater Florida.",
+     "why": "Ownership change verified by batch_05 audit; Amkor Arizona is a logic OSAT with anchor customers only (01_LANDSCAPE 6.1 row 21)."
+    },
+    {
+     "field": "who_is_already_doing_this",
+     "new_value": "Weebit (IP; first product licensee is a U.S. company for security applications; three customer tape-outs by 2026-07, foundries not named), SkyWater (foundry), Everspin Toggle MRAM (U.S.-made, $40M DoW onshore program), Honeywell Plymouth (DoD-trusted rad-hard MRAM), Teledyne HiRel (screened PERSYST MRAM for mil/aero from 4Q-2026), Frontgrade, Infineon/Cypress rad-hard NOR/F-RAM, Microchip serial EEPROM",
+     "why": "Search 2026-11-01. Weebit's first U.S. security licensee may already occupy this exact product slot."
+    },
+    {
+     "field": "fatal_flaw",
+     "new_value": "Incumbent U.S.-made rad-tolerant NVM (Everspin Toggle, Honeywell trusted MRAM) beats a 1-4 Mb ReRAM chip on density (16-32 Mb), endurance (MRAM effectively unlimited vs ReRAM ~1e4-1e5 cycles [training knowledge]) and heritage. The radiation claim rests on 16-kbit gamma tests with bulk-CMOS periphery. Modeled bit cost is ~$3,539/GB, which ties Toggle's ~$3,797/GB, so cost is no lever. The one clean axis is trusted-flow, magnet-immune key storage, and DoDI 5200.44 trust requirements target custom ICs, not COTS memory (C-71 audit), so demand at defense volumes is small.",
+     "why": "Adds the computed parity with Toggle (models/device_cost_compare.py) and the verified limits of the radiation data."
+    },
+    {
+     "field": "rule1_status",
+     "new_value": "SUPPORTED (commercial NVM); PARTIAL for the radiation-tolerant variant",
+     "why": "Qualified 256Kb module in S130; radiation evidence is 16-kbit gamma only"
+    }
+   ],
+   "new_evidence": [
+    {
+     "title": "Weebit ReRAM NVM in SkyWater 130nm CMOS (product page)",
+     "url": "https://www.weebit-nano.com/products/embedded-reram-ip/weebit-reram-nvm-in-skywater-130nm-cmos/",
+     "type": "company",
+     "date": "2026",
+     "shows": "Weebit ReRAM module proven in S130 silicon, qualified at industrial temperature, 'ready for production'; SkyWater holds a non-exclusive license, and Weebit earns license fees plus volume royalties (via search snippet)"
+    },
+    {
+     "title": "Weebit Nano expands licensing agreements with key customers; three customer chip designs taped out to date",
+     "url": "https://www.weebit-nano.com/news/press-releases/weebit-nano-expands-licensing-agreements-with-key-customers-three-customer-chip-designs-taped-out-to-date/",
+     "type": "company",
+     "date": "2026-07",
+     "shows": "Three customer designs taped out (foundries not named); Weebit expects 12-18 months of characterisation and qualification after tape-out (via search snippet)"
+    },
+    {
+     "title": "Initial studies confirm ReRAM's tolerance to high levels of gamma radiation",
+     "url": "https://www.weebit-nano.com/?p=13325",
+     "type": "company",
+     "date": "2023-03",
+     "shows": "University of Florida / CEA-Leti study: Weebit ReRAM kept data and function after high gamma doses (via search snippet)"
+    },
+    {
+     "title": "ReRAM NVM Shines, Even in High-Rad Applications",
+     "url": "https://embeddedcomputing.com/technology/storage/reram-nvm-shines-even-in-in-high-rad-applications",
+     "type": "news",
+     "date": "2023",
+     "shows": "Only 16-kbit arrays were characterized; gamma only, no heavy-ion SEE data; described as a starting point (via search snippet)"
+    },
+    {
+     "title": "Honeywell develops non-volatile magnetic solid-state memory for strategic space applications",
+     "url": "https://www.militaryaerospace.com/computers/article/16724564/honeywell-develops-nonvolatile-magnetic-solidstate-memory-for-strategic-space-applications",
+     "type": "news",
+     "date": "2007",
+     "shows": "Honeywell Plymouth MN is one of two U.S. rad-hard wafer foundries with DoD Accreditation of Trust (0.15/0.35/0.8 um) (via search snippet)"
+    }
+   ]
+  }
+ ]
+}

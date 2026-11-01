@@ -1,0 +1,10 @@
+# Assumptions — p3-audit-10 (Phase 3 kill pass, batch 10: C-66..C-72)
+
+- [p3-audit-10] DDR3 JEDEC device density tops out at 8Gb and a DDR3 SO-DIMM carries at most 16 devices / 2 chip-selects, so 16GB is the practical DDR3 SO-DIMM ceiling — basis: training knowledge of JESD79-3 plus PCWorld snippet on the 16-chip SO-DIMM cap; used to kill C-66's 32GB DDR3L SO-DIMM.
+- [p3-audit-10] A me-too module maker buying 4Gb KGD + OSAT DDP is at a structural cost disadvantage to Intelligent Memory, which owns its 8Gb DDR3 component — basis: card model ($788 cost) vs incumbent vertical integration (flyer 10.2024).
+- [p3-audit-10] HBM stacks and HBM-on-interposer assemblies are scrapped on failure rather than reworked at production volume — basis: practitioner judgment [ESTIMATE]; secondary to the captive-customer kill of C-68.
+- [p3-audit-10] Micross Apopka's ~850 wafers/yr probe capacity (snippet) is treated as enough to cover the few-hundred-wafer U.S. legacy-DRAM KGD demand the card itself estimates — basis: card C-69 estimate and Micross facility page snippet.
+- [p3-audit-10] Without a written program requirement, U.S. buyers will not pay a premium for fully U.S.-origin COTS DRAM — basis: 01_LANDSCAPE.md §0 item 7 and §7.3 (TAA, BAA COTS exemption, Section 232 at 0%); used for the C-70 R1 kill.
+- [p3-audit-10] SkyWater's July 2026 acquisition by IonQ does not end its outside foundry service; it is a partner-priority risk, not a fact-collapse — basis: IonQ completion release snippet (2026-07-31).
+- [p3-audit-10] C-67 first revenue is moved to 24 months because a new module maker must win authorized die allocation on top of the 12–24-month rugged design-win cycle — basis: card text, plus zero authorized DDR4 stock (Findchips 2026-05, cited by C-72).
+- [p3-audit-10] C-72 first revenue is moved to 12 months because members are unlikely to pay fees before any supplier or distributor LOI — basis: no electronics GPO precedent found (search 2026-11-01); Suntsu snippet that authorized distributors follow makers' allocation.
