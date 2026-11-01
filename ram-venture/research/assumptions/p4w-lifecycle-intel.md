@@ -1,0 +1,14 @@
+# Assumptions — p4w-lifecycle-intel (DD2 deep-dive author)
+
+- [p4w-lifecycle-intel] No new web research: WebSearch quota 0 and no WebFetch used; every URL in 04_DEEPDIVES/lifecycle-intel.md was already logged in research/sources/*.jsonl (checked by script, 53/53 present), so no new sources file is written — basis: task instruction; CONVENTIONS source-logging rule.
+- [p4w-lifecycle-intel] All economics are taken unchanged from models/lifecycle-intel.py (re-run 2026-11-01, exit 0, output byte-identical to research/phase4/lifecycle-intel_model_output.md) — basis: Rule 8.
+- [p4w-lifecycle-intel] Later kill gates are set at ~75% of the model's BASE path (m7: <2 paying accounts vs model 2.8; m12: <9 accounts or <$3,000 MRR vs model 11.8 / ~$4.1k; m18: <20 accounts vs 27 opens exit talks), not at the model path itself — basis: the notes' m12 gate (12 accounts / $4k) equals the model, so the expected case would trip it; model §7 shows a x0.7 miss on price or conversion never covers the salary.
+- [p4w-lifecycle-intel] m24 kill: ARR < $150,000 at 2028-11-30 — basis: ~22% below the model's SEVERE m24 ARR of $172,694.
+- [p4w-lifecycle-intel] Kill experiment runs 2026-11-02 to a 2026-12-01 decision; the Nexar/DigiKey written-answer deadline (K5) is extended to 2026-12-15 — basis: <30-day rule; vendor support response times unknown.
+- [p4w-lifecycle-intel] The three C-72 supplier calls (Winbond or Nanya U.S. sales office, a Micron franchised distributor) are added to the kill test at zero cost — basis: 03_SCORING.md §8 DD2 row ("make the three C-72 supplier calls").
+- [p4w-lifecycle-intel] The founder's employer is an unpaid design partner only, after written conflict-of-interest and IP-assignment clearance — basis: standard moonlighting/IP-assignment practice; employment contract not seen.
+- [p4w-lifecycle-intel] Advisor compensation: procurement advisor 0.25–0.5% equity; index-methodology advisor 0.5% equity or ~$2–5k cash — basis: common early-stage advisor grants; unsourced judgment.
+- [p4w-lifecycle-intel] Raise only if by 2028-05 the index has >=10 licences or one enterprise redistribution deal; then a $0.5–1M angel round — basis: model §8 (27 accounts + 10 licences pays the founder); scorers' ~$0.3M ARR ceiling otherwise.
+- [p4w-lifecycle-intel] Trademark filing ~$350–1,000 per class at USPTO — basis: training knowledge, UNVERIFIED.
+- [p4w-lifecycle-intel] Stress test: lifecycle SaaS −20% in GLUT would cut m36 ARR by ~$33k — basis: 0.2 x $13,696/month (model §6 lifecycle line) x 12.
+- [p4w-lifecycle-intel] First-90-day selling targets (5 signed design partners and >=3 BOMs uploaded by 2027-01-01; >=10 waitlist accounts and >=3 partners sharing 24 months of PO history by 2027-01-31; 150 newsletter subscribers) — basis: judgment consistent with the model's 6 trials at launch (m5) and 40% contributor share.
