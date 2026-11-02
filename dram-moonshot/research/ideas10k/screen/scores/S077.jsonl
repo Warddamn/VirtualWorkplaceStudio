@@ -1,0 +1,105 @@
+{"id": "I-09597", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "inline tier PL sparing", "note": ""}
+{"id": "I-09131", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "skyrmion racetrack loops", "note": ""}
+{"id": "I-06365", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "downbin die market", "note": ""}
+{"id": "I-07301", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "wide-bandgap access transistor", "note": ""}
+{"id": "I-08194", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ECC-servoed undervolting", "note": ""}
+{"id": "I-08204", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "rad-hard mature fab", "note": ""}
+{"id": "I-08666", "P": 5, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "per-die ECC binning", "note": ""}
+{"id": "I-06352", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "TDC sense retention profiling", "note": ""}
+{"id": "I-08659", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "VRT-aware refresh filter", "note": ""}
+{"id": "I-03600", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "in-situ microheater anneal", "note": ""}
+{"id": "I-04514", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "global refresh pulse", "note": ""}
+{"id": "I-05467", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "global refresh pulse", "note": ""}
+{"id": "I-05923", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-03600", "theme": "in-situ microheater anneal", "note": ""}
+{"id": "I-04969", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "approximate DRAM AI tier", "note": ""}
+{"id": "I-10048", "P": 2, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "strike-detector erasures", "note": ""}
+{"id": "I-09122", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sneak-path inversion", "note": ""}
+{"id": "I-06843", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "pillar-collapse tolerance", "note": ""}
+{"id": "I-00386", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "relaxed-BER standard", "note": ""}
+{"id": "I-04543", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "die grading tiers", "note": ""}
+{"id": "I-07750", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed TFT redundancy", "note": ""}
+{"id": "I-09151", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "UltraRAM resonant tunneling", "note": ""}
+{"id": "I-03133", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "refresh-scrub ECC", "note": ""}
+{"id": "I-06831", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "high-BER refresh relaxation", "note": ""}
+{"id": "I-04532", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "immersion-cooled refresh", "note": ""}
+{"id": "I-07269", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bit-significance refresh", "note": ""}
+{"id": "I-00404", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "NV shadow paging", "note": ""}
+{"id": "I-06816", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "row-migration hammer defense", "note": ""}
+{"id": "I-04061", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "canary cells", "note": ""}
+{"id": "I-07733", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "OS page retirement", "note": ""}
+{"id": "I-02710", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "fault-aware fine-tuning", "note": ""}
+{"id": "I-08668", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "dynamic twin-cell mode", "note": ""}
+{"id": "I-03609", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hot-row quarantine", "note": ""}
+{"id": "I-04990", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "cross-stack parity", "note": ""}
+{"id": "I-11436", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "partial-good HBM", "note": ""}
+{"id": "I-09604", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "hammer carrier sink", "note": ""}
+{"id": "I-10066", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "write-verify", "note": ""}
+{"id": "I-04552", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "SA aging inversion", "note": ""}
+{"id": "I-08683", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wordline slew shaping", "note": ""}
+{"id": "I-00830", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "soft-decision DRAM sensing", "note": ""}
+{"id": "I-10514", "P": 3, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "radial redundancy zoning", "note": ""}
+{"id": "I-10502", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "DSA defect-matched codes", "note": ""}
+{"id": "I-10959", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sense-timing soft info", "note": ""}
+{"id": "I-10530", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "chilled DRAM refresh", "note": ""}
+{"id": "I-01775", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-07301", "theme": "wide-bandgap access transistor", "note": ""}
+{"id": "I-00373", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-07269", "theme": "bit-significance refresh", "note": ""}
+{"id": "I-08652", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "graceful-degradation contract", "note": ""}
+{"id": "I-08658", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "age-graded KV precision", "note": ""}
+{"id": "I-08669", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03609", "theme": "hot-row quarantine", "note": ""}
+{"id": "I-08675", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "hammer-immune tier", "note": ""}
+{"id": "I-08679", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "depreciated fab revival", "note": ""}
+{"id": "I-08681", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "early-ship ECC ramp", "note": ""}
+{"id": "I-08688", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-04536", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "per-region ECC formatting", "note": ""}
+{"id": "I-04983", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "I-06816", "theme": "row-migration hammer defense", "note": "Uniform one-slot shift preserves relative neighbors; aggressor and victim stay adjacent unless mapping is permuted."}
+{"id": "I-04978", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "online margin learning", "note": ""}
+{"id": "I-09601", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "stochastic nanowire crossbar", "note": "Echoes DeHon-era stochastic decoders; litho-free 4F2 at 5 nm would be 10x, but gain cells at crossings and access speed unproven."}
+{"id": "I-00848", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-field detrap pulses", "note": ""}
+{"id": "I-02674", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "host-side row repair", "note": ""}
+{"id": "I-03599", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "error-tolerant number encoding", "note": ""}
+{"id": "I-10030", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "analog hammer counter", "note": ""}
+{"id": "I-05901", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "dual-end wordline drive", "note": ""}
+{"id": "I-10505", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-09604", "theme": "hammer carrier sink", "note": ""}
+{"id": "I-11440", "P": 5, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "TSV redundancy", "note": ""}
+{"id": "I-02231", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DIMM die re-harvest", "note": ""}
+{"id": "I-03614", "P": 1, "S": 4, "N": 3, "D": 2, "dup_of": "I-09601", "theme": "stochastic nanowire crossbar", "note": "100x cost claim assumes random junctions form fast, high-endurance storage cells; no known random junction meets DRAM speed/endurance."}
+{"id": "I-05892", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog hammer counter", "note": ""}
+{"id": "I-01317", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "replica-based ECC", "note": ""}
+{"id": "I-09140", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "NVM write-budget tiering", "note": ""}
+{"id": "I-10040", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "getter seal ring", "note": ""}
+{"id": "I-00372", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-10959", "theme": "sense-timing soft info", "note": ""}
+{"id": "I-04530", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-05892", "theme": "analog hammer counter", "note": ""}
+{"id": "I-10954", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-06365", "theme": "downbin die market", "note": ""}
+{"id": "I-02705", "P": 4, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "Mo wordline fill", "note": ""}
+{"id": "I-00393", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "MRAM write-error ECC", "note": ""}
+{"id": "I-04057", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "pooled CXL spares", "note": ""}
+{"id": "I-04068", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "I-08668", "theme": "dynamic twin-cell mode", "note": ""}
+{"id": "I-05434", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "charge-aware data coding", "note": ""}
+{"id": "I-05934", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "ECC-feedback thermal control", "note": ""}
+{"id": "I-10070", "P": 4, "S": 1, "N": 2, "D": 5, "dup_of": "I-08194", "theme": "ECC-servoed undervolting", "note": ""}
+{"id": "I-07736", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "asymmetric-error ECC", "note": ""}
+{"id": "I-02219", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "circulating delay-line memory", "note": ""}
+{"id": "I-04065", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "temperature-aware refresh", "note": ""}
+{"id": "I-06851", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-03599", "theme": "error-tolerant number encoding", "note": ""}
+{"id": "I-01772", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "display-glass DRAM", "note": ""}
+{"id": "I-10989", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-restoring gain cell", "note": ""}
+{"id": "I-08672", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "multi-level DRAM", "note": ""}
+{"id": "I-04081", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "RowPress open-time cap", "note": ""}
+{"id": "I-09113", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "wear-aware erasure decoding", "note": ""}
+{"id": "I-05009", "P": 4, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "merged-capacitor robust region", "note": ""}
+{"id": "I-07296", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "NV parity shadow", "note": ""}
+{"id": "I-03141", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-10959", "theme": "sense-timing soft info", "note": ""}
+{"id": "I-03145", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "3D tier parity", "note": ""}
+{"id": "I-08209", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "2D product-code ECC", "note": ""}
+{"id": "I-10945", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "weak-cell SRAM patch", "note": ""}
+{"id": "I-01310", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sequential sampling test", "note": ""}
+{"id": "I-02224", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-03600", "theme": "in-situ microheater anneal", "note": ""}
+{"id": "I-11444", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "patchable hammer defense", "note": ""}
+{"id": "I-02689", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "lazy on-die parity", "note": ""}
+{"id": "I-05893", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ECC-budgeted refresh", "note": ""}
+{"id": "I-08684", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "in-field retention profiling", "note": ""}
+{"id": "I-10969", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-05892", "theme": "analog hammer counter", "note": ""}
+{"id": "I-08665", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "write-aware refresh skip", "note": ""}
+{"id": "I-08191", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "temperature-elastic ECC", "note": ""}
+{"id": "I-09150", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ephemeral no-refresh zones", "note": ""}
+{"id": "I-06834", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-07269", "theme": "bit-significance refresh", "note": ""}

@@ -1,0 +1,105 @@
+{"id": "I-03949", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "open eDRAM compiler", "note": ""}
+{"id": "I-10833", "P": 2, "S": 5, "N": 4, "D": 2, "dup_of": "", "theme": "3D NAND gain cell", "note": "Concentric write/read oxide devices per channel hole gives NAND-like layer economics; doubt: IGZO speed, ring isolation, retention at tier pitch."}
+{"id": "I-08971", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "patent portfolio acquisition", "note": "Many Qimonda/Elpida-era patents expire around now, eroding value."}
+{"id": "I-09457", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "MacEtch vertical pillars", "note": "Ag contamination is a DRAM retention risk."}
+{"id": "I-02549", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "helium recycling", "note": ""}
+{"id": "I-03942", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "H2 backside cooling", "note": ""}
+{"id": "I-08068", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-03942", "theme": "H2 backside cooling", "note": ""}
+{"id": "I-08989", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "I-02549", "theme": "helium recycling", "note": ""}
+{"id": "I-09907", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-03942", "theme": "H2 backside cooling", "note": ""}
+{"id": "I-03025", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "sliding ferroelectric FET", "note": ""}
+{"id": "I-03918", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "iterative bond-doubling stack", "note": ""}
+{"id": "I-06228", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "triple-SIT hex holes", "note": ""}
+{"id": "I-00265", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CCD loop memory", "note": ""}
+{"id": "I-03947", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "combinatorial dielectric screening", "note": "Composition-spread high-k screening is 1990s art (van Dover)."}
+{"id": "I-09897", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "oxidation pitch halving", "note": ""}
+{"id": "I-10811", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "depreciated-wafer stacking", "note": ""}
+{"id": "I-04374", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "vacuum electrostatic decoder", "note": ""}
+{"id": "I-01186", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "DNA origami lithography", "note": ""}
+{"id": "I-08517", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "array nanoimprint", "note": ""}
+{"id": "I-06227", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "EUV leasing utility", "note": ""}
+{"id": "I-06671", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "random cells remap", "note": ""}
+{"id": "I-01184", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "synthetic silica crucible", "note": ""}
+{"id": "I-08077", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "Si-flux oxide desorption", "note": ""}
+{"id": "I-01628", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-scale memory", "note": "Anamartic wafer-scale memory precedent."}
+{"id": "I-09456", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "AAO capacitor mold", "note": ""}
+{"id": "I-09892", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "magnetic nanoparticle masks", "note": "Fe contamination is a retention killer."}
+{"id": "I-01648", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed memory on package", "note": ""}
+{"id": "I-03010", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "ALD precursor recovery", "note": ""}
+{"id": "I-09927", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "dry fluorine capture", "note": ""}
+{"id": "I-07147", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "porous-Si seed reuse", "note": ""}
+{"id": "I-08090", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "PFAS-free certification", "note": ""}
+{"id": "I-00736", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "error-tolerant fast etch", "note": "Twisted holes bridge neighbours, not just die."}
+{"id": "I-05780", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bistable NEMS cell", "note": ""}
+{"id": "I-07146", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-03026", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "refresh-free regenerable pages", "note": ""}
+{"id": "I-00732", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "mask defects as erasures", "note": ""}
+{"id": "I-02554", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "interference lithography", "note": ""}
+{"id": "I-04840", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "stationary-wafer fab", "note": ""}
+{"id": "I-03030", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "vacuum-gap floating gate", "note": ""}
+{"id": "I-04383", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "vacuum-channel access switch", "note": ""}
+{"id": "I-09467", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03942", "theme": "H2 backside cooling", "note": ""}
+{"id": "I-02113", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "selective-epi self-aligned contacts", "note": ""}
+{"id": "I-08550", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "utility fab shells", "note": ""}
+{"id": "I-04410", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "proton projection lithography", "note": ""}
+{"id": "I-08542", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "FEL EUV source", "note": ""}
+{"id": "I-08990", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "continuous Czochralski", "note": ""}
+{"id": "I-03478", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "one-shot staircase ramp", "note": ""}
+{"id": "I-07632", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "perovskite membrane dielectric", "note": ""}
+{"id": "I-06680", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "fully self-aligned flow", "note": ""}
+{"id": "I-09918", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ClF3 dry recess", "note": ""}
+{"id": "I-10821", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-06680", "theme": "fully self-aligned flow", "note": ""}
+{"id": "I-00712", "P": 3, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "integrated vacuum module", "note": ""}
+{"id": "I-03471", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "biosilica crucible", "note": ""}
+{"id": "I-11269", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "I-09456", "theme": "AAO capacitor mold", "note": ""}
+{"id": "I-00693", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "periphery wafer bonding", "note": ""}
+{"id": "I-06677", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-02554", "theme": "interference lithography", "note": ""}
+{"id": "I-05762", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "flow-line fab", "note": ""}
+{"id": "I-07603", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-08990", "theme": "continuous Czochralski", "note": ""}
+{"id": "I-08515", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "nanowire capacitor pillars", "note": ""}
+{"id": "I-05302", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "tip-written imprint masters", "note": ""}
+{"id": "I-08086", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "water-soluble sacrificial layer", "note": ""}
+{"id": "I-10356", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "self-rolled capacitor", "note": ""}
+{"id": "I-03475", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "offset-tier 3D DRAM", "note": ""}
+{"id": "I-05795", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "PGM-free MTJ stack", "note": ""}
+{"id": "I-08991", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "per-GB production credit", "note": ""}
+{"id": "I-02543", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-07147", "theme": "porous-Si seed reuse", "note": ""}
+{"id": "I-05295", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "grayscale multi-depth litho", "note": ""}
+{"id": "I-02078", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "whole-wafer roll imprint", "note": ""}
+{"id": "I-05767", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ion-beam ripple patterning", "note": ""}
+{"id": "I-08554", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "S-layer protein mask", "note": ""}
+{"id": "I-03951", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "nanosphere lithography", "note": ""}
+{"id": "I-01173", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "DRAM MPW shuttle", "note": ""}
+{"id": "I-00247", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "contactless wafer test", "note": ""}
+{"id": "I-08056", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "field repair vs burn-in", "note": ""}
+{"id": "I-00733", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ECC-tolerant cheap wafers", "note": ""}
+{"id": "I-08537", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-07147", "theme": "porous-Si seed reuse", "note": ""}
+{"id": "I-05765", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-10356", "theme": "self-rolled capacitor", "note": ""}
+{"id": "I-05301", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "imprint plus DSA", "note": ""}
+{"id": "I-03031", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "floating-body transient buffer", "note": ""}
+{"id": "I-00722", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "error-tolerant fast ALD", "note": ""}
+{"id": "I-01635", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "multilevel self-aligned imprint", "note": "This is HP's SAIL process."}
+{"id": "I-06689", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "die-bank postponement", "note": ""}
+{"id": "I-07613", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "roll-to-roll gain cells", "note": ""}
+{"id": "I-01627", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "spatial ALD", "note": ""}
+{"id": "I-03912", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01627", "theme": "spatial ALD", "note": ""}
+{"id": "I-01623", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-09456", "theme": "AAO capacitor mold", "note": ""}
+{"id": "I-05751", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-08517", "theme": "array nanoimprint", "note": ""}
+{"id": "I-06700", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "partial-good die remap", "note": ""}
+{"id": "I-05756", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-00693", "theme": "periphery wafer bonding", "note": ""}
+{"id": "I-05758", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "electroplated Ru/Co fill", "note": ""}
+{"id": "I-05759", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01627", "theme": "spatial ALD", "note": ""}
+{"id": "I-05760", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-06671", "theme": "random cells remap", "note": ""}
+{"id": "I-05761", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "capillary self-alignment bonding", "note": ""}
+{"id": "I-05772", "P": 3, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "superlattice pattern transfer", "note": "Heath group SNAP, 2003."}
+{"id": "I-05774", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "ion-irradiation MTJ patterning", "note": ""}
+{"id": "I-05778", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-03478", "theme": "one-shot staircase ramp", "note": ""}
+{"id": "I-05779", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "perovskite membrane FeRAM", "note": ""}
+{"id": "I-05781", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "VCMA shared-transistor MTJ", "note": ""}
+{"id": "I-05782", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "display-panel FeRAM", "note": ""}
+{"id": "I-05786", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "self-rectifying FTJ crosspoint", "note": ""}
+{"id": "I-05790", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "open NV process kit", "note": ""}
+{"id": "I-08065", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-04383", "theme": "vacuum-channel access switch", "note": ""}
+{"id": "I-03022", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "AlScN planar FeRAM", "note": ""}
+{"id": "I-09930", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "BDD rinse recycling", "note": ""}
+{"id": "I-03479", "P": 1, "S": 4, "N": 3, "D": 2, "dup_of": "I-08554", "theme": "S-layer protein mask", "note": "~10x density claim; doubt: a vertical gain cell per 9 nm site plus defect-free protein lattice registration."}

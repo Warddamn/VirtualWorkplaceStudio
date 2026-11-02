@@ -1,0 +1,96 @@
+{"id": "I-07359", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "double quantum dot bit", "note": ""}
+{"id": "I-08308", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "tunnel-diode latch", "note": ""}
+{"id": "I-04149", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "magnetic nanowire string", "note": ""}
+{"id": "I-04641", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CDW phase bit", "note": ""}
+{"id": "I-00481", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "MOS varactor node", "note": ""}
+{"id": "I-01418", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-00481", "theme": "MOS varactor node", "note": ""}
+{"id": "I-01880", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "3D DRAM SiGe etch", "note": ""}
+{"id": "I-09699", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelectric nematic LC", "note": ""}
+{"id": "I-07863", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "AAO nanopore capacitor", "note": ""}
+{"id": "I-00505", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "superconducting loop memory", "note": ""}
+{"id": "I-05067", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "negative capacitance dielectric", "note": ""}
+{"id": "I-08760", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "dead IP acquisition", "note": ""}
+{"id": "I-01878", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "organic proton ferroelectric", "note": ""}
+{"id": "I-05555", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-09699", "theme": "ferroelectric nematic LC", "note": ""}
+{"id": "I-01410", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "direct-tunnel floating gate", "note": ""}
+{"id": "I-07372", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "domain-wall conduction", "note": ""}
+{"id": "I-08763", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "vertical CCD 3D DRAM", "note": "Capacitorless 3D DRAM: packets shift along tiers; doubt is IGZO charge-transfer efficiency with traps and serial latency."}
+{"id": "I-00039", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "nondestructive FE capacitance read", "note": ""}
+{"id": "I-07846", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "varactor RF read", "note": ""}
+{"id": "I-04645", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "thin-film core memory", "note": ""}
+{"id": "I-10616", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "nanoparticle position bit", "note": ""}
+{"id": "I-09686", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spin-crossover bit", "note": ""}
+{"id": "I-05091", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "redox molecular capacitor", "note": ""}
+{"id": "I-11075", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "TFET access transistor", "note": ""}
+{"id": "I-00008", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "ferroelectric semiconductor FET", "note": ""}
+{"id": "I-03713", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "single-electron memory", "note": ""}
+{"id": "I-06463", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "MLCC ferroelectric crossbar", "note": ""}
+{"id": "I-01886", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "on-die thermal anneal", "note": ""}
+{"id": "I-09202", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "protonic Mott switch", "note": ""}
+{"id": "I-06470", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "MEMS rotating storage", "note": ""}
+{"id": "I-06938", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "trench cap foundry reuse", "note": ""}
+{"id": "I-07823", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "approximate DRAM for AI", "note": ""}
+{"id": "I-08776", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "topotactic oxide RRAM", "note": ""}
+{"id": "I-04634", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-09686", "theme": "spin-crossover bit", "note": ""}
+{"id": "I-09685", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS latch bit", "note": ""}
+{"id": "I-00463", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "pseudocapacitive node", "note": ""}
+{"id": "I-02326", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-04645", "theme": "thin-film core memory", "note": ""}
+{"id": "I-11069", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "foundry eDRAM HBM", "note": ""}
+{"id": "I-03711", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "black-Si capacitor texture", "note": ""}
+{"id": "I-09682", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ECC-relaxed capacitor", "note": ""}
+{"id": "I-08303", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "fiber delay-line memory", "note": ""}
+{"id": "I-06461", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "piezo FE readout", "note": ""}
+{"id": "I-01409", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-07372", "theme": "domain-wall conduction", "note": ""}
+{"id": "I-02309", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "biased antiferroelectric NVM", "note": ""}
+{"id": "I-07369", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "redox molecular capacitor", "note": ""}
+{"id": "I-07859", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "optical write DRAM", "note": ""}
+{"id": "I-08777", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "automotive beachhead", "note": ""}
+{"id": "I-01383", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "negative capacitance dielectric", "note": ""}
+{"id": "I-05074", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "cryogenic DRAM", "note": ""}
+{"id": "I-03251", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "NEMS latch bit", "note": ""}
+{"id": "I-04646", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "biogenic nanomagnet bits", "note": ""}
+{"id": "I-07858", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS parametron memory", "note": ""}
+{"id": "I-02777", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-05091", "theme": "redox molecular capacitor", "note": ""}
+{"id": "I-03233", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-05091", "theme": "redox molecular capacitor", "note": ""}
+{"id": "I-00947", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "joint-detection crowded cells", "note": ""}
+{"id": "I-05986", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "noncollinear AFM MRAM", "note": ""}
+{"id": "I-07834", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "volumetric ionic capacitor", "note": ""}
+{"id": "I-02775", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-05986", "theme": "noncollinear AFM MRAM", "note": ""}
+{"id": "I-03249", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bistable NEMS beam", "note": ""}
+{"id": "I-10600", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "shared-periphery prize", "note": ""}
+{"id": "I-10606", "P": 2, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "droplet position bit", "note": ""}
+{"id": "I-09667", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-08776", "theme": "topotactic oxide RRAM", "note": ""}
+{"id": "I-10605", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "I-01878", "theme": "organic proton ferroelectric", "note": ""}
+{"id": "I-10612", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "MLCC capacitor stack", "note": ""}
+{"id": "I-01393", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "porous electrode capacitor", "note": ""}
+{"id": "I-11074", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "row-hammer cell isolation", "note": ""}
+{"id": "I-00485", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS access relay", "note": ""}
+{"id": "I-05546", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "grown capacitor pillars", "note": ""}
+{"id": "I-07841", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "antiferroelectric charge boost", "note": ""}
+{"id": "I-09665", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-03249", "theme": "bistable NEMS beam", "note": ""}
+{"id": "I-05533", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "endohedral fullerene bit", "note": ""}
+{"id": "I-04160", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multi-level domain wall", "note": ""}
+{"id": "I-00030", "P": 2, "S": 3, "N": 1, "D": 3, "dup_of": "I-05091", "theme": "redox molecular capacitor", "note": ""}
+{"id": "I-00011", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-09686", "theme": "spin-crossover bit", "note": ""}
+{"id": "I-06928", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "salvage DRAM die", "note": ""}
+{"id": "I-04602", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-08763", "theme": "vertical CCD 3D DRAM", "note": "Same vertical CCD 3D DRAM; built on 3D-NAND tooling; transfer efficiency and lap latency are the doubts."}
+{"id": "I-06014", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "thyristor RAM", "note": ""}
+{"id": "I-07830", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-05067", "theme": "negative capacitance dielectric", "note": ""}
+{"id": "I-08290", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-07841", "theme": "antiferroelectric charge boost", "note": ""}
+{"id": "I-08754", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-07841", "theme": "antiferroelectric charge boost", "note": ""}
+{"id": "I-03226", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "3D DRAM lateral capacitor", "note": ""}
+{"id": "I-05087", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "topological SOT MRAM", "note": ""}
+{"id": "I-09236", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-05067", "theme": "negative capacitance dielectric", "note": ""}
+{"id": "I-01843", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00485", "theme": "NEMS access relay", "note": ""}
+{"id": "I-07403", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "GaN 2DEG storage", "note": ""}
+{"id": "I-10130", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "hopfion 3D storage", "note": ""}
+{"id": "I-06477", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-04646", "theme": "biogenic nanomagnet bits", "note": ""}
+{"id": "I-05529", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "sliding ferroelectric", "note": ""}
+{"id": "I-05993", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00485", "theme": "NEMS access relay", "note": ""}
+{"id": "I-05990", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-04641", "theme": "CDW phase bit", "note": ""}
+{"id": "I-06904", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-04641", "theme": "CDW phase bit", "note": ""}
+{"id": "I-10138", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-04641", "theme": "CDW phase bit", "note": ""}
+{"id": "I-04185", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "single-electron memory", "note": ""}
+{"id": "I-03234", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00485", "theme": "NEMS access relay", "note": ""}
+{"id": "I-04632", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "rolled-up capacitor", "note": ""}
+{"id": "I-03684", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "thermally gated barrier", "note": ""}

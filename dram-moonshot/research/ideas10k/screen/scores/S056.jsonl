@@ -1,0 +1,105 @@
+{"id": "I-03928", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "capacitor pillar stress liner", "note": ""}
+{"id": "I-07608", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "Talbot EUV lithography", "note": "Lensless achromatic Talbot removes projection optics for periodic layers; tabletop HHG source power is orders short of production throughput."}
+{"id": "I-03492", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "3D DRAM tier air gaps", "note": ""}
+{"id": "I-04861", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "self-rolled capacitor", "note": ""}
+{"id": "I-09437", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-04861", "theme": "self-rolled capacitor", "note": ""}
+{"id": "I-03014", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "access-as-refresh inference", "note": ""}
+{"id": "I-02574", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "epitaxial vertical channel", "note": ""}
+{"id": "I-09912", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dry mold release", "note": ""}
+{"id": "I-09896", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-03029", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "vertical-channel SRAM", "note": ""}
+{"id": "I-04866", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "dewetting electrode texture", "note": ""}
+{"id": "I-04379", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "parametron phase memory", "note": ""}
+{"id": "I-03945", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "shared cleanroom marketplace", "note": ""}
+{"id": "I-02576", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "litho-as-a-service model", "note": ""}
+{"id": "I-01631", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-07597", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "metal-assisted chemical etch", "note": ""}
+{"id": "I-08516", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "retired DRAM die reclaim", "note": ""}
+{"id": "I-02075", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "cold-crucible crystal growth", "note": ""}
+{"id": "I-02540", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "array-periphery split fab", "note": ""}
+{"id": "I-07149", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "DRAM foundry PDK", "note": ""}
+{"id": "I-08984", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-07149", "theme": "DRAM foundry PDK", "note": ""}
+{"id": "I-01175", "P": 1, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "fiber-drawn capacitor arrays", "note": "Draw-ratio replaces litho and HAR etch; 25 nm Si cores break up (Rayleigh) and cannot register to transistors at cell pitch."}
+{"id": "I-06217", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "bottom-up capacitor growth", "note": ""}
+{"id": "I-01654", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "inkjet additive patterning", "note": ""}
+{"id": "I-02101", "P": 4, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "4F2 VCT without EUV", "note": ""}
+{"id": "I-10386", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-aligned thermal resist", "note": ""}
+{"id": "I-01641", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "vertical printed transistors", "note": ""}
+{"id": "I-07143", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "film-defined sideways cell", "note": ""}
+{"id": "I-07628", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "spacer-defined vertical TFT", "note": ""}
+{"id": "I-10380", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "sidewall IGZO channel", "note": ""}
+{"id": "I-11285", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "I-07149", "theme": "open DRAM PDK", "note": ""}
+{"id": "I-04400", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "acoustic delay-line memory", "note": ""}
+{"id": "I-02102", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "directed self-assembly", "note": ""}
+{"id": "I-03930", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "laser-crystallized poly tiers", "note": ""}
+{"id": "I-03464", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "nanolaminate shallow capacitor", "note": ""}
+{"id": "I-01163", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "transfer-printed array tiles", "note": ""}
+{"id": "I-01158", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "fab tool leasing", "note": ""}
+{"id": "I-04870", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "high-k perovskite capacitor", "note": ""}
+{"id": "I-09445", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "dielectrophoretic capacitor assembly", "note": ""}
+{"id": "I-07169", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-04861", "theme": "self-rolled capacitor", "note": ""}
+{"id": "I-01649", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-01163", "theme": "transfer-printed DRAM chiplets", "note": ""}
+{"id": "I-03921", "P": 1, "S": 4, "N": 3, "D": 2, "dup_of": "I-01175", "theme": "fiber-drawn capacitor arrays", "note": "Same draw-and-slice concept; 50 nm coaxial cores and registration to transistors remain unproven miracles."}
+{"id": "I-11305", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "molybdenum wordline", "note": ""}
+{"id": "I-01615", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "full-wafer nanoimprint", "note": ""}
+{"id": "I-05296", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "NAND-fab vertical gain cell", "note": "Reuses installed 3D NAND tooling for vertical oxide 2T0C DRAM; doubt is gain-cell density and retention vs 1T1C."}
+{"id": "I-09917", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "cryogenic aerosol cleaning", "note": ""}
+{"id": "I-01195", "P": 4, "S": 3, "N": 1, "D": 3, "dup_of": "", "theme": "inductive die-stack link", "note": ""}
+{"id": "I-10372", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "BEOL IGZO gain cell", "note": ""}
+{"id": "I-09450", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-limiting oxidation CD", "note": ""}
+{"id": "I-10852", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "protonic gain cell", "note": ""}
+{"id": "I-10839", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CCD shift-register memory", "note": ""}
+{"id": "I-07591", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "anodic alumina template", "note": ""}
+{"id": "I-03480", "P": 1, "S": 4, "N": 3, "D": 2, "dup_of": "I-01175", "theme": "fiber-drawn cell arrays", "note": "Thermal draw sets features without masks; 20 nm multimaterial cores, uniformity and registration to CMOS are unproven."}
+{"id": "I-10830", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "CFET gain cell", "note": ""}
+{"id": "I-04406", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "shadow-evaporation patterning", "note": ""}
+{"id": "I-03485", "P": 1, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "DNA-templated 3D array", "note": "One self-assembly step patterns all tiers at ~8 nm; defectivity, CMOS registration and wire resistance need miracles."}
+{"id": "I-08088", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "bitline air gaps", "note": ""}
+{"id": "I-08999", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "cryogenic NAND-as-DRAM", "note": "NAND cost with near-DRAM writes; doubt: direct tunneling through 2 nm oxide is temperature-insensitive, so hours retention is unlikely."}
+{"id": "I-08992", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "racetrack in alumina pores", "note": "Bath-made modulated nanowires give ~100 bits per pore without bit litho; stochastic wall pinning and bottom-only readout are major doubts."}
+{"id": "I-10808", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-07591", "theme": "anodic alumina template", "note": ""}
+{"id": "I-03008", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "patternable functional oxide", "note": ""}
+{"id": "I-11271", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "crystallographic fin etch", "note": ""}
+{"id": "I-04386", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "X-ray proximity lithography", "note": ""}
+{"id": "I-08973", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "DRAM bit futures", "note": ""}
+{"id": "I-06711", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL 1S1C crosspoint", "note": ""}
+{"id": "I-05315", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-02075", "theme": "cold-crucible crystal growth", "note": ""}
+{"id": "I-06232", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "single-hole 1T1C cell", "note": ""}
+{"id": "I-11304", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "stacked-disc capacitor", "note": ""}
+{"id": "I-09452", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "heat-mode NIL mastering", "note": ""}
+{"id": "I-09462", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "shape-memory bumps", "note": ""}
+{"id": "I-04416", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "plasmonic contact lithography", "note": ""}
+{"id": "I-00694", "P": 4, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "backside capacitor", "note": ""}
+{"id": "I-03004", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "minienvironment fab shell", "note": ""}
+{"id": "I-00695", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "LCD-fab gain cells", "note": ""}
+{"id": "I-00249", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "supercritical CO2 drying", "note": ""}
+{"id": "I-05297", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-06217", "theme": "bottom-up capacitor growth", "note": ""}
+{"id": "I-10812", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ashable carbon mold", "note": ""}
+{"id": "I-03455", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "gyroid templated electrode", "note": ""}
+{"id": "I-04848", "P": 4, "S": 3, "N": 2, "D": 1, "dup_of": "I-00694", "theme": "backside capacitor", "note": ""}
+{"id": "I-10390", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "slit lateral diffusion doping", "note": ""}
+{"id": "I-00728", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "nanosphere lithography", "note": ""}
+{"id": "I-04844", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "mid-flow storage-node test", "note": ""}
+{"id": "I-08061", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "MOM-cap gain cell eDRAM", "note": ""}
+{"id": "I-09439", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NIL overlay correction", "note": ""}
+{"id": "I-04381", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "Bloch-line memory", "note": ""}
+{"id": "I-01616", "P": 2, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "multibeam maskless e-beam", "note": ""}
+{"id": "I-03936", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "high-pressure deuterium anneal", "note": ""}
+{"id": "I-03456", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "perovskite nanosheet dielectric", "note": ""}
+{"id": "I-10389", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-aligning die bonding", "note": ""}
+{"id": "I-05336", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "open DRAM repair interface", "note": ""}
+{"id": "I-01636", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "roll nanoimprint lithography", "note": ""}
+{"id": "I-06235", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-07597", "theme": "metal-assisted chemical etch", "note": ""}
+{"id": "I-02536", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "long-depreciation mature fab", "note": ""}
+{"id": "I-00705", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wafer-bonded parallel test", "note": ""}
+{"id": "I-08514", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09896", "theme": "area-selective deposition", "note": ""}
+{"id": "I-08541", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "flying-head plasmonic lithography", "note": ""}
+{"id": "I-06682", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-08973", "theme": "DRAM bit forwards", "note": ""}
+{"id": "I-00721", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ECC-relaxed short capacitor", "note": ""}
+{"id": "I-02537", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "panel-level HBM stacking", "note": ""}
+{"id": "I-06240", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "glancing-angle electrode", "note": ""}
+{"id": "I-08551", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "I-00728", "theme": "nanosphere lithography", "note": ""}
+{"id": "I-03034", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "legacy-fab conversion policy", "note": ""}
+{"id": "I-08523", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-01631", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-09000", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-00695", "theme": "LCD-fab gain cells", "note": ""}
+{"id": "I-09911", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "single-film multi-role dielectric", "note": ""}

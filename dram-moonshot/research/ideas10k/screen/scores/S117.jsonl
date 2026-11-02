@@ -1,0 +1,94 @@
+{"id": "I-08569", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sub-page line tiering", "note": ""}
+{"id": "I-09032", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "zero-copy weight mmap", "note": ""}
+{"id": "I-06285", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "PFAS-free mature fab", "note": ""}
+{"id": "I-01240", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "weight broadcast streaming", "note": "N accelerators share one streamed weight copy; doubt: batch-phase alignment and latency, Cerebras-style weight streaming partly known."}
+{"id": "I-09514", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "embedded PCM weight chiplet", "note": ""}
+{"id": "I-04434", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane early termination", "note": ""}
+{"id": "I-01658", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CXL pool dedup", "note": ""}
+{"id": "I-00318", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "sketched optimizer state", "note": ""}
+{"id": "I-01237", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "refresh-free ephemeral tier", "note": ""}
+{"id": "I-10889", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "KV latent compression", "note": ""}
+{"id": "I-03511", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "associative KV memory", "note": ""}
+{"id": "I-05834", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-01240", "theme": "weight broadcast streaming", "note": ""}
+{"id": "I-11335", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "learned FTL", "note": ""}
+{"id": "I-06294", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "probabilistic sketches", "note": ""}
+{"id": "I-06738", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "compressed CXL expander", "note": ""}
+{"id": "I-04894", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compressed pointers", "note": ""}
+{"id": "I-06740", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "persistent write buffer", "note": ""}
+{"id": "I-00765", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-03974", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-00765", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-07202", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00765", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-09478", "P": 1, "S": 3, "N": 4, "D": 1, "dup_of": "", "theme": "single-electron storage", "note": ""}
+{"id": "I-01688", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-01240", "theme": "weight broadcast streaming", "note": ""}
+{"id": "I-09973", "P": 4, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "activation sparsity predictor", "note": ""}
+{"id": "I-02160", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "snapshot lazy restore", "note": ""}
+{"id": "I-06758", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hardware hotness tracking", "note": ""}
+{"id": "I-02135", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "geo workload shifting", "note": ""}
+{"id": "I-06289", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "I-02160", "theme": "snapshot lazy restore", "note": ""}
+{"id": "I-05805", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01208", "theme": "internal memory market", "note": ""}
+{"id": "I-11325", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "I-01237", "theme": "refresh-free ephemeral tier", "note": ""}
+{"id": "I-03532", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "partial DIMM salvage", "note": ""}
+{"id": "I-01208", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "internal memory market", "note": ""}
+{"id": "I-00754", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "KV token merging", "note": ""}
+{"id": "I-06265", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "line-value dictionary", "note": ""}
+{"id": "I-03504", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "procedural weight generation", "note": ""}
+{"id": "I-01694", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01215", "theme": "zero-line elision", "note": ""}
+{"id": "I-02138", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane tensor storage", "note": ""}
+{"id": "I-06753", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "near-data filtering", "note": ""}
+{"id": "I-05349", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-03504", "theme": "procedural weight generation", "note": ""}
+{"id": "I-11349", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "optical front-end compute", "note": ""}
+{"id": "I-07218", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "I-01691", "theme": "learned context compression", "note": ""}
+{"id": "I-04879", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "approximate memory regions", "note": ""}
+{"id": "I-04898", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "near-data filtering", "note": ""}
+{"id": "I-09977", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-hit batching scheduler", "note": ""}
+{"id": "I-07209", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "extreme overcommit swap", "note": ""}
+{"id": "I-01679", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory hash engine", "note": ""}
+{"id": "I-10422", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "rotation error diffusion", "note": "Hadamard rotation (QuaRot-style) doubles as error spreading, letting high-BER relaxed-refresh storage carry quantized tensors."}
+{"id": "I-03065", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "memory budget policy", "note": ""}
+{"id": "I-01671", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory efficiency label", "note": ""}
+{"id": "I-02143", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "delta-compressed fine-tunes", "note": ""}
+{"id": "I-02151", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "unpinned device passthrough", "note": ""}
+{"id": "I-04462", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "memory-in-pixel display", "note": ""}
+{"id": "I-01702", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hot-set billing", "note": ""}
+{"id": "I-02603", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "I-01659", "theme": "idle KV eviction", "note": ""}
+{"id": "I-01659", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "idle KV eviction", "note": ""}
+{"id": "I-03054", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-01659", "theme": "idle KV eviction", "note": ""}
+{"id": "I-02128", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "compile-time memory management", "note": ""}
+{"id": "I-08589", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "refresh-time row fingerprinting", "note": ""}
+{"id": "I-03075", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "optical memory pooling", "note": ""}
+{"id": "I-05351", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "zero-copy data path", "note": ""}
+{"id": "I-07219", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "hashed embeddings", "note": ""}
+{"id": "I-05367", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "holographic cold storage", "note": ""}
+{"id": "I-01691", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "learned context compression", "note": ""}
+{"id": "I-01215", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "zero-line elision", "note": ""}
+{"id": "I-09028", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "CCD shift-register memory", "note": ""}
+{"id": "I-03538", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "weight error recovery", "note": ""}
+{"id": "I-01667", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "erasure-coded memory", "note": ""}
+{"id": "I-06301", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "miss-ratio curve sizing", "note": ""}
+{"id": "I-08598", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "compressibility pricing", "note": ""}
+{"id": "I-02617", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "virtio DAX page cache", "note": ""}
+{"id": "I-01665", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "near-dedup deltas", "note": ""}
+{"id": "I-05378", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "advance market commitment", "note": ""}
+{"id": "I-07205", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "flash-streamed MoE experts", "note": ""}
+{"id": "I-08113", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hyperdimensional superposition", "note": ""}
+{"id": "I-00293", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "holographic KV superposition", "note": ""}
+{"id": "I-03512", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "I-00293", "theme": "holographic KV superposition", "note": ""}
+{"id": "I-04420", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "mask-ROM weights", "note": ""}
+{"id": "I-09975", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-04420", "theme": "mask-ROM weights", "note": ""}
+{"id": "I-02133", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "algorithmic fault tolerance", "note": ""}
+{"id": "I-06256", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01658", "theme": "CXL pool dedup", "note": ""}
+{"id": "I-03067", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "physical DIMM reassignment", "note": ""}
+{"id": "I-04881", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "fiber delay-line memory", "note": ""}
+{"id": "I-02153", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01208", "theme": "internal memory market", "note": ""}
+{"id": "I-10887", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-00318", "theme": "sketched optimizer state", "note": ""}
+{"id": "I-02139", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "neural codec caching", "note": ""}
+{"id": "I-02612", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "cache-only servers", "note": ""}
+{"id": "I-06731", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "lifetime-aware allocation", "note": ""}
+{"id": "I-11345", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "physical reservoir computing", "note": ""}
+{"id": "I-04452", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "electrochemical analog weights", "note": ""}
+{"id": "I-01199", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "memory yield management", "note": ""}
+{"id": "I-03519", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "pod SRAM harvesting", "note": ""}
+{"id": "I-01660", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "hardware garbage collection", "note": ""}
+{"id": "I-04895", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-00318", "theme": "sketched optimizer state", "note": ""}
+{"id": "I-02125", "P": 4, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "stateless optimizer", "note": ""}
+{"id": "I-02594", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "sparse KV retrieval offload", "note": ""}

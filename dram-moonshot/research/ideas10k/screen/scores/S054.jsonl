@@ -1,0 +1,105 @@
+{"id": "I-04863", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "colloidal lithography", "note": "Registration of self-packed sphere lattice to buried wordlines and landing pads is the core doubt."}
+{"id": "I-06254", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "laser ripple patterning", "note": ""}
+{"id": "I-09453", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "plasmonic flying-head litho", "note": "Flying plasmonic lens demonstrated ~2008; wafer throughput is the doubt."}
+{"id": "I-08980", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "inductive die coupling", "note": ""}
+{"id": "I-10364", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "controlled spalling", "note": ""}
+{"id": "I-01642", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "SAM surface-energy printing", "note": ""}
+{"id": "I-04394", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "photoelectrochemical macropores", "note": "Macropore pitch tied to space-charge width; sub-100 nm pitch unproven."}
+{"id": "I-08080", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "anodic alumina template", "note": ""}
+{"id": "I-08529", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "long-bitline capacity die", "note": ""}
+{"id": "I-07614", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL oxide gain cell", "note": ""}
+{"id": "I-10816", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "licensed DRAM process IP", "note": "ARM-style licensing could break the oligopoly; doubt: recipes are tool-coupled and incumbents hold patents."}
+{"id": "I-01190", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "periphery wafer bonding", "note": ""}
+{"id": "I-01620", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "modular containerized fab", "note": ""}
+{"id": "I-09440", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "absorbance-modulation litho", "note": ""}
+{"id": "I-02994", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint replica templates", "note": ""}
+{"id": "I-10349", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-02994", "theme": "nanoimprint replica templates", "note": ""}
+{"id": "I-08527", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "laser-recrystallized Si tiers", "note": ""}
+{"id": "I-06670", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-08080", "theme": "anodic alumina template", "note": ""}
+{"id": "I-11296", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "back-gate SOI access", "note": ""}
+{"id": "I-03920", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "industrial symbiosis siting", "note": ""}
+{"id": "I-09928", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "magnetocaloric fab cooling", "note": ""}
+{"id": "I-05776", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "betavoltaic-backed gain cell", "note": "Package isotope keeps a 1000 s gain-cell array alive; doubts are periphery standby leakage and isotope regulation."}
+{"id": "I-08530", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "short-loop learning", "note": ""}
+{"id": "I-08534", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "probe-written NIL master", "note": "Hydrogen-depassivation litho writes um2 areas slowly; a full-reticle master looks impractical."}
+{"id": "I-08549", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "strategic DRAM reserve", "note": "Stored wafers go obsolete within 2-3 generations."}
+{"id": "I-05307", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "continuous-flow inline fab", "note": ""}
+{"id": "I-04373", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "field-emitter charge storage", "note": ""}
+{"id": "I-05783", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEM relay access", "note": ""}
+{"id": "I-00243", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "monolayer doping", "note": ""}
+{"id": "I-03002", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "nanoporous electrode", "note": "5-10 nm pores cannot hold ~5 nm ZrO2 plus a TiN top electrode."}
+{"id": "I-09464", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "printed edge interconnect", "note": ""}
+{"id": "I-02538", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "late-personalized array", "note": ""}
+{"id": "I-02991", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-01190", "theme": "periphery wafer bonding", "note": ""}
+{"id": "I-11277", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "defect-tolerant tiled die", "note": ""}
+{"id": "I-05775", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "1T-nC ferroelectric stack", "note": ""}
+{"id": "I-06688", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "anisotropic wet etch", "note": ""}
+{"id": "I-11282", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-06211", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "1S1C crossbar DRAM", "note": "Two-mask stackable 4F2 decks with no EUV; OTS off-state leakage likely caps retention at ms or less."}
+{"id": "I-02105", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "PHY chiplet split", "note": ""}
+{"id": "I-02094", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "on-die repair BIRA", "note": "On-die antifuse self-repair and PPR are already standard."}
+{"id": "I-10849", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "short cycle-time fab", "note": ""}
+{"id": "I-07130", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "interference lithography", "note": ""}
+{"id": "I-03953", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "electroless contact fill", "note": ""}
+{"id": "I-06679", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "distributed module fabs", "note": ""}
+{"id": "I-00275", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "transfer-printed DRAM tiles", "note": ""}
+{"id": "I-08532", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-08080", "theme": "anodic alumina template", "note": ""}
+{"id": "I-00234", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-08080", "theme": "anodic alumina template", "note": ""}
+{"id": "I-10353", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "nanoskiving gratings", "note": "Placing sliced strips with nm overlay across a wafer is the doubt."}
+{"id": "I-03914", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "block-copolymer DSA", "note": ""}
+{"id": "I-00272", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "capacitive proximity coupling", "note": ""}
+{"id": "I-09460", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "electrochromic leakage imaging", "note": ""}
+{"id": "I-03000", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "double-sided wafer arrays", "note": ""}
+{"id": "I-08544", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-03000", "theme": "double-sided wafer arrays", "note": ""}
+{"id": "I-06219", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-09464", "theme": "printed edge interconnect", "note": ""}
+{"id": "I-02107", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "spatial ALD", "note": "Semi-batch rotary ALD is already used for DRAM high-k."}
+{"id": "I-08072", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "carbon mold capacitor", "note": ""}
+{"id": "I-08070", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "backside capacitor array", "note": ""}
+{"id": "I-05321", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "DRAM harvesting reuse", "note": ""}
+{"id": "I-01629", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "combinatorial process learning", "note": ""}
+{"id": "I-07621", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "spalled Si tiers", "note": ""}
+{"id": "I-09909", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "multibeam direct write", "note": ""}
+{"id": "I-10850", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-restoring gain cell", "note": ""}
+{"id": "I-05330", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-01620", "theme": "modular containerized fab", "note": ""}
+{"id": "I-05766", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-10364", "theme": "controlled spalling", "note": ""}
+{"id": "I-10823", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-01620", "theme": "modular containerized fab", "note": ""}
+{"id": "I-02544", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "moving-head processing", "note": ""}
+{"id": "I-03017", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "biased antiferroelectric capacitor", "note": ""}
+{"id": "I-02569", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "gridded periphery layout", "note": ""}
+{"id": "I-03007", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "supercritical CO2 drying", "note": ""}
+{"id": "I-08539", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03007", "theme": "supercritical CO2 drying", "note": ""}
+{"id": "I-11283", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03007", "theme": "supercritical CO2 drying", "note": ""}
+{"id": "I-08075", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11282", "theme": "area-selective deposition", "note": ""}
+{"id": "I-02534", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-scale memory", "note": ""}
+{"id": "I-11306", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "self-aligned die bonding", "note": ""}
+{"id": "I-06701", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-02534", "theme": "wafer-scale memory", "note": ""}
+{"id": "I-03463", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "post-fab Vt trimming", "note": "Hydrogen or hot-carrier trims may relax over time and degrade reliability."}
+{"id": "I-09906", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "thermal-threshold mastering", "note": ""}
+{"id": "I-03488", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "folded membrane stacking", "note": ""}
+{"id": "I-06248", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "rolled-up capacitor", "note": ""}
+{"id": "I-07168", "P": 1, "S": 3, "N": 3, "D": 2, "dup_of": "I-03488", "theme": "folded membrane stacking", "note": ""}
+{"id": "I-04382", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-06211", "theme": "1S1C crossbar DRAM", "note": "Transistor-free diode-capacitor decks; reverse leakage and half-select disturb likely kill retention."}
+{"id": "I-10359", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "lateral selective epitaxy", "note": ""}
+{"id": "I-08997", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "roll-to-roll polymer FeRAM", "note": "Microsecond switching and 1e6-1e8 endurance fail DRAM class."}
+{"id": "I-03035", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "antiferromagnetic SOT memory", "note": ""}
+{"id": "I-06241", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "stencil lithography", "note": ""}
+{"id": "I-09436", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-00243", "theme": "monolayer doping", "note": ""}
+{"id": "I-10825", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "kerfless epi wafers", "note": ""}
+{"id": "I-02570", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "chokepoint-free subsidy", "note": ""}
+{"id": "I-07129", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-03914", "theme": "block-copolymer DSA", "note": ""}
+{"id": "I-03032", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "self-selecting chalcogenide", "note": ""}
+{"id": "I-06243", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "planar BST capacitor", "note": "k~300 planar cap at DRAM cell area gives well under 1 fF; BST was tried and abandoned."}
+{"id": "I-02559", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multi-level nanoimprint", "note": ""}
+{"id": "I-11268", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-07130", "theme": "interference lithography", "note": "40 nm pitch exceeds the ~70 nm 193i interference limit without pitch splitting."}
+{"id": "I-07135", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "metal-assisted chemical etch", "note": ""}
+{"id": "I-02539", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "split-wafer cell bonding", "note": "Needs ~40 nm-pitch hybrid bonding, far beyond today's ~0.4-1 um."}
+{"id": "I-10813", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "vacuum wafer backbone", "note": ""}
+{"id": "I-03955", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "adaptive test", "note": ""}
+{"id": "I-00231", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-02994", "theme": "nanoimprint replica templates", "note": ""}
+{"id": "I-03491", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "nanoimprint monolithic tiers", "note": ""}
+{"id": "I-11273", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "I-02994", "theme": "nanoimprint replica templates", "note": ""}
+{"id": "I-04858", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-06211", "theme": "1S1C crossbar DRAM", "note": "Punch-through selector leakage sets refresh; likely too leaky for DRAM retention."}
+{"id": "I-08548", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "I-02538", "theme": "late-personalized array", "note": ""}
+{"id": "I-05304", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "epi on low-grade substrate", "note": ""}
+{"id": "I-05757", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "epitaxial vertical channel", "note": ""}
+{"id": "I-10832", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "SiGe floating-body 3D", "note": "Removes the lateral capacitor in 3D DRAM; floating-body retention and margin have historically failed at scale."}

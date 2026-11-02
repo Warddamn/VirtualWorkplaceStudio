@@ -1,0 +1,105 @@
+{"id": "I-00086", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "photo-stimulated retention test", "note": "Sub-bandgap light may speed trap-assisted leakage; doubt: correlation with thermal tail and VRT behavior."}
+{"id": "I-00048", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "tunnel-FET access device", "note": "TFET DRAM access studied; on-current and ambipolarity remain hard."}
+{"id": "I-00531", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "retention-aware refresh", "note": "RAIDR-like; VRT cells undermine static weak-row lists."}
+{"id": "I-11108", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "retention-aware page retirement", "note": "BadRAM plus longer tREFI; VRT and data-pattern dependence need guardband."}
+{"id": "I-00525", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "unified refresh/hammer counter", "note": "Per-row counters cost area; neat merge of retention and TRR."}
+{"id": "I-04193", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optically held bistable cell", "note": "Needs nm-scale NDR with tiny valley current and uniform photocurrent balance."}
+{"id": "I-00524", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline park biasing", "note": "Minority cells see full VDD drain bias, worsening the tail that sets refresh."}
+{"id": "I-06961", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "implant-free junction", "note": "Selective epi contacts already standard; laser regrowth is the twist."}
+{"id": "I-00508", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "wide-gap drain heterojunction", "note": "Oxide/Si heterointerface traps may add leakage offsetting GIDL gains."}
+{"id": "I-06052", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "canary refresh tracking", "note": "Canary retention monitors known; tracking VRT tail cells is the doubt."}
+{"id": "I-00515", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "dynamic back-bias access", "note": "Back-plane swing energy and FD-SOI array density are costs."}
+{"id": "I-02811", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wordline charge recycling", "note": "Two-step charge sharing; saves pump energy on refresh only."}
+{"id": "I-09744", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "2D sidewall channel", "note": "Conformal monolayer MoS2 on sidewalls and contacts immature."}
+{"id": "I-02821", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "trimmable-Vt access device", "note": "Charge-trap Vt drift; row-level trim misses cell-level tail."}
+{"id": "I-02349", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "capacitor-first layer transfer", "note": "Perovskite dielectric leakage and bond alignment to dense pads are doubts."}
+{"id": "I-02356", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "NEM relay access", "note": "1e15 contact endurance and stiction at 10 nm unproven."}
+{"id": "I-06946", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "decay-tracking sense reference", "note": "Reference tracks average decay; fast-decaying tail cells still fail."}
+{"id": "I-04198", "P": 2, "S": 3, "N": 4, "D": 1, "dup_of": "", "theme": "strain-gated Mott switch", "note": "Magnetostrictive strain at nm scale weak; SmSe piezoelectronic integration unproven."}
+{"id": "I-04220", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "fixed-charge back bias", "note": "Trapped-charge stability at temperature and required density are doubts."}
+{"id": "I-03270", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "IMT hyper-FET access", "note": "Hyper-FET known; NbO2 off-state leakage far above fA."}
+{"id": "I-09246", "P": 2, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "Mott-channel access FET", "note": "0.1 e/site needs ~1e14 cm^-2 gating, near dielectric limits."}
+{"id": "I-10172", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "field-effect passivation", "note": "Surface generation is only part of the tail; CIS uses similar passivation."}
+{"id": "I-06034", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "NDR bistable cell", "note": "Tunnel-SRAM revival; valley current and PVR at nm scale are doubts."}
+{"id": "I-06492", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-06946", "theme": "decay-tracking sense reference", "note": ""}
+{"id": "I-10642", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "stacked-gate access device", "note": "Floating mid-node stack effect; dual-gate vertical cells partly explored."}
+{"id": "I-03772", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "electrostatic doping junction", "note": ""}
+{"id": "I-08786", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "electrostatically doped thyristor", "note": "Z2-FET/FB-FET known; base-charge retention and disturb remain risks."}
+{"id": "I-10665", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "NAND fab conversion", "note": "Tool overlap is real; missing piece is a proven stackable DRAM-class cell with unlimited endurance."}
+{"id": "I-09278", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-00508", "theme": "wide-gap drain heterojunction", "note": "Ga contamination and GaP/Si interface quality."}
+{"id": "I-03287", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "data-aware refresh skipping", "note": "Zero-row skipping and polarity-aware encoding known."}
+{"id": "I-01887", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-02356", "theme": "NEM relay access", "note": ""}
+{"id": "I-02818", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "guarded gain cell", "note": "Density trade confines it to cache/eDRAM tiers."}
+{"id": "I-07408", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "margin-read adaptive refresh", "note": ""}
+{"id": "I-08340", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-10642", "theme": "stacked-gate access device", "note": ""}
+{"id": "I-09286", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "voltage-stacked arrays", "note": "Shared substrate/plate and sense timing complicate stacking."}
+{"id": "I-10644", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "ECC-extended refresh", "note": "Strong-ECC refresh relaxation known; parity and latency cost."}
+{"id": "I-06067", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "in-field trap anneal", "note": "Local 200-300C via wordline pulses risks damage; VRT healing uncertain."}
+{"id": "I-07415", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-06946", "theme": "decay-tracking sense reference", "note": ""}
+{"id": "I-06982", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "burn-in trim", "note": ""}
+{"id": "I-09254", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "deep-dopant switched extension", "note": "Deep levels act as generation centers; ps ionization questionable."}
+{"id": "I-09272", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "ion-drift Vt trim", "note": "Mobile ions are a classic reliability hazard; lifetime freeze unproven."}
+{"id": "I-09252", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "negative-capacitance access FET", "note": "Steady-state NC benefit contested."}
+{"id": "I-06513", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "retention-relaxed MRAM", "note": "Volatile STT-MRAM known; MgO tunnel barrier still wears under writes."}
+{"id": "I-06030", "P": 2, "S": 3, "N": 3, "D": 1, "dup_of": "I-04198", "theme": "strain-gated Mott switch", "note": ""}
+{"id": "I-02354", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "local micro-sense amp", "note": "Area and offset of tiny preamps per 16 cells under array."}
+{"id": "I-00527", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "dynamic strain Vt", "note": "Thin AlScN liner gives small strain; 50-100 mV Vt shift doubtful."}
+{"id": "I-09269", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "strain-for-Vt trade", "note": ""}
+{"id": "I-06950", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "helical long-channel access", "note": "Helix fabrication in nm pillars and on-current are doubts."}
+{"id": "I-01898", "P": 2, "S": 3, "N": 2, "D": 1, "dup_of": "I-04198", "theme": "strain-gated Mott switch", "note": ""}
+{"id": "I-07883", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "I-06067", "theme": "in-field trap anneal", "note": "Cheap to test on commodity DIMMs; VRT anneal response unknown."}
+{"id": "I-07876", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "ferroelectric hibernation Vt", "note": ""}
+{"id": "I-05116", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-10172", "theme": "field-effect passivation", "note": ""}
+{"id": "I-09722", "P": 2, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "BEOL local refresh logic", "note": "p-type GeO2 only predicted."}
+{"id": "I-09249", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optically addressed access", "note": "Per-row optical delivery at DRAM pitch and photoconductor on-current are doubts."}
+{"id": "I-02847", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "oxide superlattice channel", "note": ""}
+{"id": "I-01458", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "betavoltaic data retention", "note": "Needs hour-retention cells; periphery standby far exceeds betavoltaic power."}
+{"id": "I-03755", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "nanoimprint patterning", "note": "NIL for memory already pursued; defectivity and overlay limits."}
+{"id": "I-07900", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "error-tolerant small capacitor", "note": "1% raw BER needs heavy ECC; noise margin doubt."}
+{"id": "I-04659", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "redox-state memory cell", "note": "ECRAM-like; 10-100 ns ion kinetics and endurance doubtful."}
+{"id": "I-11092", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "Coulomb-blockade access", "note": ""}
+{"id": "I-10168", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-aligned defect plugging", "note": "Polymer plugs must survive later thermal steps in 3D capacitors."}
+{"id": "I-09264", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "quantum-confined channel", "note": "Vt variation ~1/t^2 is severe."}
+{"id": "I-07446", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "adiabatic wordline drive", "note": "Stepwise charging known; wordline energy is a modest share of total."}
+{"id": "I-09718", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-03270", "theme": "IMT hyper-FET access", "note": ""}
+{"id": "I-08826", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "roll-to-roll printed memory", "note": "Printed devices far from DRAM-class density and speed."}
+{"id": "I-08819", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-04193", "theme": "optically held bistable cell", "note": ""}
+{"id": "I-09270", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-07446", "theme": "adiabatic wordline drive", "note": ""}
+{"id": "I-04190", "P": 3, "S": 2, "N": 5, "D": 3, "dup_of": "", "theme": "dielectric-absorption compensation", "note": "Novel: pre-charge slow high-k polarization at write; doubt: relaxation is a small share of retention margin."}
+{"id": "I-01890", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-03772", "theme": "electrostatic doping junction", "note": ""}
+{"id": "I-04682", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "leaky-tier local refresh", "note": "Cheap stacked TFT tiers; doubt: 1000x refresh rate makes standby energy dominant."}
+{"id": "I-06971", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "ferroelectric idle-row parking", "note": "AlScN coercive field high; nvDRAM concepts exist."}
+{"id": "I-03744", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "approximate refresh for AI", "note": ""}
+{"id": "I-05152", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "relaxed-refresh cloud tier", "note": ""}
+{"id": "I-06981", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "asymmetric gate oxide", "note": ""}
+{"id": "I-04231", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "memory efficiency labeling", "note": ""}
+{"id": "I-00541", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "retention binning via redundancy", "note": "At 1 s many rows fail plus VRT; 3-5% spares likely insufficient."}
+{"id": "I-01919", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "implant-free junction", "note": ""}
+{"id": "I-08811", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "R2R oxide TFT memory", "note": ""}
+{"id": "I-07910", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "restore truncation", "note": "Restore truncation already published."}
+{"id": "I-10170", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-06950", "theme": "helical long-channel access", "note": ""}
+{"id": "I-05121", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "charge-transfer sensing", "note": "1970s CTA revival; offset and speed within tRCD are doubts."}
+{"id": "I-09288", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-05121", "theme": "charge-transfer sensing", "note": ""}
+{"id": "I-01457", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "photon-written floating gate", "note": "Photoemission yield implies watt-class optical power per row write; on-die UV waveguides."}
+{"id": "I-10668", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "stacked oxide 4F2 1T1C", "note": "Self-aligned two-mask layers; doubt: tiny pad capacitance for sensing and real per-layer cost."}
+{"id": "I-09715", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-00508", "theme": "wide-gap drain heterojunction", "note": ""}
+{"id": "I-02830", "P": 2, "S": 3, "N": 3, "D": 1, "dup_of": "I-11092", "theme": "Coulomb-blockade access", "note": ""}
+{"id": "I-01001", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DRAM reuse passport", "note": ""}
+{"id": "I-00070", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "deuterium passivation", "note": "Deuterium anneals known since the 1990s."}
+{"id": "I-10173", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "matched die pairing", "note": ""}
+{"id": "I-07869", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-00515", "theme": "dynamic back-bias access", "note": ""}
+{"id": "I-04222", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "laser cell repair", "note": "IR spot covers many cells at DRAM pitch; trap healing unproven."}
+{"id": "I-10184", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DRAM reuse market", "note": ""}
+{"id": "I-01912", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "diode-isolated crosspoint DRAM", "note": "Hold leakage at full storage voltage conflicts with write current."}
+{"id": "I-07865", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic DRAM", "note": "Cryocooler overhead ~10x at 77 K erodes savings."}
+{"id": "I-10185", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hydrogen reservoir passivation", "note": ""}
+{"id": "I-02367", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-06946", "theme": "decay-tracking sense reference", "note": ""}
+{"id": "I-06974", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00070", "theme": "deuterium passivation", "note": ""}
+{"id": "I-05119", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-07446", "theme": "adiabatic wordline drive", "note": ""}
+{"id": "I-06038", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-04222", "theme": "laser cell repair", "note": ""}
+{"id": "I-04662", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-06052", "theme": "canary refresh tracking", "note": ""}
+{"id": "I-04219", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "CCD serial memory", "note": "Serial latency limits it to a capacity tier; dark current still forces regeneration."}
+{"id": "I-01005", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-clearing capacitor repair", "note": ""}
+{"id": "I-10171", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-00508", "theme": "wide-gap drain heterojunction", "note": ""}
+{"id": "I-10176", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-09264", "theme": "quantum-confined channel", "note": ""}
+{"id": "I-03304", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-02349", "theme": "capacitor-first layer transfer", "note": ""}

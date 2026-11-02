@@ -1,0 +1,96 @@
+{"id": "I-10096", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "HDD fab repurposing", "note": "Head fabs run small non-300mm wafers; MRAM adds niche NV capacity, not DRAM-class cost/bit."}
+{"id": "I-08729", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-07320", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "software footprint policy", "note": ""}
+{"id": "I-08723", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "monolayer doping", "note": ""}
+{"id": "I-05054", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "litho second source", "note": ""}
+{"id": "I-06877", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "legacy fab cascade", "note": ""}
+{"id": "I-04133", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "inventory burn-in", "note": ""}
+{"id": "I-11022", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "wafer-level test", "note": ""}
+{"id": "I-01371", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "WIP die bank", "note": ""}
+{"id": "I-11032", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-01371", "theme": "WIP die bank", "note": ""}
+{"id": "I-03660", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "biogenic nanomagnets", "note": "Novel bio-assembly, but write mechanism and ns readout of 40 nm magnetite bits unresolved."}
+{"id": "I-05482", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "cold-crucible CZ", "note": ""}
+{"id": "I-01822", "P": 2, "S": 5, "N": 3, "D": 2, "dup_of": "", "theme": "3D IGZO gain cell", "note": "NAND-style deposition stacking could give >10x cost/bit; random access per tier and IGZO vertical-channel uniformity at 300+ tiers are big doubts."}
+{"id": "I-07794", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "deposit return scheme", "note": ""}
+{"id": "I-07334", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-scale DRAM", "note": ""}
+{"id": "I-03654", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "countercyclical capacity bank", "note": ""}
+{"id": "I-07348", "P": 5, "S": 3, "N": 1, "D": 3, "dup_of": "", "theme": "SRAM-only inference", "note": ""}
+{"id": "I-08698", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "minimal fab micro-DRAM", "note": ""}
+{"id": "I-11016", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-07334", "theme": "wafer-scale DRAM", "note": ""}
+{"id": "I-00457", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-10096", "theme": "HDD fab repurposing", "note": ""}
+{"id": "I-09160", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "certified DRAM reclamation", "note": ""}
+{"id": "I-00879", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "take-or-pay fab finance", "note": ""}
+{"id": "I-04129", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-00879", "theme": "take-or-pay fab finance", "note": ""}
+{"id": "I-04568", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "DRAM price corridor", "note": ""}
+{"id": "I-09616", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "molybdenum wordlines", "note": ""}
+{"id": "I-10993", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-00879", "theme": "take-or-pay fab finance", "note": ""}
+{"id": "I-10567", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "high-k nanosheet dielectric", "note": ""}
+{"id": "I-00451", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "laser-annealed BEOL Si", "note": ""}
+{"id": "I-05497", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "fab-ready sites", "note": ""}
+{"id": "I-05028", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-07320", "theme": "software footprint policy", "note": ""}
+{"id": "I-00885", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-08698", "theme": "minimal fab micro-DRAM", "note": ""}
+{"id": "I-07331", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "universal die personality", "note": ""}
+{"id": "I-05520", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "Hf-free high-k", "note": ""}
+{"id": "I-04109", "P": 5, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "cold-page tiering contracts", "note": ""}
+{"id": "I-06865", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "footprint reduction rebates", "note": ""}
+{"id": "I-04140", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reworkable encapsulant", "note": ""}
+{"id": "I-06421", "P": 3, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "HBM second sourcing", "note": ""}
+{"id": "I-05937", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "approximate-grade DRAM", "note": ""}
+{"id": "I-01810", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "porous-Si layer transfer", "note": ""}
+{"id": "I-02264", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01810", "theme": "porous-Si layer transfer", "note": ""}
+{"id": "I-03204", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01810", "theme": "porous-Si layer transfer", "note": ""}
+{"id": "I-04111", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01810", "theme": "porous-Si layer transfer", "note": ""}
+{"id": "I-05024", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01810", "theme": "porous-Si layer transfer", "note": ""}
+{"id": "I-02256", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "die harvesting", "note": ""}
+{"id": "I-07777", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "open DRAM PDK", "note": "Know-how is the real chokepoint; transferring DRAM cell/capacitor modules to logic foundries is a large unknown."}
+{"id": "I-06434", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "LPDDR-to-server bridge", "note": ""}
+{"id": "I-06394", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "second-life CXL memory", "note": ""}
+{"id": "I-03182", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "infrastructure fab finance", "note": ""}
+{"id": "I-06427", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "VM memory harvesting", "note": ""}
+{"id": "I-05509", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "Mn4N MTJ", "note": "Scarce-element-free MTJ; low TMR and thermal stability at small size are key doubts."}
+{"id": "I-05053", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-09160", "theme": "certified DRAM reclamation", "note": ""}
+{"id": "I-08694", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "geo memory scheduling", "note": ""}
+{"id": "I-00901", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "PFAS-free certification", "note": ""}
+{"id": "I-08268", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "hermetic memory modules", "note": ""}
+{"id": "I-10086", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "DUV forever node", "note": ""}
+{"id": "I-08707", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "synthetic-lined crucible", "note": ""}
+{"id": "I-05516", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "electrochemical silicon", "note": ""}
+{"id": "I-03216", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "BEOL IGZO memory", "note": ""}
+{"id": "I-10088", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "DRAM futures market", "note": ""}
+{"id": "I-07322", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "MPC demand ledger", "note": "Privacy-preserving aggregation exposes double-ordering; adoption by competing OEMs is the doubt."}
+{"id": "I-02277", "P": 3, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "buyer-owned fab", "note": ""}
+{"id": "I-05048", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "relaxed purity specs", "note": ""}
+{"id": "I-05060", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "reduced UPW rinse", "note": ""}
+{"id": "I-04123", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "I-07794", "theme": "deposit return scheme", "note": ""}
+{"id": "I-09171", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "tool-as-a-service", "note": ""}
+{"id": "I-04563", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "roll-to-roll magnetic memory", "note": "Twistor bits are mm-scale and microsecond-class; density orders of magnitude below DRAM."}
+{"id": "I-09643", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "selective induction rework", "note": ""}
+{"id": "I-03679", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "on-die memory IP licensing", "note": ""}
+{"id": "I-10107", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "self-selecting chalcogenide", "note": "Sulfide SSM avoids Te/As; endurance and threshold-shift retention far from DRAM-class are doubts."}
+{"id": "I-02296", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "DRAM-free IoT redesign", "note": ""}
+{"id": "I-11479", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "display backplane memory", "note": ""}
+{"id": "I-08247", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "deep-trench eDRAM chiplets", "note": ""}
+{"id": "I-04570", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-05482", "theme": "cold-crucible CZ", "note": ""}
+{"id": "I-05955", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-05482", "theme": "cold-crucible CZ", "note": ""}
+{"id": "I-10550", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-05482", "theme": "cold-crucible CZ", "note": ""}
+{"id": "I-05960", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "adaptive RDL salvage", "note": ""}
+{"id": "I-06410", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-07334", "theme": "wafer-scale DRAM", "note": ""}
+{"id": "I-05504", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "supercritical CO2 cleaning", "note": ""}
+{"id": "I-01379", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "additive fab spares", "note": ""}
+{"id": "I-05948", "P": 4, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "DRAM foundry model", "note": ""}
+{"id": "I-01337", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-05937", "theme": "approximate-grade DRAM", "note": ""}
+{"id": "I-03220", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "asymmetric access transistor", "note": ""}
+{"id": "I-04118", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "wide-bandgap DRAM", "note": ""}
+{"id": "I-02291", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "buyer purchasing co-op", "note": ""}
+{"id": "I-06873", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09616", "theme": "molybdenum wordlines", "note": ""}
+{"id": "I-05017", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "strategic DRAM reserve", "note": ""}
+{"id": "I-10560", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "anodic alumina capacitors", "note": ""}
+{"id": "I-06414", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "production tax credit", "note": ""}
+{"id": "I-08695", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-05017", "theme": "strategic DRAM reserve", "note": ""}
+{"id": "I-04587", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tunnel-diode memory", "note": ""}
+{"id": "I-09646", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "inductive-coupled stacks", "note": ""}
+{"id": "I-03637", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-02256", "theme": "die harvesting", "note": ""}
+{"id": "I-01349", "P": 4, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "advance market commitment", "note": "AMC shifts first-mover risk for 3D DRAM; effect on timing depends on pledge size."}
+{"id": "I-04095", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-06394", "theme": "second-life CXL memory", "note": ""}
+{"id": "I-07313", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-06394", "theme": "second-life CXL memory", "note": ""}
+{"id": "I-04583", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multilevel analog DRAM", "note": ""}

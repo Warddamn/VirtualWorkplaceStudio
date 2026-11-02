@@ -1,0 +1,96 @@
+{"id": "I-04032", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "HBM harvest reuse", "note": ""}
+{"id": "I-09555", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "mm-wave chassis links", "note": ""}
+{"id": "I-01243", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "RF frequency multiplexing", "note": "Echoes UCLA multiband RF-interconnect work; mixer power and area are the doubt."}
+{"id": "I-06800", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "laser TSV drilling", "note": ""}
+{"id": "I-08626", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "erasure-aware ECC", "note": ""}
+{"id": "I-02623", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-scale DRAM substrate", "note": "Micrometre vertical paths cut pJ/bit 30x vs HBM; doubt is wafer-scale DRAM yield, thermal coupling and needing a DRAM fab partner."}
+{"id": "I-05426", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "multi-tenant LoRA sharing", "note": "Software multi-LoRA serving (S-LoRA, Punica) already shares one base; base-die merge adds little."}
+{"id": "I-06793", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "microspring KGD test", "note": ""}
+{"id": "I-07693", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "open memory chiplet standard", "note": ""}
+{"id": "I-01245", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "delta tensor compression", "note": ""}
+{"id": "I-03115", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "radial board layout", "note": ""}
+{"id": "I-06338", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "wire-scribed substrate", "note": ""}
+{"id": "I-08146", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-02623", "theme": "wafer-scale DRAM", "note": ""}
+{"id": "I-09557", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "optical clock distribution", "note": ""}
+{"id": "I-08622", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "US HBM packaging policy", "note": "Close to SK hynix Indiana HBM packaging plant already underway."}
+{"id": "I-07714", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "asynchronous memory link", "note": ""}
+{"id": "I-07226", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bit-plane progressive fetch", "note": ""}
+{"id": "I-03117", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "geo memory scheduling", "note": ""}
+{"id": "I-09071", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "periphery-under-array bonding", "note": "Wafer-bonded periphery under array is widely pursued for 4F2/3D DRAM."}
+{"id": "I-11389", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "elastomer reworkable stacks", "note": ""}
+{"id": "I-03558", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-01243", "theme": "RF frequency multiplexing", "note": ""}
+{"id": "I-07236", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01243", "theme": "RF frequency multiplexing", "note": ""}
+{"id": "I-09527", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-01243", "theme": "spin-Hall oscillator FDM", "note": "nW oscillator output and phase noise make multi-Gb/s carriers doubtful."}
+{"id": "I-07239", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-network reduction", "note": ""}
+{"id": "I-10462", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "aligned anisotropic film", "note": ""}
+{"id": "I-09541", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "acousto-optic switch fabric", "note": ""}
+{"id": "I-08168", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "backscatter memory link", "note": ""}
+{"id": "I-09061", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "chiplet memory over UCIe", "note": "Overlaps JEDEC SPHBM4 and UCIe memory efforts on organic substrate."}
+{"id": "I-08179", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "through-silicon optical vias", "note": ""}
+{"id": "I-00798", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "resonant adiabatic bus", "note": ""}
+{"id": "I-01259", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "I-00798", "theme": "resonant adiabatic bus", "note": ""}
+{"id": "I-02634", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-00798", "theme": "resonant adiabatic bus", "note": ""}
+{"id": "I-03101", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "I-00798", "theme": "resonant adiabatic bus", "note": ""}
+{"id": "I-04463", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "photonic delay-line broadcast", "note": ""}
+{"id": "I-05383", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "I-00798", "theme": "resonant adiabatic bus", "note": ""}
+{"id": "I-08610", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "I-00798", "theme": "resonant adiabatic bus", "note": ""}
+{"id": "I-00348", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM reuse CXL", "note": "Hyperscalers already reuse DDR4 behind CXL; supply bounded by retirement volume."}
+{"id": "I-11383", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "layer-transfer thin-film stacking", "note": "Donor reuse makes 40-tier film stacks affordable; capacitor height, thermal budget and multiplicative bond yield are the doubts."}
+{"id": "I-04506", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "substrate signal return", "note": ""}
+{"id": "I-09106", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "2D-material pad finish", "note": ""}
+{"id": "I-06330", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "free-space optical package", "note": ""}
+{"id": "I-02207", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "photonic phase-change memory", "note": ""}
+{"id": "I-00788", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "redox flow power-cooling", "note": "IBM 'electronic blood' prior art; redox power density likely too low."}
+{"id": "I-03090", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "interlayer microfluidic cooling", "note": ""}
+{"id": "I-10483", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sacrificial-polymer cooling channels", "note": ""}
+{"id": "I-06337", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "dry integrated bond cluster", "note": ""}
+{"id": "I-08149", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "in-memory transpose", "note": ""}
+{"id": "I-06763", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "in-package wireless multicast", "note": "One mm-wave link gives ~10s GB/s, far below HBM TB/s; bandwidth mismatch."}
+{"id": "I-00345", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "HBM stack rework", "note": ""}
+{"id": "I-04005", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "post-stack die bypass", "note": ""}
+{"id": "I-04468", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-04005", "theme": "post-stack die bypass", "note": ""}
+{"id": "I-07232", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00345", "theme": "HBM stack rework", "note": ""}
+{"id": "I-09529", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electroformed filament bonds", "note": ""}
+{"id": "I-10014", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "post-package repair fuses", "note": ""}
+{"id": "I-10913", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "I-04005", "theme": "spare-die stack redundancy", "note": ""}
+{"id": "I-06794", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "via-programmable interposer", "note": ""}
+{"id": "I-08163", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01243", "theme": "RF frequency multiplexing", "note": ""}
+{"id": "I-08184", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "link dictionary dedup", "note": ""}
+{"id": "I-08640", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-01245", "theme": "predictive link compression", "note": ""}
+{"id": "I-06319", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "analog in-DRAM reduction", "note": ""}
+{"id": "I-09566", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "printed edge stacking", "note": ""}
+{"id": "I-10468", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "superlattice-sliced wiring", "note": ""}
+{"id": "I-07262", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multicast nondestructive reads", "note": ""}
+{"id": "I-04490", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "beam-lead die tiling", "note": ""}
+{"id": "I-09533", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "shared comb laser source", "note": ""}
+{"id": "I-06789", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "single-layer bridge routing", "note": ""}
+{"id": "I-10479", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "maskless interposer writing", "note": ""}
+{"id": "I-05882", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "flyover cable memory", "note": ""}
+{"id": "I-10903", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-11383", "theme": "layer-transfer thin-film stacking", "note": ""}
+{"id": "I-01248", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "optical circuit-switched pooling", "note": ""}
+{"id": "I-07250", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "superconducting flux memory", "note": ""}
+{"id": "I-04956", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-01248", "theme": "optical circuit-switched pooling", "note": ""}
+{"id": "I-05417", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "KV recompute eviction", "note": ""}
+{"id": "I-10454", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "laminated glass interposer", "note": ""}
+{"id": "I-09995", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "glass-core substrate supply", "note": ""}
+{"id": "I-06311", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "backside power HBM", "note": ""}
+{"id": "I-06787", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-08168", "theme": "backscatter memory link", "note": ""}
+{"id": "I-09077", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "floating-body bonded cache", "note": ""}
+{"id": "I-00826", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "polymer optical waveguides", "note": ""}
+{"id": "I-07248", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-05417", "theme": "KV recompute eviction", "note": ""}
+{"id": "I-02646", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "die RDL face-to-face", "note": ""}
+{"id": "I-06795", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "reclaimed wafer interposers", "note": ""}
+{"id": "I-09100", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "transfer-printed dielets", "note": ""}
+{"id": "I-10904", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "edge-RDL cube stacking", "note": ""}
+{"id": "I-09091", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "contactless module connector", "note": ""}
+{"id": "I-03553", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-08179", "theme": "through-silicon optical vias", "note": ""}
+{"id": "I-10018", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "inductive coupling TCI", "note": ""}
+{"id": "I-10451", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "I-09566", "theme": "printed edge stacking", "note": ""}
+{"id": "I-08178", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "stepwise adiabatic charging", "note": ""}
+{"id": "I-09554", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "mm-wave dielectric waveguide", "note": ""}
+{"id": "I-07231", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-04005", "theme": "bank-granular stack binning", "note": ""}
+{"id": "I-00793", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sparse event bus", "note": ""}
+{"id": "I-07713", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "FD-SOI back-bias PHY", "note": ""}
+{"id": "I-10453", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ribbon silicon blanks", "note": ""}
+{"id": "I-07240", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "transparent KV quantization", "note": ""}
+{"id": "I-06772", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "laser-written glass waveguides", "note": ""}

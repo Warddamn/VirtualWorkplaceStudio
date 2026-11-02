@@ -1,0 +1,96 @@
+{"id": "I-04284", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "3D CCD shift memory", "note": "~10x density via contactless vertical CCD; doubts: transfer loss over 128 poly/IGZO stages, serial not random access."}
+{"id": "I-05703", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "channel shaping leakage", "note": ""}
+{"id": "I-02931", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "2D vdW floating gate", "note": ""}
+{"id": "I-01086", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "molded substrate patterning", "note": ""}
+{"id": "I-04750", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "in-DRAM bulk compute", "note": ""}
+{"id": "I-00180", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "through-silicon optical link", "note": ""}
+{"id": "I-05228", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "self-aligned imprint litho", "note": ""}
+{"id": "I-09823", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "stacked Si nanowire tiers", "note": ""}
+{"id": "I-04324", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "AAO self-assembly templating", "note": ""}
+{"id": "I-06581", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "array-periphery hybrid bonding", "note": ""}
+{"id": "I-09345", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "VO2 thermal latch", "note": ""}
+{"id": "I-10273", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "biotemplate self-assembly", "note": ""}
+{"id": "I-03825", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "drawn glass scaffold", "note": ""}
+{"id": "I-06126", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "in-tier local sensing", "note": ""}
+{"id": "I-03822", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "in-stack tier decoding", "note": ""}
+{"id": "I-08899", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "coincident dual-gate select", "note": ""}
+{"id": "I-00166", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sacrificial carbon release", "note": ""}
+{"id": "I-08878", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "thyristor RAM", "note": ""}
+{"id": "I-00640", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "backside trench capacitor", "note": ""}
+{"id": "I-01062", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-06581", "theme": "array-periphery hybrid bonding", "note": ""}
+{"id": "I-01099", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-07524", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-04284", "theme": "CCD charge memory", "note": ""}
+{"id": "I-09342", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "tunnel-diode SRAM", "note": ""}
+{"id": "I-10728", "P": 4, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "DRAM-on-logic bonding", "note": "10-30x I/O energy cut is real but already pursued (SeDRAM, SoIC); needs wafer partners."}
+{"id": "I-11175", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "NAND-like annular 3D DRAM", "note": "8x density with zero EUV; doubt: tiny ring Cs and multi-ring timed lateral recess uniformity."}
+{"id": "I-01521", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "segmented bitline local sense", "note": ""}
+{"id": "I-05216", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-scale DRAM-on-logic", "note": "Wafer-scale bonding removes packaging and cuts pJ/bit ~10x; doubts: compound wafer yield matching and thermal coupling."}
+{"id": "I-07962", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "retention-tiered placement", "note": ""}
+{"id": "I-09811", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "high-k rutile TiO2", "note": ""}
+{"id": "I-07972", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "3D row-hammer isolation", "note": ""}
+{"id": "I-05670", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sense-amp sharing", "note": ""}
+{"id": "I-01095", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "interference lithography", "note": ""}
+{"id": "I-05682", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "array-periphery hybrid bonding", "note": ""}
+{"id": "I-08886", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "contamination quarantine bonding", "note": ""}
+{"id": "I-00614", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "FE/AFE dual-mode capacitor", "note": ""}
+{"id": "I-09379", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "AFE nonvolatile 1T-nC", "note": ""}
+{"id": "I-03387", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "thermal page migration", "note": ""}
+{"id": "I-08441", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "thermal fiber draw", "note": ""}
+{"id": "I-05231", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "self-reference sensing", "note": ""}
+{"id": "I-09350", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "capillary self-assembly bonding", "note": ""}
+{"id": "I-04292", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "AFE passive crosspoint", "note": "Imprinted AFE threshold could make selectorless stacked crosspoint ~0.5F2; doubt: half-select disturb, imprint drift, destructive read."}
+{"id": "I-04298", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sense-amp sharing", "note": ""}
+{"id": "I-01998", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "optical wordline", "note": ""}
+{"id": "I-07037", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "bottom-up pillar 3D", "note": ""}
+{"id": "I-02017", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "kerfless spalling", "note": ""}
+{"id": "I-07069", "P": 2, "S": 5, "N": 3, "D": 3, "dup_of": "", "theme": "SiGe quantum-well 3D bits", "note": "Capacitorless bit per tier gives ~50x density; doubt: 0.5 eV offset means ~us retention at 85C, not ms."}
+{"id": "I-05238", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "printed silicon periphery", "note": ""}
+{"id": "I-02912", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "I-06126", "theme": "in-tier local sensing", "note": ""}
+{"id": "I-06155", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "I-11175", "theme": "NAND-like annular 3D DRAM", "note": "Same hole-plus-recess annular cell as I-11175; ~13x density claim hinges on small ring Cs."}
+{"id": "I-08422", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-03822", "theme": "in-stack tier decoding", "note": ""}
+{"id": "I-02456", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "twisted bitline 3D", "note": ""}
+{"id": "I-07969", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "twin-cell differential", "note": ""}
+{"id": "I-06140", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "double-sided periphery bonding", "note": ""}
+{"id": "I-07990", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "interlayer microfluidic cooling", "note": ""}
+{"id": "I-06132", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "IGZO gain cell", "note": ""}
+{"id": "I-04293", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "NDRO ferroelectric", "note": ""}
+{"id": "I-07067", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "porous-Si tier isolation", "note": ""}
+{"id": "I-03379", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "redundant staircase contacts", "note": ""}
+{"id": "I-01559", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "monolithic layer transfer", "note": ""}
+{"id": "I-05687", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "wordline strapping backside", "note": ""}
+{"id": "I-08882", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-00640", "theme": "backside trench capacitor", "note": ""}
+{"id": "I-04764", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "graphene interconnect", "note": ""}
+{"id": "I-05200", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "back-gate retention bias", "note": ""}
+{"id": "I-01985", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "streaming row sequencer", "note": ""}
+{"id": "I-00163", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-03825", "theme": "drawn glass scaffold", "note": ""}
+{"id": "I-09363", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "persistent photoconductivity", "note": ""}
+{"id": "I-10300", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "edge-die harvesting", "note": ""}
+{"id": "I-05693", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "in-situ array annealing", "note": ""}
+{"id": "I-07079", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "replacement capacitor process", "note": ""}
+{"id": "I-10733", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "multi-deck bonding", "note": ""}
+{"id": "I-06591", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "bond-interface capacitor", "note": ""}
+{"id": "I-02906", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "taper-compensated tiers", "note": ""}
+{"id": "I-10277", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "R2R laminated TFT memory", "note": ""}
+{"id": "I-08420", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-05200", "theme": "back-gate retention bias", "note": ""}
+{"id": "I-01549", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-05200", "theme": "back-gate retention bias", "note": ""}
+{"id": "I-06123", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "mirror-bonded bitline sharing", "note": ""}
+{"id": "I-01527", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "MacEtch deep trench", "note": ""}
+{"id": "I-07959", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "cryogenic DRAM", "note": ""}
+{"id": "I-10294", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-05682", "theme": "array-periphery hybrid bonding", "note": ""}
+{"id": "I-03401", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "electromigration segmentation", "note": ""}
+{"id": "I-08885", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "complementary crossbar sensing", "note": ""}
+{"id": "I-05660", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "active row-hammer shielding", "note": ""}
+{"id": "I-11220", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "OSAT-built BEOL memory", "note": ""}
+{"id": "I-03857", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "photonic memory I/O", "note": ""}
+{"id": "I-08462", "P": 4, "S": 3, "N": 1, "D": 3, "dup_of": "", "theme": "nanoimprint lithography", "note": ""}
+{"id": "I-00618", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "small-page 3D activation", "note": ""}
+{"id": "I-09805", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-07972", "theme": "3D row-hammer isolation", "note": ""}
+{"id": "I-02916", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "MPB HfZrO high-k", "note": ""}
+{"id": "I-09818", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-02916", "theme": "MPB HfZrO high-k", "note": ""}
+{"id": "I-07998", "P": 1, "S": 3, "N": 3, "D": 2, "dup_of": "I-08441", "theme": "thermal fiber draw", "note": ""}
+{"id": "I-04309", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "cross-tier erasure coding", "note": ""}
+{"id": "I-00622", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "I-11175", "theme": "NAND-like annular 3D DRAM", "note": "i-line-only thickness-defined 300-tier stack, ~4-6x density; doubt: cell plus capacitor must fit within 0.25 um hole radius."}
+{"id": "I-11190", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "tier redundancy remap", "note": ""}
+{"id": "I-06599", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "fine-grained micro-mats", "note": "Word-sized activation per bonded micro-mat kills overfetch, ~10x random-access energy; doubt: SA and bond area per 4k cells."}
+{"id": "I-03855", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "negative-capacitance FET", "note": ""}
+{"id": "I-03860", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-05200", "theme": "back-gate retention bias", "note": ""}
