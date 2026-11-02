@@ -115,7 +115,7 @@ def main():
         lines += [f"- Duplicate objection ids: {', '.join(dup)}"] if dup else []
         lines.append("")
     OUT.write_text("\n".join(lines), encoding="utf-8")
-    print(f"05_REDTEAM.md: {len(objections)} objections, {len(responses)} responses, {len(missing)} unanswered, "
+    print(f"REDTEAM.md: {len(objections)} objections, {len(responses)} responses, {len(missing)} unanswered, "
           f"{len(orphan)} orphan responses, {len(dup)} duplicate ids")
     sys.exit(1 if missing else 0)
 

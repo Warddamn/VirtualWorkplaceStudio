@@ -16,12 +16,15 @@
 
 **Name.** AND-STACK: single-etch 3D oxide gain-cell DRAM. It is AND-wired, has a select plate per tier and stores 2 bits per cell. The fallback is a coaxial per-tier cell.
 
+*(Revised after red team.)* The cell is now a two-film cell, the "notched write pocket". A per-hole write film, confined in a notch of the write-plate level, contacts the top face of the ring. The single-film BL = SL closure turned out to be topologically impossible (§11).
+
 **One-line thesis.** Build DRAM-class memory the way 3D NAND is built: deposit a tall stack of metal plates, etch one field of holes and line the holes with oxide-semiconductor films. Unlike NAND, every tier-hole crossing becomes a capacitorless, transistor-written gain cell that drives its own read current. Density then comes from tier count, not from lithography.
 
 **Rank, category, score.**
 - Rank 3 of 10, category cell/array.
 - EV 60 = step size 5 × plausibility 3 × $1M-provability 4.
 - Ranks 2-4 are within scoring noise. AND-STACK carries the portfolio's largest bits-per-dollar prize.
+- *(Revised after red team.)* Plausibility falls from 3 to ~2 (P(closure) ~20%), and the bits/$ prize roughly halves (§11). The EV is not re-scored here.
 
 **Lineage.**
 - The primary is device/AND-STACK: the single-etch dual-plate AND topology, the arithmetic and the two-step experiment.
@@ -45,21 +48,27 @@
   - B3 3D process: N-43 (the coaxial 4F² fallback), N-56 (the H-lean batch mold) and I-11544 (a Vt-coded tier decoder that removes the staircase; HOLD/HOLD, Macronix LSM prior art).
   - B4 architecture: I-11559 (ECC-paid margin; ADVANCE/ADVANCE).
 
-**PHYSICALLY POSSIBLE? YES, conditionally.**
-- No law is broken.
-- Each part has been shown separately: oxide 2T0C cells, per-tier recessed rings and in-hole source/drain pillars.
-- The combination is unbuilt. It needs a select-plate coupling ratio of at least 0.53, and tail leakage through the ring's dielectrics of at most 21 aA at 85 °C.
+**PHYSICALLY POSSIBLE? YES, conditionally, and only as a two-film cell (revised after red team).**
+- The cell physics breaks no law. Oxide 2T0C cells, per-tier recessed rings and in-hole source/drain pillars have each been shown separately.
+- The pre-red-team closure is topologically impossible: BL = SL writing on a single film lining the hole wall. In that layout the ring can only contact the film right next to its own read channel (RT-PROC-and-stack-01). That leg is killed.
+- The revised two-film cell still needs three things:
+  - select-plate CR ≥ 0.57 (σ ≤ 0.045) at a plate swing of ≤ 3.0 V;
+  - a write-FET leakage tail of ≤ 17 aA at a −3.0 V write-plate hold, at 85 °C;
+  - three process modules that have no precedent (§11.2).
+- *Pre-red-team bars: CR ≥ 0.53 and a 21 aA tail.*
 
-**STEP CHANGE IF IT WORKS? YES. Axis: density and bits per dollar.**
-- **64 tiers × 2 b:** 8.1× 1-beta density and ~3.8× bits/$ at component level, assuming 1% per-tier defects (range 1.8-4.4×).
-- **32 × 2 b:** 4.1× density and 2.7× bits/$.
-- **Refresh:** power is 31× lower at 1 s retention.
-- These replace the card's 4.5-8.9× density and 3-12× bits/$.
+**STEP CHANGE IF IT WORKS? YES on density, modest on cost (revised after red team).**
+- **64 tiers × 2 b:** 5.9× 1-beta density (was 8.1×). Bits/$ at component level is ~2.3× 2026 1-beta (2.2-2.6× across cost cases; was 3.8×), at 1% per-tier defects.
+- **Against a ~2032 incumbent** ($0.69-0.90/GB): ~1.1-1.4× at first product, and 1.2-1.6× for a two-deck 96 × 2 b part.
+- **32 × 2 b:** 2.9× density and 1.5× bits/$ (was 4.1× and 2.7×).
+- **Refresh:** power is ~25× lower at 1 s retention (was 31×). The array needs no EUV.
 
-**PROVABLE WITH $1M IN 24 MONTHS? PARTLY.**
-- A ~$150k planar emulation gives a decisive physics binary by month 11.
-- A 4-tier vertical stack fits a standalone $985k plan by month 23.
-- Tier yield at 32-64 tiers, and therefore cost, needs the $10-50M round.
+**PROVABLE WITH $1M IN 24 MONTHS? PARTLY (revised after red team).**
+- About $0.4M of direct spend decides the new crux by month 14. That buys a 2-tier vertical closure coupon plus planar statistics.
+- A 4-tier stack and a 32-tier dummy-stack etch coupon complete a $970k plan by month 23.
+- 64-tier manufacturability at 170 nm pitch, tier yield and cost need the $10-50M round or a NAND partner.
+
+**FINAL STATUS: DOWNGRADED** (§11).
 
 ---
 
@@ -95,11 +104,35 @@ SIDE VIEW (2 of 64 tiers)                 TOP VIEW at a SELECT level
 
 **Fallback.** If single-etch select margin fails, each tier is patterned with ArF lithography instead. Each cell is then a coaxial 4F² gain cell (N-43) on the same AND pillars.
 
+*(Revised after red team.)* The single-film arrangement drawn above cannot be wired. Wherever the ring touches the film, it touches the edge of its own read channel. In the redesign the select plate wraps only the ring's back face. The ring's top face is contacted by a separate write film in a notch of the write-plate level, and an Al₂O₃ plug in front of the ring serves as the read-gate dielectric. Select plates idle low and write plates hold at −3.0 V. See §11.2.
+
 ---
 
 ## 2. The physics and the numbers
 
 All values come from `models/and-stack.py` unless tagged.
+
+### 2.0 Red-team revisions to this section (revised after red team)
+
+The model now carries a RED-TEAM REVISIONS block (old → new, with objection ids). Setting `APPLY_RT_REVISIONS = False` reproduces the pre-red-team numbers kept in §2.1-2.10 below. The revised values are:
+
+| Quantity | Pre-red-team | Revised | Driver |
+|---|---|---|---|
+| Hole pitch / diameter / pillar width | 150 / 90 / 22 nm | 170 / 110 / 28 nm | PROC-03 (twin pillars) |
+| Tier pitch, stack at 64 tiers | 80 nm, 5.42 µm, AR 60 | 90 nm, 6.06 µm, AR 55 | PROC-02 |
+| Bit-tiers for 1-beta parity | 15.7 | 21.8 | pitch, array eff 0.66, parity 12% |
+| 64 × 2 b density | 3.63 Gb/mm² (8.1×) | 2.62 Gb/mm² (5.9×) | PROC-02/03, CIRC-02 |
+| Select wrap, IPD EOT → CR, C_SN | 1, 2.5 nm → 0.70, 0.246 fF | 0, 2.0 nm → 0.59, 0.214 fF | PROC-01 (top face is the write contact) |
+| Read-FET slope at 85 °C | 90 mV/dec | 120 mV/dec (160 worst) | CIRC-01, DEV-04 |
+| Unselected ring cutoff, pull-down | ≤ +0.01 V, 1.09 V | ≤ −0.15 V, 1.30 V | slope; guard 0.15 V (DEV-02) |
+| CR bar, swing at base CR | ≥ 0.53 (σ 0.03, 2.5 V), 1.79 V | ≥ 0.57 (σ 0.045, 3.0 V), 2.83 V | DEV-02, PROC-05 |
+| Write-plate hold, select idle | −1.5 V, idle at read level | −3.0 V, idle LOW | CIRC-01, DEV-03 |
+| Read current, 2-b step, resolve | 0.89 µA, 298 nA, 1.5 ns | 0.70 µA, 234 nA, 1.9 ns | geometry |
+| 2-b max drift, 1 s leak budget | 86 mV, 21 aA | 78 mV, 17 aA | kickback 206 mV, C_SN |
+| Refresh power vs DDR5 at 1 s | 31× lower | 25× lower | write-plate swing 5.5 V |
+| Write | 4 pulses, ~100 ns per cell | 2.8 KiB tier-page, 1.0 µs (no mux) to 7.8 µs (8:1 mux) | DEV-01, CIRC-03 |
+| Wafer, 64 × 2 b component $/GB | $5,920, $0.39 (3.8×) | $8,400, $0.65 (2.3×; ~1.1-1.4× vs 2032) | PROC-04, IND-03 |
+| Break-even tiers (2 b / 1 b) | 9 / 19 | 18 / 44 | PROC-04 |
 
 ### 2.1 Density
 
@@ -119,6 +152,8 @@ All values come from `models/and-stack.py` unless tagged.
 
 **Overheads.** Staircase 4.7% of area (inside the 0.7). Plate web 150 − 90 − 2×18 = **24 nm**, thin (§4).
 
+*(Revised after red team.)* Hole area is 0.0288 µm² and density is 0.0205 Gb/mm² per bit-tier, so 1-beta parity needs 21.8 bit-tiers. That gives 32 × 2 b = 1.31 Gb/mm² (2.9×), 64 × 2 b = 2.62 Gb/mm² (5.9×), and 96 × 2 b in two decks = 3.93 Gb/mm² (8.8×). The web stays at 170 − 110 − 2×18 = 24 nm. The select plates are poly-SiGe at ~300 Ω/sq, which forces 60 µm segments (RC 4.3 ns) and a 14% staircase, and the array efficiency input falls to 0.66.
+
 ### 2.2 The storage ring and the key unknown
 
 **Ring capacitance.** The sandwich select plate gives C_IPD 0.173 fF, C_gate 0.059 fF and C_parasitic 0.015 fF.
@@ -133,6 +168,8 @@ All values come from `models/and-stack.py` unless tagged.
 5. For a swing of at most 2.5 V, the bar is **CR ≥ 0.53**.
 
 The 0.6 figure came from I-10664's series pass-boost.
+
+*(Revised after red team.)* The two-film cell has no top wrap: the ring's top face is the write contact. IPD EOT 2.0 nm then gives C_IPD 0.127, C_gate 0.072 and C_par 0.015 fF, so C_SN is 0.214 fF and CR is 0.59. At 120 mV/dec the unselected ring must sit at or below −0.15 V, so the pull-down is 1.30 V (guard 0.15 V). With σ 0.045 (CR_min 0.46), the plate swing is 2.83 V and the IPD carries 2.55 MV/cm. Offsetting the selected-plate level to V_ref ≈ +1.27 V centres the IPD bias at ≤ 1.27 V (2.1 MV/cm). The bar for a ≤ 3.0 V swing is **CR ≥ 0.57**. A 20% hole taper moves CR by only 0.001, because CR is a ratio of coaxial capacitors (model §11g). Kickback is now 206 mV (deterministic) and neighbour coupling 9 mV per volt.
 
 | CR mean | Plate swing | IPD field |
 |---|---|---|
@@ -157,6 +194,17 @@ The 0.6 figure came from I-10664's series pass-boost.
 - A 2-bit write is 4 program/verify pulses: **~90 fJ and ~100 ns**.
 - Writes are therefore page writes behind an SRAM buffer.
 
+*(Revised after red team.)*
+- **Read.** 0.70 µA top-level current, a 234 nA level step, 1.9 ns to resolve, and ~16 ns array read including 4.3 ns of select-plate RC. About 5.7 fJ per cell, because the selected plate now swings 2.83 V from idle-low.
+- **Write.** A shared write plate half-selects every hole on its tier (RT-DEV-and-stack-01). Writes are therefore tier-pages: 706 BLs × 16 groups = 11,294 cells, 2.8 KiB at 2 b. The sequence is:
+  1. read the page into the buffer;
+  2. hold write plate k on;
+  3. drive the 16 groups in turn, each left floating at its target;
+  4. float SL through a bottom select;
+  5. verify.
+- **Write time and energy.** 1.0 µs per page unmuxed and 7.8 µs at the 8:1 sense-amp mux the bonded periphery forces. About 108 fJ per 2-bit cell.
+- **Bandwidth.** Internal read bandwidth is ~920 GB/s per mm² of array, ~880× the DDR5-class need per GB (model §11c-d).
+
 ### 2.4 Multilevel, retention, refresh
 
 **Raw BER.** With 13.8 mV random σ, 60 mV drift and 30 mV coupling, 2 b in 1 V gives raw BER **1e-8**. Up to **86 mV** of drift fits the 1e-4 target.
@@ -174,6 +222,12 @@ The 0.6 figure came from I-10664's series pass-boost.
 - AND-STACK at 64 s: 0.006 mW (~2,000× lower).
 
 **Headroom.** imec's >200 s at 95 °C implies ≤ ~250 zA per typical cell, ~two decades of headroom [ESTIMATE]; the risk is the tail.
+
+*(Revised after red team.)*
+- **Budget.** Random σ is 16 mV, so 2 b tolerates 78 mV of drift at raw BER 1e-4. The 1 s budget is 17 aA (8.6e-8 A/cm² over the IPD).
+- **Refresh.** 0.45 mW/GB at 1 s, **25× lower** than DDR5.
+- **Write-FET tail.** The write FET is wide and short (W/L ~38, I(Vt) ~3.8 µA). Its 1e-4 tail (−3.72σ at σ 40 mV, plus a 0.15 V DIBL penalty) leaks ~1.8 nA at the old −1.5 V hold. At −3.0 V it leaks 0.0006 aA at 120 mV/dec and 5 aA at 160 mV/dec.
+- **Cross-temperature.** At −17 mV/K, write-to-read gaps of 5, 10 and 50 K leave residuals after references of 4.2, 8.5 and 42.5 mV. Regions are therefore refreshed when |T − T_write| > 5 K (model §11a, §11f).
 
 ### 2.5 Endurance and yield
 
@@ -197,6 +251,19 @@ The 0.6 figure came from I-10664's series pass-boost.
 | 64 × 2 b | **0.39** (wafer level $0.25) | **3.8×** (5.0×) |
 
 **Break-even.** 19 tiers at 1 b, 9 tiers at 2 b.
+
+*(Revised after red team; model §9 and §11i.)* Inputs are now $50/tier and a $2,200 array base. The base covers the notched write pocket, slit Ru replacement, twin sub-hole pillars, a bottom select and a second SADP level. Hole yield is 0.93, because pillar shorts are hole-level.
+
+| Case | Density | Component $/GB | vs 2026 1-beta | vs ~2032 incumbent ($0.69-0.90) |
+|---|---|---|---|---|
+| 64 × 2 b revised | 5.9× | 0.65 | 2.3× | 1.1-1.4× |
+| 64 × 2 b, rt-PROC case ($60/tier, $2,000 base) | 5.9× | 0.68 | 2.2× | 1.0-1.3× |
+| 64 × 2 b, optimistic ($35, $1,600) | 5.9× | 0.56 | 2.6× | 1.2-1.6× |
+| 96 × 2 b, two decks | 8.8× | 0.57 | 2.6× | 1.2-1.6× |
+| 32 × 2 b | 2.9× | 0.97 | 1.5× | 0.7-0.9× |
+| 64 × 1 b | 2.9× | 1.19 | 1.2× | 0.6-0.8× |
+
+Break-even is now 18 tiers at 2 b and 44 at 1 b.
 
 ### 2.7 Against 1-beta DDR5
 
@@ -251,6 +318,13 @@ The 0.6 figure came from I-10664's series pass-boost.
 
 **Revival:** 1 b/cell with 2× the tiers, or the coaxial fallback.
 
+*(Revised after red team.)* These criteria are superseded by GO #1A (planar, month 9) and GO #1B (vertical closure coupon, month 14) in §5 and §11.5. GO #1B is the decisive gate. GO #1A adds five measurements:
+- write-FET tails on ≥ 1e4 devices;
+- Vt(T) and cross-temperature BER;
+- own-tier read disturb;
+- variable retention time (VRT), from retention re-measured ≥ 100 times on ≥ 1e4 cells;
+- read-FET RTN over windows from 10 ns to 1 s.
+
 ---
 
 ## 3. What is new versus prior art
@@ -296,7 +370,7 @@ This rests on three snippet-level searches, not a freedom-to-operate opinion.
 | # | Show-stopper | Killing number | Workaround |
 |---|---|---|---|
 | 1 | Ring dielectric leakage at 85 °C | Tail > 21 aA fails 2 b at 1 s; > 100 aA is NO-GO; > 1 fA leaves 1 b at 62 ms, no better than DDR5 | Low-field Al₂O₃/SiO₂ IPD; HfO₂ passivation (SJTU: 100×); H-lean mold; 1 b (62 aA at 1 s); 0.25 s refresh (85 aA budget at 2 b), still ~8× rarer than DDR5 |
-| 2 | Topology closure: the ring must touch the film where the write plate gates it, yet be insulated where it gates the read | Any ring-to-read-path short (TCAD, month 3) | BL = SL writing (own proposal, unverified); else segmented write and read films, at +2 recesses |
+| 2 | Topology closure: the ring must touch the film where the write plate gates it, yet be insulated where it gates the read | Any ring-to-read-path short (TCAD, month 3) | BL = SL writing (own proposal, unverified); else segmented write and read films, at +2 recesses. *(Revised after red team: one film cannot close, so BL = SL is killed. The answer is the two-film notched write pocket, §11.2.)* |
 | 3 | Coupling ratio and spread | CR < 0.53 needs > 2.5 V plates; < 0.40 puts > 3 MV/cm on the IPD | Sandwich wrap (0.70); IPD EOT 2.0 nm (0.75); 3-3.5 V NAND-class drivers |
 | 4 | PBTI and hydrogen drift | > 86 mV per interval kills 2 b; > ~250 mV kills 1 b | H-lean mold (4-8× less H, N-56); imec H+O anneal (~30×); In-poor IGZO; In₂O₃/ZTO |
 | 5 | Neighbour-write disturb | > 30 mV after 1e9 writes; > 1 LSB is NO-GO | Sandwich shielding (8 mV modelled); −1.5 V write-plate hold (10 decades of suppression); erasure coding |
@@ -311,57 +385,93 @@ None breaks a physical law. Show-stoppers 1-3 could force the fallback.
 
 ---
 
-## 5. The decisive experiment
+## 5. The decisive experiment (revised after red team)
 
-**Question.** On a ~0.25 fF ring, can one select plate mute 63 neighbours by 5.4 decades, without disturbing them, while 4 levels survive 1 s at 85 °C?
+**Question.** Does the two-film notched write pocket close: can a ring be written through a per-hole write film yet stay isolated from its own read channel? Then three physics questions follow:
+- can one select plate, idling low, mute 63 neighbours at the real 120-160 mV/dec slope;
+- does the write FET hold ≤ 17 aA at its 1e-4 tail;
+- do 4 levels survive 1 s at 85 °C and a 10 K write-to-read temperature step?
 
-**Phase 0 (months 0-3, ~$30k).**
-1. Run 3D electrostatics over wrap 0, 0.5 and 1, IPD EOT 2-5 nm and recess ±3 nm. Target nominal CR ≥ 0.6.
-2. Run SPICE of a 64-tier hole in BL = SL write mode.
-3. Choose single or segmented films.
-4. Complete the freedom-to-operate search and Provisional #1.
+*The pre-red-team question asked only for select-plate muting and 1 s retention on a planar emulation. That emulation cannot test closure, half-select, tier taper or cross-temperature reads.*
 
-**Phase 1 (months 2-11, ~$150k fab + $25k analysis). A planar 64-cell AND emulation.**
-- **Facilities.** Purdue Birck (Peide Ye's ALD In₂O₃) or Georgia Tech IEN. ALD splits at Northwestern NUFAB ($37-77/h academic, ×2 industry) or Argonne CNM.
-- **Structure.** 64 cells on one shared BL and one shared SL. Each cell has its own write and select electrodes and an e-beam floating TiN island at the true ring area (~0.012 µm²) and at 10× area. An optional top cap emulates wrap.
-- **Splits.** Wrap × IPD EOT (2.5/3.5 nm) × channel (IGZO/In₂O₃/ZTO) × mold (H-lean LPCVD vs PECVD). Two runs of ~5 wafers each.
-- **Measurements at 25/85/110 °C.**
+**Phase 0 (months 1-3, ~$35k).**
+1. Run 3D TCAD of the notch write segment, including fringe, curvature and DIBL. It must show ≥ 9 decades at a −3.0 V hold.
+2. Run CR versus geometry (wrap 0, IPD EOT 2.0-2.5 nm, hole CD ±20%).
+3. Run SPICE of the 16-group sequential write, with extracted pillar coupling. Floated groups must stay within < 10 mV.
+4. Draw a bonded-SA floorplan: one SA per 8 BLs.
+5. Run an architecture study of the write-back buffer.
+6. Complete the freedom-to-operate claim charts (Macronix 3D AND ×3, SEL NOSRAM, US 8,421,071, US11631453, NEO 3D X-DRAM) and file Provisional #1 on the notch-write module and the bias scheme.
+
+**Phase 1A (months 2-9, ~$90k fab + $20k analysis). Planar physics.**
+- **Facilities and structure.** Same as before: Purdue Birck or GT IEN, with ALD at NUFAB or Argonne CNM. The 64-cell AND emulation has e-beam TiN islands. To it add arrays of ≥ 1e4 single write FETs and read FETs, at the real channel lengths, measured on a semi-automatic hot-chuck prober.
+- **Measurements:**
   - CR across ≥ 50 cells;
-  - summed 63-cell off current;
-  - 2 b level maps;
-  - retention to 1e4 s, with the 1e-4 tail extracted;
-  - disturb after 1e9 neighbour writes;
-  - endurance to 1e12 (~28 h at 10 MHz);
-  - SIMS hydrogen.
+  - per-cell off-current and Vt distribution on ≥ 1e4 cells at 85 °C;
+  - write-FET hold leakage at the idle-low bias, 1e-4 tail;
+  - read-FET slope and Vt(T) from 25 to 110 °C;
+  - 2-b retention to 1e4 s;
+  - cross-temperature 2-b BER with in-page references (ΔT ±10 K, characterised to ±50 K);
+  - disturb after 1e8 own-tier select excursions and 1e9 neighbour writes;
+  - VRT, with retention re-measured ≥ 100 times on ≥ 1e4 cells;
+  - read-FET RTN over windows from 10 ns to 1 s;
+  - endurance to 1e12 cycles;
+  - SIMS.
 
-**Phase 2 (months 10-22, ~$330k fab + $50k FA). A 4-tier vertical stack.**
-- **Stack.** 4 × (write plate + W/TiN/W select) plus a hole-top select, ~0.8 µm thick.
-- **Holes and cell module.** 200-300 nm e-beam holes (Birck or NIST CNST), ICP etched. Then: TiN recess, IPD, ring, etch-back, gate dielectric, film, split pillars.
-- **Measurements.** As Phase 1, per tier, plus tier-to-tier spread, FIB/TEM and a defect-confinement map.
+**Phase 1B (months 4-14, ~$150k fab + $25k FIB/TEM). The 2-tier vertical closure coupon: the decisive gate.**
+- **Stack.** 2 × (SiO₂ / doped poly-SiGe select / SiO₂ / SiN write-plate sacrificial layer), with 250 nm e-beam holes (Birck or NIST CNST).
+- **Module sequence:**
+  1. SiGe recess;
+  2. IPD (SiO₂ + HfO₂);
+  3. TiN ring and etch-back;
+  4. Al₂O₃ read-gate plug;
+  5. SiN notch;
+  6. selective ALE opening of the IPD membrane on the ring top;
+  7. Ga-rich IGZO write film, sacrificial fill and etch-back;
+  8. In-rich read film;
+  9. pillars;
+  10. trench "slit", back-side removal of the SiN and the fill, 8 nm write-gate dielectric and an O₂-ALD Ru fill.
+- **Measurements:**
+  - FIB/TEM of the notch contact;
+  - electrical write-then-read on both tiers;
+  - ring hold at 85 °C;
+  - CR per tier;
+  - IGZO ΔVt and drift after the Ru fill;
+  - SIMS for F and H.
+
+**Dummy-stack etch coupon (months 8-16, ~$80k).** A 32-tier SiO₂ / poly-SiGe / SiN stack with no cells, run through a tool-vendor demo lab or a NY CREATES short loop. Etch 110 nm holes, then measure CD taper, bow and SiGe recess uniformity by TEM. If no slot is available, it moves to the raise.
+
+**Phase 2 (months 14-23, ~$140k fab + $30k FA). A 4-tier vertical stack, one lot.** It re-uses the 1B flow and adds:
+- a shared write plate across ≥ 2 hole-top select groups, to test the sequential group write;
+- a bottom select;
+- read current versus tier;
+- tier-to-tier CR;
+- a defect-confinement map.
 
 **Readout.** Bench B1500A + WGFMU, or the shared MARGIN STACK MPW chip.
 
 | Budget line (standalone) | $k |
 |---|---|
 | Two founders, lean, 24 months | 190 |
-| IP: freedom-to-operate search, 3 provisionals, PCT | 50 |
-| Phase 0 TCAD and SPICE | 30 |
-| Bench: used B1500A/WGFMU, hot-chuck prober | 85 |
-| Phase 1 fab (~650 tool-h + 150 staff-h at ~$150/h) | 150 |
-| Phase 1 SIMS, XPS, TEM | 25 |
-| Phase 2 fab (~1,400 tool-h at ~$175/h + staff, e-beam) | 330 |
-| Phase 2 FIB/TEM (~20 cross-sections) | 50 |
+| IP: freedom-to-operate claim charts (now including NEO), 3 provisionals, PCT | 60 |
+| Phase 0 TCAD, SPICE and architecture | 35 |
+| Bench: used B1500A/WGFMU, semi-automatic hot-chuck prober, switch matrix | 85 |
+| Phase 1A planar fab | 90 |
+| Phase 1A SIMS, XPS, TEM | 20 |
+| Phase 1B 2-tier closure coupon fab | 150 |
+| Phase 1B FIB/TEM | 25 |
+| 32-tier dummy-stack etch coupon (vendor demo or NY CREATES) | 80 |
+| Phase 2 4-tier stack fab (one lot) | 140 |
+| Phase 2 FIB/TEM | 30 |
 | Travel, legal, company | 40 |
-| Contingency | 35 |
-| **Total** | **985** |
+| Contingency | 25 |
+| **Total** | **970** |
 
-**Rate anchors and allocation.** All budget lines are [ESTIMATE]. Rates are anchored to Notre Dame ($124/h), UNM ($88-250/h) and NUFAB. The portfolio seed allocates only ~$150k to AND-STACK. Under that allocation, Phases 0-1 (~$230k) are the seed deliverable and Phase 2 is the raise milestone.
+**Rate anchors and allocation.** All budget lines are [ESTIMATE]. Rates are anchored to Notre Dame ($124/h), UNM ($88-250/h) and NUFAB. Direct spend to GO #1B is ~$0.4M: Phase 0, Phase 1A, Phase 1B and the bench. Under the portfolio's ~$150k allocation, Phase 0 plus the planar write-FET and cutoff statistics are the seed deliverable. The closure coupon then becomes the first funded milestone.
 
 **Pass/fail.**
-- **#1 (month 11):** §2.10.
-- **#2 (month 22-23):** every tier meets #1, tier-to-tier σ_CR ≤ 0.03, and leakage tails are within 2× of planar.
-
----
+- **#1A (month 9):** CR ≥ 0.57 with within-tier σ ≤ 0.045; ≤ 111 fA per unselected cell; write-FET 1e-4 tail ≤ 17 aA; 4 levels for ≥ 1 s at 85 °C with ≤ 78 mV tail drift; cross-temperature 2-b BER ≤ 1e-4 at ±10 K; ≤ 30 mV disturb.
+- **#1B (month 14, decisive):** write-then-read on ≥ 2 tiers with no ring-to-read-channel short; ring hold ≤ 100 aA at 85 °C with the write plate at −3.0 V; per-tier CR ≥ 0.57; FIB/TEM of the notch contact.
+- **#2 (month 22-23):** every tier meets #1A; the sequential group write leaves ≤ 10 mV on floated groups; tier-to-tier CR offset is trimmable; leakage tails are within 2× of planar.
 
 ## 6. The $1M, 24-month plan
 
@@ -369,16 +479,16 @@ Month 1 = January 2027.
 
 | Quarter | Milestones | Gate |
 |---|---|---|
-| Q1 2027 | TCAD/SPICE; freedom-to-operate search; Provisional #1; bench; nanofab onboarding | **G0:** nominal CR ≥ 0.60, no ring short |
-| Q2 2027 | Phase 1 run 1; first CR and cutoff data; Provisional #2 | CR ≥ 0.45 or redesign |
-| Q3 2027 | Phase 1 run 2 (molds, 64-cell, disturb); SIMS | Tail trending ≤ 100 aA |
-| Q4 2027 | **GO/NO-GO #1 (month 11)**; Provisional #3; PCT (month 12) | **G1:** §2.10 |
-| Q1 2028 | Phase 2 short loops: stack, holes, sandwich recess | Recess σ ≤ 2 nm (TEM) |
-| Q2 2028 | Rings, split pillars, first 4-tier lot | Per-tier write/read |
-| Q3 2028 | Second lot; reliability; FA | Tier spread in limits |
+| Q1 2027 | TCAD (notch segment ≥ 9 decades), SPICE (group write), claim charts; Provisional #1; bench; nanofab onboarding | **G0:** notch segment ≥ 9 decades at −3.0 V; nominal CR ≥ 0.57 |
+| Q2 2027 | Phase 1A run; write-FET and Vt statistics on ≥ 1e4 devices; 1B short loops (SiGe recess, plug, notch) | Write-FET tail trending ≤ 100 aA |
+| Q3 2027 | **GO/NO-GO #1A (month 9)**; 1B first coupon lot; Provisional #2 | **G1A:** §5 #1A |
+| Q4 2027 | 1B second lot (ALE open, write-film confinement, Ru fill); dummy-stack etch slot; PCT (month 12) | Notch contact seen in TEM |
+| Q1 2028 | **GO/NO-GO #1B (month 14, decisive)**; Phase 2 lot starts | **G1B:** write-then-read on 2 tiers |
+| Q2 2028 | 4-tier lot; dummy-stack TEM results; **kill single-etch if 1B has not closed by month 18** | Recess σ ≤ 2 nm; CD ≤ 5% |
+| Q3 2028 | Group-write test; reliability; FA | Floated groups ≤ 10 mV |
 | Q4 2028 | **GO/NO-GO #2**; demo; data room; raise | **G2:** §5 #2 |
 
-**Allocation.** ~49% fab, 19% founders, 9% bench, 8% analysis, 5% IP, 3% design and 8% overhead plus contingency.
+**Allocation** *(revised after red team)*. ~48% fab and etch coupon, 20% founders, 9% bench, 8% analysis, 6% IP, 4% design and 7% overhead plus contingency, on a $970k total.
 
 **Team.**
 - **Founder A, device and process.** A floating-gate 3D-NAND integrator with recess and IPD experience. Recruit from ex-Micron Boise R&D, where FG 3D NAND was developed, or ex-Intel/Solidigm Folsom NAND R&D [UNVERIFIED-PK].
@@ -451,26 +561,32 @@ Month 1 = January 2027.
 
 ---
 
-## 9. Kill criteria
+## 9. Kill criteria (revised after red team)
 
-Physics only. Month 1 = January 2027.
+Physics only. Month 1 = January 2027. The pre-red-team criteria assumed the single-film cell. That leg is now killed (RT-PROC-and-stack-01), so these criteria apply to the two-film notched write pocket.
 
-1. **2027-03-31.** If TCAD gives nominal CR < 0.55 for every geometry with IPD EOT ≥ 2.0 nm and web ≥ 20 nm, **or** no write topology avoids a ring short: kill single-etch and move to the coaxial fallback. *Revival:* CR ≥ 0.6 at a 160-170 nm pitch.
-2. **2027-11-30.** If measured CR mean < 0.40 or σ > 0.06 over ≥ 50 cells: kill single-etch. *Revival:* > 3.5 V drivers with IPD stress shown to 1e12 reads.
-3. **2027-11-30.**
-   - Tail leakage > 1 fA at 85 °C means 1 b holds < 62 ms: kill the DRAM-class claim.
-   - Tail > 100 aA: drop to 1 b.
-   - *Revival:* a split at ≤ 21 aA.
-4. **2027-11-30.** If 63-cell on/off < 1e4 at 85 °C with a swing ≤ 3.5 V: kill.
-5. **2027-11-30.** Disturb > 1 LSB after 1e9 writes: drop 2 b. Disturb > 250 mV at 1 b: kill.
-6. **2027-11-30.** Drift > 86 mV in 1 s at 85 °C on both molds: drop 2 b. 1-b drift > 250 mV in 1 s: kill.
-7. **2028-10-31.** If any 4-tier stack tier is worse than 2× planar in CR or leakage tail, or tier σ_CR > 0.05: kill single-etch and move to the fallback.
-8. **2028-10-31.** If the non-confined defect share is > 30% **and** the per-tier killer rate is > 3.5%: kill the bits-per-dollar claim (64 × 2 b < 2.5×) and keep only an energy niche.
-9. **2028-10-31.** If endurance at 85 °C is < 1e10 cycles (~8× the 1-s refresh need): kill.
+1. **2027-03-31 (G0).** Kill single-etch and move to the coaxial or per-tier fallback if TCAD shows either of two things:
+   - no notch geometry reaches ≥ 9 decades of write-segment suppression at a −3.0 V hold, with a 120 mV/dec slope and DIBL;
+   - nominal CR is < 0.55 for every geometry with IPD EOT ≥ 2.0 nm and web ≥ 20 nm.
+   *Revival:* wrap 0.5 (bottom select cap) without a short path, or a 190 nm pitch.
+2. **2027-09-30 (#1A).** If measured CR mean is < 0.40, or within-tier σ is > 0.07 over ≥ 50 cells: kill single-etch. *Revival:* > 3.5 V drivers with IPD stress shown to 1e12 excursions.
+3. **2027-09-30.** Ring tail leakage at 85 °C:
+   - > 1 fA means 1 b holds < 53 ms: kill the DRAM-class claim;
+   - > 100 aA: drop to 1 b;
+   - *Revival:* a split at ≤ 17 aA.
+4. **2027-09-30.** Write-FET hold leakage 1e-4 tail at a −3.0 V hold on ≥ 1e4 devices:
+   - > 100 aA: drop 2 b;
+   - > 1 fA: kill;
+   - *Revival:* a −3.5 V hold with an 8-10 nm write-gate dielectric, or a higher-Vt write film.
+5. **2027-09-30.** If 63-cell on/off is < 1e4 at 85 °C with a swing ≤ 3.5 V: kill.
+6. **2027-09-30.** Disturb > 1 LSB after 1e8 own-tier excursions or 1e9 neighbour writes: drop 2 b. Disturb > 250 mV at 1 b: kill.
+7. **2027-09-30.** Drift > 78 mV in 1 s at 85 °C on both molds, or a cross-temperature residual > 30 mV at ΔT 10 K with references: drop 2 b. A 1-b drift > 250 mV in 1 s: kill.
+8. **2028-06-30.** If coupon 1B has shown no write-then-read closure on ≥ 2 tiers, or the ring hold through the notch segment exceeds 1 fA: **kill the single-etch leg**. Only the per-tier patterned fallback survives, at ~1.0-1.6× bits/$, and the bits/$ step-change claim dies. *Revival:* an area-selective or self-aligned write-film confinement shown on a 2-tier coupon.
+9. **2028-10-31.** If any 4-tier stack tier is worse than 2× planar in CR or leakage tail, or untrimmed tier σ_CR is > 0.07: kill single-etch and move to the fallback.
+10. **2028-10-31.** If the non-confined defect share is > 30% **and** the per-tier killer rate is > 3%, 64 × 2 b falls below ~1.5× bits/$ vs 2026 1-beta: kill the bits/$ claim and keep only the density and energy niche.
+11. **2028-10-31.** If endurance at 85 °C is < 1e10 cycles (~8× the 1-s refresh need): kill.
 
-**Pivot, not a kill.** A blocking patent triggers a partner or licensing route.
-
----
+**Pivot, not a kill.** Two triggers lead to a partner, JDA or licensing route rather than a kill: a blocking patent (Macronix, NEO), or a failed dummy-stack etch (CD variation > 5% or recess σ > 2 nm at 32 tiers). An etch failure also moves the stack to two decks or a wider pitch.
 
 ## 10. Sources
 
