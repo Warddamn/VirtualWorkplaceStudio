@@ -397,6 +397,21 @@ The claims of US 12096638 and US 2007/0183191 are read at M0-1, before filing.
 
 **Allocation ($k).** Stage A 225. Two stack iterations 255 (~1,400 tool-h × $150 + $45k masks and materials). Readout silicon and boards 30. FIB/TEM 25. Reliability 25. IP (3 provisionals, 1 PCT, Kepler FTO read) 45. Two lean founders 300. Travel 15. Contingency 60. **Total 980.** On a NO-GO, the remaining ~$650-700k moves to the FE persistent variant (Notre Dame, Sandia MESA) or to AND-STACK / PIXEL-STACK coupons.
 
+**(Revised after red team; see §5 and §11.)** The revised allocation ($k) totals **960**:
+
+| Line | $k |
+|---|---|
+| Stage A | 260 |
+| Stage B | 280 |
+| IP (3 provisionals, 1 PCT, claim reads of US 12096638 and US 2007/0183191, Kepler FTO) | 55 |
+| Two lean founders | 300 |
+| Travel | 15 |
+| Contingency | 50 |
+
+On a NO-GO, ≤$60k goes to a Ga₂O₃/heterojunction retry and the rest to AND-STACK / PIXEL-STACK coupons. **The FE persistent variant is no longer a fallback** (RT-IND-04).
+
+**IP policy (RT-IND-02).** Anode and interface recipes stay trade secrets until process claims are filed. Nothing on composition is published before the PCT, and only the aA test structure is published.
+
 **Team.**
 - **Founder A, device (the recruited expert).** An oxide contact and reliability physicist: Schottky I-V-T, IPE, ALD, aA floating-node metrology. Recruit from:
   - Purdue (Ye group [UNVERIFIED]);

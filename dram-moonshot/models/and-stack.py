@@ -659,8 +659,211 @@ def section_cost():
 # --------------------------------------------------------------------------------------------
 # 10. GO / NO-GO
 # --------------------------------------------------------------------------------------------
+def _with_inputs(over, fn):
+    """Evaluate fn() with some INPUTS temporarily overridden (values only)."""
+    saved = {k: INPUTS[k] for k in over}
+    try:
+        for k, v in over.items():
+            INPUTS[k] = (v, saved[k][1])
+        return fn()
+    finally:
+        INPUTS.update(saved)
+
+
+# --------------------------------------------------------------------------------------------
+# 11. RED-TEAM checks (owner response resp-and-stack)
+# --------------------------------------------------------------------------------------------
+def write_fet_tail_leak(hold, ss, ring_min, sigma_mv=None, n_sig=3.72):
+    """1e-4-tail write-FET hold leakage (A). Source = ring (lowest node), gate = write plate."""
+    sigma_mv = V("sigma_vt_mV") if sigma_mv is None else sigma_mv
+    r_mid = (V("hole_d_nm") / 2 + V("ring_t_nm") / 2)
+    wl = 2 * math.pi * r_mid / V("write_L_nm")
+    i_vt = V("i_at_vt_A") * wl
+    vt_eff = V("vt_write") - n_sig * sigma_mv / 1000 - V("dibl_write_V")
+    margin = vt_eff - (hold - ring_min)
+    return i_vt * 10 ** (-margin / (ss / 1000)), margin, wl
+
+
+def section_redteam(c, s, dmax2):
+    h2("11. RED-TEAM checks (owner response, 2026-11-02)")
+    csn = c["c_sn"]
+    leak_budget = csn * dmax2 / 1000 / 1.0
+    ring_min = -s["shift"]
+    # 11a write-FET hold leakage
+    out("### 11a. Write-FET hold leakage with idle-low select plates (RT-CIRC-and-stack-01, RT-DEV-and-stack-04)")
+    out("")
+    _, _, wl = write_fet_tail_leak(V("v_wp_hold"), V("ss_write_mv_dec_85c"), ring_min)
+    out(f"- Write FET = write film on the notch floor, W = 2 pi x {V('hole_d_nm')/2 + V('ring_t_nm')/2:.0f} nm, L = "
+        f"{V('write_L_nm'):.0f} nm -> W/L {wl:.0f}, I(Vt) {V('i_at_vt_A')*wl*1e6:.1f} uA (a wide, short device: worse than the "
+        f"39 nA the dossier used). Tail cell = Vt - 3.72 sigma ({V('sigma_vt_mV'):.0f} mV) - {V('dibl_write_V')} V DIBL. "
+        f"Ring parked at {ring_min:+.2f} V (top level, select plates idle low). Budget at 1 s, 2 b: {leak_budget*1e18:.0f} aA.")
+    out("")
+    rows = []
+    for hold in (-1.5, -2.0, -2.5, -3.0):
+        r = [f"{hold:+.1f} V"]
+        for ss in (90, 120, 160):
+            lk, m, _ = write_fet_tail_leak(hold, ss, ring_min)
+            r.append(f"{lk*1e18:.3g} aA ({'OK' if lk <= leak_budget else 'FAIL'})")
+        rows.append(r)
+    table(["WP hold", "SS 90 mV/dec", "SS 120", "SS 160"], rows)
+    e_hold = (abs(V("v_wp_hold")) + 0.1) / (V("wgd_phys_nm") * 1e-7) / 1e6
+    e_on = V("v_wp_on") / (V("wgd_phys_nm") * 1e-7) / 1e6
+    out("")
+    out(f"- At the adopted hold {V('v_wp_hold')} V the write-gate dielectric ({V('wgd_phys_nm'):.0f} nm) sees at most "
+        f"{abs(V('v_wp_hold'))+0.1:.1f} V ({e_hold:.1f} MV/cm) in hold and {V('v_wp_on')} V ({e_on:.1f} MV/cm) when writing; "
+        f"write-plate swing {V('v_wp_on')-V('v_wp_hold'):.1f} V (thick-oxide drivers).")
+    # 11b Vt tail of unselected read FETs
+    out("")
+    out("### 11b. Unselected-cell Vt tails (RT-DEV-and-stack-02)")
+    out("")
+    wl_r, _ = read_fet_wl()
+    cox = EPS0 * 3.9 / (V("gox_eot_nm") * 1e-9)
+    di2 = V("mu_cm2") * 1e-4 * cox * wl_r * V("v_data_max") / 3 * V("vds_read")
+    rows = []
+    for ss in (90, 120, 160):
+        for nsig, lab in ((3.72, "1e-4"), (6.36, "1e-10")):
+            x = nsig * 50.0 / 1000
+            i = s["i_off_max"] * 10 ** (x / (ss / 1000))
+            rows.append([ss, lab, f"{x*1000:.0f}", f"{i*1e12:.3g} pA", f"{i/di2*100:.3g}%"])
+    table(["SS mV/dec", "cell quantile (sigma_Vt 50 mV)", "Vt shift mV", "leak at nominal cutoff", "of a 2-b level step"], rows)
+    out("")
+    out(f"- 142 fA x 10^3.5 is ~0.45 nA, not 0.48 uA: the objection's tail currents are 1000x too high. A 1e-10 cell costs "
+        f"well under 1% of a {di2*1e9:.0f} nA level step. What does move the cutoff is the slope: at "
+        f"{V('ss_mv_dec_85c'):.0f} mV/dec the unselected ring must sit <= {s['v_ring_cut']:+.2f} V, so the pull-down is "
+        f"{s['shift']:.2f} V (guard {V('guard_v')} V).")
+    # 11c write half-select
+    out("")
+    out("### 11c. Shared write plate: half-select and the sequential group write (RT-DEV-and-stack-01)")
+    out("")
+    cbl, cp = c_bitline()
+    err = 2 * cp / (2 * cp + csn)
+    out(f"- If unselected groups' pillars float at an unknown value, a write pulse pulls each ring {err*100:.0f}% of the way to "
+        f"its floating pillars (BL+SL {2*cp*1e15:.2f} fF vs C_SN {csn*1e15:.3f} fF): corruption, as the objection says.")
+    bl_pitch = V("hole_pitch_nm") / V("rows_per_select_group")
+    n_bl = V("plate_len_um") * 1000 / bl_pitch
+    n_g = V("n_sel_on_bl")
+    page_cells = n_bl * n_g
+    out(f"- Fix adopted: hold write plate k ON and drive the {n_g} groups in turn through the hole-top selects; each driven "
+        f"group's ring + pillars then float at their target while the next group is driven. SL pillars float via a bottom "
+        f"select. Page = one tier of one block = {n_bl:.0f} BLs x {n_g} groups = {page_cells:,.0f} cells "
+        f"({page_cells*2/8/1024:.1f} KiB at 2 b), read into the buffer first (read-modify-write).")
+    rows = []
+    for mux in (1, 8, 16):
+        cyc = n_g * mux * V("t_group_drive_ns") + V("t_write_ns") + n_g * mux * 10.0
+        t_page = V("verify_pulses") * cyc
+        rows.append([mux, f"{cyc:.0f}", f"{t_page/1000:.1f}", f"{page_cells*2/8/(t_page*1e-9)/1e9:.2f}"])
+    table(["SA/driver mux", "ns per pulse cycle (drive + pulse + verify)", "us per page (4 pulses)", "GB/s per block"], rows)
+    # 11d SA pitch and bandwidth
+    out("")
+    out("### 11d. Sense-amp pitch and bandwidth per mm2 (RT-CIRC-and-stack-03)")
+    out("")
+    fp = V("l_local_bl_um") * bl_pitch / 1000
+    mux = math.ceil(V("sa_area_um2") / fp)
+    sa_mm2 = 1e6 / fp / mux
+    bw_rd = sa_mm2 * 2 / 8 / 20e-9 / 1e9
+    need = density_gb_mm2(64, 2) / 8 * V("ddr5_GBps_per_GB")
+    out(f"- BL footprint {V('l_local_bl_um'):.0f} um x {bl_pitch:.0f} nm = {fp:.2f} um2 vs SA + driver ~{V('sa_area_um2'):.0f} um2 "
+        f"-> {mux}:1 mux. {sa_mm2:,.0f} SAs per mm2 of array, 2 b per ~20 ns -> internal read bandwidth "
+        f"~{bw_rd:,.0f} GB/s per mm2.")
+    out(f"- DDR5-class need at 64 x 2 b density: {density_gb_mm2(64,2)/8:.2f} GB/mm2 x {V('ddr5_GBps_per_GB')} GB/s per GB = "
+        f"{need:.2f} GB/s per mm2 -> {bw_rd/need:,.0f}x headroom. Page width falls {mux}x; latency per access does not.")
+    # 11e pillar resistance
+    out("")
+    out("### 11e. Pillar resistance (RT-CIRC-and-stack-04, RT-PROC-and-stack-03)")
+    out("")
+    h_pill = (64 * V("tier_pitch_nm") + V("extra_layers_nm")) * 1e-7  # cm
+    a_w = math.pi * ((V("pillar_w_nm") - 6) / 2 * 1e-7) ** 2
+    a_p = math.pi * (V("pillar_w_nm") / 2 * 1e-7) ** 2
+    r_w = V("rho_w_core_uohm_cm") * 1e-6 * h_pill / a_w
+    r_p = V("rho_poly_mohm_cm") * 1e-3 * h_pill / a_p
+    i_on = s["i_on"]
+    rows = []
+    for lab, r in (("W core (3 nm TiN liner)", r_w), ("doped poly", r_p)):
+        same_end = 2 * r * i_on
+        split = r * i_on
+        rows.append([lab, f"{r/1e3:.1f}", f"{same_end*1e3:.0f} mV ({same_end/V('vds_read')*100:.0f}%)",
+                     f"{split*1e3:.0f} mV ({split/V('vds_read')*100:.0f}%), all tiers"])
+    table(["pillar", "kOhm per pillar", "worst tier, BL+SL from top", "BL from top, SL from bottom"], rows)
+    out("")
+    out("- Contacting BL at the top and SL at the bottom makes the series resistance the same for every tier (one pillar "
+        "length), so the loss is a uniform, verify-cancelled offset. Doped-poly pillars are excluded.")
+    # 11f cross-temperature
+    out("")
+    out("### 11f. Cross-temperature MLC (RT-CIRC-and-stack-02)")
+    out("")
+    rows = []
+    for dT in (V("dT_trigger_K"), 10.0, 50.0):
+        cm = abs(V("tempco_vt_mV_K")) * dT
+        res = cm * V("tempco_spread")
+        rows.append([f"{dT:.0f}", f"{cm:.0f}", f"{res:.1f}", "OK" if res <= 10 else ("marginal" if res <= 30 else "FAIL")])
+    table(["dT write->read (K)", "common-mode Vt shift (mV, removed by in-page refs)", "residual spread (mV)",
+           "vs ~10 mV allowance"], rows)
+    out("")
+    out(f"- Adopted: in-page reference cells (+2% parity), temperature-tracked select read bias, and a forced refresh of any "
+        f"region whose |T - T_write| exceeds {V('dT_trigger_K'):.0f} K. 1 b/cell tolerates the full 50 K with refs.")
+    # 11g CR vs taper
+    out("")
+    out("### 11g. CR versus hole taper and recess depth (RT-PROC-and-stack-05, RT-CIRC-and-stack-05)")
+    out("")
+    rows = []
+    d0 = V("hole_d_nm")
+    for f in (1.0, 0.9, 0.8):
+        r = [f"{d0*f:.0f} nm ({(1-f)*100:.0f}% taper)"]
+        for rt in (7.0, 10.0, 13.0):
+            cc = _with_inputs({"hole_d_nm": d0 * f, "ring_t_nm": rt}, lambda: ring_caps())
+            r.append(f"{cc['cr']:.3f} / {cc['c_sn']*1e15:.3f}")
+        rows.append(r)
+    table(["hole CD", "ring 7 nm: CR / C_SN fF", "10 nm", "13 nm"], rows)
+    out("")
+    out("- CR is a ratio of two coaxial capacitors, so a 20% CD taper moves it only ~0.01-0.02; read W/L and C_SN do scale "
+        "with CD and are absorbed by per-cell write-verify plus per-tier reference trims.")
+    # 11h IPD read disturb
+    out("")
+    out("### 11h. Neighbour-read excursions on the IPD (RT-DEV-and-stack-03)")
+    out("")
+    v_ipd_exc = (1 - c["cr"]) * s["dv_unsel"]
+    q_e = (c["c_ipd"] * v_ipd_exc + c["c_gox"] * c["cr"] * s["dv_unsel"]) / QE
+    out(f"- Displacement charge per excursion ~{q_e:.0f} e-; trapping 0.1-1% of it is {q_e*0.001*QE/csn*1e3:.1f}-"
+        f"{q_e*0.01*QE/csn*1e3:.0f} mV per excursion on C_SN {csn*1e15:.3f} fF.")
+    out("- Original bias (select plates idle at read level): every read of any tier swings the 63 other rings, i.e. ~1e7 "
+        "excursions per ring per second in a hole read at 10 MHz. Adopted idle-low bias: a ring moves only when its own tier "
+        "is read (1/64 of the hole's reads on average); a single-cell read hammer still gives up to 1e7/s, so the GO list "
+        "tests own-tier excursions (1e8 within one refresh interval, 1e12 cumulative).")
+    # 11i cost rebasing
+    out("")
+    out("### 11i. Cost re-basing (RT-PROC-and-stack-04, RT-IND-and-stack-03)")
+    out("")
+    yrs = V("years_to_volume")
+    inc_lo = V("comp_1b_usd_gb") * (1 - V("incumbent_decline_hi")) ** yrs
+    inc_hi = V("comp_1b_usd_gb") * (1 - V("incumbent_decline_lo")) ** yrs
+    rows = []
+    cases = [("64 x 2 b revised ($%.0f/tier, $%.0f base)" % (V("tier_usd"), V("array_base_usd")), 64, 2, {}),
+             ("64 x 2 b, rt-PROC case ($60/tier, $2,000 base)", 64, 2, {"tier_usd": 60.0, "array_base_usd": 2000.0}),
+             ("64 x 2 b, optimistic ($35/tier, $1,600 base)", 64, 2, {"tier_usd": 35.0, "array_base_usd": 1600.0}),
+             ("32 x 2 b revised", 32, 2, {}),
+             ("96 x 2 b, two decks", 96, 2, {"array_base_usd": V("array_base_usd") + V("deck2_usd")}),
+             ("64 x 1 b revised (fallback mode)", 64, 1, {})]
+    for lab, n, b, ov in cases:
+        _, comp, _ = _with_inputs(ov, lambda: usd_per_gb(n, b)) if ov else usd_per_gb(n, b)
+        rows.append([lab, f"{density_gb_mm2(n,b)/V('d1b_gb_mm2'):.1f}x", f"{comp:.2f}", f"{V('comp_1b_usd_gb')/comp:.1f}x",
+                     f"{inc_lo/comp:.1f}-{inc_hi/comp:.1f}x"])
+    table(["case", "density vs 1-beta", "component $/GB", "bits/$ vs 2026 1-beta ($1.48)",
+           f"vs ~{2026+yrs} incumbent (${inc_lo:.2f}-{inc_hi:.2f})"], rows)
+    out("")
+    out("- The 2032 column holds AND-STACK at its first-product cost while the incumbent rides its curve, as the objection "
+        "asks; it ignores incumbent 3D DRAM, which could do better or worse than the 8-12%/yr trend.")
+    # 11j bow
+    out("")
+    out("### 11j. Gate-first metal bow check (RT-PROC-and-stack-02)")
+    out("")
+    kappa = 6 * 1.0e9 * 2.8e-6 / (180e9 * (775e-6) ** 2)
+    out(f"- Stoney, 2.8 um of W at 1 GPa on 775 um Si (M = 180 GPa): bow {kappa*0.15**2/2*1e3:.2f} mm over 300 mm. The objection's "
+        "1.7 mm is right, so gate-first metal is dropped: the etched stack is SiO2 / poly-SiGe / SiN (stress-tunable, NAND "
+        "practice) and the write-plate metal arrives later from the slits, as NAND's replacement W does.")
+
+
 def section_go(c, s, dmax2):
-    h2("10. GO / NO-GO for the decisive experiment")
+    h2("10. GO / NO-GO for the decisive experiment (revised after red team)")
     csn = c["c_sn"]
     leak_1s = csn * dmax2 / 1000 / 1.0
     cr_go = None
@@ -670,17 +873,22 @@ def section_go(c, s, dmax2):
         if r["dv_unsel"] <= V("v_plate_max") and r["e_ipd"] <= 3.0e6:
             cr_go = cr
             break
-    out(f"- **GO (Phase 1, planar 2-tier emulation, month 11):** measured select-plate-to-ring coupling CR >= {cr_go:.2f} "
-        f"with sigma <= {V('cr_sigma')} across >=50 cells (so dV_unsel <= {V('v_plate_max')} V); on/off >= 1e5 against 63 "
-        f"unselected-equivalent cells at 85 C (each unselected cell <= {s['i_off_max']*1e15:.0f} fA with the top level stored); "
-        f"neighbour-write disturb <= 30 mV extra ring shift after 1e9 neighbour writes; 4 levels in <= 1 V holding "
-        f">= 1 s at 85 C with the 1e-4-quantile cell drifting <= {dmax2:.0f} mV (node leakage <= {leak_1s*1e18:.0f} aA).")
-    out("- **NO-GO:** CR < 0.40 (plate swing > 3 V and IPD > 3 MV/cm), or the 1e-4-tail ring leaks > 100 aA at 85 C "
-        "(< 0.2 s for 2 b), or disturb > 1 LSB after 1e9 neighbour writes. Revival: 1 b/cell at <= 0.25 V loss "
-        "(leak budget 4x looser) with 2x the tiers, or the per-tier coaxial fallback cell.")
-    out(f"- **Prize if GO:** 64 tiers x 2 b = {density_gb_mm2(64,2):.2f} Gb/mm2 ({density_gb_mm2(64,2)/V('d1b_gb_mm2'):.1f}x 1-beta), "
-        f"~${usd_per_gb(64,2)[1]:.2f}/GB component ({V('comp_1b_usd_gb')/usd_per_gb(64,2)[1]:.1f}x bits/$) at 1% per-tier defects; "
-        f"refresh-free-class energy at >= 64 s.")
+    out(f"- **GO #1B (vertical closure coupon, month 14; the decisive gate):** on a 2-tier vertical coupon built with the "
+        f"two-film notched write pocket, write-then-read works on >=2 tiers with no ring-to-read-channel short, the ring "
+        f"holds <= 100 aA at 85 C with the write plate at {V('v_wp_hold')} V and select plates idle low, per-tier CR >= {cr_go:.2f}, "
+        "and FIB/TEM shows the notch contact.")
+    out(f"- **GO #1A (planar physics, month 9):** CR >= {cr_go:.2f} with within-tier sigma <= {V('cr_sigma')} over >=50 cells "
+        f"(dV_unsel <= {V('v_plate_max')} V); each unselected cell <= {s['i_off_max']*1e15:.0f} fA at 85 C with the top level "
+        f"stored; write-FET hold leakage 1e-4 tail <= {leak_1s*1e18:.0f} aA at the idle-low bias on >=1e4 devices; read-FET SS "
+        f"and Vt(T) from 25 to 110 C; 4 levels in <= 1 V for >= 1 s at 85 C with the 1e-4 cell drifting <= {dmax2:.0f} mV; "
+        "cross-temperature 2-b raw BER <= 1e-4 with in-page references at dT +/-10 K (characterised to +/-50 K); "
+        "<= 30 mV shift after 1e8 own-tier select excursions inside one refresh interval and after 1e9 neighbour writes; "
+        "retention re-measured >= 100 times on >= 1e4 cells (VRT) and read-FET RTN over 10 ns-1 s windows.")
+    out(f"- **NO-GO:** no write-then-read closure on the coupon by month 18 (single-etch leg dies; coaxial fallback only), "
+        f"CR < 0.40, write-FET tail > 100 aA at {V('v_wp_hold')} V hold, ring tail > 100 aA, or disturb > 1 LSB.")
+    out(f"- **Prize if GO (revised):** 64 tiers x 2 b = {density_gb_mm2(64,2):.2f} Gb/mm2 "
+        f"({density_gb_mm2(64,2)/V('d1b_gb_mm2'):.1f}x 1-beta), ~${usd_per_gb(64,2)[1]:.2f}/GB component "
+        f"({V('comp_1b_usd_gb')/usd_per_gb(64,2)[1]:.1f}x bits/$ vs 2026 1-beta) at 1% per-tier defects.")
 
 
 def inputs_block():
@@ -704,6 +912,7 @@ def main():
     section_endurance()
     section_yield()
     section_cost()
+    section_redteam(c, s, dmax2)
     section_go(c, s, dmax2)
     inputs_block()
     os.makedirs(os.path.dirname(OUT_MD), exist_ok=True)
