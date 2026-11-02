@@ -314,6 +314,16 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 
 None violates physics. Only number 1 could end the program, and it is what the seed measures.
 
+*(revised after red team)* New rows forced by the reviewers. Details are in section 11.
+
+| # | Show-stopper | Number | Workaround path |
+|---|---|---|---|
+| 9 | **No regeneration return path** (RT-CIRC-02) | A straight hole cannot re-inject at the end it reads | Inject at the bottom, sense at the top, return through the CMOS. Either a [SPECULATIVE] deck-joint regenerator tier (+$500/wafer) keeps 98 transfers, or the one-way 64-stage fallback needs CTE ≥ 0.9987 |
+| 10 | **Staircase** (RT-PROC-02) | 29% of area at 200 plates | Accepted. [SPECULATIVE] staircase-free three-trench phase contacts |
+| 11 | **Oxide source-follower RTN** (RT-CIRC-04, RT-DEV-02) | η 2.8 mV unscreened → floor 0.9993; 4.2 mV fails | Screen at 25 e- (≤ 1.8% spared); larger source-follower gate; field re-screen; I-12627 dual source follower |
+| 12 | **Buried margin** (RT-DEV-01) | 0.3 eV leaves 1.4 kT at 4.5e12 cm⁻² | ΔEc ≥ 0.5 eV with a cap ≤ 2.5 nm, or 2.5e12 cm⁻² at CTE ~0.999 |
+| 13 | **Per-plate cost** (RT-PROC-04) | $25, not $10 | None within reach. The cost leg is killed; revival needs ≤ $12/plate plus staircase-free contacts |
+
 ---
 
 ## 5. The decisive experiment
@@ -381,9 +391,75 @@ None violates physics. Only number 1 could end the program, and it is what the s
 | Retention at 85 °C (≤ 10% loss) | ≥ 20 s | ≥ 200 s | < 2 s |
 | Bytes with ≥ 0.64 µs lead (dense / MoE) | ≥ 92% / ≥ 92% | ≥ 99% / ≥ 96% | < 90% on both |
 
+### Revised after red team
+
+**Question (revised after red team).** Three conditions, all on the **overlapping-gate reference**:
+- Does any deposited oxide channel reach median per-transfer CTE ≥ 0.9973 (DFE) at ≥ 150 MT/s, at 25 and 85 °C, at ~4.5e12 cm⁻²?
+- Does a buried heterochannel with a measured ΔEc ≥ 0.5 eV cut deferral ≥ 3x?
+- Can ≥ 1e4 oxide source followers, after sparing ≤ 2%, hold the 1e-9 per-read RTN step to ≤ 30 e- at the real CDS interval?
+
+**Added and changed steps.**
+
+| When | Step | Answers |
+|---|---|---|
+| M0 | Read the imec papers **before any spending**. Commission a professional FTO ($20k, was $3-5k) before filing provisionals | RT-IND-03, RT-IND-01 |
+| M0-2 | Poisson-Schrödinger solve of the full-fill packet (≥ 2 nm from any interface). 2D/3D electrostatics of the curved vertical gap (barrier ≤ 2 kT, signal-dependent pocket ≤ 5 e-). XPS band offsets of every stack at Argonne | RT-DEV-01, RT-DEV-04 |
+| Run 1 | **Overlapping two-level gates** (W / ALD Al2O3 / W) are the GATE-scoring reference, and single-level 12-20 nm gaps are the vertical proxy. ±10% In/Ga composition corners. Channel-last vs channel-first splits, with coupons exposed to the W-fill chemistry (pass: ΔCTE < 5e-4) | RT-PROC-05, RT-PROC-06, RT-PROC-01 |
+| M3-8 | Multi-cation ALD in AR 40-80 conformality test structures. TEM/EDX at top, middle and bottom (pass: within ±10%) | RT-DEV-03, RT-PROC-06 |
+| Runs 1-2 | **RTN node array.** ≥ 1e4 oxide floating-diffusion/source-follower cells, each floating diffusion shared by 2 holes as in the product. On-die oxide sample-and-hold at the real **2-5 ns** CDS interval. ≥ 1e7 samples per node. Yields the step distribution and its 1e-9 quantile, the screen threshold and the spare fraction. A dual-source-follower variant (I-12627) is included | RT-CIRC-04, RT-DEV-02 |
+| M14-20 | **12-plate vertical CCD coupon.** 4 three-phase stages, ~250 nm holes, buried heterochannel, bottom injection contact, top floating diffusion, run at ≥ 50 MHz. Replaces the separate narrow-channel run 2 | RT-IND-04, RT-DEV-03, RT-DEV-04, RT-PROC-03 |
+| DEMO | The loop is **inject-bottom / sense-top** through the FPGA/sky130 regenerator (98 transfers), plus a **194-transfer one-way loop** to price the fallback. The sky130 chip adds a 3-step stepwise clock-driver test | RT-CIRC-02, RT-CIRC-03 |
+| Simulator | Reports energy per useful bit with I/O and the random floor | RT-CIRC-03 |
+| Q4 | Buyer-discovery talks for a write-endurant streaming-tier spec (no budget) | RT-IND-02 |
+
+**Budget (revised after red team).** $994k fully loaded, of which $519k is direct; it was $990k and $480k.
+
+| Item | USD |
+|---|---|
+| Nanofab (~1,200 h; run 2 merged into the coupon run) | 170k |
+| E-beam | 35k |
+| Wafers, precursors, targets, masks (+ overlapping-gate level, composition corners) | 50k |
+| National-lab time (XPS offsets, TEM/EDX) | 25k |
+| High-AR conformality test chips | 5k |
+| 12-plate vertical coupon | 50k |
+| RTN node array | 15k |
+| Test hardware | 85k |
+| sky130 chip | 15k |
+| Packaging | 12k |
+| GPU | 12k |
+| Per-plate reverse-costing check | 5k |
+| Advisor | 40k |
+| **Direct** | **519k** |
+| Founders | 330k |
+| IP (3 provisionals + PCT) | 40k |
+| Professional FTO | 20k |
+| Legal, accounting, insurance | 28k |
+| Travel | 12k |
+| Contingency (cut from $80k) | 45k |
+| **Total** | **994k** |
+
+**Pass/fail additions (revised after red team).**
+
+| Test | PASS | STRONG | FAIL |
+|---|---|---|---|
+| Median CTE, overlapping-gate reference, ≥ 150 MT/s, 25/85 °C | ≥ 0.9973 (DFE); ≥ 0.9987 if one-way | ≥ 0.999 | < 0.9951 at ≥ 50 MT/s, all variants |
+| XPS core/cap offset | ≥ 0.5 eV | ≥ 0.7 eV | < 0.35 eV for every stack |
+| RTN: 1e-9 per-read step quantile after sparing (≥ 1e4 nodes, 2-5 ns CDS) | ≤ 30 e- with ≤ 2% spared | ≤ 20 e- with ≤ 0.5% | > 5% spared to reach 30 e- |
+| ALD composition top/middle/bottom at AR ≥ 40 | within ±10% | within ±5% | > ±20% and CTE-critical in the corners |
+| CTE after W-fill chemistry exposure | ΔCTE < 5e-4 | none | > 1e-3 with channel-last too |
+| 12-plate vertical coupon, ≥ 50 MHz | per-stage CTE within 2x of planar | within 1.3x | > 5x worse |
+| Read noise, coupon floating diffusion | ≤ 10 e- | ≤ 6 e- | > 15 e- |
+
 ---
 
 ## 6. The $1M, 24-month plan
+
+*(revised after red team)* The budget is now $994k (section 5, revised). The quarterly plan changes as follows:
+- **Q1** adds reading the papers before any spend, the $20k FTO, and the Poisson-Schrödinger, gap-electrostatics and XPS work.
+- **Q2-Q3** add the overlapping-gate run, the LHAR TEM/EDX and the RTN array.
+- **Q4 GATE 1** uses CTE ≥ 0.9973 and buried ≥ 3x.
+- **Q5-Q6** replace the narrow-channel run 2 with the 12-plate vertical coupon (M14-20) and add an RTN gate (M12-16).
+- **Q8**'s "partner coupon" becomes an in-house 12-plate result plus a partner AR-40 deck request.
 
 ### Quarterly milestones (M0 = funding close, assumed 2027-01-01)
 

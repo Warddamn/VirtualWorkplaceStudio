@@ -1,6 +1,6 @@
 # DIODE-TOWER: technical dossier
 
-*Agent `dosw-diode-tower`, 2026-11-02. Model: `models/diode-tower.py` (re-run 2026-11-02, exit 0; output `research/stage3/diode-tower_model_output.md`). Notes: `research/stage3/diode-tower_notes.md`. Assumptions: `research/assumptions/dos-diode-tower.md`. Sources: `research/sources/dos-diode-tower.jsonl`, plus A2/A3 cross-references. Numbers come from the model unless a source is named. Tags: [ESTIMATE] is a modelled judgement, [SPECULATIVE] is plausible but unshown physics, and [UNVERIFIED] is unchecked training knowledge.*
+*Agent `dosw-diode-tower`, 2026-11-02. Model: `models/diode-tower.py` (re-run 2026-11-02, exit 0; output `research/stage3/diode-tower_model_output.md`). Notes: `research/stage3/diode-tower_notes.md`. Assumptions: `research/assumptions/dos-diode-tower.md`. Sources: `research/sources/dos-diode-tower.jsonl`, plus A2/A3 cross-references. Red-team revision 2026-11-02: responses in `research/redteam/responses_diode-tower.json`, outcome in §11, sources in `research/sources/resp-diode-tower.jsonl`. Numbers come from the model unless a source is named. Tags: [ESTIMATE] is a modelled judgement, [SPECULATIVE] is plausible but unshown physics, and [UNVERIFIED] is unchecked training knowledge.*
 
 ---
 
@@ -537,7 +537,7 @@ On a NO-GO, ≤$60k goes to a Ga₂O₃/heterojunction retry and the rest to AND
 - **Kioxia.** OCTRAM vertical IGZO plus BiCS hole processing: the most experienced oxide-in-hole partner.
 - **SK hynix.** Intel's floating-gate NAND line via Solidigm [UNVERIFIED], and 5-tier 3D DRAM yield work.
 - **Samsung.** 4F² IGZO VCT and 3D DRAM programs.
-- **Intel and Kepler.** Cross-license our diode delta against their 1T-nC estate. The FE variant fits their roadmap.
+- **Intel and Kepler.** Cross-license our diode delta against their 1T-nC estate. The FE variant fits their roadmap. *(Revised after red team, RT-IND-04: the cross-licence covers only the linear, diode-steered method and geometry claims. The FE variant is parked and is not offered.)*
 - **Foundries.** GlobalFoundries and SkyWater for CMOS-under-array or embedded BEOL memory (the ≤400 °C flow is logic-compatible), or fab-lite through CELL-WAFER FOUNDRY.
 - **Display makers.** Sharp/SEL, LG Display, Samsung Display and BOE as IGZO-contact materials partners and IP counterparties, not volume makers.
 - **Tool makers.** Lam, Applied Materials, TEL and ASM: recess etch and anode ALD co-development.

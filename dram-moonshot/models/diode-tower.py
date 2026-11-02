@@ -130,7 +130,7 @@ INPUTS = {
 
 # --------------------------------------------------------------------------------------------
 # RED-TEAM REVISIONS (2026-11-02, owner response to research/redteam/rt_{DEV,PROC,CIRC,IND}.json)
-#   input: old -> new  [objection id]  why
+#   input: old -> new  [objection id]  why   (short ids: RT-CIRC-01 = RT-CIRC-diode-tower-01, etc.)
 # --------------------------------------------------------------------------------------------
 RT_REVISIONS = [
     ("sigma_cds_mV", "7 mV rms -> removed; sigma_rand_mV 2.5 rms + rtn_tail_mV 20 + coupling_mV 1.2 (deterministic) + dVf(slew)",
