@@ -214,7 +214,7 @@ Required Cs (fF) by random residual and coupling (32-cell segment, kick included
 | Sequential / M3D sense tiers: CEA-Leti CoolCube, M3D DRAM periphery tier (arXiv 2008.11367), Monolithic 3D ion-cut patents [Stage 2 critics] | 2010s-20s | Si sense tiers; capacitor not sized to the segment |
 | SK hynix vertical-gate 4F2 with bitline shielding | VLSI 2026 | No local gain |
 | ETH SAFARI SoftMC, DRAM Bender, PaCRAM (388 DDR4 chips) | 2018-25 | Our test method |
-| NAND soft-bit sensing (US 11,907,545); XED [training knowledge] | 2016-24 | Not in DRAM silicon |
+| NAND soft-bit sensing (US 11,907,545); XED on-die error flags; static weak-cell erasure maps (US 8,898,544); Razor delayed sampling (MICRO 2003); Solar-DRAM weak-cell profiles; chipkill marking [Stage 2 critics, training knowledge] | 2003-24 | Static or timing flags; no per-read DRAM sense-amp erasure flag |
 | Image-sensor source follower + CDS [training knowledge] | decades | Not memory |
 
 **The genuine delta.** Every part is known; no snippet showed them combined into one margin budget on an oxide access device built to shrink the capacitor. Claimable:
@@ -224,7 +224,7 @@ Required Cs (fF) by random residual and coupling (32-cell segment, kick included
 4. Pair-aware codeword orientation.
 5. A ≤ 100 nm lateral stub sized to a 16-tier segment.
 
-No oxide VCT program has published a capacitor cut. If DOSRAM already runs ~1 fF cells on short stacked bitlines, the novelty narrows to items 1-3.
+No logged snippet shows an oxide VCT program publishing a capacitor cut. If DOSRAM already runs ~1 fF cells on short stacked bitlines, the novelty narrows to items 1-3.
 
 ---
 

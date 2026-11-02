@@ -44,7 +44,7 @@ A DRAM bit is a bucket of charge (a capacitor) behind a tap (a transistor). Toda
 DIODE-TOWER etches one hole through a stack of metal "plate" floors. On each floor a small ring-shaped bucket wraps the hole. All the floors share one vertical metal core, the pillar, and only the pillar has a tap. Between each bucket and the pillar sits a **one-way valve**, an oxide Schottky diode.
 
 - **Read floor k.** Set the pillar to a known level and let it float. Pulse floor k's plate up. That bucket rises above the pillar, its valve opens and its charge pours in. An amplifier at the top of the hole samples the pillar before and after, and the subtraction cancels the amplifier's own error.
-- **Write floor k** (same pulse). Drive the pillar to the data level. The bucket drains to one valve-drop above it. When the plate drops, the bucket falls **below** any level the pillar can reach, so its valve stays shut (the plate-swing rule, §2.5).
+- **Write floor k** (same pulse). Drive the pillar to the data level. The bucket drains to one valve-drop above it. When the plate drops, the bucket falls **below** any level the pillar can reach, so its valve stays shut (the plate-swing rule, §2.4).
 - **The other floors.** Their plates don't move, so their valves stay reverse-biased. They lose only the diode's reverse leakage, and that leakage is the whole bet.
 
 ```
@@ -114,11 +114,11 @@ Parity comes at **18 tiers** and 3× at **50**. That is harsher than the critics
 | Best Pt-IGZO (KIT, secondary) | 0.92 eV | 0.78-0.82 eV | 0.2-0.8 ms |
 | AgOx on crystal ZnO (AVS 2008) | 1.10 eV | 0.94-0.98 eV | 35-140 ms (marginal) |
 
-The best IGZO result is **0.15-0.3 eV short**.
+The best IGZO result is **0.15-0.2 eV short** of the 64 ms bar, and 0.25-0.3 eV short of the 1 s bar.
 
 ### 2.4 Write, disturb, endurance
 
-- **Write current.** Charging 0.27 fF by 0.5 V in 10 ns takes **13.5 nA** on average, or **~512 A/cm²**, far above where oxide rectifiers are characterised. Forward bias flattens the shell, so the full low-field barrier applies. A 1.12 eV contact therefore needs V_f ≈ **1.10 V at 0 °C**, not the card's 0.7-0.9 V.
+- **Write current.** Charging 0.27 fF by 0.5 V in 10 ns takes **~13.6 nA** on average, or **~515 A/cm²**, far above where oxide rectifiers are characterised. Forward bias flattens the shell, so the full low-field barrier applies. A 1.12 eV contact therefore needs V_f ≈ **1.10 V at 0 °C**, not the card's 0.7-0.9 V.
 - **Plate-swing rule.** ΔV_PL ≥ Vdata + V_f + 0.2 V ≈ **1.8 V** keeps every stored level below the pillar minimum.
   - Without it, a victim forward-biased by 0.5 V loses 100 mV in 350 (0.9 eV) to 2.3e5 (1.1 eV) pillar accesses. At ~2e7 accesses/s, a 1.0 eV victim fails in **0.45 ms**. With the rule there are zero events.
   - ZrO₂ sees ≤0.7 V, because the floating node follows the plate.
@@ -190,7 +190,7 @@ Items 1-4 look new. Item 5 combines known parts.
 
 ## 4. Show-stoppers and how persistence could get around them
 
-1. **Barrier gap: 0.15-0.3 eV.** The design needs ≥1.07-1.12 eV, and the best on IGZO is 0.92 eV. *Paths:*
+1. **Barrier gap: 0.15-0.2 eV (64 ms), 0.25-0.3 eV (1 s).** The design needs ≥1.07-1.12 eV (≥1.17-1.22 eV for 1 s), and the best on IGZO is 0.92 eV. *Paths:*
    - AgOx-class anodes (1.0-1.2 eV on ZnO);
    - Ga-rich IGZO or a-Ga₂O₃ shells, whose lower electron affinity raises every barrier (higher Ga also stabilises Pt/IGZO, Sci Rep 2019);
    - a 20 nm shell (0.11-0.17 eV of lowering);
