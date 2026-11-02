@@ -174,6 +174,7 @@ Measure on **thin-shell vertical coupons at design thickness**, at 85 °C and 0.
 | Cross-point DRAM | US 5281837 | A vertical 1T1C, not diode-capacitor |
 | Floating-gate 3D-NAND recess | Micron/Intel [prior knowledge] | The tier process |
 | Vertical IGZO devices | Kioxia OCTRAM (2024-12, Ioff < 1 aA); imec 2T0C (2025, > 1e12 cycles); IMECAS 4-tier (VLSI 2026) | Access and gain FETs |
+| Supporting-block prior art named by Stage 2 critics | Samsung/SK hynix offset-cancellation sense amps, image-sensor CDS (I-05218); Hi-ECC (ISCA 2010), DDR5 on-die ECC, NAND LDPC soft sensing (I-11559); XED (ISCA 2016), Razor (MICRO 2003), weak-cell erasure maps US 8,898,544, chipkill marking (I-11148); Chipkill, SSD RAIN (I-00729); NEO 3D X-DRAM, Huawei vertical CAA IGZO (I-03474, I-10833); Toshiba NAND-structured DRAM, US 12082391 (I-10664); NaMLab biased-AFE ZrO₂, MPB-HZO capacitors (I-02355); Macronix VG-NAND layer select, coded ROM decoders (I-11544) | CDS read, ECC-paid margin, erasure flags, tier codes, in-hole oxide cells, AFE option and tier decoder. None of these is claimed as new |
 
 **Negative result.** Two searches and both stage-2 critics found **no diode-steered linear-capacitor 1T-nC or 1D1C DRAM**. That is not an FTO opinion, and pre-1990 diode-capacitor literature was not searched.
 
@@ -336,7 +337,7 @@ Items 1-4 look new. Item 5 combines known parts.
 - **Hafnium: not needed.** TiN/ZrO₂ tiers avoid HZO's 14-41% of separated Hf. The AFE upgrade would bring it back.
 - **Ruthenium: fine only as a thin anode** [ESTIMATE, this dossier].
   - A solid RuOx ring (49,480 nm³ per tier, 64 tiers) is ~0.0075 cm³ per wafer: 0.04 g Ru, or 0.003 mg/GB.
-  - A2's Ru-electrode case is 0.10 mg/GB (26-176% of world Ru). The ring is ~36× less: **~0.7-5% of world Ru**, at A2's 5% flag.
+  - A2's Ru-electrode case deposits ~0.14 mg/GB (0.42 g per 3,068-GB wafer; 26-176% of world Ru, depending on utilization). The ring is ~40× less: **~0.6-4% of world Ru**, just under A2's 5% flag.
   - A 2 nm liner on a TiN ring cuts that ~10×. Ru tripled to $56/g in a year (A2).
   - **Prefer AgOx or MoOx.** Keep Ir to thin liners.
 - **Indium and gallium.** The 64-tier IGZO shell is ~0.1 g per wafer (In 0.036 g, Ga 0.022 g), negligible on quantity. But Ga is ~98% Chinese, and the suspension of the U.S. ban lapses **2026-11-27** (A2). Ga-rich and Ga₂O₃ shells raise that exposure, **so keep a Ga-free shell in the matrix.**
