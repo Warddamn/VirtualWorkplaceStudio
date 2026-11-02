@@ -1,6 +1,6 @@
 # CHARGE-RIVER: technical dossier
 
-**Agent:** `dosw-charge-river` · **Written:** 2026-11-02 · **Inputs:** `research/stage3/FINAL_CONCEPTS.{json,md}`, `research/stage3/charge-river_notes.md`, `research/stage3/charge-river_model_output.md`, `models/charge-river.py` (re-run 2026-11-02, exit 0), `MISSION.md`. Sources are logged in `research/sources/*.jsonl`; assumptions are in `research/assumptions/dos-charge-river.md`.
+**Agent:** `dosw-charge-river` · **Written:** 2026-11-02 · **Inputs:** `research/stage3/FINAL_CONCEPTS.{json,md}`, `research/stage3/charge-river_notes.md`, `research/stage3/charge-river_model_output.md`, `models/charge-river.py` (re-run 2026-11-02, exit 0), `MISSION.md`. Sources are logged in `research/sources/*.jsonl`; assumptions are in `research/assumptions/dos-charge-river.md`. *(Revised after red team, 2026-11-02: see section 11; model re-run, exit 0.)*
 
 **Tags.** [REPORTED] = search snippet or secondary source. [ESTIMATE] = our arithmetic. [SPECULATIVE] = physics nobody has shown. [UNVERIFIED] = training knowledge, not confirmed this session.
 
