@@ -1,0 +1,96 @@
+{"id": "I-11343", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sensor-held frame buffer", "note": "X-ray flat panels already integrate and hold charge; ROI readout is known. Niche scanner segment."}
+{"id": "I-04918", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-00314", "theme": "trained-dictionary page compression", "note": ""}
+{"id": "I-10853", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "I-03044", "theme": "KV recompute from checkpoints", "note": "Rebuilding 7 skipped layers needs full-layer compute over all context tokens each step, far beyond decode slack."}
+{"id": "I-07660", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "predictive memory overcommit", "note": "Forecast-based overcommit is established hyperscaler practice."}
+{"id": "I-09035", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "controller zero-line overcommit", "note": ""}
+{"id": "I-09503", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "SiC gain cell", "note": "SiC cannot integrate monolithically with Si NPU logic; IGZO gain cells already give long retention."}
+{"id": "I-04909", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "KV recompute vs retain", "note": "Dropping or spilling KV between turns with a cost model is common serving practice."}
+{"id": "I-04921", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "cold-page heap right-sizing", "note": "Close to TMO/Senpai/DAMON-based proactive reclaim."}
+{"id": "I-00314", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "trained-dictionary page compression", "note": "Per-cgroup zstd dictionaries for zswap; a 4-5x ratio is optimistic."}
+{"id": "I-03502", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CXL switch dedup", "note": "Decaying popularity table avoids full scans; twist on cross-host dedup."}
+{"id": "I-01673", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00740", "theme": "compression-embedded ECC", "note": ""}
+{"id": "I-08130", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "log template encoding", "note": "Already done by NanoLog/CLP-style systems; small DRAM segment."}
+{"id": "I-00745", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "block-sparse zero pages", "note": "Accuracy at 30-60% page-granular block sparsity is the doubt."}
+{"id": "I-07662", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "regenerable PRNG pages", "note": "Small real footprint; frameworks already regenerate dropout masks from seeds."}
+{"id": "I-05824", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "BEOL ReRAM weights", "note": "BEOL ReRAM capacity per die (a few GB) is far below model sizes; read bandwidth is unproven."}
+{"id": "I-06718", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-03502", "theme": "CXL switch dedup", "note": ""}
+{"id": "I-09477", "P": 2, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "oscillator associative dedup", "note": "Hash lookup is not the dedup bottleneck; analog phase locking of page signatures is fragile."}
+{"id": "I-09508", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "spike-coded activations", "note": "The memory gain comes from sparse coding; NbO2 hardware adds little."}
+{"id": "I-10436", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "BER-tolerant sketches", "note": "Median across sketch rows absorbs cell flips; enables cheap high-BER cells for sketch workloads."}
+{"id": "I-04877", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-03502", "theme": "CXL switch dedup", "note": ""}
+{"id": "I-03044", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "KV recompute from checkpoints", "note": "Recomputing intermediate layers for all cold tokens each step scales with context and exceeds idle FLOPs."}
+{"id": "I-05358", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "never-read line tracking", "note": ""}
+{"id": "I-07641", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "texture-format tensor compression", "note": "BC/ASTC exploit spatial image correlation that weights lack; little gain over 4-bit quantization."}
+{"id": "I-00319", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "hashed embedding generation", "note": "Deep Hash Embedding is published prior art."}
+{"id": "I-07193", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "memory budget CI gate", "note": ""}
+{"id": "I-09978", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "memory-energy procurement labels", "note": "Binding federal procurement mandate is slow and uncertain; a labeling pilot is feasible."}
+{"id": "I-00316", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "follow-the-sun scheduling", "note": "Data gravity and migration cost limit gains; carbon-aware variants exist."}
+{"id": "I-00740", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compression-embedded ECC", "note": "Close to the published COP (compress-and-protect) work."}
+{"id": "I-09936", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-05358", "theme": "never-read line tracking", "note": ""}
+{"id": "I-10880", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "carbon antifuse XIP ROM", "note": "Burn-once code breaks patching; code is only 5-15% of RSS."}
+{"id": "I-06290", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "speculative decode offload", "note": "SpecExec-style offloading exists; host DDR/PCIe bandwidth caps throughput."}
+{"id": "I-06760", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03534", "theme": "DIMM reuse cascade", "note": ""}
+{"id": "I-02145", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "elastic JVM heap pooling", "note": "Similar to existing elastic-heap JVM features."}
+{"id": "I-03989", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "kill-and-rehydrate services", "note": ""}
+{"id": "I-03965", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "erasure-coded RAM", "note": "EC-Cache, Hydra and Carbink already do this."}
+{"id": "I-09939", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-03965", "theme": "erasure-coded RAM", "note": ""}
+{"id": "I-00305", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "shared RAG chunk KV", "note": "CacheBlend/EPIC-style position-independent caching is published."}
+{"id": "I-02599", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "attention offload to DDR", "note": "Matches published attention-offloading systems (FastDecode, Lamina)."}
+{"id": "I-10412", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "computational storage pushdown", "note": ""}
+{"id": "I-05818", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "learned index", "note": "Learned indexes (Kraska 2018) are widely pursued."}
+{"id": "I-04422", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "depreciated-fab bulk tier", "note": "Old-node bit density is 2-3x lower, so zero depreciation only partly closes the cost-per-bit gap."}
+{"id": "I-00294", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "consumer RAM donation", "note": "WAN latency makes donated RAM worse than data-center SSD for cold objects."}
+{"id": "I-03969", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "global weight codebook", "note": "VQ quantizers (AQLM/QuIP#) are prior art; gain over 4-bit is modest."}
+{"id": "I-01683", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "flash main memory, threads", "note": "Key doubt: 64B loads from 4KB+ flash pages cause huge read amplification, IOPS ceilings and write wear."}
+{"id": "I-01214", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compressed 32-bit pointers", "note": ""}
+{"id": "I-00772", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00314", "theme": "trained-dictionary page compression", "note": ""}
+{"id": "I-09029", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "KV vector quantization", "note": "Base-die placement needs an HBM vendor; KV quantization is widely done in kernels."}
+{"id": "I-08135", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-06732", "theme": "sketch-first analytics", "note": ""}
+{"id": "I-03046", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-00314", "theme": "trained-dictionary page compression", "note": ""}
+{"id": "I-03523", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "rewritable row remapping", "note": "Soft PPR and controller remapping already exist."}
+{"id": "I-10409", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "base-plus-delta fine-tunes", "note": "BitDelta and S-LoRA/Punica are prior art."}
+{"id": "I-09507", "P": 2, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "nanomagnetic in-place logic", "note": "Dipole-coupled nanomagnet logic has high error rates; needs custom fab."}
+{"id": "I-03516", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "shared MSB bit-planes", "note": ""}
+{"id": "I-05380", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "hollow-core pool reach", "note": "Propagation is a minor share of pool latency; the DRAM gain is a few percent."}
+{"id": "I-05823", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "CIM key sketch top-k", "note": "Insight: a 1-bit key sketch in BEOL CIM picks the tokens. Doubts: sketch top-k accuracy, per-layer flash fetch latency."}
+{"id": "I-07645", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "sub-page delta dedup", "note": "Difference Engine (OSDI 2008) did sub-page patching."}
+{"id": "I-02578", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "predictive residual storage", "note": "Cross-layer KV correlation is weak; plain 4-bit quantization already gets most of the gain."}
+{"id": "I-10398", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-09029", "theme": "KV vector quantization", "note": "PQ-based KV compression and LUT attention are published."}
+{"id": "I-08586", "P": 2, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "in-DRAM CAM", "note": "1T1C cells cannot compare; CAM needs per-cell logic, not one metal mask."}
+{"id": "I-10898", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "model cascade routing", "note": "FrugalGPT/RouteLLM are prior art."}
+{"id": "I-06296", "P": 3, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "video-codec KV compression", "note": "Close to LLM.265 (video codecs as tensor codecs)."}
+{"id": "I-03988", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "fan back-EMF flush", "note": "Fan rotor energy (~10 J) is real but small; it bounds the dirty set to tens of GB."}
+{"id": "I-05340", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "cost-based rematerialization", "note": "Generalizes DTR/Checkmate rematerialization."}
+{"id": "I-02601", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "disaggregated memory chassis", "note": ""}
+{"id": "I-10892", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "on-sensor tokenization", "note": "On-sensor AI (e.g. IMX500) exists; frame buffers are a small DRAM share."}
+{"id": "I-10418", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "outlier-protected approximate memory", "note": "Most of the 10x comes from known quantization; 1% BER tolerance is optimistic."}
+{"id": "I-02619", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-01214", "theme": "compressed 32-bit pointers", "note": ""}
+{"id": "I-02597", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "expert-major MoE offload", "note": "Throughput-oriented MoE offloading (MoE-Lightning etc.) exists."}
+{"id": "I-01218", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "frequent-value compression", "note": "Frequent-value compression is decades-old art."}
+{"id": "I-06739", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "all-SRAM inference", "note": "Groq/Cerebras precedent; SRAM costs ~50x DRAM per bit; needs a leading-edge logic fab."}
+{"id": "I-09971", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "partial-row activation layout", "note": "Needs non-commodity partial-activation DRAM; fine-grained activation is known."}
+{"id": "I-09039", "P": 2, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "racetrack KV loops", "note": "Streaming KV access suits racetrack, but shift errors and bandwidth remain unsolved after decades."}
+{"id": "I-07208", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "replay-based state rebuild", "note": ""}
+{"id": "I-00313", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "profile-guided field narrowing", "note": ""}
+{"id": "I-06732", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "annotated approximate structures", "note": ""}
+{"id": "I-04906", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "zygote CoW runtimes", "note": "Zygote and forkserver patterns are established."}
+{"id": "I-11350", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "printed analog sketch tags", "note": "Printed analog capacitors drift; IoT ingest DRAM is a niche."}
+{"id": "I-06748", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-04906", "theme": "zygote CoW runtimes", "note": ""}
+{"id": "I-04419", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "broadcast weight-stream ring", "note": "One weight copy streamed per rack; each tap must ingest ~1.25 TB/s and runs ~56 ms per step."}
+{"id": "I-02161", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "downgraded-die modules", "note": "Downgraded dies already sell as lower-grade parts; small supply gain."}
+{"id": "I-04884", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "line-granular tiering", "note": "Line-level remap metadata for TB-scale memory is the cost."}
+{"id": "I-06266", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-03965", "theme": "erasure-coded RAM", "note": ""}
+{"id": "I-02140", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "forkless snapshots", "note": "userfaultfd-WP snapshots already ship in QEMU and Dragonfly."}
+{"id": "I-04885", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "near-memory GC", "note": "Hardware/near-memory GC is published; allocation still needs headroom."}
+{"id": "I-03052", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "key-resident sparse KV", "note": "ShadowKV/InfiniGen-style prior art."}
+{"id": "I-02586", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane precision tiering", "note": ""}
+{"id": "I-08133", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00316", "theme": "follow-the-sun scheduling", "note": ""}
+{"id": "I-10894", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hardware hash-consing", "note": ""}
+{"id": "I-00760", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "DIMM-buffer compression", "note": "Real BDI ratios are ~1.5x; adding indirection to timing-critical buffers is hard."}
+{"id": "I-07671", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "footprint patch bounties", "note": ""}
+{"id": "I-03534", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "DIMM reuse cascade", "note": "Azure-style CXL reuse of retired DIMMs already exists."}
+{"id": "I-09031", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tiering patent pool", "note": ""}
+{"id": "I-07672", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory footprint labels", "note": ""}
+{"id": "I-03529", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "retired-server memory donors", "note": ""}
+{"id": "I-00743", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "learned FTL mapping", "note": "LeaFTL (ASPLOS 2023) is direct prior art."}
+{"id": "I-04458", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "analog leaky optimizer state", "note": "Analog precision and drift are inadequate, and 8-bit optimizers already cut optimizer state."}
