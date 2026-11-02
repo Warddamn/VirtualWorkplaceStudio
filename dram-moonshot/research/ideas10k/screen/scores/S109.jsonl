@@ -1,0 +1,96 @@
+{"id": "I-06275", "P": 4, "S": 4, "N": 3, "D": 4, "dup_of": "", "theme": "KV gist recompute", "note": "Gist KV plus attention-triggered re-prefill could cut agent KV ~20x; doubt: gist fidelity and re-prefill latency spikes."}
+{"id": "I-05369", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "optical speckle dedup", "note": "Optical random projection as LSH is real; modulating pages onto light costs more than software KSM hashing."}
+{"id": "I-04001", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "optimizer state offload", "note": "ZeRO-Infinity-like offload; staggered stale moments bound flash wear, convergence impact unknown."}
+{"id": "I-09497", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "skyrmion reservoir", "note": "Skyrmion reservoir computing already in lab literature; niche streaming models."}
+{"id": "I-08576", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "predictive line compression", "note": "Predicting from neighbor lines needs extra accesses; gain over BDI/FPC-style compression modest."}
+{"id": "I-08566", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "delta-tree fine-tunes", "note": "BitDelta-style 1-bit deltas arranged hierarchically; easy software demo."}
+{"id": "I-00278", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "KV on NVM log", "note": "Write-once KV matches NVM; prefill write bandwidth and RRAM endurance over many conversations are doubts."}
+{"id": "I-09045", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "layer streaming flash", "note": "FlexGen-like; KV and activations still need DRAM, so not truly DRAM-free."}
+{"id": "I-07199", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "learned generative codec", "note": "30-300x overclaimed; learned codecs beat zstd modestly and decode latency is huge in memory path."}
+{"id": "I-02144", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compiler field narrowing", "note": "Profile-guided struct narrowing; guards add complexity."}
+{"id": "I-09044", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NAND read-only CXL", "note": "Like XL-Flash/CMM-H; microsecond NAND latency makes load/store stalls painful."}
+{"id": "I-06272", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "MoE expert prefetch", "note": "Pre-gated MoE / MoE-Infinity already pursue this."}
+{"id": "I-07182", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "compress-then-encrypt", "note": "Size side-channel leakage is the key doubt for confidential VMs."}
+{"id": "I-02122", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hardware heap compaction", "note": "Hardware lacks object boundaries; per-object redirection table would be huge."}
+{"id": "I-09494", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "holographic storage tier", "note": "Holographic storage repeatedly failed; NAND/CXL already fills this tier."}
+{"id": "I-01670", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02144", "theme": "compiler field narrowing", "note": ""}
+{"id": "I-01201", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "seed-regenerated tensors", "note": "SeedLM/PRANC-like; few production models store large random tensors."}
+{"id": "I-01235", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "filter-fronted NVM index", "note": "SILT/learned-index style; one NVM read per lookup is known art."}
+{"id": "I-03059", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01201", "theme": "seed-regenerated tensors", "note": ""}
+{"id": "I-04911", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "learned indexes", "note": "Kraska 2018; widely pursued."}
+{"id": "I-06725", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "PIM hash join", "note": "Demonstrable on UPMEM; PIM joins already studied."}
+{"id": "I-07642", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "CXL near-data operators", "note": "Computational CXL memory widely pursued."}
+{"id": "I-09963", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "sketch-fronted tables", "note": "Sketch-first lookups are standard practice."}
+{"id": "I-09501", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "SAW radar compression", "note": "FMCW dechirp already gives cheap range; CFAR before Doppler integration loses SNR."}
+{"id": "I-04443", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "plated-wire NDRO", "note": "Plated-wire density is orders below DRAM/NAND; MRAM already covers magnetic NDRO."}
+{"id": "I-01202", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "neural hash embeddings", "note": "DHE-like; IDs lack spatial locality, so hash-grid accuracy is the doubt."}
+{"id": "I-09017", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "CXL inline compression", "note": "Being commercialized (e.g. CXL compressed-memory controllers)."}
+{"id": "I-09049", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "CNT NRAM BEOL", "note": "NRAM already BEOL-compatible; density and speed, not contamination, are the real blockers."}
+{"id": "I-04882", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "position-independent KV sharing", "note": "CacheBlend/EPIC-like; cross-chunk attention loss needs blending."}
+{"id": "I-06261", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hardware page meshing", "note": "Hardware version of Mesh allocator."}
+{"id": "I-05806", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ECC-embedded compression metadata", "note": "Close to COP and Attache compression-ECC co-design."}
+{"id": "I-03080", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "erasure-coded memory store", "note": "EC-Cache/Cocytus-style known art."}
+{"id": "I-01227", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "frozen base adapters", "note": "S-LoRA/Punica known; base weights still need bandwidth from NV."}
+{"id": "I-08112", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane tiering", "note": "Bit-plane layout breaks locality; most inference needs full precision."}
+{"id": "I-00309", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "I-03080", "theme": "erasure-coded memory store", "note": ""}
+{"id": "I-00749", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "compositional embeddings", "note": "QR/hashing-trick embeddings with frequency-based promotion are known."}
+{"id": "I-09946", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-00749", "theme": "compositional embeddings", "note": ""}
+{"id": "I-05347", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02144", "theme": "compiler field narrowing", "note": "Adds hardware bitfield load/store to struct narrowing."}
+{"id": "I-05830", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "memory chiplet reuse", "note": "HBM generations change interfaces; SI at fine pitch through ACF/sockets doubtful."}
+{"id": "I-09518", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "thermally gated ionic memory", "note": "400 C microheaters in BEOL raise thermal crosstalk and energy; dedup claim is a separate effect."}
+{"id": "I-02596", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "memory spot market", "note": ""}
+{"id": "I-10858", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-09045", "theme": "layer streaming flash", "note": ""}
+{"id": "I-03073", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "line-pair compression", "note": "Similar to LCP/buddy-style compressed layouts."}
+{"id": "I-09957", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hardware TTL memory", "note": ""}
+{"id": "I-05802", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "refresh-aged hotness", "note": "Refresh restoring rows could decay counters for free; needs on-die logic changes."}
+{"id": "I-09490", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "RTD inline decompression", "note": "Decompression latency is algorithmic, not gate-speed bound; RTD integration unproven."}
+{"id": "I-10433", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "error-tolerant KV clamping", "note": "Ranger-style range clamping applied to KV in 1%-BER cells."}
+{"id": "I-00295", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "client-carried state", "note": ""}
+{"id": "I-05381", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory-in-pixel display", "note": "Sharp MIP exists; 1-3 bits per subpixel is too few for HDR color."}
+{"id": "I-07191", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "in-switch hot cache", "note": "NetCache (2017)."}
+{"id": "I-03982", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "mask-ROM weights", "note": "Hardwired-model chips already pursued; mature-node ROM is not denser than DRAM."}
+{"id": "I-09027", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "helper-thread prefetch", "note": "Helper-thread prefetching is well studied; cannot hide NAND latency."}
+{"id": "I-03963", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "memory futures market", "note": ""}
+{"id": "I-10425", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "error-tolerant DRAM binning", "note": "Relaxed-spec AI-grade SKU could widen process windows; needs maker buy-in."}
+{"id": "I-03542", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "HBM spare die", "note": "HBM already uses redundant TSVs; spare die adds cost."}
+{"id": "I-07207", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "external-memory algorithms", "note": "Classic external-memory algorithms."}
+{"id": "I-02581", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-09045", "theme": "layer streaming flash", "note": "FlexGen-style layer-major batching."}
+{"id": "I-00759", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-06272", "theme": "MoE expert prefetch", "note": ""}
+{"id": "I-02149", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-06272", "theme": "MoE expert prefetch", "note": ""}
+{"id": "I-10429", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "I-03080", "theme": "erasure-coded memory store", "note": "Adds inner LDPC so 1%-BER modules replace per-DIMM ECC."}
+{"id": "I-07192", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "hardware GC barriers", "note": "Azul Vega shipped hardware read barriers; managed-runtime headroom is a big share."}
+{"id": "I-02621", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "frequency-domain KV", "note": "RoPE-rotated keys are not smooth along sequence; easy GPU kernel test."}
+{"id": "I-01666", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-06261", "theme": "hardware page meshing", "note": ""}
+{"id": "I-06260", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "line-granular CoW", "note": "Page Overlays (MICRO 2015) proposed this."}
+{"id": "I-00746", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-08112", "theme": "bit-plane tiering", "note": ""}
+{"id": "I-02118", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "KV recompute from residuals", "note": "Intermediate layers need attention over all tokens, so recompute is a prefill per step."}
+{"id": "I-04429", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "working-set billing", "note": ""}
+{"id": "I-03998", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "in-storage scan", "note": "Computational-storage scans with Bloom summaries are known."}
+{"id": "I-01674", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-08112", "theme": "bit-plane tiering", "note": ""}
+{"id": "I-02613", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "serverless snapshot restore", "note": "Firecracker snapshots, REAP and FaaSnap already do this."}
+{"id": "I-01232", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "in-DRAM analog compute", "note": "Analog charge-sharing MAC precision is limited."}
+{"id": "I-07189", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-10425", "theme": "error-tolerant DRAM binning", "note": ""}
+{"id": "I-07663", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02144", "theme": "compiler field narrowing", "note": ""}
+{"id": "I-03536", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "rack spare pool", "note": ""}
+{"id": "I-08588", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "PIM broadcast bus", "note": "Single shared bus serializes PIM units."}
+{"id": "I-10428", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "error-resilient compression", "note": "RVLC/resync codecs are known; applying them to approximate memory is a twist."}
+{"id": "I-03528", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-05830", "theme": "memory chiplet reuse", "note": "Pressure contacts at HBM microbump pitch are very hard."}
+{"id": "I-04892", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "I-03080", "theme": "erasure-coded memory store", "note": ""}
+{"id": "I-04002", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "I-09963", "theme": "sketch-fronted tables", "note": ""}
+{"id": "I-05368", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical attention prefilter", "note": "Photorefractive recording is slow and decays on read; per-token key appends are a doubt."}
+{"id": "I-02598", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "compute on compressed data", "note": "Columnar DBs and LUT-GEMM already do this."}
+{"id": "I-06756", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "DPA efficiency rationing", "note": "Novel policy lever, but US domestic DRAM output is tiny and politically implausible."}
+{"id": "I-03978", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-09045", "theme": "layer streaming flash", "note": ""}
+{"id": "I-09041", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "stochastic memristor counters", "note": "Signed EMA moments do not fit monotonic counters; 8-bit Adam already cuts state."}
+{"id": "I-03509", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "compiler buffer reuse", "note": "XLA/TVM memory planning does this."}
+{"id": "I-01238", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "approximate DRAM training", "note": "Close to EDEN/Flikker; refresh is a small share of DRAM power."}
+{"id": "I-04440", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "CCD weight streamer", "note": "Novel use of CCD shift registers; density at mature node loses to DRAM."}
+{"id": "I-09953", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-06261", "theme": "hardware page meshing", "note": ""}
+{"id": "I-10437", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-00749", "theme": "compositional embeddings", "note": ""}
+{"id": "I-03043", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "nested quantization tiering", "note": "Matryoshka quantization (2025) exists."}
+{"id": "I-07190", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-06275", "theme": "KV gist recompute", "note": "Without stored KV, predictor needs some summary to flag relevance."}
+{"id": "I-10877", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "host-DRAM-lite AI node", "note": "GPUDirect Storage and GPU decode already exist."}
+{"id": "I-10426", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-quality data placement", "note": "Heterogeneous-reliability memory work covers this."}
+{"id": "I-10888", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "superword tokenizer", "note": "SuperBPE-style; needs model retraining."}
+{"id": "I-03503", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "mixed-precision KV", "note": "Importance-based mixed-precision KV is known (MiKV, ZipCache)."}
+{"id": "I-05814", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "in-place recompression", "note": "Multi-codec compressed tiers like zswap are known."}

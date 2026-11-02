@@ -1,0 +1,94 @@
+{"id": "I-05875", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "CXL near-memory processing", "note": "Widely pursued (CXL-PNM, SmartSSD); easy FPGA demo but incremental."}
+{"id": "I-02639", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "memory-centric disaggregation", "note": ""}
+{"id": "I-02668", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "optical power delivery", "note": "Lower dies still need power vias; PV heat and windows in stack; only tiny-power stacks."}
+{"id": "I-10002", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "contactless wafer probing", "note": "Inductive/capacitive probing known (Scanimetrics); power still needs contact."}
+{"id": "I-09064", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "WDM optical memory bus", "note": ""}
+{"id": "I-11400", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "nanowire anisotropic film", "note": "Pad-to-pad die alignment still required at 1 um pitch; film removes only bump alignment."}
+{"id": "I-02633", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "asymmetric bidirectional PHY", "note": ""}
+{"id": "I-04935", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "row-buffer direct bonding", "note": "Exposing full row buffers to logic kills overfetch and global I/O energy; needs DRAM-fab cooperation and dense bonds over SA stripes."}
+{"id": "I-07241", "P": 4, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-on-wafer DRAM-logic", "note": "~10x I/O energy cut, but WoW DRAM-on-logic already shipped (UniIC SeDRAM) and pursued by majors."}
+{"id": "I-06346", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "dry packaging foundry", "note": ""}
+{"id": "I-00820", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "liquid-metal reworkable bonds", "note": "Ga alloys with Au/Ni-P over time; pitch and reliability doubtful."}
+{"id": "I-01268", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "staircase die stacking", "note": "Essentially Vertical Circuits/Invensas conductive-polymer stair-step stacking."}
+{"id": "I-07227", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical weight broadcast", "note": "Needs lockstep GPUs and TB/s optical receive per device; split loss limits fan-out."}
+{"id": "I-06806", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ESD-free bonded I/O", "note": "LCD shorting-bar trick; bar is buried after hybrid bonding, so needs electrical fuse."}
+{"id": "I-05846", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-01250", "theme": "acoustic vertical links", "note": ""}
+{"id": "I-08644", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "error-spreading transforms", "note": "Spreading equalizes but does not shrink MSB-flip error energy; value depends on cheap high-BER DRAM existing."}
+{"id": "I-07703", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "HBM capacity pooling", "note": ""}
+{"id": "I-05860", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "FDM over TSV", "note": "Multi-band RF-interconnect known; mixer/filter area may exceed saved keep-out."}
+{"id": "I-06308", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "capacitive proximity coupling", "note": "Sun proximity communication heritage; power delivery and 1 um gap clamping are open."}
+{"id": "I-06313", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-01724", "theme": "edge-standing dies", "note": ""}
+{"id": "I-07700", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "tensor compression", "note": "Shared-exponent formats (MX) already capture much of this."}
+{"id": "I-10481", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-rolled sub-THz antennas", "note": "Wireless buses lack bandwidth density and energy efficiency vs wires."}
+{"id": "I-00339", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "doped-silicon TSV", "note": "Known (Silex Sil-Via); high resistance limits to slow lanes."}
+{"id": "I-06768", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-05860", "theme": "FDM over TSV", "note": ""}
+{"id": "I-09983", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "reworkable HBM attach", "note": "SMA micro-springs at microbump pitch unproven; test-before-commit is the real value."}
+{"id": "I-05888", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "open-source memory IP", "note": ""}
+{"id": "I-09081", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "CXL memory compression", "note": "CXL-controller compression already commercialized/proposed (e.g., ZeroPoint)."}
+{"id": "I-10480", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "air-gap fiber dielectric", "note": "Fibrous mats cannot support 2 um lithographic wiring or CMP."}
+{"id": "I-04497", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "fluorine-free TSV etch", "note": ""}
+{"id": "I-08627", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "deferred ECC correction", "note": "Matmul linearity lets correction trail compute (ABFT-like); E may be denser than 1-2% at 1% BER."}
+{"id": "I-06320", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "thermal interlayers", "note": "Low-temperature BAs films do not exist; poly-diamond k low and incompatible with hybrid bonding."}
+{"id": "I-06769", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01250", "theme": "acoustic vertical links", "note": ""}
+{"id": "I-02186", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "mask-ROM weights", "note": "Mature-node via-ROM is ~10x less dense than DRAM; only frozen models; Taalas-like hardwiring exists."}
+{"id": "I-01742", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "e-waste material recovery", "note": ""}
+{"id": "I-08155", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-07684", "theme": "data over power rails", "note": ""}
+{"id": "I-05861", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory filtering", "note": ""}
+{"id": "I-08147", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "streaming KV port", "note": ""}
+{"id": "I-09522", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-04006", "theme": "through-silicon optical vias", "note": ""}
+{"id": "I-07701", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "adaptive maskless RDL", "note": "Deca Adaptive Patterning already does per-package maskless RDL."}
+{"id": "I-10012", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "thin-film Peltier cooling", "note": ""}
+{"id": "I-10441", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "roll-to-roll interposer", "note": "2 um overlay on dimensionally unstable polyimide web is the key doubt."}
+{"id": "I-01254", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "folded-flex stacking", "note": ""}
+{"id": "I-04953", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "periphery offload", "note": "Wordline drivers and SAs stay local; interposer bond density limits how much periphery moves."}
+{"id": "I-11376", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "dielectric waveguide links", "note": ""}
+{"id": "I-07710", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "thermal isolation stacking", "note": "Near-field signaling density across 5-10 um vacuum gap and mechanical support are doubtful."}
+{"id": "I-00361", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "optical contactless test", "note": "Flash-powered PV gives mW; full-speed DRAM BIST needs far more power."}
+{"id": "I-10448", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "printed RDL", "note": ""}
+{"id": "I-08638", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "test-in-field ECC", "note": ""}
+{"id": "I-03085", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "tier-tapered TSVs", "note": ""}
+{"id": "I-08628", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "significance-aware placement", "note": ""}
+{"id": "I-01710", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "delta write compression", "note": ""}
+{"id": "I-04006", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "through-silicon optical vias", "note": "BEOL metal in every tier blocks light; needs windows and per-tier detectors."}
+{"id": "I-04015", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-02632", "theme": "bit-plane precision fetch", "note": ""}
+{"id": "I-02632", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane precision fetch", "note": "Close to Any-Precision LLM bit-plane storage and bit-serial accelerators."}
+{"id": "I-07687", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "inter-chiplet SRAM bridges", "note": ""}
+{"id": "I-05887", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "on-package LPDDR arrays", "note": ""}
+{"id": "I-02635", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "logic-on-DRAM stacking", "note": "Big vertical bandwidth and energy gain; feeding hundreds of watts through DRAM dies costs area and noise."}
+{"id": "I-04026", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "glass panel interposers", "note": "Glass interposers widely pursued; LCD-line reuse is the twist."}
+{"id": "I-04016", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "near-memory reduction", "note": ""}
+{"id": "I-04481", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "I-02632", "theme": "bit-plane precision fetch", "note": ""}
+{"id": "I-10943", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "KV cache quantization", "note": "Even 16x-compressed KV caches exceed base-die SRAM; PQ KV caches already published."}
+{"id": "I-04047", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "low-temp Cu bonding", "note": "Nanotwinned Cu low-temperature bonding is established prior art (NYCU)."}
+{"id": "I-02169", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "reworkable nano-interconnect", "note": "Resembles Cu nanowire 'Klett-welding' work; contact reliability at speed unproven."}
+{"id": "I-02183", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "HBM capacity pooling", "note": ""}
+{"id": "I-01250", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "acoustic vertical links", "note": "Acoustic channel density and per-channel bandwidth far below TSVs; bond interfaces reflect."}
+{"id": "I-08150", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "stack-to-stack links", "note": ""}
+{"id": "I-07702", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-07227", "theme": "optical weight broadcast", "note": ""}
+{"id": "I-05858", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "compliant spring interconnect", "note": "Close to Georgia Tech G-Helix compliant interconnects."}
+{"id": "I-08606", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00820", "theme": "liquid-metal reworkable bonds", "note": ""}
+{"id": "I-03552", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "shared-periphery bonding", "note": "Bitline pitch (~40 nm) far below hybrid-bond pitch; per-bitline sharing across dies infeasible today."}
+{"id": "I-04030", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01250", "theme": "acoustic vertical links", "note": ""}
+{"id": "I-02182", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "distributed memory-on-logic", "note": "Short vertical wires cut I/O energy ~15x; DRAM over hot logic raises refresh and thermal limits."}
+{"id": "I-07711", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "remote-laser optical link", "note": "External-laser modulator links are standard silicon photonics practice."}
+{"id": "I-01730", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00820", "theme": "liquid-metal reworkable bonds", "note": ""}
+{"id": "I-01708", "P": 3, "S": 4, "N": 3, "D": 1, "dup_of": "", "theme": "backside DRAM-on-logic", "note": "~0.1 pJ/bit claim plausible; power must traverse DRAM layer and needs BSPDN wafers."}
+{"id": "I-01741", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "persistent memory backplane", "note": ""}
+{"id": "I-06332", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "dry die attach", "note": ""}
+{"id": "I-06345", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "water-budget incentives", "note": ""}
+{"id": "I-07706", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "wide-bandgap periphery", "note": "SiC CMOS is micron-scale and slow; cannot run HBM PHY speeds."}
+{"id": "I-08624", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "row-scale ECC", "note": "Rate-0.85 near capacity at 1% BER needs long iterative decode; partial writes force row parity updates."}
+{"id": "I-08174", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "PIM attention", "note": "Widely pursued (AttAcc, NeuPIMs, HBM-PIM); top-k accuracy trade-off."}
+{"id": "I-04946", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "eDRAM chiplet tier", "note": ""}
+{"id": "I-09561", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "reworkable underfill", "note": ""}
+{"id": "I-01724", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "edge-standing dies", "note": "Edge-interconnect cubes known (Irvine Sensors); edge pad bandwidth is limited."}
+{"id": "I-01746", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "memory leasing", "note": ""}
+{"id": "I-01738", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DRAM health telemetry", "note": ""}
+{"id": "I-06312", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "array-as-capacitor reuse", "note": "Access-transistor ESR and cell voltage limits hurt converter efficiency; failed arrays may be shorted."}
+{"id": "I-01726", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "inductive coupling stacks", "note": "ThruChip inductive stacking exists; power delivery still needs vias."}
+{"id": "I-10914", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-04026", "theme": "glass panel interposers", "note": ""}
+{"id": "I-00790", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "backscatter links", "note": "Unbonded dies still need power; cavity multipath limits bandwidth."}
+{"id": "I-01719", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "serialized TSVs", "note": ""}
+{"id": "I-02181", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "NIC in base die", "note": ""}
+{"id": "I-04027", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "nanoimprint RDL", "note": ""}
+{"id": "I-07684", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "data over power rails", "note": "Decoupling capacitance shunts high-frequency data; LC isolation costs area."}

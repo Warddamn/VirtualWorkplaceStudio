@@ -1,0 +1,96 @@
+{"id": "I-03344", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-01941", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "avalanche bitline sensing", "note": ""}
+{"id": "I-06531", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tunnel-diode sense latch", "note": ""}
+{"id": "I-06997", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "backside layer-transfer periphery", "note": ""}
+{"id": "I-07020", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "printed TFT control logic", "note": ""}
+{"id": "I-02859", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "vertical-transistor SWD", "note": ""}
+{"id": "I-02861", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline coupling cancellation", "note": ""}
+{"id": "I-05164", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "controller-offloaded periphery", "note": ""}
+{"id": "I-06545", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "bonded logic base die", "note": ""}
+{"id": "I-07942", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-05164", "theme": "controller-offloaded periphery", "note": ""}
+{"id": "I-01038", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "capacitive nondestructive read", "note": ""}
+{"id": "I-02870", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "precharge-free sensing", "note": ""}
+{"id": "I-06574", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "negative-impedance bitline", "note": ""}
+{"id": "I-05623", "P": 4, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "analog row-hammer counter", "note": ""}
+{"id": "I-10678", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "stochastic nanowire decoder", "note": ""}
+{"id": "I-04720", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NEMS bistable cell", "note": ""}
+{"id": "I-02876", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "vertical CCD memory", "note": "NAND-like cost for refresh-by-recirculation memory; but 10-50 us serial access is not DRAM-class, and CTI over 512 transfers is doubtful."}
+{"id": "I-03357", "P": 4, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "counterfeit DRAM screening", "note": ""}
+{"id": "I-00582", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "I-05623", "theme": "analog row-hammer counter", "note": ""}
+{"id": "I-00120", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "negative-capacitance bitline", "note": ""}
+{"id": "I-09293", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-06531", "theme": "tunnel-diode sense latch", "note": ""}
+{"id": "I-01507", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "IGZO periphery", "note": ""}
+{"id": "I-04270", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "SA offset calibration", "note": ""}
+{"id": "I-05197", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "inductive die-stack links", "note": ""}
+{"id": "I-02401", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "SA-as-charge-pump", "note": ""}
+{"id": "I-08371", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "bonded periphery wafer", "note": ""}
+{"id": "I-07954", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "LTPS over-array periphery", "note": ""}
+{"id": "I-08869", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "threshold-switch sustain refresh", "note": "Plasma-style global sustain removes access transistor and refresh; selector endurance under constant sustain firing and read path are the doubts."}
+{"id": "I-09326", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retired DIMM grading", "note": ""}
+{"id": "I-01968", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "diode-matrix decoder", "note": ""}
+{"id": "I-09304", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-01941", "theme": "avalanche bitline sensing", "note": "Pre-latch avalanche gain could allow sub-fF cells; gain spread near breakdown, excess noise and temperature drift across millions of junctions."}
+{"id": "I-08383", "P": 4, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-on-logic DRAM", "note": "~30x lower I/O energy by bonding DRAM wafer to logic; known path (WOW, SoIC), with yield, thermal and die-size matching as doubts."}
+{"id": "I-09784", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "silicate die bonding", "note": ""}
+{"id": "I-10683", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "I-08383", "theme": "wafer-on-logic DRAM", "note": "Cell-only die on processor removes periphery and PHY; 1 um bond pitch cannot reach ~40 nm bitlines without on-die muxing."}
+{"id": "I-04237", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multilevel shared sensing", "note": ""}
+{"id": "I-04722", "P": 2, "S": 4, "N": 1, "D": 3, "dup_of": "", "theme": "racetrack memory", "note": "Vertical racetrack would give ~64 bits per access device; reliable domain shifting in 3D tracks has stalled for 15+ years."}
+{"id": "I-03801", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "low-signal CDS sensing", "note": ""}
+{"id": "I-05165", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "host-managed repair map", "note": ""}
+{"id": "I-01970", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "anodized Al wiring", "note": ""}
+{"id": "I-02431", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "3D DRAM vertical bitline", "note": ""}
+{"id": "I-10220", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-06531", "theme": "tunnel-diode sense latch", "note": ""}
+{"id": "I-01029", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "I-05623", "theme": "analog row-hammer counter", "note": ""}
+{"id": "I-01510", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bootstrapped wordline driver", "note": ""}
+{"id": "I-03325", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "I-05623", "theme": "analog row-hammer counter", "note": ""}
+{"id": "I-09318", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-04270", "theme": "SA offset calibration", "note": ""}
+{"id": "I-01494", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "averaged sense reference", "note": ""}
+{"id": "I-08856", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "vertical NAND-style DRAM", "note": "3D NAND cost structure for DRAM strings; each tier's thin capacitor hits the charge wall and series read/restore adds latency."}
+{"id": "I-09316", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "optical retention screening", "note": ""}
+{"id": "I-00109", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "back-plate Vt modulation", "note": ""}
+{"id": "I-07922", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "nonvolatile SA trim", "note": ""}
+{"id": "I-03811", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Charlieplexed decoding", "note": ""}
+{"id": "I-04728", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "volatile STT-MRAM", "note": ""}
+{"id": "I-08403", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS access switch", "note": ""}
+{"id": "I-11169", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "VCMA-gated SOT-MRAM", "note": ""}
+{"id": "I-10706", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "donor wafer reuse", "note": ""}
+{"id": "I-02885", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "optical charge-film memory", "note": ""}
+{"id": "I-06105", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "ECC-absorbed row hammer", "note": ""}
+{"id": "I-05632", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "open DRAM periphery IP", "note": ""}
+{"id": "I-10234", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "fluidic self-assembly periphery", "note": ""}
+{"id": "I-04240", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-08869", "theme": "threshold-switch sustain refresh", "note": ""}
+{"id": "I-01015", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "multilevel ramp-ADC sensing", "note": ""}
+{"id": "I-01513", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "IGZO CCD readout", "note": ""}
+{"id": "I-02406", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-05165", "theme": "host-managed repair map", "note": ""}
+{"id": "I-03793", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "self-timed sensing", "note": ""}
+{"id": "I-00576", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-08371", "theme": "bonded periphery wafer", "note": ""}
+{"id": "I-07455", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-08371", "theme": "bonded periphery wafer", "note": ""}
+{"id": "I-01014", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-01941", "theme": "avalanche bitline sensing", "note": "APD-style 10-30x charge gain would permit 0.3-0.5 fF low-AR cells; dark current, gain variance and bias control are unproven."}
+{"id": "I-05186", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "sense-timing erasure ECC", "note": ""}
+{"id": "I-07928", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "approximate AI memory", "note": ""}
+{"id": "I-01516", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "BEOL-only periphery fab", "note": ""}
+{"id": "I-07025", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "AAO template capacitors", "note": ""}
+{"id": "I-08839", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CNFET over-array periphery", "note": ""}
+{"id": "I-11139", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-07922", "theme": "nonvolatile SA trim", "note": ""}
+{"id": "I-03815", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "stencil deposition", "note": ""}
+{"id": "I-06575", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "shielded bitlines", "note": ""}
+{"id": "I-02897", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "self-reference sensing", "note": ""}
+{"id": "I-00593", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "bonded periphery standard", "note": ""}
+{"id": "I-04701", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-05165", "theme": "host-managed repair map", "note": ""}
+{"id": "I-02424", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "glass TFT periphery", "note": ""}
+{"id": "I-02860", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-06574", "theme": "negative-impedance bitline", "note": ""}
+{"id": "I-05648", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00120", "theme": "negative-capacitance bitline", "note": ""}
+{"id": "I-08847", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-00120", "theme": "negative-capacitance bitline", "note": ""}
+{"id": "I-04736", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "SOT read-while-write", "note": ""}
+{"id": "I-06560", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "acoustic resonator decode", "note": ""}
+{"id": "I-03794", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "time-multiplexed SA", "note": ""}
+{"id": "I-00590", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bitline charge recycling", "note": ""}
+{"id": "I-10680", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-00590", "theme": "bitline charge recycling", "note": ""}
+{"id": "I-05642", "P": 4, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "consume-once reads", "note": ""}
+{"id": "I-06570", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "MTJ shadow row buffer", "note": ""}
+{"id": "I-09332", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "data-inversion refresh", "note": ""}
+{"id": "I-09313", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "injection-locked sensing", "note": ""}
+{"id": "I-01511", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "MTJ repair fuses", "note": ""}
+{"id": "I-07481", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "cool-tier binning", "note": ""}
+{"id": "I-08410", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "retention-aware allocation", "note": ""}
+{"id": "I-10684", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "dithered sensing", "note": ""}
+{"id": "I-05154", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "non-destructive sip read", "note": "Subthreshold partial read gives non-destructive 64B access; needs ~0.2 fF local sense nodes and precise sip control across Vt spread."}

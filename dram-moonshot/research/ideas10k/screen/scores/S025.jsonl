@@ -1,0 +1,96 @@
+{"id": "I-01866", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "anodic alumina capacitor", "note": "AAO pores give cheap AR>100, but registering self-ordered pores to a 30 nm transistor grid is unproven."}
+{"id": "I-10143", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01866", "theme": "anodic alumina capacitor", "note": ""}
+{"id": "I-06019", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "domestic element policy", "note": ""}
+{"id": "I-07361", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "vacuum-gap storage node", "note": "Sealed 20 nm vacuum cavities and field-emission write/read at array density are far from any fab flow."}
+{"id": "I-02325", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "vertical CCD memory", "note": "Charge-transfer efficiency over 100 poly-Si gates is the killer doubt."}
+{"id": "I-06472", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "electrochemical battery bit", "note": "us-ms writes and finite cycle life put it outside DRAM class."}
+{"id": "I-07837", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-06472", "theme": "electrochemical battery bit", "note": "Size-independent OCV signal is a nice insight; ion kinetics and cycling remain."}
+{"id": "I-04148", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "Bloch-line racetrack", "note": ""}
+{"id": "I-00464", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "capacitor-wafer bonding", "note": "Sub-500 nm bond pitch is ~10x coarser than DRAM cell pitch, so density falls far short."}
+{"id": "I-05534", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "NEMS nanotube switch", "note": ""}
+{"id": "I-04620", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "superconducting loop memory", "note": ""}
+{"id": "I-05088", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "volatile Ag filament", "note": "Diffusive Ag memristors exist; endurance and variability at 1e15 refresh-rewrite cycles is the doubt."}
+{"id": "I-11046", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "bistable NEMS membrane", "note": ""}
+{"id": "I-03244", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "band-engineered charge trap", "note": "Stepped barriers echo crested/VARIOT tunnel stacks; retention-vs-write-speed tradeoff persists."}
+{"id": "I-01402", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "selector-gated crosspoint DRAM", "note": "Threshold-switch off leakage is orders above the ~fA needed for usable retention."}
+{"id": "I-06479", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "cryogenic 3D poly-Si DRAM", "note": "Cryo rescues leaky NAND-style 3D 1T1C; doubt: field-enhanced trap tunneling and GIDL do not freeze out, plus cooling overhead."}
+{"id": "I-00043", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "protonic ECRAM cell", "note": "Endurance of protonic devices under DRAM duty is unknown."}
+{"id": "I-05065", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "avalanche-gain read", "note": "Shrinks storage node ~50x, but retention scales with C and avalanche dark counts/variability threaten read fidelity."}
+{"id": "I-07839", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "single-electron memory", "note": ""}
+{"id": "I-02316", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-05065", "theme": "avalanche-gain read", "note": ""}
+{"id": "I-06900", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "antiferroelectric DRAM capacitor", "note": "Leakage-induced AFE plateau extending retention is a fresh twist on AFE capacitor work."}
+{"id": "I-07831", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "molecular redox memory", "note": "ZettaCore pursued porphyrin multi-redox memory; stability over 1e15 cycles unproven."}
+{"id": "I-00495", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cryogenic DRAM operation", "note": ""}
+{"id": "I-07826", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wide-bandgap charge storage", "note": ""}
+{"id": "I-04176", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "nondestructive FeRAM read", "note": ""}
+{"id": "I-02341", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "NAND-string DRAM", "note": "Toshiba's 1990s NAND-structured DRAM."}
+{"id": "I-09680", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-07839", "theme": "single-electron memory", "note": ""}
+{"id": "I-08779", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "self-healing MTJ barrier", "note": ""}
+{"id": "I-00044", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "interference lithography", "note": "193i two-beam pitch floor is ~67 nm; still needs multipatterning and overlay to other layers."}
+{"id": "I-04601", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "parametron phase memory", "note": "LC/BAW resonators are micron-scale; density far below DRAM."}
+{"id": "I-08317", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "optical bistable memory", "note": "NTT demonstrated photonic-crystal nanocavity RAM; continuous bias power and density limit it."}
+{"id": "I-05101", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "display-panel memory", "note": "Panel area is cheap, but 30 nm overlay-aligned imprint across 2.5 m glass is far beyond any display line."}
+{"id": "I-06482", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "acoustic coincidence addressing", "note": ""}
+{"id": "I-07386", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "oxide gain cell", "note": "Ga2O3 gain cell is an IGZO twist; stencil masks cannot resolve DRAM pitch."}
+{"id": "I-01848", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "ferroelectric semiconductor FET", "note": ""}
+{"id": "I-09227", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-01848", "theme": "ferroelectric semiconductor FET", "note": ""}
+{"id": "I-04156", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "spin-echo memory", "note": ""}
+{"id": "I-01860", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-07361", "theme": "vacuum-gap storage node", "note": ""}
+{"id": "I-06018", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "NEMS torsion latch", "note": ""}
+{"id": "I-06917", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-07361", "theme": "vacuum-gap storage node", "note": ""}
+{"id": "I-07370", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "multilevel DRAM", "note": ""}
+{"id": "I-03266", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelectric nematic LC", "note": ""}
+{"id": "I-05564", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "atomic-switch Ag cluster", "note": ""}
+{"id": "I-00942", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "molecular switch memory", "note": ""}
+{"id": "I-02318", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "antiferromagnetic spintronics", "note": ""}
+{"id": "I-04146", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "magnetic-latched NEMS", "note": ""}
+{"id": "I-06013", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-05088", "theme": "volatile Ag filament", "note": ""}
+{"id": "I-06459", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-07839", "theme": "single-electron memory", "note": ""}
+{"id": "I-00001", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-06900", "theme": "antiferroelectric DRAM capacitor", "note": ""}
+{"id": "I-02771", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-07361", "theme": "vacuum-gap storage node", "note": ""}
+{"id": "I-03687", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "electron-beam probe storage", "note": ""}
+{"id": "I-03698", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "molecular rotor dielectric", "note": ""}
+{"id": "I-03708", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spin-crossover memory", "note": ""}
+{"id": "I-10134", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "ultrafast toggle magnet", "note": ""}
+{"id": "I-02806", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "inductive-coupled die stack", "note": ""}
+{"id": "I-01396", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "acoustic delay-line memory", "note": ""}
+{"id": "I-04172", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-01396", "theme": "acoustic delay-line memory", "note": ""}
+{"id": "I-10154", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-04620", "theme": "superconducting loop memory", "note": ""}
+{"id": "I-05563", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "PFAS-free certification", "note": ""}
+{"id": "I-08762", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "AlScN crossbar FeRAM", "note": ""}
+{"id": "I-10621", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "large-area printed memory", "note": ""}
+{"id": "I-06916", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "laminated plate capacitor", "note": ""}
+{"id": "I-03224", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "block-copolymer 3D capacitor", "note": ""}
+{"id": "I-05079", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "relaxed-retention standard", "note": ""}
+{"id": "I-10611", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-03708", "theme": "spin-crossover memory", "note": ""}
+{"id": "I-04179", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "array-periphery bonding", "note": ""}
+{"id": "I-01867", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "anodic capacitor dielectric", "note": ""}
+{"id": "I-06932", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "NEMS nanorelay", "note": ""}
+{"id": "I-00493", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-01848", "theme": "ferroelectric semiconductor FET", "note": ""}
+{"id": "I-00474", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-05101", "theme": "display-panel memory", "note": ""}
+{"id": "I-05530", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01396", "theme": "acoustic delay-line memory", "note": ""}
+{"id": "I-05558", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "oxide nanosheet dielectric", "note": ""}
+{"id": "I-04623", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "dual-use decap memory", "note": ""}
+{"id": "I-03719", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "junction field passivation", "note": ""}
+{"id": "I-05550", "P": 2, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "negative-capacitance capacitor", "note": ""}
+{"id": "I-05093", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "molecular ferroelectric", "note": ""}
+{"id": "I-07392", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-05093", "theme": "molecular ferroelectric", "note": ""}
+{"id": "I-06015", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "grown capacitor electrode", "note": ""}
+{"id": "I-02327", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-06916", "theme": "laminated plate capacitor", "note": ""}
+{"id": "I-03252", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "nonvolatile DRAM backup", "note": ""}
+{"id": "I-04605", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "leakage-as-decay KV cache", "note": ""}
+{"id": "I-05072", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-07839", "theme": "single-electron memory", "note": ""}
+{"id": "I-00465", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "I-02325", "theme": "vertical CCD memory", "note": ""}
+{"id": "I-00923", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-06916", "theme": "laminated plate capacitor", "note": ""}
+{"id": "I-03726", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-06015", "theme": "grown capacitor electrode", "note": ""}
+{"id": "I-07849", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "differential twin-cell", "note": ""}
+{"id": "I-03238", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-06900", "theme": "antiferroelectric DRAM capacitor", "note": ""}
+{"id": "I-05536", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "CDW phase-switch memory", "note": ""}
+{"id": "I-06941", "P": 4, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "loadless 4T SRAM", "note": ""}
+{"id": "I-05543", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-04620", "theme": "superconducting loop memory", "note": ""}
+{"id": "I-01875", "P": 3, "S": 4, "N": 2, "D": 3, "dup_of": "", "theme": "AAO vertical racetrack", "note": "Parkin-style 3D racetrack; reliable DW shifting in plated wires and per-pore read heads remain unsolved."}
+{"id": "I-00964", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "molecular tape storage", "note": ""}
+{"id": "I-00467", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-01402", "theme": "selector-gated crosspoint DRAM", "note": ""}
+{"id": "I-00500", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-03708", "theme": "spin-crossover memory", "note": ""}
+{"id": "I-00950", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-01402", "theme": "selector-gated crosspoint DRAM", "note": ""}
+{"id": "I-00955", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-05065", "theme": "avalanche-gain read", "note": ""}

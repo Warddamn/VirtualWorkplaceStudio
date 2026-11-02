@@ -1,0 +1,96 @@
+{"id": "I-05815", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "optical circuit-switched pooling", "note": "MEMS OCS re-patching CXL links recovers stranded DRAM without packet-switch latency; CXL-over-optics PHY and reconfiguration pauses are the doubt."}
+{"id": "I-05797", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-02585", "theme": "regenerable seed pages", "note": ""}
+{"id": "I-06719", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "predictive line compression", "note": ""}
+{"id": "I-02616", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "shared page tables", "note": ""}
+{"id": "I-08600", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "significance-aware refresh", "note": ""}
+{"id": "I-00738", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "encrypted-memory dedup", "note": "Convergent keys for dedup under TDX/SEV weaken confidentiality and need address-independent MACs."}
+{"id": "I-06733", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "forward-gradient training", "note": ""}
+{"id": "I-03527", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "repairable socketed DIMM", "note": ""}
+{"id": "I-09058", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "MoE expert prefetch", "note": ""}
+{"id": "I-00304", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "KV precision decay", "note": ""}
+{"id": "I-09025", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pointer elision compression", "note": ""}
+{"id": "I-07204", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "cross-layer VQ latent KV", "note": "Stacks MLA, cross-layer sharing and VQ; 1-2 bytes per token for all layers likely destroys long-context recall."}
+{"id": "I-02137", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "unikernel VM density", "note": ""}
+{"id": "I-09942", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hardware pointer compression", "note": ""}
+{"id": "I-08111", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "synthesized tail embeddings", "note": ""}
+{"id": "I-09505", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "thermoelectric DRAM island", "note": ""}
+{"id": "I-01672", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "diurnal memory harvesting", "note": ""}
+{"id": "I-09480", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "stochastic MTJ KV sampling", "note": "The KV saving comes from reservoir sampling itself; a spintronic coin flip adds little over a digital PRNG."}
+{"id": "I-09952", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "frequency-domain KV compression", "note": ""}
+{"id": "I-09051", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-06719", "theme": "predictive line compression", "note": ""}
+{"id": "I-07667", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "GC cold-object tiering", "note": ""}
+{"id": "I-07668", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "prefix-affinity KV routing", "note": ""}
+{"id": "I-02611", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "mature-node compression helpers", "note": ""}
+{"id": "I-01677", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "controller columnar layout", "note": ""}
+{"id": "I-03500", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hinted compressed tier", "note": ""}
+{"id": "I-00291", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "mask-ROM weight chiplets", "note": ""}
+{"id": "I-01207", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "robotic memory sled logistics", "note": "Physically moving sleds is novel, but CXL switching and cabling get most of the benefit without robots."}
+{"id": "I-03074", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse far memory", "note": ""}
+{"id": "I-11316", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-06719", "theme": "procedural line synthesis", "note": ""}
+{"id": "I-07186", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lease-based cold tiering", "note": ""}
+{"id": "I-10440", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "LM-prior error correction", "note": "Joint source-channel decoding of token streams with an LM prior; useful only if 1%-BER memory is truly cheaper."}
+{"id": "I-07177", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-00304", "theme": "KV precision decay", "note": ""}
+{"id": "I-07201", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical delay-line weight broadcast", "note": "Fiber delay-line storage of 100 GB needs thousands of km of amplified fiber; noise and rigid scheduling dominate."}
+{"id": "I-07212", "P": 2, "S": 4, "N": 2, "D": 4, "dup_of": "", "theme": "hypernetwork weight generation", "note": "Hypernetwork weight generation is known; 50-200x compression without quality loss is unproven at LLM scale."}
+{"id": "I-00297", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "context-to-LoRA consolidation", "note": ""}
+{"id": "I-01697", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "dictionary hardware compression", "note": ""}
+{"id": "I-11317", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "timetabled memory co-tenancy", "note": ""}
+{"id": "I-04457", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "optical mask weights", "note": ""}
+{"id": "I-00756", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cross-DIMM parity ECC", "note": ""}
+{"id": "I-11339", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "printed ROM page dedup", "note": "Printed antifuse density is orders too low to hold GBs of golden pages; reads too slow."}
+{"id": "I-03970", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "signed-hash embedding superposition", "note": ""}
+{"id": "I-07665", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "meshing allocator", "note": ""}
+{"id": "I-11347", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed MLC approximate storage", "note": ""}
+{"id": "I-04459", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "write-suppression NVM", "note": ""}
+{"id": "I-08100", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "hardware succinct structures", "note": ""}
+{"id": "I-05840", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03048", "theme": "anti-phase job scheduling", "note": ""}
+{"id": "I-04461", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "university memory pilot fabs", "note": ""}
+{"id": "I-03064", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory embedding pooling", "note": ""}
+{"id": "I-03514", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00304", "theme": "KV precision decay", "note": ""}
+{"id": "I-03515", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "block-shared fine-tune zoo", "note": ""}
+{"id": "I-07649", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "cross-layer KV deltas", "note": ""}
+{"id": "I-07653", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "keyframe delta activations", "note": ""}
+{"id": "I-08571", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "delta-log standby replicas", "note": ""}
+{"id": "I-09056", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-07653", "theme": "keyframe delta activations", "note": ""}
+{"id": "I-07666", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "RAG KV chunk reuse", "note": ""}
+{"id": "I-06267", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03048", "theme": "anti-phase job scheduling", "note": ""}
+{"id": "I-09060", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "fixed-rate entropy weights", "note": ""}
+{"id": "I-02129", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compiler pool pointer compression", "note": ""}
+{"id": "I-11354", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "printed in-place scan sheet", "note": "Co-printed cold storage cannot hold TB datasets at printed densities; scanning idea sound, substrate not."}
+{"id": "I-09050", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "exact reversible training", "note": ""}
+{"id": "I-06287", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "soft-RAM VM pricing", "note": ""}
+{"id": "I-08098", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "trigger-style ingest filtering", "note": ""}
+{"id": "I-05357", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "memory-efficiency procurement label", "note": "Energy-Star-style GB-hours-per-work label for federal procurement; adoption and benchmark gaming are the doubts."}
+{"id": "I-10890", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "gist-token prompt compression", "note": ""}
+{"id": "I-01701", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "late media decode", "note": ""}
+{"id": "I-05798", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "controller line compaction", "note": ""}
+{"id": "I-09954", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "hot-line page clustering", "note": ""}
+{"id": "I-10879", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "TiO2 crossbar embeddings", "note": ""}
+{"id": "I-04891", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "serverless snapshot hibernation", "note": ""}
+{"id": "I-08099", "P": 3, "S": 4, "N": 2, "D": 4, "dup_of": "", "theme": "sketch-guided KV offload", "note": "LSH-sketch sparse attention is known (MagicPIG, InfiniGen); flash bandwidth per decode step is the key doubt."}
+{"id": "I-08103", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "CXL flash execute-in-place", "note": ""}
+{"id": "I-05812", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "usage-based memory billing", "note": ""}
+{"id": "I-10417", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-05812", "theme": "usage-based memory billing", "note": ""}
+{"id": "I-01662", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "lossless exponent coding", "note": ""}
+{"id": "I-11329", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory peak insurance", "note": ""}
+{"id": "I-02155", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "GPU HBM host swap", "note": ""}
+{"id": "I-06280", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-02155", "theme": "GPU HBM host swap", "note": ""}
+{"id": "I-04887", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "geo time-shifted batch", "note": ""}
+{"id": "I-05352", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "attention PIM LPDDR", "note": ""}
+{"id": "I-06276", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "memory budgets in CI", "note": ""}
+{"id": "I-02607", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "struct field reordering", "note": ""}
+{"id": "I-07636", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "compressed CXL expander", "note": ""}
+{"id": "I-09980", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "graph reorder gap coding", "note": ""}
+{"id": "I-09961", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "read-once no-restore DRAM", "note": ""}
+{"id": "I-06751", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "hardware GC barriers", "note": ""}
+{"id": "I-03048", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "anti-phase job scheduling", "note": ""}
+{"id": "I-02588", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "erasure-coded in-memory stores", "note": ""}
+{"id": "I-05842", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-02588", "theme": "erasure-coded in-memory stores", "note": ""}
+{"id": "I-02132", "P": 2, "S": 4, "N": 3, "D": 4, "dup_of": "", "theme": "holographic superposed KV", "note": "Effectively fast-weight/linear-attention memory; HRR capacity scales with dimension, so exact recall of millions of tokens is doubtful."}
+{"id": "I-11319", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-01697", "theme": "dictionary hardware compression", "note": ""}
+{"id": "I-00761", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "SLC NAND CXL tier", "note": ""}
+{"id": "I-07203", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "e-waste phone memory", "note": "Sunk-cost LPDDR is cheap, but per-GB power, latency and fleet management likely erase the savings."}
+{"id": "I-00776", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "partial-good die salvage", "note": ""}
+{"id": "I-02585", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "seed-regenerated tensors", "note": ""}
+{"id": "I-10408", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "expert-affinity batching", "note": ""}
+{"id": "I-09979", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "analog in-DRAM GEMV", "note": ""}

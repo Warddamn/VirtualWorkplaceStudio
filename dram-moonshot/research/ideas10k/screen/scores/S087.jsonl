@@ -1,0 +1,96 @@
+{"id": "I-01504", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "threshold-switch sense amp", "note": "OTS threshold spread (~50 mV) is comparable to the bitline signal; per-device trim needed."}
+{"id": "I-02874", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-01504", "theme": "threshold-switch sense amp", "note": ""}
+{"id": "I-04276", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "avalanche gain sense amp", "note": "Geiger-mode charge gain at sense node; dark counts and breakdown spread across millions of SAs are the doubt."}
+{"id": "I-07931", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04276", "theme": "avalanche gain sense amp", "note": ""}
+{"id": "I-09754", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04276", "theme": "avalanche gain sense amp", "note": ""}
+{"id": "I-09768", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01504", "theme": "threshold-switch sense amp", "note": ""}
+{"id": "I-11166", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "antiferroelectric charge preamp", "note": "AFE-to-FE transition as charge amplifier for tiny FeRAM cells; variability and hysteresis unknown."}
+{"id": "I-06113", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "error-tolerant AI memory", "note": "Close to EDEN-style approximate DRAM for DNNs."}
+{"id": "I-03323", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "optical BIST readout", "note": ""}
+{"id": "I-01505", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL diode-matrix decoder", "note": ""}
+{"id": "I-01953", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "oxide-TFT periphery over array", "note": ""}
+{"id": "I-06074", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00119", "theme": "NEM relay decoder", "note": ""}
+{"id": "I-07472", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "2D-semiconductor BEOL periphery", "note": ""}
+{"id": "I-07929", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-07451", "theme": "time-shared sense amp", "note": ""}
+{"id": "I-09751", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-07472", "theme": "2D-semiconductor BEOL periphery", "note": ""}
+{"id": "I-11143", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01505", "theme": "BEOL diode-matrix decoder", "note": ""}
+{"id": "I-06995", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "negative-capacitance bitline", "note": "Static NC in a passive series stack is unproven and hysteretic."}
+{"id": "I-05620", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "array-periphery bond standard", "note": ""}
+{"id": "I-07955", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NMOS-only wordline driver", "note": ""}
+{"id": "I-07484", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "staggered SA firing", "note": ""}
+{"id": "I-00110", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "inductive die-to-die link", "note": "ThruChip-style coupling already demonstrated, including on DRAM stacks."}
+{"id": "I-01514", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-00110", "theme": "inductive die-to-die link", "note": ""}
+{"id": "I-04702", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-00110", "theme": "inductive die-to-die link", "note": ""}
+{"id": "I-05657", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-00110", "theme": "inductive die-to-die link", "note": ""}
+{"id": "I-09787", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-00110", "theme": "inductive die-to-die link", "note": ""}
+{"id": "I-11133", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "negative-capacitance sense amp", "note": ""}
+{"id": "I-11146", "P": 4, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "subarray hybrid bonding", "note": "Subarray-direct bonds to logic cut pJ/bit ~6x; already pursued (SeDRAM-style bonded DRAM), needs DRAM wafers."}
+{"id": "I-01937", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "array-periphery wafer split", "note": "Xtacking/CBA-style split for DRAM; already on vendor roadmaps."}
+{"id": "I-04242", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "latching MEMS power gating", "note": ""}
+{"id": "I-04253", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-01937", "theme": "array-periphery wafer split", "note": ""}
+{"id": "I-06568", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-01054", "theme": "display-fab periphery", "note": ""}
+{"id": "I-11142", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-01937", "theme": "array-periphery wafer split", "note": ""}
+{"id": "I-01946", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "analog row-hammer integrator", "note": "Leakage-based decay drifts strongly with temperature; threshold calibration is the doubt."}
+{"id": "I-07026", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed TFT interposer", "note": ""}
+{"id": "I-08831", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "thyristor sense amp", "note": ""}
+{"id": "I-06556", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00117", "theme": "ferroelectric SA trim", "note": ""}
+{"id": "I-00573", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "3D DRAM tier select", "note": ""}
+{"id": "I-08870", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-07451", "theme": "time-shared sense amp", "note": "Serial sensing could make 3D DRAM pay off at few tiers; restoring each vertical bitline in 0.4 ns is doubtful."}
+{"id": "I-01965", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "additive electroless BEOL", "note": ""}
+{"id": "I-09796", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "micro-LED maskless litho", "note": "365/280 nm cannot print ~80 nm pitch at any NA; only relaxed layers."}
+{"id": "I-03788", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "pooled column redundancy", "note": ""}
+{"id": "I-02884", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "cryogenic stacked DRAM", "note": ""}
+{"id": "I-10244", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "array-die build-to-order", "note": ""}
+{"id": "I-07915", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lock-in gain-cell sensing", "note": ""}
+{"id": "I-03786", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "background SA calibration", "note": ""}
+{"id": "I-03790", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "adiabatic wordline drive", "note": ""}
+{"id": "I-04712", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "partial restore truncation", "note": "Known as restore truncation (HPCA 2016)."}
+{"id": "I-08838", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "gain-cell current sensing", "note": ""}
+{"id": "I-02862", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "selective bitline activation", "note": "Close to selective bitline activation (SBA, ISCA 2010)."}
+{"id": "I-05647", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "plate-pulse restore", "note": ""}
+{"id": "I-07451", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "time-shared sense amp", "note": ""}
+{"id": "I-01037", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "charge-integrator long bitlines", "note": ""}
+{"id": "I-10254", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "module hub offload", "note": ""}
+{"id": "I-10702", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "BTI-balancing inversion", "note": ""}
+{"id": "I-00117", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ferroelectric SA trim", "note": ""}
+{"id": "I-00119", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NEM relay decoder", "note": "Relay endurance far below decoder switching counts."}
+{"id": "I-00130", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "undoped GAA periphery", "note": ""}
+{"id": "I-00554", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "row back-gate bias", "note": ""}
+{"id": "I-09752", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00119", "theme": "NEM relay decoder", "note": ""}
+{"id": "I-06551", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00564", "theme": "shift-register refresh", "note": ""}
+{"id": "I-11150", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02427", "theme": "open periphery IP", "note": ""}
+{"id": "I-09778", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "microsupercap decoupling", "note": ""}
+{"id": "I-01506", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "TFT interposer die sparing", "note": ""}
+{"id": "I-03797", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "supercritical CO2 cleaning", "note": ""}
+{"id": "I-11158", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "charge-trap NV backup", "note": ""}
+{"id": "I-04721", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "parametron NEMS FDM", "note": ""}
+{"id": "I-10704", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "in-field column repair", "note": ""}
+{"id": "I-04694", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "shared sense die stack", "note": ""}
+{"id": "I-07921", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-timed sensing", "note": ""}
+{"id": "I-09757", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-01946", "theme": "analog row-hammer integrator", "note": ""}
+{"id": "I-01484", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "charge-transfer preamp", "note": ""}
+{"id": "I-09325", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "resonant bus energy recovery", "note": ""}
+{"id": "I-04274", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "plate-tile sensing", "note": "Wordline activation still destroys row data; tile signal is tiny versus plate capacitance."}
+{"id": "I-08841", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "TSV direct sensing", "note": ""}
+{"id": "I-07000", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "early latch deferred restore", "note": ""}
+{"id": "I-08872", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "bistable NEMS crosspoint", "note": "Contactless snap-through beams avoid stiction; doubt is aF capacitive readout and 40 nm beam stress control at scale."}
+{"id": "I-08868", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "in-DRAM decompression", "note": ""}
+{"id": "I-05658", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "event-driven periphery", "note": ""}
+{"id": "I-02898", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "multilevel sigma-delta sensing", "note": ""}
+{"id": "I-00112", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "tunnel-FET sense amp", "note": ""}
+{"id": "I-00571", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00112", "theme": "tunnel-FET sense amp", "note": ""}
+{"id": "I-01509", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00112", "theme": "tunnel-FET sense amp", "note": ""}
+{"id": "I-03804", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00112", "theme": "tunnel-FET sense amp", "note": ""}
+{"id": "I-10250", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "selective device matching", "note": ""}
+{"id": "I-10715", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "off-die power chiplet", "note": ""}
+{"id": "I-06116", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "stack erasure coding", "note": ""}
+{"id": "I-10232", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "shared restore driver", "note": ""}
+{"id": "I-00564", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "shift-register refresh", "note": ""}
+{"id": "I-00124", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "stochastic nanowire decoder", "note": ""}
+{"id": "I-03806", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "laser dry cleaning", "note": ""}
+{"id": "I-02427", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "open periphery IP", "note": ""}
+{"id": "I-01956", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "selective-ALD isolation", "note": ""}
+{"id": "I-01054", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "display-fab periphery", "note": ""}
+{"id": "I-09320", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "latch-time margin sensing", "note": ""}
+{"id": "I-11159", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Hadamard multiplexed reads", "note": ""}
+{"id": "I-02414", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multilevel SAR sensing", "note": ""}

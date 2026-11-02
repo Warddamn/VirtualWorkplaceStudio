@@ -1,0 +1,96 @@
+{"id": "I-06457", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "photonic bistable cavity", "note": "NTT-style PhC bistable RAM already demonstrated; buffer niche."}
+{"id": "I-08304", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "acoustic delay-line memory", "note": "GHz acoustic loss and microsecond serial latency; ~kbit per cm path, buffer niche."}
+{"id": "I-07857", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "self-refresh keeper cell", "note": "Loadless-4T style leakage-ratio bistability; keeper current window vs leakage tail is the doubt."}
+{"id": "I-02784", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "swappable vdW storage film", "note": "Peel/relaminate with aligned contacts at nm pitch is doubtful; DRAM cells do not wear out."}
+{"id": "I-05096", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01399", "theme": "protonic gain cell", "note": ""}
+{"id": "I-03707", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "antiferroelectric high-k capacitor", "note": "ZrO2-rich MPB/AFE high-k widely explored; hysteresis and charge return limit."}
+{"id": "I-03695", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multilayer capacitor electrodes", "note": "Alternate-layer contacting inside ~30 nm hole consumes the hole; modest net gain."}
+{"id": "I-00020", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "magnetoelectric BFO bit", "note": "MESO-type physics; 100 mV deterministic BFO switching not yet achieved."}
+{"id": "I-04152", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "I-00944", "theme": "vertical CCD 3D memory", "note": "Key doubt: charge-transfer efficiency over ~240 shifts in poly/IGZO channel and serial latency."}
+{"id": "I-05100", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "BEOL memory PDK licensing", "note": "Embedded BEOL memory options (eMRAM, IGZO) already pursued; storage element unspecified."}
+{"id": "I-00023", "P": 2, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "wurtzite ferroelectric capacitor", "note": "AlScN FeRAM actively pursued; high coercive field and ~1e7 endurance far from DRAM duty."}
+{"id": "I-03715", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "I-01845", "theme": "bistable buckled NEMS", "note": ""}
+{"id": "I-10152", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01845", "theme": "bistable buckled NEMS", "note": ""}
+{"id": "I-09669", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-01865", "theme": "superconducting flux-loop memory", "note": ""}
+{"id": "I-04608", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "frequency-addressed resonator array", "note": "Charge on resonator still leaks; resonator footprint and Q at scale limit density."}
+{"id": "I-08756", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "orbital-torque MRAM", "note": "Orbital Hall is hot research; SOT three-terminal cell undermines claimed 10-15F2."}
+{"id": "I-08774", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "molecular cluster charge storage", "note": "POM molecular flash already published (2014); thin tunnel oxide gives flash-like, not DRAM, behavior."}
+{"id": "I-00496", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "retention-aware tensor placement", "note": "Compiler TTL plus unrefreshed short-retention pool; provable on FPGA with refresh disabled."}
+{"id": "I-06907", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00020", "theme": "magnetoelectric BFO bit", "note": ""}
+{"id": "I-03230", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00017", "theme": "tunnel-diode static latch", "note": ""}
+{"id": "I-01845", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "bistable buckled NEMS", "note": "Buckled-beam memories demonstrated at micron scale; ns snapping, stiction and 6-8F2 density are doubts."}
+{"id": "I-01852", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01399", "theme": "protonic gain cell", "note": ""}
+{"id": "I-01865", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "superconducting flux-loop memory", "note": "YBCO grain-boundary junction reproducibility and loop inductance limit density."}
+{"id": "I-04186", "P": 3, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "Wiegand magnetic strip", "note": "Unusual self-generated read pulse; density niche."}
+{"id": "I-07388", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00023", "theme": "wurtzite ferroelectric capacitor", "note": ""}
+{"id": "I-00017", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "tunnel-diode static latch", "note": "TI TSRAM precedent; standby valley current ~mW/Gb rivals refresh power."}
+{"id": "I-08286", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "transferred perovskite dielectric", "note": "Transferred membrane is planar only; planar 5 fF at DRAM pitch needs k in thousands."}
+{"id": "I-00956", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "few-electron jot storage", "note": "In-cell source follower cannot fit 4F2; sub-electron read needs slow CDS."}
+{"id": "I-02346", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "strain magnetoelectric bit", "note": "Straintronics known; 180-degree deterministic switching and 180 nm density limit it."}
+{"id": "I-10121", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "self-assembled 3D electrode", "note": "Only a few gyroid cells fit; 5 nm channels cannot hold dielectric plus electrode."}
+{"id": "I-06944", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "nanoparticle high-k dielectric", "note": "Alumina infill in series and BTO size effect drop effective k sharply."}
+{"id": "I-08279", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-03681", "theme": "pseudocapacitive storage node", "note": ""}
+{"id": "I-01856", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spin-crossover molecules", "note": "Electrical ns switching unproven; volume change fatigue."}
+{"id": "I-10159", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelectric nematic LC", "note": "Fluid polarization retention, ns switching and narrow N_F temperature range doubtful."}
+{"id": "I-02797", "P": 4, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "spare-tier redundancy", "note": "Standard redundancy extended to tiers; needs 3D DRAM to exist."}
+{"id": "I-07389", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "carbon resistive switching", "note": "Amorphous carbon switching endurance is NVM-class; dry resist already commercial."}
+{"id": "I-08761", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelastic strain bit", "note": "Clamped island remanent strain and MoS2 gauge sensitivity likely give small read margin."}
+{"id": "I-06020", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "volatile phase-change cell", "note": "Melt-quench write energy and PCM endurance far below DRAM duty."}
+{"id": "I-05083", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "nanoparticle shuttle bit", "note": "7 nm sealed cavity fabrication and impact wear are major unknowns."}
+{"id": "I-10585", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "I-00461", "theme": "negative-capacitance dielectric", "note": ""}
+{"id": "I-03704", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-00960", "theme": "sliding ferroelectric 2D", "note": ""}
+{"id": "I-01846", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01426", "theme": "parametron resonator memory", "note": ""}
+{"id": "I-03681", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "pseudocapacitive storage node", "note": "Faradaic redox completing in <10 ns with sub-fA self-discharge is the core doubt."}
+{"id": "I-01399", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "protonic gain cell", "note": "Protonic ns switching shown; endurance to 1e12+ and retention are unknowns."}
+{"id": "I-07396", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "single-electron memory", "note": "Hitachi PLEDM-style few-electron cells known; variability."}
+{"id": "I-02315", "P": 1, "S": 4, "N": 2, "D": 1, "dup_of": "", "theme": "quantum-dot cellular automata", "note": "QCA serial memory is old idea; room-temperature margins and atomic-precision fabrication at scale need a miracle."}
+{"id": "I-02772", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "crested-barrier selector", "note": "Likharev crested barrier in vdW; ~1e10 nonlinearity needed for 4F2 stackable charge crosspoint."}
+{"id": "I-07364", "P": 1, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "atomic dangling-bond bit", "note": "Atomic density if works; electron in symmetric DB pair hops fast, and wafer-scale STM lithography absent."}
+{"id": "I-09701", "P": 1, "S": 4, "N": 2, "D": 2, "dup_of": "I-07364", "theme": "atomic dangling-bond bit", "note": "Same DB-pair mechanism; room-temperature retention and addressing unresolved."}
+{"id": "I-09696", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "magnetic vortex-core bit", "note": "Vortex-core switching known; core read via MTJ and disk size limit density."}
+{"id": "I-08281", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CCD serial weight memory", "note": "Sequential weight streaming suits CCD shift registers; CCD-in-CMOS shuttles exist."}
+{"id": "I-02802", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "DRAM PUF reuse market", "note": "DRAM PUF/TRNG well studied; small residual-value niche."}
+{"id": "I-03260", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "supercooled metal phase bit", "note": "Decade-scale supercooled metastability and small resistivity contrast are doubtful."}
+{"id": "I-08782", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "liquid-metal droplet switch", "note": "Ga oxide skin and nanoscale wetting hinder 10-100 ns droplet motion."}
+{"id": "I-05102", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "oxide-vacancy metastable bit", "note": "Hole injection into n-type IGZO is hard; PPC decays over hours."}
+{"id": "I-10592", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01399", "theme": "protonic gain cell", "note": ""}
+{"id": "I-07390", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-03253", "theme": "thermally gated ionic glass", "note": ""}
+{"id": "I-08767", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "FeRAM imprint inversion", "note": "Polarity inversion for imprint likely in prior patents; simple controller demo."}
+{"id": "I-01426", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "parametron resonator memory", "note": "MEMS parametron bit storage demonstrated 2008; micron size."}
+{"id": "I-04166", "P": 3, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "micro-magnetic core memory", "note": "Micron-scale cells; rad-hard niche only."}
+{"id": "I-05539", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "improper ferroelectric oxide", "note": "Ca3Ti2O7 needs epitaxy above BEOL budget; coercive field not clearly lower."}
+{"id": "I-00461", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "negative-capacitance dielectric", "note": "Stabilized NC enhancement contested; MPB ZrO2 already mainstream path."}
+{"id": "I-03255", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "tethered-ion gate dielectric", "note": "Two-site bistability barrier and charge density for useful Vt shift unproven."}
+{"id": "I-00475", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "porous electrode capacitor", "note": "HSG-silicon precedent; 10-20 nm pores cannot hold dielectric plus electrode."}
+{"id": "I-11037", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-02328", "theme": "pinned-well storage cell", "note": ""}
+{"id": "I-03253", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "thermally gated ionic glass", "note": "Thermal gating breaks speed-retention tradeoff but costs pJ writes and thermal crosstalk."}
+{"id": "I-07402", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01859", "theme": "direct-tunnel charge trap", "note": ""}
+{"id": "I-02780", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "self-clearing capacitor segments", "note": "Eight sub-capacitors with 2 nm fusible necks inside one cell is unfabricable; tail is soft leakage."}
+{"id": "I-10146", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "porous electrode capacitor", "note": "Magnesiothermic reduction ~650 C and Mg contamination in cups are concerns."}
+{"id": "I-00960", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "sliding ferroelectric 2D", "note": "20-tier stacked sliding-FE storage; wafer-scale parallel-stacked bilayer growth and endurance unproven."}
+{"id": "I-01859", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "direct-tunnel charge trap", "note": "Direct-tunnel memory known; engineered trap depth for minutes retention; endurance is key doubt."}
+{"id": "I-05061", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "low-barrier volatile MRAM", "note": "Relaxed-retention STT known; 28 kT gives ~1 s mean life, too many flips for ECC."}
+{"id": "I-09205", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrochromic optical bit", "note": "Ion kinetics us-ms and electrochromic endurance far from DRAM duty."}
+{"id": "I-00944", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "vertical CCD 3D memory", "note": "~14x bits/area on NAND tooling if charge transfer efficiency and retention survive many shifts."}
+{"id": "I-02328", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pinned-well storage cell", "note": "Pinned well gives seconds retention but ~0.2 um2/bit and slow CDS read limit to warm tier."}
+{"id": "I-02765", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-02328", "theme": "pinned-well storage cell", "note": ""}
+{"id": "I-03682", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-02328", "theme": "pinned-well storage cell", "note": ""}
+{"id": "I-03694", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-limiting multilevel charge", "note": "Spill-gate levels self-calibrate, but leakage shrinks per-level margin and refresh rises."}
+{"id": "I-04164", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02328", "theme": "pinned-well storage cell", "note": ""}
+{"id": "I-06024", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-02328", "theme": "pinned-well storage cell", "note": ""}
+{"id": "I-06942", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02328", "theme": "pinned-well storage cell", "note": ""}
+{"id": "I-04155", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00017", "theme": "tunnel-diode static latch", "note": ""}
+{"id": "I-05081", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00017", "theme": "tunnel-diode static latch", "note": ""}
+{"id": "I-10591", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00017", "theme": "tunnel-diode static latch", "note": ""}
+{"id": "I-06943", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "ferroelectric semiconductor channel", "note": "FeS-FET with alpha-In2Se3 already published; retention and endurance open."}
+{"id": "I-07819", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS relay access", "note": "Relay area and contact endurance toward 1e15 are the limits."}
+{"id": "I-08752", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "all-optical magnetic switching", "note": "AOS-MTJ demonstrated; on-chip fs sources and per-row plasmonics impractical."}
+{"id": "I-09230", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CISS spin writing", "note": "CISS magnetization switching reported but magnitude disputed."}
+{"id": "I-04629", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00960", "theme": "sliding ferroelectric 2D", "note": ""}
+{"id": "I-05989", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-05061", "theme": "low-barrier volatile MRAM", "note": ""}
+{"id": "I-05994", "P": 1, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "Maxwell-Wagner colossal-k", "note": "At 5 nm cores in ~6 nm film, MW effective k stays ~30, not 300-1000."}
+{"id": "I-04144", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "vacuum secondary-emission bistable", "note": "Nano-vacuum sealing, emitter stability and low-energy secondary yield at 30 nm unproven."}
+{"id": "I-09214", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ferroelectric photonic ring", "note": "TFLN MPW accessible; um2 per bit restricts to photonic buffers."}
+{"id": "I-05561", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "molybdenum replaces tungsten", "note": "Industry already adopting Mo ALD for contacts and wordlines."}
+{"id": "I-01388", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "antiferromagnetic tunnel junction", "note": "All-AFM tunnel junctions demonstrated 2023; TMR and SOT write currents open."}
+{"id": "I-01883", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "rolled-up nanomembrane capacitor", "note": "Multi-layer stack rolls to hundreds of nm diameter; sub-30 nm multi-turn rolls unlikely."}

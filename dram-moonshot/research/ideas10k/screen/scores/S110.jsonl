@@ -1,0 +1,96 @@
+{"id": "I-04922", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "lease-based allocator", "note": ""}
+{"id": "I-00277", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "optical weight broadcast", "note": "One weight copy streamed per decode step frees most weight-resident HBM; doubt: ~1.4 TB/s optical receive per accelerator and strict lockstep."}
+{"id": "I-05809", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "address-swizzle tensor views", "note": ""}
+{"id": "I-08559", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "I-00277", "theme": "optical weight broadcast", "note": "Same as rack-scale lockstep broadcast; HBM freed for KV, but per-GPU optical bandwidth must match weight read rate."}
+{"id": "I-09482", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "I-00277", "theme": "optical weight broadcast", "note": "Broadcast variant with Ge photoconductive samplers; receiver bandwidth and synchronization are the doubts."}
+{"id": "I-09964", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "HBM multicast fabric", "note": ""}
+{"id": "I-10872", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "succinct data structures", "note": ""}
+{"id": "I-08138", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "1-bit fine-tune deltas", "note": ""}
+{"id": "I-04454", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "glass TFT memory", "note": "30 GB/m2 at 2 um rules implies ~1F2 cells; realistic density ~20x lower, losing to flash on cost."}
+{"id": "I-09038", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "capacitorless 1T cell", "note": ""}
+{"id": "I-02142", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "context distillation", "note": ""}
+{"id": "I-05826", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "holographic weight storage", "note": ""}
+{"id": "I-11353", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "electrochromic optical tier", "note": ""}
+{"id": "I-00312", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "neural texture compression", "note": ""}
+{"id": "I-04446", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "SAW analog convolver", "note": ""}
+{"id": "I-03531", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "approximate memory reuse", "note": ""}
+{"id": "I-07679", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "priced memory overcommit", "note": ""}
+{"id": "I-00773", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "flash weight streaming", "note": ""}
+{"id": "I-01693", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "binary vector quantization", "note": ""}
+{"id": "I-02117", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "page cache elimination", "note": ""}
+{"id": "I-02150", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "I-01693", "theme": "binary vector quantization", "note": ""}
+{"id": "I-04915", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "MoE expert offload", "note": ""}
+{"id": "I-07216", "P": 2, "S": 4, "N": 3, "D": 4, "dup_of": "", "theme": "learned page prefetch", "note": "If >99% hit 200 us ahead held, DRAM could be ~1% of dataset; doubt: irregular workloads rarely predictable at that accuracy."}
+{"id": "I-07655", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "follow-the-sun scheduling", "note": ""}
+{"id": "I-02134", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "fused optimizer backward", "note": ""}
+{"id": "I-10413", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "anti-phase job packing", "note": ""}
+{"id": "I-03063", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "shared read-only pool", "note": ""}
+{"id": "I-02593", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lineage recompute freeing", "note": ""}
+{"id": "I-09969", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "multiresolution storage", "note": ""}
+{"id": "I-03535", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "compression-funded erasure coding", "note": ""}
+{"id": "I-07637", "P": 2, "S": 4, "N": 4, "D": 4, "dup_of": "", "theme": "neural-field KV compression", "note": "KV as fitted implicit function could give 20-50x; doubt: K/V vectors are not smooth in position, so fits likely lossy."}
+{"id": "I-03050", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "polar KV quantization", "note": ""}
+{"id": "I-03507", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "embedding delta compression", "note": ""}
+{"id": "I-08116", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-00773", "theme": "flash weight streaming", "note": ""}
+{"id": "I-09504", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lifetime-aware refresh", "note": ""}
+{"id": "I-00777", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "memory spot market", "note": ""}
+{"id": "I-02615", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "I-02134", "theme": "fused optimizer backward", "note": ""}
+{"id": "I-04433", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog SSM state", "note": ""}
+{"id": "I-06293", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "dedup-aware packaging", "note": ""}
+{"id": "I-10432", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-06730", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "profile-guided field narrowing", "note": ""}
+{"id": "I-03520", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "predictive DIMM retirement", "note": ""}
+{"id": "I-08106", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "zero-copy I/O ownership", "note": ""}
+{"id": "I-10403", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "shared buffer pools", "note": ""}
+{"id": "I-11327", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "PQ-coded attention keys", "note": ""}
+{"id": "I-06281", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "large-LLC cache residency", "note": ""}
+{"id": "I-06259", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "age-graded KV precision", "note": ""}
+{"id": "I-05833", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed analog crossbar", "note": ""}
+{"id": "I-05832", "P": 2, "S": 4, "N": 2, "D": 5, "dup_of": "", "theme": "logarithmic KV retention", "note": "O(log n) KV would shrink 1M contexts ~50x; doubt: merging old tokens badly hurts retrieval and needle tasks."}
+{"id": "I-10863", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-07216", "theme": "learned page prefetch", "note": ""}
+{"id": "I-01661", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "pointer compression", "note": ""}
+{"id": "I-05820", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL IGZO metadata layer", "note": ""}
+{"id": "I-10402", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "dictionary page compression", "note": ""}
+{"id": "I-03070", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "hardware GC accelerator", "note": ""}
+{"id": "I-03513", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "in-DRAM attention PIM", "note": ""}
+{"id": "I-04438", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "partial-capacity HBM SKUs", "note": ""}
+{"id": "I-10430", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "physics-checked lossy storage", "note": ""}
+{"id": "I-11333", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "foveated framebuffer", "note": ""}
+{"id": "I-03517", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "threshold page replication", "note": ""}
+{"id": "I-02577", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "destructive-read reclaim", "note": ""}
+{"id": "I-02579", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "content-addressed memory", "note": ""}
+{"id": "I-01216", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory reduction", "note": ""}
+{"id": "I-03999", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "tier admission filtering", "note": ""}
+{"id": "I-08594", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "fleet-trained line dictionary", "note": ""}
+{"id": "I-03541", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "robotic memory sled moves", "note": ""}
+{"id": "I-07643", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "predictive residual compression", "note": ""}
+{"id": "I-03039", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "secure page dedup", "note": ""}
+{"id": "I-03997", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "client-side state offload", "note": ""}
+{"id": "I-02119", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "I-00277", "theme": "optical weight broadcast", "note": "Passive splitter broadcast to lockstep accelerators; same mechanism as I-00277, same bandwidth and sync doubts."}
+{"id": "I-03057", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "eviction-robust training", "note": ""}
+{"id": "I-05342", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "I-06259", "theme": "age-graded KV precision", "note": ""}
+{"id": "I-09956", "P": 4, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "memory efficiency tax credit", "note": ""}
+{"id": "I-01205", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "attention-score KV eviction", "note": ""}
+{"id": "I-05799", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-07679", "theme": "priced memory overcommit", "note": ""}
+{"id": "I-01676", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-08138", "theme": "1-bit fine-tune deltas", "note": ""}
+{"id": "I-09511", "P": 5, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "probabilistic counters", "note": ""}
+{"id": "I-05807", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "bit-plane weight tiering", "note": ""}
+{"id": "I-06282", "P": 5, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "PFAS-free interconnect", "note": ""}
+{"id": "I-01219", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "computational storage pushdown", "note": ""}
+{"id": "I-08137", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "ternary weight packing", "note": ""}
+{"id": "I-07181", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "PRAC counter telemetry", "note": ""}
+{"id": "I-07213", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "consumer RAM leasing", "note": ""}
+{"id": "I-01664", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "mask-ROM system pages", "note": ""}
+{"id": "I-03069", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-07655", "theme": "follow-the-sun scheduling", "note": ""}
+{"id": "I-05353", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-10413", "theme": "anti-phase job packing", "note": ""}
+{"id": "I-05822", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DRAM die salvage", "note": ""}
+{"id": "I-01231", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "event-sourced NVM state", "note": ""}
+{"id": "I-04908", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "GPU host DRAM harvest", "note": ""}
+{"id": "I-02582", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "local-loss training", "note": ""}
+{"id": "I-04889", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-02582", "theme": "local-loss training", "note": ""}
+{"id": "I-07176", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-02579", "theme": "content-addressed memory", "note": ""}
+{"id": "I-09951", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-06259", "theme": "age-graded KV precision", "note": ""}
+{"id": "I-11358", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "flexible hybrid memory module", "note": ""}
+{"id": "I-10410", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "memory waste profiling", "note": ""}
+{"id": "I-09937", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "slack-packing allocator", "note": ""}
+{"id": "I-10419", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "significance-graded reliability", "note": ""}

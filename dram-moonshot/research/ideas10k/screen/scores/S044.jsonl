@@ -1,0 +1,96 @@
+{"id": "I-01722", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "delay-insensitive DRAM link", "note": ""}
+{"id": "I-07255", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "optical bistable buffer", "note": "Tiny capacity and holding-beam power limit it to switch buffers."}
+{"id": "I-02659", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "folded flex stacking", "note": ""}
+{"id": "I-04035", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-02659", "theme": "folded flex stacking", "note": ""}
+{"id": "I-00325", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "glass optical interposer", "note": ""}
+{"id": "I-00331", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "lid-carried interconnect", "note": "Ceramic lid RDL density and bonding to uneven die heights are doubtful."}
+{"id": "I-00332", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-02659", "theme": "folded flex stacking", "note": ""}
+{"id": "I-00346", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "printed glass interposer", "note": ""}
+{"id": "I-00354", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "wide LPDDR on HDI", "note": ""}
+{"id": "I-00800", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "under-die HBM placement", "note": "Heat and GPU power delivery must pass through the memory region."}
+{"id": "I-01262", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "cryogenic DRAM system", "note": "YBCO needs epitaxial substrates; cryocooler overhead likely exceeds savings."}
+{"id": "I-02190", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "active memory interposer", "note": ""}
+{"id": "I-03120", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "optical weight broadcast", "note": "PON-class optics far below HBM bandwidth; only works for lockstep streaming."}
+{"id": "I-10004", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "surplus die translation buffer", "note": ""}
+{"id": "I-01720", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-scale DRAM bonding", "note": ""}
+{"id": "I-08642", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "capacitive die coupling", "note": "Folding link BER into the cell ECC budget is the twist; 1 um dies are extreme."}
+{"id": "I-01721", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "fluidic chiplet assembly", "note": ""}
+{"id": "I-06762", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "free-space optical die link", "note": ""}
+{"id": "I-06314", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-01720", "theme": "wafer-scale DRAM bonding", "note": ""}
+{"id": "I-01740", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "interconnect lane sparing", "note": ""}
+{"id": "I-07716", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "isothermal operation", "note": "At 125 C retention collapses and refresh rises sharply."}
+{"id": "I-08634", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "rack-scale scrubbing", "note": "Needs hour-retention cells; DRAM cannot, so it depends on a new cell."}
+{"id": "I-06335", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dry mass transfer", "note": ""}
+{"id": "I-04961", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "tin-free Cu joints", "note": ""}
+{"id": "I-03128", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "TLP bonding stacks", "note": ""}
+{"id": "I-03091", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "warpage pre-compensation", "note": ""}
+{"id": "I-02180", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "compiler-scheduled DRAM", "note": ""}
+{"id": "I-10016", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "Mo-filled TSVs", "note": ""}
+{"id": "I-09559", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "R2R interposer overlay", "note": ""}
+{"id": "I-10017", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "NTE mold filler", "note": ""}
+{"id": "I-11374", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01722", "theme": "delay-insensitive DRAM link", "note": ""}
+{"id": "I-04474", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "loaded transmission lines", "note": "On-chip lines are R-dominated; the required inductance is impractically large."}
+{"id": "I-02191", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-memory checkpointing", "note": ""}
+{"id": "I-02664", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "coaxial bump interconnect", "note": ""}
+{"id": "I-01265", "P": 4, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "subarray-level hybrid bonding", "note": "Per-mat vertical ports remove global I/O; real physics, but needs a DRAM-logic wafer bonding partner."}
+{"id": "I-00789", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "embedded-die substrate memory", "note": ""}
+{"id": "I-09548", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "phase-change thermal buffer", "note": ""}
+{"id": "I-06317", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-06762", "theme": "free-space optical die link", "note": ""}
+{"id": "I-00786", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-08642", "theme": "capacitive die coupling", "note": ""}
+{"id": "I-08636", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "timing margin harvesting", "note": ""}
+{"id": "I-02188", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "persistent write buffer", "note": ""}
+{"id": "I-09538", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "liquid-metal vias", "note": "Ga embrittlement and electrowetting reliability in micro-vias are severe unknowns."}
+{"id": "I-05385", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "I-01265", "theme": "subarray-level hybrid bonding", "note": "Same subarray-direct bonding; millions of 1 um bonds and register area on logic are the doubt."}
+{"id": "I-08603", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "wide slow hybrid-bond bus", "note": ""}
+{"id": "I-10010", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diamond thermal shims", "note": ""}
+{"id": "I-10908", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "resonant charge recycling", "note": ""}
+{"id": "I-04933", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "power-line data signaling", "note": ""}
+{"id": "I-01278", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-04474", "theme": "loaded transmission lines", "note": ""}
+{"id": "I-10911", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory gather", "note": ""}
+{"id": "I-03121", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "DIMM reuse CXL tier", "note": ""}
+{"id": "I-03086", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "asymmetric read lanes", "note": ""}
+{"id": "I-04011", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-03086", "theme": "asymmetric read lanes", "note": ""}
+{"id": "I-07690", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-02180", "theme": "compiler-scheduled DRAM", "note": ""}
+{"id": "I-02194", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "analog multilevel readout", "note": "Noise margins of FeFET levels driven straight onto PAM4 lanes are doubtful."}
+{"id": "I-03127", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "HBM partial-good binning", "note": ""}
+{"id": "I-11394", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "e-waste die harvesting", "note": ""}
+{"id": "I-09565", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "holographic optical fanout", "note": ""}
+{"id": "I-04483", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog inter-die signaling", "note": ""}
+{"id": "I-09563", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "printed CNT interconnect", "note": ""}
+{"id": "I-02195", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bond repair switches", "note": ""}
+{"id": "I-11369", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "helium-free via formation", "note": ""}
+{"id": "I-04924", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "WDM bank addressing", "note": ""}
+{"id": "I-05390", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "transition-minimizing coding", "note": ""}
+{"id": "I-08186", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "burst-mode memory PHY", "note": ""}
+{"id": "I-02657", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "post-test liquid-metal wiring", "note": "Test-then-wire avoids KGD cost; liquid-metal channels limit speed and density."}
+{"id": "I-08609", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-01265", "theme": "subarray-level hybrid bonding", "note": ""}
+{"id": "I-09082", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01722", "theme": "delay-insensitive DRAM link", "note": ""}
+{"id": "I-02204", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "die test traceability", "note": ""}
+{"id": "I-04967", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01262", "theme": "cryogenic DRAM system", "note": ""}
+{"id": "I-05405", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01262", "theme": "cryogenic DRAM system", "note": ""}
+{"id": "I-10447", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "batch isostatic bonding", "note": ""}
+{"id": "I-05854", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "woven wire interposer", "note": "Woven microwire placement accuracy is far coarser than chiplet pad pitch."}
+{"id": "I-03111", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-00789", "theme": "embedded-die substrate memory", "note": ""}
+{"id": "I-08159", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "narrow serial DRAM", "note": ""}
+{"id": "I-05870", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02180", "theme": "compiler-scheduled DRAM", "note": ""}
+{"id": "I-03586", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-02659", "theme": "folded flex stacking", "note": ""}
+{"id": "I-08173", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sparse event link", "note": ""}
+{"id": "I-06798", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "capillary die self-alignment", "note": ""}
+{"id": "I-00807", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "plasma-free bond activation", "note": ""}
+{"id": "I-06778", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "nanowire room-temp bonding", "note": ""}
+{"id": "I-04939", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "seed-based weight compression", "note": ""}
+{"id": "I-01264", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane progressive fetch", "note": ""}
+{"id": "I-09088", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "silicon avalanche optical link", "note": "SPAD photon budget makes Si emitters viable; dead time limits per-channel rate."}
+{"id": "I-08613", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory function shipping", "note": ""}
+{"id": "I-10446", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-06798", "theme": "capillary die self-alignment", "note": ""}
+{"id": "I-10910", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "exponent entropy coding", "note": ""}
+{"id": "I-07263", "P": 3, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "network buffer pooling", "note": "Switch SRAM is small and needed for packets; little memory reclaimed."}
+{"id": "I-08172", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "low-swing CDS links", "note": "CDS cancels offsets enabling ~30 mV swings; clocking overhead and settling at speed are the doubt."}
+{"id": "I-02164", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "edge-bonded standing dies", "note": "Huge edge contact count with no TSVs; polished-edge 2 um pads and mechanical stability are major unknowns."}
+{"id": "I-06781", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-02164", "theme": "edge-bonded standing dies", "note": ""}
+{"id": "I-05419", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "spatial dataflow pipelining", "note": ""}
+{"id": "I-01252", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "universal DRAM core die", "note": ""}
+{"id": "I-02173", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "in-memory attention top-k", "note": ""}
+{"id": "I-02175", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "spare die stacking", "note": ""}
+{"id": "I-01276", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "simultaneous bidirectional signaling", "note": ""}
+{"id": "I-01748", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "shape-memory disassembly", "note": ""}

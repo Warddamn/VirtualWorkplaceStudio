@@ -1,0 +1,96 @@
+{"id": "I-03971", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "tiered vector embeddings", "note": ""}
+{"id": "I-04444", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "ferroelectric capacitive crossbar", "note": ""}
+{"id": "I-09970", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "bit-plane weights", "note": ""}
+{"id": "I-00281", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "learned FTL mapping", "note": ""}
+{"id": "I-00288", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compressed pointers", "note": ""}
+{"id": "I-00758", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-00288", "theme": "compressed pointers", "note": ""}
+{"id": "I-03081", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "I-00288", "theme": "compressed pointers", "note": ""}
+{"id": "I-05359", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "shared-base delta weights", "note": ""}
+{"id": "I-06263", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "approximate KV dedup", "note": ""}
+{"id": "I-09493", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "in-mat analog decompression", "note": "Doubt: analog charge sum of base+delta rows needs multi-level sensing/ADC, not a standard sense amp."}
+{"id": "I-09935", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "near-duplicate page dedup", "note": ""}
+{"id": "I-09499", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS nonvolatile codebook", "note": ""}
+{"id": "I-06298", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "tokenizer compression", "note": ""}
+{"id": "I-09033", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "synchronous page-move tier", "note": ""}
+{"id": "I-09481", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "photonic nonvolatile weights", "note": "Doubt: photonic attenuators are ~100 um devices, so weight capacity per chip is tiny versus model sizes."}
+{"id": "I-05800", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "CXL shared weights", "note": ""}
+{"id": "I-00315", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "planned rematerialization", "note": ""}
+{"id": "I-10431", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "fault-tolerant model training", "note": ""}
+{"id": "I-01226", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "mask-ROM weights", "note": ""}
+{"id": "I-00741", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "codec KV compression", "note": ""}
+{"id": "I-03957", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-09935", "theme": "near-duplicate page dedup", "note": ""}
+{"id": "I-05361", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical weight broadcast", "note": "Insight: passive optical fan-out lets lockstep replicas share one weight copy; doubt: splitter loss and TB/s per receiver."}
+{"id": "I-08582", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "compression metadata eDRAM", "note": ""}
+{"id": "I-04424", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "CDR-coding pointers", "note": ""}
+{"id": "I-04897", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "JIT field narrowing", "note": ""}
+{"id": "I-09959", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "bank-level PIM filtering", "note": ""}
+{"id": "I-00292", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "migrating threads", "note": ""}
+{"id": "I-10884", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "oxide gain cell BEOL", "note": ""}
+{"id": "I-07656", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "in-HBM attention PIM", "note": ""}
+{"id": "I-02157", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "background app hibernation", "note": ""}
+{"id": "I-00764", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "optical delay-line storage", "note": ""}
+{"id": "I-01695", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "error-bounded lossy compression", "note": ""}
+{"id": "I-06721", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "stranded memory market", "note": ""}
+{"id": "I-07657", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "in-storage vector search", "note": ""}
+{"id": "I-06297", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "RAS config reclaim", "note": ""}
+{"id": "I-03968", "P": 4, "S": 4, "N": 2, "D": 5, "dup_of": "", "theme": "fine-tune delta compression", "note": "Insight: BitDelta-style 1-bit masks over a shared base give ~10x+ savings for multi-tenant full fine-tunes; LoRA already covers many cases."}
+{"id": "I-07647", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "I-03968", "theme": "fine-tune delta compression", "note": ""}
+{"id": "I-09020", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "content-addressed CXL dedup", "note": ""}
+{"id": "I-06728", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "gang-scheduled memory images", "note": ""}
+{"id": "I-09042", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog flash CIM", "note": ""}
+{"id": "I-00322", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory-efficiency labeling", "note": ""}
+{"id": "I-00763", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-01226", "theme": "mask-ROM weights", "note": ""}
+{"id": "I-10399", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "address-fold dedup", "note": ""}
+{"id": "I-06742", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "ReRAM CIM", "note": ""}
+{"id": "I-05838", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "analog leakage aging", "note": ""}
+{"id": "I-11351", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "printed OECT storage", "note": ""}
+{"id": "I-02141", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-07680", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "memory ESCO contracting", "note": ""}
+{"id": "I-00769", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09042", "theme": "analog flash CIM", "note": ""}
+{"id": "I-02154", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "SRAM-only pipeline inference", "note": ""}
+{"id": "I-03061", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "hardware zswap offload", "note": ""}
+{"id": "I-06271", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "GC cold-object compression", "note": ""}
+{"id": "I-07651", "P": 5, "S": 4, "N": 2, "D": 5, "dup_of": "", "theme": "idle session hibernation", "note": "Insight: agent sessions idle most of wall-clock time; snapshotting KV and heap to NVMe cuts resident memory per agent ~10x."}
+{"id": "I-08102", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "background tab freezing", "note": ""}
+{"id": "I-01223", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "decay-based KV eviction", "note": "Doubt: dense attention reads every KV row each step, so nothing decays; cell-level retention is random, not per-row."}
+{"id": "I-06736", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "memory overcommit", "note": ""}
+{"id": "I-07658", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "I-02141", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-01686", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "approximate sketch analytics", "note": ""}
+{"id": "I-00751", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-04897", "theme": "JIT field narrowing", "note": ""}
+{"id": "I-10396", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "layer-fusion tiling", "note": ""}
+{"id": "I-02589", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00292", "theme": "migrating threads", "note": ""}
+{"id": "I-07206", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compressed-domain media memory", "note": ""}
+{"id": "I-01233", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-10396", "theme": "layer-fusion tiling", "note": ""}
+{"id": "I-04899", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-10396", "theme": "layer-fusion tiling", "note": ""}
+{"id": "I-09962", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "zero-line elision", "note": ""}
+{"id": "I-05831", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "I-07651", "theme": "idle session hibernation", "note": ""}
+{"id": "I-10891", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-02141", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-07178", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "procedural memory lines", "note": ""}
+{"id": "I-01222", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "refresh-free clean cache", "note": ""}
+{"id": "I-03082", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-01226", "theme": "mask-ROM weights", "note": ""}
+{"id": "I-09030", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-06721", "theme": "stranded memory market", "note": ""}
+{"id": "I-06268", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-09970", "theme": "bit-plane weights", "note": ""}
+{"id": "I-09483", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "nonvolatile access integrators", "note": ""}
+{"id": "I-06755", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "context distillation adapters", "note": ""}
+{"id": "I-07185", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "optical KV prefix multicast", "note": ""}
+{"id": "I-00317", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-03968", "theme": "fine-tune delta compression", "note": ""}
+{"id": "I-02156", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "shared weight mappings", "note": ""}
+{"id": "I-05365", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "panel-level shared HBM", "note": ""}
+{"id": "I-06744", "P": 5, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "unified memory package", "note": ""}
+{"id": "I-06299", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "memory-time pricing", "note": ""}
+{"id": "I-00285", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "optically switched memory pooling", "note": ""}
+{"id": "I-00767", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "hybrid DRAM-NAND stack", "note": ""}
+{"id": "I-07652", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-00288", "theme": "compressed pointers", "note": ""}
+{"id": "I-05371", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed ferroelectric memory", "note": ""}
+{"id": "I-09966", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "succinct index structures", "note": ""}
+{"id": "I-03062", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "precision-transcoding memory", "note": ""}
+{"id": "I-02146", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "erasure-coded memory caches", "note": ""}
+{"id": "I-01236", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "superposition KV memory", "note": ""}
+{"id": "I-07217", "P": 3, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "binary sparse activations", "note": ""}
+{"id": "I-08591", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "HBM context swapping", "note": ""}
+{"id": "I-00311", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "I-08102", "theme": "background tab freezing", "note": ""}
+{"id": "I-07194", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "in-network collectives", "note": ""}
+{"id": "I-05370", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diffractive optical layers", "note": ""}
+{"id": "I-03499", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "adaptive line codebook", "note": ""}
+{"id": "I-03055", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "diurnal fleet sharing", "note": ""}
+{"id": "I-10406", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "approximate line dedup", "note": ""}

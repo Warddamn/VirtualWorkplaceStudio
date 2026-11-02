@@ -1,0 +1,96 @@
+{"id": "I-08405", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "FE/DRAM dual-mode cell", "note": "Dual-mode HZO NV-DRAM is known art; copying charge to polarization needs coercive voltage at the cell."}
+{"id": "I-08412", "P": 1, "S": 3, "N": 4, "D": 1, "dup_of": "", "theme": "leak-driven memristor backup", "note": "fA leakage carries far too little charge to move ions in a memristor."}
+{"id": "I-00114", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-map scrambling", "note": ""}
+{"id": "I-00135", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog address decoding", "note": "Window comparators cannot resolve ~1000 analog levels in the noise."}
+{"id": "I-05155", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-00575", "theme": "coincident dual-gate addressing", "note": ""}
+{"id": "I-08833", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "floating-body TDC sensing", "note": "Exponential latch delay turns small body-charge differences into timing, but Z-RAM also failed on retention and variability."}
+{"id": "I-00113", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-referenced sensing", "note": "A linear capacitor gives no data-dependent difference after charge injection, unlike MRAM."}
+{"id": "I-09315", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "fast retention profiling", "note": "Reduced-tRCD profiling on an FPGA is easy to demo; VRT cells limit how safe the binning is."}
+{"id": "I-10211", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "reusable bonded periphery tiles", "note": "Reusing tiles across generations is new; a bitline-pitch adapter for hybrid bonding is the hard part."}
+{"id": "I-00575", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "coincident dual-gate addressing", "note": "Fine-grained activation is known; a dual-gate access device in the cell costs area and half-select leakage."}
+{"id": "I-01032", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-00575", "theme": "coincident dual-gate addressing", "note": "Two series access transistors per cell erase the density gain."}
+{"id": "I-02400", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "victim-margin row hammer", "note": ""}
+{"id": "I-04259", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "thyristor wordline driver", "note": "An SCR latch driver removes level shifters; latch-up and reset timing are the risks."}
+{"id": "I-09307", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "coincident threshold-switch select", "note": ""}
+{"id": "I-10216", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "backside periphery", "note": "Low-temperature backside transistors are slow; industry chose bonded cell-on-periphery instead."}
+{"id": "I-02402", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "back-gated access array", "note": ""}
+{"id": "I-07946", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00137", "theme": "segmented bitline repeaters", "note": ""}
+{"id": "I-10255", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "open periphery standard", "note": "180 nm periphery cannot match array bitline pitch, so only control and I/O dies apply."}
+{"id": "I-01035", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "system-level row sparing", "note": ""}
+{"id": "I-08846", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-01022", "theme": "resonant wordline drive", "note": ""}
+{"id": "I-09781", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "on-die BAW clock", "note": "A frequency reference does not do a DLL's phase-alignment job."}
+{"id": "I-09334", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "stepwise adiabatic charging", "note": "Bitline equalization already recycles charge, so the extra gain is small."}
+{"id": "I-01475", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "time-shared sense amp", "note": ""}
+{"id": "I-06991", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "co-aging reference cells", "note": "Tracks common-mode droop, but the refresh-setting tail cells are outliers."}
+{"id": "I-05651", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "approximate bit-plane DRAM", "note": ""}
+{"id": "I-06108", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00111", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-11148", "P": 4, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "erasure-flag soft sensing", "note": "Slow-resolving SA bits flagged as erasures double what ECC can correct; this is NAND soft info applied to DRAM."}
+{"id": "I-01942", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "RTD Goto-pair sensing", "note": ""}
+{"id": "I-09786", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-01942", "theme": "RTD Goto-pair sensing", "note": ""}
+{"id": "I-04251", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pilot-cell adaptive sensing", "note": ""}
+{"id": "I-03317", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-01474", "theme": "time-domain sensing", "note": ""}
+{"id": "I-08416", "P": 1, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "RTD bistable storage node", "note": "Revives TI's tunnel-diode SRAM, which needs a peak-to-valley ratio near 1e6; graphene/hBN RTDs reach about 10."}
+{"id": "I-07491", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "per-mat VPP trim", "note": ""}
+{"id": "I-01954", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic DRAM tier", "note": ""}
+{"id": "I-03345", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "reject-die salvage", "note": ""}
+{"id": "I-01951", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "contactless wafer test", "note": "Flood-lit PV cells cannot supply DRAM test power per die."}
+{"id": "I-00592", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "partial row activation", "note": ""}
+{"id": "I-01473", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-00592", "theme": "partial row activation", "note": ""}
+{"id": "I-02397", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-00592", "theme": "partial row activation", "note": ""}
+{"id": "I-06078", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cell-cap pump capacitors", "note": ""}
+{"id": "I-04266", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "varactor parametric bitline", "note": "Collapsing bitline capacitance after charge sharing gives noiseless signal gain; common-mode shift needs handling."}
+{"id": "I-09298", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NV shadow sense latches", "note": ""}
+{"id": "I-08855", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "skyrmion shift memory", "note": "Major/minor loop latency runs to microseconds, not DRAM-class random access; room-temperature skyrmion pinning is unsolved."}
+{"id": "I-01482", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "analog activation counter", "note": "A leaky capacitor per row counts activations cheaply; leak variation and temperature undermine the threshold."}
+{"id": "I-06993", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-01482", "theme": "analog activation counter", "note": ""}
+{"id": "I-09758", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "MTJ RNG for PARA", "note": ""}
+{"id": "I-01019", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "SA offset trim", "note": ""}
+{"id": "I-09336", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bond-wire boost VPP", "note": ""}
+{"id": "I-02869", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01022", "theme": "resonant wordline drive", "note": ""}
+{"id": "I-10692", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-09334", "theme": "stepwise adiabatic charging", "note": ""}
+{"id": "I-00137", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "segmented bitline repeaters", "note": "No room at array pitch for TFTs, and laser crystallization over capacitors is a thermal risk."}
+{"id": "I-08861", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "Vt-coded tier decoding", "note": "Vt-coded series select gates remove the 3D staircase; they cut read current, and the 3D cell itself stays unsolved."}
+{"id": "I-10213", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "vertically stacked bitline pair", "note": ""}
+{"id": "I-07941", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "boosted gain cell", "note": ""}
+{"id": "I-07488", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "multi-rate refresh", "note": ""}
+{"id": "I-01962", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "air-gap bitlines", "note": ""}
+{"id": "I-01022", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "resonant wordline drive", "note": ""}
+{"id": "I-09762", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-07488", "theme": "multi-rate refresh", "note": ""}
+{"id": "I-04700", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dithered majority sensing", "note": "Dither plus voting averages out noise, not comparator offset or lost cell charge."}
+{"id": "I-09295", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "per-mat thermal refresh", "note": ""}
+{"id": "I-01474", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "time-domain sensing", "note": ""}
+{"id": "I-01051", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "vacuum-channel sense amp", "note": "Field emission needs high fields; such voltages and emitter variability rule out sense amps."}
+{"id": "I-03341", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "redundancy allocation heuristics", "note": ""}
+{"id": "I-04272", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "shift-register refresh pointer", "note": ""}
+{"id": "I-03802", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint periphery litho", "note": ""}
+{"id": "I-07027", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-03802", "theme": "nanoimprint periphery litho", "note": ""}
+{"id": "I-07917", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-01954", "theme": "cryogenic DRAM tier", "note": ""}
+{"id": "I-01045", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "reflectometry readout", "note": "fF cell shunts give tiny reflections at 20 ps; this is not practical."}
+{"id": "I-01046", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "polarity inversion for TFTs", "note": ""}
+{"id": "I-03787", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "online weak-row detection", "note": ""}
+{"id": "I-00580", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "inductive die-stack links", "note": ""}
+{"id": "I-08859", "P": 1, "S": 4, "N": 4, "D": 1, "dup_of": "", "theme": "SET electrometer sensing", "note": "A 100x smaller cell would allow stacked planar tiers; doubts are room-temperature SET variability and 300-electron retention below a fA."}
+{"id": "I-05634", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline coupling neutralization", "note": ""}
+{"id": "I-10690", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "refresh-piggyback reads", "note": ""}
+{"id": "I-11152", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "nonlinear-dielectric FE readout", "note": "Like SNDM, the odd-in-P second-order permittivity reads polarization without switching; signal from fF caps in 5 ns is tiny."}
+{"id": "I-10695", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "DIMM spare-die site", "note": ""}
+{"id": "I-03324", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "field-aligned ACF bonding", "note": "A 300 nm pitch is far too coarse for bitline-pitch periphery, and pad alignment is still needed."}
+{"id": "I-05638", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "voltage-stacked subarrays", "note": "Stacked charge recycling cuts supply energy, but a 0.25 V swing leaves too little stored signal."}
+{"id": "I-00598", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "bootstrapped wordline driver", "note": ""}
+{"id": "I-08400", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "lifetime-based refresh skip", "note": ""}
+{"id": "I-00557", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "local oxide preamp", "note": "A BEOL IGZO follower per 8 cells shrinks the sensed node, letting Cs and aspect ratio fall; restore path and Vt spread are open questions."}
+{"id": "I-01036", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "auto-zero TFT sense amp", "note": ""}
+{"id": "I-00095", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "foundry periphery bonding", "note": ""}
+{"id": "I-06550", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "per-bank timing binning", "note": ""}
+{"id": "I-11140", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "neighbor-segment bootstrap", "note": ""}
+{"id": "I-05192", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "ZTC timing bias", "note": ""}
+{"id": "I-09779", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "charge-trap SA trim", "note": ""}
+{"id": "I-10681", "P": 1, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "impact-ionization sense amp", "note": "I-MOS needs volts of bias for avalanche, which contradicts a 0.4 V array."}
+{"id": "I-09327", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "stress-tuned leakage", "note": "Tens of MPa shifts the bandgap by only meV; cheap to test with a clamp on DIMMs."}
+{"id": "I-03327", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-timed mats", "note": ""}
+{"id": "I-04703", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03327", "theme": "self-timed mats", "note": ""}
+{"id": "I-00111", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-03813", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "peel-off dry clean", "note": ""}
+{"id": "I-09311", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "on-die photonic I/O", "note": ""}
+{"id": "I-06081", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-01475", "theme": "time-shared sense amp", "note": ""}
+{"id": "I-09300", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "optical BIST readout", "note": "Camera-read electrochromic pass/fail pads avoid tester channels; full-wafer power contact is still needed."}

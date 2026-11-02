@@ -1,0 +1,94 @@
+{"id": "I-03659", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "ECRAM ion memory", "note": "Li/proton ECRAM endurance and speed fall short of DRAM-class; battery-line reuse is the twist."}
+{"id": "I-04593", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "in-DRAM associative search", "note": "Sense-amp match logic is known PIM; attention needs similarity top-k, not exact key match."}
+{"id": "I-06407", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-01806", "theme": "buyer-owned fab coop", "note": "Same buyer co-op plus take-or-pay offtake as I-01806."}
+{"id": "I-10576", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "helium-free process", "note": "H2/Ar backside cooling requalification is cheap nanofab work; H2 safety and cooling parity are the unknowns."}
+{"id": "I-08732", "P": 3, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "maskless e-beam litho", "note": "MAPPER-style multibeam throughput was the failure mode; only niche secure volumes."}
+{"id": "I-03655", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "postponement WIP bank", "note": "Different products differ in floorplan from early masks; only works within a shared die design."}
+{"id": "I-05489", "P": 5, "S": 3, "N": 3, "D": 2, "dup_of": "I-00436", "theme": "per-bit production credit", "note": "Same per-Gb production tax credit as I-00436."}
+{"id": "I-09167", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "long-horizon funding trust", "note": "Milestone-tranched statutory trust; execution hinges on legislative will."}
+{"id": "I-01342", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "take-or-pay project finance", "note": "Lower WACC via hyperscaler offtake; DRAM prepayment deals exist, SPV structure is the twist."}
+{"id": "I-11462", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "countercyclical revenue insurance", "note": "Moral hazard and fiscal exposure are key doubts."}
+{"id": "I-02730", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "I-01341", "theme": "strategic DRAM reserve", "note": "Same reserve concept as I-01341."}
+{"id": "I-01368", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "shared fab shell REIT", "note": "Cross-tenant contamination and shared utilities qualification are the doubts."}
+{"id": "I-00454", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "memory in package substrate", "note": "Gain-cell tiers on glass cores: density, yield coupling to the package are big unknowns."}
+{"id": "I-00442", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "helium-free anneal", "note": "Microwave anneal is known; helium use in anneals is a modest share."}
+{"id": "I-02284", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "error-tolerant DRAM bins", "note": "Approximate-DRAM idea with a concrete CDN pilot; yield gain is small."}
+{"id": "I-10108", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "CBRAM open IP", "note": "CBRAM endurance far below DRAM-class; persistence tier only."}
+{"id": "I-11454", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "legacy DRAM onshoring", "note": "Sound but conventional; needs a fab line."}
+{"id": "I-08237", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "I-01341", "theme": "strategic DRAM reserve", "note": "Same reserve concept as I-01341."}
+{"id": "I-11468", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "wafer tolling contracts", "note": "Close to existing foundry/consignment models."}
+{"id": "I-11470", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-05037", "theme": "DIMM deposit-refund", "note": "Same bottle-bill deposit as I-05037."}
+{"id": "I-04591", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "free-space optical memory I/O", "note": "SEED needs III-V hybridization, external laser power and microlens alignment; laser wall-plug erodes 10x claim."}
+{"id": "I-03211", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "periphery strain engineering", "note": "Stress liners are standard logic practice since 90 nm."}
+{"id": "I-04561", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00423", "theme": "DIMM reuse via CXL", "note": "Same reclaimed-DRAM behind buffer/CXL controller as I-00423."}
+{"id": "I-00450", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CNT BEOL periphery", "note": "CNFET maturity and sense-amp matching doubtful; 60% capex claim unsupported."}
+{"id": "I-00423", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse via CXL", "note": "Hyperscalers already reuse DDR4 behind CXL."}
+{"id": "I-06866", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "open DRAM process kit", "note": "Expired patents omit the tacit yield know-how that is the real barrier."}
+{"id": "I-05476", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-00435", "theme": "retention-aware binning", "note": "Per-row variant of retention-graded salvage in I-00435; RAIDR-like."}
+{"id": "I-03647", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tungsten bioleaching", "note": "Wolframite/scheelite are not sulfides; bioleaching tungsten is weakly demonstrated."}
+{"id": "I-02287", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "DIMM reuse policy", "note": "Cheap remanence study; NIST guidance may already treat power removal as sufficient."}
+{"id": "I-05025", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tungsten recycling", "note": "WF6 capture from exhaust plausible; volume recovered per fab is modest."}
+{"id": "I-01817", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "I-01341", "theme": "strategic DRAM reserve", "note": "Same reserve concept as I-01341."}
+{"id": "I-00424", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "memory buying cooperative", "note": "Purchasing co-ops are established practice."}
+{"id": "I-02743", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-00456", "theme": "dry/scCO2 cleaning", "note": "Same dry-clean water substitution as I-00456."}
+{"id": "I-04114", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "shared fab utility campus", "note": "Science parks already share some utilities; neutral ownership is the twist."}
+{"id": "I-10112", "P": 5, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "Optane reuse market", "note": "Finite stranded inventory; niche."}
+{"id": "I-06859", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wafer edge harvesting", "note": "Small die in every field costs interior area unless edge uses separate reticle."}
+{"id": "I-09628", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "DSA hole multiplication", "note": "DSA for DRAM holes long studied; defectivity is the blocker, open IP the twist."}
+{"id": "I-10538", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-04100", "theme": "LCD-fab oxide memory", "note": "Same LCD-fab IGZO gain-cell panels as I-04100."}
+{"id": "I-07780", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "DRAM futures market", "note": "Liquidity and contract standardization are the doubts."}
+{"id": "I-02719", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-02267", "theme": "memory leasing cascade", "note": "Same vendor-owned leased memory as I-02267."}
+{"id": "I-03642", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "DRAM module in logic foundry", "note": "Embedded DRAM in logic foundries existed; commodity cost parity doubtful."}
+{"id": "I-02735", "P": 5, "S": 3, "N": 3, "D": 2, "dup_of": "I-00436", "theme": "per-bit production credit", "note": "Same per-Gb production tax credit as I-00436."}
+{"id": "I-04100", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "LCD-fab oxide memory", "note": "At ~1 um rules density is ~1000x below DRAM; glass cost/area advantage likely does not close cost/GB."}
+{"id": "I-10104", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS latching memory", "note": "Stiction latching reliability and >1e15 cycles at sub-100 nm are unproven."}
+{"id": "I-00456", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "dry/scCO2 cleaning", "note": "scCO2 cleaning studied for decades; full wet-clean replacement unproven."}
+{"id": "I-01816", "P": 4, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "pure-play DRAM foundry", "note": "PSMC/Winbond already offer DRAM foundry; needs a fab."}
+{"id": "I-03187", "P": 4, "S": 3, "N": 2, "D": 1, "dup_of": "I-01816", "theme": "pure-play DRAM foundry", "note": "Same pure-play DRAM foundry as I-01816."}
+{"id": "I-04574", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-04100", "theme": "LCD-fab oxide memory", "note": "Same LCD-fab IGZO gain-cell panels as I-04100."}
+{"id": "I-06869", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "modular fab construction", "note": "Vibration and utility integration at fab scale are doubts; LNG analogy apt."}
+{"id": "I-08251", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "salvaged die restacking", "note": "Old low-density dies give poor power/bandwidth; reliability after decap uncertain."}
+{"id": "I-09185", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "racetrack domain-wall memory", "note": "Racetrack memory widely pursued; old-line build is the twist."}
+{"id": "I-00435", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention-aware binning", "note": "Sell leakage-tail rejects with faster refresh; small yield gain."}
+{"id": "I-09193", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "mature tool bank", "note": "Executable; impact limited to companion chips."}
+{"id": "I-11034", "P": 3, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "fab line conversion", "note": "Planar NAND lines largely already converted."}
+{"id": "I-05037", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "DIMM deposit-refund", "note": "Bottle-bill model; secondary supply modest share."}
+{"id": "I-02267", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory leasing cascade", "note": "Leasing exists; cascade plus ABS financing is the twist."}
+{"id": "I-00420", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "synthetic silica crucibles", "note": "Synthetic inner-layer crucibles already exist."}
+{"id": "I-01806", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "buyer-owned fab coop", "note": "Shifts capex to buyers; governance among competitors is the doubt."}
+{"id": "I-10089", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-05037", "theme": "DIMM deposit-refund", "note": "Same bottle-bill deposit as I-05037."}
+{"id": "I-07788", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "cleanroom-free fab", "note": "FOUP minienvironments already standard; full warehouse shell is incremental."}
+{"id": "I-09656", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "chamber liner renewal", "note": "In-situ seasoning/precoat is common practice."}
+{"id": "I-09618", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "helium recycling", "note": "Helium recovery skids already sold to fabs."}
+{"id": "I-04572", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "mandatory second source", "note": "Proven historical lever; DRAM makers resist licensing."}
+{"id": "I-07355", "P": 4, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "grid incentive refresh-free", "note": "Refresh is a tiny share of datacenter power; presupposes refresh-free memory."}
+{"id": "I-01354", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tool spares pooling", "note": "OEM spares pools exist; a few % output gain."}
+{"id": "I-07336", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "refresh-free ephemeral DRAM", "note": "Retention tail over temperature and dropping row-hammer defenses are risks."}
+{"id": "I-11469", "P": 5, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "back-end onshoring", "note": "Already underway with U.S. HBM packaging plants."}
+{"id": "I-11489", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "all-glass LTPO memory", "note": "Full chip on glass removes Si, but density and LTPS periphery speed limit it."}
+{"id": "I-08724", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "laser anneal xenon-free", "note": "Laser spike anneal with diode/CO2 lasers is already used."}
+{"id": "I-00917", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "procurement preference", "note": "Policy fusion; depends on an F-free process existing."}
+{"id": "I-09653", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-00420", "theme": "synthetic silica crucibles", "note": "Two-part variant of synthetic-silica crucible in I-00420."}
+{"id": "I-09624", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "selector crosspoint DRAM", "note": "NbO2 off-state leakage far too high for capacitor retention."}
+{"id": "I-10570", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "tungsten-free metallization", "note": "Ru/Co wordline replacement widely pursued; electroless superfill is the twist."}
+{"id": "I-08277", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "lean software RAM diet", "note": "Executable; edge DRAM demand is a modest segment."}
+{"id": "I-00436", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "per-bit production credit", "note": "Pays for yield/output; 45X-style credits exist for other sectors."}
+{"id": "I-10084", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "helium strategic reserve", "note": "Salt-cavern helium storage feasible; buffers supply, no cost change."}
+{"id": "I-00911", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "PFAS-free fab siting", "note": "Depends on an unproven PFAS-free flow."}
+{"id": "I-00446", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "BEOL repair tier", "note": "Thermal budget on finished DRAM and timing mismatch of oxide spares are doubts."}
+{"id": "I-01341", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "strategic DRAM reserve", "note": "Damps price swings; DRAM generation obsolescence limits shelf life of stored product."}
+{"id": "I-00891", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tungsten recycling", "note": "Carbide zinc-process recycling is mature; WF6 plant is the add."}
+{"id": "I-01815", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "fab workforce training", "note": "VR fab training already offered by vendors."}
+{"id": "I-11486", "P": 3, "S": 2, "N": 2, "D": 1, "dup_of": "I-04100", "theme": "LCD-fab oxide memory", "note": "Relocation variant of LCD-fab IGZO panels in I-04100."}
+{"id": "I-04590", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "near-threshold periphery", "note": "Wide-slow subthreshold periphery cuts CV2 but adds latency; array energy unaffected."}
+{"id": "I-08258", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "minimal fab legacy DRAM", "note": "Half-inch Minimal Fab output is tiny; rad-hard niche only."}
+{"id": "I-01819", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "R2R memory foil", "note": "Multilayer 100 nm overlay on flexible foil is the killer; if solved ~10x cost/bit for a slow tier."}
+{"id": "I-01809", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "quartz export leverage", "note": "Trade-law limits and emerging non-U.S. HPQ sources weaken the lever."}
+{"id": "I-02298", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "know-how capture", "note": "Cheap and executable; tacit knowledge transfer is partial."}
+{"id": "I-08717", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint litho", "note": "Canon NIL already evaluated for memory; defectivity and overlay limit."}
+{"id": "I-10541", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "I-01806", "theme": "buyer-owned fab coop", "note": "Same buyer co-op fab as I-01806."}
+{"id": "I-08275", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "salvaged die rewiring", "note": "Niche small-lot reuse."}
+{"id": "I-10099", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "NV-backed 3D gain cell", "note": "Poly-Si channel leakage and on-die backup energy are doubts; novel pairing."}
+{"id": "I-07790", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-04100", "theme": "LCD-fab oxide memory", "note": "Same LCD-fab IGZO gain-cell panels as I-04100."}
+{"id": "I-03186", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fab tool-hour exchange", "note": "Cross-fab contamination and requalification make lot-hopping impractical."}
+{"id": "I-00896", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fab-datacenter colocation", "note": "Packaging still needed for boards; savings overstated."}

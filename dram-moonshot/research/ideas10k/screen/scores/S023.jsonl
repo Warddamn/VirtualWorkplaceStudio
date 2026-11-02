@@ -1,0 +1,94 @@
+{"id": "I-07082", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "3D tier layout", "note": ""}
+{"id": "I-05241", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "roll-to-roll memory foil", "note": "Converted web lines slash capex; doubt: web-processed devices reaching DRAM density, speed and particle-free yield."}
+{"id": "I-01991", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "sidewall array folding", "note": ""}
+{"id": "I-09341", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "SET charge electrometer", "note": "RT Coulomb-blockade readout could cut Cs 20x; doubt: sub-3 nm island variability and offset charge across billions of bitlines."}
+{"id": "I-02469", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "in-array nano-TSV", "note": ""}
+{"id": "I-07051", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "twisted bitline", "note": "Twisted bitlines are known in planar DRAM; vertical crossover vias are the new part."}
+{"id": "I-08898", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "split-pillar dual cell", "note": ""}
+{"id": "I-11180", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "I-08895", "theme": "fine-grain activation", "note": ""}
+{"id": "I-02466", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "fine-grain activation", "note": "Half-page activation is known art (Half-DRAM, sub-wordline segmentation)."}
+{"id": "I-00145", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "display-fab oxide memory", "note": "Depreciated Gen-8.5 IGZO lines add EUV-free capacity; doubt: 0.8 um pitch density and slow tier may not hold $/GB long term."}
+{"id": "I-09816", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "indium-free oxide channel", "note": ""}
+{"id": "I-10732", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "per-tier test and repair", "note": ""}
+{"id": "I-00627", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "SiC access transistor", "note": "SiC DRAM retention shown at Purdue in 1990s; pitch and interface quality are the doubts."}
+{"id": "I-03395", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "adaptive refresh", "note": ""}
+{"id": "I-07999", "P": 2, "S": 3, "N": 5, "D": 2, "dup_of": "", "theme": "ion-track capacitor holes", "note": "Track-etch gives AR>200 holes without plasma; doubt: registering one track per ~40 nm cell and beam throughput."}
+{"id": "I-03384", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "stress-free bonding", "note": ""}
+{"id": "I-10716", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "per-pillar bonded sense amp", "note": "Tiny bitline lets 0.3-0.5 fF lateral caps sense; doubt: 300-400 nm hybrid-bond pitch and SA area per pillar."}
+{"id": "I-07070", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multilevel DRAM cell", "note": ""}
+{"id": "I-00624", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "low-temp hybrid bonding", "note": ""}
+{"id": "I-04783", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "chokepoint-free MTJ", "note": ""}
+{"id": "I-06590", "P": 3, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "wafer-scale DRAM bonding", "note": ""}
+{"id": "I-08428", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-05689", "theme": "multilayer-plate capacitor", "note": ""}
+{"id": "I-07995", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "wet TSV metallization", "note": ""}
+{"id": "I-04779", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "MacEtch high-AR holes", "note": ""}
+{"id": "I-02909", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "row-hammer shield planes", "note": ""}
+{"id": "I-07056", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-02909", "theme": "row-hammer shield planes", "note": ""}
+{"id": "I-09804", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "air-gap bitline", "note": ""}
+{"id": "I-00149", "P": 4, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "array/periphery bonding", "note": "Cell-on-periphery hybrid bonding is widely pursued by majors."}
+{"id": "I-02005", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "carbon capacitor mold", "note": ""}
+{"id": "I-02011", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint array layers", "note": ""}
+{"id": "I-00161", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Vt-coded tier decoder", "note": ""}
+{"id": "I-02447", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "capacitor-first VCT", "note": ""}
+{"id": "I-01558", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "sub-rank access", "note": ""}
+{"id": "I-00167", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "molybdenum wordline", "note": ""}
+{"id": "I-04758", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "relaxed-pitch 3D DRAM", "note": ""}
+{"id": "I-06585", "P": 1, "S": 3, "N": 5, "D": 2, "dup_of": "", "theme": "self-folding membrane array", "note": "Fold planar caps upright via stressed hinges; doubt: nm-registered folding of interconnected arrays is a miracle step."}
+{"id": "I-10269", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "electrospun oxide channels", "note": ""}
+{"id": "I-05237", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "porous electrode capacitor", "note": ""}
+{"id": "I-10283", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "superlattice pattern transfer", "note": ""}
+{"id": "I-04763", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "I-03828", "theme": "anodic alumina capacitor", "note": ""}
+{"id": "I-04743", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "fine-grain activation", "note": ""}
+{"id": "I-01073", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "laser-crystallized tiers", "note": ""}
+{"id": "I-11198", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "interposer-embedded DRAM", "note": "Idle interposer BEOL becomes ~100 GB near memory at sub-pJ/bit; doubt: oxide 1T1C density at 40 nm and interposer cost."}
+{"id": "I-08905", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reworkable HBM package", "note": ""}
+{"id": "I-06621", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "vdW barristor access", "note": ""}
+{"id": "I-11216", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "backside-BEOL DRAM", "note": ""}
+{"id": "I-09352", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "self-assembled pillar channels", "note": ""}
+{"id": "I-04757", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "shared-layer tiers", "note": ""}
+{"id": "I-08892", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "redox pseudocapacitor cell", "note": "Redox clusters multiply charge per area; doubt: ns-scale Faradaic kinetics, retention, and endurance."}
+{"id": "I-04318", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "charge-transfer strings", "note": ""}
+{"id": "I-04781", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-02011", "theme": "nanoimprint array layers", "note": ""}
+{"id": "I-00638", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic DRAM", "note": ""}
+{"id": "I-02444", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "bonded DUV tiers", "note": ""}
+{"id": "I-08895", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "fine-grain activation", "note": ""}
+{"id": "I-03823", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "backside bitline 4F2", "note": ""}
+{"id": "I-05689", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "multilayer-plate capacitor", "note": ""}
+{"id": "I-11181", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-10735", "theme": "donor wafer reuse", "note": ""}
+{"id": "I-01066", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hex lattice addressing", "note": ""}
+{"id": "I-10730", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "I-04318", "theme": "charge-transfer strings", "note": ""}
+{"id": "I-09825", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "I-00145", "theme": "display-fab oxide memory", "note": ""}
+{"id": "I-03839", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "I-01533", "theme": "shared stacked sense amps", "note": ""}
+{"id": "I-01061", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "shared-layer tiers", "note": ""}
+{"id": "I-06619", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "approximate refresh AI", "note": ""}
+{"id": "I-03385", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "twin-cell sensing", "note": ""}
+{"id": "I-07518", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "doped-epi wordline", "note": ""}
+{"id": "I-06594", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-01548", "theme": "inductive die coupling", "note": ""}
+{"id": "I-11215", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-08892", "theme": "redox pseudocapacitor cell", "note": ""}
+{"id": "I-07514", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "epitaxial high-k capacitor", "note": ""}
+{"id": "I-08442", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "porous electrode capacitor", "note": ""}
+{"id": "I-00174", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective ALD", "note": ""}
+{"id": "I-01522", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "gain-cell long bitline", "note": ""}
+{"id": "I-01538", "P": 4, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "mat-level logic bonding", "note": "Per-mat bonding cuts I/O to ~0.1 pJ/bit (~30x); known direction (SeDRAM-style), so novelty is limited."}
+{"id": "I-02022", "P": 2, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "reflow planarization", "note": ""}
+{"id": "I-02000", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tiered-latency DRAM", "note": ""}
+{"id": "I-04772", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "edge-wired stacking", "note": ""}
+{"id": "I-07538", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "porous electrode capacitor", "note": ""}
+{"id": "I-04766", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "porous-Si tier isolation", "note": ""}
+{"id": "I-04744", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-02000", "theme": "tiered-latency DRAM", "note": ""}
+{"id": "I-11209", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "wide-gap oxide channel", "note": ""}
+{"id": "I-03828", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "anodic alumina capacitor", "note": ""}
+{"id": "I-07968", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "local-gain short bitline", "note": "8-cell vertical bitline with local gain lets 1 fF caps sense; doubt: gain-transistor Vt mismatch and area under array."}
+{"id": "I-00626", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "2D-material channel", "note": ""}
+{"id": "I-00636", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-array TSV", "note": ""}
+{"id": "I-07053", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "interference lithography", "note": ""}
+{"id": "I-05219", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "thermal-aware refresh", "note": ""}
+{"id": "I-01074", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "thermal vias in stack", "note": ""}
+{"id": "I-05218", "P": 3, "S": 4, "N": 3, "D": 4, "dup_of": "", "theme": "offset-cancelling sense amp", "note": "CDS sense amp targets kT/C floor so Cs drops ~10x; doubt: WL/BL coupling and charge injection, not thermal noise, set the floor."}
+{"id": "I-00639", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "known-good-die reconstitution", "note": ""}
+{"id": "I-01564", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "TSV link serialization", "note": ""}
+{"id": "I-01548", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "inductive die coupling", "note": ""}
+{"id": "I-07527", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "open gain-cell compiler", "note": ""}
+{"id": "I-10735", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "donor wafer reuse", "note": ""}
+{"id": "I-03838", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "staircase-free tier contacts", "note": ""}
+{"id": "I-01533", "P": 2, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "shared stacked sense amps", "note": ""}

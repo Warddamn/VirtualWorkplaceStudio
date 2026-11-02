@@ -1,0 +1,105 @@
+{"id": "I-08042", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "self-healing MIM electrode", "note": ""}
+{"id": "I-02968", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "rutile TiO2 capacitor", "note": ""}
+{"id": "I-00204", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "PGM-free SOT-MRAM", "note": ""}
+{"id": "I-05245", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "donor wafer reuse", "note": ""}
+{"id": "I-03409", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "double-layer storage node", "note": ""}
+{"id": "I-08024", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "SiC refresh-free cell", "note": ""}
+{"id": "I-08478", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "redox molecular capacitor", "note": ""}
+{"id": "I-04826", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spin-crossover molecular bit", "note": ""}
+{"id": "I-02490", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "subtractive Mo wiring", "note": ""}
+{"id": "I-06650", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "anodic alumina capacitor", "note": ""}
+{"id": "I-06171", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "helium recycling", "note": ""}
+{"id": "I-00650", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "membrane distillation UPW", "note": ""}
+{"id": "I-07083", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "H2 backside cooling", "note": ""}
+{"id": "I-07114", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-06171", "theme": "helium recycling", "note": ""}
+{"id": "I-01144", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "display-glass memory", "note": ""}
+{"id": "I-07558", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "PFAS-free photoacid", "note": ""}
+{"id": "I-01125", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "synthetic HPQ feedstock", "note": ""}
+{"id": "I-03870", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "reusable nitride crucible", "note": ""}
+{"id": "I-06203", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "LED i-line retrofit", "note": ""}
+{"id": "I-00185", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "Mo wordline fill", "note": ""}
+{"id": "I-01573", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "I-00185", "theme": "Mo wordline fill", "note": ""}
+{"id": "I-10334", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "I-00185", "theme": "Mo wordline fill", "note": ""}
+{"id": "I-11226", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "I-00185", "theme": "Mo wordline fill", "note": ""}
+{"id": "I-07124", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "DES metal recycling", "note": ""}
+{"id": "I-08965", "P": 2, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "wurtzite FeFET", "note": ""}
+{"id": "I-04797", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-01144", "theme": "display-glass memory", "note": ""}
+{"id": "I-11236", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-01144", "theme": "display-glass memory", "note": ""}
+{"id": "I-08038", "P": 2, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "silicide wordline", "note": ""}
+{"id": "I-07557", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "CO2 chuck cooling", "note": ""}
+{"id": "I-01597", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "glass-core substrate", "note": ""}
+{"id": "I-05711", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "bio-derived resist", "note": ""}
+{"id": "I-07554", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dry wafer cleaning", "note": ""}
+{"id": "I-07576", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-08024", "theme": "SiC refresh-free cell", "note": ""}
+{"id": "I-01601", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "macropore capacitor wafer", "note": ""}
+{"id": "I-00676", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "UMG silicon repull", "note": ""}
+{"id": "I-05274", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "cryogenic capacitorless DRAM", "note": "77 K makes bare-gate gain cells retain for hours; doubt: ~10x cryocooler overhead and 8-deck density claim not cryo-specific."}
+{"id": "I-08022", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-05274", "theme": "cryogenic capacitorless DRAM", "note": ""}
+{"id": "I-09417", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "Prussian-blue ECRAM", "note": ""}
+{"id": "I-08015", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "fab water reclaim", "note": ""}
+{"id": "I-10783", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "fab metal recovery", "note": ""}
+{"id": "I-05269", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "spatial ALD tiers", "note": ""}
+{"id": "I-07550", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "bio tungsten recovery", "note": ""}
+{"id": "I-10796", "P": 2, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "eutectic self-assembled lines", "note": ""}
+{"id": "I-11252", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-10783", "theme": "ALD precursor recovery", "note": ""}
+{"id": "I-04828", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "abundant-element memory prize", "note": ""}
+{"id": "I-07581", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "carbon sp2/sp3 switch", "note": ""}
+{"id": "I-10312", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-02038", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-scale DRAM", "note": ""}
+{"id": "I-09863", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "epitaxial silicide bitline", "note": ""}
+{"id": "I-09403", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "capacitive deionization", "note": ""}
+{"id": "I-06665", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "fluorine-free LOCOS flow", "note": ""}
+{"id": "I-03889", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "supercritical CO2 drying", "note": ""}
+{"id": "I-02050", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "refresh-free ephemeral banks", "note": ""}
+{"id": "I-05277", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-03409", "theme": "double-layer storage node", "note": ""}
+{"id": "I-06183", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-03409", "theme": "double-layer storage node", "note": ""}
+{"id": "I-06639", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-03409", "theme": "double-layer storage node", "note": ""}
+{"id": "I-09855", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-03409", "theme": "double-layer storage node", "note": ""}
+{"id": "I-10766", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-05245", "theme": "donor wafer reuse", "note": ""}
+{"id": "I-02063", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "bit-plane progressive fetch", "note": ""}
+{"id": "I-01118", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-10312", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-08504", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "wire-bond die stacking", "note": ""}
+{"id": "I-07556", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "yttria-free chamber coating", "note": ""}
+{"id": "I-00670", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "TiN landing pad", "note": ""}
+{"id": "I-01568", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "synthetic silica crucible", "note": ""}
+{"id": "I-03875", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "MAX-phase wordline", "note": ""}
+{"id": "I-07093", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "In-free oxide channel", "note": ""}
+{"id": "I-07574", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "organic ferroelectric FeRAM", "note": ""}
+{"id": "I-03447", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "self-renewing CMP pad", "note": ""}
+{"id": "I-04349", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "woven magnetic wire memory", "note": ""}
+{"id": "I-04790", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-02968", "theme": "rutile TiO2 capacitor", "note": ""}
+{"id": "I-06647", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "edge-bus die cube", "note": ""}
+{"id": "I-02037", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01144", "theme": "display-glass memory", "note": ""}
+{"id": "I-05282", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "Schottky 3D tiers", "note": ""}
+{"id": "I-01141", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "minimal-tool fab strategy", "note": ""}
+{"id": "I-02494", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "thermal-inertia etch", "note": ""}
+{"id": "I-08031", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-07554", "theme": "dry wafer cleaning", "note": ""}
+{"id": "I-02945", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-07083", "theme": "H2 backside cooling", "note": ""}
+{"id": "I-08946", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-08024", "theme": "SiC refresh-free cell", "note": ""}
+{"id": "I-00672", "P": 3, "S": 1, "N": 1, "D": 4, "dup_of": "I-08038", "theme": "silicide wordline", "note": ""}
+{"id": "I-00220", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "laser wafer splitting", "note": ""}
+{"id": "I-11264", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "ceria slurry recycling", "note": ""}
+{"id": "I-05731", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "tungsten scrap precursor", "note": ""}
+{"id": "I-02487", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-05245", "theme": "donor wafer reuse", "note": ""}
+{"id": "I-05290", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "grayscale staircase", "note": ""}
+{"id": "I-02966", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "partial-die harvesting", "note": ""}
+{"id": "I-02988", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "I-07556", "theme": "yttria-free chamber coating", "note": ""}
+{"id": "I-00221", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "dry dicing thinning", "note": ""}
+{"id": "I-07571", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "supercap-backed NVDIMM", "note": ""}
+{"id": "I-05276", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "polyoxometalate storage node", "note": ""}
+{"id": "I-08014", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "on-site fluorine generation", "note": ""}
+{"id": "I-01566", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "cold-crucible Czochralski", "note": ""}
+{"id": "I-08927", "P": 2, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "wurtzite FeRAM", "note": ""}
+{"id": "I-04348", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "e-beam charge storage", "note": ""}
+{"id": "I-03437", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "biomimetic RO membrane", "note": ""}
+{"id": "I-04363", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "thermomechanical probe storage", "note": ""}
+{"id": "I-11248", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "coated low-grade crucible", "note": ""}
+{"id": "I-04329", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "vacuum-channel latch", "note": ""}
+{"id": "I-04331", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ferroelectric crossbar", "note": ""}
+{"id": "I-07587", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "domain-wall memory", "note": ""}
+{"id": "I-08955", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "BaTiO3 foil capacitor", "note": ""}
+{"id": "I-10325", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "transferred perovskite capacitor", "note": ""}
+{"id": "I-11251", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-05731", "theme": "tungsten scrap precursor", "note": ""}
+{"id": "I-00664", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-10312", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-01122", "P": 5, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "neon capture", "note": ""}
+{"id": "I-02495", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "additive capacitor growth", "note": ""}

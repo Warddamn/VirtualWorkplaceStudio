@@ -1,0 +1,96 @@
+{"id": "I-10686", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "multilevel SAR sensing", "note": "Neighbor bitlines are not free DAC caps: every bitline on the row is charge-sharing its own cell during activation."}
+{"id": "I-00558", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "plate-pulse sensing", "note": "Plate pulse couples both states equally (common-mode); 1-vs-0 differential is unchanged, so the 1.5-2x signal claim is doubtful."}
+{"id": "I-08373", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "RF frequency addressing", "note": "FBARs are far larger than micron scale; per-mat resonators cost more area than the 3-6% decoder savings."}
+{"id": "I-09312", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "optical row addressing", "note": ""}
+{"id": "I-11147", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "NEMS sense latch", "note": "Biasing within 30 mV of pull-in is unstable under process variation; 1e15 contact cycles unproven."}
+{"id": "I-08842", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "inductive die stacking", "note": "Coils over sensitive bitlines risk coupling noise into the array."}
+{"id": "I-08862", "P": 1, "S": 4, "N": 2, "D": 2, "dup_of": "I-10686", "theme": "multilevel SAR sensing", "note": "16 levels means ~10 mV spacing; Cs spread and leakage drift swamp it, and the 10x math assumes a 4F2 cell too."}
+{"id": "I-01938", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "clockless DRAM interface", "note": ""}
+{"id": "I-02417", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "bipolar sense chiplet", "note": ""}
+{"id": "I-02873", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sense amp offset trim", "note": ""}
+{"id": "I-03336", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "retention-aware refresh", "note": "Close to RAIDR/REAPER/AVATAR prior art; value is licensable RTL, not new mechanism."}
+{"id": "I-10243", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "retention-aware refresh", "note": "Each mat holds tail cells and VRT moves them, so per-mat gains are likely far below 4-8x."}
+{"id": "I-09771", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "optical DRAM I/O", "note": ""}
+{"id": "I-09794", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "BEOL decap capacitors", "note": "Crystalline high-k BaTiO3 needs anneals beyond the BEOL thermal budget."}
+{"id": "I-04734", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-09312", "theme": "optical row addressing", "note": ""}
+{"id": "I-02415", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sparsity-aware sensing", "note": ""}
+{"id": "I-06109", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "salvaged die reuse", "note": ""}
+{"id": "I-09328", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "optical test multiplexing", "note": ""}
+{"id": "I-10711", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "periphery die reuse", "note": ""}
+{"id": "I-04733", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "3D tier select", "note": "A single gate level turns on every tier with lower Vt; needs coded multi-line select (like 3D NAND LSM)."}
+{"id": "I-01033", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "adaptive sense reference", "note": "Reference cells track average decay, but refresh is set by tail cells."}
+{"id": "I-02395", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "charge-integrating sense", "note": "Integrator also sees large common-mode bitline charge; signal charge is still Cs*VDD, as with charge sharing."}
+{"id": "I-02436", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-09292", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "single-electron sensing", "note": "Would break the capacitor wall, but random background charge and sub-2 nm island uniformity make per-bitline room-temperature SETs implausible."}
+{"id": "I-00584", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "sense amp offset trim", "note": ""}
+{"id": "I-02434", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "directed self-assembly", "note": ""}
+{"id": "I-09299", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "analog activation counter", "note": "Diffusive-memristor variability makes a ~1k-ACT threshold with a 64 ms decay hard to hit reliably."}
+{"id": "I-00103", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "redundant comparator sensing", "note": "At equal area, one larger matched pair beats a majority of three min-size comparators."}
+{"id": "I-02863", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sense amp matching layout", "note": ""}
+{"id": "I-03315", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "threshold-switch sensing", "note": "NbO2 threshold variability far exceeds few-mV signals."}
+{"id": "I-10710", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "post-package repair access", "note": "DDR4/DDR5 already define hPPR/sPPR commands."}
+{"id": "I-08384", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sequential row addressing", "note": ""}
+{"id": "I-08866", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "vernier nanowire decoding", "note": "Vernier coincidence is clever, but coarse gates cannot isolate one 6 nm wire, and no DRAM-class cell works at that pitch."}
+{"id": "I-00115", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "in-DRAM compression", "note": ""}
+{"id": "I-08413", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "cooled DRAM tier", "note": "Dense Cu pillars conduct heat well; holding a 75 C gap across a bonded interface is doubtful."}
+{"id": "I-06093", "P": 3, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "CFET sense amps", "note": ""}
+{"id": "I-07454", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bipolar bitline preamp", "note": ""}
+{"id": "I-06117", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "ECC-relaxed refresh", "note": ""}
+{"id": "I-08852", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "DRAM MPW service", "note": ""}
+{"id": "I-06100", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ECC-relaxed sensing", "note": "A 1% raw BER needs ECC overhead that likely eats the ~10% die saving."}
+{"id": "I-05649", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-00115", "theme": "in-DRAM compression", "note": ""}
+{"id": "I-05178", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "leakage-tracking refresh", "note": ""}
+{"id": "I-08835", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lock-in crossbar read", "note": ""}
+{"id": "I-02896", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "read-once ephemeral memory", "note": ""}
+{"id": "I-04273", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "partial row activation", "note": ""}
+{"id": "I-03347", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "full-wafer probe contact", "note": ""}
+{"id": "I-11149", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "multilevel cell sensing", "note": ""}
+{"id": "I-04729", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "complementary MTJ cell", "note": ""}
+{"id": "I-00106", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "nonvolatile row buffer", "note": ""}
+{"id": "I-04265", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sense amp offset trim", "note": ""}
+{"id": "I-05195", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "vacuum-channel switches", "note": ""}
+{"id": "I-06533", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "asymmetric sensing", "note": ""}
+{"id": "I-03784", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "off-die VPP supply", "note": ""}
+{"id": "I-10708", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "cell-periphery interface standard", "note": ""}
+{"id": "I-07004", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-11149", "theme": "multilevel cell sensing", "note": ""}
+{"id": "I-10224", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "charge-transfer preamp", "note": ""}
+{"id": "I-08832", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "thyristor wordline driver", "note": ""}
+{"id": "I-00563", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "CCD row buffer", "note": ""}
+{"id": "I-06073", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "time-domain sensing", "note": ""}
+{"id": "I-11136", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-00103", "theme": "dithered stochastic sensing", "note": "Dither does not cancel static comparator offset; majority still reports sign(signal minus offset)."}
+{"id": "I-02403", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "3D staircase reuse", "note": ""}
+{"id": "I-05639", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "partial row activation", "note": ""}
+{"id": "I-00099", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-04273", "theme": "partial row activation", "note": ""}
+{"id": "I-04697", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-04273", "theme": "partial row activation", "note": ""}
+{"id": "I-06532", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multiplexed sense amps", "note": "Parked ~100 mV signals must survive coupling from neighbors swinging full rail."}
+{"id": "I-06549", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-05639", "theme": "partial row activation", "note": ""}
+{"id": "I-07923", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "time-domain sensing", "note": ""}
+{"id": "I-09324", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "multilevel gain cell", "note": ""}
+{"id": "I-05652", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "processing-in-DRAM", "note": ""}
+{"id": "I-01485", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02873", "theme": "sense amp offset trim", "note": ""}
+{"id": "I-01016", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-06073", "theme": "time-domain sensing", "note": ""}
+{"id": "I-01487", "P": 1, "S": 4, "N": 2, "D": 2, "dup_of": "I-09292", "theme": "single-electron sensing", "note": "With 300 electrons, fA-level leakage empties the cell within one refresh window; SET uniformity is unproven."}
+{"id": "I-04269", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "coupling-avoidance coding", "note": ""}
+{"id": "I-01960", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "single-oxide periphery", "note": ""}
+{"id": "I-01043", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-09312", "theme": "optical row addressing", "note": ""}
+{"id": "I-04256", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "array-pitch decoders", "note": ""}
+{"id": "I-06998", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-03784", "theme": "off-die VPP supply", "note": ""}
+{"id": "I-02393", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-06532", "theme": "multiplexed sense amps", "note": ""}
+{"id": "I-07466", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-05178", "theme": "leakage-tracking refresh", "note": ""}
+{"id": "I-10251", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog activation counter", "note": ""}
+{"id": "I-01933", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-06073", "theme": "time-domain sensing", "note": ""}
+{"id": "I-05613", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "impact-ionization charge gain", "note": "5x pre-latch gain would ease the capacitor wall, but EMCCD gain needs high clock voltages and adds excess noise."}
+{"id": "I-05641", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "charge-transfer sensing", "note": "Restoring a 1 needs the cell node, and so the bitline, at VDD; a bitline that never swings cannot restore."}
+{"id": "I-10239", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "CCD charge-domain sensing", "note": ""}
+{"id": "I-02875", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "canary refresh monitor", "note": ""}
+{"id": "I-01496", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL TFT periphery", "note": "TFT mismatch and Te p-FET instability are poor fits for offset-critical sense amps."}
+{"id": "I-03316", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL TFT periphery", "note": ""}
+{"id": "I-04708", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-01496", "theme": "BEOL TFT periphery", "note": ""}
+{"id": "I-07953", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tungsten-free metallization", "note": ""}
+{"id": "I-03792", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-05639", "theme": "partial row activation", "note": ""}
+{"id": "I-03775", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "joint detection sensing", "note": ""}
+{"id": "I-11155", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bounded-dirty persistence", "note": ""}
+{"id": "I-06569", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "abundant-element procurement", "note": ""}
+{"id": "I-07919", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "GaN periphery tier", "note": ""}
+{"id": "I-08379", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "sense amp sizing redundancy", "note": ""}
+{"id": "I-08397", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "refresh-free DRAM cache", "note": "The canary must decay faster than the row's VRT tail cells, or corruption goes undetected."}

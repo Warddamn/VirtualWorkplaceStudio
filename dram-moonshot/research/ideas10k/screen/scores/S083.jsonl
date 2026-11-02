@@ -1,0 +1,96 @@
+{"id": "I-02408", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "periphery-array wafer bonding", "note": ""}
+{"id": "I-00136", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reconfigurable ReRAM decoder", "note": ""}
+{"id": "I-07949", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "die margin binning tiers", "note": ""}
+{"id": "I-07465", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "bitline charge recycling", "note": ""}
+{"id": "I-11162", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "spin-orbit voltage readout", "note": ""}
+{"id": "I-03817", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "water-metric grant policy", "note": ""}
+{"id": "I-00108", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "canary-cell adaptive refresh", "note": ""}
+{"id": "I-04699", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NV sense-amp offset trim", "note": ""}
+{"id": "I-02405", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "short-bitline capacitor relief", "note": ""}
+{"id": "I-02879", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "AC capacitive NDRO readout", "note": ""}
+{"id": "I-10672", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-02879", "theme": "AC capacitive NDRO readout", "note": ""}
+{"id": "I-10691", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "self-timed sensing", "note": ""}
+{"id": "I-07485", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "noise-aware sense timing", "note": ""}
+{"id": "I-07034", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "printed microbumps", "note": ""}
+{"id": "I-08396", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "refresh-free training memory", "note": ""}
+{"id": "I-10214", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "DSA low-LER transistors", "note": ""}
+{"id": "I-01952", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "time-of-flight row select", "note": ""}
+{"id": "I-00596", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "significance-aware approximate DRAM", "note": ""}
+{"id": "I-02853", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "segmented bitlines", "note": ""}
+{"id": "I-02404", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sequential row token", "note": ""}
+{"id": "I-03796", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "xerographic metallization", "note": ""}
+{"id": "I-09331", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sentinel disturbance canary", "note": ""}
+{"id": "I-05181", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "rank-modulation DRAM", "note": ""}
+{"id": "I-02890", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed electrolyte periphery", "note": ""}
+{"id": "I-04241", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "cryogenic DRAM sensing", "note": ""}
+{"id": "I-04709", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "dynamic body-bias access", "note": ""}
+{"id": "I-07936", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint periphery", "note": ""}
+{"id": "I-03319", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "chopper-stabilized sensing", "note": ""}
+{"id": "I-02889", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "Geiger-mode avalanche sensing", "note": "Avalanche gain could delete the capacitor module; doubts are dark counts, afterpulsing, high bias at DRAM pitch, junction leakage swamping 100-electron packets."}
+{"id": "I-05161", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-02889", "theme": "Geiger-mode avalanche sensing", "note": "Same as I-02889: ~100x smaller Cs if dark counts and quench recovery can be tamed within DRAM pitch and timing."}
+{"id": "I-06571", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-02889", "theme": "Geiger-mode avalanche sensing", "note": ""}
+{"id": "I-08390", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "fleet-learned timing tuning", "note": ""}
+{"id": "I-08382", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "SA soft-decision ECC", "note": ""}
+{"id": "I-05619", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-02408", "theme": "periphery-array wafer bonding", "note": ""}
+{"id": "I-00567", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS wordline relays", "note": ""}
+{"id": "I-01971", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "staggered sense firing", "note": ""}
+{"id": "I-05653", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane precision fetch", "note": ""}
+{"id": "I-09782", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL diode decoders", "note": ""}
+{"id": "I-05163", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02404", "theme": "sequential row token", "note": ""}
+{"id": "I-06559", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "thyristor wordline drivers", "note": ""}
+{"id": "I-07028", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "stack liquid cooling", "note": ""}
+{"id": "I-05174", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "CCD shift memory", "note": ""}
+{"id": "I-09306", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00567", "theme": "NEMS wordline relays", "note": ""}
+{"id": "I-09301", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "NVM repair storage", "note": ""}
+{"id": "I-10245", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "layer-transfer 3D DRAM", "note": "Shared periphery under 8-16 transferred array layers; doubt is per-layer thermal budget for access devices and capacitors, and compounding bond yield."}
+{"id": "I-00562", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-04699", "theme": "NV sense-amp offset trim", "note": ""}
+{"id": "I-01978", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "PFAS-free fab policy", "note": ""}
+{"id": "I-09783", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "air-gap bitlines", "note": ""}
+{"id": "I-01947", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "host-controlled raw timing", "note": ""}
+{"id": "I-01975", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog voltage addressing", "note": ""}
+{"id": "I-07006", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "I-02404", "theme": "sequential row token", "note": ""}
+{"id": "I-08385", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "optical on-die addressing", "note": ""}
+{"id": "I-10230", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "pitch-matched vertical SA", "note": ""}
+{"id": "I-03795", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "speculative early sensing", "note": ""}
+{"id": "I-09791", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "helium-free fab policy", "note": ""}
+{"id": "I-09792", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "time-domain sensing", "note": ""}
+{"id": "I-05183", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "cascode wordline drivers", "note": ""}
+{"id": "I-07463", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-01975", "theme": "analog voltage addressing", "note": "Anti-ambipolar windows (~0.5 V wide) cannot resolve hundreds of rows on a few-volt ladder; hierarchical use only."}
+{"id": "I-08843", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-04699", "theme": "NV sense-amp offset trim", "note": ""}
+{"id": "I-08863", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "field-emitter charge storage", "note": "Transistor-free 8 nm-pitch charge film could beat DRAM density ~13x; doubts: 8 nm spots via microlenses, vacuum packaging, nitride endurance, serial access latency."}
+{"id": "I-01961", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "capacitive interlayer coupling", "note": ""}
+{"id": "I-00588", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DDR4 reuse CXL", "note": ""}
+{"id": "I-02409", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "logic-die decoding", "note": ""}
+{"id": "I-06096", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "soft-decision DRAM ECC", "note": ""}
+{"id": "I-07479", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "base-die power delivery", "note": ""}
+{"id": "I-07495", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "base-die repair storage", "note": ""}
+{"id": "I-04713", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "shifting row buffer", "note": ""}
+{"id": "I-04249", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "acoustic delay-line buffer", "note": ""}
+{"id": "I-11163", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "on-die hold-up energy", "note": ""}
+{"id": "I-11164", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "row-buffer write coalescing", "note": ""}
+{"id": "I-04731", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "merchant periphery die", "note": ""}
+{"id": "I-04715", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "analog activation counter", "note": ""}
+{"id": "I-07943", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-01952", "theme": "time-of-flight row select", "note": ""}
+{"id": "I-08392", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "stochastic nanowire decoders", "note": ""}
+{"id": "I-03810", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cascade rinse reuse", "note": ""}
+{"id": "I-06555", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS sense latch", "note": ""}
+{"id": "I-06996", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "adiabatic wordline drive", "note": ""}
+{"id": "I-01481", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-00108", "theme": "canary-cell adaptive refresh", "note": ""}
+{"id": "I-05624", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-00108", "theme": "canary-cell adaptive refresh", "note": ""}
+{"id": "I-07490", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09331", "theme": "sentinel disturbance canary", "note": ""}
+{"id": "I-11131", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "frequency-addressed select", "note": ""}
+{"id": "I-03321", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-05174", "theme": "CCD shift memory", "note": ""}
+{"id": "I-11160", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "binary-weighted multi-cell read", "note": ""}
+{"id": "I-08857", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "stacked threshold-switch layers", "note": "8 OTS layers per crosspoint with one etch could give ~12x density; doubt: Vth variability across 8 windows, read disturb, endurance."}
+{"id": "I-08834", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tracking reference sensing", "note": ""}
+{"id": "I-04727", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "superconducting loop memory", "note": ""}
+{"id": "I-07932", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cryogenic DRAM sensing", "note": ""}
+{"id": "I-03816", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrostatic particle removal", "note": ""}
+{"id": "I-05626", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multilevel DRAM sensing", "note": ""}
+{"id": "I-08837", "P": 1, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "chain cell topology", "note": "Linear capacitors shunted by ON parallel transistors lose their charge; chain topology relies on ferroelectric remanence."}
+{"id": "I-02892", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "rolling-scan row memory", "note": ""}
+{"id": "I-07925", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11131", "theme": "frequency-addressed select", "note": ""}
+{"id": "I-09760", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "threshold-switch wordline select", "note": ""}
+{"id": "I-05168", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "array-device decoders", "note": ""}
+{"id": "I-06092", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-00108", "theme": "canary-cell adaptive refresh", "note": ""}
+{"id": "I-08407", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "leakage-tolerant training memory", "note": ""}

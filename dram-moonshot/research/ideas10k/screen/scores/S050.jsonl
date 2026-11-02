@@ -1,0 +1,105 @@
+{"id": "I-11300", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "1S1C selector crosspoint", "note": "Two-mask stacked 4F2 tiers could cut cost several-fold, but fA off-current at 125 C with ns write current and half-select disturb is unproven."}
+{"id": "I-04411", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "laser-melt diffusion doping", "note": "Laser/monolayer doping known; dose control and deep wells limit full implanter replacement."}
+{"id": "I-03474", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "coaxial vertical gain cell", "note": "One hole litho for all tiers, ~8-10x bits/mm2; doubt: per-tier storage ring segmentation and reading floating-gated series channel."}
+{"id": "I-10827", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "stochastic-tolerant EUV dose", "note": "Defect rate rises steeply at half dose; spares/ECC may not absorb it."}
+{"id": "I-03009", "P": 3, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "spatial ALD", "note": "Spatial/rotary semi-batch ALD already commercial; HAR conformality limits gain."}
+{"id": "I-02533", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "backside self-aligned exposure", "note": "Known in TFT displays; UV absorption in Si and diffraction at sub-20 nm are hard."}
+{"id": "I-00244", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "rutile TiO2 high-k", "note": "Long-studied (RuO2-templated rutile); leakage at low EOT is the blocker."}
+{"id": "I-03006", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "selective epi landing pads", "note": "Epi mushrooms cannot relocate pads to honeycomb capacitor grid; merge shorts risk."}
+{"id": "I-01168", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "swappable chamber liners", "note": "Replaceable process kits exist; incremental uptime gain."}
+{"id": "I-02103", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "online retention profiling", "note": "Similar to published online profiling (REAPER/AVATAR); FPGA-demoable."}
+{"id": "I-06255", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CNT forest capacitor", "note": "Forest density on sub-100 nm pads and ALD nucleation on CNT are unproven."}
+{"id": "I-04835", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-scale DRAM slab", "note": "Back-end savings modest; needs stitched DRAM wafers from a fab."}
+{"id": "I-07150", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-04835", "theme": "wafer-scale DRAM slab", "note": ""}
+{"id": "I-07605", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-04835", "theme": "wafer-scale DRAM slab", "note": ""}
+{"id": "I-06226", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "shared array-tile consortium", "note": "Array and periphery are co-optimized; vendor reluctance high."}
+{"id": "I-08071", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "split-fab back-half", "note": "Trusted-foundry split exists; modest capital gain."}
+{"id": "I-00710", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sacrificial polymer mold", "note": "Polymer mold limits electrode thermal budget; HAR polymer etch plausible."}
+{"id": "I-02090", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-11300", "theme": "1S1C selector crosspoint", "note": ""}
+{"id": "I-06231", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "short bitline local sense", "note": "Hierarchical bitlines known; CMOS-under-array area for 32-cell SAs is the doubt."}
+{"id": "I-08552", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "MacEtch capacitor holes", "note": "Cheap wet bench; wandering and catalyst contamination at sub-50 nm pitch."}
+{"id": "I-09010", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "multitier grain memory", "note": "Thin-film tiers with no capacitor could hit ~$0.1/GB; doubt: grain threshold scatter despite write-verify and 3x redundancy."}
+{"id": "I-09438", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11300", "theme": "1S1C selector crosspoint", "note": "Honest us-ms retention makes it a buffer tier."}
+{"id": "I-10831", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "vertical thyristor RAM", "note": "T-RAM physics known; standby current and temperature sensitivity sank it before."}
+{"id": "I-10842", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "selector-only memory", "note": "SOM actively pursued by Micron/Intel; DRAM endurance unlikely."}
+{"id": "I-10846", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "floating-base bipolar cell", "note": "Floating-body retention issues; periphery saving partial."}
+{"id": "I-10848", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "water-lean dry fab", "note": "Depends on capacitorless cell existing first."}
+{"id": "I-10851", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "monolithic 3D SRAM", "note": "Still 4-8x below DRAM density; CFET-like split known."}
+{"id": "I-04401", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "porous-Si layer transfer", "note": "Wafer is a small cost share; resource angle and low-O epi are the gain."}
+{"id": "I-01638", "P": 1, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "molecular redox storage", "note": "A monolayer under a ~20 nm footprint holds ~hundreds of electrons, far short of ~15k needed."}
+{"id": "I-02546", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse market", "note": "Refurb DIMM market already exists; supply adds at low capex."}
+{"id": "I-10834", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "film-defined vertical gain cell", "note": "Deposition-defined CDs remove EUV; vertical 2T gain cells under research."}
+{"id": "I-06221", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "fluidic tile self-assembly", "note": "Inter-tile interconnect density and bonding yield are the doubts."}
+{"id": "I-09893", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "sacrificial ZnO tiers", "note": "Si tiers on ZnO are not single-crystal; Zn is a deep-level trap hurting retention."}
+{"id": "I-00692", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NIL plus DSA", "note": "Both NIL and DSA widely pursued for DRAM holes."}
+{"id": "I-09443", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "Coulomb-blockade access switch", "note": "Cotunneling leakage and dot-size uniformity make fA off-state doubtful."}
+{"id": "I-10836", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS bistable beam", "note": "Beam footprint far above DRAM cell; stiction/fatigue risk."}
+{"id": "I-09444", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "pyroelectric nanoxerography", "note": "10 nm particle transfer defectivity and overlay unproven."}
+{"id": "I-05794", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "multiferroic nanopillars", "note": "Known BFO-CFO self-assembly; per-pillar addressing and readout unsolved."}
+{"id": "I-01161", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "single-wafer flow fab", "note": "Minimal-fab style concepts known; hard to prove without a line."}
+{"id": "I-08528", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-06221", "theme": "micro-tile mass transfer", "note": ""}
+{"id": "I-07144", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "open-source fab tools", "note": "Open ALD tool demo feasible; matching vendor performance is the doubt."}
+{"id": "I-03028", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "weight mask ROM", "note": "No capacitor or refresh for frozen weights; model churn and e-beam throughput limit it."}
+{"id": "I-08993", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "vertical 3D PCM", "note": "Vertical RRAM/PCM proposed widely; endurance makes it storage-class, not DRAM-class."}
+{"id": "I-03939", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-08552", "theme": "MacEtch capacitor holes", "note": ""}
+{"id": "I-04860", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-08552", "theme": "MacEtch capacitor holes", "note": ""}
+{"id": "I-11270", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-08552", "theme": "MacEtch capacitor holes", "note": "Buried trench variant of MacEtch."}
+{"id": "I-10845", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-on-wafer memory", "note": "Big energy gain but limited to wafer-scale accelerators; gain-cell capacity low."}
+{"id": "I-05294", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "vicinal step templating", "note": "Step bunching pitch uniformity and line cuts/registration unproven."}
+{"id": "I-05792", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "dual-mode hafnia capacitor", "note": "Close to Micron NVDRAM-style dual-mode hafnia; k gain minimal vs ZrO2."}
+{"id": "I-05769", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "S-layer protein templates", "note": "S-layer patterning known; domain size and registration limit."}
+{"id": "I-06697", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "HDD head fab MRAM", "note": "Clever capacity reuse, but SOT-MRAM density is far below DRAM."}
+{"id": "I-11280", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "helium-free chuck cooling", "note": "Supply-risk removal, small cost gain."}
+{"id": "I-01193", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "I-09893", "theme": "sacrificial ZnO tiers", "note": ""}
+{"id": "I-01171", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "X-ray 3D metrology", "note": "X-ray metrology for 3D NAND exists; nm resolution needs flux."}
+{"id": "I-00699", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective ALD", "note": "ASD widely pursued; selectivity defects remain."}
+{"id": "I-09449", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "etch-free MRAM patterning", "note": "Continuous barrier/free layer risks lateral shunting and coupling."}
+{"id": "I-09932", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "subtractive metal etch", "note": "Subtractive Mo/Ru widely pursued for logic BEOL."}
+{"id": "I-10840", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09449", "theme": "etch-free MRAM patterning", "note": ""}
+{"id": "I-11294", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09932", "theme": "subtractive metal etch", "note": ""}
+{"id": "I-09454", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention rebinning", "note": "Zero-capex supply recovery; depends on vendors selling retention rejects."}
+{"id": "I-08069", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "capacity futures market", "note": "Liquidity and standardization are the barriers; prepay deals already exist."}
+{"id": "I-01180", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-06255", "theme": "CNT forest capacitor", "note": ""}
+{"id": "I-06672", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "cleanroom-free fab", "note": "Mini-environments already standard; incremental capex cut."}
+{"id": "I-06253", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "molecular-ruler nanogaps", "note": "Published molecular-ruler technique; wafer uniformity doubtful."}
+{"id": "I-04834", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-10827", "theme": "stochastic-tolerant EUV dose", "note": "Twin pads help missing prints, not bridges to neighbours."}
+{"id": "I-05309", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "backside trench capacitor", "note": "Uses BSPDN tooling; backside contact to storage node is hard."}
+{"id": "I-00276", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-11300", "theme": "1S1C selector crosspoint", "note": ""}
+{"id": "I-09902", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "repeated layer transfer", "note": "26+ bonds is costly; still needs per-tier patterning."}
+{"id": "I-09009", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-03028", "theme": "weight mask ROM", "note": "3D diode ROM echoes Matrix Semiconductor OTP."}
+{"id": "I-08998", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "drawn-fiber crossbar", "note": "Multi-lamination addressing, registration and PCM endurance are unsolved."}
+{"id": "I-02558", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "anodic alumina molds", "note": "Pore lattice defects make transistor self-alignment hard."}
+{"id": "I-04846", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-06231", "theme": "short bitline local sense", "note": "250 nm hybrid-bond pitch is aggressive."}
+{"id": "I-00730", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "field burn-in scrubbing", "note": "Customer acceptance and gross-defect escapes are the risk."}
+{"id": "I-03459", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "magnetic die self-alignment", "note": "Self-alignment known; <200 nm registration for hybrid bond is the test."}
+{"id": "I-08521", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-on-wafer HBM", "note": "Compound wafer yield is the known blocker."}
+{"id": "I-05310", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "CMOS-bonded-array periphery", "note": "CBA/Xtacking known; mature-fab sourcing twist."}
+{"id": "I-07593", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "superlattice edge patterning", "note": "Close to SNAP/nanoskiving; ribbon tiling alignment unsolved."}
+{"id": "I-09905", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "molten-metal cavity fill", "note": "140 C melt incompatible with later ~400 C BEOL; Sn/Bi contamination."}
+{"id": "I-00698", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "DRIE trench buffer DRAM", "note": "Low-density niche buffer on depreciated 200 mm fabs."}
+{"id": "I-09921", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "plasma dicing", "note": "Plasma dicing already commercial."}
+{"id": "I-00236", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "molybdenum metallization", "note": "Mo ALD already adopted by industry."}
+{"id": "I-09451", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "ion-track etched holes", "note": "40 nm stencil for MeV-GeV ions is implausible; ions damage underlying transistors."}
+{"id": "I-06707", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "tool-hour exchange", "note": "Contamination, IP and logistics barriers."}
+{"id": "I-04874", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "stacked mature-node arrays", "note": "16 stacked 180 nm layers still less dense than one modern layer at 16x wafer cost."}
+{"id": "I-02072", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-02558", "theme": "anodic alumina molds", "note": "Barrier layer at pore bottom must be opened."}
+{"id": "I-06224", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-00244", "theme": "rutile TiO2 high-k", "note": ""}
+{"id": "I-06706", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "open memory PDK", "note": "Mature-node memory density far below DRAM; cost per bit uncompetitive."}
+{"id": "I-00266", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "backside logic DRAM", "note": "Very low energy, but capacity limited to under-die area."}
+{"id": "I-00274", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "cryo quantum paraelectric", "note": "Thin-film STO k is strongly suppressed versus bulk; 4 K niche."}
+{"id": "I-10824", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-11280", "theme": "helium-free chuck cooling", "note": ""}
+{"id": "I-06693", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "legacy-line arbitrage", "note": "Already common incumbent practice."}
+{"id": "I-05319", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spare-die HBM stack", "note": "Sound yield math; stack loss is partly bonding, not die."}
+{"id": "I-08519", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "relaxed-retention access device", "note": "Recess exists for short-channel control, not only retention tail."}
+{"id": "I-02111", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "laser wafer slicing", "note": "Si slicing less mature than SiC KABRA."}
+{"id": "I-08987", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wafer-level BIST burn-in", "note": "Power delivery and heat in cassette are the doubts."}
+{"id": "I-03024", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "LiNbO3 domain-wall memory", "note": "Known research; high write voltage, 1e10 endurance."}
+{"id": "I-00254", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "active interposer eDRAM", "note": "65 nm trench eDRAM capacity is sub-GB per interposer."}
+{"id": "I-07631", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "electrochemical ALD", "note": "Potential drop deep in holes and seeding on oxides are risks."}
+{"id": "I-06702", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "multilevel DRAM cell", "note": "Multilevel DRAM studied since 1990s; quartered margin fights leakage tail."}
+{"id": "I-01155", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "modular fab construction", "note": "Prefab skids already used; schedule gain incremental."}
+{"id": "I-06233", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-02558", "theme": "anodic alumina molds", "note": ""}
+{"id": "I-08522", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00730", "theme": "field burn-in scrubbing", "note": ""}
+{"id": "I-05305", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-11280", "theme": "helium-free chuck cooling", "note": ""}
+{"id": "I-08074", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "photopatternable high-k", "note": "Spin-on films cannot coat 3D holes; film quality vs ALD."}
+{"id": "I-03012", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "offset-cancel sense amp", "note": "Offset-cancellation SAs already in production."}

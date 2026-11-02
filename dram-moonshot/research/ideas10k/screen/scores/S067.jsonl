@@ -1,0 +1,105 @@
+{"id": "I-03879", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "display-fab oxide-TFT memory", "note": "Depreciated Gen-8.5 glass area at 2um rules; doubt: ~10-50 GB/panel, panel-tile interconnect and yield may erase $/GB edge."}
+{"id": "I-04804", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "CXL memory pooling", "note": ""}
+{"id": "I-02971", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "diamond access transistor", "note": ""}
+{"id": "I-02977", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "barrier-layer colossal-k dielectric", "note": ""}
+{"id": "I-05289", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "CNT coaxial capacitor", "note": "Grown not etched AR-100 coax caps; doubt: single-tube placement at 10 nm pitch, CVD temperature, leakage of 2 nm ZrO2 at 1 nm radius."}
+{"id": "I-00659", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "synthetic silica crucible", "note": ""}
+{"id": "I-03866", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00186", "theme": "hydrogen chuck backside gas", "note": ""}
+{"id": "I-09870", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "wet anisotropic trench etch", "note": ""}
+{"id": "I-02521", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "in-field test and repair", "note": ""}
+{"id": "I-05741", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "precursor heel recovery", "note": ""}
+{"id": "I-11235", "P": 2, "S": 4, "N": 5, "D": 3, "dup_of": "", "theme": "fiber-drawn capacitor arrays", "note": "Pitch from draw ratio, no litho/etch; doubt: draw disorder breaks registration to access transistors and glass dielectric gives low Cs."}
+{"id": "I-08037", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "low-water rinse", "note": ""}
+{"id": "I-08928", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "NRAM carbon crosspoint", "note": "Purification fixes NRAM's fab-contamination blocker; doubt: NRAM speed/endurance at DRAM duty never shown at scale."}
+{"id": "I-01124", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "quartz recycling", "note": ""}
+{"id": "I-11222", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-00659", "theme": "synthetic silica crucible", "note": ""}
+{"id": "I-02044", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "kerfless wafer", "note": ""}
+{"id": "I-07085", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CuMn self-barrier wiring", "note": ""}
+{"id": "I-00654", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "molybdenum metallization", "note": ""}
+{"id": "I-04367", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS access switch", "note": "Air-gap off state kills leakage and refresh; doubt: relay endurance ~1e10 vs >1e15 DRAM access cycles, stiction."}
+{"id": "I-05714", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "perovskite titanate capacitor", "note": ""}
+{"id": "I-06206", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-05714", "theme": "perovskite titanate capacitor", "note": ""}
+{"id": "I-00648", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "porous-Si layer transfer", "note": ""}
+{"id": "I-02969", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "rare-metal-free MRAM", "note": ""}
+{"id": "I-08471", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-08046", "theme": "spatial ALD", "note": ""}
+{"id": "I-00686", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "epi doping laser anneal", "note": ""}
+{"id": "I-02509", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "ECC-tolerant weak cells", "note": ""}
+{"id": "I-10309", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "bio-made photoresist", "note": ""}
+{"id": "I-03444", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "nanoimprint replica stamps", "note": ""}
+{"id": "I-06200", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "deuterium anneal retention", "note": ""}
+{"id": "I-02033", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "CMP-free planarization", "note": ""}
+{"id": "I-05248", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00186", "theme": "hydrogen chuck backside gas", "note": ""}
+{"id": "I-02954", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "hydrogen recycling", "note": ""}
+{"id": "I-00186", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hydrogen chuck backside gas", "note": ""}
+{"id": "I-06182", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "DRAM die reuse packaging", "note": ""}
+{"id": "I-07559", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "PFC gas recovery", "note": ""}
+{"id": "I-05729", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "ZTO oxide channel", "note": ""}
+{"id": "I-08482", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "gasless solid-contact chuck", "note": ""}
+{"id": "I-09407", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-05729", "theme": "ZTO oxide channel", "note": ""}
+{"id": "I-01577", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "supercritical CO2 clean", "note": ""}
+{"id": "I-02517", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ECC-based repair", "note": ""}
+{"id": "I-04342", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-01126", "theme": "partial-good DRAM binning", "note": ""}
+{"id": "I-09419", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "oxide CMOS periphery", "note": ""}
+{"id": "I-02515", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "self-assembled capacitor patterning", "note": ""}
+{"id": "I-01603", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "inductive die coupling", "note": ""}
+{"id": "I-09406", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "I-01572", "theme": "anodic alumina capacitor mold", "note": ""}
+{"id": "I-04824", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "media-agnostic memory standard", "note": ""}
+{"id": "I-02953", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-03874", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tungsten recovery loop", "note": ""}
+{"id": "I-08046", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "spatial ALD", "note": ""}
+{"id": "I-00201", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "hafnium substitution", "note": ""}
+{"id": "I-10336", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "hafnium substitution", "note": ""}
+{"id": "I-01572", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "anodic alumina capacitor mold", "note": ""}
+{"id": "I-03910", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "I-02965", "theme": "chemical regeneration", "note": ""}
+{"id": "I-08013", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "I-01587", "theme": "sputter target recovery", "note": ""}
+{"id": "I-08925", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "thyristor RAM", "note": "Barrier-set regeneration still thermionic, so holding current likely stays exponential in T."}
+{"id": "I-01582", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "memory dedup compression", "note": ""}
+{"id": "I-08944", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "offtake-backed US fab", "note": ""}
+{"id": "I-03443", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "bio-based package dielectric", "note": ""}
+{"id": "I-01587", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "sputter target recovery", "note": ""}
+{"id": "I-08477", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "helium offtake contracts", "note": ""}
+{"id": "I-05261", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "monolayer doping", "note": ""}
+{"id": "I-02957", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fab demand response", "note": ""}
+{"id": "I-02965", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "chemical regeneration", "note": ""}
+{"id": "I-10795", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "interference lithography arrays", "note": ""}
+{"id": "I-02955", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-03877", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "templated rutile TiO2", "note": ""}
+{"id": "I-03884", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "biomimetic silica fill", "note": ""}
+{"id": "I-02496", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "self-assembled step templates", "note": ""}
+{"id": "I-10348", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "electrolytic wet chemistry", "note": ""}
+{"id": "I-11228", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-07085", "theme": "CuMn self-barrier wiring", "note": ""}
+{"id": "I-08966", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "racetrack memory", "note": ""}
+{"id": "I-00223", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "fab water recovery", "note": ""}
+{"id": "I-10345", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "on-site precursor synthesis", "note": ""}
+{"id": "I-00198", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "PFAS fluid substitution", "note": ""}
+{"id": "I-00663", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "precursor recovery", "note": ""}
+{"id": "I-08463", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "intermetallic wordlines", "note": ""}
+{"id": "I-02505", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01603", "theme": "inductive die coupling", "note": ""}
+{"id": "I-06180", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "DNA-origami lithography", "note": ""}
+{"id": "I-03441", "P": 4, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "helium leak sensing", "note": ""}
+{"id": "I-03423", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-02955", "theme": "DIMM reuse CXL", "note": ""}
+{"id": "I-01126", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "partial-good DRAM binning", "note": ""}
+{"id": "I-10769", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "I-05714", "theme": "perovskite titanate capacitor", "note": ""}
+{"id": "I-02034", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "I-01577", "theme": "supercritical CO2 clean", "note": ""}
+{"id": "I-10342", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01577", "theme": "supercritical CO2 clean", "note": ""}
+{"id": "I-00188", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "quartzite purification", "note": ""}
+{"id": "I-00658", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "carbon capacitor mold", "note": ""}
+{"id": "I-09868", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00658", "theme": "carbon capacitor mold", "note": ""}
+{"id": "I-02503", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "helium-sited fab", "note": ""}
+{"id": "I-01119", "P": 5, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "LNG cold energy", "note": ""}
+{"id": "I-01579", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "solid-state DUV source", "note": ""}
+{"id": "I-02974", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "cold-crucible Czochralski", "note": ""}
+{"id": "I-03425", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-02974", "theme": "cold-crucible Czochralski", "note": ""}
+{"id": "I-11239", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "swappable chamber liners", "note": ""}
+{"id": "I-01593", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "rare-metal-free MRAM", "note": ""}
+{"id": "I-01107", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-00659", "theme": "synthetic silica crucible", "note": ""}
+{"id": "I-04827", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "biogenic magnetic bits", "note": ""}
+{"id": "I-09389", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-03877", "theme": "templated rutile TiO2", "note": ""}
+{"id": "I-07098", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "CMP-free planarization", "note": ""}
+{"id": "I-03900", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "CMOS-bonded periphery", "note": ""}
+{"id": "I-04792", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "cleanroom-free fab", "note": ""}
+{"id": "I-06195", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "quartz-free Czochralski", "note": ""}
+{"id": "I-08465", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00648", "theme": "porous-Si layer transfer", "note": ""}
+{"id": "I-09384", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "gasless solid-contact chuck", "note": ""}
+{"id": "I-00669", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "shared high-k module", "note": ""}
+{"id": "I-09877", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "electrolytic silicon", "note": ""}

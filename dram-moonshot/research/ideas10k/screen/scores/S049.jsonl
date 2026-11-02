@@ -1,0 +1,105 @@
+{"id": "I-08064", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "transfer-printed memory tiles", "note": ""}
+{"id": "I-08981", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-scale DRAM blades", "note": ""}
+{"id": "I-10362", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "fluidic tile self-assembly", "note": ""}
+{"id": "I-11278", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-08981", "theme": "wafer-scale DRAM blades", "note": "Same unsawn-wafer RDL mesh as I-08981."}
+{"id": "I-07599", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "array/periphery wafer bonding", "note": ""}
+{"id": "I-05752", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "SAQP loop wordline layout", "note": ""}
+{"id": "I-00718", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ECC-absorbed retention tail", "note": ""}
+{"id": "I-01172", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "retention-binned dies", "note": ""}
+{"id": "I-06236", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "solution-processed oxide TFT", "note": ""}
+{"id": "I-03937", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-06690", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03937", "theme": "DIMM reuse market", "note": "Die-level variant of retired-server memory reuse in I-03937."}
+{"id": "I-10822", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "RF resonator metrology", "note": ""}
+{"id": "I-09008", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "printed-Si gain-cell tiers", "note": "Spin-on Si tiers at ~$5-10/wafer each; grain-boundary leakage and ms refresh likely erode DRAM-class value."}
+{"id": "I-07600", "P": 4, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "array-only scanner", "note": ""}
+{"id": "I-03490", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "rib-folded lateral capacitor", "note": ""}
+{"id": "I-10355", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "interdigitated laminate capacitor", "note": ""}
+{"id": "I-10838", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "floating-body 1T substrate", "note": ""}
+{"id": "I-02995", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "anodic alumina capacitor mold", "note": ""}
+{"id": "I-10820", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "VLS nanowire capacitors", "note": ""}
+{"id": "I-10363", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "edge-interconnect die stack", "note": ""}
+{"id": "I-03018", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "coaxial oxide 2T0C 3D", "note": "Refresh-free multi-tier gain cell from one hole; ALD amorphous Ga2O3 mobility and nested-shell control are the doubt."}
+{"id": "I-03944", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fab streaming finance", "note": ""}
+{"id": "I-03919", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "scanner leasing", "note": ""}
+{"id": "I-08060", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "SiC refresh-free DRAM", "note": ""}
+{"id": "I-04389", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "via-ROM model weights", "note": ""}
+{"id": "I-05331", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "kerf silicon recycling", "note": ""}
+{"id": "I-09466", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "spatial ALD", "note": ""}
+{"id": "I-03016", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "cryogenic DRAM tier", "note": ""}
+{"id": "I-00261", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "back-gated FD-SOI array", "note": ""}
+{"id": "I-07598", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "continuous linear fab", "note": ""}
+{"id": "I-01613", "P": 3, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "relaxed-pitch 3D DRAM", "note": "Trade EUV for tier count; 3D DRAM is widely pursued, but 300 tiers via NAND-style stacks is a real density lever."}
+{"id": "I-05788", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "laser-annealed FeRAM tiers", "note": ""}
+{"id": "I-05770", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "shared FEL EUV source", "note": ""}
+{"id": "I-06687", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "I-05770", "theme": "shared FEL EUV source", "note": ""}
+{"id": "I-06210", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint array layers", "note": ""}
+{"id": "I-06681", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "maskless e-beam periphery", "note": ""}
+{"id": "I-08535", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-06681", "theme": "maskless e-beam periphery", "note": ""}
+{"id": "I-03917", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "capacitor-first sequential 3D", "note": ""}
+{"id": "I-00697", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-06681", "theme": "maskless e-beam periphery", "note": ""}
+{"id": "I-02561", "P": 3, "S": 4, "N": 2, "D": 2, "dup_of": "I-01613", "theme": "relaxed-pitch 3D DRAM", "note": "Same F~38 nm DUV-only multi-tier trade as I-01613."}
+{"id": "I-09914", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "supercritical CO2 clean", "note": ""}
+{"id": "I-01156", "P": 4, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "DUV mini-fab strategy", "note": ""}
+{"id": "I-03452", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "interference lithography arrays", "note": ""}
+{"id": "I-03454", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "shrink-polymer NIL masters", "note": ""}
+{"id": "I-03911", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "display-fab oxide memory", "note": ""}
+{"id": "I-03956", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "I-03454", "theme": "shrink-polymer NIL masters", "note": ""}
+{"id": "I-07609", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-03454", "theme": "shrink-polymer NIL masters", "note": "Hydrogel implosion variant of write-large-then-shrink mastering."}
+{"id": "I-11286", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-06681", "theme": "maskless e-beam periphery", "note": ""}
+{"id": "I-00248", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "X-ray proximity lithography", "note": ""}
+{"id": "I-06703", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "refurbished-tool shell fill", "note": ""}
+{"id": "I-08540", "P": 4, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "deep-trench capacitor DRAM", "note": ""}
+{"id": "I-07612", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-03911", "theme": "display-fab oxide memory", "note": ""}
+{"id": "I-03486", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "confined-epitaxy 3D tiers", "note": "Single-crystal Si grown into NAND-style nitride-strip tunnels; lateral confined-epi distance and defects are the doubt."}
+{"id": "I-08057", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "multi-process single chamber", "note": ""}
+{"id": "I-07166", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diamond heat-spreading substrate", "note": ""}
+{"id": "I-08996", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "e-beam probe storage", "note": ""}
+{"id": "I-05784", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "dual-budget fab financing", "note": ""}
+{"id": "I-07142", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09466", "theme": "spatial ALD", "note": ""}
+{"id": "I-07159", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "known-good-tier lamination", "note": ""}
+{"id": "I-00241", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "film-defined sidewall cells", "note": ""}
+{"id": "I-03487", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "axial-segment nanowire tiers", "note": "All tiers' channels from one VLS growth; aligning wordline tiers to dopant segments and catalyst contamination are the doubt."}
+{"id": "I-03943", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "helium recycling", "note": ""}
+{"id": "I-09430", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "ion-ripple self-organized gratings", "note": ""}
+{"id": "I-09448", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "capillary-breakup dot arrays", "note": ""}
+{"id": "I-05773", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "drawn nanochannel glass mold", "note": ""}
+{"id": "I-09891", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "oxidized-electrode dielectric", "note": ""}
+{"id": "I-04414", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bistable NEMS memory", "note": ""}
+{"id": "I-09434", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "multilayer silicon-on-nothing", "note": ""}
+{"id": "I-07633", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "biomimetic silica gap fill", "note": ""}
+{"id": "I-08510", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-03911", "theme": "display-fab oxide memory", "note": ""}
+{"id": "I-01191", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ZnON gain-cell tiers", "note": ""}
+{"id": "I-02106", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "mature-node HBM base die", "note": ""}
+{"id": "I-08520", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "small-dielet yield", "note": ""}
+{"id": "I-10350", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "roll-to-roll memory foil", "note": ""}
+{"id": "I-07590", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "i-line multi-spacer patterning", "note": ""}
+{"id": "I-01176", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "titanate high-k capacitor", "note": ""}
+{"id": "I-10376", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "multi-angle grating exposure", "note": ""}
+{"id": "I-01633", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-03919", "theme": "scanner leasing", "note": ""}
+{"id": "I-06250", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "university-toolset microfabs", "note": ""}
+{"id": "I-02996", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dual-dose merged exposure", "note": ""}
+{"id": "I-03460", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-03013", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "flash-annealed high-k", "note": ""}
+{"id": "I-07138", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "open array mask standard", "note": ""}
+{"id": "I-08982", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "implant-defined MTJ", "note": ""}
+{"id": "I-00264", "P": 5, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "stacked SRAM hot tier", "note": ""}
+{"id": "I-07145", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "strategic DRAM reserve", "note": ""}
+{"id": "I-03466", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wafer-level BIST test", "note": ""}
+{"id": "I-05793", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "in-array repair map", "note": ""}
+{"id": "I-04854", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "superlattice-edge NIL master", "note": ""}
+{"id": "I-10379", "P": 3, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "vertical-bitline 3D DRAM", "note": "One-mask radial 3D cell gives NAND-like cost curve; closely tracks existing IGZO/3D X-DRAM programs."}
+{"id": "I-10354", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "reusable capacitor mold transfer", "note": ""}
+{"id": "I-05324", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "recyclable depolymerizing resist", "note": ""}
+{"id": "I-00252", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "I-05770", "theme": "shared FEL EUV source", "note": ""}
+{"id": "I-04845", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "I-05770", "theme": "shared FEL EUV source", "note": ""}
+{"id": "I-10829", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "I-05770", "theme": "shared FEL EUV source", "note": ""}
+{"id": "I-06691", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-07598", "theme": "continuous linear fab", "note": "Vacuum-linked linear track, a module-scoped version of I-07598."}
+{"id": "I-08513", "P": 3, "S": 4, "N": 2, "D": 1, "dup_of": "I-01613", "theme": "relaxed-pitch 3D DRAM", "note": "ArF-only horizontal-capacitor 3D DRAM at 120-150 epi tiers; same trade as I-01613."}
+{"id": "I-10377", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "I-02995", "theme": "anodic alumina capacitor mold", "note": ""}
+{"id": "I-10392", "P": 1, "S": 2, "N": 3, "D": 3, "dup_of": "I-03454", "theme": "shrink-polymer hardmask", "note": "Laminating a shrunken membrane hardmask with array overlay is implausible."}
+{"id": "I-10393", "P": 2, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "seeded columnar electrode growth", "note": ""}
+{"id": "I-10835", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "RTD latch cell", "note": ""}
+{"id": "I-00700", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "metal-spacer bitlines", "note": ""}
+{"id": "I-09903", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "metal-induced lateral crystallization", "note": ""}
+{"id": "I-09926", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "GeO-volatilized sacrificial layer", "note": ""}
+{"id": "I-10368", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cross-laminated stress cancel", "note": ""}

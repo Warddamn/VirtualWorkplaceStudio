@@ -1,0 +1,105 @@
+{"id": "I-05579", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fixed-charge field passivation", "note": ""}
+{"id": "I-10209", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "seed-regenerated data", "note": ""}
+{"id": "I-00054", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "optical wordline access", "note": ""}
+{"id": "I-00075", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "damage-free wet etch", "note": ""}
+{"id": "I-03748", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "retention-grade binning", "note": ""}
+{"id": "I-05127", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "undoped channel Vt", "note": ""}
+{"id": "I-00977", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "measured-leakage refresh", "note": "Aggregate well current reflects mean leakage, not the tail cells that set retention."}
+{"id": "I-00968", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "canary refresh cells", "note": ""}
+{"id": "I-01894", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00968", "theme": "canary refresh cells", "note": ""}
+{"id": "I-03278", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00968", "theme": "canary refresh cells", "note": ""}
+{"id": "I-03298", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "single-grain oxide channel", "note": ""}
+{"id": "I-00056", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "Hyper-FET access", "note": "NbO2 off-state leakage far above fA; Hyper-FET is known art."}
+{"id": "I-01433", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00056", "theme": "Hyper-FET access", "note": ""}
+{"id": "I-05580", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "standby plate bias", "note": ""}
+{"id": "I-03761", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "PCM thermal buffer", "note": ""}
+{"id": "I-02374", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "memory-first cooling", "note": ""}
+{"id": "I-01463", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "VCMA-SOT MRAM", "note": ""}
+{"id": "I-05110", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cold-retargeted DRAM", "note": ""}
+{"id": "I-06510", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "thin-oxide charge-trap DRAM", "note": ""}
+{"id": "I-00987", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fixed-charge Vt set", "note": ""}
+{"id": "I-04676", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-00054", "theme": "optical wordline access", "note": ""}
+{"id": "I-04684", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "decay-compensated analog weights", "note": "Per-cell tau spread is lognormal over decades; a per-tile exp correction cannot fix it."}
+{"id": "I-10183", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "stacked dual-gate access", "note": ""}
+{"id": "I-01915", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "Ga2O3 access device", "note": ""}
+{"id": "I-02357", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "vacuum access switch", "note": ""}
+{"id": "I-06062", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "data-aware refresh skip", "note": ""}
+{"id": "I-10639", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-06062", "theme": "data-aware refresh skip", "note": ""}
+{"id": "I-02363", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "weak-row boosted restore", "note": ""}
+{"id": "I-06501", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "OS-guided refresh skip", "note": ""}
+{"id": "I-01008", "P": 4, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "adaptive wordline bias", "note": ""}
+{"id": "I-04202", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "I-01008", "theme": "adaptive wordline bias", "note": ""}
+{"id": "I-04204", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "column-gated cell access", "note": ""}
+{"id": "I-01429", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic memory pool", "note": ""}
+{"id": "I-09280", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "online VRT detection", "note": ""}
+{"id": "I-03763", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "per-cell Vt trimming", "note": ""}
+{"id": "I-09290", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "bootstrapped wordline driver", "note": "Bootstrapped wordline drivers were standard in NMOS-era DRAM."}
+{"id": "I-05111", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "TFET access device", "note": ""}
+{"id": "I-03759", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "waste-heat absorption cooling", "note": ""}
+{"id": "I-04658", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "diode-access cell", "note": "Two-terminal wide-gap Schottky access could stack 4F2 cells; doubts: half-select disturb, Vf-set levels, destructive plate read."}
+{"id": "I-03769", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "laser-crystallized Si tiers", "note": ""}
+{"id": "I-07872", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "charge-recycling refresh", "note": ""}
+{"id": "I-03297", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "magnetic nanowire assembly", "note": ""}
+{"id": "I-06527", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "single-electron memory", "note": ""}
+{"id": "I-00974", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tracking sense reference", "note": ""}
+{"id": "I-04661", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "junctionless SOI access", "note": ""}
+{"id": "I-04675", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "cryogenic capacitorless stacks", "note": "LN2 lets capacitorless poly-Si cells retain long enough for NAND-like stacking; doubt: cryo plant energy and logistics at scale."}
+{"id": "I-06514", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "electrochemical RAM", "note": ""}
+{"id": "I-06523", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "logic-fab gain cell", "note": ""}
+{"id": "I-04689", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "field-defined cells", "note": ""}
+{"id": "I-02838", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-00054", "theme": "optical wordline access", "note": ""}
+{"id": "I-00087", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "lifetime-aware refresh skip", "note": ""}
+{"id": "I-00980", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "NEMS access switch", "note": ""}
+{"id": "I-04189", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "SIT/JFET access", "note": ""}
+{"id": "I-04647", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-05111", "theme": "TFET access device", "note": ""}
+{"id": "I-06035", "P": 2, "S": 3, "N": 5, "D": 3, "dup_of": "", "theme": "optical global refresh", "note": "Light-driven, self-gated top-up refreshes the whole array with zero activations; doubts: photodiode area per cell, stray photocurrent into 0-nodes."}
+{"id": "I-08369", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "feedback-FET access", "note": ""}
+{"id": "I-02839", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "superconducting loop memory", "note": ""}
+{"id": "I-04651", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-10183", "theme": "stacked dual-gate access", "note": ""}
+{"id": "I-00975", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "soft-ECC lazy refresh", "note": ""}
+{"id": "I-00979", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-07872", "theme": "charge-recycling refresh", "note": ""}
+{"id": "I-08806", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-06501", "theme": "OS-guided refresh skip", "note": ""}
+{"id": "I-06507", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-00975", "theme": "soft-ECC lazy refresh", "note": ""}
+{"id": "I-03291", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "biocatalytic oxide deposition", "note": ""}
+{"id": "I-10202", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelastic strain memory", "note": ""}
+{"id": "I-01897", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "parametric resonator memory", "note": ""}
+{"id": "I-00985", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "diode-isolated gain cell", "note": ""}
+{"id": "I-00083", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "interference lithography", "note": ""}
+{"id": "I-09745", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "metal-assisted chemical etch", "note": "Ag is a fast-diffusing deep-level lifetime killer in Si; contamination likely worsens the leakage tail."}
+{"id": "I-08347", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "erasure-coded memory pool", "note": ""}
+{"id": "I-05586", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "workload-synced refresh", "note": ""}
+{"id": "I-10647", "P": 2, "S": 5, "N": 4, "D": 3, "dup_of": "", "theme": "diode-steered 3D capacitor stack", "note": "16 bits per pillar from deposition plus one hole etch; doubt: ~0.2 fF per tier capacitance and diode disturb on shared node."}
+{"id": "I-06966", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-00054", "theme": "optical wordline access", "note": ""}
+{"id": "I-03754", "P": 5, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "Mo buried wordline", "note": "Mo wordlines and dual-workfunction buried gates are already in industry roadmaps."}
+{"id": "I-00521", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "dual-mode AFE capacitor", "note": ""}
+{"id": "I-02812", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog hammer counter", "note": ""}
+{"id": "I-10190", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-00980", "theme": "NEMS access switch", "note": ""}
+{"id": "I-06958", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "retention-aware placement", "note": ""}
+{"id": "I-00049", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-00980", "theme": "NEMS access switch", "note": ""}
+{"id": "I-00511", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-05580", "theme": "standby plate bias", "note": ""}
+{"id": "I-05117", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-05580", "theme": "standby plate bias", "note": ""}
+{"id": "I-06044", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "silicon-on-nothing junction", "note": ""}
+{"id": "I-09706", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "proximity gettering", "note": ""}
+{"id": "I-11096", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-05580", "theme": "standby plate bias", "note": ""}
+{"id": "I-05581", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "hammer charge-sink implant", "note": ""}
+{"id": "I-06031", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "domain-wall access switch", "note": ""}
+{"id": "I-11106", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "retention-aware refresh controller", "note": ""}
+{"id": "I-04679", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "cyclic-access memory", "note": "Full-array restore every 1 ms multiplies refresh energy ~64x, and ~1 us waits are not DRAM-class latency."}
+{"id": "I-05141", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "bit-plane refresh tiers", "note": ""}
+{"id": "I-11115", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "I-05141", "theme": "bit-plane refresh tiers", "note": ""}
+{"id": "I-04213", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-02357", "theme": "vacuum access switch", "note": ""}
+{"id": "I-06486", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-00980", "theme": "NEMS access switch", "note": ""}
+{"id": "I-07882", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-00980", "theme": "NEMS access switch", "note": ""}
+{"id": "I-09245", "P": 1, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "piezoelectronic access switch", "note": "A 0.5 eV-gap off-state leaks more than silicon at 85 C, so the claimed leakage reduction contradicts physics."}
+{"id": "I-09716", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "2D TMD access device", "note": ""}
+{"id": "I-10632", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-00054", "theme": "optical wordline access", "note": ""}
+{"id": "I-10667", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "frequency-multiplexed access", "note": ""}
+{"id": "I-00993", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "reusable-donor SOI", "note": ""}
+{"id": "I-05612", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00993", "theme": "reusable-donor SOI", "note": ""}
+{"id": "I-10166", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00993", "theme": "layer-transferred 3D tiers", "note": ""}
+{"id": "I-01907", "P": 2, "S": 4, "N": 2, "D": 3, "dup_of": "", "theme": "1S1C crosspoint DRAM", "note": "Would remove the lateral-transistor blocker for 3D, but OTS/Mott selector off-leakage is orders above the needed sub-fA."}
+{"id": "I-07909", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "kerfless substrates", "note": "Shorter carrier lifetime directly raises junction generation leakage, which sets retention; substrate is a small cost share."}
+{"id": "I-03757", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "AAO template channels", "note": ""}
+{"id": "I-05569", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00968", "theme": "canary refresh cells", "note": ""}
+{"id": "I-11094", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00968", "theme": "canary refresh cells", "note": ""}
+{"id": "I-08788", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "I-01907", "theme": "1S1C crosspoint DRAM", "note": "Diffusive Ag memristors show ~1e10 on/off, which is promising for stacked 1S1C; doubts: 1e15 endurance, Ag contamination, ns turn-on."}
