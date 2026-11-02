@@ -1,0 +1,352 @@
+{
+  "lens": "system",
+  "portfolio_thesis": "One interface, three layers, one policy wrapper. The interface is a raw-error contract: bits may arrive at raw BER <=1e-4, with flagged erasures and typed pages (exact / regenerable / lossy-bounded). Concept 1, the ECC-Native Controller, implements it on a mature U.S. logic node. LAYER 1 (0-3 years, no fab; the biggest near-term effect on the shortage) cuts demand and adds supply that needs no wafers. AI Memory Diet (3) deletes DRAM's jobs in AI racks: about 22% of rack DRAM through host-DRAM-lite nodes, and roughly 10x fewer KV-tier bits per concurrent chat session. Second-Life Bits (2) routes about 2-4 EB/yr of retired, harvested and reclaimed DRAM through concept 1's sleds, about 8-15% of world output [ESTIMATE]. LAYER 2 (the bridge) turns 'reading is solved' into a design rule. The Margin Stack (4) cuts the charge a cell must hold 4-15x. With that rule, the coarse 0.5-1 um bonds of the open Merchant Cell Wafer interface (5) become tolerable, and a litho-light, chokepoint-free cell wafer can sit on a U.S. logic periphery wafer. LAYER 3 is the founder's core interest: new ways to make memory. Each bet only has to clear the layer-2 contract. All are EUV-free, and every write goes through a semiconductor channel or junction, which is endurance-safe. The bets are: Pillar DRAM (7), 16-32 linear-capacitor bits per transistor; Circulating Tensor Memory (8), oxide CCD strings scheduled like a drum for LLM sweeps; Depreciated-Fab DRAM (9), 2 b/cell coaxial oxide gain cells, about 4x 1-beta at 8 tiers on ArF; and Self-Aligned Panel Memory (10), independent tiers on display lines. Hot-Side Memory (6) shows where oxide cells beat silicon outright: on hot logic, in the carrier wafer that backside power already requires, at about 0.3 pJ/bit. The Memory Bits Compact (11) pays for qualified bits and counts saved bits, so layers 1 and 3 have buyers. Seed sequencing ($1M, 18-24 months) uses shared vehicles: (a) FPGA error-tail and erasure study, ~$250k. It decides 1, 2 and 11 and calibrates the ECC margin for 4, 7 and 9. (b) One shared 28/22 nm MPW, ~$300k, carrying the margin-stack sense test chip (4), the bond-interface periphery (5) and the MLC sense/ADC (9). (c) One university-fab coupon run, ~$350k: per-tier oxide Schottky diode leakage (7, go/no-go) and buried-channel oxide CCD transfer efficiency (8), the two unmeasured numbers that decide the boldest cell bets. (d) ~$100k of trace and policy work for 3 and 11. The other experiments go to partners, grants and the raise. The program wins even if every cell bet fails, because layers 1-2 cut DRAM demand and add supply on their own. If any one cell bet clears its number, the layer-2 interface is already in place to ship it.",
+  "concepts": [
+    {
+      "name": "ECC-Native Memory: a NAND-style controller that makes weak bits sellable",
+      "category": "system/architecture",
+      "thesis": "Flash got cheap by pairing weak cells with strong controllers. DRAM never did, because on-die SEC and 64 ms refresh hide every weak bit. The concept is a mature-node CXL Type-3 controller with row-wise BCH for line access, page LDPC for cold or compressed pages, sense-amp erasure-flag inputs, hammer-safe relaxed refresh via controller-issued RFM, and typed pages (regenerable KV gets CRC plus recompute; fp64 fields get fixed-rate ZFP). Together these create one raw-BER-1e-4 landing zone shared by three feedstocks: relaxed-refresh commodity DRAM, second-life parts, and new short-capacitor or oxide 3D cells.",
+      "idea_ids": [
+        "I-01312",
+        "I-11559",
+        "I-11148",
+        "I-10963",
+        "I-05623",
+        "I-10420",
+        "I-04613",
+        "I-07888",
+        "I-09037",
+        "N-62",
+        "N-63"
+      ],
+      "why_bigger_than_parts": "Each part alone is a margin trick that critics cut to 10-20% (VRT bursts, 64x RMW on 4 KB codes, TRR slots lost at relaxed refresh). Together they form an interface contract: raw BER <=1e-4, exported erasure flags, and typed pages that spend parity only on irreplaceable data. The contract decouples cell invention from system qualification, the role NAND controllers played for MLC/TLC/QLC. The same silicon is the outlet for second-life supply (concept 2) and the qualification vehicle for every new cell (concepts 4, 7, 9, 10).",
+      "bottlenecks_attacked": [
+        "A1 #3 access-device leakage tail -> refresh",
+        "A1 #1 capacitor wall (ECC pays the last 4 sigma)",
+        "A1 #9 row hammer (controller RFM, analog activation counters)",
+        "A1 #10 array voltage floor (smaller required dV)"
+      ],
+      "step_change": "Refresh energy: today ~0.5 W per 64 GB RDIMM at 64 ms (A1, ~46 fJ/bit-refresh). Stretching to 1 s behind a page code gives 0.5 x 64/1000 = 0.032 W plus scrub, about 10-15x less refresh energy. The tRFC/tREFI loss falls from 7.6% to <1%; Hi-ECC showed a 93% refresh cut on eDRAM. Cell margin: t=8 BCH (80 check bits per 512, 15.6%) at raw BER 1e-4 fails ~2e-17 per read, so the required dV drops from 50 to 26 mV and the capacitor halves (1,300 to 640 nm, AR 62 to 30). The critic counts 9-21 points of die area for the check bits. Erasure flags: if >=50% of errors are slow, flaggable decisions, 4 erasures per 512 b need only a d=5 code (~20 bits, 3.9%). If most errors are confident flips, the gain falls to ~15% parity (critic).",
+      "what_is_new_vs_prior_art": "Prior art: Hi-ECC (ISCA 2010), ArchShield, LOT-ECC, Morphable ECC, XED on-die flags, DDR5 on-die ECC, JEDEC PRAC/RFM, Micron analog-accumulator hammer patents, Microsoft GreenSKU, Meta Vistara, Marvell Structera X, X-PPR recycled-DDR4 CXL repair (2025), and LLNL zfp. Delta: (1) a published raw-BER/erasure contract that new cells are designed to, rather than ECC retrofitted onto spec-grade DRAM; (2) erasure flags from sense-amp resolution time exported across the interface; (3) per-page data types, so regenerable data runs CRC-only and lossy-bounded data runs fixed-rate; (4) relaxed refresh made hammer-safe by controller RFM instead of in-DRAM TRR.",
+      "key_unknown": "The fraction of raw errors at ~1e-4 BER (4-8x tREFI, 85 C) that are iid and flaggable, as opposed to row-correlated, VRT or confidently wrong. If >50% are correlated or confident, t=8 codewords burst and the erasure gain collapses.",
+      "decisive_experiment": "DRAM Bender/SoftMC on 50-100 commodity DDR4/DDR5 modules plus retention-reject DIMMs: truncated-tRAS half-charge restore, 0.25-2 s refresh, 45-85 C, double reads at reduced and nominal tRCD as erasure flags, and hammer patterns with RFM on, for 3-6 months. Then an Agilex CXL Type-3 FPGA controller with row BCH, 4 KB LDPC and SRAM write-combining runs a 1,000 h soak under Redis, SPEC and vLLM traces. Cost ~$250-450k: FPGA boards ~$60k, modules ~$40k, thermal chambers ~$30k, 1.5 FTE. Duration 9-12 months.",
+      "scale_path": "Fab-lite 28/22 nm CXL controller ASIC sold to module makers, or IP licensed to Microchip/Astera/Marvell-class controller vendors. The JEDEC 'ECC-native' grade comes via concept 11. Memory makers can then sell relaxed-spec bins.",
+      "resource_angle": "Zero wafer starts for the relaxed-refresh and reuse portions. Use-phase energy dominates: a server GB burns ~6.6 kWh over 5 years, ~16x its fab electricity (A2), and refresh is 16-33% of idle power. The controller is on a mature node, with no EUV, helium-heavy HAR etch or Hf.",
+      "us_buildable": "Controller: GlobalFoundries Malta NY (22FDX) or SkyWater Bloomington MN. FPGA and test: any university lab (e.g., Carnegie Mellon, Georgia Tech) using open-source DRAM Bender. Soak testing: NERSC or TACC partner nodes."
+    },
+    {
+      "name": "Second-Life Bits: an urban-mined memory supply chain with physics-bound trust",
+      "category": "resources/supply",
+      "thesis": "Exabytes of working DRAM sit in retiring servers, end-of-life phones and over-provisioned enterprise fleets. A three-stage chain turns them into graded CXL capacity with zero wafer starts. Reclaim: shared-savings tiering frees installed DIMMs, which are physically pulled. Recertify: in-system retention and hammer binning issues a certificate bound to the module's own retention-failure fingerprint, not its copyable SPD. Redeploy: concept-1 CXL sleds take DIMMs, and LPDDR bridge cards with per-package remap take phone parts.",
+      "idea_ids": [
+        "I-04109",
+        "I-00845",
+        "I-03937",
+        "I-06172",
+        "I-01797",
+        "I-00224",
+        "I-06854",
+        "I-07784",
+        "I-08260",
+        "I-07673",
+        "I-01312"
+      ],
+      "why_bigger_than_parts": "Each piece fails a critic alone. Reuse lacks trust; a PUF-bound certificate cannot move to a worse module. ESCO savings are counterfactual; pulling and reselling the freed DIMMs makes them metered. Phone LPDDR has more than 50 ballouts; one CXL bridge with remap gives a single outlet. Grading needs baselines; the atlas supplies them. Together they make a supply route, not a recycling anecdote.",
+      "bottlenecks_attacked": [
+        "A2 binding constraint: capital x cleanroom-time x tools per bit",
+        "A1 #4 capital intensity (zero new fab)",
+        "A2 chokepoints (avoids EUV, helium, W, Hf entirely)"
+      ],
+      "step_change": "Supply without wafers, using critic-corrected numbers. Open-market retiring server DRAM is ~1-2 EB/yr: ~5-7 EB/yr gross, but hyperscalers reuse much of it internally. Phones: ~1.2B/yr x ~5.5 GB at 15-20% collection x 70% rework yield gives ~0.7-1 EB/yr. Enterprise reclaim: 10-20% of non-hyperscale fleets, ~0.5-1.1 EB/yr. Total ~2.2-4.1 EB/yr, 8-15% of ~25-30 EB/yr world output [ESTIMATE]. Micron expects only low-20s% bit growth for 2027-28, so this is roughly a third to a half of a year's growth. Avoided fab inputs at 2.6 L and 0.42 kWh per GB: ~5.7-10.7 million m3 of water and ~0.9-1.7 TWh.",
+      "what_is_new_vs_prior_art": "Prior art: Microsoft GreenSKU and Meta Vistara (internal DDR4 reuse behind CXL), Marvell Structera X, ITAD resellers (ITRenew/Sipi), X-PPR (2025), VMware VCF 9 NVMe tiering, Meta TMO, Google far memory, and the Shenzhen reballing trade. Delta: (1) certificates bound to a retention-failure PUF, making grades uncopyable; (2) an LPDDR-to-CXL bridge with defect remap; (3) shared-savings reclaim where savings are metered by DIMMs physically pulled and resold; (4) an open cross-fleet atlas as the baseline authority.",
+      "key_unknown": "All-in recertified cost per GB (test + controller/bridge + rework) against new DRAM. The concept dies above ~$3-5/GB or below a ~70% pass rate. For phones the deciding number is underfilled-PoP desolder/reball yield >=70%.",
+      "decisive_experiment": "Three pilots, ~$600k total over 12 months. (a) Desolder, bake and reball 1,000 EOL phones; bin by retention and HCfirst; run 16 packages behind an FPGA CXL bridge with remap for 1,000 h (~$150k). (b) Pass 2,000 retired DDR4/DDR5 DIMMs through an open FPGA tester that issues PUF-bound certificates; re-measure after 3 months to quantify VRT drift of the fingerprint (~$150k). (c) Run a 200-500 server reclaim pilot at 2-3 enterprise or university-HPC sites with zswap or CXL tiering, metering resident-memory cut and p99 for 6 months (~$300k).",
+      "scale_path": "An exchange/operator with ITAD and recycler partners. The certificate spec is licensed and standardized via the Open Compute Project. Controllers come from concept 1.",
+      "resource_angle": "Zero new wafers: avoids ~2.6 L of water, ~0.42 kWh of fab electricity and all EUV, helium, W and Hf per GB, and diverts e-waste.",
+      "us_buildable": "Recyclers: ERI (Fresno CA), Sims Lifecycle Services. Fleet pilots: TACC (UT Austin), NERSC (LBNL). Controller: SkyWater or GlobalFoundries. FPGA testers can be built in any university lab."
+    },
+    {
+      "name": "AI Memory Diet: delete DRAM's jobs in the racks that cause the shortage",
+      "category": "system/architecture",
+      "thesis": "AI racks hold about as much host DRAM as HBM and keep idle sessions' KV caches resident. One coordinated stack cuts DRAM bits per served user with no new cell: host-DRAM-lite nodes (GPU-direct shard decode and checkpoint streaming); think-time KV hibernation straight to flash, with prefetch triggered by client typing and focus signals; a trained shared cross-layer KV latent; exact KV sharing across fine-tunes; and in-memory top-k on a PIM tier for long context.",
+      "idea_ids": [
+        "I-10877",
+        "I-08555",
+        "I-07651",
+        "I-04878",
+        "I-11326",
+        "I-09070",
+        "I-00766",
+        "I-04908",
+        "I-10963",
+        "I-07637"
+      ],
+      "why_bigger_than_parts": "Separately the levers fight. Host-DRAM-lite fails alone because host DRAM is becoming the KV tier (Dynamo KVBM, LMCache), and flash KV hibernation fails alone on NAND wear (~280 TB/day per node) and bandwidth (~50 GB/s). Combined, the client-signal prefetch moves KV between HBM and flash directly, so the KV job never lands in host DRAM. That makes host-DRAM-lite viable. The latent KV shrinks the bytes 2-7x, which is the critics' own fix for flash wear and bandwidth.",
+      "bottlenecks_attacked": [
+        "A1 #6 HBM TSV/stacking tax (fewer HBM bits per user)",
+        "A1 #5 interface/data-movement energy",
+        "A2 binding constraint (bits demanded by AI racks)"
+      ],
+      "step_change": "Host DRAM: GB300 NVL72 carries ~17 TB LPDDR5X against ~21 TB HBM. The critic-corrected 2x cut frees ~8.5 TB per rack, 8.5/38 = ~22% of rack DRAM bits. KV residency: chat turns generate for ~5-10 s against 5-60 s of think time (median ~30 s assumed), so active duty is ~15-25% and resident KV falls ~4-6x. KV bytes: a retrofit latent gives 2-7x (xKV training-free holds RULER to ~8x); taking 3x, KV-tier bits per concurrent session fall ~4 x 3 = ~12x. Flash load: 50 GB/s / 3 = ~17 GB/s per node, inside 8 Gen5 SSDs. Net DRAM per served chat user is ~2-3x lower [ESTIMATE].",
+      "what_is_new_vs_prior_art": "Prior art: CachedAttention/AttentionStore (ATC'24, scheduler-hint disk prefetch), Mooncake, LMCache, Dynamo KVBM, GPUDirect Storage, nvCOMP/DALI, MLA (DeepSeek-V2), xKV, YOCO, LCKV, MHA2MLA, DroidSpeak (NSDI'26), Activated LoRA, Quest/ShadowKV, Samsung LPDDR5X-PIM, Lamina, and Taalas-style hard-wired weights [training knowledge]. Delta: (1) client-signal prefetch, which gives 2-20 s of lead against <1 s from scheduler hints; (2) one trained latent per token across all layers, beyond xKV; (3) a published host-DRAM-minimal node spec that co-designs these so the KV job does not migrate back into host DRAM.",
+      "key_unknown": "The fraction of turns where client typing or focus gives at least the restore time (~1-3 s for 10-30 GB KV). Below ~80% coverage, TTFT p99 forces a DRAM KV tier back in.",
+      "decisive_experiment": "(1) Instrument an open chat front-end (e.g., Open WebUI) to log typing and focus lead times from consenting users (~$30k). (2) Replay the traces on one 8xGPU node with vLLM+LMCache, comparing SSD-only against a host-DRAM KV tier, with host memory cgroup-capped at 32-64 GB/GPU and GDS checkpointing. Report TTFT p99, resident sessions/GB and NAND TB/day (~$150k including GPU time). (3) Distil Llama-3.1-8B into one shared 512-d latent with 2-5B tokens and compare RULER/LongBench at 32-128k against MHA2MLA and xKV (~$100k). Total ~$280k, 9-12 months.",
+      "scale_path": "Open-source reference stack (vLLM/LMCache plugins) plus an OCP host-DRAM-lite node spec, licensed or supported for inference providers. No fab.",
+      "resource_angle": "Every GB not bought avoids ~0.42 kWh of fab electricity and ~2.6 L of water. Every HBM GB avoided also saves ~3x the DDR5 wafer area per bit. The capacity moves to NAND, which costs far less per GB [ESTIMATE ~30x].",
+      "us_buildable": "Any U.S. GPU cluster. National-lab and academic clusters (NERSC Perlmutter, ORNL, TACC) can host the trace studies. No fabrication needed."
+    },
+    {
+      "name": "Margin Stack: a logic-process sense periphery that lets a 0.3-1 fF cell read like a 5 fF one",
+      "category": "sensing/periphery",
+      "thesis": "The ~17,800 electrons in a DRAM bit exist to beat bitline capacitance and offset, not noise. A periphery built on mature logic, hybrid-bonded under the array, stacks independent margin levers: charge-transfer pre-sense, active bitline neutralisation (critic-corrected to Cn/Cbl <=0.5), offset-cancelled CDS latches whose slow decisions are flagged as erasures, row-wise ECC margin, and optionally 16-64-cell local segmentation. The cell capacitance it needs falls 4-15x, from a 1.3 um pillar to a <=300 nm stub or a 3D-tier lateral capacitor.",
+      "idea_ids": [
+        "N-04",
+        "I-11588",
+        "I-11148",
+        "I-11559",
+        "I-05218",
+        "I-04613",
+        "I-00257",
+        "I-11545",
+        "I-05154",
+        "N-40",
+        "N-27"
+      ],
+      "why_bigger_than_parts": "Each lever is 1.2-4x and too small alone to justify a new periphery. Multiplied where independent, they cross the threshold where the HAR capacitor disappears. At that threshold, 0.5-1 um bond pitches with an 8-32:1 mux become acceptable, which is what concepts 5, 6, 7 and 9 need. On a bonded logic wafer the extra transistors cost cheap logic area, not array area.",
+      "bottlenecks_attacked": [
+        "A1 #1 storage-capacitor charge wall",
+        "A1 #10 array voltage floor",
+        "A1 #7 periphery overhead (moved to a bonded logic wafer)",
+        "A1 #2 no manufacturable 3D cell (Cbl decoupled from tier count)"
+      ],
+      "step_change": "Required Cs = dVmin x Cbl / (0.5 V - dVmin). Baseline: 512-cell bitline, Cbl 35 fF, 50 mV gives 3.9 fF (5.4 fF in practice with droop margin). With ECC margin (26 mV): 1.9 fF, 2.0x. Adding neutralisation at Cn/Cbl = 0.5 (Cbl_eff 17.5 fF): 0.96 fF, 4.1x. Adding 64-cell segments (Cbl ~5 fF): 0.27 fF, 14x. Charge-transfer pre-sense alone reaches ~0.5 fF on an unchanged 512-cell line at 19 sigma kTC (triage N-04). Capacitor height scales ~linearly: 1.3 um to ~0.32 um at 4x. Noise check: kTC on 35 fF is 0.38 mV. The neutraliser doubles a ~3 mV post-auto-zero offset to ~6 mV against a 26 mV budget, 4.3 sigma, above BCH t=8's 3.72 sigma at 1e-4.",
+      "what_is_new_vs_prior_art": "Prior art: offset-cancelling SAs (shipping), IBM eDRAM 3T micro-SA on 32-cell local bitlines (Barth, ISSCC 2007-08), the clamped-bitline SA (Blalock), SRAM negative-capacitance bitlines (Mostafa, TVLSI), US 8872938, Hi-ECC, DDR5 on-die ECC, Samsung VCT periphery-under-cell, and Samsung 16-tier VS-DRAM peri-on-cell (VLSI 2026). Delta: (1) co-designing the cell capacitance to the stacked margin; (2) a capacitance neutraliser on DRAM bitlines; (3) sense-amp resolution time exported as erasure flags; (4) all of it on a bonded mature-logic periphery wafer.",
+      "key_unknown": "The stable neutralisation ratio Cn/Cbl under worst-case neighbour data (BL-BL coupling assumed 20-30% of Cbl). At least 0.5 is needed. If stability caps it at <=0.3, that lever falls to ~1.4x and the target requires segmentation.",
+      "decisive_experiment": "One 28/22 nm MPW: 64 emulated 35 fF bitlines with 0.25-5 fF MIM cell stubs. Each line carries a neutraliser, charge-transfer pre-sense and a CDS latch with a delayed second sample as the erasure flag. Measure signal, the offset tail to ~1e-5 (64k reads per line) and oscillation under all-0, all-1 and checkerboard data, then feed the measured BER into BCH/erasure analysis. ~$250-350k (MPW ~$100-150k through a university program, plus boards and design labor), 12-15 months. Shares the shuttle with concepts 5 and 9.",
+      "scale_path": "License the periphery IP and cell-margin design rules to memory makers. Make it the reference periphery for the open bond interface (concept 5), or sell sense-chiplet wafers.",
+      "resource_angle": "Shorter capacitors cut fluorocarbon HAR etch time and ZrO2/TiN ALD volume. They remove the push toward k>50 dielectrics that drags in Hf and Ru (A2: Ru electrodes fleet-wide would need 26-176% of world Ru). Lower VARY cuts use-phase energy. The periphery needs no EUV.",
+      "us_buildable": "MPW: GlobalFoundries Malta NY (22FDX university program) or SkyWater SKY130 for an early 130 nm pass. Test: Georgia Tech, Purdue or any university mixed-signal lab."
+    },
+    {
+      "name": "Merchant Cell Wafer: an open array-to-periphery bond interface with a chokepoint-free cell fab",
+      "category": "integration/manufacturing",
+      "thesis": "Every 2026 next-gen DRAM demo already bonds a periphery wafer to a cell wafer, but in-house. The concept publishes an open electrical and mechanical envelope at the 0.5-1 um, local-bitline-group bond level. Then a purely periodic, litho-light cell wafer can come from a new or depreciated U.S. line while the periphery comes from any logic foundry. The cell wafer uses Ga-free oxide channels, ArF single-exposure or interference/NIL patterning, short or carbon-mold capacitors, and H2 instead of helium backside cooling.",
+      "idea_ids": [
+        "I-04714",
+        "I-05632",
+        "I-00869",
+        "I-07130",
+        "I-10762",
+        "I-11545",
+        "N-31",
+        "N-21",
+        "N-29",
+        "N-26",
+        "N-36"
+      ],
+      "why_bigger_than_parts": "The standard alone has no customer, since incumbents will not sell array wafers. The litho-light cell process alone has no periphery, and interference lithography alone fails on overlay for arbitrary layouts. Splitting the die makes the cell wafer purely periodic, which is what interference/NIL patterning needs. The Margin Stack (concept 4) makes the 8-32:1 mux forced by a 0.4-1 um bond tolerable: Cbl ~10-12 fF needs only ~0.6 fF cells.",
+      "bottlenecks_attacked": [
+        "A1 #4 litho-bound scaling and capital intensity",
+        "A1 #7 periphery overhead",
+        "A1 #1 capacitor wall (short caps via concept 4)",
+        "A2 chokepoints: EUV, helium, PFAS, Hf/Ge/Ga"
+      ],
+      "step_change": "EUV and capital: 5-7 EUV layers at 1c cost $825-1,155 per wafer, 19-27% of a $4.3k wafer (A1). The cell wafer at F~40 nm uses single-exposure ArF and zero EUV. A vertical 2T0C reaches 1-beta die density at bits x tiers >=15 (A3), e.g., 2 b x 8 tiers. Bonds: one per 128-256-cell segment needs only ~1-2 um pitch (A3 model section 7), inside demonstrated W2W (imec, 300 nm). With 0.4-1 um bonds and an 8-32:1 mux, Cbl ~11 fF; at the 26 mV ECC margin, Cs = 26 x 11 / 474 = 0.6 fF. Yield: at >=99.99% per segment, a 16 Gb die with 256-cell segments (6.25e7 segments) has ~6k dead segments, which column sparing can absorb. W2W without known-good die compounds 0.9 x 0.9 = 0.81, so die-to-wafer or tier spares are required.",
+      "what_is_new_vs_prior_art": "Prior art: Samsung 10a VCT periphery-under-cell, SK hynix 4F2 VG, Samsung VS-DRAM peri-on-cell, YMTC Xtacking and Kioxia CBA (NAND, in-house), UniIC SeDRAM, UCIe (die-level only), MIT SBIL, Eulitha DTL, and Canon NIL. Delta: (1) an open interface at the bitline-group level; (2) a cell wafer from a different, cheaper line (non-DRAM oxide stack, no EUV, no high-temperature Si); (3) a chokepoint-free recipe with H2 backside gas, carbon-mold or AAO capacitors and Ga-free channels.",
+      "key_unknown": "Per-segment hybrid-bond yield at 0.5-1 um pitch on warped multi-tier oxide wafers, which must be >=99.99%. The bonding thermal cycle must also leave oxide Vt within ~20 mV.",
+      "decisive_experiment": "Draft the envelope spec: Cs/Cbl window, ~3 V VPP, pitch, test pads. Reuse the concept-4 MPW for a 28/22 nm SA plus WL-driver periphery. Die-to-wafer bond it at 1-2 um pitch to a university-fab IGZO/ZTO 2T0C or MIM-cap array coupon. Measure sense margin against bond parasitics and pre/post-bond retention and Vt. ~$700-900k, 18-24 months. In parallel, run one H2-vs-He backside-cooling chamber trial with an equipment partner (thermocouple wafers, 5-30 Torr, ~$300k partner-funded) as a separately licensable spin-out.",
+      "scale_path": "Standard through a JEDEC/OCP or CHIPS-funded consortium. Fab-lite: contract cell wafers from a depreciated U.S. line, periphery from a logic foundry. License the cell recipe.",
+      "resource_angle": "The cell wafer avoids EUV (supply-capped at ~65 tools/yr; ~11 kWh per exposure) and helium (Qatar ~30% of supply, offline since March 2026; Korea took 64.7% of its helium from Qatar in 2025). It also avoids PFAS HAR etch (carbon mold or short caps), Hf/Ru capacitors and Ge superlattices. ZTO channels avoid Ga (~98% Chinese).",
+      "us_buildable": "Periphery: GlobalFoundries Malta/Burlington, SkyWater, TSMC Arizona, Intel. Cell pilot: SkyWater Bloomington (200 mm), NY CREATES Albany NanoTech, Texas Institute for Electronics (Austin). Bonding: SkyWater Florida (Osceola), Applied Materials META Center (Albany), Sandia MESA."
+    },
+    {
+      "name": "Hot-Side Memory: oxide-cell tiers in the backside-power carrier and the logic BEOL",
+      "category": "integration/manufacturing",
+      "thesis": "Backside power delivery forces a bonded carrier wafer onto every leading-edge logic die. The concept makes that carrier a trailing-node CMOS wafer carrying 8-16 tiers of oxide gain cells, optionally with 2-4 more oxide tiers in the logic BEOL. Oxide cells hold >200 s at 95 C, where silicon DRAM needs 16-32 ms refresh. Memory defects are treated as capacity bins, not logic scrap. The result is tens of GB at ~0.3 pJ/bit with no TSV, PHY or interposer.",
+      "idea_ids": [
+        "I-11538",
+        "I-11532",
+        "I-02936",
+        "I-00156",
+        "I-11192",
+        "I-00729",
+        "I-11544",
+        "N-41",
+        "N-35",
+        "N-57"
+      ],
+      "why_bigger_than_parts": "Carrier-is-memory's killer doubts were heat (Si DRAM at 95-105 C needs 2-4x refresh) and W2W yield (scrapping ~10% of good logic). The oxide cell answers heat with ~1e4x Si retention at temperature. Fail-soft binning answers yield: logic-side remap means a dead memory site lowers the near-memory capacity bin while the die still ships with HBM. BEOL-in-logic's doubt was yield coupling (1% per tier x 16 tiers = 15% logic loss). Moving most tiers to the separately tested carrier and keeping <=4 BEOL tiers caps that coupling.",
+      "bottlenecks_attacked": [
+        "A1 #5 interface/data-movement energy",
+        "A1 #6 HBM TSV/stacking tax",
+        "A1 #3 leakage at logic junction temperature",
+        "A1 #8 destructive read and page overfetch (non-destructive gain-cell reads)"
+      ],
+      "step_change": "Interface energy: 3.5 to ~0.3 pJ/bit. At 8-16 TB/s (6.4-12.8e13 b/s), 3.2 pJ x 6.4-12.8e13 = 205-410 W saved per accelerator, ~12x lower interface energy. Capacity: a 2 b x 8-tier oxide 2T0C at F=40 nm reaches ~1-beta die density (~0.44 Gb/mm2), so 800 mm2 holds ~44 GB, or ~88 GB at 16 tiers. Honest scale: HBM per GPU is ~288-512 GB, so this tier carries the hottest bandwidth (KV, activations) and displaces perhaps 10-30% of HBM bits, each worth ~3x the DDR5 wafer area. Refresh at 95-105 C: Si 16-32 ms against oxide >=200 s, >6,000x fewer refreshes.",
+      "what_is_new_vs_prior_art": "Prior art: imec's face-to-face memory-on-logic in a BSPDN stack, Chip Scale Review 2022 (memory wafer as carrier), UniIC SeDRAM (IEDM 2020), Graphcore Bow power carrier, AP Memory VHM WoW, TSMC fully-BEOL oxide-selector memory over logic (VLSI 2025), CXMT BEOL multi-layer IGZO DRAM (IEDM 2025), and Stanford/MIT N3XT. Delta: (1) an oxide gain-cell carrier on trailing-node CMOS, not Si DRAM, so heat is not a problem; (2) fail-soft capacity binning with logic-side remap; (3) tier-orthogonal codewords against 3D tier defects; (4) splitting tiers between carrier and BEOL to cap yield coupling.",
+      "key_unknown": "Oxide-cell Vt drift and worst-case retention after the post-bond backside-power thermal and hydrogen sequence (<=400 C, forming gas) while operating under ~1 W/mm2. Needs <=20-50 mV drift and >=1 s worst-case retention at 105-125 C.",
+      "decisive_experiment": "(1) Deposit 2-4 IGZO/ZTO 2T0C tiers on finished 22-28 nm foundry MPW logic die in a university BEOL. Measure 1-2 b retention at 105 C for 1,000 h and ring-oscillator shift (~$300k). (2) Hybrid-bond oxide-tier coupons face-down onto a dummy logic wafer with a SiGe etch stop, thin to <1 um, and run a 400 C backside-metal emulation. Map the retention tail, bond-pad yield and overlay before and after (~$400k). ~$700k, 18-24 months.",
+      "scale_path": "Partner with a logic foundry's backside-power line (TSMC A16 Super Power Rail, Intel 18A PowerVia) as a carrier-wafer option. License the cell and binning IP. The carrier wafer itself can come from a merchant cell fab (concept 5).",
+      "resource_angle": "No HBM TSV stack (HBM uses ~3x the wafer per bit) and no interposer. Oxide tiers are built at <=400 C in the BEOL. In and Ga quantities are under 0.4% of supply, but Ga is ~98% Chinese, so prefer ZTO/ITZO channels.",
+      "us_buildable": "Intel 18A PowerVia (Arizona/Oregon), TSMC Arizona (future A16), GlobalFoundries Malta MPW. BEOL tiers: Stanford SNF, Georgia Tech IEN, Purdue Birck. Bonding: Applied Materials META Center (Albany), SkyWater Florida."
+    },
+    {
+      "name": "Pillar DRAM: sixteen-to-thirty-two linear-capacitor bits per transistor, read by a double-sampled in-hole gain FET",
+      "category": "cell/array",
+      "thesis": "Deposit 16-32 plate/dielectric tiers around one vertical storage pillar, with a per-tier oxide Schottky diode (barrier >=1.0 eV) so that a plate pulse dumps only the selected tier onto the shared pillar. A local gain transistor built in the same vertical-channel step reads the ~76 mV pillar swing, double-sampled to cancel its own Vt, and row ECC with erasure flags covers the tail. It uses the 3D-NAND recess flow with no EUV and no ferroelectric, and every write passes through semiconductor junctions or channels rather than tunnelling insulators.",
+      "idea_ids": [
+        "I-10647",
+        "I-00257",
+        "I-05218",
+        "I-11559",
+        "I-11148",
+        "I-10664",
+        "I-03474",
+        "I-10833",
+        "I-00729",
+        "I-11544"
+      ],
+      "why_bigger_than_parts": "Each part dies alone. The diode-steered stack's 15-76 mV signal is too small for a remote sense amp. A local gain FET faces 30-50 mV Vt sigma, only ~5-6 sigma. CDS alone needs ~0.5 fF cells on short lines. Combined, the pillar is itself a 16-32-cell local bitline of ~1.5 fF: the gain FET amplifies in place, CDS removes the FET offset, and ECC absorbs the 3.7 sigma tail. The result is the linear-dielectric (fatigue-free, Hf-free) analogue of 1T-nC ferroelectric memory.",
+      "bottlenecks_attacked": [
+        "A1 #1 storage-capacitor charge wall",
+        "A1 #2 no manufacturable 3D DRAM cell",
+        "A1 #4 litho/EUV dependence",
+        "A1 #7 periphery/access-device overhead (1 transistor per 16-32 bits)"
+      ],
+      "step_change": "Signal: dV = 0.5 V x 0.27/(0.27 + 1.5) = 76 mV. kTC on 1.5 fF at 85 C is 1.8 mV rms, 42 sigma. A ~5-10 mV residual after CDS leaves 7-15 sigma against BCH t=8's 3.72 sigma. Density (critic-corrected): 2-4x 1-beta at 16-32 tiers in ~60 nm holes, not 24x; the innovation critic wants >=48 tiers for 3x. Retention: 0.27 fF with 100 mV droop in 1 s allows <=2.7e-17 A per tier. Ideal thermionic reverse current through a ~5.7e-11 cm2 diode ring at 85 C (A* ~36 A/cm2K2) is 2.2e-18 A at 1.0 eV (passes), 1.1e-17 A at 0.95 eV (marginal) and 5.7e-17 A at 0.9 eV (fails). Transistor count: 15 of 16 (or 31 of 32) access transistors removed.",
+      "what_is_new_vs_prior_art": "Prior art: Intel EP4016625 3D FeRAM plate lines, Kepler Computing 1T-nC stacked ferroelectric pillars, the Notre Dame/PSU/IBM/Fraunhofer/NUS 2T-64C (IEDM 2025), Sogang 2026 1T-nC, IBM eDRAM micro-sense amps, the 3D-NAND floating-gate recess (Micron), and Japanese oxide-semiconductor NAND gain-cell patents (US8421071, US8750023). Delta: (1) linear-dielectric capacitors steered by per-tier oxide Schottky diodes, avoiding HZO fatigue and wake-up and the A2 warning that fleet-wide HZO would need 14-41% of separated Hf; (2) an in-hole local gain FET with CDS readout.",
+      "key_unknown": "Per-tier oxide Schottky reverse leakage at 85 C (<=2e-17 A, i.e., an effective barrier >=~1.0 eV after image-force lowering). It must also deliver enough forward current to write in <=10-20 ns and stay stable over >=1e12 forward cycles.",
+      "decisive_experiment": "Go/no-go first (3 months, ~$80k): planar IGZO/RuOx and Ru-free (MoOx) Schottky coupons sized like one tier ring. Measure I-V-T to 125 C, barrier height and 1e10-1e12 pulsed forward cycling. Then (~$520k, 15-18 months) build a university-fab 4-tier stack in 100-200 nm holes (TiN plates / ZrO2 / recessed node / oxide Schottky / pillar) with a discrete IGZO gain FET on top. Measure clamp-write, read charge with CDS, reverse leakage per tier, and unselected-tier disturb. Total ~$600k.",
+      "scale_path": "License to 3D NAND makers or DRAM incumbents: the flow is one hole etch, lateral recess and ALD on depreciated NAND tools. A merchant cell wafer (concept 5) is the fab-lite route.",
+      "resource_angle": "No EUV, ferroelectric or Hf-based FE capacitor. ZrO2 or Hf-free dielectrics. The diode anode is a thin ring, far below capacitor-electrode area, but A2 flags Ru, so screen MoOx and other Ru-free high-work-function contacts. The hole etch still uses fluorocarbon chemistry unless paired with a carbon mold (N-29).",
+      "us_buildable": "Stanford SNF, Cornell CNF, Georgia Tech IEN, Purdue Birck (oxide ALD), Argonne Center for Nanoscale Materials (ALD and characterisation), Sandia MESA. Scale-up partners: Micron Boise R&D, SkyWater."
+    },
+    {
+      "name": "Circulating Tensor Memory: buried-channel oxide CCD strings scheduled like a drum",
+      "category": "cell/array",
+      "thesis": "LLM inference reads every weight and KV byte once per token in a predictable order, which is exactly what a circulating serial memory serves best. The cell: vertical oxide CCD strings with no transistor or capacitor per bit, writes staying in a semiconductor channel, a buried IGO/IGZO (or Ga-free) heterochannel, fat-zero bias, a regenerator every ~64 bits, and decision-feedback deferred-charge correction at the string foot. A SOAP-style compiler places tensors so each word arrives just in time. Together they form a deposition-built streaming tier behind a small SRAM/DRAM front buffer.",
+      "idea_ids": [
+        "I-08763",
+        "I-10793",
+        "I-04285",
+        "I-01064",
+        "I-06518",
+        "I-04670",
+        "I-04284",
+        "I-11504",
+        "I-04245",
+        "I-11148"
+      ],
+      "why_bigger_than_parts": "CCD strings alone are serial (15 us shifts at imec's 4-6 MHz clocks), and drum-style placement alone needs a serial array that exists. Together, the workload hides the latency, and per-lap regeneration doubles as refresh. Decision feedback (from astronomy's deferred-charge correction) plus regeneration every 192 transfers relaxes the CTE requirement from ~0.9999 to ~0.999.",
+      "bottlenecks_attacked": [
+        "A1 #1 capacitor wall (no capacitor at all)",
+        "A1 #2 no manufacturable 3D cell (deposition-only strings)",
+        "A1 #4 litho/EUV (single-exposure ArF)",
+        "A1 #6 HBM tax (streaming tier for weights/KV)",
+        "A1 #3 refresh (lap regeneration is refresh)"
+      ],
+      "step_change": "Density (critic-corrected): 2-4x 1-beta at 32 tiers with per-row slits, not 4-8x. CTE: 64 bits x 3 phases = 192 transfers per regeneration. Charge kept: 0.98^192 = 2% (imec today, fails), 0.999^192 = 82.5% (regenerable), 0.9999^192 = 98%. Bandwidth: a 50 MHz phase clock gives 16.7 Mb/s per string, so 1 TB/s per die needs ~4.8e5 active sense nodes, comparable to an HBM-class row-buffer complement. A lap takes 64 x 3 / 50 MHz = 3.84 us, against a 20-40 ms decode step, giving the compiler ~5,000 laps per token. Shift energy is ~86 fJ/bit (critic estimate). Honest limit: the unpredictable 20-40% of traffic (top-k attention, batch churn) needs the front tier, and an average under 40 ns needs front-tier misses below ~0.2%.",
+      "what_is_new_vs_prior_art": "Prior art: imec IEDM 2024 planar IGZO CCD buffer memory (CTE >98%, >200 s retention, >1e10 cycles), imec IMW 2026 vertical 3D IGZO CCD, 1970s Fairchild/Intel CCD main memories, the IBM 650 SOAP, ShiftsReduce racetrack placement (TACO 2019), LSST deferred-charge correction (Snyder 2021), SanDisk/SK hynix HBF for weights, and Taalas hard-wired weights [training knowledge]. Delta: (1) a buried-heterochannel oxide CCD with fat-zero bias and decision feedback at the sense node; (2) compiler-scheduled placement that makes it a first-class tier for LLM sweeps instead of a buffer.",
+      "key_unknown": "Charge-transfer efficiency per transfer in a buried-channel oxide CCD at >=50 MHz and 85 C. Needs >=0.999; imec's planar surface channel shows >0.98 at 4-6 MHz.",
+      "decisive_experiment": "University-fab planar 3-4 phase CCDs, surface against buried IGO/IGZO (and ITZO/ZTO) heterochannels, with fat-zero bias. Measure CTE against clock from 4 to 200 MHz at 25-125 C (~$300k, 12 months; go if >=0.999 at >=50 MHz). In parallel, a trace-driven simulator (~$150k) runs decode, prefill and training traces against string shift rate, CTE and lap length with an SRAM front buffer, reporting bytes served within 30 ns-equivalent and pJ/bit against HBM. Total ~$450k.",
+      "scale_path": "License to imec-partner memory makers or NAND fabs (word-plane stacks are 3D-NAND-like). Partner with an accelerator vendor on the placement compiler and controller. Long term, an HBF-class weights/KV tier product.",
+      "resource_angle": "No capacitor module (no HAR capacitor etch, no ZrO2/TiN ALD), no per-bit transistor, single-exposure ArF. Prefer Ga-free heterochannels (ITZO/ZTO), since Ga is ~98% Chinese.",
+      "us_buildable": "MIT Lincoln Laboratory Microelectronics Laboratory (world-class CCD fab, via government programs), Cornell CNF, Stanford SNF, Purdue Birck, Sandia MESA."
+    },
+    {
+      "name": "Depreciated-Fab DRAM: multi-level coaxial oxide gain cells over trailing-node CMOS-under-array",
+      "category": "cell/array",
+      "thesis": "Get density from bits x tiers instead of wavelength. Coaxial 4F2 2T0C cells, whose storage node is the core gate of a read-channel shell, are stacked 8-16 tiers over 28-65 nm CMOS-under-array. Each stores 2 bits with write-verify and non-destructive read, on per-tier word planes with vertical AND-type read and write pillars and Vt-coded tier decoders. Tier-orthogonal codewords absorb tier defects, and the ECC-native controller is the landing zone. All patterning is single-exposure ArF, buildable on depreciated U.S. logic or NAND lines.",
+      "idea_ids": [
+        "N-43",
+        "N-37",
+        "N-05",
+        "N-56",
+        "I-11532",
+        "I-03474",
+        "I-10833",
+        "I-11544",
+        "I-00729",
+        "I-01312",
+        "I-02936",
+        "I-01822",
+        "I-00869"
+      ],
+      "why_bigger_than_parts": "MLC alone needs drift budgets that single cells do not prove. Tiers alone need ~26 to break even (A1 base case), and the coaxial cell alone reaches only 1-beta parity at 4 bit-tiers. Multiplied, 2 b x 8 tiers = 16 bit-tiers, ~3.9x 1-beta on an EUV-free depreciated line. The architecture avoids the critics' series-string trap (tree-ring shells give NAND-like 0.5-5 us reads) by using vertical AND/NOR-style pillars, the fix the I-10833 critic named.",
+      "bottlenecks_attacked": [
+        "A1 #2 no manufacturable 3D cell",
+        "A1 #4 litho-bound scaling and capital intensity",
+        "A1 #3 leakage/refresh (oxide Ioff <1 aA)",
+        "A1 #1 capacitor wall (no capacitor)",
+        "A1 #8 destructive read (gain-cell NDRO)"
+      ],
+      "step_change": "Coaxial 4F2 at F=40 nm: 0.0064 um2 per cell. CMOS-under-array lifts array efficiency from ~51% to ~80%, so 4 bit-tiers match 1-beta (triage N-43). 2 b x 8 tiers gives ~3.9x 1-beta die density; 2 b x 16 gives ~7.8x if tier yield holds. Cross-check with A3's generic 10F2-class vertical 2T0C, which needs bits x tiers >=15 for parity (2 b x 8 = 1.07x). A3: 3 b x 8 tiers at F=40 nm gives ~1.56x bits per dollar. Level budget: 2 b in a ~1 V window is ~250-300 mV per level. 3 b (~140 mV spacing, ~120 e- per level on 0.15 fF) is a stretch goal gated by 95 C PBTI drift. Yield: 2 spare tiers per 32 or tier-orthogonal codes (~6-12% parity) against A1's >=0.998 per-tier requirement.",
+      "what_is_new_vs_prior_art": "Prior art: IMECAS + Beijing Super String 4-tier 2T0C at 3 b and 400 s (VLSI 2026), SJTU IGO 2T0C at 4 b and 30,000 s (AFM 2026), imec 2T0C at >1e12 cycles and 95 C (EDL 2025), NEO 3D X-DRAM 3T0C, Kioxia/Nanya OCTRAM and Kioxia 3D OCTRAM, CXMT BEOL IGZO 3D DRAM, Samsung VS-DRAM, and Micron CMOS-under-array NAND. Delta: (1) array-level MLC DRAM with write-verify on a coaxial 4F2 gain cell; (2) built on depreciated trailing-node CMOS with ArF-only patterning; (3) paired with a controller-level error contract and tier-orthogonal coding.",
+      "key_unknown": "Array-level Vt drift (PBTI plus hydrogen) at 85 C over the refresh interval for 2 b/cell. Needs <=~60 mV, and <=~20 mV for 3 b. The concept dies at 2 b if drift reaches >=60 mV within seconds; the fallback is 1 b x more tiers.",
+      "decisive_experiment": "Build 1-4 kb planar and 2-tier coaxial IGZO/ZTO 2T0C arrays in a university BEOL on a hydrogen-lean LPCVD mold and on a PECVD mold (N-56), read by the shared concept-4 MPW sense/ADC chip. Map level-retention distributions against temperature (25-110 C) and cycling (to 1e12). ~$500-700k, 18-24 months.",
+      "scale_path": "Fab-lite on a depreciated U.S. 200/300 mm line, with CMOS-under-array at 65-28 nm. Alternatively, license to NAND/DRAM makers, or ship as merchant cell wafers through the concept-5 interface.",
+      "resource_angle": "No EUV (ArF single exposure), no HAR capacitor and no Si/SiGe superlattice, which avoids A2's 6-38% of refined Ge for 3D Si DRAM. No Hf capacitor. Ga-free ZTO channels and a hydrogen-lean furnace mold.",
+      "us_buildable": "SkyWater Bloomington (200 mm, BEOL-friendly), GlobalFoundries Burlington VT (depreciated 200 mm), Micron Manassas VA, Texas Institute for Electronics (Austin). Cell development: Purdue Birck, Georgia Tech IEN, Notre Dame."
+    },
+    {
+      "name": "Self-Aligned Panel Memory: display-glass and foil tiers that never need to align to each other",
+      "category": "integration/manufacturing",
+      "thesis": "Display lines process ~100x more area per month than a DRAM fab but cannot overlay sub-micron layers. The concept removes the need. Each tier is a complete memory: an oxide 1T1C or 2T0C array plus its own n-only oxide periphery. All of a tier's levels come from one self-aligned multilevel imprint, and tiers connect only through coarse (>=5-10 um) power and I/O vias, so tier-to-tier overlay can be microns. Defect-tolerant coding and block sparing absorb imprint defects.",
+      "idea_ids": [
+        "I-10785",
+        "I-01819",
+        "I-02936",
+        "I-04673",
+        "I-00145",
+        "I-10799",
+        "I-11535",
+        "I-06468",
+        "I-05412",
+        "I-07130",
+        "N-38",
+        "N-34"
+      ],
+      "why_bigger_than_parts": "The critics' killer doubt for every display and foil idea is multilevel overlay: FPD tools reach ~0.3-0.5 um overlay, and PI foil moves 10-20 ppm/K. A single multilevel SAIL stamp fixes intra-tier overlay by construction. All-oxide n-only periphery fixes inter-tier alignment by making tiers independent. Glass (~3 ppm/K) with single-stamp fields handles the residual. No part works alone. The all-IGZO periphery idea is the enabler the display ideas had silently assumed.",
+      "bottlenecks_attacked": [
+        "A1 #4 capital intensity and EUV dependence",
+        "A2 binding constraint: capital x cleanroom-time (reuses idle display cleanrooms)",
+        "A1 #1 capacitor wall (planar caps suffice at Ioff <1 aA)",
+        "A1 #3 leakage (oxide TFT off-current)"
+      ],
+      "step_change": "Per tier at F=0.25 um, 8F2 = 0.5 um2: 250 GB/m2 raw. At 25-35% array efficiency (n-only periphery is 3-5x Si area) that is 62-88 GB/m2 per tier, or 0.6-0.9 TB/m2 at 10 tiers. Cost at $50-150/m2 per tier-pass [ASSUMPTION]: $0.6-2.4/GB, parity with DDR5's ~$1.48/GB cost, not 10x below. FPD steppers at F~1.5 um would give only ~37 GB/m2 and ~$13/GB (critic), so 0.25 um imprint is the whole game. Supply: a Gen-10.5 line runs ~60-90k sheets/month x 9.9 m2, ~100x the ~7,000 m2/month of a 100k-wspm DRAM fab. But 10 tiers take 10 passes, so the output is ~0.06-0.09 Mm2/month of finished panels, ~0.5-0.8 EB/yr per converted line, ~2-3% of world bits. For comparison, a 100k-wspm DRAM fab makes ~3.6 EB/yr. Access: 2T0C read ratios >1e3 at 10-30 cm2/Vs make 50-100 ns plausible, a CXL capacity tier.",
+      "what_is_new_vs_prior_art": "Prior art: SEL CAAC-IGZO DOSRAM/NOSRAM (on Si periphery), HP Labs SAIL roll-to-roll TFTs (proven near ~1 um), PragmatIC FlexIC/Flex-RV NMOS-only IGZO processor (Nature 2024), IGZO gate-driver-on-array, Canon NIL, large-area wire-grid imprint, 1970s NMOS DRAMs, and in-study panel-memory cards (N-38). Delta: (1) a tier-independent architecture, where each tier is self-contained and inter-tier vias are coarse, which removes inter-tier overlay as a requirement; (2) single-stamp multilevel imprint at 0.25 um on glass, aimed at memory.",
+      "key_unknown": "Killer-defect density per tier for a 0.25 um single-stamp multilevel imprint on large glass. Needs roughly <=0.1/cm2 per tier with block sparing and ECC [ESTIMATE].",
+      "decisive_experiment": "Build two tiers of ZnSnO 1T1C/2T0C arrays with bootstrapped n-only decoders and auto-zeroed latch sensing at F=0.25 um on 200 mm glass, using a commercial step-and-repeat NIL tool with one multilevel SAIL stamp per tier. Measure intra-tier overlay, killer defects/cm2 per tier, Vt sigma, 85 C retention and 50-100 ns access. Feed the results into a panel-maker cost-per-tier-m2 model. ~$600-800k, 18-24 months.",
+      "scale_path": "License to display makers; Gen-8.5/10.5 lines are mostly in China, Korea and Japan, which is a strategic caveat. Alternatively, after the raise, build a U.S. roll-to-roll or glass pilot line (~$100M class, per the I-01819 critic).",
+      "resource_angle": "No EUV, no Si wafer (glass), no W (Mo/Al lines), no Hf (Al2O3/TiO2 caps), no helium-cooled HAR etch. In-free ZnSnO avoids In and Ga. Idle display cleanrooms supply new area without building new cleanrooms.",
+      "us_buildable": "Canon Nanotechnologies (Austin TX, NIL tools), UT Austin (NIL heritage), Corning (glass), NextFlex (San Jose) and Binghamton University CAMM (roll-to-roll), HP Labs (SAIL heritage), Applied Materials display R&D (Santa Clara), Penn Singh Center."
+    },
+    {
+      "name": "Memory Bits Compact: pull-side policy that pays for qualified bits and counts saved ones",
+      "category": "policy/strategy",
+      "thesis": "New DRAM entrants die in the bust, and memory-saving architectures stall because specs and procurement count only raw GB. The compact bundles four pull instruments: (1) a technology-neutral, tapered advance market commitment for delivered bits meeting $/GB, latency, endurance and resource-intensity thresholds; (2) a JEDEC 'ECC-native' device grade (raw BER <=1e-4 under a controller contract); (3) an audited effective-GB rating so platforms and procurement can count certified compression and tiering; (4) an open memory-contents atlas that sets the baselines.",
+      "idea_ids": [
+        "I-00893",
+        "I-05038",
+        "I-09018",
+        "I-07673",
+        "I-04714",
+        "I-08260",
+        "I-04109"
+      ],
+      "why_bigger_than_parts": "Each instrument alone fails. An AMC sized at 10 EB is $30-50B and politically opposed (SEMI's July 2026 letter). A device grade alone has no buyer. A rating alone saves ~1% of world bits. Together: the atlas defines measurable baselines, the grade defines what qualifies (so new cells and second-life parts both enter), the AMC buys the first tranche, and the rating turns software savings into avoided purchases.",
+      "bottlenecks_attacked": [
+        "A2 binding constraint: capital x cleanroom-time x tools",
+        "A1 #4 capital intensity (entrant cost of capital)",
+        "Demand-risk valley for new cell technologies (Qimonda 2009, Elpida 2012)"
+      ],
+      "step_change": "Financing: a fundable first tranche of $1-5B buys 0.05-0.25 EB at ~$20/GB, ~0.2-1% of a year's ~25-30 EB. A $3B tranche at a $20/GB floor guarantees 0.15 EB. That is ~0.7 years of a 6k-wspm entrant line (6,000 x 12 x 3,000 GB = 0.22 EB/yr), enough to make it bankable like a power-purchase agreement. Rating: a certified ~1.6x effective-GB cuts device DRAM 10-20% only where spec floors drop; the critic values that at ~1% of world bits. Grade: it legalises concept-1 and concept-2 bins and the short-capacitor cells of concepts 4, 7 and 9.",
+      "what_is_new_vs_prior_art": "Prior art: the Gavi pneumococcal AMC ($1.5B, 2009), the Frontier carbon-removal AMC ($925M, 2022), CHIPS Act supply-side grants (Micron ~$6.1B), the EPA fuel-economy rating, and the SoftRAM 95 cautionary tale. JEDEC on-die ECC and PRAC exist but define no raw-BER grade. Delta: a tech-neutral DRAM-class performance-plus-resource spec as the single qualification gate, coupled to an open atlas and a device grade.",
+      "key_unknown": "Whether a $1-5B tapered tranche lifts entrant-fab IRR above its cost of capital through a 2012-style bust. Physics has no say here; the IRR model is the number.",
+      "decisive_experiment": "A 12-month policy pilot, ~$400-500k. Write the term sheet: performance and resource thresholds, a 0.5-1 EB cap, taper and floor price. Model entrant-fab IRR with and without the commitment through a 2012-style bust. Submit a JEDEC task-group proposal for the ECC-native grade backed by concept-1 FPGA data. Draft an effective-GB test protocol with an independent lab. Ship atlas v0.1: an eBPF/DAMON agent publishing on-host aggregates only (no hashes leave the host) at 3 partner fleets. Seek non-binding LOIs from 3-5 hyperscalers.",
+      "scale_path": "Standards through JEDEC JC-42 and OCP. Funding through the CHIPS R&D Office, DOE, DoD Microelectronics Commons and a hyperscaler buyer consortium.",
+      "resource_angle": "AMC thresholds can include kWh, water and helium per GB plus EUV-free bonus tiers, steering the first exabytes toward low-chokepoint routes (concepts 5, 9, 10).",
+      "us_buildable": "NIST (metrology for grades and ratings), CHIPS R&D Office, Microelectronics Commons hubs, OCP. Atlas fleets: NERSC, TACC, LLNL Livermore Computing."
+    }
+  ]
+}
