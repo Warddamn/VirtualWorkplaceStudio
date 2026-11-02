@@ -1,6 +1,6 @@
 # Stage 2 report: two-lens critique of the 408-idea pool
 
-Reviewed 408 ideas; missing review files: 4 ['innovation_R05.jsonl', 'innovation_R10.jsonl', 'physics_R15.jsonl', 'innovation_R15.jsonl']. Final: ADVANCE 29, HOLD 148, DROP 231.
+Reviewed 408 ideas; missing review files: 2 ['innovation_R05.jsonl', 'physics_R15.jsonl']. Final: ADVANCE 29, HOLD 139, DROP 240.
 
 Consensus = mean over the physics and innovation lenses of (1.2·S2 + 1.0·N2 + 0.7·P2 + 0.5·D2)/17, re-scored by the critics.
 
