@@ -1,0 +1,96 @@
+{"id": "I-07783", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "CXL memory pooling pricing", "note": ""}
+{"id": "I-01840", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "learning-curve subsidy", "note": "DRAM already rides steep learning; subsidy unlikely to create new 100x curve."}
+{"id": "I-06867", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "compulsory patent licensing", "note": ""}
+{"id": "I-02720", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "CXL memory market", "note": ""}
+{"id": "I-09173", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "partial-good die harvest", "note": ""}
+{"id": "I-00910", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed oxide memory", "note": ""}
+{"id": "I-06412", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "DRAM MPW shuttle", "note": "Depends on an incumbent DRAM fab opening its flow; enabler rather than direct gain."}
+{"id": "I-05484", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02720", "theme": "CXL memory market", "note": ""}
+{"id": "I-01364", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "maskless e-beam direct write", "note": ""}
+{"id": "I-06879", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint array patterning", "note": ""}
+{"id": "I-09651", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "photomask blank reuse", "note": ""}
+{"id": "I-10546", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-01364", "theme": "maskless e-beam direct write", "note": ""}
+{"id": "I-09194", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "memory MPW shuttle", "note": ""}
+{"id": "I-11457", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "open DRAM macro kit", "note": ""}
+{"id": "I-03639", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "advance market commitment", "note": ""}
+{"id": "I-04136", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "advance market commitment", "note": ""}
+{"id": "I-02716", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-09173", "theme": "partial-good die harvest", "note": ""}
+{"id": "I-06858", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09173", "theme": "partial-good die harvest", "note": ""}
+{"id": "I-02257", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09173", "theme": "partial-good die harvest", "note": ""}
+{"id": "I-02759", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dry laser cleaning", "note": ""}
+{"id": "I-07818", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "molecular storage node", "note": "POM charge-storage nodes (cf. Busche 2014 flash proposal); doubts: single-molecule charge sensing, variability, 85 C retention."}
+{"id": "I-03656", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "retention-bin harvesting", "note": ""}
+{"id": "I-06896", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-11457", "theme": "trench eDRAM chiplets", "note": ""}
+{"id": "I-03643", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "modular pod fab", "note": ""}
+{"id": "I-02742", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "UPW reuse cascade", "note": ""}
+{"id": "I-02258", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "display-line oxide memory", "note": "Micron-scale display rules give ~100x lower density; per-tier panel cost makes DRAM-like $/bit doubtful."}
+{"id": "I-00888", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02720", "theme": "CXL memory market", "note": ""}
+{"id": "I-04132", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "automotive memory standard", "note": ""}
+{"id": "I-04101", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "DRAM foundry model", "note": ""}
+{"id": "I-10999", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "helium recycling", "note": ""}
+{"id": "I-00898", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-05935", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "e-waste LPDDR harvest", "note": ""}
+{"id": "I-01352", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "supply-chain mapping", "note": ""}
+{"id": "I-04556", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "I-02257", "theme": "partial-good die harvest", "note": ""}
+{"id": "I-03206", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "die provenance marking", "note": ""}
+{"id": "I-03219", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "embedded-die modules", "note": ""}
+{"id": "I-06868", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "multinational DRAM consortium", "note": ""}
+{"id": "I-09188", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "wafer-level burn-in", "note": ""}
+{"id": "I-10562", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "lateral seeded crystallization", "note": ""}
+{"id": "I-11017", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "crucible life extension", "note": ""}
+{"id": "I-09622", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "pyroelectric e-beam source", "note": "Novel emitter, but pyroelectric emission is erratic and slow-cycling; litho-grade current stability doubtful."}
+{"id": "I-08249", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DRAM-lean certification", "note": ""}
+{"id": "I-06887", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "fab franchise model", "note": ""}
+{"id": "I-10548", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "universal configurable die", "note": ""}
+{"id": "I-11026", "P": 3, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "litho layer offload", "note": ""}
+{"id": "I-07337", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "cryogenic DRAM salvage", "note": ""}
+{"id": "I-02297", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "glovebox micro-fab", "note": ""}
+{"id": "I-02285", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "expired-patent DRAM atlas", "note": ""}
+{"id": "I-06415", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-02285", "theme": "expired-patent DRAM atlas", "note": ""}
+{"id": "I-02268", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-05935", "theme": "e-waste LPDDR harvest", "note": ""}
+{"id": "I-11035", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-04101", "theme": "DRAM foundry model", "note": ""}
+{"id": "I-04117", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "standardized second-source qualification", "note": ""}
+{"id": "I-02752", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "reclaimed-water fab siting", "note": ""}
+{"id": "I-00883", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-02258", "theme": "display-line oxide memory", "note": ""}
+{"id": "I-08735", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "rare-gas policy incentive", "note": ""}
+{"id": "I-02729", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "DRAM futures market", "note": ""}
+{"id": "I-05943", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02729", "theme": "DRAM futures market", "note": ""}
+{"id": "I-06864", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02729", "theme": "DRAM futures market", "note": ""}
+{"id": "I-09615", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "crucible-free silicon growth", "note": ""}
+{"id": "I-11483", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "HDD-line MRAM crossbar", "note": ""}
+{"id": "I-06426", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "memory compression", "note": ""}
+{"id": "I-09644", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "recycling separation", "note": ""}
+{"id": "I-01366", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "known-good tile bonding", "note": ""}
+{"id": "I-04139", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ECC base die", "note": ""}
+{"id": "I-09158", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "open HBM base die", "note": ""}
+{"id": "I-07351", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "BEOL MRAM finishing", "note": ""}
+{"id": "I-05942", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "strategic memory reserve", "note": ""}
+{"id": "I-09177", "P": 5, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "pseudo-SRAM legacy", "note": ""}
+{"id": "I-02754", "P": 4, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "dry photoresist", "note": ""}
+{"id": "I-07817", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "porous-Si tier stack", "note": "Pulsed anodization plus H2 reseal (ELTRAN/SON) for crystalline tiers; doubt: sheet quality and uniformity over 50 tiers."}
+{"id": "I-07316", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-05942", "theme": "strategic memory reserve", "note": ""}
+{"id": "I-08261", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "module sparing", "note": ""}
+{"id": "I-09192", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-02258", "theme": "display-line oxide memory", "note": ""}
+{"id": "I-08240", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "legacy-fab DRAM", "note": ""}
+{"id": "I-08246", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "shared KV prefix cache", "note": ""}
+{"id": "I-01355", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-10548", "theme": "universal configurable die", "note": ""}
+{"id": "I-10998", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "CXL page dedup", "note": ""}
+{"id": "I-06439", "P": 4, "S": 2, "N": 1, "D": 1, "dup_of": "", "theme": "EUV-free DRAM litho", "note": ""}
+{"id": "I-05478", "P": 4, "S": 2, "N": 1, "D": 1, "dup_of": "I-06439", "theme": "EUV-free DRAM litho", "note": ""}
+{"id": "I-09626", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "FEL EUV source", "note": ""}
+{"id": "I-11473", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "I-02729", "theme": "DRAM futures market", "note": ""}
+{"id": "I-08701", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02285", "theme": "expired-patent DRAM atlas", "note": ""}
+{"id": "I-01358", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "molybdenum metallization", "note": ""}
+{"id": "I-05515", "P": 3, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "vertically integrated campus", "note": ""}
+{"id": "I-00919", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fluorine-free patterning", "note": ""}
+{"id": "I-10074", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "synthetic silica crucible", "note": ""}
+{"id": "I-06417", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-06424", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-05935", "theme": "e-waste LPDDR harvest", "note": ""}
+{"id": "I-05030", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-04101", "theme": "DRAM foundry model", "note": ""}
+{"id": "I-11021", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "fab debottlenecking", "note": ""}
+{"id": "I-06857", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03656", "theme": "retention-bin harvesting", "note": ""}
+{"id": "I-02299", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "phone microserver reuse", "note": ""}
+{"id": "I-11495", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00910", "theme": "printed oxide memory", "note": ""}
+{"id": "I-02727", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fab shell financing", "note": ""}
+{"id": "I-08696", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-02729", "theme": "DRAM futures market", "note": ""}
+{"id": "I-08726", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "bond surface activation", "note": ""}

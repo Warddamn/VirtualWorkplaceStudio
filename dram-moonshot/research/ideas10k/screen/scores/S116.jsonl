@@ -1,0 +1,96 @@
+{"id": "I-10871", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "MoE expert offload", "note": ""}
+{"id": "I-03537", "P": 5, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "compression maintenance headroom", "note": ""}
+{"id": "I-08578", "P": 4, "S": 4, "N": 3, "D": 4, "dup_of": "", "theme": "via-ROM frozen weights", "note": "One added via mask moves frozen weights out of HBM, no refresh; doubt is model churn vs 6-18 month freeze and Taalas-style prior art."}
+{"id": "I-10897", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "glass interposer LPDDR", "note": ""}
+{"id": "I-07200", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "in-flash KV attention", "note": ""}
+{"id": "I-06288", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "memory-efficiency certification", "note": ""}
+{"id": "I-05825", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-08578", "theme": "via-ROM frozen weights", "note": ""}
+{"id": "I-06750", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "cache unification", "note": ""}
+{"id": "I-00778", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "compressed-memory pricing", "note": ""}
+{"id": "I-03979", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory decode attention", "note": ""}
+{"id": "I-04905", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "learned KV compression", "note": ""}
+{"id": "I-03984", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "PRNG-seed weights", "note": ""}
+{"id": "I-05836", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "fine-tune delta compression", "note": ""}
+{"id": "I-08140", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "event-sourced replay state", "note": ""}
+{"id": "I-08579", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "bank-level hybrid-bond compression", "note": ""}
+{"id": "I-02622", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "volunteer edge compute", "note": ""}
+{"id": "I-05350", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "generator-backed pages", "note": ""}
+{"id": "I-09974", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "KV page selection", "note": ""}
+{"id": "I-03985", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "KV recompute from tokens", "note": ""}
+{"id": "I-10407", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "end-to-end compressed format", "note": ""}
+{"id": "I-09938", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "shape-shared documents", "note": ""}
+{"id": "I-04460", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hardware stochastic rounding", "note": ""}
+{"id": "I-00755", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-05836", "theme": "fine-tune delta compression", "note": ""}
+{"id": "I-05816", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "trained compression dictionaries", "note": ""}
+{"id": "I-09037", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "lossy FP page compression", "note": ""}
+{"id": "I-01687", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "CXL rack pooling", "note": ""}
+{"id": "I-08592", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "on-die thin provisioning", "note": ""}
+{"id": "I-09940", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sub-page heap reclamation", "note": ""}
+{"id": "I-08595", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "looped transformer weights", "note": ""}
+{"id": "I-04456", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "ternary ferroelectric CIM", "note": ""}
+{"id": "I-10865", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-08578", "theme": "via-ROM frozen weights", "note": ""}
+{"id": "I-00768", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-04903", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "NAND read-mostly tier", "note": ""}
+{"id": "I-09960", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "VQ codebook base-die decode", "note": ""}
+{"id": "I-08115", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "fused weight decompression", "note": ""}
+{"id": "I-09498", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "AlScN FeFET weights", "note": ""}
+{"id": "I-03508", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "predictive cold-page tiering", "note": ""}
+{"id": "I-03983", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "learned index on NV", "note": ""}
+{"id": "I-08574", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "RowClone copy-on-write", "note": ""}
+{"id": "I-09485", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "CCD analog activation storage", "note": ""}
+{"id": "I-08122", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-03985", "theme": "KV recompute from tokens", "note": ""}
+{"id": "I-03959", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "error-diffusion KV quantization", "note": ""}
+{"id": "I-10896", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "prefix KV dedup", "note": ""}
+{"id": "I-10868", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "hardware garbage collection", "note": ""}
+{"id": "I-07640", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "bit-plane tensor tiering", "note": ""}
+{"id": "I-05841", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "defect-mapped DIMMs", "note": ""}
+{"id": "I-03990", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "retention-relaxed NV writes", "note": ""}
+{"id": "I-10885", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "inline memory compression ASIC", "note": ""}
+{"id": "I-09053", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "oxide-TFT load SRAM", "note": ""}
+{"id": "I-01692", "P": 3, "S": 4, "N": 2, "D": 5, "dup_of": "", "theme": "hash-computed embeddings", "note": "Embeddings computed not stored could cut recommender DRAM 10x+; DHE/TT-Rec prior art, doubt is compute cost and accuracy at scale."}
+{"id": "I-10861", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hot/cold object splitting", "note": ""}
+{"id": "I-08119", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compressed-domain inference", "note": ""}
+{"id": "I-01682", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "NAND weight streaming", "note": ""}
+{"id": "I-08585", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "in-DRAM dedup compare", "note": ""}
+{"id": "I-05341", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "I-03985", "theme": "KV recompute from tokens", "note": ""}
+{"id": "I-07673", "P": 5, "S": 2, "N": 4, "D": 5, "dup_of": "", "theme": "memory content atlas", "note": ""}
+{"id": "I-10438", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "approximate payload storage", "note": ""}
+{"id": "I-01700", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "graph compression decoder", "note": ""}
+{"id": "I-00307", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-10871", "theme": "MoE expert offload", "note": ""}
+{"id": "I-09046", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "in-SSD graph processing", "note": ""}
+{"id": "I-06283", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM reuse expanders", "note": ""}
+{"id": "I-09052", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "bonded MRAM weight die", "note": ""}
+{"id": "I-05813", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-10407", "theme": "end-to-end compressed format", "note": ""}
+{"id": "I-11321", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "geo-temporal load shifting", "note": ""}
+{"id": "I-10864", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-07640", "theme": "bit-plane tensor tiering", "note": ""}
+{"id": "I-03958", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "transform-coded KV", "note": ""}
+{"id": "I-11352", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "battery-backed durable DRAM", "note": ""}
+{"id": "I-10854", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-03985", "theme": "KV recompute from tokens", "note": ""}
+{"id": "I-09019", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "rack-pooled page cache", "note": ""}
+{"id": "I-01690", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-07200", "theme": "in-flash KV attention", "note": ""}
+{"id": "I-08129", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "cold-code bytecode tier", "note": ""}
+{"id": "I-09047", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "approximate MLC flash", "note": ""}
+{"id": "I-00742", "P": 3, "S": 2, "N": 4, "D": 5, "dup_of": "", "theme": "texture-unit weight decode", "note": ""}
+{"id": "I-06292", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "runtime hash-consing", "note": ""}
+{"id": "I-11326", "P": 5, "S": 2, "N": 4, "D": 5, "dup_of": "", "theme": "frozen-layer KV sharing", "note": ""}
+{"id": "I-11324", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "expert parallelism", "note": ""}
+{"id": "I-08565", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "row-granular compression", "note": ""}
+{"id": "I-05364", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "glass charge-domain attention", "note": ""}
+{"id": "I-08561", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "byte-second optimization", "note": ""}
+{"id": "I-10878", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "SONOS analog CIM", "note": ""}
+{"id": "I-01696", "P": 3, "S": 4, "N": 2, "D": 4, "dup_of": "", "theme": "retrieval-augmented small models", "note": "Shifting knowledge from weights to flash corpus could cut weight DRAM 10x; RETRO prior art, doubt is reasoning-quality parity."}
+{"id": "I-06286", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "ternary weight packing", "note": ""}
+{"id": "I-08556", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "hierarchical KV recall", "note": ""}
+{"id": "I-03510", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-03985", "theme": "KV recompute from tokens", "note": ""}
+{"id": "I-09965", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "KV-to-recurrent-state distillation", "note": ""}
+{"id": "I-00757", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "weight broadcast streaming", "note": ""}
+{"id": "I-03540", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-10407", "theme": "end-to-end compressed format", "note": ""}
+{"id": "I-03526", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "DRAM wear leveling", "note": ""}
+{"id": "I-01680", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-03985", "theme": "KV recompute from tokens", "note": ""}
+{"id": "I-04919", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-08595", "theme": "looped transformer weights", "note": ""}
+{"id": "I-05377", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "leaky TFT KV decay", "note": ""}
+{"id": "I-09018", "P": 4, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "effective-memory certification", "note": ""}
+{"id": "I-07674", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "unboxed Python containers", "note": ""}
+{"id": "I-08121", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-06283", "theme": "DIMM reuse expanders", "note": ""}
+{"id": "I-11337", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "holographic KV ROM", "note": ""}
+{"id": "I-01204", "P": 3, "S": 3, "N": 2, "D": 5, "dup_of": "I-03959", "theme": "error-diffusion KV quantization", "note": ""}

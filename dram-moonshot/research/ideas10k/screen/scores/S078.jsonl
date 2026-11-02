@@ -1,0 +1,105 @@
+{"id": "I-09605", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "fixed-charge field shaping", "note": "Negative fixed-charge liners known from solar passivation; realistic gain is a narrower GIDL tail, not 10x density."}
+{"id": "I-02243", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "pilot-cell sense reference", "note": ""}
+{"id": "I-02708", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "NV fault-map storage", "note": "Storing retention/weak-row profiles in SPD-like NV storage is close to existing practice."}
+{"id": "I-05441", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "selective twin-cell mode", "note": "Twin-cell / CLR-DRAM style switchable 2T2C is known art."}
+{"id": "I-02218", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "logic-die remap repair", "note": ""}
+{"id": "I-10500", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "defect-map die matching", "note": ""}
+{"id": "I-01300", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "wordline edge shaping", "note": ""}
+{"id": "I-09142", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "SRAM main memory", "note": "SRAM cell area keeps cost/bit roughly 10x+ above DRAM even with CFET tiers."}
+{"id": "I-08210", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "speculative ECC decode", "note": ""}
+{"id": "I-03610", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "buried hammer sink line", "note": ""}
+{"id": "I-00378", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-03610", "theme": "buried hammer sink line", "note": "Same buried biased line between aggressor and victim as I-03610."}
+{"id": "I-05918", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-05441", "theme": "selective twin-cell mode", "note": "Temperature trigger for the same switchable twin-cell mode."}
+{"id": "I-03608", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "lifetime-aware refresh skip", "note": "Dead-data refresh skipping is published art (semantic/ESKIMO-style refresh)."}
+{"id": "I-03597", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "canary-row refresh tuning", "note": ""}
+{"id": "I-11416", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "approximate bit-plane refresh", "note": "Close to Sparkk/Flikker significance-aware refresh."}
+{"id": "I-00392", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "FE nonvolatile snapshot", "note": ""}
+{"id": "I-05890", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "OS-managed sparing", "note": ""}
+{"id": "I-09125", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "defect-aware coset coding", "note": ""}
+{"id": "I-00407", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "replicated persistence", "note": ""}
+{"id": "I-02223", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "age-adaptive ECC", "note": ""}
+{"id": "I-10494", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hot-row replication", "note": ""}
+{"id": "I-09572", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrochromic defect mapping", "note": "Optical resolution far coarser than cell pitch; electrolyte contact into high-AR electrodes is doubtful."}
+{"id": "I-10982", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog charge weights", "note": ""}
+{"id": "I-05011", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-02708", "theme": "NV fault-map storage", "note": ""}
+{"id": "I-03607", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "morphable ECC refresh", "note": "Close to Morphable ECC (idle strong code plus slow refresh)."}
+{"id": "I-00845", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-04995", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "per-mat body bias", "note": ""}
+{"id": "I-06807", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-03608", "theme": "lifetime-aware refresh skip", "note": ""}
+{"id": "I-11442", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-02223", "theme": "age-adaptive ECC", "note": ""}
+{"id": "I-04985", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-timed sensing", "note": "Signal below sense-amp offset resolves wrong, not slow."}
+{"id": "I-10063", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "I-03608", "theme": "lifetime-aware refresh skip", "note": ""}
+{"id": "I-03134", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spare-row reuse", "note": ""}
+{"id": "I-07293", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "In-free oxide gain cell", "note": ""}
+{"id": "I-05928", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "tunnel-diode latch cell", "note": ""}
+{"id": "I-10057", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-healing underfill", "note": ""}
+{"id": "I-02248", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrochemical vacancy healing", "note": ""}
+{"id": "I-04086", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "hammer-aware page placement", "note": "Victims rewritten every few ms may still flip within ~1k activations (~50 us)."}
+{"id": "I-08206", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "programmable on-die ECC", "note": ""}
+{"id": "I-10955", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-05441", "theme": "selective twin-cell mode", "note": ""}
+{"id": "I-04986", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "standby bitline parking", "note": "Shared bitline also serves cells holding the opposite value."}
+{"id": "I-09138", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-05928", "theme": "tunnel-diode latch cell", "note": ""}
+{"id": "I-02678", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "aggressor quarantine", "note": "Essentially AQUA."}
+{"id": "I-05460", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "gain-cell hammer immunity", "note": ""}
+{"id": "I-10495", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-03597", "theme": "canary-row refresh tuning", "note": ""}
+{"id": "I-04050", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "shingled hammer restore", "note": ""}
+{"id": "I-08219", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "subarray tenant isolation", "note": "Essentially Siloz."}
+{"id": "I-10983", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "multi-row charge summing", "note": ""}
+{"id": "I-06348", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "panel-fab DRAM", "note": "Panel-litho cells are orders of magnitude larger; capex per m2 savings do not win cost/bit."}
+{"id": "I-06363", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "ensemble subcell bits", "note": ""}
+{"id": "I-04062", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02243", "theme": "pilot-cell sense reference", "note": ""}
+{"id": "I-01770", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "I-00845", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-04550", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS access switch", "note": "1e15-cycle contact endurance is far beyond demonstrated NEMS."}
+{"id": "I-10492", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "cross-tier ECC interleave", "note": ""}
+{"id": "I-03621", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "dual-bank maintenance duty", "note": ""}
+{"id": "I-05002", "P": 5, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "reliability SKU split", "note": ""}
+{"id": "I-07751", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "phase-change thermal buffering", "note": ""}
+{"id": "I-09121", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "PCM disturb scheduling", "note": ""}
+{"id": "I-07273", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "cold-grade binning", "note": ""}
+{"id": "I-09575", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "thermal-history witness cells", "note": ""}
+{"id": "I-10956", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-03607", "theme": "morphable ECC refresh", "note": ""}
+{"id": "I-00833", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "in-stack RAID parity", "note": ""}
+{"id": "I-00832", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-05441", "theme": "selective twin-cell mode", "note": ""}
+{"id": "I-02254", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "reliability firmware subscription", "note": ""}
+{"id": "I-07731", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-10983", "theme": "multi-row charge summing", "note": ""}
+{"id": "I-09610", "P": 1, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "acoustic trap healing", "note": "Key doubt: ultrasound trap passivation is small and transient; 100x poly-Si tail narrowing needs a miracle."}
+{"id": "I-02687", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ECC-syndrome hammer detection", "note": ""}
+{"id": "I-07758", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "self-healing interconnect", "note": ""}
+{"id": "I-01324", "P": 5, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "clean-page weak tier", "note": ""}
+{"id": "I-09119", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "PCM drift references", "note": ""}
+{"id": "I-09596", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "confined-channel 3D DRAM", "note": "Generation leakage falls ~exp(-dEg/2kT), but GIDL, traps and thickness-driven Vth spread may dominate at 2 nm."}
+{"id": "I-01785", "P": 3, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "mirrored redundant arrays", "note": ""}
+{"id": "I-11432", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02218", "theme": "logic-die remap repair", "note": ""}
+{"id": "I-03593", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "error-driven adaptive refresh", "note": ""}
+{"id": "I-04524", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "off-array hammer counters", "note": ""}
+{"id": "I-10523", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "high-pressure deuterium anneal", "note": ""}
+{"id": "I-03625", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "cold-operated capacitorless 3D", "note": "Insight: -40 C cuts junction leakage ~100x; doubt: poly-channel floating-body cells and enclosure cost."}
+{"id": "I-01334", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "selective full restore", "note": ""}
+{"id": "I-08198", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diverse-technology ECC parity", "note": ""}
+{"id": "I-07761", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "printed-process feedback control", "note": ""}
+{"id": "I-07762", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "device-specific fault-aware training", "note": ""}
+{"id": "I-03166", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "e-beam repair personalization", "note": ""}
+{"id": "I-10498", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-situ electrothermal anneal", "note": ""}
+{"id": "I-02671", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "charge-sparse coding", "note": ""}
+{"id": "I-00406", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "relaxed-retention NVM writes", "note": ""}
+{"id": "I-09599", "P": 1, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "CCD loop memory", "note": "Key doubt: clocking every electrode at GHz costs roughly kW per GB; thin-film transfer inefficiency."}
+{"id": "I-10950", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-address randomization", "note": "Close to RRS/SRS; one migration per refresh slot is too slow against ~1k activations."}
+{"id": "I-03171", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-00392", "theme": "FE nonvolatile snapshot", "note": ""}
+{"id": "I-06371", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "low-swing sense with retry", "note": "At 0.3 V the cell signal falls near sense-amp offset; the ~0.1% retry rate looks optimistic."}
+{"id": "I-07284", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-05441", "theme": "selective twin-cell mode", "note": ""}
+{"id": "I-01318", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "error-concealing AI memory", "note": ""}
+{"id": "I-04092", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "two-tier ECC", "note": ""}
+{"id": "I-05915", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "asymmetric error codes", "note": ""}
+{"id": "I-08197", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02218", "theme": "logic-die remap repair", "note": ""}
+{"id": "I-06390", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ternary pair encoding", "note": "Bitline swing energy is paid regardless of stored charge, so the 5-10x energy claim is weak."}
+{"id": "I-00834", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "erasure-coded TSV lanes", "note": ""}
+{"id": "I-04083", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "transform-domain error spreading", "note": ""}
+{"id": "I-04511", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-02218", "theme": "logic-die remap repair", "note": ""}
+{"id": "I-01315", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention-binned ranks", "note": ""}
+{"id": "I-05453", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "age-aware read reference", "note": ""}
+{"id": "I-09578", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "negative-capacitance access FET", "note": ""}
+{"id": "I-07765", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-clearing electrodes", "note": ""}
+{"id": "I-10975", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cryogenic DRAM", "note": ""}
+{"id": "I-06840", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "DUV-only DRAM patterning", "note": "CXMT-style DUV multipatterning is known; overlay misses cluster rather than scatter randomly."}
+{"id": "I-08226", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "I-00845", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-11431", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "erasure-coded memory pooling", "note": "Close to IBM RAIM and distributed memory RAID."}
