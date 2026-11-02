@@ -10,7 +10,7 @@ Tags:
 - [UNVERIFIED-PK]: prior knowledge, no URL.
 - [SPECULATIVE]: not yet shown by anyone.
 
-No WebSearch or patent search was run for this dossier.
+The dossier writer ran no WebSearch. Web facts come from the research phase's 6 searches (snippets only; see notes). No patent search has been run for this concept.
 
 ---
 
@@ -134,7 +134,7 @@ When HBM capacity binds, flash must refill the whole HBM KV pool once per genera
 - **Reads.** 189 GB / 10 s x 0.879 returning = **16.6 GB/s per GPU**. With HBM hold and false positives it is 21 GB/s.
   - This does not depend on bytes per token.
   - The latent cuts flash load per conversation 3x (13.7 to 4.6 MB/s), not per drive.
-- **Writes.** ~8.9k new tokens/s x 160 KiB = 1.45 GB/s = **125.6 TB/day per GPU** (107 TB/day with prefetch). That is **~860 TB/day per 8-GPU node**.
+- **Writes.** ~8.9k new tokens/s x 160 KiB = 1.45 GB/s = **125.6 TB/day per GPU** (107 TB/day with prefetch). With prefetch that is **~860 TB/day per 8-GPU node** (~1,000 without).
 - **Drives.** The binding constraint is bandwidth: 21.3/(14 x 0.6) = 2.54 drive-equivalents. Endurance needs 107.4/(15.36 x 3) = 2.33, and capacity 0.31. So each GPU needs **3 x 15.36 TB drives rated at 3 DWPD**, used at 2.33 DWPD.
 
 **Critic corrections carried:**
@@ -206,13 +206,14 @@ The test replays consented chat traces on one 8-GPU node. Host memory is capped 
 
 | Component | Prior art (date) | Gap left |
 |---|---|---|
+| GPU-direct data paths (host-lite) | NVIDIA GPUDirect Storage, nvCOMP/DALI GPU decode, DeepSpeed ZeRO-Infinity/FastPersist NVMe paths (named by Stage 2 critics) [UNVERIFIED-PK] | The mechanisms exist. Critics found no published host-DRAM-minimal node spec or fleet host-DRAM study |
 | Flash KV tier | NVIDIA ICMS on BlueField-4 (CES, Jan 2026), with Dell, HPE, Pure, VAST and WEKA [REPORTED] | **KV-to-flash is mainstream.** The diet cannot claim it |
 | Tiered KV | Dynamo KVBM (2025) [UNVERIFIED-PK]; NIXL [REPORTED]; LMCache [UNVERIFIED-PK]; Mooncake, FAST'25 [UNVERIFIED-PK]; TensorMesh: SSD gives ~4x TTFT vs ~1.4x RAM-only (vendor) [REPORTED] | All keep a host-DRAM tier. None uses client deadlines |
 | Disk prefetch | CachedAttention, USENIX ATC'24 (arXiv 2403.19708) [REPORTED] | Scheduler hints give <1 s of lead |
 | Reuse prediction | Alibaba "KVCache Cache in the Wild" (Jun 2025); gap-aware eviction, arXiv 2605.18825 (May 2026) [REPORTED] | Server-side only |
 | Typing as a signal | LiveMind, TUM (Jun 2024) [REPORTED]; web prefetch-on-hover [UNVERIFIED-PK]. WEKA (2026) calls KV prefetch "almost impossible" [REPORTED] | Text-level, not KV placement. **Closest prior art** |
 | Agents, fallback | InferCept, ICML'24 [UNVERIFIED-PK]; TVCache, ICML'26; agent host-tier sizing (Sep 2026); Cake load+recompute (Oct 2024) [REPORTED] | Agents may need a host tier |
-| Latent KV | DeepSeek-V2 MLA (May 2024) [UNVERIFIED-PK]; MHA2MLA (Feb 2025): -92.19% KV at -0.5% LongBench, ~3.2x beyond GQA-8; TransMLA: -68.75% training-free; X-EcoMLA: 6.4x; xKV: 8x at 87.8% RULER [REPORTED] | All per-layer or layer-group. **A retrofit single shared latent is open.** YOCO, LCKV and CLA (2024) were pretrained [UNVERIFIED-PK] |
+| Latent KV | DeepSeek-V2 MLA (May 2024) [UNVERIFIED-PK]; MHA2MLA (Feb 2025): -92.19% KV at -0.5% LongBench, ~3.2x beyond GQA-8; TransMLA: -68.75% training-free; X-EcoMLA: 6.4x; xKV: 8x at 87.8% RULER [REPORTED] | All per-layer or layer-group. Training-free cross-layer retrofits exist: xKV, and MiniCache (2024, named by the Stage 2 critic) [UNVERIFIED-PK], stalling near 2-7x. **A retrofit single latent shared by all layers has not been shown.** YOCO, LCKV and CLA (2024) were pretrained [UNVERIFIED-PK] |
 | Cross-finetune | DroidSpeak, NSDI'26 [REPORTED]; Activated LoRA, IBM 2025 [UNVERIFIED-PK] | Freezing adds little |
 | Sparse / PIM | Quest, ShadowKV [UNVERIFIED-PK]; Samsung LPDDR5X-PIM (Hot Chips 2026); H2EAL; StarC; Lamina [REPORTED] | Software top-k already gives 8-16x |
 
@@ -269,7 +270,7 @@ The 2026 field is crowded: SwiftCache, CacheWise, TraceLab and a KV-offload bott
 |---|---|
 | Lead-time study (400 x $50 incentives, hosted model, IRB and privacy review) | 45,000 |
 | Replay compute (~3,000 node-hours at ~$25) | 75,000 |
-| Wear rig (12 x 15.36 TB Gen5 at ~$3k, plus a JBOF) | 36,000 |
+| Wear rig (12 x 15.36 TB Gen5 at ~$3k; the ~$5-10k JBOF chassis comes from section 6 contingency) | 36,000 |
 | Latent distillation and evals (~11,000 GPU-h). X-EcoMLA took ~70 MI300-h for 1B [REPORTED] | 50,000 |
 | **External total** (founder time in section 6; the card said $280k) | **206,000** |
 
@@ -279,7 +280,7 @@ The 2026 field is crowded: SwiftCache, CacheWise, TraceLab and a KV-offload bott
 |---|---|---|---|
 | G1 | M6 | Hold ≤1.0 s/turn at ≤0.5 false positives/turn | Drop the signal; continue with B0 |
 | G2 | M10 | p99 added TTFT ≤0.30 s vs the 240 GB/GPU baseline, at equal tokens/s, ≤3 drive-eq/GPU and ≤3 DWPD | p99 >0.30 s at the measured mix: FP8 host-lite fails |
-| G3 | M14 | ≥3x at ≤1 point RULER-average loss at 32k | <2x: the latent arm fails |
+| G3 | M14 | ≥3x at ≤1 point RULER-average loss at 32k | <2x: the latent arm fails. 2-3x: partial; re-run the model's context limits at the measured factor |
 
 ---
 
@@ -364,7 +365,7 @@ There is no fab on this path.
   - HBM avoided saves ~3x the wafer area per bit. HBM dies are 35-45% larger, with 20-30% lower TSV yield [REPORTED].
   - NAND is not free either: enterprise SSDs cost ~2.3-2.8x more in 2026 [REPORTED]. But the 2026 baseline buys the same flash.
 - **EUV.** Bits not bought include the EUV layers of 1c DRAM and HBM. 3D NAND uses no EUV [UNVERIFIED-PK], and neither does the diet.
-- **Energy in use.** Freed host DRAM saves ~1.9 kW per rack at 0.15 W/GB [UNVERIFIED]. The 216 drive-eq draw ~3 kW at ~15 W each [ESTIMATE, not in the model]. Net: a wash against a no-flash design, ~1.9 kW saved against the 2026 baseline.
+- **Energy in use.** Freed host DRAM saves ~1.9 kW per rack at 0.15 W/GB [UNVERIFIED]. The 216 drive-eq draw ~3.2 kW at ~15 W each [ESTIMATE, not in the model]. Net: ~1.3 kW more than a no-flash design (3.2 - 1.9 kW); ~1.9 kW saved against the 2026 baseline, which carries the same flash.
 - **Fab water and power.** Micron's Clay, NY complex projects ~16 billion kWh/yr and up to 48 million gallons/day [REPORTED]. Lower demand per AI user defers build-out like this.
 - **U.S. manufacturability.**
   - No fab is needed. The diet runs on any U.S. GPU cluster, including NERSC, ORNL and TACC.

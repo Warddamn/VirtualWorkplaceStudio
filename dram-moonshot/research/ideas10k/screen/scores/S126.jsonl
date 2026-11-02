@@ -1,0 +1,105 @@
+{"id": "I-11892", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "acoustic modal metrology", "note": "Hole-depth signal in wafer flexural modes is ~ppm, likely swamped by thickness and temperature drift."}
+{"id": "I-11893", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "tracer void imaging", "note": "Only open seams take tracer; sealed buried voids stay invisible."}
+{"id": "I-11894", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pooled die group testing", "note": ""}
+{"id": "I-11895", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "vibration-gated exposure", "note": ""}
+{"id": "I-11896", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "full-wafer projection optics", "note": "Micralign-class 1:1 full-wafer projection revived for coarse layers."}
+{"id": "I-11897", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "polarization-multiplexed reticle", "note": ""}
+{"id": "I-11898", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "rotary track lithography", "note": ""}
+{"id": "I-11899", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "free-fall optical die sorting", "note": ""}
+{"id": "I-11900", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "robotic reconfigurable probe card", "note": "Theta-phi positioners at ~60 um pad pitch are implausible."}
+{"id": "I-11901", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "open chamber interface standard", "note": "SEMI MESC modular standards already exist; adoption is the barrier."}
+{"id": "I-11902", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "pooled spare-module depot", "note": ""}
+{"id": "I-11903", "P": 5, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "Elo chamber ranking", "note": ""}
+{"id": "I-11904", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dep-etch chamber pairing", "note": ""}
+{"id": "I-11905", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dielectrophoretic line repair", "note": "Individual lines are not biasable at that stage."}
+{"id": "I-11906", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "pressure alloy capacitor fill", "note": "Like Forcefill; a low-melt alloy must survive later 400C BEOL."}
+{"id": "I-11907", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "DRAM futures exchange", "note": ""}
+{"id": "I-11908", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diamond fly-cut planarization", "note": ""}
+{"id": "I-11909", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "surge capacity retainer", "note": "Logic fabs cannot switch to DRAM-class cells within 90 days."}
+{"id": "I-11910", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "per-lens corrector plates", "note": ""}
+{"id": "I-11911", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "third-party parts equivalence", "note": ""}
+{"id": "I-11912", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "acoustic resonance hole flushing", "note": "The viscous layer is comparable to the 20 nm hole width, so acoustic streaming will be weak."}
+{"id": "I-11913", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "magnetographic web patterning", "note": ""}
+{"id": "I-11914", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "acoustic standing-wave assembly", "note": ""}
+{"id": "I-11915", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "moving stencil belt", "note": ""}
+{"id": "I-11916", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "field-aligned nanorod dielectric", "note": ""}
+{"id": "I-11917", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "inkjet per-die repair", "note": ""}
+{"id": "I-11918", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sublimation dopant transfer", "note": ""}
+{"id": "I-11919", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "disposable full-wafer contactor", "note": ""}
+{"id": "I-11920", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "electrospun fiber masks", "note": ""}
+{"id": "I-11921", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "flat-optic lens arrays", "note": ""}
+{"id": "I-11922", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "mechanical resist ploughing", "note": ""}
+{"id": "I-11923", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "particle-ALD capacitor powder", "note": ""}
+{"id": "I-11924", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "inline print defect repair", "note": ""}
+{"id": "I-11925", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "laminate nanoskiving lines", "note": "Close to Whitesides nanoskiving; laying the ribbons flat in registration is the hard part."}
+{"id": "I-11926", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "adaptive re-rasterized overlay", "note": ""}
+{"id": "I-11927", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "thermal transfer films", "note": ""}
+{"id": "I-11928", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "woven fiber crossbar", "note": ""}
+{"id": "I-11929", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "crack-arrest rib grids", "note": ""}
+{"id": "I-11930", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "angled shadow evaporation", "note": ""}
+{"id": "I-11931", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "R2R press franchise", "note": ""}
+{"id": "I-11932", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "nanosheet monolayer high-k", "note": ""}
+{"id": "I-11933", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "adhesion lithography nanogaps", "note": "Adhesion lithography (a-Lith) is published; 10 ns printed-oxide access is doubtful."}
+{"id": "I-12312", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "I-11898", "theme": "rotary track lithography", "note": "Same spinning-wafer track writer as I-11898, here with plasmonic flying heads."}
+{"id": "I-12313", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "field-emitter charge storage", "note": ""}
+{"id": "I-12314", "P": 2, "S": 4, "N": 2, "D": 3, "dup_of": "", "theme": "tunnel-diode latch cell", "note": "Prior art: TSRAM (TI, 1990s). Doubts are room-temperature Si RTD peak-to-valley ratio and pA/bit standby."}
+{"id": "I-12315", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-11925", "theme": "laminate nanoskiving lines", "note": "Same laminate-and-slice pitch mechanism as I-11925."}
+{"id": "I-12316", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11930", "theme": "angled shadow evaporation", "note": "Dolan-bridge double-angle evaporation; same shadow-evaporation core as I-11930."}
+{"id": "I-12317", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diode-matrix decoder", "note": ""}
+{"id": "I-12318", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrical forming contacts", "note": ""}
+{"id": "I-12319", "P": 3, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "high-index immersion", "note": "Pursued and shelved around 2009 over fluid and LuAG problems."}
+{"id": "I-12320", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "thermomigration TSV columns", "note": ""}
+{"id": "I-12321", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "stencil-mask implantation", "note": ""}
+{"id": "I-12322", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dendritic-web ribbon substrate", "note": ""}
+{"id": "I-12323", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "second-source licensing", "note": ""}
+{"id": "I-12324", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "photocathode electron projection", "note": ""}
+{"id": "I-12325", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NMOS-only periphery", "note": ""}
+{"id": "I-12326", "P": 3, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "universal process chamber", "note": ""}
+{"id": "I-12327", "P": 2, "S": 4, "N": 2, "D": 3, "dup_of": "", "theme": "redox molecular storage", "note": "ZettaCore porphyrin memory precedent. Redox kinetics at 10 ns and charge retention are unproven."}
+{"id": "I-12328", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "absorbance-modulation lithography", "note": ""}
+{"id": "I-12329", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "through-silicon optical links", "note": ""}
+{"id": "I-12330", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "electrochemical ALD", "note": ""}
+{"id": "I-12331", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "I-11921", "theme": "flat-optic lens arrays", "note": "Same idea as I-11921 (an array of fab-made flat lenses replacing one projection lens), pushed to NA 0.9 at 193 nm."}
+{"id": "I-12332", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "organic ferroelectric capacitor", "note": ""}
+{"id": "I-12333", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-clearing capacitor electrode", "note": ""}
+{"id": "I-12334", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "constant-weight rank sensing", "note": ""}
+{"id": "I-12335", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "write-verify contact relaxation", "note": ""}
+{"id": "I-12336", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "flash-sintered perovskite capacitor", "note": "Size effects suppress k in 10 nm BaTiO3."}
+{"id": "I-12337", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "guided-crack cut patterning", "note": ""}
+{"id": "I-12338", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "avalanche-gain cell read", "note": ""}
+{"id": "I-12339", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "error concealment base die", "note": ""}
+{"id": "I-12340", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dual-tone resist doubling", "note": ""}
+{"id": "I-12341", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "ion track-etch pores", "note": "A 12 nm pore leaves no room for a full MIM stack."}
+{"id": "I-12342", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "no-pump single-oxide DRAM", "note": ""}
+{"id": "I-12343", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "high-BER AI memory grade", "note": ""}
+{"id": "I-12344", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "near-field contact printing", "note": ""}
+{"id": "I-12345", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "constrained coupling codes", "note": ""}
+{"id": "I-12346", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "implant-converted isolation", "note": ""}
+{"id": "I-12347", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "pellicle-free reticle policy", "note": ""}
+{"id": "I-12348", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "DNA-templated nanotube transistors", "note": ""}
+{"id": "I-12349", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "significance-split pitch mats", "note": "Drawing pitch 20% tighter on the same tools would fail outright, not at a 1% BER."}
+{"id": "I-12350", "P": 2, "S": 4, "N": 2, "D": 3, "dup_of": "", "theme": "granular-film single-electron cell", "note": "Extends Hitachi's single-electron memory. Doubts are sub-50 ns tunneling writes, threshold spread and seconds-scale retention."}
+{"id": "I-12351", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "lifetime-matched unrefreshed banks", "note": ""}
+{"id": "I-12352", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "converted MoS2 channels", "note": ""}
+{"id": "I-12353", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "elastocapillary pillar bundles", "note": ""}
+{"id": "I-12732", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "isotope marker endpoint", "note": ""}
+{"id": "I-12733", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "scribe-line leakage integrator", "note": ""}
+{"id": "I-12734", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "EDMR defect fingerprinting", "note": ""}
+{"id": "I-12735", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "measured queue-time dispatch", "note": ""}
+{"id": "I-12736", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "inline CD-SAXS", "note": ""}
+{"id": "I-12737", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "picosecond pillar acoustics", "note": ""}
+{"id": "I-12738", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "combinatorial gradient wafers", "note": "Intermolecular commercialized combinatorial process development, including for DRAM high-k."}
+{"id": "I-12739", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lifetime-graded wafer qualification", "note": ""}
+{"id": "I-12740", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "metrology-gated chemical reclaim", "note": ""}
+{"id": "I-12741", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "fluorocarbon gas recirculation", "note": ""}
+{"id": "I-12742", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "Raman TSV stress mapping", "note": ""}
+{"id": "I-12743", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sacrificial test metallization", "note": ""}
+{"id": "I-12744", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "metrology-first market entry", "note": ""}
+{"id": "I-12745", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "retention qualification standard", "note": ""}
+{"id": "I-12746", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hyperspectral wafer metrology", "note": ""}
+{"id": "I-12747", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sensor-terminated ALD", "note": ""}
+{"id": "I-12748", "P": 5, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "backside bow compensation", "note": "Backside-stress compensation tools already ship for 3D NAND."}
+{"id": "I-12749", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "ionic conductance hole metrology", "note": ""}
+{"id": "I-12750", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "conditional clean sensing", "note": ""}
+{"id": "I-12751", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "chamber wall-state sensing", "note": ""}
+{"id": "I-12752", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "yield-indexed tool leasing", "note": ""}
