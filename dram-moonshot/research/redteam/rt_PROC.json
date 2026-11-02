@@ -1,0 +1,370 @@
+{
+  "persona": "PROC",
+  "persona_name": "30-year DRAM and 3D-NAND process-integration veteran (deep etch, ALD, staircase, hybrid bonding, overlay, CMP, thermal budget, contamination, yield per layer, tool sets, fab cost per wafer)",
+  "objections": [
+    {
+      "id": "RT-PROC-margin-stack-01",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§2.6-2.7 'Added masks +1 DUV; no EUV'; model INPUTS added_mask_frac=0.012, sites_strap=1, sites_extra_per_seg=3",
+      "objection": "A 'same-step' VCT gain FET does not come with the terminals a segment amp needs. A 4F2 VCT device's natural nodes are the buried BL (bottom), the WL (gate, mid-pillar) and the top pad. The amp needs its GATE on the buried BL segment, its source on a separate read-source line and its drain on a new global line. Building that takes at least four levels: a WL-layer cut to make gate islands, the island-to-BL strap, a buried-BL cut every 32 cells with a separate buried read-source/write-back line, and a global-BL metal at the 2F~29 nm pitch, one line per column because the 3T amp has no column select. ArFi single exposure stops at ~76-80 nm pitch (the AND-STACK model's own note), so these are EUV or SAQP+cut layers. At the portfolio's $165 per EUV layer, three added layers cost ~$495, or ~13% of a $3,800 wafer. That turns the claimed -3% to +4% $/bit into roughly +10% to +17%, and voids 'no EUV added'.",
+      "would_change_my_mind": "A VCT-integrator process flow, or a process-emulation flow (e.g. Coventor), that builds the gain, reset and write-back FETs, the gate-to-BL strap and the global line with <=1 added critical layer, or with every added layer at >=80 nm pitch."
+    },
+    {
+      "id": "RT-PROC-margin-stack-02",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§5 decisive experiment steps 1, 3, 6; key unknown alpha (data-dependent BL coupling); K4/K6",
+      "objection": "The quantity that decides Cs is data-dependent BL-BL/WL coupling alpha in an oxide 4F2 array: buried bitlines at ~29 nm pitch under a wrap-around WL. The MPW is 22FDX with MOM stubs and planar wires at >=80-100 nm pitch, so its silicon measures the emulator layout's coupling, not a VCT array's. Per §2.8, alpha alone moves the required Cs from 0.26 to 0.44 fF at 13 mV (alpha 0.05 to 0.20). K4 and K6 will therefore rest on partner TCAD, a simulation of the one term the concept admits CDS cannot cancel. The terms the MPW measures well (comparator 1.9 mV, sampling kTC 0.3 mV) are not the ones in doubt.",
+      "would_change_my_mind": "Alpha measured on real VCT/IGZO array silicon under worst-case neighbour data (a Samsung, Kioxia/Nanya or imec 4F2 IGZO test vehicle). Alternatively, a 22FDX structure whose Cbl-bl/Cseg and Cwl-bl/Cseg ratios match extracted VCT values within 20%."
+    },
+    {
+      "id": "RT-PROC-margin-stack-03",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§5 step 5 (IGZO coupons, >=1,000-cell droop arrays, lognormal fit to 1e-10); §2.9 GO #3; K2/K3",
+      "objection": "G4, K2 and K3 hinge on the 1-in-1e10 IGZO leakage tail at 85 C (<=586 aA). A >=1,000-cell coupon observes only about the 1e-3 quantile, so reaching 1e-10 means extrapolating ~3.3 sigma along an assumed lognormal. DRAM retention tails are defect-driven (VRT, trap-assisted leakage, sidewall and contact damage) and not lognormal. The tail of a planar university-fab IGZO FET is also not the tail of a plasma-etched vertical IGZO sidewall in a VCT. The kill decision would rest on a number the experiment misses by about seven orders of magnitude in sample size.",
+      "would_change_my_mind": "Tail data at 85 C on >=1e7 oxide cells from a partner array (an OCTRAM-class 275 Mb device or a Samsung 4F2 IGZO test array). Alternatively, a mechanism-resolved tail model validated on >=1e6 vertical cells and predicting <=586 aA at 1e-10."
+    },
+    {
+      "id": "RT-PROC-margin-stack-04",
+      "dd": "margin-stack",
+      "severity": "MINOR",
+      "section": "§2.6 cost; model INPUTS cap_module_share=0.15 [unsourced], cap_height_scaled_frac=0.65",
+      "objection": "The concept's only economic win is the capacitor module, and both inputs that size it are unsourced estimates. A 120 nm stub still needs a bottom electrode, ZrO2/Al2O3 ALD, the top electrode and plate, and the contact, so only the height-scaled share shrinks. At a 10% module share the model already gives +3.6% $/bit; add objection 01's masks and MARGIN STACK costs more on every axis except capacitor capital and PFAS. That is a fair PFAS/capex claim, but the concept should not be scored on $/bit.",
+      "would_change_my_mind": "A teardown-based cost split (TechInsights or IC Knowledge) showing the 1-beta/1c capacitor module at >=15% of wafer cost with >=65% of it height-scaled, or a licensee's internal figure."
+    },
+    {
+      "id": "RT-PROC-hot-side-memory-01",
+      "dd": "hot-side-memory",
+      "severity": "FATAL",
+      "section": "§4 #7 'Carrier bow vs backside-litho overlay: Unknown'; §5 Gate C pass 'bow increase <=10% [ASSUMPTION]'",
+      "objection": "In a BSPDN flow the carrier is bonded before the logic wafer is thinned to <1 um and its backside nano-TSV/contact level is patterned. That level needs <10 nm overlay to the buried frontside today and <<5 nm at the next node (CEA-Leti, SPIE 12496; Chip Scale Review 2024), and bonding to a blank carrier already leaves ~15 nm (mean+3sigma) after scanner correction. The thinned logic layer takes on the carrier's surface strain. With 3.2 um of tier films at ~100 MPa that strain is ~2-7e-6 (membrane to bending), ~0.3-1 um at the wafer edge, which is mostly correctable. But a 10% die-scale stress non-uniformity (16 patterned tiers vs scribe and periphery) leaves ~3-10 nm of intrafield distortion over a 28 mm field, the entire budget. Gate C measures bow, which is the wrong metric. No foundry will bond a ~$30k 18A/A16 wafer to a carrier that adds even 2-3 nm of uncorrectable distortion.",
+      "would_change_my_mind": "High-order and intrafield backside-overlay residuals on logic-emulation wafers bonded to an 8-16-tier carrier within ~1-2 nm (3sigma) of the blank-carrier reference after standard scanner correction. Measure them with backside overlay marks at a BSPDN-capable partner (imec, CEA-Leti or Intel)."
+    },
+    {
+      "id": "RT-PROC-hot-side-memory-02",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§2 'Yield and cost' $1.36/GB; model INPUT logic_die_usd ('~38 good 800 mm2 dies') vs §9 GB/wafer computed on 64 gross sites",
+      "objection": "The model prices the logic die at ~38 good dies per wafer but spreads the carrier cost over all 64 gross 800 mm2 sites (GB/wafer = 64 x 80 GB = 5,120). W2W bonding allows no known-good-die selection, so every carrier site under a dead logic die is scrapped with it. $/GB therefore rises by 64/38 = 1.68x: from $1.36 to ~$2.29/GB for 16 x 2 b, and from $3.55 to ~$5.98/GB for 8 x 1 b. The 'near-tier bits at DDR5-like dollars' line becomes 1.5-4x DDR5 cost.",
+      "would_change_my_mind": "§9 re-run with GB/wafer = good logic dies x GB/die. Alternatively, a known-good-die (D2W) route with its own cost and pitch."
+    },
+    {
+      "id": "RT-PROC-hot-side-memory-03",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§2 'Incremental cost ... 16 x $300 tiers'; model INPUT tier_usd=300 ('~3 ArFi single-exposure passes')",
+      "objection": "A sequentially built 2T0C tier is not three litho passes. Write-WL, read gate, channel/via, write-BL, read-BL/SL and storage-node contact make >=5-6 patterned levels, even in IMECAS-style single-step dual-gate cells, and each level must register to the tier below. Sixteen tiers then carry ~80-100 masks, more than an entire DRAM flow, plus 16 chained overlay registrations whose yield loss binning can absorb but whose cost it cannot. At ~$100 per patterned level all-in, a tier costs ~$500-600 and the carrier adder ~$10-12k. Combined with objection 02, 16 x 2 b lands at ~$3.5-4/GB.",
+      "would_change_my_mind": "A mask-level flow for one carrier tier with <=3 patterned levels (e.g. NAND-style self-aligned patterning of >=4 tiers per litho), or a foundry quote of <=$5k/wafer for a 16-tier BEOL oxide stack."
+    },
+    {
+      "id": "RT-PROC-hot-side-memory-04",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§2 'Yield and cost' logic scrap 0.6% at p=0.1% per tier/bond; §4 #5 (counts shorts only)",
+      "objection": "The logic-scrap estimate counts shorts but not bond voids. A single >=0.5 um particle unbonds a 2-3 mm radius (CELL-WAFER FOUNDRY's own input), and the void delaminates when the logic wafer is thinned to <1 um, killing the 8 cm2 die above it. A blank prime carrier is the cleanest surface in the fab; a carrier after 16 tiers of dep/etch/CMP is not. At CELL-WAFER FOUNDRY's 'fab-grade' 0.05 particles/cm2, voids scrap 1-exp(-0.05 x 8) = 33% of $800 logic dies. Holding scrap <=1% needs <=0.0013/cm2, about one particle per 300 mm wafer, on a heavily processed surface.",
+      "would_change_my_mind": "CSAM void maps on >=25 W2W pairs (8-16-tier processed carrier on dummy logic) showing void-induced die loss <=1% at 800 mm2 die size."
+    },
+    {
+      "id": "RT-PROC-hot-side-memory-05",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§7-8 U.S. manufacturability (Intel 18A / TSMC A16 bonding and backside line); §4 #10",
+      "objection": "The carrier enters the leading-edge logic fab at bonding. It then stays attached through grind, CMP, backside litho, nano-TSV etch, metallization and forming gas, all on tools shared with every 18A/A16 wafer. In, Ga and Zn are not approved materials in leading-edge FEOL-adjacent lines: In and Ga are acceptors in Si, and Zn is a deep-level contaminant. Films at the carrier bevel and edge exclusion, slurry and brush carry-over, and chamber walls all become cross-contamination paths; the typical limit is <=1e10 atoms/cm2 by VPD-ICPMS on backside and bevel. Before any foundry accepts the carrier, the concept needs either dedicated backside tool sets, which it never prices, or a qualified encapsulation and bevel-clean flow.",
+      "would_change_my_mind": "VPD-ICPMS/TXRF data on encapsulated, bevel-cleaned IGZO carriers after a full backside-sequence emulation, showing In/Ga/Zn <=1e10 at/cm2 on all exposed surfaces, plus acceptance by a foundry materials review."
+    },
+    {
+      "id": "RT-PROC-and-stack-01",
+      "dd": "and-stack",
+      "severity": "FATAL",
+      "section": "§4 #2 'Topology closure'; §3 delta 'BL = SL = data writing' (own proposal, unverified); kill #1 (TCAD, month 3)",
+      "objection": "The integration sequence does not close as described. Where the ring gates the BL-SL read path, it must be insulated from the IGZO film by the read-gate dielectric (EOT 3 nm). Where the write plate gates the write path, the same ring must contact the same film ohmically. In a single hole the film and the gate dielectric are both conformal ALD liners deposited after the ring etch-back. Opening the dielectric only at each ring's write edge, on all 64 tiers at once, at AR 60, would need a self-aligned, tier-selective removal that no 3D-NAND flow has. The fallback, segmented write and read films, adds two lateral recess/fill modules per tier, each with its own selectivity. Month-3 TCAD can show a short-free electrostatic geometry but not a process that builds it. Without such a flow, the single-etch concept and its 3.8x bits/$ reduce to the coaxial fallback's ~1.56x.",
+      "would_change_my_mind": "A step-by-step flow (every dep/etch/recess with materials and selectivities) that gives ring-to-film write contact and ring-to-film read isolation in one hole. Demonstrate it on a 2-4-tier vertical coupon with FIB/TEM and an electrical write-then-read on >=2 tiers."
+    },
+    {
+      "id": "RT-PROC-and-stack-02",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§1 'deposit a tall stack of metal plates, etch one field of holes'; §4 #7; model INPUTS tier_pitch_nm=80, ring_h_nm ('6 nm W caps + 6 nm IPD top/bottom')",
+      "objection": "As modelled, the 'sandwich' select level is W 6 nm / IPD / 18 nm ring / IPD / W 6 nm. That can only be made by recessing a different middle material X between two W caps. With the write plate and inter-plate oxide, each tier is ~5 sublayers of 3-4 materials, so 64 tiers is a ~320-layer single etch at AR 60, not '128 plates'. A gate-first build puts ~2.8 um of W/Mo in the stack; at ~1 GPa that bows a 775 um wafer by ~1.7 mm (Stoney), against the ~0.1-0.2 mm litho and bond chucks tolerate, and no HAR etch through such a stack has a precedent. A gate-last build (NAND-style replacement) runs a WF6/H2 or Mo-chloride/H2 fill at 300-500 C after the IGZO is in the hole. That floods the channel with the hydrogen the H-lean mold and the <=86 mV 2-b drift budget exist to exclude.",
+      "would_change_my_mind": "A demonstrated >=32-tier stack of the actual materials, etched at AR >=30 with <=5% CD variation and bow <=150 um. Alternatively, a replacement-metal flow after which coupon IGZO Vt shift is <=20 mV and 2-b drift <=86 mV."
+    },
+    {
+      "id": "RT-PROC-and-stack-03",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§1 top view; §4 #6; model INPUT pillar_w_nm=22 ('BL and SL metal pillars inside the 68 nm core')",
+      "objection": "Two separate 22 nm metal pillars in a 68 nm core down a 5.42 um stack can be made only two ways. One is two ~22 nm sub-holes at AR ~245, aligned inside the channel hole; the other is one fill split by a <=20 nm slot etched 5.4 um deep. Neither exists in production: NAND channel holes are ~100 nm at AR <=70 per deck. Doped-poly pillars (Macronix 3D AND's choice) can be filled, but at ~1 mOhm-cm a 22 nm x 5.4 um pillar is ~140 kOhm and drops up to 0.13 V at the 0.89 uA read current, more than the 0.1 V Vds. Pillar shorts are also hole-level (all 64 tiers), so tier-orthogonal codes do not fix them.",
+      "would_change_my_mind": "A coupon >=2.8 um deep (16-32-tier depth) with two isolated metal pillars per <=100 nm hole, <=1e-4 pillar-to-pillar shorts over >=1e5 holes, and <=10 kOhm per pillar."
+    },
+    {
+      "id": "RT-PROC-and-stack-04",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§2.6 cost; §4 #11; model INPUTS tier_usd=30, array_base_usd=1000",
+      "objection": "$30 per tier (two metal plates plus a tri-layer) and $1,000 for the whole cell module sit below NAND's own economics. TechInsights' Choe put the 64-to-96-layer cost gain at only 10-15%. That implies 55-70% of a NAND wafer's cost scales with layer count, ~$20-38 per ONON pair at a $2.5-3.5k wafer [rt-PROC estimate]. An AND-STACK tier is two pairs built with metal depositions, which are slower and costlier than PECVD SiN. Its cell module adds >=5 HAR recess, ALD and etch-back steps. At $60/tier and a $2,000 base, the 64 x 2 b wafer is ~$8,840 and component cost ~$0.61/GB: 2.4x bits/$, not 3.8x.",
+      "would_change_my_mind": "A NAND partner's cost model (Kioxia, Micron, SK hynix) or Yole/TechInsights reverse-costing showing <=$35 per metal-plate tier and <=$1,200 for the AR-60 cell module."
+    },
+    {
+      "id": "RT-PROC-and-stack-05",
+      "dd": "and-stack",
+      "severity": "MINOR",
+      "section": "§2.2 CR spread; model INPUT cr_sigma=0.03",
+      "objection": "Sigma_CR of 0.03 implies ~+/-1.5 nm control of recess depth and IPD thickness across 64 tiers and the wafer. Yet AR-60 NAND holes typically taper 15-25% in CD from top to bottom, and lateral recess rates track local CD and etchant transport. CR sets plate swing, not cutoff, so sigma 0.06 still gives CR_min 0.52 and a ~2.1 V swing, which is survivable. But read W/L (current per level) and C_SN also follow hole CD, so placing the 2-b levels needs per-tier verify trims, like NAND's per-WL biasing.",
+      "would_change_my_mind": "TEM recess-depth data on a >=32-tier coupon with sigma <=1.5 nm top to bottom, or a per-tier trim scheme shown to hold 4 levels despite tier-dependent CD."
+    },
+    {
+      "id": "RT-PROC-raw-ber-contract-01",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§5 Phase 1 population (60 DDR4 modules); §4 #6; DRAM Bender has no DDR5 support",
+      "objection": "The GO/NO-GO is measured on DDR4 because DDR4 has no on-die ECC, but 2026 DDR4 is mostly 1y/1z/1a silicon. 1b/1c cells (smaller Cs, newer high-k stacks, buried-WL GIDL, tighter-pitch hammer coupling) ship only as DDR5/LPDDR5. There, 128+8 SEC hides raw singletons and miscorrects doublets (~53% per §2.4). The decisive cluster spectrum, VRT growth and flaggable share are therefore measured on cells 2-3 generations older than any product the contract would govern. The 'DDR5 cross-check' sees only post-SEC statistics.",
+      "would_change_my_mind": "Raw (ECC-bypassed) error maps from current 1b/1c DDR5 or LPDDR5X dies through a vendor test mode under NDA, matching the DDR4 cluster spectrum and VRT growth within 2x."
+    },
+    {
+      "id": "RT-PROC-raw-ber-contract-02",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§2.5 safe interval; §8 'zero wafer starts'; §5 population (3 vendors x 2-3 date codes)",
+      "objection": "Commodity parts are screened at sort to 64 ms (32 ms hot) plus guard band. Beyond that screen the retention distribution is uncontrolled: it shifts with die revision (vendors ship A/B/M-die and node shrinks under one part number) and with test-program changes. 60 modules from 3 vendors x 2-3 date codes cover a handful of wafer lots per vendor, yet a contract interval must hold for the worst lot in a fab's lot-to-lot distribution. The 'zero wafer starts' relaxed-refresh product therefore needs a vendor-run screen (a new bin), not just a controller.",
+      "would_change_my_mind": "Safe-interval data across >=30 lots per vendor, including two die revisions, showing the worst-lot 85 C safe interval >=0.5 s. Alternatively, a vendor commitment to a 1 s retention screen."
+    },
+    {
+      "id": "RT-PROC-raw-ber-contract-03",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§2.6-2.7 'New 1-beta-class die built to contract'; §4 #7",
+      "objection": "At raw BER 1e-4 a 16 Gb die ships ~1.7M weak bits. Wafer sort must therefore change from 'repair every fail' to 'repair clusters, leave singletons', and it must certify a cluster spectrum and a VRT growth rate per die. VRT growth needs hours to days of soak and cannot be screened at sort, so it becomes a lot statistic. Per-die DUE (2e-19 per read) is then guaranteed only statistically, and outlier dies escape. Redundancy, fuse budgets and test time (multi-second pauses x temperatures x patterns) all need redesign, and none of it is costed or planned.",
+      "would_change_my_mind": "A sort/repair flow, with a test-time estimate, that bounds per-die cluster and VRT parameters from <=1 h of test, validated by post-sort dies staying within the grade after 1,000 h."
+    },
+    {
+      "id": "RT-PROC-raw-ber-contract-04",
+      "dd": "raw-ber-contract",
+      "severity": "MINOR",
+      "section": "§2.5 refresh-blocked time 41% -> 2.6% at 64Gb; model INPUT trfc_ns 64Gb = 1600",
+      "objection": "The 1.6 us tRFC for 64Gb is an extrapolation. Yet JEDEC kept DDR5 tRFC1 at 410 ns from 24Gb to 32Gb (the model's own input), because vendors add internal parallel refresh rather than lengthen tRFC. At a plausible 0.6-0.8 us, the blocked fraction is ~15-20%, not 41%. That shrinks the 'strategic 64Gb tRFC crisis' argument, which carries most of the commodity value; energy alone is worth $2.60 per module over 5 years.",
+      "would_change_my_mind": "A published JEDEC or vendor 64Gb tRFC >=1.2 us, or vendor evidence that same-bank/fine-granularity refresh cannot hold tRFC under 1 us."
+    },
+    {
+      "id": "RT-PROC-pixel-stack-01",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§2.5 cost; model INPUTS usd_per_deck=250, usd_per_amp_sublayer=300",
+      "objection": "An amp tier every 16 tiers turns the stack into four sequential modules. Each needs its own BL-hole HAR etch, cell-isolation trench, lateral channel and capacitor recesses, ALD fills, WL staircase and CMP, then two amp sub-layers of ~4 DUV masks each, then realignment for the next group. $250 per deck for all of that is implausible by NAND standards (a staircase alone is several litho/trim cycles), and $300 per sub-layer prices four critical levels at ~$60 each. At $1,000/deck and $600/sub-layer the wafer is ~$13,400 and $/bit ~0.67x 1-beta. That equals the Smart-Cut c-Si case (0.67x) the oxide amp tier was supposed to beat.",
+      "would_change_my_mind": "A bottom-up step list (steps, tool-hours) for one 16-tier group plus its amp tier, from a 3D-DRAM or NAND integrator, pricing it at <=$650 per group-plus-amp."
+    },
+    {
+      "id": "RT-PROC-pixel-stack-02",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§2.5 'SF must keep >=~0.01 um2 of gate area and a SiNx-capped gate'; §2.3 retention; §4 #4",
+      "objection": "The noise fix and the retention fix pull in opposite directions. The SF 1/f budget relies on a SiNx-capped gate, since Al2O3-only gates are 100-1000x noisier (Cho, EDL 2009). But PECVD SiNx is the classic hydrogen source that dopes IGZO, and at sigma_Vt 30 mV retention tolerates only ~3 mV of H-induced dVt (31.3 vs 33.8 aA). Each of the 4 groups adds an amp tier with that SiNx plus another cell module's ALD and anneals. Group 1 therefore takes ~4x the H/thermal dose of the single 400 C/H2 planar test.",
+      "would_change_my_mind": "Planar coupons that combine the low-noise SF gate stack with access cells and survive a 4x cumulative group thermal/H sequence with tail leakage <=34 aA and dVt <20 mV. Alternatively, a low-H gate stack (e.g. ALD SiN) meeting alpha_H <=1e-2 at 0.01 um2."
+    },
+    {
+      "id": "RT-PROC-pixel-stack-03",
+      "dd": "pixel-stack",
+      "severity": "MINOR",
+      "section": "§2.1 cell footprint (20 BL + 70 TFT + 52 cap + 15 plate nm); model INPUT array_eff=0.55",
+      "objection": "The footprint leaves no room to bring each amp tier's column output, RST supply and SEL/RST/TG controls down to the base-wafer CDS columns through 1-3 lower groups. Either a vertical column via per SF passes through every lower cell tier (~+6-10% cell area), or each group needs an edge via farm and its own control staircase (~+3-8% die area). Neither appears in the 0.55 efficiency or in the 15 ns CDS timing, and column capacitance grows with length.",
+      "would_change_my_mind": "A floorplan of a 4-group mat showing column and control routing with array efficiency >=0.5 and column capacitance <=15 fF."
+    },
+    {
+      "id": "RT-PROC-pixel-stack-04",
+      "dd": "pixel-stack",
+      "severity": "MINOR",
+      "section": "§2.1 capacitor 69.1 fF/um2 at EOT 0.50 nm; §4 #6; kill #4",
+      "objection": "Production ZrO2/Al2O3/ZrO2 reaches 0.5 nm EOT through tetragonal crystallisation with TiN electrodes on vertical pillars. In a ~60 nm lateral cavity the TiN/ZrO2/TiN shell takes >=27-32 nm of tier height, the recess must be filled by ALD from a 24:1 hole into a 52 nm-deep, ~30 nm-tall slot, and the cell then sees up to three more group thermal cycles that raise leakage. The 8% retention margin cannot absorb EOT 0.7 nm (a 75 nm capacitor) without losing density, and the dossier does not carry that into the GO line.",
+      "would_change_my_mind": "M12 lateral-cavity coupons at 60 nm tier pitch reaching >=60 fF/um2 with J <=1e-7 A/cm2 after 4x cumulative 400 C exposure."
+    },
+    {
+      "id": "RT-PROC-diode-tower-01",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§2.3 contact table (AgOx 1.10 eV best); §4 #8 'PtOx and AgOx may decompose [UNVERIFIED]'; §5 anode matrix",
+      "objection": "The only contacts near the bar are ones the process cannot build. Ag2O partly dissociates at 300 C and is fully decomposed by ~400 C (Waterhouse, PCCP 2001); in gas it is stable only below ~170 C. An AgOx anode therefore will not survive the <=400 C IGZO, ALD and anneal steps intact, and PtOx also reduces at these temperatures. Pt, Ag and Ir have no volatile dry-etch products, so the per-tier etch-back that isolates anode rings inside a 60 nm, AR 27-53 hole is not available for them. Ag and Pt are also fast-diffusing contaminants excluded from most DRAM and CMOS-under-array tool sets. RuOx (volatile RuO4) and MoOx can be integrated, but no logged data puts either at >=1.07 eV on IGZO.",
+      "would_change_my_mind": "A dry-etchable anode (RuOx, MoOx or similar) on a <=20 nm IGZO or Ga2O3 shell with low-field phi >=1.07 eV and sigma <=0.05 eV after 400 C, plus a demonstrated HAR etch-back of that anode."
+    },
+    {
+      "id": "RT-PROC-diode-tower-02",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§2.6 GO measured on planar coupons with 'anode below the IGZO, as in the tier'; §2.3 inhomogeneity tail",
+      "objection": "In the tower the Schottky interface is the ring's inner face, which is created by the etch-back that separates tiers. IGZO is then deposited onto a plasma-etched, partly reduced noble-metal-oxide surface. Oxidised-metal barriers are set by surface oxygen stoichiometry and defects (the dossier's own IrOx citation). Sigma costs 0.14 eV at 0.05 eV and 0.21 eV at 0.07 eV, against a barrier gap of already 0.15-0.3 eV. Planar, as-deposited anodes will understate sigma and overstate phi, so Gate A can pass on coupons and fail in the hole.",
+      "would_change_my_mind": "Barrier height and sigma measured on anodes given the real etch-back chemistry, or on vertical recess coupons, within 0.03 eV of the planar values."
+    },
+    {
+      "id": "RT-PROC-diode-tower-03",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§1 diagram (access FET, gain FET, read select, write BL, read BL per pillar); §2.1 footprint 0.0165 um2; model INPUT base_wafer_usd=3000",
+      "objection": "Each 121 nm-pitch pillar needs three transistors and two bitlines at its top. Three vertical oxide FETs will not fit side by side in 0.0165 um2: one 4F2 VCT at F~60 nm already takes ~0.014 um2. They must either stack as 2-3 device levels, or the footprint grows ~2-3x and 32-tier density falls from 1.94x to below parity. Two bitlines per pillar column put metal at ~60 nm pitch, under the ArFi single-exposure limit (~76-80 nm), so SADP is required. None of these ~10-15 masks is in the $3,000 base or the footprint.",
+      "would_change_my_mind": "A top-of-pillar layout and flow fitting the access, gain and select FETs plus both bitlines in <=0.02 um2 per pillar, with the added masks priced."
+    },
+    {
+      "id": "RT-PROC-diode-tower-04",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§1 'etches one hole through a stack of metal plate floors'; §5 Stage B 'TiN/SiO2 x 4'; model INPUT plate_nm=25",
+      "objection": "At 64 tiers the stack holds 1.6 um of TiN; at ~1 GPa that bows a 775 um wafer by ~1 mm (Stoney). Alternating TiN/SiO2 stacks have no production HAR etch at AR 53. The NAND-style replacement route (SiN out through slits, metal in) would expose the ZrO2 and IGZO already in the hole to hot H3PO4 and to WF6/H2 or TiCl4/NH3 fills at 300-500 C. That brings in exactly the hydrogen and fluorine the barrier and drift budgets cannot take. A 4-tier Stage B stack will reveal neither problem.",
+      "would_change_my_mind": "A >=32-pair TiN (or Mo)/oxide stack with bow <=150 um etched at AR >=30, or a replacement flow shown to shift the coupon barrier by <=30 meV."
+    },
+    {
+      "id": "RT-PROC-charge-river-01",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§1/§2.1 200 W/SiO2 plates; model INPUTS plate_thk_nm=25, slit_nm=60 ('plates are not replaced through it'), holes_per_row=1",
+      "objection": "The plates are gate-first W: 200 x 25 nm = 5 um of W. At CVD-W stress (~1 GPa) that bows a 300 mm wafer by ~3 mm (Stoney), and even 200 MPa gives ~0.6 mm, against ~0.1-0.2 mm chuckable. The hole is 8 um deep at AR 80 through alternating metal and oxide. The per-row isolation slits are 60 nm wide through the same 8 um, AR ~130 in metal, while NAND slits are >100 nm wide and cut ONON. Switching to replacement metal only moves the problem: a WF6/H2 fill after the IGZO channel is deposited injects H and F into the traps that set CTE.",
+      "would_change_my_mind": "An 8 um metal/oxide stack (or two 4 um decks) with bow <=150 um and a <=60-80 nm slit etched through it. Alternatively, a replacement-metal flow with CTE unchanged (delta <5e-4) on planar coupons exposed to the fill chemistry."
+    },
+    {
+      "id": "RT-PROC-charge-river-02",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§8 'no staircase, 3-6 clock contacts'; §2.6 plate RC 'strap every ~100 um'; model INPUT holes_per_row=1",
+      "objection": "Each plate is a separate buried W layer, so tying plates 1, 4, 7 ... into one clock phase means contacting every one of them. That requires a ~200-step staircase, or a 3-metal stack with selective recess, which is an even harder etch. With per-row slits, each one-hole-wide strip needs its own staircase: ~200 steps x 0.3 um, about 60 um at the strip end. RC (145 Ohm/um, 0.73 fF/um) limits a strip to ~100-200 um at 50 MHz, and a buried plate cannot be 'strapped' without yet another staircase. Overhead is therefore 60/(L+60), or ~23-38% of array area, cutting density from 1.62 to ~1.0-1.25 Gb/mm2 (2.2-2.8x 1-beta). The per-row slits cannot simply be dropped: sharing plates across 16 rows multiplies park-and-shift cycles 16x (1.5e11 to 2.4e12).",
+      "would_change_my_mind": "A plate-contact scheme with <=10% area overhead that keeps per-row (or <=4-row) clock groups, shown in layout with plate RC <=2 ns at 50 MHz."
+    },
+    {
+      "id": "RT-PROC-charge-river-03",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§1 'end A: bonded CMOS wafer (sense amps, DFE)'; model INPUTS segments=2, c_fd_fF=0.30",
+      "objection": "Two-ended strings need a sense node at the hole bottom. A hybrid-bond pad plus via is ~1-2 fF (the HOT-SIDE model uses 10 fF for bond plus BEOL via stack), and bonds cannot sit at the 141 nm hole pitch, so the bottom node must be multiplexed. A node shared by N holes carries N x junction/overlap capacitance plus wire. At even 8-16 holes, C_FD is ~1-2 fF: conversion gain falls 3-6x and read noise rises to ~25-50 e-, and the model itself says a 313 e- packet fails at 30 e-. That leaves two options. One is per-hole in-array FD/RST/SF/SEL oxide devices under the stack, contacted by an AR-80 bottom punch-through (NAND's hardest step). The other is one-ended strings at half the bits (~1.8x 1-beta).",
+      "would_change_my_mind": "A bottom-end readout with C_FD <=0.5 fF per <=8 holes, shown in layout, and measured read noise <=8 e- on a vertical coupon."
+    },
+    {
+      "id": "RT-PROC-charge-river-04",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§2.2 wafer cost; model INPUT per_plate_usd=10",
+      "objection": "$10 per W/SiO2 plate pair is 2-4x below NAND's own per-layer economics. Choe/TechInsights' 10-15% cost gain from 64 to 96 layers implies 55-70% of NAND wafer cost scales with layer count, ~$20-38 per ONON pair at a $2.5-3.5k wafer [rt-PROC estimate], and CVD/PVD W layers cost more than PECVD SiN. At $25/plate the wafer is ~$8,250 and cost ~$1.11/GB, only 1.3x below DDR5. With objection 02's area overhead added, the cost advantage disappears.",
+      "would_change_my_mind": "A NAND-maker or reverse-costing estimate of <=$12 per metal/oxide plate pair, including deposition, etch share and metrology."
+    },
+    {
+      "id": "RT-PROC-charge-river-05",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§5 step 3 (single-level W/Mo gates, 12-20 nm e-beam gaps, 16-256 stages, university fabs)",
+      "objection": "Single-level CCDs with 12-20 nm e-beam gaps are notoriously defect-limited. A wide gap leaves a potential pocket or barrier that defers charge; a narrow one shorts phases. E-beam stitching and gap-CD variation over 256 stages will stack fab-defect deferral on top of oxide-trap deferral. GATE 1's NO-GO (<0.9934) could then reflect a university gap process rather than IGZO physics, and a pass on wide channels may not transfer. Production CCDs use overlapping multi-level gates for exactly this reason.",
+      "would_change_my_mind": "Overlapping two-level gates with an ALD inter-gate dielectric on run 1, or CTE measured on imec- or MIT LL-built planar structures as the reference for scoring the university variants."
+    },
+    {
+      "id": "RT-PROC-charge-river-06",
+      "dd": "charge-river",
+      "severity": "MINOR",
+      "section": "§2.3 k_ws=1.5; §4 #6 'conformal ALD heterochannel' in an AR-80 hole",
+      "objection": "A buried heterochannel (IGO/IGZO core, barrier and cap) grown by multi-cation ALD supercycles in an 8 um, AR-80 hole will grade in composition from top to bottom, because the In, Ga and Zn precursors stick and deplete differently. The >=0.3 eV band offset and the trap DOS then vary along the string. That variation sets the worst-string factor k_ws (<=1.5 to PASS; k_ws 3 alone moves the floor to ~0.9985), and planar coupons cannot measure it.",
+      "would_change_my_mind": "TEM-EDX composition plus CTE (or TFT trap DOS) at the top, middle and bottom of an AR >=40 hole, within +/-10% composition and k_ws <=1.5."
+    },
+    {
+      "id": "RT-PROC-lean-array-module-01",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§2.3 leak into plasma '0.5-1.2% H atoms against 420 sccm of F'; §5 Step 1b/2 pass criteria",
+      "objection": "The H2 leak enters at the outer seal band, i.e. at the wafer bevel, and flows outward to the pump. The H fraction is therefore not the 0.5-1.2% chamber average. It is concentrated in the outer few mm, where HAR etch already fights edge tilt, CD and polymer balance through edge-ring tuning. The pass criteria are global etch-rate (<=2%) and selectivity (<=5%) drifts. Both can be met while edge-die hole tilt and bottom CD shift enough to lose the outer ring of die, ~5-10% of DRAM die per wafer.",
+      "would_change_my_mind": "Step 2 data at r = 140-148 mm on patterned AR >=40 wafers at 2x the predicted leak: hole tilt <=0.1 deg, bottom CD within 1 nm, and bow within spec versus helium."
+    },
+    {
+      "id": "RT-PROC-lean-array-module-02",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§0 STEP CHANGE 'capacitor fluorocarbon ... go to 0'; FINAL_CONCEPTS 'PFAS HAR etch and EUV out of array modules'",
+      "objection": "The PFAS claim holds only for planar oxide 4F2 with a stub (MARGIN STACK). Every 3D cell in the same portfolio brings back a deep fluorocarbon etch (oxide) and Cl/F etch (metal): AND-STACK at AR 60 through ~320 metal/oxide sublayers, DIODE-TOWER at AR 27-53, CHARGE-RIVER at AR 80 plus 60 nm slits, PIXEL-STACK with four AR-24 group etches, and CELL-WAFER FOUNDRY's 64-tier stacks. The module moves the PFAS-heavy etch from the capacitor to the cell stack rather than deleting it.",
+      "would_change_my_mind": "A flow for whichever portfolio cell passes whose deep etches run on non-PFAS chemistry (e.g. cryogenic HF-based etch or a carbon mold with O2 etch), with the profile demonstrated at the AR it needs."
+    },
+    {
+      "id": "RT-PROC-lean-array-module-03",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§2.5 AAO; §4 #6; kill #6 ('>=1e-4 branched/missing pores')",
+      "objection": "Self-ordered AAO forms um-scale domains with random orientation. Pores cannot land on an existing 35.2 nm-pitch storage-node pad array without an imprint pre-texture aligned to the pads at ~3-4 nm overlay, which brings nm-class lithography back in. The Al film must also anodise completely down to a stop layer across 300 mm, where voltage drop in a thin film makes depth non-uniform. Any unanodised Al island shorts neighbouring nodes, and sulfate or oxalate incorporated in the oxide outgasses in later 400 C steps. The kill line of 1e-4 missing pores is 1.7M dead cells per 16 Gb die, beyond redundancy and the entire raw-BER budget.",
+      "would_change_my_mind": "AAO on pad arrays at <=40 nm pitch with >=99.9999% pore-to-pad registration across a 300 mm wafer, no Al-residue shorts, and <=1e-6 missing or branched pores."
+    },
+    {
+      "id": "RT-PROC-lean-array-module-04",
+      "dd": "lean-array-module",
+      "severity": "MINOR",
+      "section": "§2.7 GO matrix at 20/40/60 C; §4 #4 'Etch chambers first (<~100 C)'",
+      "objection": "The newest HAR etchers (TEL's cryogenic channel-hole etch, Lam Cryo 3.0) run their chucks at roughly -60 to -70 C. That is where high-bias heat removal is hardest and where the helium stake is highest. Light-gas accommodation shifts with surface temperature and adsorbate films (the dossier's own H-on-W 0.54 -> 0.14), and the test matrix stops at 20 C.",
+      "would_change_my_mind": "a_H2 measured at -70 to 0 C on the same film and chuck faces, staying >=0.17."
+    },
+    {
+      "id": "RT-PROC-lean-array-module-05",
+      "dd": "lean-array-module",
+      "severity": "MINOR",
+      "section": "§2.4 'Retrofitting 1,500 chambers at $50k ... pays back after 2.4 days'",
+      "objection": "Changing the backside gas on an HVM HAR etch chamber is a process change. It requires requalifying every product route through the chamber, customer PCNs for automotive and server DRAM, and re-baselining the backside-flow and leak fault-detection limits that use He flow as a clamp-health signal. $50k per chamber and a 2.4-day payback ignore months of qualification wafers. The insurance value is real, but the payback is misstated.",
+      "would_change_my_mind": "An OEM or fab estimate of per-chamber requalification cost and time for a backside-gas change."
+    },
+    {
+      "id": "RT-PROC-cell-wafer-foundry-01",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§2 sensitivity 'Residual run-out after compensation 10% / 25%'; §4 #1; model runout_um (delta = b*t/r)",
+      "objection": "The overlay model treats run-out as isotropic, so magnification compensation removes 75-90% of it. Multi-tier memory stacks warp anisotropically; the cited 3D NAND +300/-550 um is a saddle. Using the model's own delta = b*t/r, that saddle gives ~+1.5 um along one axis and ~-2.8 um along the other at r = 150 mm. Isotropic correction removes only the ~-0.65 um mean, leaving ~+/-2.2 um against a 0.375 um budget at 1.5 um pitch. The bow <=200 um gate is necessary but not sufficient.",
+      "would_change_my_mind": "Bonded overlay maps on 8-tier coupons (IR verniers at centre, mid-radius and edge, both axes) showing <=0.30 um after compensation. Alternatively, an anisotropic warp component <=~40 um after backside compensation."
+    },
+    {
+      "id": "RT-PROC-cell-wafer-foundry-02",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§2 base case 1T1C, 64 tiers, footprint 80 x 323 nm; model INPUTS cell_base_cost=700, tier_cost=30",
+      "objection": "An 80 nm BL pitch with a lateral 1T1C cell in every tier needs per-cell isolation along the WL direction. In Si/SiGe (Samsung, SK hynix) and replacement-channel schemes, that is a line or slot etch of ~40 nm CD through the whole ~4.5 um, 64-tier stack (AR ~110), beyond the ~50-70 production limit. That forces 2-4 decks, each repeating the HAR modules, alignment and staircase. A $700 cell base plus $30/tier, cheaper than a 200-layer NAND wafer for a far more complex cell, is not credible. At ~2x that cell-wafer cost, the pair is ~$8,400, cost ~$0.78/GB, and cost break-even moves from 16 to ~20 tiers.",
+      "would_change_my_mind": "A 3D-DRAM integrator flow for 64 tiers at 80 nm pitch in <=2 decks, with the cell wafer priced at <=$3k."
+    },
+    {
+      "id": "RT-PROC-cell-wafer-foundry-03",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§0/§1 open merchant split (cell wafer from one maker, periphery from a logic foundry); §5 bonding partner",
+      "objection": "The merchant model ships In/Ga/Zn-bearing, Cu-padded cell wafers into a bonding, CMP and thinning line that must also take logic periphery wafers. In and Ga are acceptors in Si and Zn is a deep-level contaminant, and logic foundries keep them off shared tools. So either the foundry builds a dedicated hybrid-bond line for a merchant customer, or a neutral third-party bond fab must exist with fab-grade <=0.05/cm2 cleanliness (the model's own input). Neither is costed. The null hypothesis, in-house CuA as Samsung and SK hynix already do, avoids the problem entirely.",
+      "would_change_my_mind": "A named bonding partner that accepts oxide-semiconductor wafers, with a contamination qualification (VPD-ICPMS <=1e10 at/cm2) and a bond price of <=$400 per pair."
+    },
+    {
+      "id": "RT-PROC-cell-wafer-foundry-04",
+      "dd": "cell-wafer-foundry",
+      "severity": "MINOR",
+      "section": "§4 #4 anneal dVt; §2 GO '<=250 C anneal, dVt <=20 mV'",
+      "objection": "Low-temperature (<=200-250 C) Cu/SiCN or oxide hybrid bonding gives up Cu interdiffusion and pad reliability unless a special Cu microstructure is used. Dielectric bonding also releases water and hydrogen at the interface (Si-OH condensation), directly above the top tiers' IGZO. The GO counts only anneal temperature, not interface water, and packaging reflows (~260 C, several times) add dose after the test.",
+      "would_change_my_mind": "A ToF-SIMS H profile of the top tier after bonding plus 3 x 260 C reflow, with dVt <=20 mV and Cu-Cu Kelvin resistance stable after 1,000 thermal cycles."
+    },
+    {
+      "id": "RT-PROC-ai-memory-diet-01",
+      "dd": "ai-memory-diet",
+      "severity": "MAJOR",
+      "section": "§2.4 'The diet adds ~0 flash against 2026 practice'; model INPUT ssd_per_gpu=3 for both baseline and diet; §8 resources",
+      "objection": "The endurance constraint alone (107 TB/day per GPU at 3 DWPD) forces >=36 TB of TLC per GPU, and the plan buys 3 x 15.36 TB = 46 TB. NVIDIA's own DGX B200 ships 8 x 3.84 TB NVMe per 8 GPUs: ~3.84 TB per GPU, ~0.25 drive-equivalents in capacity and ~0.5-1 in bandwidth. Against that baseline, the diet adds ~32-42 TB of NAND per GPU, ~2.3-3.0 PB per NVL72 rack, or ~16-30 NAND wafers at ~100-140 TB per wafer. That buys 12.7 TB of freed DRAM, ~4 DRAM wafers. Fab wafer starts, kWh and water per rack therefore go up, not down, in a year when the dossier itself reports enterprise SSD prices up 2.3-2.8x.",
+      "would_change_my_mind": "Fleet data showing that 2026 inference racks already carry >=3 Gen5 drive-equivalents per GPU of >=3 DWPD flash for KV tiering (ICMS/LMCache deployments), so the diet's flash is truly not incremental."
+    },
+    {
+      "id": "RT-PROC-ai-memory-diet-02",
+      "dd": "ai-memory-diet",
+      "severity": "MAJOR",
+      "section": "§0 STEP CHANGE (1.50x DRAM, 1.19x wafer-eq); FINAL_CONCEPTS S=2",
+      "objection": "On FINAL_CONCEPTS' own scale, S=2 means ~1.3-2x and S=1 means <=1.3x. The diet's own lever is 1.19x in wafer terms (1.29x DRAM at the critic's 22%), and the client-signal variant B gives 1.02x. The 3x comes from a latent that is model research in a crowded prior-art field, not a memory change. Scored on what the diet itself does, S is 1 and EV is 15, not 30.",
+      "would_change_my_mind": "Measured traces in which host-lite alone gives >=1.3x fewer wafer-equivalent DRAM GB per served conversation at equal p99."
+    },
+    {
+      "id": "RT-PROC-ai-memory-diet-03",
+      "dd": "ai-memory-diet",
+      "severity": "MINOR",
+      "section": "§2.3 rack/fleet 'freed DRAM'; §7 'freed host bits move to HBM'",
+      "objection": "The freed host bits are LPDDR5X/SOCAMM. They relieve the HBM shortage only if HBM output is limited by front-end wafers. In 2026 it is gated by TSV, stacking and test: TC bonders, MR-MUF, and base-die and stack yield. LPDDR wafer starts can move to HBM core dies on the same node only as fast as back-end capacity grows. For HBM, 'bits not bought' does not equal 'shortage relieved'.",
+      "would_change_my_mind": "A supply analysis (TrendForce, Yole) showing that front-end wafer starts, not back-end stacking, bind HBM output in 2027-28."
+    }
+  ],
+  "overall": {
+    "margin-stack": "Sound physics and cheapest to test, but the 'same-step 3T amp, +1 DUV mask' needs 3-4 critical (EUV-class) levels, and the MPW cannot measure the coupling that sets Cs. Expect a capex/PFAS win with a ~10% $/bit loss.",
+    "hot-side-memory": "The best energy idea in the set, but logic-fab realities gate it: carrier-induced backside overlay distortion, bond voids and In/Ga/Zn contamination must be shown harmless to $30k wafers, and honest carrier cost is ~$2.3-4/GB, not $1.36.",
+    "and-stack": "Biggest prize, least-closed integration. No process sequence yet gives ring-to-film write contact plus read isolation in one hole, the stack is ~320 mixed sublayers, and the 22 nm twin pillars are unbuildable. The realistic case is the coaxial fallback at ~1.5-2.5x bits/$.",
+    "raw-ber-contract": "The coding math is sound, but manufacturability depends on vendor screens and sort/repair flows the plan never touches, and the DDR4 experiment measures cells 2-3 generations old.",
+    "pixel-stack": "Credible read physics, but four sequential decks plus amp tiers price at Smart-Cut parity (~0.67x), and the SiNx-capped SF works against the hydrogen retention budget.",
+    "diode-tower": "An elegant cell whose best-barrier anodes (AgOx/PtOx) cannot survive 400 C or be etched back in a hole, and whose top-of-pillar 3T+2BL wiring is unpriced. The coupons must use etched, integrable anodes.",
+    "charge-river": "The planar CTE test is cheap and worth running, but the vertical product as drawn does not close: gate-first 5 um of W, AR-80 holes, AR-130 per-row slits, no staircase and two-ended sensing. Realistic density is ~2x 1-beta at near-DDR5 cost.",
+    "lean-array-module": "H2 backside cooling is a sound, testable hedge if edge-local H effects are measured. The PFAS and AAO claims are weaker than stated: the portfolio's 3D cells bring deep etches back, and AAO cannot register to pads.",
+    "cell-wafer-foundry": "Bond physics is testable, but anisotropic warp, AR-110 isolation at 80 nm pitch and cross-fab contamination make the merchant split costlier than modelled. It lives or dies with a passing cell and a neutral bond fab.",
+    "ai-memory-diet": "A software lever with a real but small effect of its own (~1.2x wafer-eq). Once the NAND it buys is counted against a DGX-class baseline, it may raise fab wafer starts and resources per rack."
+  }
+}
