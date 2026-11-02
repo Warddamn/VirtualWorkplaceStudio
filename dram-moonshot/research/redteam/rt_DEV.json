@@ -1,0 +1,378 @@
+{
+  "persona": "DEV",
+  "persona_name": "Device physicist (oxide semiconductors, ferroelectrics, Schottky contacts, leakage/RTN/BTI/hydrogen reliability, charge transfer); IEDM/VLSI/Nature Electronics reviewer",
+  "objections": [
+    {
+      "id": "RT-DEV-margin-stack-01",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§2.5 retention / §2.9 GO 3; model INPUTS ioff_igzo_median_aA=1, sigma_vt_access_mV=50",
+      "objection": "The 0.5 fF planning cell is set by the IGZO 1-in-1e10 leakage tail, yet the dossier never derives that tail from its own inputs. With the model's sigma_vt_access_mV = 50 and a realistic 85-100 mV/dec slope at 85 C (ideal 71), the 6.36-sigma low-Vt cell sits 318 mV lower and leaks 3.2-3.7 decades (1,500-5,000x) above the median: 1.5-5 fA if OCTRAM's '<1 aA' is an 85 C median (its test temperature and statistic are unpublished; rt-DEV.jsonl). That is 2.6-8.5x over the 586 aA GO line; even with the droop-optimised 370 mV allowance, 0.5 fF holds only 37-123 ms, so the 917 ms refresh and 28x refresh-power claims collapse. The coupon plan (>=1,000-cell 2T droop arrays plus a lognormal fit) observes only to ~3.1 sigma and extrapolates 3 more sigma on an assumed shape.",
+      "would_change_my_mind": "A negative WL hold that puts the -6.4-sigma cell >=1.2 V below threshold, shown on >=1e6 IGZO VCT cells at 85 C with a measured 1e-6 quantile <=60 aA and sigma_Vt <=25 mV, so that the 1e-10 extrapolation is short."
+    },
+    {
+      "id": "RT-DEV-margin-stack-02",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§2.3 residual budget and §9 sense timing (model of the dossier); model INPUTS i_gain_uA=5, gain_local=3, vov_gain_V=0.4",
+      "objection": "The 1.89 mV comparator term and the 0.72 ns sample time both rest on 5 uA (gm 25 uS) from a same-step, high-Vt IGZO gain FET at 0.4 V overdrive, and no source supports that. Scaling OCTRAM's >15 uA (at an undisclosed, typically 1.5-2.5 V overdrive) down to 0.4 V gives 0.4-4 uA and gm ~2-10 uS, so the local gain G = gm*t/C_GBL is 0.23-1.2 at 0.7 ns on 6 fF, not 3. The comparator then refers to ~5-25 mV at the input (with the -4-sigma 0.53 gm factor), central sigma_res rises from 5 to ~7-25 mV and Cs from 0.14 to ~0.15-0.64 fF (§2.8 table at alpha 0.1), and the stretch case disappears. Restoring G = 3 needs 1.8-9 ns per sample, which makes sense-plus-restore 6-20 ns against a ~14 ns tRCD and widens the 1/f+RTN window.",
+      "would_change_my_mind": "Measured Id-Vg at 85 C on a VCT-geometry IGZO FET (15 nm pillar, 60 nm Lg, the same high-Vt step) giving >=4 uA at Vov 0.4 V; or a multi-pillar/back-gated gain stage whose area is carried in the +8.8% die figure."
+    },
+    {
+      "id": "RT-DEV-margin-stack-03",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§2.3 'oxide 1/f + RTN between samples 4.0 mV [SPECULATIVE]' folded into a Gaussian 3.72-sigma RSS",
+      "objection": "RTN is budgeted as a 4 mV Gaussian term, but in a 15 x 60 nm IGZO pillar FET (gate area ~2,800 nm^2, EOT 2 nm) one trap shifts Vt by q/(Cox*W*L) ~3.3 mV on average. Amplitudes are exponentially distributed and enhanced 2-3x by percolation in amorphous channels (eta ~7-10 mV). If 1-30% of the ~5.3e8 gain FETs on a 16Gb die carry a trap whose time constant lies within 10x of the 0.7-5 ns sample gap, the 1e-4 per-read quantile is eta*ln(50-1,500) = 4-7 eta, i.e. ~13-70 mV, against the 15 mV a Gaussian 4 mV implies. CDS cancels only traps that do not switch between samples. This erases the 0.14-0.25 fF stretch and consumes 17-90% of the ~78 mV left at 0.5 fF after coupling and kick.",
+      "would_change_my_mind": "Per-device, time-domain RTN statistics on >=1e4 scaled IGZO FETs at 85 C with 1-10 ns resolution, showing the 1e-4 quantile of between-sample Vt jumps <=15 mV."
+    },
+    {
+      "id": "RT-DEV-margin-stack-04",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§5 decisive experiment, steps 3, 5 and 7 (silicon sigma_res plus coupon oxide 1/f, combined by projection)",
+      "objection": "The decisive number, the oxide post-CDS residual at a 0.7 ns sample gap, is never measured on an oxide device. The 22FDX MPW measures silicon FD-SOI gain FETs. The coupon 'discrete CDS on IGZO gain FETs' runs through ~1-10 pF of probe and board parasitics, which caps sampling bandwidth at tens of MHz. The GO/NO-GO therefore extrapolates IGZO noise from Hz-MHz PSDs to GHz and assumes Gaussian statistics, exactly where small oxide FETs are non-Gaussian. A pass could be an artefact of silicon's lower trap density.",
+      "would_change_my_mind": "An oxide-native ns-CDS measurement: IGZO gain FETs post-processed in the BEOL of the 22FDX die (or an on-coupon IGZO sample-and-hold), so an oxide FET drives an on-chip fF-scale node sampled at <=1 ns."
+    },
+    {
+      "id": "RT-DEV-margin-stack-05",
+      "dd": "margin-stack",
+      "severity": "MINOR",
+      "section": "§2.9 GO 3 and §9 K2 (tail measured on fresh, as-built coupons)",
+      "objection": "The tail spec is checked on fresh coupons, but IGZO access FETs drift negative over life from hydrogen redistribution and hold-bias stress. Every 30 mV of negative drift at 90 mV/dec multiplies the subthreshold tail by ~2.2x, so a 10-year, 85-105 C drift of 50-100 mV (common for unbarriered IGZO) multiplies it by 3.6-13x after qualification.",
+      "would_change_my_mind": "Tail leakage re-measured after a 1,000 h, 105 C hold-bias stress, with <=2x growth."
+    },
+    {
+      "id": "RT-DEV-hot-side-memory-01",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§2 retention and refresh; model INPUT tail_leak_mult=3; Gate A 'tail retention >=1 s at 125 C (<=7.5 aA)'",
+      "objection": "The 1e-4 tail cell is assumed to leak only 3x the reported imec cell, yet the dossier itself quotes 30-100 mV Vt sigma for BEOL oxide devices (§4 row 9). At 3.72 sigma and ~95 mV/dec at 105 C (ideal 75), sigma 30/50/100 mV gives ~15x/90x/8,000x, not 3x. From the implied 75 zA at 95 C, the 105 C tail is ~2-13 aA (sigma 30-50 mV) against the 7.5 aA 2-b budget at 1 s, and the 125 C tail is ~7.5-45 aA against the Gate-A line of <=7.5 aA. Unless write-FET sigma_Vt <=30 mV is shown in arrays, both 2-b capacity and the 125 C GO fail on the dossier's own arithmetic.",
+      "would_change_my_mind": "A write-FET Vt distribution on >=1e5 BEOL cells with sigma <=30 mV and SS <=90 mV/dec at 105 C, or a measured 1e-4-quantile retention >=1 s at 125 C after the full emulation sequence."
+    },
+    {
+      "id": "RT-DEV-hot-side-memory-02",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§2 multi-level margin (sigma_read 8 mV, sigma_place 10 mV) and show-stopper #2",
+      "objection": "The 2-b budget has no term for random telegraph noise in the read transistor, which in a gain cell is the sensor itself. RTN is cancelled neither by per-level references nor by write-verify, because the trap state at verify and at read (1-4 s later) are independent. For a read-FET gate of 0.0016-0.01 um^2 (40 nm planar to vertical channel-all-around) at EOT ~4 nm, one trap shifts Vt by 1.9-11.6 mV on average, or 4-35 mV with amorphous-channel percolation, and nearly every trap with tau between microseconds and seconds toggles between verify and read. With ~1 such trap per device and a ~60 mV excursion allowance, the per-read error probability spans ~3e-7 (small eta) to >1e-2 (large eta). This is the mechanism that capped MLC in sub-20 nm NAND, and it decides whether 2 b (89 GB) or 1 b (44 GB) is real.",
+      "would_change_my_mind": "Gate A reports repeated-read Vt-equivalent distributions (>=100 reads spaced ~1 s) on >=1e5 cells at 105 C, with the 1e-4 RTN quantile <=30 mV."
+    },
+    {
+      "id": "RT-DEV-hot-side-memory-03",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§5 Step 2 emulation (350 C/2 h + 400 C forming gas on unbonded coupons); show-stopper #1",
+      "objection": "A backside-power carrier must survive grinding of the logic wafer to sub-micron thickness plus backside CMP, so its oxide-oxide bond is annealed hot (typically 300-400 C) and acts as a water/hydrogen source. Activated surfaces carry ~4-5 OH/nm^2, and condensation releases ~2-5e14 H2O/cm^2 at the bond plane, within ~1 um of the top tier. An IGZO donor sheet of 1e12 cm^-2 shifts Vt by ~0.14 V at EOT 3 nm, so if ~0.1% of that inventory acts as donors in a channel it exceeds the 24 mV drift and 10 mV Vt budgets. Gate A anneals unbonded coupons and never sees bond-interface water, and Gate C (carrier emulation) arrives at M22, after the capacity decision.",
+      "would_change_my_mind": "SIMS hydrogen profiles plus top-tier delta-Vt <=10 mV after a real fusion or hybrid bond with a 350-400 C anneal on a tier coupon, moved into Gate A."
+    },
+    {
+      "id": "RT-DEV-hot-side-memory-04",
+      "dd": "hot-side-memory",
+      "severity": "MINOR",
+      "section": "§2 write-verify (sigma_place 10 mV, 3 iterations, t_cycle 20 ns)",
+      "objection": "On a 0.15 fF node, kT/C at 105-125 C is 5.9-6.1 mV rms and is re-sampled on every write iteration. A 10 mV placement sigma therefore leaves ~8 mV for verify-read noise, write-wordline kickback spread (~5% of a 0.2-0.35 V kick, i.e. 10-17 mV unless the verify captures it) and RTN. Three program/verify loops with an 8-15 ns sense each also make the 2-b write ~50-80 ns, not the 20 ns array cycle used for bandwidth and latency.",
+      "would_change_my_mind": "Measured placement sigma <=10 mV at 105 C with <=3 iterations in <=40 ns on a 64 kb array."
+    },
+    {
+      "id": "RT-DEV-and-stack-01",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§1 and §2.3 write (BL = SL = data, one write plate per tier shared by the block); model INPUTS rows_per_select_group=2, n_sel_on_bl=16",
+      "objection": "Writes are selected only by plate and pillar driver, and a single-etch write plate is shared by every hole between slits. When write plate k pulses to 2.5 V, every ring on tier k connects through its write FET to its own BL/SL pillars, and an ohmic channel write has no inhibit (unselected rings at 0-1 V see Vgs >=1.5 V). Holes in the 15 unselected select groups on a 16:1 local BL have floating pillars (1.28 fF each, 2.56 fF for BL+SL) that charge-share with a 0.246 fF ring and pull it ~90% of the way to the pillar voltage. Each plate pulse therefore corrupts every non-driven hole on that tier. The planar 64-cell emulation, with its own write electrode per cell, cannot reveal this.",
+      "would_change_my_mind": "A specified write scheme with extracted pillar-to-pillar coupling, e.g. read, precharge and float all 16 groups, then >=3 charge-share pulses to <10 mV error, with the page-write time and energy put in the model; or full-depth slits every select group (2 rows, ~300 nm), with the ~20-33% area penalty carried into §2.1 instead of 15%."
+    },
+    {
+      "id": "RT-DEV-and-stack-02",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§2.2 select margin ('142 fA per unselected cell'; model INPUTS guard_v 0.1 V, vt_read 0.5 V)",
+      "objection": "The cutoff arithmetic uses nominal Vt with a 0.1 V guard and ignores Vt variation in a 5 nm ALD oxide film lining a 60:1 recessed hole, where thickness and In/Ga/Zn composition drift with depth and the Vt of In-rich films moves of order 0.1 V per nm. At an assumed sigma_Vt of 50 mV over ~8e9 unselected cells per 16Gb die, the 1e-10 low-Vt cell (-318 mV) leaks ~3.5 decades over 142 fA, ~0.48 uA, i.e. 1.6 level steps of the 298 nA 2-b read. Even a 1e-4 cell (-186 mV) leaks ~17 nA, 6% of a level, and that leakage depends on the neighbour's stored level, which write-verify at read bias cannot cancel. The guard must be ~0.3-0.35 V, which raises the swing to ~2.1-2.2 V at CR_min 0.61 and the CR bar from 0.53 to ~0.61-0.63.",
+      "would_change_my_mind": "Measured per-tier sigma_Vt <=30 mV along a >=32-tier hole, or a summed 63-cell off-current distribution on >=1e4 holes with the 1e-4 hole below 1% of a level step at 85 C."
+    },
+    {
+      "id": "RT-DEV-and-stack-03",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§2.2 IPD (6 nm Al2O3/HfO2 laminate, 0.69 V across it on every neighbour read); §2.10 GO disturb test (1e9 neighbour writes only)",
+      "objection": "Every read of any tier in a hole swings the 63 other select plates by ~1.8 V, so each unselected ring moves 1.09 V and its IPD sees a 0.7 V excursion on every neighbour read. Al2O3/HfO2 laminates show dielectric relaxation and charge trapping (Curie-von Schweidler). At 0.1-1% of the IPD and gate displacement charge (~760 + 400 e-), that is ~1-12 e-, or 0.7-8 mV on a 0.246 fF ring per excursion, with history-dependent recovery. A hot hole read at MHz rates accumulates this against an 86 mV 2-b drift budget. The GO disturb test counts 1e9 neighbour writes but no neighbour reads.",
+      "would_change_my_mind": "A read-disturb test on the planar emulation: ring shift <=30 mV after 1e12 neighbour select-plate excursions at 85 C."
+    },
+    {
+      "id": "RT-DEV-and-stack-04",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§4 #2 topology closure; write FET L = one plate (~40 nm); 'write-plate hold -1.5 V gives 10.1 decades'",
+      "objection": "The ring must contact the film ohmically under its write plate yet act as an insulated gate on the same continuous film at the select level. Isolation rests on a ~40 nm write-plate-gated segment of 5 nm film, fringed by the adjacent select plate swinging ~1.8 V, and the vertical film path from the ring contact to the read channel is gated only by fringe. The '10 decades of suppression' assumes an ideal 90 mV/dec, but a 40 nm, side-gated, curved thin-film segment will show DIBL and a degraded slope. At an effective 120-150 mV/dec, suppression falls to 6-7.5 decades, which puts hold leakage near the 21 aA budget before any trap-assisted term.",
+      "would_change_my_mind": "3D TCAD of the real write-level segment, with fringe and curvature, showing >=9 decades; then a measured planar 'ring contact + gated segment + read channel' structure holding <=21 aA at 85 C."
+    },
+    {
+      "id": "RT-DEV-and-stack-05",
+      "dd": "and-stack",
+      "severity": "MINOR",
+      "section": "§4 #7 plate stack (W/Mo plates, 6 nm IPD to the film)",
+      "objection": "128 plates of CVD W (WF6 with H2/B2H6/SiH4 nucleation) carry fluorine and hydrogen, both shallow donors in IGZO, within 6-10 nm of the channel. Out-diffusion during later <=400 C steps shifts Vt negative and raises off-current exponentially. The H-lean mold addresses the oxide layers, not the metal plates.",
+      "would_change_my_mind": "PVD Mo plates, or SIMS showing F and H <=1e19 cm^-3 in the film after the full thermal budget, with delta-Vt <=30 mV."
+    },
+    {
+      "id": "RT-DEV-raw-ber-contract-01",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§5 steps 3 and 6 (reduced-tRCD double read as the flag proxy); GO-B (>=50% flaggable at 0.5 sigma)",
+      "objection": "Reduced-tRCD failures are dominated by slow charge sharing (high access-transistor or contact resistance, slow SA enable) and cluster by subarray and column, as Solar-DRAM itself showed. The flag proposed for new silicon targets small |dV| from charge loss or small Cs. These are different populations: a full-charge cell with a slow access path fails early sampling with a large |dV|, while a leaky but fast cell fails late with a small |dV|. GO-B and the 20-check-bit saving can therefore pass or fail for the wrong physical reason.",
+      "would_change_my_mind": "A validation on the DRAM Bender rigs in which truncated-tRAS cells, whose |dV| is known by construction, are shown to be the cells flagged at reduced tRCD, with the column/subarray correlation of flags within 2x of random."
+    },
+    {
+      "id": "RT-DEV-raw-ber-contract-02",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§5 population (60 DDR4 modules for raw physics; DDR5 only after on-die SEC) vs the commodity DDR5 RDIMM claim (§2.5, §2.7)",
+      "objection": "The product claim is relaxed refresh on DDR5 RDIMMs, but the decisive raw retention, VRT and cluster data come from DDR4, because DDR5 hides raw errors behind on-die SEC. Retention tails at 85 C are set by GIDL and trap-assisted junction leakage and by the WL-off bias, all of which change with each buried-channel cell generation, and a 1-beta cell at ~5.4 fF stores less charge than typical DDR4 cells, so the same leakage fails it sooner. A lognormal fitted on DDR4 (median 82 s, sigma_ln 1.24) cannot set the DDR5 interval; the 0.84-1.5 s result is a DDR4 result.",
+      "would_change_my_mind": "Raw (ECC-off) retention and cluster maps on >=20 1-alpha/1-beta DDR5 dies, via a vendor test mode or a DDR5 PHY, showing a safe interval >=0.5 s at 85 C."
+    },
+    {
+      "id": "RT-DEV-raw-ber-contract-03",
+      "dd": "raw-ber-contract",
+      "severity": "MINOR",
+      "section": "§2.5 VRT growth input (1x static BER per day); §9 kill #4",
+      "objection": "VRT comes from metastable defects in the storage-node depletion region whose switching is thermally activated (activation energies near 1 eV are typical). At 85 C cells toggle between leaky and normal states on minute-to-hour scales, so the population that is marginal at 1 s is far larger than at 64 ms. The 1x/day growth input has no source. The 4-week, 20-module soak measures a mean growth rate but not the joint probability of 2-3 VRT cells landing in one 64 B codeword within one scrub period.",
+      "would_change_my_mind": "Measured per-codeword VRT coincidence statistics at 1 s/85 C over >=4 weeks, folded into the 2e-19 calculation."
+    },
+    {
+      "id": "RT-DEV-raw-ber-contract-04",
+      "dd": "raw-ber-contract",
+      "severity": "MINOR",
+      "section": "§2.1 target 2e-19 per read; §5 pass line 'overdispersion within 2x of Poisson to 6 errors'",
+      "objection": "BCH-12 fails at >=13 errors per codeword, so the 2e-19 target is set by rare correlated mechanisms: a weak sub-wordline driver under-restoring a whole chip's contribution, or a MAT-edge defect, at 1e-12 to 1e-18 per codeword. A 6-month study of ~80 modules yields ~1e12-1e13 codeword observations, which bounds nothing below ~1e-12, and a Poisson check to 6 errors says nothing about 13.",
+      "would_change_my_mind": "A physical failure-mode census (sub-WL driver, MAT, column) with each mechanism's rate bounded independently, or fleet telemetry at >=1e15 codewords, before the JEDEC grade is fixed."
+    },
+    {
+      "id": "RT-DEV-raw-ber-contract-05",
+      "dd": "raw-ber-contract",
+      "severity": "MINOR",
+      "section": "§9 kill #1 revival ('oxide/IGZO cells, whose retention tail sits 1e3-1e4x to the right')",
+      "objection": "No IGZO DRAM array retention distribution at the 1e-4 to 1e-9 quantiles has been published: OCTRAM and 3D OCTRAM report a typical Ioff and no tail, and the rt-DEV search found no test temperature. Oxide cells also bring their own error physics: PBTI and hydrogen Vt drift that is systematic and correlated with temperature history, and RTN-driven off-current switching that behaves like VRT. The revival condition is unsupported as written.",
+      "would_change_my_mind": "A published IGZO 1T1C or 2T0C array retention CDF down to <=1e-6 at 85 C."
+    },
+    {
+      "id": "RT-DEV-pixel-stack-01",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§2.2 'RTN 1e-4 tail (3 x q/Cox·W·L) 4.2 mV'; model RTN constant",
+      "objection": "The RTN tail is set at 3x the single-trap mean step (1.39 mV for a 100 x 100 nm SF at EOT 3 nm). Trap amplitudes in small devices are exponentially distributed and enhanced 2-3x by percolation in amorphous channels (eta ~2.8-4.2 mV). If 1-30% of the ~5e8 SFs per die carry a trap whose time constant lies within 10x of the 15 ns CDS gap, the per-read 1e-4 quantile is eta*ln(50-1,500) = 4-7 eta, i.e. ~11-31 mV, not 4.2. That moves the 14.7 mV residual to ~21-42 mV, from GO into the 15-30 mV CONDITIONAL band or past the 30 mV NO-GO line. In a 0.01 um^2 device, Hooge 1/f and RTN also double-count, since the 1/f there is the sum of a few Lorentzians.",
+      "would_change_my_mind": "Time-domain RTN on >=1e4 SFs of <=0.01 um^2 at 85 C, giving a 1e-4 quantile of jumps within a 15 ns gap <=10 mV. The planar run can deliver this if analysed per device rather than by PSD."
+    },
+    {
+      "id": "RT-DEV-pixel-stack-02",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§2.3 retention (Ioff median 1 aA, sigma_Vt 30 mV, SS 80 mV/dec); §2.5 retention table",
+      "objection": "Retention closes (31 vs 34 aA) only at the optimistic end of every input. The dossier's own text gives 30-100 mV oxide offsets; at sigma_Vt 50 mV its table gives 0.15 s, and with a 50 mV hydrogen shift 0.04 s, about the same as DDR5's 32 ms hot interval. The 1 aA median is imported from a vertical OCTRAM device, whose test temperature and statistic are unpublished (rt-DEV.jsonl), into a lateral TFT deposited in a <=400 C multi-tier stack. 80 mV/dec at 85 C is near-ideal (ideal is 71). The 17x refresh-power claim is therefore unsupported.",
+      "would_change_my_mind": "Measured on the planar lot after the H/400 C splits: sigma_Vt <=30 mV, SS <=85 mV/dec at 85 C, and a 1e-4-quantile node leakage <=34 aA on >=1e4 nodes."
+    },
+    {
+      "id": "RT-DEV-pixel-stack-03",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§4 #4 hydrogen/thermal accumulation; GO 'bottom-tier delta-Vt <20 mV after the amp tier'",
+      "objection": "Group-1 cells absorb the thermal and hydrogen budget of 48 further cell tiers and 6-8 amp sub-layers, each with ALD channels and capacitor dielectrics from H-bearing precursors and 250-400 C steps: plausibly tens of hours at 300-400 C. The planar run tests one 400 C/H2 sequence and the 4-tier milestone tests one amp tier; neither bounds the 64-tier accumulation, where unbarriered IGZO commonly shifts by hundreds of mV. Retention falls ~2x per 20 mV of negative shift at sigma 30 mV (§2.5 table), so the bottom group sets the whole die's refresh.",
+      "would_change_my_mind": "A cumulative-dose anneal equal to the 64-tier budget on planar coupons with Al2O3/SiNx barriers, giving delta-Vt <=20 mV and an unchanged Ioff tail."
+    },
+    {
+      "id": "RT-DEV-pixel-stack-04",
+      "dd": "pixel-stack",
+      "severity": "MINOR",
+      "section": "§5 step 5 ('pixel amp as the meter: 1 mV in 1,000 s on 3 fF = 3e-21 A')",
+      "objection": "Over 1,000 s the SF itself drifts by more than 1 mV: from 1/f noise integrated down to 1 mHz, from PBTI under continuous bias, and from a Vt temperature coefficient of order -1 to -3 mV/K (0.5 K of chuck drift is ~1 mV). The RST device's own aA-level leakage adds to the signal. Sub-zA metrology needs a reference node and chopped readout.",
+      "would_change_my_mind": "A differential meter with a matched dummy node showing a baseline drift <0.3 mV per 1,000 s at 85 C."
+    },
+    {
+      "id": "RT-DEV-diode-tower-01",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§4 #1 paths (AgOx-class anodes, 1.0-1.2 eV on ZnO) and #8 anode stability; §5 anode matrix",
+      "objection": "AgOx on crystalline ZnO is the only contact class in the dossier that reaches the 1.07-1.12 eV low-field bar, but silver oxide is thermally unstable. Reported decomposition of Ag2O to Ag + O2 starts near 170-200 C in gas ambients and is essentially complete by ~400 C (logged in rt-DEV.jsonl). In the tower the anode goes down first and then sees IGZO ALD, every later tier and <=400 C anneals, so its barrier reverts toward a Ag/IGZO contact, and Ag diffuses fast through thin oxides (risking shorts through 5.5 nm ZrO2 and 15 nm IGZO). That leaves PtOx, IrOx, RuOx and MoOx, none shown at >=1.0 eV on amorphous IGZO.",
+      "would_change_my_mind": "Any anode on IGZO that keeps >=1.07 eV with sigma <=0.05 eV after the cumulative thermal budget of a 32-tier build (not one 400 C anneal), with no Ag detected in the ZrO2 by ToF-SIMS."
+    },
+    {
+      "id": "RT-DEV-diode-tower-02",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§2.3 leakage model (thermionic + image force + TFE + Gaussian patches); Q2 2027 gate '>=1.0 eV low-field'",
+      "objection": "Reverse leakage in wide-gap oxide and nitride Schottky diodes is usually not thermionic-limited. ZnO and GaN diodes commonly leak orders of magnitude above thermionic theory through trap-assisted tunnelling and Poole-Frenkel emission via deep states, and a-IGZO carries ~1e16-1e18 cm^-3 eV^-1 of V_O-related deep states. At the 0.87 MV/cm anode field of a depleted 15 nm shell, Poole-Frenkel lowering is ~2x the image-force term, ~0.2-0.35 eV. A barrier extracted by I-V-T and Werner-Guttler on thick diodes therefore does not predict ring leakage, and anodes may be down-selected on the wrong metric.",
+      "would_change_my_mind": "Ring-sized thin-shell diodes whose reverse current at 0.7 V tracks the thermionic prediction within 10x over 25-125 C (an activation energy equal to the barrier), on coupon structures (b) and (c)."
+    },
+    {
+      "id": "RT-DEV-diode-tower-03",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§5 step 2 ('anode below the IGZO, as in the tier')",
+      "objection": "The literature's 0.9-1.2 eV barriers on IGZO and ZnO come from top contacts sputtered in O2 onto the semiconductor, which oxidises the interface and removes V_O donors. In the tower the anode is underneath, and IGZO is grown on it by ALD with O3/H2O and metal-organic precursors at 150-300 C. That reduces noble-metal oxides (PtOx, AgOx, RuOx) and leaves a V_O- and H-rich interfacial layer that pins the Fermi level. Inverted, bottom-anode oxide Schottky diodes typically lose ~0.1-0.3 eV, which on its own widens the 0.15-0.2 eV gap to ~0.25-0.5 eV.",
+      "would_change_my_mind": "Bottom-anode diodes with ALD IGZO on top reaching the barrier and ideality (n <=1.3) of top-anode controls from the same run."
+    },
+    {
+      "id": "RT-DEV-diode-tower-04",
+      "dd": "diode-tower",
+      "severity": "MINOR",
+      "section": "§2.4 endurance; G4 (delta-phi <=30 meV after 1e12 pulses at 515 A/cm^2)",
+      "objection": "Noble-metal/IGZO interfaces are the active element of interface-type resistive switches, where oxygen-vacancy migration under repeated bias modulates the barrier. 1e12 forward pulses at ~515 A/cm^2, with ~1.1 V forward and reverse fields near 1 MV/cm, is a switching-like stress. Barrier drift is therefore a known mechanism, not just an unknown.",
+      "would_change_my_mind": "G4 passed on the G1-passing anode at 85 C with reverse-hold leakage re-measured every decade of pulses, delta-phi <=30 meV."
+    },
+    {
+      "id": "RT-DEV-charge-river-01",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§2.4 buried-channel factor 0.18x (f_it 0.6, eta_buried 0.9, eta_fz 0.4) at a 4.5e12 cm^-2 packet",
+      "objection": "A buried channel protects the packet from interface traps only while the charge stays away from the interfaces. Silicon BCCDs limit full well to ~1e12 cm^-2 with the potential maximum ~0.1-1 um deep for exactly this reason. Here a 4.5e12 cm^-2 packet in a few-nm heterochannel raises the 2D Fermi level ~36 meV (m* 0.3) and drops ~0.14-0.2 V across a 2-3 nm cap (E = qn/eps ~6.8e5 V/cm), consuming most of a 0.3 eV offset, so the top of every '1' packet reaches the cap interface. A 90% removal of interface loss is not credible at the design point. Buried operation needs <=~1e12 cm^-2 (~70 e- at 25 nm plates), where the model's own partition-noise floor is above 0.999.",
+      "would_change_my_mind": "A planar heterochannel CCD at a matched 4.5e12 cm^-2 showing >=3x lower deferral than surface IGZO at 50 MHz and 25 C, plus a Poisson-Schrodinger solve placing the packet's charge >=2 nm from any interface at full fill."
+    },
+    {
+      "id": "RT-DEV-charge-river-02",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§2.1 and §2.3 (read noise 8 e-, Gaussian; raw-BER target 4.9e-10, Q = 6.11)",
+      "objection": "The BER target is 5e-10 per decision, so read-chain tails matter at ~6 sigma, not 3.7. At end B the floating-diffusion source follower is an oxide FET whose RTN amplitudes are exponentially distributed. For a ~0.01 um^2 gate (eta ~1.4-4.2 mV, i.e. 2.6-7.9 e- at 534 uV/e-) with ~20% of devices carrying a fast trap, the 5e-10 quantile is ~19 eta, i.e. ~50-150 e-, against an eye half-width of ~100 e- at 65% survival. A Gaussian 8 e- term hides this. Silicon sensing at both ends would halve the bits per hole (density ~1.8x 1-beta).",
+      "would_change_my_mind": "A measured 1e-9 quantile of between-sample jumps <=30 e- on oxide FD-SF devices, or a design with silicon sensing at both ends and the density carried at 32 stages per hole."
+    },
+    {
+      "id": "RT-DEV-charge-river-03",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§4 #6 vertical integration (AR-80 hole, conformal ALD heterochannel); §5 'why planar first'",
+      "objection": "The 3.6x density needs a buried core/barrier/cap heterostructure, each layer a few nm thick, conformal down an 8 um x 100 nm hole, holding a >=0.3 eV offset from top to bottom. No ALD multilayer oxide heterostructure has been shown at AR 80. Composition gradients with depth (ALD supercycle growth per cycle depends on precursor depletion) shift the offset and the local channel potential along the string, and a step at the two-deck joint acts as a barrier or pocket. At 313 e-, a 30 mV local potential error (~1 kT at 85 C) is enough to strand charge at 150 MT/s.",
+      "would_change_my_mind": "A >=16-plate vertical coupon with TEM/EDS showing <=5% composition variation over the hole depth, and per-stage CTE within 2x of planar."
+    },
+    {
+      "id": "RT-DEV-charge-river-04",
+      "dd": "charge-river",
+      "severity": "MINOR",
+      "section": "§2.2 plate stack (25 nm W plates, 15 nm SiO2 inter-plate gaps, EOT 5 nm); CTE model",
+      "objection": "Single-level gates separated by 15 nm gaps (gap/gate 0.6, gap/EOT 3) leave the channel under each gap controlled only by fringing. That forms potential barriers or pockets that strand charge at high clock rates and low signal, which is why silicon CCDs use overlapping gates. The CTE model has no gap term. The planar run's 12-20 nm e-beam gaps will see it, but the vertical geometry (curved channel, deposited gap oxide) differs.",
+      "would_change_my_mind": "2D/3D electrostatics of the vertical gap showing a barrier or pocket <0.5 kT at full and fat-zero fill, confirmed by planar CTE versus gap width."
+    },
+    {
+      "id": "RT-DEV-charge-river-05",
+      "dd": "charge-river",
+      "severity": "MINOR",
+      "section": "§2.3 worst-string factor k_ws = 1.5 over ~1e8 strings",
+      "objection": "With ~1e8-1e9 strings per die, the worst-string factor is set by rare 'bright' defects (a pinhole, an In-rich cluster, a gap pocket), as with trap-dominated columns in CCD imagers. Poisson spread of ~1e2-1e3 traps per string alone gives only ~1.1-1.2. The 1e-8 quantile cannot come from a few hundred narrow planar channels, and the model shows that k_ws 3 alone moves the floor to ~0.9985.",
+      "would_change_my_mind": "A string-screening and spare-mapping scheme sized from a measured 1e-4 tail and extrapolated with a defect model, with the spare cost carried into density."
+    },
+    {
+      "id": "RT-DEV-lean-array-module-01",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§2.2 prior a_H2 ~0.27 'before the rotational-mode penalty'; §2.1 free-molecular ratio 2.09x",
+      "objection": "The 2.09x H2/He conductance per unit accommodation uses (gamma+1)/(gamma-1) = 6 for H2, which assumes full exchange of rotational energy. H2 has unusually large rotational quanta (J=0->2 at 44 meV, J=1->3 at 74 meV, against kT ~26-30 meV), and its rotational accommodation on surfaces is generally well below its translational accommodation [training knowledge]. At a rotational/translational ratio of 0.1-0.3, the factor is 4.2-4.6, not 6, and the H2/He ratio is ~1.5-1.6x, not 2.09x. In the model's own terms, the 0.27 prior becomes ~0.19-0.21 effective, just above the 0.17 GO line, and the dossier's own logged datum (H2 on W: 0.54 bare vs 0.14 under adsorbed H) points lower. P4 (50-75%) is not supported; ~P3 is.",
+      "would_change_my_mind": "Rig data on SiO2, SiN and CFx coupons giving an effective a_H2 >=0.20, fitted with the same h_gas() formula (which folds rotational exchange into the fitted coefficient)."
+    },
+    {
+      "id": "RT-DEV-lean-array-module-02",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§2.3 leak into the plasma (1.06-2.5 sccm H2); §3 delta 4 (the bundle with oxide cells)",
+      "objection": "The concept is bundled with oxide-channel arrays, yet it feeds 1-2.5 sccm of H2 into every chucked plasma step. There it dissociates into atomic H, which diffuses into exposed or near-surface films. IGZO is the most hydrogen-sensitive channel in the portfolio: other dossiers equate ~20 mV of Vt drift with ~3 ppm of the H in one PECVD SiN tier. Steps 1b and 2 test etch-rate and selectivity drift but include no oxide-device Vt or leakage monitor.",
+      "would_change_my_mind": "IGZO TFT monitor wafers run through the H2-cooled chamber at 2x the predicted leak with delta-Vt <=10 mV and unchanged Ioff; otherwise, a rule restricting H2 cooling to chambers that never see exposed oxide channels."
+    },
+    {
+      "id": "RT-DEV-lean-array-module-03",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§2.5 AAO mold at the 1-beta pitch (35.2 nm pitch, ~23 nm pores, 2.5-3.0 um deep)",
+      "objection": "Deleting the AR-60 fluorocarbon etch with AAO creates two harder problems. First, a TiN/ZrO2/TiN MIM must be deposited conformally in ~23 nm pores 2.5-3.0 um deep (AR ~110-130), roughly 3.1-4.5x the AR-squared ALD dose and time of today's AR-62 pillar. Second, the anodic barrier layer at each pore bottom (~1.0-1.4 nm/V x 14 V = 14-20 nm of alumina) must be opened to reach the landing pad. Wet widening cannot be afforded at a 35 nm pitch, and dry barrier etches are typically fluorocarbon or chlorine chemistry. The PFAS-free claim and the 5.8-7.0 fF parity both rest on these unshown steps.",
+      "would_change_my_mind": "A 35 nm-pitch AAO coupon with the barrier opened by a non-fluorocarbon process, a conformal MIM down to the pore bottom (TEM), and >=5.5 fF per pore at <=1e-7 A/cm^2."
+    },
+    {
+      "id": "RT-DEV-lean-array-module-04",
+      "dd": "lean-array-module",
+      "severity": "MINOR",
+      "section": "§5 Step 1 rig (static gas, coupons at 20-60 C)",
+      "objection": "The rig measures accommodation on coupons in static gas. Production backsides under bias are plasma-heated, H-terminated, polymer- or fluoride-contaminated and ion-bombarded at the edge, and accommodation is set by the outermost monolayer. Sandia's Ar-plasma clean shifted He by up to 0.10, so a static-gas coupon can misstate a_H2 by more than the 0.17-0.24 band that separates GO from drop-in.",
+      "would_change_my_mind": "Step 1b thermocouple-wafer data under plasma agreeing with the rig-fitted a_H2 within +/-0.03."
+    },
+    {
+      "id": "RT-DEV-lean-array-module-05",
+      "dd": "lean-array-module",
+      "severity": "MINOR",
+      "section": "§4 #10 Ga-free ZTO / In-lean channels (N-26)",
+      "objection": "Ga-free ZTO usually needs >=400-500 C anneals to reach low trap density. ZTO made at BEOL temperature shows larger hysteresis, more PBTI and Sn2+-related subgap states, and its ~1,500 s 2T0C result is on a long channel. Ioff <=1 aA at Lg <30 nm is unshown, so the materials module may trade a gallium risk for a leakage risk.",
+      "would_change_my_mind": "Short-channel (Lg <=40 nm) ZTO FETs made at <=400 C with SS <=90 mV/dec and extracted Ioff <=10 aA at 85 C."
+    },
+    {
+      "id": "RT-DEV-cell-wafer-foundry-01",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§2 GO ('after a <=250 C anneal, delta-Vt <=20 mV'); §4 #4 workarounds",
+      "objection": "Oxide-oxide (SiO2/SiCN) hybrid bonding releases water and hydrogen at the bond plane. Activated surfaces carry ~4-5 OH/nm^2, and condensation releases ~2-5e14 H2O/cm^2 within ~1 um of the top tier and of the oxide-TFT group selectors and WL predecode that sit on the bond side. An IGZO donor sheet of 1e12 cm^-2 shifts Vt by ~0.14 V at EOT 3 nm, so if ~0.03-0.07% of that inventory acts as donors in a channel, the 20 mV spec is broken. A 180-250 C bond slows diffusion but leaves the inventory in place for the life of the part. The Arrhenius-dose argument does not cover this.",
+      "would_change_my_mind": "ToF-SIMS on bonded 4-tier coupons showing no H rise in the top-tier channel, plus delta-Vt <=20 mV on top-tier cells and selector TFTs after bond, anneal and a 1,000 h 125 C bake, with or without an ALD Al2O3/SiN barrier under the bond layer."
+    },
+    {
+      "id": "RT-DEV-cell-wafer-foundry-02",
+      "dd": "cell-wafer-foundry",
+      "severity": "MINOR",
+      "section": "§2/§5 model 'bond-anneal thermal dose as equivalent time at 85 C (Ea 0.58-0.72 eV)'",
+      "objection": "Expressing a 250-350 C anneal as 0.09-37 years at 85 C assumes a single thermally activated process with the same activation energy at both temperatures. At bond temperatures, hydrogen release from SiCN/SiN, H transport through barriers and oxygen exchange in IGZO switch on, and none of these runs at 85 C at any rate. The Arrhenius map can understate bond-induced shifts and is no basis for the <=250 C spec.",
+      "would_change_my_mind": "Measured delta-Vt versus anneal temperature (150-300 C) on coupons, showing one activation energy that matches 85 C aging."
+    },
+    {
+      "id": "RT-DEV-cell-wafer-foundry-03",
+      "dd": "cell-wafer-foundry",
+      "severity": "MINOR",
+      "section": "§4 #7 oxide-TFT WL predecode ('digital and offset-tolerant')",
+      "objection": "An n-only oxide predecode passing ~3 V word-line pulses loses a threshold voltage per pass gate unless bootstrapped, and display-style bootstrapped IGZO gate drivers run at microsecond rates, not nanosecond. PBTI under 3 V at 85-125 C drifts the pass Vt by tens to hundreds of mV over life (the I-02936 critics' 50-100 mV), and that drift comes straight off the WL high level, and so off the write-'1' level and retention. Without the 1:8 predecode, WL bonds exceed the site budget at 1.5 um.",
+      "would_change_my_mind": "A 1:8 IGZO predecode delivering a 3.0 V WL with <=10 ns edges and <=50 mV level loss after 1,000 h at 125 C."
+    },
+    {
+      "id": "RT-DEV-cell-wafer-foundry-04",
+      "dd": "cell-wafer-foundry",
+      "severity": "MINOR",
+      "section": "§5 thermal cycling (-40/125 C, 500 cycles) on a ~5 um multi-tier oxide stack",
+      "objection": "The bonded interface is not the only weak plane. ALD laminates in the tier stack (Al2O3/HfO2/TiN/IGZO) often have adhesion energies of only a few J/m^2, comparable to an annealed bond. Post-bond thinning, Cu pad expansion (17 vs ~0.5 ppm/K for SiO2) and thermal cycling load the weakest interface. Delamination inside the stack would read as daisy-chain 'opens' and be blamed on the bond.",
+      "would_change_my_mind": "Four-point-bend adhesion >=5 J/m^2 on the tier stack, and FIB on every failed chain to locate the failing plane."
+    },
+    {
+      "id": "RT-DEV-ai-memory-diet-01",
+      "dd": "ai-memory-diet",
+      "severity": "MAJOR",
+      "section": "§2.4 endurance (2.33 DWPD on 3-DWPD drives; model INPUT spill_frac 1.0, no write-amplification term); GO 2",
+      "objection": "Endurance is sized on host writes with an implicit write amplification of 1. KV chunks expire on mixed timelines (12% never return, 1 h retention, per-session TTLs), so without FDP or ZNS placement the flash translation layer garbage-collects partly valid blocks, and typical WAF is ~1.3-2.0. That puts NAND wear at ~3.0-4.7 DWPD-equivalent against a 3 DWPD rating, and endurance, not bandwidth, becomes the binding drive count. GO 2 ('<=3 DWPD by SMART') passes if it reads host writes and fails if it reads NAND writes.",
+      "would_change_my_mind": "Rig data reporting NAND-side writes (vendor log page) with measured WAF <=1.25 under replayed expiry patterns, or FDP-enabled drives in the bill of materials with their WAF measured."
+    },
+    {
+      "id": "RT-DEV-ai-memory-diet-02",
+      "dd": "ai-memory-diet",
+      "severity": "MINOR",
+      "section": "§2.4 bandwidth sizing (14 GB/s per drive at rho <=0.6) over drive life",
+      "objection": "As NAND nears its P/E rating, raw BER rises and controllers fall back to read-retry and soft LDPC decoding, which cuts sustained read throughput. Fresh KV data (<=1 h) limits retention-driven retries, but wear-driven program noise still grows. The p99 gate is tested on new drives, while the design runs at rho ~0.5-0.6 with no end-of-life margin.",
+      "would_change_my_mind": "Restore throughput and p99 measured on drives pre-cycled to >=80% of rated endurance."
+    },
+    {
+      "id": "RT-DEV-ai-memory-diet-03",
+      "dd": "ai-memory-diet",
+      "severity": "MINOR",
+      "section": "§8 energy in use ('~1.9 kW per rack at 0.15 W/GB')",
+      "objection": "0.15 W/GB is a DDR5-RDIMM-class figure, but this rack's host memory is LPDDR5X on Grace, whose background power per GB is several times lower [training knowledge]. Freed host DRAM probably saves ~0.3-0.6 kW per rack, not 1.9 kW. At ~15-25 W per Gen5 drive under mixed load, 216 drive-equivalents draw ~3.2-5.4 kW. The diet costs energy against a no-flash design, and saves little against the 2026 flash-tier baseline.",
+      "would_change_my_mind": "Measured per-GB LPDDR5X power on a GB300 tray under serving load."
+    },
+    {
+      "id": "RT-DEV-ai-memory-diet-04",
+      "dd": "ai-memory-diet",
+      "severity": "MINOR",
+      "section": "§4 #4 flash slots and pod shelves; M/M/1 queue in §2.5",
+      "objection": "Gen5 E1.S and U.2 drives throttle at roughly 70-80 C composite temperature, and dense flash shelves beside liquid-cooled GPU racks are often air-cooled. A throttled drive can lose about half its bandwidth, which at rho 0.5-0.6 sets the p99 directly. Throttling and read/write interference (program/erase busy time on shared dies) are both outside the M/M/1 model.",
+      "would_change_my_mind": "A 24 h soak on the replay node at rack-representative inlet temperature, with drive temperatures logged and p99 held."
+    }
+  ],
+  "overall": {
+    "margin-stack": "Sound physics and the right keystone, but the 10x cut rests on an underived IGZO 1e-10 leakage tail, an unsupported 25 uS oxide gain FET and a Gaussian RTN budget; plan for ~1-1.5 fF (3-5x) until oxide-native ns-CDS and >=1e6-cell tail data exist.",
+    "hot-side-memory": "The energy case is robust at 1 b; the 2-b capacity claim fails on the dossier's own arithmetic if write-FET sigma_Vt >30 mV or read-FET RTN is uncontrolled, and bond-interface hydrogen must move into Gate A.",
+    "and-stack": "Biggest prize, least-closed device physics: write half-select on shared write plates, Vt-tail cutoff and IPD read disturb each force redesign-scale changes, and the planar 64-cell emulation tests none of them.",
+    "raw-ber-contract": "Coding arithmetic is solid; the device measurement is not, because the reduced-tRCD flag proxy samples the wrong error population and DDR4 raw data cannot set a DDR5 refresh interval.",
+    "pixel-stack": "A credible CDS argument, but RTN tails in 0.01 um^2 oxide followers and a sigma-30-mV retention assumption put 0.45 fF in the conditional band; the <=1 fF fallback (~4-5x) is the honest planning case.",
+    "diode-tower": "Least likely cell: the only >=1.0 eV contact class (AgOx) decomposes inside the thermal budget, and the bottom-anode geometry plus trap-assisted leakage widen a gap already 0.15-0.2 eV; P ~10-15%, cheap to kill, keep it as a coupon side-bet.",
+    "charge-river": "The decisive test is cheap, but the buried-channel lever cannot work at 4.5e12 cm^-2 in a few-nm film and oxide-SF RTN at a 5e-10 BER eats the eye; P ~10-20% unless imec's 98% turns out to be end-to-end.",
+    "lean-array-module": "A real hedge with overstated plausibility: rotational accommodation pulls the H2 prior to the GO line, the H2 leak-in conflicts with an oxide-cell portfolio, and AAO trades an AR-60 etch for AR-110-130 ALD plus an unsolved barrier opening.",
+    "cell-wafer-foundry": "The bond physics is credible engineering; the device risk is bond-interface hydrogen reaching the top tier and the selector/predecode TFTs, and the rest inherits the cells' risk.",
+    "ai-memory-diet": "No device physics blocks it; flash write amplification and end-of-life throughput are the physical risks, and the energy claim is overstated for LPDDR5X hosts."
+  }
+}

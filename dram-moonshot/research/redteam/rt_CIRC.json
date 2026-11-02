@@ -1,0 +1,386 @@
+{
+ "persona": "CIRC",
+ "persona_name": "DRAM circuit and sense-amplifier designer (signal margin, offset/RTN, coupling, timing, periphery pitch, refresh, ECC hardware, hammer)",
+ "objections": [
+  {
+   "id": "RT-CIRC-margin-stack-01",
+   "dd": "margin-stack",
+   "severity": "MAJOR",
+   "section": "§2.6 area / model §7 density; §5 MPW global CDS",
+   "objection": "The global CDS comparator does not pitch-match. There is one global line per buried bitline at 2F = 29.4 nm pitch, serving 16 segments x 32 cells = 512 cells (c_gbl_fF 6 fF = 15 um line), so each comparator gets 15 um x 29.4 nm = 0.44 um2 of under-array area. Each one needs an auto-zeroed comparator, two 10 fF sampling caps (c_sample_fF), a delayed-compare flag latch and a write-back driver. A plain 8-10-device DRAM latch SA already uses ~0.4-0.9 um2. The +8.8% die figure counts only the 4 in-array sites per segment and prices none of this. The fixes cost elsewhere. Lengthening the global line to 32-64 segments raises C_GBL to 12-24 fF, cuts local gain from 3 to ~0.75-1.5 and multiplies the comparator term 2-4x. Muxing comparators serialises restore of a destructively read row.",
+   "would_change_my_mind": "A layout of the full CDS comparator + sampling + restore + flag cell at <=0.44 um2 per 29.4 nm column, or a re-run of §2.3 and §7 at the global-line length that does fit, showing sigma_res and die area."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-02",
+   "dd": "margin-stack",
+   "severity": "MAJOR",
+   "section": "§2.6 cost / §2.7 table (density 0.701 Gb/mm2, $/bit flat)",
+   "objection": "ECC parity is missing from the density and $/bit numbers. The model gets 0.701 Gb/mm2 as 0.762/1.087, which counts only the segment overhead. The design needs BCH t=8, 80 check bits per 512 (15.6%), against the 6.25% on-die ECC already in A1's '16Gb + ECC' baseline (cells_16gb 1.7e10). That is a further x1.088 of die area, so density falls to ~0.644 Gb/mm2. At a capacitor-module share of 10/15/20%, $/bit becomes +12.7/+9.3/+5.8%, not +3.6/+0.4/-2.8%. RAW-BER CONTRACT's own corrected target (2e-19 per read) needs t=9 (17.6%), which is worse again. MARGIN STACK is a ~6-13% $/bit penalty on 4F2, not 'flat'.",
+   "would_change_my_mind": "An architecture that carries the t=8 code in bits that already exist (for example the RDIMM side band) without extra array bits, or a sourced capacitor-module cost share of >=30% from a teardown cost model."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-03",
+   "dd": "margin-stack",
+   "severity": "MAJOR",
+   "section": "§5 decisive experiment (22FDX MPW, M16-17 GO by projection)",
+   "objection": "The experiment cannot measure the two terms that set Cs. The GO statistic is sigma_res with coupling folded in, and §2.8 shows that alpha alone moves the 0.5 fF threshold from 23.5 mV (alpha 0.05) to 14.5 mV (alpha 0.20). The MPW is Si FD-SOI with MOM stubs and BEOL-metal segments. Its gain FETs have AVT ~1-2 mV*um and no IGZO trap noise, and its coupling geometry has nothing to do with a buried bitline at 29 nm pitch under vertical-gate wordlines. Oxide 1/f comes from coupons and is 'combined by projection' (§5 step 7). Neither alpha nor the oxide gain-FET residual is measured in situ, so D=5 ('decisive binary for <=$300k') is overstated.",
+   "would_change_my_mind": "Partner TCAD or field-solver alpha for a VCT 4F2 buried bitline, calibrated to published Samsung or SK hynix 4F2 coupling data, plus a measured IGZO gain-FET + CDS population (>=1,000 devices) at the real ~15 x 60 nm pillar footprint."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-04",
+   "dd": "margin-stack",
+   "severity": "MAJOR",
+   "section": "§2.3 post-CDS residual (sigma_1f_rtn_mV 4.0, Gaussian) / §2.9 GO metric",
+   "objection": "RTN is treated as a 4 mV Gaussian, but it has a heavy per-device tail. A 15 nm x 60 nm GAA pillar at 2 nm EOT has Cox*W*L ~ 17.3 fF/um2 x 0.0028 um2 = 0.049 fF. One trap therefore gives q/(Cox*W*L) ~ 3.3 mV, and percolation in oxide channels typically multiplies that 2-5x. RTN amplitudes are exponentially distributed across devices, as PIXEL-STACK's own rtn_mult note says, so the 1e-4 device quantile is ~7-9x the mean: ~25-45 mV, not 3.72 x 4 = 15 mV. A gain FET whose trap toggles between the two samples errs on all 32 cells it serves. The 0.5 fF planning cell survives with ~78 mV of post-coupling signal. The 0.09-0.32 fF row-I stretch (17-40x) does not, and a sigma-based GO threshold is the wrong statistic.",
+   "would_change_my_mind": "A measured per-device RTN amplitude distribution on >=10k scaled IGZO FETs at 85 C with a 5-15 ns sample gap, with a 1e-4 quantile <=15 mV, and a GO restated as a measured BER tail rather than sigma_res."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-05",
+   "dd": "margin-stack",
+   "severity": "MAJOR",
+   "section": "§2.4 ECC / §1 read timing (3.6 ns vs 14 ns tRCD)",
+   "objection": "On-die ECC latency and write granularity are not costed. A 592-bit codeword per device is 9x a DDR5 x4 burst (64 bits), so every access must fetch and decode 592 bits, and any write narrower than 512 data bits per device becomes a read-modify-write. That is the DDR5 on-die-ECC write penalty on a 4x larger codeword. At raw BER 1e-4, 1-(1-1e-4)^592 = 5.8% of reads take the BCH slow path: >=8 Berlekamp-Massey iterations plus a Chien search over 592 positions, ~10-20 ns at DRAM-periphery speed [ESTIMATE]. That lands in p95 read latency. Neither the 3.6 ns sense chain nor the tRCD comparison includes it.",
+   "would_change_my_mind": "A synthesis estimate of t=8 BCH decode latency and area per bank in a DRAM-periphery-class process, plus a column path that delivers 592 bits per access at DDR5 rates, folded into tCL, tCCD_WR and die area."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-06",
+   "dd": "margin-stack",
+   "severity": "MINOR",
+   "section": "§2.3 / model i_gain_uA 5, gain_local 3, vov_gain_V 0.4",
+   "objection": "The gain-FET drive is unsourced. 5 uA at 0.4 V overdrive (gm 25 uS, G=3 in 0.72 ns) is an estimate, while OCTRAM's '>15 uA' Ion is at full boosted overdrive (~2 V). Square-law scaling from that point gives ~0.6 uA and gm ~3 uS at 0.4 V, or G ~0.36 in 0.72 ns. Even linear scaling gives ~3 uA. Holding G=3 then takes ~1.2-6 ns per sample, which stretches the 3.6 ns read chain to ~6-14 ns. Holding the sample time instead raises the input-referred comparator term 2-8x.",
+   "would_change_my_mind": "Measured Id-Vg and gm of a same-step IGZO VCT pillar at 0.3-0.5 V overdrive with a pulsed negative read source."
+  },
+  {
+   "id": "RT-CIRC-hot-side-memory-01",
+   "dd": "hot-side-memory",
+   "severity": "MAJOR",
+   "section": "§2 density (array_eff_carrier 0.5) / §6 subarray 64x256 / §2 energy (8.1 fF RBL)",
+   "objection": "Periphery does not fit under the array as modelled. The energy number uses a 64-cell local read bitline in 64 x 256-cell subarrays. Across 16 tiers x ~2.5e10 cells per tier per die, that implies ~6.3e9 bitline segments and ~3.1e9 wordline drivers (a write and a read wordline per 256-cell row). Under 800 mm2 of carrier that is 0.13 um2 per SA and 0.26 um2 per driver. A level-shifting driver for the 2.2 V write-wordline swing (-0.5 to 1.7 V) in 28-65 nm CMOS is ~2-5 um2. Array efficiency 0.5 cannot hold with these subarrays. Real designs need 2-4k-cell rows and tier-shared SAs reached through oxide tier-select switches. Those put an extra oxide device (sigma Vt 30-100 mV, with its own PBTI) and 16-tier via capacitance into the 2-bit read path, which the 8 mV sense residual ignores.",
+   "would_change_my_mind": "A carrier floorplan for 16 tiers giving SA and wordline-driver counts per mm2 that fit 28-65 nm CMOS, with the energy and window budget re-run on the resulting bitline hierarchy."
+  },
+  {
+   "id": "RT-CIRC-hot-side-memory-02",
+   "dd": "hot-side-memory",
+   "severity": "MAJOR",
+   "section": "§2 multi-level margin (24 mV drift budget) / §5 Gate A (isothermal)",
+   "objection": "Cross-temperature reads are not budgeted. a-IGZO TFT threshold falls ~17 mV/K (Chen et al., IEEE TED 2009; logged in rt-CIRC). A GPU's local temperature swings 20-40 K between idle and load on ms-to-s scales, and hotspots move with the kernel. Data written at 80 C and read at 105 C therefore sees up to ~0.4 V of read-FET shift if uncompensated, against a 2-bit half-spacing of 100 mV and a 24 mV drift budget. Per-level references cancel only the common mode, and a 5% cell-to-cell tempco spread is ~20 mV at 25 K, which is the whole budget. Gate A measures drift isothermally at 85, 105 and 125 C, so it cannot see this.",
+   "would_change_my_mind": "Gate A adds write-at-T1, read-at-T2 maps (delta T +/-30 K) on >=1e5 cells with in-array references, showing residual sigma <=10 mV. Otherwise the plan should default to 1 bit per cell."
+  },
+  {
+   "id": "RT-CIRC-hot-side-memory-03",
+   "dd": "hot-side-memory",
+   "severity": "MAJOR",
+   "section": "§2 watts saved (traffic_frac 0.5 -> 193 W)",
+   "objection": "Traffic share is coupled to capacity, and the 193 W assumes the best capacity case. LLM decode reads every resident weight and KV byte each step, so the near tier's traffic share is roughly its share of resident bytes. A share of 0.5 needs ~144 of 288 GB, which only the 16-tier x 2-bit case gives (178 GB/GPU). At Gate A's 1-bit fallback, 16 tiers give 89 GB/GPU (31%) and ~119 W. The 8 x 1-bit first product gives 44 GB (15%) and ~58 W at the same 3.65 pJ/bit delta. The planning headline should be indexed to bits per cell and tier count.",
+   "would_change_my_mind": "A trace-driven study showing that a hot subset (<30% of resident bytes) carries >=50% of HBM traffic in real serving, or a tier plan that actually delivers 2 bits per cell at 16 tiers."
+  },
+  {
+   "id": "RT-CIRC-hot-side-memory-04",
+   "dd": "hot-side-memory",
+   "severity": "MINOR",
+   "section": "§2 density (ecc_overhead 1.125, RS(36,32)) vs raw_ber_target 1e-4",
+   "objection": "Capacity counts only the tier-orthogonal RS(36,32) at 12.5%. The window budget targets raw BER 1e-4, which RAW-BER CONTRACT says needs BCH t=9 (17.6%) against random bit errors. RS(36,32) with 8-bit symbols at 1e-4 has a symbol error rate ~8e-4 and fails ~4e-6 per codeword (P of >=3 symbol errors in 36). Adding an inner BCH cuts the capacity from 89 to ~76 GB per die, and the traffic share with it.",
+   "would_change_my_mind": "A combined random-plus-erasure code that meets 2e-19 per read within the 12.5% budget."
+  },
+  {
+   "id": "RT-CIRC-hot-side-memory-05",
+   "dd": "hot-side-memory",
+   "severity": "MINOR",
+   "section": "§2 energy (L_deliver_near_mm 1 vs L_deliver_hbm_mm 8)",
+   "objection": "The 1 mm delivery distance assumes every byte sits above its consumer. Tensor-parallel weight slices and KV are read by all SMs, and on an 800 mm2 die the mean distance from an SM to an arbitrary location is ~8-10 mm unless data is strictly partitioned per SM cluster (~0.6 GB per SM). At 56 fJ/mm, delivered energy is ~0.5-0.6 pJ/bit. That makes the ratio to HBM ~6.5x rather than 12x, although watts fall only ~10% (~176 W).",
+   "would_change_my_mind": "A placement and addressing scheme showing that >=80% of near-tier reads are served within 1-2 mm of the consuming SM."
+  },
+  {
+   "id": "RT-CIRC-and-stack-01",
+   "dd": "and-stack",
+   "severity": "MAJOR",
+   "section": "§2.2 select margin / model 'lowest ring potential -1.09 V', ss_mv_dec_85c 90, v_wp_hold -1.5",
+   "objection": "The write-FET hold margin during reads is thin. During any read in a block, the 63 unselected rings are pulled to -1.09 V while the write plates sit at -1.5 V. That leaves each write FET only 0.91 V below Vt. The claimed 10.1 decades (~3 aA from I(Vt) = 39 nA) assumes SS = 90 mV/dec at 85 C, which is an estimate. A published IGZO 2T0C shows 161 mV/dec at 300 K (Frontiers of Physics 2025; logged in rt-CIRC). At 120-160 mV/dec the margin is 5.7-7.6 decades, or ~0.1-0.8 fA. A -3.7 sigma Vt tail (sigma Vt 30-40 mV) costs another 1-1.7 decades. Against a 21 aA budget, any block with more than ~3-20% read duty fails 2-bit retention, a workload-dependent 'read hammer'. The fix is a hold of <=-2.5 V (a >=5 V write-plate swing, with IPD and gate-oxide stress) or a write-plate pull-down synchronised to the select plates.",
+   "would_change_my_mind": "Phase 1 measures write-FET leakage with the ring at -1.1 V and the plate at -1.5 V, at 85 C on >=1e4 devices, with a 1e-4 tail <=5 aA. Alternatively, a bias scheme that keeps the write FET's Vgs <=-1.5 V relative to the ring during reads, with its plate-driver cost."
+  },
+  {
+   "id": "RT-CIRC-and-stack-02",
+   "dd": "and-stack",
+   "severity": "MAJOR",
+   "section": "§2.4 multilevel / §3 'single-bias current-mode MLC read with write-verify at read bias' / §2.10 GO (isothermal)",
+   "objection": "MLC reads across temperature are not addressed. Write-verify at the read bias cancels per-cell CR, Vt and kickback only at the write temperature. The ring-gated film's Vt moves ~-17 mV/K (a-IGZO; Chen, IEEE TED 2009). A level written at 85 C and read at 35 C shifts ~0.85 V, most of the 1 V four-level window, and the mobility tempco changes the 298 nA level step as well. Per-page reference cells track only the common mode. A 5% tempco spread is ~40 mV at 50 K, against a 30 mV coupling budget and an 86 mV drift budget. Every GO test is isothermal.",
+   "would_change_my_mind": "Cross-temperature BER (write and read delta T +/-50 K) with in-page references in the Phase 1 emulation, with 2-bit raw BER <=1e-4."
+  },
+  {
+   "id": "RT-CIRC-and-stack-03",
+   "dd": "and-stack",
+   "severity": "MAJOR",
+   "section": "§2.3 read / model l_local_bl_um 20, SADP top BL 75 nm, 'flash comparators'",
+   "objection": "The sense amp does not pitch-match, which costs page bandwidth. The local bitline is 20 um long and runs to a bonded SA on a 75 nm SADP pitch, so each bitline has 1.5 um2 of footprint. The read is a clamped current-mode 2-bit flash (a clamp amplifier, 3 comparators and 3 reference currents), plus BL = SL data-write and verify drivers: ~10-20 um2 at 28 nm. That forces 8-16:1 column muxing. Page read width and the already slow 100 ns, 4-pulse write bandwidth then fall 8-16x. The '~15 ns non-destructive read' holds per bitline, not per page.",
+   "would_change_my_mind": "A bonded-SA floorplan at <=1.5 um2 per bitline, or read and write bandwidth per mm2 with the mux included, compared against DDR5."
+  },
+  {
+   "id": "RT-CIRC-and-stack-04",
+   "dd": "and-stack",
+   "severity": "MINOR",
+   "section": "§2.3 read current / model pillar_w_nm 22 (metal pillars, 5.4 um)",
+   "objection": "Pillar resistance is not modelled. Two 22 nm metal pillars 5.4 um tall (AR ~245) in TiN or W, at 30-150 uOhm*cm thin-film resistivity, are ~4-21 kOhm each. At 0.89 uA and a 0.1 V clamped Vds, bottom tiers lose ~8-38 mV of Vds, up to ~38% of current, so the 298 nA level step falls to ~185 nA. Write-verify cancels the static offset, but bottom-tier margin and the 1.5 ns resolve time degrade.",
+   "would_change_my_mind": "Pillar resistance and tier-position read current measured on the 4-tier stack."
+  },
+  {
+   "id": "RT-CIRC-and-stack-05",
+   "dd": "and-stack",
+   "severity": "MINOR",
+   "section": "§5 Phase 1 planar emulation / GO 'CR sigma <=0.03 over >=50 cells'",
+   "objection": "The planar emulation uses e-beam TiN islands, so it measures planar island-to-island CR spread. It cannot measure the tier-to-tier CR sigma that sets plate swing. That comes from hole taper and bow over a 5.4 um, 60:1 etch, which change ring arc, recess depth and C_IPD/C_gate from top to bottom. The GO number is therefore not the 64-tier number.",
+   "would_change_my_mind": "Report CR versus tier on the 4-tier vertical stack and extrapolate taper to 64 tiers from a NAND-class hole profile."
+  },
+  {
+   "id": "RT-CIRC-raw-ber-contract-01",
+   "dd": "raw-ber-contract",
+   "severity": "MAJOR",
+   "section": "§2.3 erasure flags / §6 IP 'file first: the DRAM sense-amp reliability flag'",
+   "objection": "The flag circuit cannot resolve its own window. The window is delta = 0.5 sigma = 3.6 mV. A latch's resolution time scales as tau*ln(V/dV), so signals of 3.6 and 7.2 mV differ by only tau*ln2 ~ 15-35 ps (tau ~20-50 ps). SAN/SAP enable skew along a 1k-SA strip, plus supply droop when ~8k SAs latch at once, is tens to ~150 ps, so a delayed-strobe flag sees skew rather than signal unless every SA is calibrated. The DRAM Bender reduced-tRCD proxy measures column-path timing marginality, not latch metastability. Phase 1 therefore cannot validate the flag the IP strategy files first.",
+   "would_change_my_mind": "sky130 or 22FDX silicon showing a per-SA flag-window sigma <=1.5 mV across a >=1k-SA strip at 85 C without per-SA trim."
+  },
+  {
+   "id": "RT-CIRC-raw-ber-contract-02",
+   "dd": "raw-ber-contract",
+   "severity": "MAJOR",
+   "section": "§1 controller diagram ('data + unsure flags') / §2.3",
+   "objection": "Flag storage and transport are not costed. The flag is born at row activation but read at the column access 15-50 ns later. Each bitline SA therefore needs a second latch and comparator: ~+20-40% SA-strip area, or ~+2-4% die [ESTIMATE]. DDR5 has no per-bit flag pins. At the modelled false-flag rate (~6e-4 per bit), a 512-bit line averages ~0.3 flags and needs ~10-20 bits of position code. BCH-12 already uses 120 of the 128 side-band bits, leaving 8. Flags must cost either burst beats (bandwidth) or check bits (code strength).",
+   "would_change_my_mind": "A protocol plus on-die encoder that carries flags within existing DDR5 RDIMM beats without weakening the code below the 2e-19 per read target, with the SA-strip area added."
+  },
+  {
+   "id": "RT-CIRC-raw-ber-contract-03",
+   "dd": "raw-ber-contract",
+   "severity": "MAJOR",
+   "section": "§2.5 / §2.4 (BCH-12 1.5 s vs RS-8 0.84 s; 'RS with one chip dead' 8.3e-7)",
+   "objection": "The 15x refresh headline gives up chipkill. It is the BCH-12 path (1-1.5 s), which cannot correct a dead x4 chip (64 bits per line), and hyperscale RAS requires SDDC/chipkill. The RS-8 path keeps chipkill but gives 0.84 s central and 0.50 s pessimistic, i.e. 13x and 7.7x. With one chip already dead, the maximum raw BER is 8.3e-7, so refresh must fall back toward 64-128 ms in degraded mode until the DIMM is serviced. The honest server number is ~8-13x, with a degraded-mode fallback.",
+   "would_change_my_mind": "A code that gives both BCH-12-class random-bit correction and SDDC within 128 check bits, with a measured safe interval >=1 s at 85 C."
+  },
+  {
+   "id": "RT-CIRC-raw-ber-contract-04",
+   "dd": "raw-ber-contract",
+   "severity": "MAJOR",
+   "section": "§2.5 idle-power saving 14-16% / §4 #5 self-refresh",
+   "objection": "Self-refresh may erase the idle saving. Idle is where refresh dominates module power, and DDR5 self-refresh runs off the on-die timer at a fixed tREFI, with temperature scaling only. Keeping DIMMs in power-down with controller-issued REF keeps the clock, the CA bus, the RCD and the controller PHY awake: ~0.3-1 W per RDIMM [ESTIMATE, training knowledge] against 0.456 W saved. Idle savings can go negative. The model treats this background cost as zero ('unmodelled').",
+   "would_change_my_mind": "Measured RDIMM plus PHY power on the Phase 2 platform, self-refresh versus power-down with 1 s controller REF, or a vendor test mode or JEDEC MR for a programmable self-refresh interval."
+  },
+  {
+   "id": "RT-CIRC-raw-ber-contract-05",
+   "dd": "raw-ber-contract",
+   "severity": "MAJOR",
+   "section": "§1 'ordinary loads and stores ~100-200 ns' / §2.1 decoder",
+   "objection": "The read chain falls outside DRAM-class latency. The contract lives in a CXL Type-3 controller, which adds ~70-150 ns load-to-use over local DDR5 [training knowledge]. At the contract BER, BCH-12 takes the slow path on 1-(1-1e-4)^576 = 5.6% of lines (Berlekamp-Massey plus Chien, ~15-30 ns at 28 nm), and Chase decoding of flagged lines adds more, so p95 sits on the slow path. For the commodity path this is a capacity-tier product. For new cells 'built to contract' to stay in the 10-100 ns class, the decoder must move on-die or into the host memory controller, which the plan does not cost.",
+   "would_change_my_mind": "A measured p50/p99 load-to-use latency distribution at injected raw BER 1e-4 on the Phase 2 FPGA controller, with an ASIC projection for an on-die or host-side decoder."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-01",
+   "dd": "pixel-stack",
+   "severity": "MAJOR",
+   "section": "§1 diagram 'CDS comparator in logic periphery' / model c_col_fF 15 ('shared by 16-32 SELs'), share 2, array_eff 0.55",
+   "objection": "There are too many comparators for the base wafer. Each vertical bitline has 0.022 um2 of footprint (2 mirrored cells per tier), there is one SF per 2 bitlines, and the 15 fF column line serves 16-32 SELs. That makes one auto-zeroed CDS comparator per 0.7-1.4 um2 of array footprint per 16-tier group, or 2.8-5.6 um2 even if all 4 groups share one base comparator. That area must also hold the sampling cap, the restore driver and the base wafer's share of 64 tiers of wordline drivers. An auto-zeroed comparator with a sampling cap at 22-28 nm is ~5-10 um2. Going to 64-128 SELs per column instead raises c_col to ~40-70 fF. With gm 10 uS, SF settling (tau = C/gm) grows from 1.5 to 4-7 ns per sample, and tRC from 55 ns toward ~75-90 ns.",
+   "would_change_my_mind": "A base-wafer floorplan per mm2 that lists comparators, wordline drivers and restore drivers and fits array_eff 0.55, with tRC and the noise budget recomputed at the resulting c_col."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-02",
+   "dd": "pixel-stack",
+   "severity": "MAJOR",
+   "section": "§2.2 read noise / model rtn_mult 3.0 ('1e-4-tail RTN = 3 x q/CoxWL')",
+   "objection": "The RTN tail input contradicts its own basis. The note says Si RTN amplitudes are exponential with a mean of 1-2 x q/(Cox*W*L). An exponential's 1e-4 quantile is ln(1e4) = 9.2x the mean, i.e. 9-18 x q/(Cox*W*L) = 13-25 mV, not 4.2 mV. Even discounting for trap occupancy and toggling probability (~7x the mean), it is ~10-20 mV. Substituted in, the readout residual moves from 14.7 mV to ~24-35 mV. That shifts the verdict from GO to CONDITIONAL or NO-GO at 0.45 fF and pushes Cs toward 0.6-0.75 fF: ~5-6x 1-beta rather than 6.2x.",
+   "would_change_my_mind": "The planar lot's RTN amplitude distribution on >=65k SFs at 85 C with a 15 ns gap, with a 1e-4 quantile <=6 mV at 0.01 um2."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-03",
+   "dd": "pixel-stack",
+   "severity": "MINOR",
+   "section": "§2.4 timing/energy (89 fJ, tRC 55 ns) / §4 #5 amp-tier area",
+   "objection": "Density, mask count and tRC cannot all hold at once. At share 2 the amp tier needs two sub-layers per 16-tier group (~8 extra masks per group, 32 per 64 tiers). Share 4 or 8 removes a sub-layer but gives a tRC of 106 or 210 ns, outside DRAM class. The SF static bias (2 uA x 1.2 V x 16 ns) makes reads 89 fJ/bit, 2x DDR5, and ~4 mA of static current per activated 4096-bitline row. The step-change claim should state which corner it is.",
+   "would_change_my_mind": "A single design point that meets tRC <=60 ns, energy <=46 fJ/bit and <=1 amp sub-layer per group, or a statement of which axis is conceded."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-04",
+   "dd": "pixel-stack",
+   "severity": "MINOR",
+   "section": "§2.2 coupling 'after decision feedback 1.2 mV' / model dfb_residual 0.15",
+   "objection": "Decision feedback is not free in a page that is sensed all at once. It needs the neighbours' decisions before the victim's, but every bitline on the open wordline is sensed simultaneously. That takes a two-pass compare with a per-comparator threshold DAC, ~+5 ns and extra area, none of it modelled. Without decision feedback the residual is 21.5 mV, and it fails at Cc/C_BL 0.2 (33.6 mV).",
+   "would_change_my_mind": "A comparator design with two-pass decision feedback and its area and time added to §2.4."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-05",
+   "dd": "pixel-stack",
+   "severity": "MINOR",
+   "section": "§2.3 retention / model h_vt_shift_mV 0.0",
+   "objection": "The planning retention (1.08 s) assumes zero hydrogen-induced Vt shift after the full <=400 C stack, while the gate only requires <20 mV. At 20 mV the model gives 0.67 s, so the '~17x lower refresh' headline rests on an input set to the best case.",
+   "would_change_my_mind": "Planning retention computed at the gate value (20 mV), or measured delta Vt <=3 mV after 400 C/H2 in the planar lot."
+  },
+  {
+   "id": "RT-CIRC-diode-tower-01",
+   "dd": "diode-tower",
+   "severity": "MAJOR",
+   "section": "§2.1 signal (sigma_cds_mV 7) / §4 #6 / §2.5 'CDS residual vs maximum tiers'",
+   "objection": "The gain-FET residual is inconsistent with the portfolio's own model. sigma_cds_mV = 7 is the 'midpoint of the concept's 5-10 mV'. PIXEL-STACK's model computes a 14.7 mV readout residual for a 100 x 100 nm oxide SF (0.01 um2), which is close to an in-hole FET in a 60 nm hole (pi x 60 nm x 60-100 nm = 0.011-0.019 um2). The RTN correction in RT-CIRC-pixel-stack-02 pushes that to ~24-35 mV. Per §2.5, 15 mV caps the back-wall tower at 14 tiers, below the 18-tier parity. The 1.9-3.9x density claim survives only on the wrapped capacitor (0.725 fF, +1 deposition per tier) or a bonded Si gain FET, so the base case should move there with its cost.",
+   "would_change_my_mind": "A measured post-CDS residual <=7 mV on an in-hole-sized oxide gain FET at 85 C, or §2.2 restated on the wrapped-Cs cell with its density and $/bit."
+  },
+  {
+   "id": "RT-CIRC-diode-tower-02",
+   "dd": "diode-tower",
+   "severity": "MAJOR",
+   "section": "§2.4 write / §3 delta 2 'V_f offsets largely cancel' / §4 #3 'V_f moves ~0.1 V from 0 to 85 C'",
+   "objection": "Cross-temperature V_f does not cancel. A level is stored as V_pillar,write + V_f - swing and read by dumping to V_pillar + V_f, so V_f cancels only when write and read happen at the same temperature. The dossier itself says V_f moves ~0.1 V between 0 and 85 C. A write at 85 C read at 25 C shifts the dumped charge by Cs*dV_f: 0.27 fF x ~70 mV / 1.27 fF = ~15 mV of pillar signal. That is ~35% of the 42 mV half-margin at 32 tiers (z 5.8 -> ~3.7) and more at 64 tiers (half-margin ~30 mV). The reference tier is written at a different time, so it does not cancel this either.",
+   "would_change_my_mind": "Coupon floating-node read error versus write and read temperature difference (+/-60 K), or a temperature-tracked reference scheme with its scrub rate."
+  },
+  {
+   "id": "RT-CIRC-diode-tower-03",
+   "dd": "diode-tower",
+   "severity": "MAJOR",
+   "section": "§2.4 'page = plate segment, slits every 4 rows' / §1 'CMOS under array: ~1.8-2 V plate drivers'",
+   "objection": "Plate drivers trade off against plate RC, and neither is in the model. A 25 nm TiN plate perforated by ~101 nm hole-plus-ring openings at 121 nm pitch (20 nm webs) has an effective R_sq of ~120-240 Ohm/sq. Each plate carries ~33 nodes/um x 0.27 fF plus fringe, ~12 fF/um. A 4-row (0.48 um) segment 50 um long then has an Elmore delay of ~3-6 ns, but at 200 um it is ~45-90 ns. Keeping 50 um segments at 32 tiers needs ~1.2M plate drivers/mm2, or 0.85 um2 each, for ~2 V thick-oxide drivers that need >=2-4 um2 with level shifting, plus a 32-step staircase at every segment. array_eff 0.55 is borrowed from A1 and prices none of this.",
+   "would_change_my_mind": "A plate-driver and staircase floorplan whose segment length meets <=10 ns RC at 32 tiers, or a demonstration of the I-11544 Vt-coded tier decoder."
+  },
+  {
+   "id": "RT-CIRC-diode-tower-04",
+   "dd": "diode-tower",
+   "severity": "MINOR",
+   "section": "§2.4 plate-swing rule (0.2 V guard) / model c_fringe_tier_fF (pillar-to-plate only)",
+   "objection": "The 0.2 V guard that keeps unselected nodes reverse-biased is eroded by plate k's 1.8 V swing coupling into nodes k+/-1. The plate-to-adjacent-node fringe is ~0.01-0.02 fF against a ~0.29 fF node (~4-7%), which gives ~70-120 mV and eats most of the guard. The model includes only pillar-to-plate fringe.",
+   "would_change_my_mind": "Extracted plate-to-adjacent-node coupling for the recessed-ring geometry, and a guard re-derived with it."
+  },
+  {
+   "id": "RT-CIRC-charge-river-01",
+   "dd": "charge-river",
+   "severity": "MAJOR",
+   "section": "§1 diagram / model holes_per_row 1 ('each hole on its own column line'), 512 SAs per 262,144-hole subarray, periph_eff 0.75",
+   "objection": "The per-hole output and injection devices are not priced. Each hole has its own column line, so it needs its own floating diffusion, reset, source follower and select at the top end, plus a fill-and-spill injection structure at each end for regeneration: ~5-7 oxide TFTs per hole end in a 0.02 um2 footprint. PIXEL-STACK's area model needs 0.034 um2 for one SF/RST/SEL set even when shared by 2 bitlines, and still requires two sub-layers. 'No transistor per bit' holds, at ~10-14 TFTs per 64 bits. But the hole ends need amp tiers that periph_eff 0.75 and the $1,200 array base do not price, and the noise of those scaled SFs is what sets the 8 e- read noise.",
+   "would_change_my_mind": "A layout of the per-hole output and injection set at <=0.02 um2, or a sharing scheme with its timing and noise, added to the cost and density model."
+  },
+  {
+   "id": "RT-CIRC-charge-river-02",
+   "dd": "charge-river",
+   "severity": "MAJOR",
+   "section": "§1 'a sense node reads each puddle ... and re-injects' / §2.6 latency and endurance / model n_t = 3 x stages + 2",
+   "objection": "A straight hole has no return path for regeneration. Readout is destructive at the segment end. Re-injection must happen either at the far end of the segment, which is mid-hole where no circuitry exists, or at the same end after the lap. The second option needs 32 bits of buffer per sense node: 1e6 nodes x 32 b = 32 Mb of latches, ~5-8 mm2 of 28-40 nm CMOS under a 9.9 mm2 die. It also needs a reverse lap, which doubles lap time (0.64 -> 1.28 us, so s must rise from 92% to ~96% for 40 ns) and plate cycles (1.5e11 -> 3e11, 30x beyond imec's >1e10). The model's 98-transfer read counts one input injection as if the input sat at the read end.",
+   "would_change_my_mind": "A U-shaped, pipe-connected string (Toshiba P-BiCS-style) or an explicit bidirectional scheme, with its buffer area, endurance and latency carried into the model."
+  },
+  {
+   "id": "RT-CIRC-charge-river-03",
+   "dd": "charge-river",
+   "severity": "MINOR",
+   "section": "§2.2 table 'core read energy 0.072 pJ/bit vs HBM 3.44 pJ' / model eta_rec 0.5",
+   "objection": "The energy comparison is not like for like. The 0.072 pJ/bit core read excludes I/O, while HBM's 3.44 pJ includes it. The 45 fJ/bit shift energy also assumes every bit of a 32-stage lap is consumed. A random single-bit access pays the whole lap, ~1.4 pJ per useful bit. 50% clock-energy recovery (eta_rec) at 50 MHz across per-row clock groups is unsourced: on-chip LC resonance would need uH-class inductors, so stepwise charging is the realistic route.",
+   "would_change_my_mind": "Energy per useful bit for measured trace mixes, with I/O and a specified clock-recovery circuit included."
+  },
+  {
+   "id": "RT-CIRC-charge-river-04",
+   "dd": "charge-river",
+   "severity": "MINOR",
+   "section": "§2.3 CTE floor / model sigma_read_e 8 (Gaussian)",
+   "objection": "The 4.9e-10 per segment-read target is a ~6.1 sigma decision, made on ~1e6 oxide source followers. With exponential RTN amplitudes, the worst SFs (q/(Cox*W*L) ~1.4 mV at 100 x 100 nm and 3 nm EOT; 1e-6 quantile ~14x the mean, ~19 mV, ~48 e- on 0.4 fF) lose about half the eye. The dossier's own sensitivity says 30 e- fails at any CTE. Sense-node screening and sparing, each spare costing ~512 holes x 64 bits, belong in the GO and the density figure.",
+   "would_change_my_mind": "A measured SF noise distribution over >=1e4 nodes and a sparing overhead added to the density figure."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-01",
+   "dd": "lean-array-module",
+   "severity": "MAJOR",
+   "section": "§2.3 leak into the plasma (fluorocarbon only) / §0 bundle with oxide cells",
+   "objection": "The leak-in analysis covers only fluorocarbon etch chemistry (0.5-1.2% H/F). The same ~1-2.5 sccm of H2 reaches the wafer in every chucked ALD, PECVD and etch step on the oxide-channel tiers this module is bundled with. H is a shallow donor in IGZO, and the portfolio's own budgets are tight. PIXEL-STACK tolerates <=3-20 mV of H-induced delta Vt. HOT-SIDE puts its 24 mV drift budget at ~3 ppm of H in one SiN tier. AND-STACK requires an H-lean mold. A continuous H2 backside source in oxide-tier chambers works against all three, and the GO tests only etch rate and selectivity.",
+   "would_change_my_mind": "An IGZO/ZTO FET split processed with H2 versus He backside gas in every chucked step after channel formation, showing delta Vt <5 mV and no Ioff tail shift. Alternatively, restrict H2 to chambers that never see an exposed oxide channel, and state the share of helium that leaves."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-02",
+   "dd": "lean-array-module",
+   "severity": "MAJOR",
+   "section": "§2.5 AAO (5.84 fF at 35.2 nm pitch, 11.9 nm mid-plane, EOT 0.55 nm)",
+   "objection": "The AAO capacitor geometry does not close. The pore is 0.65 x 35.2 = 22.9 nm, and Cs is computed at an 11.9 nm dielectric mid-plane with 0.55 nm EOT (~5.6 nm of k~40 ZrO2). That leaves ~2.7 nm for the outer electrode and a ~6 nm core for the inner electrode, down a 2.5 um pore: an ALD fill at aspect ratio ~400, against ~60 for today's capacitor, with 2.7 nm TiN walls of very high resistivity. A 1-beta pillar uses convex outer area, while an AAO pore has only concave inner area. The 'parity' 5.84 fF therefore assumes a three-layer conformal fill that has not been shown at this pitch.",
+   "would_change_my_mind": "TEM-verified TiN/ZrO2/TiN fill of >=2 um AAO pores at <=36 nm pitch, with >=5 fF measured per pore and leakage <=1e-7 A/cm2."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-03",
+   "dd": "lean-array-module",
+   "severity": "MINOR",
+   "section": "§2.5 AAO retention (67 ms at a 13 fA tail)",
+   "objection": "AAO's 67 ms at a 13 fA tail is only 5% above 64 ms, and DDR5 refreshes at 32 ms above 85 C. AAO therefore buys no refresh relief and no VRT guard band, and its silicon-access route keeps every circuit-side cost of today's DRAM. The 76 mV signal also uses a different droop convention from A1's 50 mV at 5.42 fF, which flatters the comparison.",
+   "would_change_my_mind": "Signal and retention restated on A1's droop convention with a >=2x VRT guard."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-04",
+   "dd": "lean-array-module",
+   "severity": "MINOR",
+   "section": "§0 thesis 'delete the fluorocarbon capacitor etch' / §1 module table",
+   "objection": "The PFAS step depends on the circuits working elsewhere. 'Stub or gain cells delete the HAR etch outright' holds only if MARGIN STACK's circuits, or a capacitorless cell, pass their GO. MARGIN STACK's 120 nm stub, the VCT pillar etch and the buried-bitline etch still use fluorocarbon chemistry. The module deletes the AR-60 step, not PFAS-class etch.",
+   "would_change_my_mind": "A fluorocarbon gas inventory per wafer, before and after, for the specific cell the module ships with."
+  },
+  {
+   "id": "RT-CIRC-cell-wafer-foundry-01",
+   "dd": "cell-wafer-foundry",
+   "severity": "MAJOR",
+   "section": "§2 bond grid ('1:8 oxide-TFT WL predecode') / §4 #7 'the predecode is digital and offset-tolerant'",
+   "objection": "The wordline drive through n-only oxide predecode is analog, not digital. IGZO cells need a negative wordline hold (~-0.5 to -0.7 V across the portfolio, for zA leakage) and a ~2.3-3 V high. An n-only pass TFT passes the high level only up to V_gate - Vt, so its gate needs ~3.5-4 V or 1970s-style bootstrapping. Its 50-100 mV Vt drift (the I-02936 critics' figure) lands directly on the wordline high level and therefore on the restore level. Unselected wordlines behind an off predecode TFT float instead of being clamped at the negative hold, so neighbour coupling lifts them and erodes retention. The predecode switches the wordline voltage itself.",
+   "would_change_my_mind": "A predecode/driver circuit with simulated wordline high and hold accuracy of +/-50 mV over oxide Vt drift, active clamping of unselected wordlines at <=-0.5 V, and its area in the 8% edge budget."
+  },
+  {
+   "id": "RT-CIRC-cell-wafer-foundry-02",
+   "dd": "cell-wafer-foundry",
+   "severity": "MAJOR",
+   "section": "§2 bitline and cell (Cs 1.16 fF at 26 mV) / model ecc 1.0625, dv_min_margin_mV 26",
+   "objection": "The sense threshold and ECC parity are inconsistent. Cs = 1.16 fF uses MARGIN STACK's 26 mV threshold, which exists only at raw BER 1e-4 with BCH t=8 (15.6% parity). The model uses ecc = 1.0625 (DDR5 on-die), which overstates density by ~8.8% (2.01 -> ~1.85 Gb/mm2). The 26 mV also assumes 1-beta-like coupling. A 47 um global line at 80 nm pitch behind a 146:1 oxide group select has data-dependent BL-BL coupling alpha ~0.1-0.2 per side, which the model omits. That requires S >= 26/(1-2*alpha) = 33-43 mV, i.e. Cs 1.5-2.0 fF. Together, density lands at ~1.5-1.75 Gb/mm2 (3.4-3.9x), and $/GB rises ~10-25%.",
+   "would_change_my_mind": "Field-solver alpha for the 47 um global line and a model re-run with ecc 1.156 (or the RAW-BER t=9 value), showing density >=4x."
+  },
+  {
+   "id": "RT-CIRC-cell-wafer-foundry-03",
+   "dd": "cell-wafer-foundry",
+   "severity": "MINOR",
+   "section": "§2 bond grid (SA ~2.5 um2 in 28 nm logic) / sensitivity",
+   "objection": "A 2.5 um2 SA in 28 nm logic is optimistic. It must deliver ECC-grade ~7 mV sigma with offset cancellation and restore through a 19.9 fF line and an oxide group-select switch (~50-100 kOhm at 40 nm IGZO, tau 1-2 ns). DRAM SAs are built on tailored periphery devices. The sensitivity row (1-5 um2 -> 3.8-4.8x) shows this matters, and the base case sits at the optimistic end.",
+   "would_change_my_mind": "A 28 nm SA layout with offset cancellation and write driver at <=2.5 um2, Monte Carlo offset <=7 mV."
+  },
+  {
+   "id": "RT-CIRC-cell-wafer-foundry-04",
+   "dd": "cell-wafer-foundry",
+   "severity": "MINOR",
+   "section": "§5 step 11 sense-margin emulation (programmable Cbl + 0-2 fF bond emulator)",
+   "objection": "The sense emulation on the MARGIN STACK MPW uses a lumped Cbl and a bond emulator. It leaves out the oxide 146:1 group-select switch (kickback, Vt spread, R_on) and the oxide wordline predecode, which are the electrical novelties of this split. Everything electrical that makes the split pay is therefore still unmeasured at the raise.",
+   "would_change_my_mind": "Oxide group-select and predecode TFTs on the coupon lot, read by the MPW, before the raise."
+  },
+  {
+   "id": "RT-CIRC-ai-memory-diet-01",
+   "dd": "ai-memory-diet",
+   "severity": "MAJOR",
+   "section": "§2.2 scenarios (human-chat gap model) / §4 #7 agents 'not modeled'",
+   "objection": "Agent and API traffic is exactly where the host tier earns its keep. The model's ~240 GB/GPU host tier holds a conversation for ~9 s. Agentic and API turns wait 1-10 s on tool calls, have no typing signal, and in 2026 carry a large and growing share of served tokens. For that traffic the host tier's hit rate would be high, not 5%. Host-lite forces those turns to flash or recompute, and the p99 TTFT gate on human chat traces never sees them.",
+   "would_change_my_mind": "The replay testbed includes an agent and API trace mix at a realistic share, and host-lite still meets p99 TTFT <=0.30 s."
+  },
+  {
+   "id": "RT-CIRC-ai-memory-diet-02",
+   "dd": "ai-memory-diet",
+   "severity": "MAJOR",
+   "section": "§2.2 scenario D / §5 step 4 latent gate (RULER only) / §4 #2",
+   "objection": "A single latent shared by all layers multiplies decode HBM traffic. GQA FP8 reads 2 KiB per token per layer. A latent shared across all 80 layers at 3x compression is ~53 KiB per token, and each layer must read all of it, even with MLA-style weight absorption. Per decode step that is ~80/3 = ~27x more KV read bandwidth: for a 32k context, ~139 GB per step versus 5.2 GB, unless it is held on-chip, which 1.75 GB per sequence cannot be. Decode is HBM-bandwidth-bound, so D's 'equal tokens/s' cannot hold. The latent gate measures only RULER accuracy.",
+   "would_change_my_mind": "A latent design (for example layer-group latents) whose per-step HBM read bytes are <= GQA FP8, and a latent gate that adds decode tokens/s at batch on the 8-GPU node."
+  },
+  {
+   "id": "RT-CIRC-ai-memory-diet-03",
+   "dd": "ai-memory-diet",
+   "severity": "MAJOR",
+   "section": "§2.4 drives (3 x 15.36 TB per GPU) / §4 #4 'local bays ~2 per GPU [UNVERIFIED-PK]'",
+   "objection": "The flash slots and the DRAM in the storage path do not add up. GB300 NVL72 compute trays expose 8 E1.S bays per 4-GPU tray (Cudo, Gigabyte, HPE specs; logged in rt-CIRC), with 15 TB the largest listed E1.S. That is <=2 local drives per GPU, so the 3rd drive-equivalent (~7 GB/s per GPU) must come over the scale-out NIC from pod shelves that carry their own server and BlueField DRAM. Enterprise TLC SSDs also carry ~1 GB of FTL DRAM per TB, ~46 GB across 3 x 15.36 TB per GPU, against the 176 GB/GPU freed. The 'DRAM GB per conversation' metric counts none of this. Including SSD DRAM alone moves 1.50x to ~1.44x, and shelf-server DRAM lowers it further.",
+   "would_change_my_mind": "A bill of DRAM across the full KV path (host, SSD controllers, storage servers and DPUs) for A and B0, with B0 still >=1.4x."
+  },
+  {
+   "id": "RT-CIRC-ai-memory-diet-04",
+   "dd": "ai-memory-diet",
+   "severity": "MINOR",
+   "section": "§2.5 p99 model (M/M/1 at rho<=0.6, reads only) / §4 #8",
+   "objection": "The p99 restore model queues reads only. Each GPU writes ~1.2-1.45 GB/s continuously at 2.33 DWPD. NAND program and erase operations (ms-scale) block reads on the same die, and garbage collection under mixed load adds write amplification above 1. That threatens both the p99 and the 3 DWPD gate unless FDP/ZNS placement keeps write amplification ~1.",
+   "would_change_my_mind": "Rig measurements of p99 restore latency and write amplification under the full read-plus-write mix."
+  }
+ ],
+ "overall": {
+  "margin-stack": "Circuit idea sound and 0.5 fF plausible, but the global CDS comparator does not fit a 29 nm column, the BCH parity turns 'flat' $/bit into +6-13%, and the 22FDX emulation cannot measure alpha or oxide RTN, the two terms that decide Cs.",
+  "hot-side-memory": "Energy win survives any reasonable correction, but 64-cell subarrays imply impossible driver/SA density in the carrier, 2-bit MLC ignores ~17 mV/K cross-temperature shift, and the 190 W needs the 16-tier x 2-bit capacity case.",
+  "and-stack": "Biggest density prize; at realistic IGZO swing (120-160 mV/dec) the -1.5 V write-plate hold leaks 5-40x the 21 aA budget during reads, 2-bit MLC needs a cross-temperature reference scheme, and the bonded current-mode SA forces 8-16:1 muxing.",
+  "raw-ber-contract": "Error-physics study is cheap and decisive, but the flag circuit cannot resolve a 3.6 mV window under SA strobe skew, flags have no pins or check bits to ride on, and the 15x headline gives up chipkill and ignores self-refresh.",
+  "pixel-stack": "CDS-in-oxide argument holds in principle, but one auto-zeroed comparator per 0.7-5.6 um2 does not fit the base wafer, and the RTN input (3x instead of ~9x q/CoxWL) hides a residual near the NO-GO line.",
+  "diode-tower": "Diode barrier aside, the 7 mV gain-FET residual is half the portfolio's own oxide-SF estimate (which caps the back-wall tower below parity), V_f cancels only isothermally, and plate drivers vs plate RC are unpriced.",
+  "charge-river": "CTE is the right binary test, but the design hides an amp tier at every hole end and has no regeneration return path in a straight hole; a buffer plus reverse lap doubles latency and plate wear.",
+  "lean-array-module": "A sound hedge on helium, but H2 leak-in into oxide-channel chambers conflicts with the portfolio's tight hydrogen budgets, and the AAO 'parity' capacitor assumes an AR-400 three-layer fill.",
+  "cell-wafer-foundry": "Bond physics is a fair first experiment, but wordlines through n-only oxide predecode with a negative hold are an analog problem, and the 26 mV threshold is booked without its 15.6% parity or global-line coupling.",
+  "ai-memory-diet": "Host-lite for human chat is plausible at ~1.4-1.5x, but agent/API traffic needs the host tier, a single shared latent multiplies decode HBM reads ~27x, and only 2 local drives fit per GPU."
+ }
+}
