@@ -585,6 +585,54 @@ def section_inductive():
     print(f"  4-high memory-on-logic: {3*hop:.1f} pJ/b worst hop; reported -26% die area vs TSV (7 nm SRAM stack)")
 
 
+# ==========================================================================================
+# B5-R  Arithmetic behind the REJECTED ideas (see B5-firstprinciples_notes.md)
+# ==========================================================================================
+def section_rejected():
+    hr("B5-R  REJECTED IDEAS: the numbers that killed them (each has a revival condition in the notes)")
+    # R1 acoustic delay line
+    v, rate = 5000.0, 10e9           # m/s (AlN-class), bits/s
+    bit_len = v / rate
+    width = 1e-6
+    d = 1 / (bit_len * width) / 1e6 / 1e9   # Gb/mm2
+    print(f"R1 acoustic delay line @10 Gb/s: bit length {bit_len*1e6:.2f} um, 1 um-wide line -> {d*1e3:.1f} Mb/mm2 "
+          f"= 1/{DENS_1B/d:.0f} of DDR5; 1 mm line = {1e-3/bit_len:.0f} bits, {1e-3/v*1e9:.0f} ns loop")
+    # R2 optical bistable nanocavity
+    lam, n = 1550e-9, 3.48
+    cell = (lam / (2 * n)) ** 2
+    print(f"R2 optical cavity at the diffraction limit: {(cell)*1e12:.3f} um2 -> {1e-6/cell/1e6:.0f} Mb/mm2 "
+          f"(1/{DENS_1B/(1e-6/cell/1e9):.0f} of DDR5 before any waveguides); holding 30 nW/bit -> {30e-9*1e9:.0f} W per Gb")
+    # R3 frequency-multiplexed NEMS resonator bits
+    E, f, Qm = 1e-17, 1e9, 1e4
+    p = E * 2 * math.pi * f / Qm
+    print(f"R3 resonator bit (E 1e-17 J, 1 GHz, Q 1e4): {p*1e12:.1f} pW/bit vs DRAM refresh 0.72 pW/bit @64 ms; "
+          f"Q 1e6 needed to reach {p*1e12/100:.2f} pW")
+    # R4 thermally gated write (single Arrhenius barrier)
+    tau0 = 1e-13
+    for t_hold in (1.0, 1e6):
+        Eb = kT_eV(T_RT) * math.log(t_hold / tau0)            # minimum barrier for the hold time at 300 K
+        T2 = Eb * Q / (KB * math.log(1e-9 / tau0))            # temperature giving a 1 ns hop over that barrier
+        print(f"R4 heat-as-gate: hold {t_hold:.0e} s at 300 K needs Eb >= {Eb:.2f} eV; a 1 ns write over it needs "
+              f"T_write = {T2:.0f} K (single Arrhenius barrier, tau0 0.1 ps)")
+    # R5 quantum-paraelectric SrTiO3 cryo capacitor
+    for k, t in ((20000, 20e-9), (2000, 100e-9)):
+        c = EPS0 * k * (40e-9) ** 2 / t
+        print(f"R5 planar STO k={k}, t={t*1e9:.0f} nm, 40x40 nm: {c*1e15:.2f} fF (field at 1 V = {1/t/1e5:.0f} kV/cm; "
+              f"STO k collapses at tens of kV/cm)")
+    # R6 via-threaded nanoring 'core memory'
+    for I in (100e-6, 1e-3):
+        H = I / (2 * math.pi * 25e-9)
+        print(f"R6 nanoring core: {I*1e6:.0f} uA through a via, r=25 nm -> H = {H:.0f} A/m = {H*4*math.pi*1e-3:.0f} Oe")
+    phi = 4 * math.pi * 1e-7 * 1e6 * (5e-9 * 20e-9)
+    print(f"   induction read: flux {phi:.1e} Wb switched in 1 ns -> {phi/1e-9*1e6:.2f} uV")
+    # R7 nanofluidic ion bit without a binding barrier
+    D = 5e-8 * 0.02585
+    print(f"R7 aqueous ion over 10 nm: drift at 1 V/10 nm {5e-8*1e8:.0f} m/s ({10e-9/(5e-8*1e8)*1e9:.0f} ns) but "
+          f"diffusive loss in {(10e-9)**2/D*1e9:.0f} ns without a binding barrier")
+    # R8 'ballistic' or superconducting bitlines
+    print("R8 bitline capacitance per length (~0.15-0.2 fF/um) is geometric: conductor material cannot lower it")
+
+
 def main():
     print("B5_firstprinciples_estimates.py -- dram-moonshot phase B, lens 5 (first principles & wild cards)")
     print(f"Anchors [A1]: 1b cell {CELL_1B_NM2:.0f} nm2, array eff {ARRAY_EFF}, {DENS_1B} Gb/mm2, "
@@ -608,6 +656,7 @@ def main():
     section_cdw()
     section_qdram()
     section_inductive()
+    section_rejected()
     return 0
 
 
