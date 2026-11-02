@@ -1,0 +1,99 @@
+{"id": "I-01913", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "atomic switch access", "note": ""}
+{"id": "I-01459", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "persistent DRAM flush", "note": ""}
+{"id": "I-06508", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical access switch", "note": "Light-gated photoconductor removes GIDL and wordline voltage; doubts: ns photoconductor speed and micron waveguide pitch vs cell pitch."}
+{"id": "I-09709", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "diamond access transistor", "note": ""}
+{"id": "I-08817", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "Coulomb blockade access", "note": "Ensemble averaging of offset charges is a fresh fix for SET variability; on-current and junction uniformity unproven."}
+{"id": "I-09268", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "Coulomb blockade access", "note": ""}
+{"id": "I-03271", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "piezoelectronic access switch", "note": ""}
+{"id": "I-01905", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "data-aware refresh skip", "note": ""}
+{"id": "I-06954", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01905", "theme": "data-aware refresh skip", "note": ""}
+{"id": "I-10659", "P": 3, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "ephemeral stacked gain cells", "note": "Accept ms retention to get cheap stacked poly-Si gain cells for short-lived AI data; doubt: 2T0C NAND-like stacking density claim."}
+{"id": "I-08356", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "oxide BEOL access", "note": ""}
+{"id": "I-11117", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "back-bias retrofit", "note": ""}
+{"id": "I-07448", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "cold-source access FET", "note": ""}
+{"id": "I-06955", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ephemeral memory binning", "note": ""}
+{"id": "I-09728", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "layer-transfer 3D tiers", "note": ""}
+{"id": "I-07867", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "Ga2O3 access TFT", "note": ""}
+{"id": "I-06968", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "SiC DRAM cell", "note": ""}
+{"id": "I-06980", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "temperature-aware refresh", "note": ""}
+{"id": "I-07443", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "single-electron memory", "note": ""}
+{"id": "I-07406", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01905", "theme": "data-aware refresh skip", "note": ""}
+{"id": "I-04199", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "heterojunction storage well", "note": ""}
+{"id": "I-00983", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "adaptive refresh control", "note": ""}
+{"id": "I-00051", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "wide-gap storage junction", "note": "Moving GIDL/SRH high-field region into a wide-gap contact is clever; heterointerface traps may simply relocate the leakage."}
+{"id": "I-10631", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-07448", "theme": "cold-source access FET", "note": ""}
+{"id": "I-07445", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "stacked local sense amps", "note": "8-cell bitline segments cut bitline load ~100x, easing charge wall and array energy; doubt: n-only oxide latch offset and speed."}
+{"id": "I-05109", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-00051", "theme": "wide-gap storage junction", "note": ""}
+{"id": "I-02831", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-06968", "theme": "SiC DRAM cell", "note": ""}
+{"id": "I-07906", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "approximate memory tier", "note": ""}
+{"id": "I-09274", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "VRT defect anneal", "note": "Boot-time thermal pruning of VRT defects is new; whether anneal favours low-leak state, and on-die thermal isolation, are unproven."}
+{"id": "I-06505", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "damage-free channel formation", "note": ""}
+{"id": "I-09738", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "crystallographic etch channels", "note": ""}
+{"id": "I-06504", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "backside thinned array", "note": ""}
+{"id": "I-07407", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "I-06968", "theme": "SiC DRAM cell", "note": ""}
+{"id": "I-00542", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "gated-diode gain cell", "note": ""}
+{"id": "I-03300", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "bio-template lithography", "note": "Protein-lattice masks hardened by SIS could replace EUV layers; doubt: defect density and registration to underlying array."}
+{"id": "I-00535", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "loadless 4T SRAM", "note": ""}
+{"id": "I-01911", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "tunnel-diode static cell", "note": ""}
+{"id": "I-08801", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "Vt-trim tail repair", "note": "Once-a-year charge-trap Vt trim of only tail transistors clips the refresh-setting tail; doubt: nitride in gate stack adding traps."}
+{"id": "I-11118", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "oxide BEOL access", "note": ""}
+{"id": "I-07414", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-09274", "theme": "VRT defect anneal", "note": ""}
+{"id": "I-06054", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "idle bias relaxation", "note": ""}
+{"id": "I-02378", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "backside trench capacitor", "note": ""}
+{"id": "I-01007", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bias-recovery detrapping", "note": ""}
+{"id": "I-04648", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS relay access", "note": ""}
+{"id": "I-10654", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "2D thyristor crosspoint", "note": "Stacked two-terminal latching cells could exceed 10x density; doubt: pA holding current and multilayer 2D transfer yield."}
+{"id": "I-09736", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "atomic layer etch", "note": ""}
+{"id": "I-07886", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fleet retention telemetry", "note": ""}
+{"id": "I-09285", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "canary-based refresh", "note": ""}
+{"id": "I-01922", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "transfer-printed transistors", "note": ""}
+{"id": "I-01464", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "domain-wall memory", "note": ""}
+{"id": "I-07405", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09285", "theme": "canary-based refresh", "note": ""}
+{"id": "I-04196", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "resonant energy recovery", "note": ""}
+{"id": "I-09741", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "lateral 3D DRAM process", "note": ""}
+{"id": "I-04687", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "thermally gated access", "note": "1.5 eV activation gives ~1e14 on/off between 25 and 400 C; doubts: heater energy, thermal crosstalk, dielectric leakage when hot."}
+{"id": "I-06056", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "asymmetric junction implant", "note": ""}
+{"id": "I-01448", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "junction defect anneal", "note": ""}
+{"id": "I-09261", "P": 2, "S": 1, "N": 4, "D": 5, "dup_of": "", "theme": "magnetic VRT suppression", "note": "Spin-dependent TAT quench via package magnet is novel and trivially testable; expected effect likely tiny."}
+{"id": "I-07434", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "I-04648", "theme": "NEMS relay access", "note": ""}
+{"id": "I-07877", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tracking sense reference", "note": ""}
+{"id": "I-06068", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-06980", "theme": "temperature-aware refresh", "note": ""}
+{"id": "I-06986", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "thermoelectric harvesting", "note": ""}
+{"id": "I-03279", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "bifurcation sense amp", "note": "Biasing latch at Hopf edge for high gain on tiny signals is fresh; noise and metastability may eat the margin."}
+{"id": "I-02373", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "multi-rate refresh", "note": ""}
+{"id": "I-04188", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "helical channel transistor", "note": "Helical ribbon channel multiplies Lg in a 4F2 pillar; fabricating spirals at ~20 nm is the miracle."}
+{"id": "I-01012", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pooled memory servicing", "note": ""}
+{"id": "I-10197", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-01911", "theme": "tunnel-diode static cell", "note": ""}
+{"id": "I-03295", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "protonic memory", "note": ""}
+{"id": "I-00509", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "refresh-fused bulk ops", "note": ""}
+{"id": "I-09287", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-01905", "theme": "data-aware refresh skip", "note": ""}
+{"id": "I-06027", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "I-07867", "theme": "Ga2O3 access TFT", "note": ""}
+{"id": "I-01930", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "suspended-gate FET", "note": ""}
+{"id": "I-03728", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "field-effect junction passivation", "note": ""}
+{"id": "I-03738", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hydrogen reservoir passivation", "note": ""}
+{"id": "I-07413", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-06054", "theme": "idle bias relaxation", "note": ""}
+{"id": "I-11083", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-04648", "theme": "NEMS relay access", "note": ""}
+{"id": "I-10178", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "liquid-metal printed oxide", "note": "Room-temperature transfer of Ga2O3 skin from liquid metal as BEOL channel; wafer-scale uniformity and contacts are open."}
+{"id": "I-11112", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "workload-aware refresh scheduling", "note": ""}
+{"id": "I-06071", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "neighbor wordline bias", "note": ""}
+{"id": "I-03752", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09738", "theme": "crystallographic etch channels", "note": ""}
+{"id": "I-10169", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "laminated poly channel", "note": "Cross-ply textured channels break percolating grain-boundary leak paths; cheap to test in TFT runs."}
+{"id": "I-00052", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "field-plate junction", "note": ""}
+{"id": "I-00516", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-04648", "theme": "NEMS relay access", "note": ""}
+{"id": "I-03732", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "nonlinear series barrier", "note": "Crested barrier in storage contact adds bias-dependent nonlinearity; doubt: series resistance at 10 ns write currents."}
+{"id": "I-08827", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "printed diode access", "note": "Two printed diodes replace the access transistor; reverse leakage and micron pitch likely kill retention and density."}
+{"id": "I-10203", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-06955", "theme": "ephemeral memory binning", "note": ""}
+{"id": "I-00058", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "1S1C crosspoint DRAM", "note": "Stackable 4F2 1S1C would be a 3D DRAM; required 1e9 V/2 selector nonlinearity is far beyond known selectors."}
+{"id": "I-09277", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "dipole Vt engineering", "note": ""}
+{"id": "I-01451", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "NEMS bistable memory", "note": ""}
+{"id": "I-01902", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention descriptor standard", "note": ""}
+{"id": "I-05114", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "2D channel vertical access", "note": ""}
+{"id": "I-00539", "P": 4, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "display-fab memory", "note": "Reuse depreciated LCD lines as 1T1C arrays; cost/area falls 100x but density falls far more, so cost/bit worsens."}
+{"id": "I-06956", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-07445", "theme": "stacked local sense amps", "note": ""}
+{"id": "I-06952", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "TFET access", "note": ""}
+{"id": "I-10640", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09285", "theme": "canary-based refresh", "note": ""}
+{"id": "I-10198", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "resonant-tunneling access", "note": ""}
+{"id": "I-08808", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "roll-to-roll imprint arrays", "note": "Single-stamp self-aligned imprint solves web overlay; micron pitch keeps density too low for cost/bit win."}
+{"id": "I-10645", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "OS-directed refresh skip", "note": ""}
+{"id": "I-06964", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "external VPP supply", "note": ""}
+{"id": "I-06530", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "innovation prize policy", "note": ""}

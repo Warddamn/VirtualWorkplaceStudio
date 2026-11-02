@@ -1,0 +1,105 @@
+{"id": "I-09255", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "diamond access channel", "note": ""}
+{"id": "I-07889", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "approximate significance refresh", "note": ""}
+{"id": "I-05582", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "local SOI storage junction", "note": ""}
+{"id": "I-00076", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic implant", "note": ""}
+{"id": "I-04691", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "broadcast self-refresh", "note": "Global clock tops up only stored 1s, letting leaky TFT cells skip row refresh; doubt: continuous clock power and bistable margins across billions of cells."}
+{"id": "I-02848", "P": 2, "S": 4, "N": 5, "D": 2, "dup_of": "", "theme": "drawn-fiber memory", "note": "Litho-free km-scale drawn fiber columns woven into 3D blocks; doubt: fiber feature sizes and chalcogenide speed far from DRAM density."}
+{"id": "I-05136", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "asymmetric ECC refresh", "note": ""}
+{"id": "I-00552", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "floating negative wordline", "note": ""}
+{"id": "I-06515", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "ferroelectric domain-wall memory", "note": ""}
+{"id": "I-00084", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "atomic layer etching", "note": ""}
+{"id": "I-07433", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "voltage-stacked subarrays", "note": ""}
+{"id": "I-00997", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-00999", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "disaggregated periphery die", "note": ""}
+{"id": "I-01932", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "air-gap isolation", "note": ""}
+{"id": "I-00091", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01932", "theme": "air-gap isolation", "note": ""}
+{"id": "I-01889", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "wide-gap access transistor", "note": ""}
+{"id": "I-06990", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "buried wordline metal", "note": ""}
+{"id": "I-04674", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-00997", "theme": "DIMM reuse market", "note": ""}
+{"id": "I-06522", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-refreshing gain cell", "note": ""}
+{"id": "I-09253", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelectric back-bias", "note": ""}
+{"id": "I-10165", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "laser zone refining", "note": ""}
+{"id": "I-07871", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention-bin product grades", "note": ""}
+{"id": "I-09720", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "adiabatic refresh", "note": ""}
+{"id": "I-02810", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "heterojunction GIDL suppression", "note": ""}
+{"id": "I-05576", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lifetime-aware refresh skip", "note": ""}
+{"id": "I-07441", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "ultralow-leak small capacitor", "note": "Ultra-low-leak wide-gap access lets a planar 0.5 fF cap replace the 60:1 pillar; doubt: sensing ~3k electrons at DRAM speed and noise."}
+{"id": "I-10633", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "refresh piggybacking", "note": ""}
+{"id": "I-06519", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "lifetime-matched volatile memory", "note": ""}
+{"id": "I-00068", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cold memory refresh", "note": ""}
+{"id": "I-01444", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "twin-cell mode", "note": ""}
+{"id": "I-11111", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "PASR memory compaction", "note": ""}
+{"id": "I-09279", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fixed-charge GIDL passivation", "note": ""}
+{"id": "I-01895", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-04691", "theme": "broadcast self-refresh", "note": ""}
+{"id": "I-03308", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BTI recovery pulses", "note": ""}
+{"id": "I-05572", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical access gating", "note": ""}
+{"id": "I-05577", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "per-cell Vt trimming", "note": ""}
+{"id": "I-06490", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-05577", "theme": "per-cell Vt trimming", "note": ""}
+{"id": "I-06953", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "VRT trap conditioning", "note": ""}
+{"id": "I-06973", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "heterostructure charge storage", "note": ""}
+{"id": "I-09711", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "per-cell Vt trimming", "note": ""}
+{"id": "I-09742", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "laser melt anneal", "note": ""}
+{"id": "I-11119", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-05577", "theme": "per-cell Vt trimming", "note": ""}
+{"id": "I-03741", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline standby bias", "note": ""}
+{"id": "I-11125", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "retention profiling", "note": ""}
+{"id": "I-01918", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "GAA access device", "note": ""}
+{"id": "I-01469", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "vacuum floating-gate cell", "note": ""}
+{"id": "I-04649", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "vacuum-channel access", "note": ""}
+{"id": "I-06495", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04649", "theme": "vacuum-channel access", "note": ""}
+{"id": "I-07868", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04649", "theme": "vacuum-channel access", "note": ""}
+{"id": "I-09251", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04649", "theme": "vacuum-channel access", "note": ""}
+{"id": "I-11091", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04649", "theme": "vacuum-channel access", "note": ""}
+{"id": "I-07885", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "passivated storage contact", "note": ""}
+{"id": "I-11120", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "DIMM undervolting", "note": ""}
+{"id": "I-02834", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "panel TFT memory", "note": ""}
+{"id": "I-01440", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-05582", "theme": "local SOI storage junction", "note": ""}
+{"id": "I-05604", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dry planarization", "note": ""}
+{"id": "I-01436", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "hierarchical local sensing", "note": ""}
+{"id": "I-02822", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "data-aware partial refresh", "note": ""}
+{"id": "I-06957", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "stacked access transistor", "note": ""}
+{"id": "I-03756", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "selective-deposition GIDL spacer", "note": ""}
+{"id": "I-04208", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "cryogenic impact-ionization switch", "note": ""}
+{"id": "I-06033", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "resonant-tunneling access", "note": ""}
+{"id": "I-09256", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "graphene barristor access", "note": ""}
+{"id": "I-04654", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-05136", "theme": "asymmetric ECC refresh", "note": ""}
+{"id": "I-00085", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "oxide channel passivation", "note": ""}
+{"id": "I-00513", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-05577", "theme": "per-cell Vt trimming", "note": ""}
+{"id": "I-00536", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "nonvolatile shadow", "note": ""}
+{"id": "I-06047", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "charge-trap DRAM cell", "note": ""}
+{"id": "I-07439", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical wordline drive", "note": ""}
+{"id": "I-08343", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-07889", "theme": "approximate significance refresh", "note": ""}
+{"id": "I-00537", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CCD loop memory", "note": ""}
+{"id": "I-04690", "P": 2, "S": 5, "N": 3, "D": 2, "dup_of": "", "theme": "crested-barrier crossbar", "note": "Transistor-free, capacitor-tower-free 4F2 decks from blanket depositions would cut cost/bit >10x; doubt: capacitive crossbar readout and 1e12 write/hold contrast."}
+{"id": "I-08326", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "fleet retention profiling", "note": ""}
+{"id": "I-04192", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04691", "theme": "broadcast self-refresh", "note": ""}
+{"id": "I-08335", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-07871", "theme": "retention-bin product grades", "note": ""}
+{"id": "I-11090", "P": 1, "S": 3, "N": 3, "D": 2, "dup_of": "I-05572", "theme": "optical access gating", "note": ""}
+{"id": "I-04197", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "crested-barrier selector", "note": ""}
+{"id": "I-07903", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tungsten-free wordline", "note": ""}
+{"id": "I-08361", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "porous-Si 3D tiers", "note": ""}
+{"id": "I-00543", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-05582", "theme": "local SOI storage junction", "note": ""}
+{"id": "I-09721", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "wide-gap access transistor", "note": ""}
+{"id": "I-02835", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "self-assembled pore array", "note": ""}
+{"id": "I-09734", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "4F2 vertical channel", "note": ""}
+{"id": "I-00526", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "retention-aware allocation", "note": ""}
+{"id": "I-09724", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "negative-capacitance access", "note": ""}
+{"id": "I-11127", "P": 3, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "weak-cell remap table", "note": ""}
+{"id": "I-07436", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-09724", "theme": "negative-capacitance access", "note": ""}
+{"id": "I-01003", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory-as-a-service leasing", "note": ""}
+{"id": "I-02385", "P": 3, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "ECC-feedback refresh", "note": ""}
+{"id": "I-05596", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "high-temperature HBM", "note": ""}
+{"id": "I-05587", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-07871", "theme": "retention-bin product grades", "note": ""}
+{"id": "I-09729", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "SiC refresh-free DRAM", "note": ""}
+{"id": "I-05601", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00552", "theme": "floating negative wordline", "note": ""}
+{"id": "I-00073", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "nanoimprint lithography", "note": ""}
+{"id": "I-04221", "P": 2, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "X-ray lithography", "note": ""}
+{"id": "I-10199", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "mechanical nanoparticle bit", "note": ""}
+{"id": "I-06040", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "adaptive sense reference", "note": ""}
+{"id": "I-01449", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "boosted refresh restore", "note": ""}
+{"id": "I-00088", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "access-aware refresh skip", "note": ""}
+{"id": "I-01891", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-00088", "theme": "access-aware refresh skip", "note": ""}
+{"id": "I-07870", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-00088", "theme": "access-aware refresh skip", "note": ""}
+{"id": "I-05585", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ultrathin channel confinement", "note": ""}
+{"id": "I-05589", "P": 1, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "single-electron access", "note": ""}
+{"id": "I-05590", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dry pre-clean", "note": ""}
+{"id": "I-05591", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "CO2 cleaning", "note": ""}

@@ -1,0 +1,96 @@
+{"id": "I-04246", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "twisted bitline 3D", "note": ""}
+{"id": "I-00566", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "negative capacitance sensing", "note": ""}
+{"id": "I-07944", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sequential wordline token", "note": ""}
+{"id": "I-06546", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "CCD bitline readout", "note": ""}
+{"id": "I-11173", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "non-driven plate FeRAM", "note": ""}
+{"id": "I-01498", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "NEMS relay drivers", "note": ""}
+{"id": "I-11154", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "per-SA NV backup", "note": ""}
+{"id": "I-01055", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "folded periphery flex", "note": ""}
+{"id": "I-04716", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "oxide TFT latch cell", "note": ""}
+{"id": "I-03352", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "memory link compression", "note": ""}
+{"id": "I-09323", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "replica-cell refresh timing", "note": ""}
+{"id": "I-04696", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multilevel DRAM readout", "note": ""}
+{"id": "I-09776", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "DSA periphery patterning", "note": ""}
+{"id": "I-00128", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "RF reflectometry readout", "note": ""}
+{"id": "I-02437", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-scale memory", "note": ""}
+{"id": "I-01964", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09776", "theme": "DSA periphery patterning", "note": ""}
+{"id": "I-03313", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "averaged-reference sensing", "note": ""}
+{"id": "I-07911", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "repeated-sampling gain cell", "note": ""}
+{"id": "I-07493", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "open periphery IP", "note": ""}
+{"id": "I-02893", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "all-oxide n-type periphery", "note": ""}
+{"id": "I-06558", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "varactor parametric preamp", "note": ""}
+{"id": "I-07476", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "early ACT decode", "note": ""}
+{"id": "I-03350", "P": 4, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM cooling refresh", "note": ""}
+{"id": "I-06087", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "optical wordline addressing", "note": ""}
+{"id": "I-06548", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "open array-periphery interface", "note": ""}
+{"id": "I-09790", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "anodized gate dielectric", "note": ""}
+{"id": "I-08865", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "3D plated-wire magnetic", "note": "Transistorless 3D magnetic cell with unlimited endurance; doubts: nm-film inductive/AMR signal is tiny, half-select disturb, high write currents."}
+{"id": "I-04248", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Mott neuristor repeaters", "note": ""}
+{"id": "I-07459", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ferroelectric SA offset trim", "note": ""}
+{"id": "I-03332", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "time-coincidence decoder", "note": ""}
+{"id": "I-00581", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-hammer address randomization", "note": ""}
+{"id": "I-01966", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fluorine-free dielectrics", "note": ""}
+{"id": "I-10713", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "OS mat retirement", "note": ""}
+{"id": "I-08377", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "active guard bitlines", "note": ""}
+{"id": "I-07945", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bitline charge recycling", "note": ""}
+{"id": "I-05179", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "bidirectional EM rails", "note": ""}
+{"id": "I-05633", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention-grade binning", "note": ""}
+{"id": "I-06090", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "charge-transfer preamp", "note": ""}
+{"id": "I-01503", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "BEOL MIM pump caps", "note": ""}
+{"id": "I-02895", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "strong-ECC relaxed sensing", "note": ""}
+{"id": "I-01939", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "plate-pulsed ground sensing", "note": ""}
+{"id": "I-02425", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "off-die VPP converter", "note": ""}
+{"id": "I-10699", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "shared spare sense amp", "note": ""}
+{"id": "I-05159", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-08377", "theme": "active guard bitlines", "note": ""}
+{"id": "I-03814", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "reclaimed-water fab", "note": ""}
+{"id": "I-06104", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "low-VARY ECC array", "note": ""}
+{"id": "I-01945", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-09323", "theme": "replica-cell refresh timing", "note": ""}
+{"id": "I-07012", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "split periphery wafers", "note": ""}
+{"id": "I-07480", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "partial-good die pairing", "note": ""}
+{"id": "I-01936", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "bootstrapped wordline boost", "note": ""}
+{"id": "I-02878", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "many-tier CDS sensing", "note": ""}
+{"id": "I-09780", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "local thermal refresh", "note": ""}
+{"id": "I-00100", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-07944", "theme": "sequential wordline token", "note": ""}
+{"id": "I-02872", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "online weak-row detection", "note": ""}
+{"id": "I-06566", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "bitline flying-cap pump", "note": ""}
+{"id": "I-09302", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00566", "theme": "negative capacitance sensing", "note": ""}
+{"id": "I-09788", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "Mo replaces tungsten", "note": ""}
+{"id": "I-04723", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "spin-orbit voltage readout", "note": ""}
+{"id": "I-00594", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "BiCMOS bonded sensing", "note": ""}
+{"id": "I-02433", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "backside periphery", "note": ""}
+{"id": "I-01058", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-09323", "theme": "replica-cell refresh timing", "note": ""}
+{"id": "I-09767", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-00566", "theme": "negative capacitance sensing", "note": ""}
+{"id": "I-06077", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "TDR column readout", "note": ""}
+{"id": "I-08875", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "3D local micro-SA", "note": "Short 16-cell local bitlines let ~1 fF lateral caps work in 3D tiers; doubt: thin-film micro-SA mismatch and tier transistor quality."}
+{"id": "I-11157", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "dual-mode HZO backup", "note": ""}
+{"id": "I-01477", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-08377", "theme": "active guard bitlines", "note": ""}
+{"id": "I-05646", "P": 4, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "hybrid-bonded per-mat I/O", "note": "Vertical per-mat bonds remove global I/O and PHY energy ~10x; direction already pursued (wafer-on-wafer DRAM, logic-on-DRAM stacking)."}
+{"id": "I-01040", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "voltage-imaging array test", "note": ""}
+{"id": "I-00118", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "piezo transformer pump", "note": ""}
+{"id": "I-03799", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "subarray erasure coding", "note": ""}
+{"id": "I-01950", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "controller-side repair map", "note": ""}
+{"id": "I-04257", "P": 2, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "maskless per-die repair", "note": ""}
+{"id": "I-05631", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01950", "theme": "controller-side repair map", "note": ""}
+{"id": "I-11151", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "I-01950", "theme": "controller-side repair map", "note": ""}
+{"id": "I-05177", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "SA offset self-calibration", "note": ""}
+{"id": "I-00578", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "I-01950", "theme": "controller-side repair map", "note": ""}
+{"id": "I-02881", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "read-mostly gain cell", "note": ""}
+{"id": "I-03326", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-02872", "theme": "online weak-row detection", "note": ""}
+{"id": "I-00587", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "I-07480", "theme": "partial-good die pairing", "note": ""}
+{"id": "I-01935", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-07944", "theme": "sequential wordline token", "note": ""}
+{"id": "I-06114", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "SA timing soft decode", "note": ""}
+{"id": "I-05654", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic JJ sensing", "note": ""}
+{"id": "I-08406", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "nanocrystal charge storage", "note": ""}
+{"id": "I-09755", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00118", "theme": "piezo transformer pump", "note": ""}
+{"id": "I-05185", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "MTJ trim storage", "note": ""}
+{"id": "I-07015", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "printed repair links", "note": ""}
+{"id": "I-02891", "P": 1, "S": 4, "N": 5, "D": 2, "dup_of": "", "theme": "rolled film memory", "note": "Film-capacitor winding for ~$0.1/GB bulk tier; doubts: end-cap contact registration over 1000 turns, TFT retention, us-ms access."}
+{"id": "I-00134", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "air-gap bitlines", "note": ""}
+{"id": "I-08391", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-07012", "theme": "split periphery wafers", "note": ""}
+{"id": "I-03781", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline charge recycling", "note": ""}
+{"id": "I-09303", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-06558", "theme": "varactor parametric preamp", "note": ""}
+{"id": "I-01499", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multi row buffers", "note": ""}
+{"id": "I-05171", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL TFT wordline drivers", "note": ""}
+{"id": "I-10701", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "BTI anneal heaters", "note": ""}
+{"id": "I-02432", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "self-timed sensing", "note": ""}
+{"id": "I-05628", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-08875", "theme": "3D local micro-SA", "note": ""}

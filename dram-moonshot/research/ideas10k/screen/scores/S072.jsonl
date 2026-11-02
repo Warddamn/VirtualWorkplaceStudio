@@ -1,0 +1,105 @@
+{"id": "I-03622", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "mirrored pages CRC", "note": "Mirroring plus checksums is ZFS-style known art; 2.25x overhead eats most of the cheap-media gain."}
+{"id": "I-04059", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "buried wordline shield", "note": "Needs process integration; benefit depends on whether coupling or substrate electron migration dominates hammer flips."}
+{"id": "I-10987", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "defect-aware coset coding", "note": "Stuck-at coset coding ported from PCM; VRT cells not in BIST map limit gains."}
+{"id": "I-00375", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "in-field fine-grain remap", "note": ""}
+{"id": "I-04528", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "canary-cell refresh", "note": "Canaries track temperature/aging, not random VRT tail cells; largely overlaps temperature-compensated refresh."}
+{"id": "I-10042", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL oxide-TFT periphery", "note": ""}
+{"id": "I-06354", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bit-significance tensor splitting", "note": ""}
+{"id": "I-10051", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "cooled DIMM refresh relax", "note": ""}
+{"id": "I-01791", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "hydrogen getter IGZO", "note": ""}
+{"id": "I-07769", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "variation-adaptive bits per cell", "note": ""}
+{"id": "I-02222", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-07267", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-09141", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "antiferromagnetic tunnel junction", "note": ""}
+{"id": "I-04518", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "majority-logic on-die ECC", "note": ""}
+{"id": "I-06850", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "display-glass memory", "note": "Sub-micron panel patterning unproven; $2-4/GB is above DDR5 make cost, so gain is capital intensity only."}
+{"id": "I-10953", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "error-tolerant DNN training", "note": "Close to EDEN (2019) error-tolerant DNN on approximate DRAM."}
+{"id": "I-04988", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ABFT replaces ECC", "note": ""}
+{"id": "I-11405", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "access-as-refresh", "note": ""}
+{"id": "I-05461", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "lattice-coded MLC gain cells", "note": ""}
+{"id": "I-05894", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "compression stuck-bit masking", "note": ""}
+{"id": "I-01320", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "twin-cell differential mode", "note": ""}
+{"id": "I-04535", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "thermal-aware data placement", "note": ""}
+{"id": "I-04989", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "triple-row activation TMR", "note": ""}
+{"id": "I-05933", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "diverse-technology redundancy", "note": ""}
+{"id": "I-06822", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-04989", "theme": "triple-row activation TMR", "note": ""}
+{"id": "I-09110", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-06354", "theme": "bit-significance tensor splitting", "note": ""}
+{"id": "I-00855", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multi-tier charge summing", "note": ""}
+{"id": "I-01305", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hot-row SRAM cache", "note": ""}
+{"id": "I-08673", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "SAQP-class refresh binning", "note": "Testable on commodity DRAM via retention vs row index mod 4; systematic class effect may be swamped by random tail."}
+{"id": "I-03630", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "vertical CCD circulation", "note": "Charge transfer efficiency through trap-rich poly channels over 200 stages is doubtful; microsecond serial access is not DRAM-class."}
+{"id": "I-06392", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "dual-sample sense amp", "note": ""}
+{"id": "I-11446", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "spare subarray sparing", "note": ""}
+{"id": "I-07292", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "DRAM write-verify", "note": ""}
+{"id": "I-06393", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "NC-FET access transistor", "note": ""}
+{"id": "I-10980", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "circulating shift-loop DRAM", "note": ""}
+{"id": "I-10515", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "subarray fault isolation", "note": ""}
+{"id": "I-06386", "P": 1, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "single-electron storage", "note": "100-electron node leaks out in microseconds at fA leakage; room-temperature SET variability and offset charge unsolved since 1990s."}
+{"id": "I-03150", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-06375", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "asymmetric Z-channel coding", "note": ""}
+{"id": "I-02228", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "orthogonal-tier wordlines", "note": ""}
+{"id": "I-09108", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "hammer canary cells", "note": ""}
+{"id": "I-01312", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "strong-ECC CXL controller", "note": ""}
+{"id": "I-01325", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "lifetime-aware gain cells", "note": ""}
+{"id": "I-11417", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "electrothermal trap anneal", "note": ""}
+{"id": "I-08220", "P": 5, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "hot-row replication", "note": ""}
+{"id": "I-08674", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "retention-matched die stacking", "note": ""}
+{"id": "I-04523", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "neighbor wordline counter-pulse", "note": ""}
+{"id": "I-01293", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-04059", "theme": "buried wordline shield", "note": ""}
+{"id": "I-05448", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "end-to-end ECC", "note": ""}
+{"id": "I-01297", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cell-level defect substitution", "note": ""}
+{"id": "I-04088", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-group XOR parity", "note": ""}
+{"id": "I-07759", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "double-sided complementary printing", "note": ""}
+{"id": "I-04982", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-04088", "theme": "row-group XOR parity", "note": ""}
+{"id": "I-05895", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-04088", "theme": "row-group XOR parity", "note": ""}
+{"id": "I-08664", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "checkpoint instead of ECC", "note": ""}
+{"id": "I-05922", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "thermal page rotation", "note": ""}
+{"id": "I-09583", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "stress-sensed zone refresh", "note": ""}
+{"id": "I-05440", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "ramped wordline precharge", "note": ""}
+{"id": "I-03136", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-04523", "theme": "neighbor wordline counter-pulse", "note": ""}
+{"id": "I-09581", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog checksum scrub", "note": ""}
+{"id": "I-01767", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "detect-and-recompute data", "note": ""}
+{"id": "I-03140", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-04059", "theme": "buried wordline shield", "note": ""}
+{"id": "I-10971", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "deuterium anneal", "note": ""}
+{"id": "I-06377", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "ECC-feedback voltage scaling", "note": ""}
+{"id": "I-08692", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "graded-memory procurement policy", "note": ""}
+{"id": "I-01766", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "erasure-coded memory pool", "note": ""}
+{"id": "I-03152", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01312", "theme": "strong-ECC CXL controller", "note": ""}
+{"id": "I-09144", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ReRAM reforming self-heal", "note": ""}
+{"id": "I-10522", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00855", "theme": "multi-tier charge summing", "note": ""}
+{"id": "I-10526", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "detrapping bias pulses", "note": ""}
+{"id": "I-10527", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-01312", "theme": "strong-ECC CXL controller", "note": ""}
+{"id": "I-00381", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "in-field retention profiling", "note": ""}
+{"id": "I-03165", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "short-life DRAM SKU", "note": ""}
+{"id": "I-05443", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "accelerated retention screen", "note": ""}
+{"id": "I-05932", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "hot compaction PASR", "note": ""}
+{"id": "I-06819", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compression-funded ECC", "note": ""}
+{"id": "I-08218", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-06819", "theme": "compression-funded ECC", "note": ""}
+{"id": "I-10067", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-06819", "theme": "compression-funded ECC", "note": ""}
+{"id": "I-02253", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "monolithic memory on base die", "note": ""}
+{"id": "I-02676", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "inverted HBM stack", "note": ""}
+{"id": "I-03159", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "embedded microfluidic cooling", "note": ""}
+{"id": "I-04533", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hot-running HBM via coding", "note": ""}
+{"id": "I-06382", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-06819", "theme": "compression-funded ECC", "note": ""}
+{"id": "I-07763", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "supercapacitor decoupling film", "note": ""}
+{"id": "I-03612", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "I-06850", "theme": "display-glass memory", "note": "~100x capital-cost cut if 100 nm imprint over 9 m2 glass with multilayer overlay works; that patterning step is the miracle."}
+{"id": "I-07770", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "antifuse reroute interposer", "note": ""}
+{"id": "I-01292", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "randomized row remapping", "note": ""}
+{"id": "I-09135", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-11405", "theme": "access-as-refresh", "note": ""}
+{"id": "I-07772", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "printed-memory qualification", "note": ""}
+{"id": "I-10491", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "multi-direction parity", "note": ""}
+{"id": "I-05473", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "national reliability testbed", "note": ""}
+{"id": "I-03161", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "wordline air gaps", "note": ""}
+{"id": "I-01787", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "single-grain LTPS", "note": ""}
+{"id": "I-01291", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-04996", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-05889", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-06814", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-10033", "P": 2, "S": 1, "N": 2, "D": 3, "dup_of": "I-04528", "theme": "canary-cell refresh", "note": ""}
+{"id": "I-10062", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "liquid-metal connectors", "note": ""}
+{"id": "I-10035", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "field-effect junction passivation", "note": ""}
+{"id": "I-04531", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "parametric bitline sensing", "note": "Matched-capacitor gain sidesteps latch offset; pumping thousands of bitlines at GHz within a ns window is the doubt."}
+{"id": "I-01323", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "error-injection certification", "note": ""}
+{"id": "I-11430", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reworkable HBM stack", "note": ""}
+{"id": "I-00852", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "self-clearing MIM capacitor", "note": "fJ stored energy too small to clear electrodes itself; an external clearing pulse in a nanofab test is cheap to try."}
+{"id": "I-09595", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "per-tier thermal refresh", "note": ""}

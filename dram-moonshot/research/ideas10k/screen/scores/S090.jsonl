@@ -1,0 +1,96 @@
+{"id": "I-06576", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NMOS-only sense amp", "note": "NMOS-era DRAMs used bootstrapped NMOS restore; saves well spacing but adds bootstrap caps and timing."}
+{"id": "I-09774", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-04711", "theme": "segmented bitline preamp", "note": "Laser-crystallized poly-Si preamp variability over the array is the doubt."}
+{"id": "I-04271", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "off-die repair map", "note": ""}
+{"id": "I-08411", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "I-08408", "theme": "refresh-free retention contract", "note": "Si DRAM retention tail cannot certify 2 s at 85 C without profiling/ECC; fits IGZO cells."}
+{"id": "I-05637", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "stepwise adiabatic charging", "note": "Known stepwise-charging art; 6-10x optimistic given switch losses and SA regeneration needs."}
+{"id": "I-01944", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "optical vertical links", "note": "Each die's Ge photodiode and BEOL metal block the beam; 12-high pass-through implausible."}
+{"id": "I-07019", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01480", "theme": "thermal-aware refresh", "note": ""}
+{"id": "I-01480", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "thermal-aware refresh", "note": "Per-region temperature-aware refresh proposed in literature."}
+{"id": "I-04711", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "segmented bitline preamp", "note": "Local gain per segment relaxes Cs; gain-transistor Vt variation and area per 16 cells are doubts."}
+{"id": "I-05194", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "dynamic twin-cell mode", "note": "Close to CLR-DRAM (ISCA 2020) dynamic capacity-latency twin-cell mode."}
+{"id": "I-09310", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "CCD charge-transfer sensing", "note": "Lateral CCD in DRAM array needs near-perfect transfer efficiency over 64 columns; serial latency."}
+{"id": "I-10676", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-04711", "theme": "segmented bitline preamp", "note": ""}
+{"id": "I-07030", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "off-die reference supply", "note": ""}
+{"id": "I-04278", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "row-hammer field cancellation", "note": ""}
+{"id": "I-04735", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "SAW straintronic MRAM", "note": ""}
+{"id": "I-02430", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "NEMS power gating", "note": ""}
+{"id": "I-03334", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "switched-cap signal boost", "note": ""}
+{"id": "I-01479", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "air-gap bitline", "note": "Air-spacer bitlines already in production; full vacuum suspension adds mechanical risk."}
+{"id": "I-06115", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "few-electron planar cell", "note": "Planar BEOL tiers could enable stackable 3D DRAM; doubts: 1% raw BER, preamp variation, IGZO leakage tail."}
+{"id": "I-08850", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "racetrack shift correction", "note": ""}
+{"id": "I-11165", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "time-domain FeRAM sensing", "note": ""}
+{"id": "I-08375", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "I-04245", "theme": "vertical CCD string", "note": "IGZO CCD transfer efficiency over 100 tiers unproven; microsecond serial latency makes it a capacity tier."}
+{"id": "I-05625", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-address randomization", "note": "Close to Randomized Row-Swap (RRS/SRS); hammering still flips physical neighbors."}
+{"id": "I-11141", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-05637", "theme": "stepwise adiabatic charging", "note": ""}
+{"id": "I-07474", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "shared column decoder", "note": ""}
+{"id": "I-08381", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "scribe-line DFT", "note": "Post-package repair and field BIST still need on-die logic; gapped seal ring is a reliability risk."}
+{"id": "I-09795", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "seed wafer reuse", "note": "ELTRAN-style reuse known; epi wafers usually cost more than CZ."}
+{"id": "I-02854", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-02428", "theme": "bonded periphery foundry", "note": ""}
+{"id": "I-00559", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "distributed repair CAM", "note": ""}
+{"id": "I-02412", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-buffer cache", "note": "Cached DRAM / virtual-channel memory prior art."}
+{"id": "I-04245", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "vertical CCD string", "note": "Capacitor- and lateral-transistor-free 3D string with free refresh; doubts: transfer efficiency, serial latency."}
+{"id": "I-07013", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "content-aware refresh skip", "note": ""}
+{"id": "I-07927", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "streaming shift readout", "note": ""}
+{"id": "I-01500", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "nonvolatile SA offset trim", "note": ""}
+{"id": "I-01489", "P": 2, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "RF tone decoding", "note": ""}
+{"id": "I-01512", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "tunnel-diode sense latch", "note": ""}
+{"id": "I-07947", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "in-DRAM similarity search", "note": ""}
+{"id": "I-08380", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "nonvolatile SA offset trim", "note": ""}
+{"id": "I-02882", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "I-00107", "theme": "host-managed repair", "note": ""}
+{"id": "I-00107", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "host-managed repair", "note": "ArchShield-style controller fault maps are prior art."}
+{"id": "I-06097", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "erasure-flag sensing", "note": ""}
+{"id": "I-04738", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "bistable floating body", "note": "Close to biristor/T-RAM bistable cells; leakage-balance margins and variability."}
+{"id": "I-04719", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "differential FeFET sensing", "note": "FeFET endurance ~1e10 falls short of DRAM-class."}
+{"id": "I-05188", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "temperature-tracking VPP", "note": ""}
+{"id": "I-11144", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "tungsten replacement", "note": "Mo replacement of W already pursued by toolmakers."}
+{"id": "I-07956", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "on-die photonic I/O", "note": ""}
+{"id": "I-03348", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "host-offloaded periphery", "note": ""}
+{"id": "I-00133", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "nanoimprint periphery", "note": ""}
+{"id": "I-00589", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "retention-aware refresh", "note": "RAIDR-style; VRT makes static weak-row maps unreliable."}
+{"id": "I-07007", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "bitline charge recycling", "note": ""}
+{"id": "I-00585", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multilevel DRAM cell", "note": ""}
+{"id": "I-05172", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-referenced sensing", "note": ""}
+{"id": "I-03322", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wordline charge recycling", "note": ""}
+{"id": "I-09314", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention-reject binning", "note": ""}
+{"id": "I-08408", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "refresh-free retention contract", "note": ""}
+{"id": "I-10703", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "redundant wordline drive", "note": ""}
+{"id": "I-03773", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "gated-diode charge gain", "note": "Builds on IBM gated-diode amplifier work."}
+{"id": "I-10685", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "time-domain sensing", "note": ""}
+{"id": "I-00121", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cryogenic SET sensing", "note": ""}
+{"id": "I-07924", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "resonant adiabatic charging", "note": ""}
+{"id": "I-01490", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00585", "theme": "multilevel DRAM cell", "note": ""}
+{"id": "I-06540", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-05172", "theme": "self-referenced sensing", "note": ""}
+{"id": "I-10675", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-01500", "theme": "nonvolatile SA offset trim", "note": ""}
+{"id": "I-05173", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-02428", "theme": "bonded periphery foundry", "note": ""}
+{"id": "I-09777", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective deposition", "note": ""}
+{"id": "I-09756", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-06080", "theme": "oxide CMOS periphery", "note": ""}
+{"id": "I-08858", "P": 2, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "selectorless crosspoint sensing", "note": "Sneak currents depend on stored data in both pillars, so mirror cancellation needs matched data; element endurance not DRAM-class."}
+{"id": "I-06080", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "oxide CMOS periphery", "note": "p-type oxide mobility and Ioff are the blockers."}
+{"id": "I-07469", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "ternary address decode", "note": ""}
+{"id": "I-06992", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "online weak-cell detection", "note": ""}
+{"id": "I-05643", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "nondestructive partial read", "note": "Weak-inversion sip variability and leakage make cumulative charge tracking fragile."}
+{"id": "I-06535", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "backside bitline", "note": ""}
+{"id": "I-07032", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "display-fab repurposing", "note": ""}
+{"id": "I-02428", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "bonded periphery foundry", "note": "CMOS-bonded arrays already pursued (Xtacking, VCT DRAM); bond pitch vs bitline density is key."}
+{"id": "I-07467", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "bond interface standard", "note": ""}
+{"id": "I-08853", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "I-07467", "theme": "bond interface standard", "note": ""}
+{"id": "I-09322", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "phase-change thermal buffer", "note": ""}
+{"id": "I-00555", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "RF resonator sensing", "note": ""}
+{"id": "I-11171", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "battery-backed refresh island", "note": ""}
+{"id": "I-07950", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-02428", "theme": "bonded periphery foundry", "note": ""}
+{"id": "I-07492", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "partial restore", "note": "Restore truncation (HPCA 2016) is prior art."}
+{"id": "I-00138", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "open sensing testbed", "note": ""}
+{"id": "I-00122", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "superconducting sensing", "note": ""}
+{"id": "I-07937", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "vertical periphery transistors", "note": ""}
+{"id": "I-04236", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "optical wordline addressing", "note": "Diffraction cannot select ~40 nm-pitch rows; PV diode currents too slow for ns wordlines."}
+{"id": "I-07029", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "organic interposer", "note": ""}
+{"id": "I-09793", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "domain-wall hammer counter", "note": ""}
+{"id": "I-03807", "P": 5, "S": 1, "N": 1, "D": 2, "dup_of": "", "theme": "integrated vacuum processing", "note": ""}
+{"id": "I-10687", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "sequential-access decoder", "note": ""}
+{"id": "I-10679", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "array-device periphery", "note": ""}
+{"id": "I-07473", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "early column read", "note": ""}
+{"id": "I-01042", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "GaN chiplet periphery", "note": ""}
+{"id": "I-06573", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "inductive stack coupling", "note": "ThruChip Interface (Kuroda, Keio) already demonstrated with DRAM stacks."}
+{"id": "I-02399", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "chopped comparator sensing", "note": ""}
+{"id": "I-04724", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "Mott hysteretic memory", "note": "VO2 Tc ~68 C is below DRAM operating temperature; hold power is high."}
+{"id": "I-10215", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "amorphous metal gate", "note": ""}

@@ -1,0 +1,96 @@
+{"id": "I-05999", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "bonded capacitor wafer", "note": "Statistical many-caps-per-pad removes overlay; but 40 nm hybrid-bond pitch and AR>100 8 nm pillars are far beyond state of art."}
+{"id": "I-11061", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multi-level DRAM cell", "note": ""}
+{"id": "I-08758", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "VCMA MeRAM pulse shaping", "note": "NMR composite pulses to cancel width/anisotropy errors is a non-obvious transfer; precession nonlinearity may limit first-order cancellation."}
+{"id": "I-03265", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "straintronic nanomagnet", "note": ""}
+{"id": "I-09234", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "I-03265", "theme": "straintronic nanomagnet", "note": ""}
+{"id": "I-00952", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "nested-shell capacitor", "note": ""}
+{"id": "I-02761", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "NDR diode latch", "note": ""}
+{"id": "I-05099", "P": 3, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "monolithic 3D DRAM tiers", "note": "3D-NAND-style blanket stack plus one etch removes EUV; widely pursued; low-temp capacitorless cell retention and per-tier access are the doubts."}
+{"id": "I-08320", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "CDW phase memory", "note": ""}
+{"id": "I-10619", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "2D gain cell", "note": ""}
+{"id": "I-06026", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "redox molecular storage", "note": ""}
+{"id": "I-09668", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "nanobattery bit", "note": ""}
+{"id": "I-01408", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "VO2 hysteresis bit", "note": ""}
+{"id": "I-09677", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "AFE imprint NVM", "note": ""}
+{"id": "I-02794", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "substrate reclaim", "note": ""}
+{"id": "I-07843", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "FD-SOI back-gate cell", "note": ""}
+{"id": "I-01404", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-00024", "theme": "AAO pore capacitor", "note": ""}
+{"id": "I-02311", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01408", "theme": "VO2 hysteresis bit", "note": ""}
+{"id": "I-05531", "P": 2, "S": 2, "N": 1, "D": 3, "dup_of": "I-01408", "theme": "VO2 hysteresis bit", "note": ""}
+{"id": "I-01849", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "I-00012", "theme": "wide-bandgap storage node", "note": ""}
+{"id": "I-04604", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "NEMS tunnel relay access", "note": ""}
+{"id": "I-06000", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "ferroelectric NDRO capacitance", "note": ""}
+{"id": "I-06922", "P": 2, "S": 3, "N": 2, "D": 4, "dup_of": "I-07843", "theme": "FD-SOI back-gate cell", "note": ""}
+{"id": "I-10595", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-06000", "theme": "ferroelectric NDRO capacitance", "note": ""}
+{"id": "I-00015", "P": 1, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "single-atom charge bit", "note": ""}
+{"id": "I-02792", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "transient electronics memory", "note": ""}
+{"id": "I-11047", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "HTS flux memory", "note": ""}
+{"id": "I-06464", "P": 2, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "AAO racetrack", "note": "Parkin vertical racetrack in AAO nanowires; 20 years unproven, serial shift latency breaks DRAM-class access, pore-base contacting unsolved."}
+{"id": "I-07399", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "minimal-fab pilot line", "note": ""}
+{"id": "I-07860", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-03241", "theme": "self-clearing electrode", "note": ""}
+{"id": "I-02340", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "LTPS panel memory", "note": ""}
+{"id": "I-02795", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "design-for-recycling delamination", "note": ""}
+{"id": "I-09673", "P": 1, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "mobile-ion threshold memory", "note": ""}
+{"id": "I-02773", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01408", "theme": "VO2 hysteresis bit", "note": ""}
+{"id": "I-09239", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "Seebeck thermal read", "note": ""}
+{"id": "I-11044", "P": 2, "S": 2, "N": 1, "D": 3, "dup_of": "I-01408", "theme": "VO2 hysteresis bit", "note": ""}
+{"id": "I-05997", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "liquid ferroelectric FeRAM", "note": ""}
+{"id": "I-08287", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "time-domain MLC sensing", "note": ""}
+{"id": "I-08288", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "UWBG oxide access TFT", "note": ""}
+{"id": "I-08297", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "significance-graded cells", "note": ""}
+{"id": "I-08748", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-06026", "theme": "redox pseudocapacitor node", "note": ""}
+{"id": "I-03241", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-clearing electrode", "note": ""}
+{"id": "I-06469", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "field-emitter charge storage", "note": ""}
+{"id": "I-01862", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "endohedral fullerene dipole", "note": ""}
+{"id": "I-00002", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cryo quantum-paraelectric cap", "note": ""}
+{"id": "I-06460", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-00002", "theme": "cryo quantum-paraelectric cap", "note": ""}
+{"id": "I-10596", "P": 3, "S": 2, "N": 1, "D": 3, "dup_of": "I-00478", "theme": "NEMS parametron", "note": ""}
+{"id": "I-09240", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "I-05082", "theme": "adiabatic charge recycling", "note": ""}
+{"id": "I-00953", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "NEMS ratchet multi-detent", "note": ""}
+{"id": "I-10162", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "caged-ion dipole", "note": ""}
+{"id": "I-10133", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "2D ferroelectric semiconductor", "note": ""}
+{"id": "I-09208", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "altermagnet MTJ", "note": ""}
+{"id": "I-00024", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "AAO pore capacitor", "note": ""}
+{"id": "I-00025", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "DSA contact multiplication", "note": ""}
+{"id": "I-03724", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "diode-isolated crosspoint cap", "note": "Transistor-free deposited capacitor decks would collapse 3D cost; MIIM hold leakage must improve ~1e4, near-miracle."}
+{"id": "I-03223", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "perovskite nanosheet dielectric", "note": ""}
+{"id": "I-07365", "P": 3, "S": 2, "N": 1, "D": 3, "dup_of": "I-00478", "theme": "NEMS parametron", "note": ""}
+{"id": "I-02308", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "piezo-read ferroelectric", "note": ""}
+{"id": "I-03700", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "capacitor-substrate supplier", "note": ""}
+{"id": "I-04619", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "sealed double-island dipole", "note": ""}
+{"id": "I-04622", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "random nanodot remap", "note": ""}
+{"id": "I-04626", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "I-00012", "theme": "wide-bandgap storage node", "note": ""}
+{"id": "I-05095", "P": 3, "S": 3, "N": 1, "D": 3, "dup_of": "", "theme": "monatomic PCM", "note": ""}
+{"id": "I-09704", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "error-tolerant memory grade", "note": ""}
+{"id": "I-11064", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "VCMA write-verify", "note": ""}
+{"id": "I-05082", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "adiabatic charge recycling", "note": ""}
+{"id": "I-04609", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NDR global self-restore", "note": ""}
+{"id": "I-09209", "P": 2, "S": 3, "N": 1, "D": 2, "dup_of": "I-02761", "theme": "NDR diode latch", "note": ""}
+{"id": "I-05077", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "vertical CCD strings", "note": "No capacitor or transistor per bit, 3D-NAND cost structure; doubts are poly-channel CTE, dark-current retention, serial latency."}
+{"id": "I-09664", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "2D ferroelectric diode", "note": ""}
+{"id": "I-00478", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NEMS parametron", "note": ""}
+{"id": "I-01384", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "segmented pillar multi-bit", "note": ""}
+{"id": "I-10132", "P": 4, "S": 3, "N": 1, "D": 4, "dup_of": "", "theme": "MPB hafnia-zirconia high-k", "note": ""}
+{"id": "I-09242", "P": 1, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Johnson-noise read", "note": ""}
+{"id": "I-03706", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrophoretic nanoparticle bit", "note": ""}
+{"id": "I-03722", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "moire trap storage", "note": ""}
+{"id": "I-02798", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "VRT cell burn-out repair", "note": ""}
+{"id": "I-09237", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spin-wave multiplexed read", "note": ""}
+{"id": "I-04627", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "domain-wall conduction read", "note": ""}
+{"id": "I-07850", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "dual-bit cap+body cell", "note": ""}
+{"id": "I-05090", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "oxide quantum-well cell", "note": ""}
+{"id": "I-04607", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "unpatterned charge film", "note": ""}
+{"id": "I-01423", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "nanoimprint litho", "note": ""}
+{"id": "I-01413", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "photonic bistable memory", "note": ""}
+{"id": "I-09679", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "magnetoelectric Cr2O3", "note": ""}
+{"id": "I-04184", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "advance market commitment", "note": ""}
+{"id": "I-07366", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "spin-crossover bit", "note": ""}
+{"id": "I-11056", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "optical global refresh", "note": ""}
+{"id": "I-00012", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "wide-bandgap storage node", "note": ""}
+{"id": "I-02769", "P": 3, "S": 2, "N": 1, "D": 3, "dup_of": "I-00478", "theme": "NEMS parametron", "note": ""}
+{"id": "I-02782", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "rolled-up nanomembrane cap", "note": ""}
+{"id": "I-05522", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "bistable buckled NEMS", "note": ""}
+{"id": "I-03239", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "nanolaminate dielectric", "note": ""}
+{"id": "I-02324", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00012", "theme": "SiC deep-depletion cell", "note": ""}
+{"id": "I-02789", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "Ru recycling", "note": ""}
+{"id": "I-08773", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "organic ferroelectric", "note": ""}

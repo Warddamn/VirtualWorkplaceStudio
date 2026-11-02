@@ -1,0 +1,96 @@
+{"id": "I-03995", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "allocation-site tiering", "note": "Lifetime-predicted allocation (LLAMA, memkind/PMem placement) is known; NV tier availability is shrinking post-Optane."}
+{"id": "I-05810", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "float exponent coding", "note": "Exponent entropy coding (DFloat11, ZipNN) is active art; controller placement is the twist; ~25-30% gain."}
+{"id": "I-02147", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "succinct data structures", "note": "Succinct/MPH packing is well known; Redis module is a straightforward application limited to read-mostly keyspaces."}
+{"id": "I-10414", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "I-02147", "theme": "succinct data structures", "note": "Generalizes succinct packing with auto-detection and overlay; same core mechanism as I-02147."}
+{"id": "I-08573", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "client-side KV parking", "note": "Offloading session state to clients is fresh; long-context KV exceeds 2 MB unless lossy gist compression holds quality."}
+{"id": "I-02162", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM redistribution", "note": "Simple ops play; channel population rules and labor limit gains."}
+{"id": "I-07210", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "display-glass TFT memory", "note": "Micron-rule 1T1C cells are ~25 um2 not 1 um2, so $/GB falls far short; slow tier competes with NAND."}
+{"id": "I-09944", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "line-level hardware dedup", "note": "HICAMP-style line dedup on a base die; 1.3-2x gain with translation-table overhead."}
+{"id": "I-04920", "P": 3, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "GPU texture compression", "note": "Reuses installed decoders; BC/ASTC artifacts on non-image tensors may hurt accuracy."}
+{"id": "I-11314", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "session-aware KV eviction", "note": "Return-time prediction adds to known KV drop-and-recompute; re-prefill compute cost is real at long context."}
+{"id": "I-10893", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "memory-efficiency incentive policy", "note": "Counterfactual bytes-avoided is hard to audit and easy to game."}
+{"id": "I-03053", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "activation transform compression", "note": "DCT/JPEG-style activation compression for training is published art."}
+{"id": "I-04900", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "DIMM reuse via CXL", "note": "Already pursued by Azure/Meta (Pond-style DDR4 on CXL)."}
+{"id": "I-09943", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "I-04900", "theme": "DIMM reuse via CXL", "note": "Same retired-DDR4-on-CXL mechanism as I-04900."}
+{"id": "I-10416", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-04900", "theme": "DIMM reuse via CXL", "note": "Remanufacturing business variant of I-04900 with retention binning."}
+{"id": "I-01197", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "delta page compression", "note": "Hardware Difference-Engine; near-duplicate pages via MinHash reference selection is a fair twist."}
+{"id": "I-08127", "P": 3, "S": 4, "N": 2, "D": 3, "dup_of": "", "theme": "NAND in-memory compute", "note": "Weights never in DRAM if it works; analog precision, read disturb and NAND speed are the doubts; widely researched."}
+{"id": "I-10874", "P": 2, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "hyperdimensional superposition", "note": "Cross-talk noise scales with k; k=4-8 dense tensors give SNR near 1, too noisy without sparsity."}
+{"id": "I-05808", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "reject-die salvage", "note": "Clever lifetime-bounded use of retention rejects; guaranteeing data lifetimes and few-percent supply gain limit impact."}
+{"id": "I-04425", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-01197", "theme": "content-hash block dedup", "note": "Exact plus XOR-residual dedup of blocks overlaps I-01197; full fine-tunes rarely share identical blocks."}
+{"id": "I-08139", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "object-level tiering", "note": "Object-granular far memory (AIFM, Carbink) is known; 80-95% cold claim is optimistic."}
+{"id": "I-06300", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "Optane reuse", "note": "Installed base of discontinued PMem is small and shrinking."}
+{"id": "I-03525", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-04900", "theme": "DIMM grading and reuse", "note": "Grading and redeploying pulled modules; same reuse core as I-04900."}
+{"id": "I-01663", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "neural page compression", "note": "Neural codec latency and energy on page faults; 3-5x over LZ4 on heap data unproven."}
+{"id": "I-02592", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "direct cache I/O", "note": "Intel DDIO/DCA already lands I/O in LLC."}
+{"id": "I-05343", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "miss-ratio-curve sizing", "note": "SHARDS/MRC-based memory sizing is known; hardware sampler is incremental."}
+{"id": "I-08123", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "SRAM-only serverless", "note": "Working-set proofs via static analysis are unreliable; SRAM costs far more per bit."}
+{"id": "I-03996", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-02147", "theme": "succinct data structures", "note": "Succinct encodings placed in NV; same core as I-02147."}
+{"id": "I-07180", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "memory market scheduling", "note": "Market-based reclamation and spot memory resemble Borg reclamation and Memtrade."}
+{"id": "I-07644", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "dictionary line compression", "note": "SC2-style statistically trained cache compression exists; fleet dictionaries are an incremental extension."}
+{"id": "I-10401", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "headerless typed heaps", "note": "BIBOP plus compressed oops; known runtime techniques combined."}
+{"id": "I-04883", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "KV mixed-precision quantization", "note": "Importance/age-based KV precision (KIVI, MiKV, ZipCache) is crowded art."}
+{"id": "I-07650", "P": 2, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "holographic KV superposition", "note": "64 superposition vectors per head cannot hold thousands of pairs at usable recall; resembles compressive/linear attention."}
+{"id": "I-09495", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "optical random projection", "note": "A pseudo-random digital matrix does the same; optics adds cost and drift without benefit."}
+{"id": "I-02580", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "high-bandwidth flash weights", "note": "High-bandwidth flash and LLM-in-a-flash are actively pursued; NAND bandwidth for decode is the doubt."}
+{"id": "I-09034", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "sub-page huge-page backing", "note": "Partial-subblock TLBs (Talluri-Hill) and Ingens/HawkEye cover this; needs CPU changes."}
+{"id": "I-03533", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "modular CXL controller", "note": "Sensible module modularity; gain depends on compression improving over life."}
+{"id": "I-02600", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-05808", "theme": "reject-die salvage", "note": "Approximate tier from reject-bin dies; same salvage core as I-05808; approximate DRAM (Flikker) is known."}
+{"id": "I-07669", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "output-length KV scheduling", "note": "PagedAttention already removed most reservation waste; length prediction is published."}
+{"id": "I-03047", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "compression-aware provisioning", "note": "Operational strategy for compressed memory overcommit; ratio-collapse risk handled by spill tier."}
+{"id": "I-08128", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-01663", "theme": "neural page compression", "note": "LM-based text page compression; same learned-codec core as I-01663; controller compute heavy."}
+{"id": "I-00739", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "PRAC hotness telemetry", "note": "Row counters do not map cleanly to pages under interleaving; CXL hotness units already exist."}
+{"id": "I-03079", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "object hash-consing", "note": "Hash-consing and JVM string dedup are old art."}
+{"id": "I-07198", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "latency-hiding NAND memory", "note": "70x cheaper bits if it works; 20-50 us needs ~10^4 outstanding requests per core and page-granular reads amplify heavily."}
+{"id": "I-08597", "P": 2, "S": 4, "N": 3, "D": 4, "dup_of": "", "theme": "KV recomputation", "note": "Recomputing old-context K/V every decode step far exceeds idle compute; hidden-state checkpoints can exceed GQA KV size."}
+{"id": "I-06269", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "lossy HPC array compression", "note": "Fixed-rate ZFP in cache fill path is plausible for HPC; hardware ZFP has prior proposals."}
+{"id": "I-03072", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "hardware page dedup", "note": "180 nm TCAM cannot hold fingerprints for hundreds of millions of pages; DRAM hash tables suffice."}
+{"id": "I-11346", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed ferroelectric memory", "note": "Printed cell pitch implies square meters per GB; $1-3/GB and us access over flex are implausible."}
+{"id": "I-11344", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "bistable display memory", "note": "E-paper and memory-in-pixel displays already hold images without a framebuffer."}
+{"id": "I-04448", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "oscillator associative memory", "note": "Hopfield-type capacity (~0.14N patterns) cannot replace GB-scale vector stores."}
+{"id": "I-09016", "P": 4, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "secure page dedup", "note": "VUsion (2018) already proposed uniform fault behavior for secure page fusion."}
+{"id": "I-09015", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "DRAM cache over CXL flash", "note": "Tags-in-ECC DRAM caches and CXL flash memory (CMM-H) exist; NAND miss latency threatens <10% slowdown."}
+{"id": "I-09488", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "approximate gain-cell sensing", "note": "Stored-charge noise is frozen at write, so repeated dithered reads may not average it out."}
+{"id": "I-07646", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "frequency-aware quantization", "note": "Frequency-based mixed-precision embeddings are known in recsys."}
+{"id": "I-06752", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hot-cold struct splitting", "note": "Chilimbi-style structure splitting plus cold-part compression."}
+{"id": "I-10883", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "SRAM-only inference pipeline", "note": "Groq/Cerebras-style SRAM pipelines; removes DRAM but raises cost per bit."}
+{"id": "I-05828", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "2D-material gain cell", "note": "MoS2 2T0C cells are researched; BEOL scratchpad capacity is small and IGZO is more mature."}
+{"id": "I-03992", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "GC tenure to flash", "note": "Reading tenured objects from flash costs tens of us; NVM-aware GC has prior work."}
+{"id": "I-00753", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "retrieval-based sparse attention", "note": "RetrievalAttention, PQCache, MagicPIG already pursue ANN over KV."}
+{"id": "I-06723", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "approximate KV reuse", "note": "Non-prefix KV depends on preceding context and position; CacheBlend-style reuse is prior art."}
+{"id": "I-11334", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "GC headroom reduction", "note": "10% headroom risks GC thrash; region inference and concurrent compaction are known."}
+{"id": "I-00301", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "bad-row mapped DIMMs", "note": "Practical yield salvage through SPD maps; badram exists, standardizing distribution is the twist."}
+{"id": "I-03521", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "I-04900", "theme": "DIMM reuse via CXL", "note": "DIMM-slot CXL carriers for retired DDR4; same as I-04900."}
+{"id": "I-07214", "P": 2, "S": 3, "N": 2, "D": 5, "dup_of": "I-07650", "theme": "holographic superposition", "note": "HDC superposition for associative memory; same core as I-07650, capacity-limited noise."}
+{"id": "I-10415", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "snapshot-restore idle tenants", "note": "REAP-style recorded-prefetch snapshots exist; applying broadly to idle tenants and KV."}
+{"id": "I-08596", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory-efficiency labeling", "note": "Energy-Star-like disclosure for GB-hours; slow, modest effect."}
+{"id": "I-11342", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "printed event sensor", "note": "Event cameras exist; surveillance frame buffering is a tiny share of DRAM."}
+{"id": "I-04880", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "recompute-on-fault paging", "note": "Spark-style lineage for derived pages; clean file pages already drop free."}
+{"id": "I-10400", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "entropy-sorted compression", "note": "LCP's exception region is related; line relocation adds metadata overhead."}
+{"id": "I-09941", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "temporal KV deduplication", "note": "Temporal token reduction for video LLMs is an active area; per-layer thresholding a twist."}
+{"id": "I-08104", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-11334", "theme": "GC headroom reduction", "note": "Static peak-memory proofs for cloud services; same core as I-11334 and hard to prove at build time."}
+{"id": "I-04455", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "circuit-switched memory pooling", "note": "Relays on DDR5 channels hurt signal integrity; retraining and hot-plug make microsecond moves unrealistic."}
+{"id": "I-01229", "P": 2, "S": 4, "N": 2, "D": 4, "dup_of": "I-08597", "theme": "KV recomputation", "note": "Same token-ID recompute core as I-08597; re-prefill compute for long spans is the doubt."}
+{"id": "I-10427", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "fail-and-refetch ECC", "note": "Accepting rare decode failure for clean data is a nice insight; 4 KB LDPC hurts random-access latency."}
+{"id": "I-10421", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "error-resilient quantization", "note": "Pseudo-Gray index assignment (channel-optimized VQ) applied to weights in faulty memory."}
+{"id": "I-11322", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "app state checkpointing", "note": "Android saved-instance-state already does this; adoption and perceived warmth are the hurdles."}
+{"id": "I-06715", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "TTL memory reclamation", "note": "TTL semantics to stop refresh on dead rows; programmer adoption limits gains."}
+{"id": "I-00780", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "disaggregated KV cache", "note": "Mooncake, LMCache and CachedAttention already do this."}
+{"id": "I-06759", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "memory chargeback", "note": "Standard FinOps practice."}
+{"id": "I-03058", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "refresh-piggybacked processing", "note": "Using refresh-opened rows for compaction is novel; refresh internals do not expose data to the logic die."}
+{"id": "I-04000", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "I-00780", "theme": "precomputed RAG KV", "note": "Precomputed position-corrected document KV (TurboRAG, CacheBlend); same core as I-00780."}
+{"id": "I-03973", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "weight streaming ring", "note": "Weight streaming and FSDP-style rings are known; needs large batches."}
+{"id": "I-00290", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-09015", "theme": "DRAM cache over CXL flash", "note": "DRAM cache over SLC NAND; same core as I-09015."}
+{"id": "I-04428", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "I-11314", "theme": "session-aware KV eviction", "note": "Keystroke-predicted KV roll-in; same predicted-return core as I-11314."}
+{"id": "I-11357", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "procurement DRAM caps", "note": "Printed media able to hold weights does not exist; caps may simply raise cost."}
+{"id": "I-10869", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "predictive float compression", "note": "FPC/fpzip-style lossless prediction gives ~1.5-2x on floats, not 3-10x; random access breaks predictor chains."}
+{"id": "I-03975", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "temporal workload colocation", "note": "Diurnal colocation and harvest VMs are known practice."}
+{"id": "I-04423", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "object-granular hardware compression", "note": "Zippads/Hotpads did object-based compressed hierarchies; ISA change is costly."}
+{"id": "I-02609", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-03975", "theme": "temporal workload colocation", "note": "Geo-shifting batch work for diurnal troughs; same core as I-03975."}
+{"id": "I-03060", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "per-die compression companion", "note": "Each x8 die holds a byte slice of every line, which wrecks line compression patterns."}
+{"id": "I-10411", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-03058", "theme": "refresh-piggybacked processing", "note": "Bank ALUs during refresh; same core as I-03058."}
+{"id": "I-01678", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "I-07180", "theme": "memory spot market", "note": "Memtrade and Infiniswap already trade stranded memory over RDMA."}
+{"id": "I-03037", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "bit-plane KV tiering", "note": "Coarse high planes for scoring plus lossless low-plane fetch for top-k; limited to ~2x."}
+{"id": "I-09021", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "attention-aware KV prefetch", "note": "InfiniGen-style speculative KV prefetch over unified memory exists."}
+{"id": "I-03077", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "sub-page memory backing", "note": "Zero-line elimination in memory-side compression (MXT, Compresso) covers this."}
+{"id": "I-03964", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hardware pointer compression", "note": "Base-delta compression already captures pointer redundancy."}

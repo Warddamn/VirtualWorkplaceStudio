@@ -1,0 +1,105 @@
+{"id": "I-10508", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse market", "note": "Retired-DRAM reuse behind CXL buffers already done (Azure GreenSKU/Pond); ECC-shell remount adds little new."}
+{"id": "I-06830", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "row-wide LDPC", "note": "Row-scale LDPC makes 1%-BER cells usable; doubt: parallel decoder area/latency in sense-amp stripe on DRAM process."}
+{"id": "I-10510", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "scCO2 dielectric healing", "note": "Novel low-T vacancy refill; doubt ozone/H2O2 transport and reaction in 70:1 trenches."}
+{"id": "I-10963", "P": 4, "S": 3, "N": 3, "D": 5, "dup_of": "", "theme": "recompute-as-correction", "note": "CRC plus regeneration replaces ECC for KV/activations; easy software demo."}
+{"id": "I-07757", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tile dielet salvage", "note": "Yield gain only on defect-clustered lots; transfer-print interconnect cost."}
+{"id": "I-05464", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "NEMS bistable beam", "note": "Buckled-beam bistable memory known; speed and density unproven."}
+{"id": "I-11407", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "canary hammer rows", "note": "Few sentinel rows only sense hammering of their own neighbours, not arbitrary aggressors."}
+{"id": "I-08230", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "field burn-in", "note": "Moves infant screening to field mirroring; modest test capex saving."}
+{"id": "I-03634", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "shared logic periphery die", "note": "Arrays-only dies plus shared decoder die; 100x claim overstated, CBA/Xtacking-like."}
+{"id": "I-09593", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "cryogenic memory pool", "note": "77 K makes capacitorless stacked gain cells viable; cryocooler overhead and system cost doubtful."}
+{"id": "I-06379", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "coupled negative wordline", "note": "Low-Vt access still leaks in standby; coupling only helps during activation."}
+{"id": "I-09149", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CBRAM nanopore", "note": "Per-cell nanopore milling not manufacturable; CBRAM endurance not DRAM-class."}
+{"id": "I-05906", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hammer sink implant", "note": "Process-level hammer mitigation; similar barrier engineering pursued by vendors."}
+{"id": "I-07275", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "time-aware sense reference", "note": "Helps median decay, not fast-decaying tail cells."}
+{"id": "I-04998", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "per-die repair write", "note": "Laser-fuse repair is already per-die personalization."}
+{"id": "I-00850", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "JEDEC retention map", "note": "Standard weak-row map enables multi-rate refresh; adoption is the hurdle."}
+{"id": "I-02669", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-06830", "theme": "row-wide LDPC", "note": "Same row-codeword LDPC mechanism."}
+{"id": "I-01765", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "3D tier redundancy", "note": "Spare tiers trade density for yield; needs 3D DRAM fab to prove."}
+{"id": "I-02211", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "significance-graded cells", "note": "Dual capacitor sizes per row; AI-only and process-heavy."}
+{"id": "I-05452", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "gain-cell conditional refresh", "note": "Read-scan refresh of non-destructive cells; refresh energy only."}
+{"id": "I-09603", "P": 2, "S": 4, "N": 2, "D": 3, "dup_of": "", "theme": "quantum-well 1T cell", "note": "Capacitorless stackable 1T would be big; doubt retention vs GIDL/tunnelling, QW 1T-DRAM known."}
+{"id": "I-11425", "P": 4, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "DUV relaxed-pitch cell", "note": "Density loss far exceeds reclaimed ECC/refresh margin."}
+{"id": "I-05891", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "weak-column permutation", "note": "~5% sellable-bit gain via buffer-chip remap."}
+{"id": "I-01761", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "weak-row overdrive", "note": "Per-row write boost; reliability stress on boosted rows."}
+{"id": "I-11421", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "data whitening", "note": "Controller scrambling already standard."}
+{"id": "I-09124", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "per-die hammer grading", "note": "DDR5 RFM thresholds already vendor-set in mode registers."}
+{"id": "I-04545", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-07275", "theme": "time-aware sense reference", "note": "Same decay-tracking reference; water claim overreaches."}
+{"id": "I-00396", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "on-die persistence flush", "note": "Niche persistence feature."}
+{"id": "I-05466", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelectric self-restoring node", "note": "S-shaped node CV for latch-like retention; negative-capacitance stability doubtful."}
+{"id": "I-08203", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "weak cell plus LDPC", "note": "Half-height caps plus base-die LDPC; ~20% cost gain."}
+{"id": "I-05909", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00850", "theme": "JEDEC retention map", "note": "Same standardized weak-row map idea."}
+{"id": "I-11449", "P": 4, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "wafer-scale memory", "note": "Anamartic wafer-scale DRAM did this in the 1980s."}
+{"id": "I-08224", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ECC lane reclamation", "note": "Up to 12.5% capacity on end-to-end-protected pages."}
+{"id": "I-03601", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-healing bonds", "note": "Ga capsules self-heal shown in flex circuits; Ga attacks Cu/Al at micron scale."}
+{"id": "I-05008", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "DUV fab retrofit policy", "note": "Mature-line supply policy with map-based tolerance."}
+{"id": "I-02249", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "flip-bounded number format", "note": "Software-demoable robust encoding for weights."}
+{"id": "I-07280", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "fault-aware training", "note": "Widely studied (EDEN etc.)."}
+{"id": "I-02685", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wordline Joule anneal", "note": "ms-scale 300C local heating destroys neighbour data; Macronix did NAND self-heal."}
+{"id": "I-08190", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "refresh-time ECC scrub", "note": "Correct at every refresh to stop error accumulation; periphery area cost."}
+{"id": "I-03613", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "bad-cell skip masks", "note": "NAND-style column skipping at cell granularity; shifter latency."}
+{"id": "I-09117", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "racetrack position codes", "note": "Position-error codes for racetrack already studied."}
+{"id": "I-03143", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "adaptive negative wordline", "note": "ECC-driven per-bank VNWL; modest refresh gain."}
+{"id": "I-04526", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "VRT trap parking", "note": "Speculative trap physics; dither may not bias defect configuration."}
+{"id": "I-06846", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "low-purity crucible silicon", "note": "Synthetic-silica crucible layers already used; leakage-tail cost."}
+{"id": "I-03592", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog hammer integrator", "note": "Leaky analog activation counter replaces SRAM tables; accuracy and aliasing per row group."}
+{"id": "I-04991", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Same leaky charge-bucket counter."}
+{"id": "I-07270", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Reservoir throttle variant of same analog bucket."}
+{"id": "I-07740", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Same leaky integrator."}
+{"id": "I-09107", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Same leaky integrator."}
+{"id": "I-09587", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "leakage-tracking refresh clock", "note": "Replica-leakage refresh timing; temp-compensated self-refresh exists."}
+{"id": "I-10506", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Same leaky integrator."}
+{"id": "I-10977", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-09587", "theme": "leakage-tracking refresh clock", "note": "Same replica-leakage oscillator."}
+{"id": "I-11408", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Same leaky integrator."}
+{"id": "I-00837", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "keyed row remapping", "note": "Similar to RRS/SRS/SHADOW row shuffling."}
+{"id": "I-00412", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-05464", "theme": "NEMS bistable beam", "note": "Same buckled-beam cell."}
+{"id": "I-10981", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "per-mat body bias", "note": "Adaptive body bias per block is known."}
+{"id": "I-10038", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "threshold-switch cell isolation", "note": "OTS drop and snapback disturb charge-share read."}
+{"id": "I-08687", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-11421", "theme": "data whitening", "note": "Same scrambling mechanism with rotating keys."}
+{"id": "I-01769", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "speculative ECC", "note": "Speculative ECC forwarding known in literature."}
+{"id": "I-07279", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "ABFT for weights", "note": "ABFT well known; applied to ECC-free HBM."}
+{"id": "I-07307", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "tunnel-diode cell", "note": "TI tunnelling SRAM precedent; Si ITD density integration hard."}
+{"id": "I-10513", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-reforming dielectric", "note": "Anodization in deep trenches and in-field reforming unlikely."}
+{"id": "I-03156", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "VRT provocation screening", "note": "Fast VRT screening; effectiveness unproven."}
+{"id": "I-07749", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "online retention profiling", "note": "Online profiling (REAPER-like) with mirrored spares."}
+{"id": "I-10054", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "hammer guard placement", "note": "ZebRAM-like guard rows via allocator."}
+{"id": "I-00851", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01769", "theme": "speculative ECC", "note": "Same speculative forward plus replay."}
+{"id": "I-01763", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09587", "theme": "leakage-tracking refresh clock", "note": "Canary cells pacing refresh, same as replica tracking."}
+{"id": "I-03596", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "exchange-coupled spin chains", "note": "Chain stability vs single-cell write conflicts; domain-wall propagation reliability."}
+{"id": "I-00371", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "erasure decoding maps", "note": "Map-based erasures double correction; ArchShield-like."}
+{"id": "I-02227", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00371", "theme": "erasure decoding maps", "note": "Same erasure-map decoding."}
+{"id": "I-04527", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "latch-time erasure flags", "note": "Sense-amp resolution time as soft info; per-group timers locate group not bit."}
+{"id": "I-04971", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00371", "theme": "erasure decoding maps", "note": "Same erasure-map decoding."}
+{"id": "I-06818", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "inversion encoding", "note": "Bus-invert style data inversion for retention."}
+{"id": "I-10068", "P": 5, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "neutron-adaptive scrubbing", "note": "Niche scrub-energy saving."}
+{"id": "I-06821", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-field retention screening", "note": "Shifts test cost to BIST; VRT risk."}
+{"id": "I-01792", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "physical codeword interleave", "note": "Standard interleaving practice."}
+{"id": "I-08660", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-09593", "theme": "cryogenic memory pool", "note": "Same 77 K retention mechanism."}
+{"id": "I-04977", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-02685", "theme": "wordline Joule anneal", "note": "Same wordline-heater anneal."}
+{"id": "I-02704", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "field-to-fab yield loop", "note": "Telemetry for PFAS-free etch learning."}
+{"id": "I-04091", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00837", "theme": "keyed row remapping", "note": "Same keyed Feistel remap."}
+{"id": "I-05432", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Same leaky integrator."}
+{"id": "I-11429", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "die passport ledger", "note": "Cheap re-binning for reuse."}
+{"id": "I-11450", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "latent TSV second life", "note": "Burdens all dies; retired DDR I/O unsuitable for HBM."}
+{"id": "I-10487", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "thermometer-coded weights", "note": "Thermometer code costs density; software demo easy."}
+{"id": "I-09598", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "negative-capacitance bitline", "note": "Cancelling 85% Cb would remove capacitor module; doubt NIC stability, mismatch, offset."}
+{"id": "I-01776", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "isothermal substrate", "note": "On-die gradients already small."}
+{"id": "I-10531", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "redundant bond pads", "note": "Redundant TSV/pad schemes common."}
+{"id": "I-00398", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "age-graded ECC", "note": "Retention-aware ECC known from NAND/PCM."}
+{"id": "I-02706", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-02211", "theme": "significance-graded cells", "note": "Same LSB-on-weak-lines mapping."}
+{"id": "I-08223", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "unequal error protection", "note": "UEP for AI data studied."}
+{"id": "I-01755", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "sub-zero DIMM cooling", "note": "Cooling cost vs modest refresh savings."}
+{"id": "I-09116", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "multi-device memristor cell", "note": "Parallel averaging known; ReRAM endurance not DRAM-class."}
+{"id": "I-00370", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-03592", "theme": "analog hammer integrator", "note": "Same leaky integrator."}
+{"id": "I-07735", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bit-plane refresh grading", "note": "Flikker-style approximate refresh."}
+{"id": "I-08188", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-02211", "theme": "significance-graded cells", "note": "Same graded capacitor mechanism."}
+{"id": "I-04513", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "Berger code detection", "note": "Unidirectional retention errors detected; detect-only."}
+{"id": "I-02235", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "hydrogen-free oxide TFT", "note": "H control in IGZO actively pursued."}
+{"id": "I-05451", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "low-voltage array plus ECC", "note": "Voltron-like voltage scaling."}
+{"id": "I-08216", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "fault-tolerant inference runtime", "note": "Zero-substitution on poison; software."}
+{"id": "I-02237", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "stochastic decoders", "note": "DeHon stochastic nanowire decoders precedent."}
+{"id": "I-04519", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "SRAM row cache hammer", "note": "Row cache bounds ACTs; thrash path still needs counters."}
+{"id": "I-09609", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "asymmetric-error codes", "note": "Z-channel gain ~2x, not 100x claimed."}
+{"id": "I-07290", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "self-clearing electrodes", "note": "Clearing event at nm cell scale kills the cell; STO crystallization temperature."}
+{"id": "I-01777", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "optical TFT detrapping", "note": "Glass-substrate niche; light-induced drift risk."}
+{"id": "I-04052", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-04526", "theme": "VRT trap parking", "note": "Same pulse-based VRT trap reset."}

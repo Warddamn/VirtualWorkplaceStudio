@@ -1,0 +1,96 @@
+{"id": "I-01021", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "code-division sensing", "note": "Walsh-coded multi-cell reads on nondestructive gain cells; real gain is noise averaging, not fewer SAs than sequential reads."}
+{"id": "I-06082", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "SA offset trim", "note": "Nonvolatile FG trim of SA Vt; known analog trick, embedded FG mask adds cost to DRAM flow."}
+{"id": "I-10714", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "PIM die reuse", "note": "Ambit/ComputeDRAM-style bitwise compute applied to second-life retired dies."}
+{"id": "I-06552", "P": 2, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "time-domain sensing", "note": "Ramp-timed turn-on decoding is clever, but first-movement detection is still charge-limited by Cs/Cbl and noise."}
+{"id": "I-06089", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "shift-register row select", "note": "LCD gate-driver style token rows for streaming banks; per-row shift stage may not beat decoder area."}
+{"id": "I-10212", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "coincident row selection", "note": "Half-select threshold switching for wordline drivers; threshold variability sets margin."}
+{"id": "I-03354", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "refresh jitter anti-hammer", "note": "Jittered REF timing within tREFI allowance to break attacker sync with TRR; cheap FPGA test."}
+{"id": "I-01967", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "glass-panel periphery", "note": "LTPS periphery on glass bonded to array dies; pitch matching and CTE-mismatched fine-pitch bonding are severe doubts."}
+{"id": "I-07486", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "charge-recycling I/O", "note": "Voltage-stacked global data lines reuse charge; known logic technique newly applied to DRAM internal I/O."}
+{"id": "I-05189", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS power gating", "note": "BEOL relays for rarely switched gating; stiction and contact reliability remain open."}
+{"id": "I-08851", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL row-buffer cache", "note": "Multiple open-row buffers as oxide-TFT latches over SA stripe; hit-rate gains are workload dependent."}
+{"id": "I-03782", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-10212", "theme": "coincident row selection", "note": "OTS endurance and drift at wordline toggle rates are doubtful."}
+{"id": "I-01052", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-01967", "theme": "glass-panel periphery", "note": "1-2 um periphery rules inflate area far more than glass saves per m2."}
+{"id": "I-01949", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "skip-restore read-once", "note": "Destructive-read regions for read-once traffic; related to restore truncation and IBM destructive-read eDRAM."}
+{"id": "I-02880", "P": 2, "S": 5, "N": 4, "D": 2, "dup_of": "", "theme": "glass-panel DRAM", "note": "Multi-tier oxide-TFT DRAM on cheap glass with silicon sense chiplets could hit >10x cost/bit; panel lithography, overlay, us latency doubtful."}
+{"id": "I-01497", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "negative-capacitance bitline", "note": "Stable transient NC shunt at ns speed is unproven; hysteresis risk high."}
+{"id": "I-04267", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "charge-transfer sensing", "note": "1970s charge-transfer preamp revived; Vt mismatch of transfer gate limits gain but enables smaller Cs."}
+{"id": "I-05160", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reactive nondestructive read", "note": "Reactance read of floating varactor node through access device still exchanges charge; per-cell AC readout costly."}
+{"id": "I-09317", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "bipolar sense amp", "note": "BJT pair for low-offset gain-cell sensing on open 130 nm PDK; easy MPW demo, mature-node niche."}
+{"id": "I-07462", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "on-die mat NoC", "note": "Packet-routed mats replace global decode/buses; router latency and area overhead are the question."}
+{"id": "I-06103", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "multi-row group testing", "note": "OR-sensing of 8 rows to confirm zero blocks; true/anti-cell encoding and disturb complicate it."}
+{"id": "I-07011", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "open periphery IP", "note": "Federally funded open DRAM periphery library on a U.S. mature node; pilot macros fit SKY130 shuttles."}
+{"id": "I-06095", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "parametric bitline amplification", "note": "MOS varactor capacitance pumping raises signal, but added varactor capacitance erodes net gain."}
+{"id": "I-06111", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "restore truncation", "note": "Restore truncation is published art; using ECC budget for under-restored cells is a mild twist."}
+{"id": "I-05621", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "SA offset trim", "note": "Dynamic offset-cancellation sense amps already in production DRAM."}
+{"id": "I-06088", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "stochastic nanowire decoder", "note": "DeHon-style stochastic decoders; DRAM wordline pitch already litho-defined, so little gain."}
+{"id": "I-09335", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "BTI-balanced SA", "note": "Periodic SA polarity swap equalizes BTI drift; known from SRAM aging mitigation, cheap to prove."}
+{"id": "I-09761", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "resonant charge recovery", "note": "Half-VDD precharge already recycles charge; tens-of-nH on-die inductors are large and lossy."}
+{"id": "I-02416", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "periphery chiplet split", "note": "Off-pitch periphery onto depreciated U.S. 200mm chiplets via F2F bonding; bonding cost vs 20% area."}
+{"id": "I-05175", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "die binning SKU", "note": "Derated datacenter SKU from margin-failing dies; few-percent supply gain."}
+{"id": "I-04277", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "common-mode noise reference", "note": "Diagonal dummy bitline as noise reference; diagonal routing in a dense array is awkward."}
+{"id": "I-09319", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bootstrapped wordline driver", "note": "NMOS-era bootstrap revival; device stress at 2xVDD and negative wordline needs remain."}
+{"id": "I-08860", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "redox molecular storage", "note": "Multi-redox molecules self-calibrate 3-bit levels; thermal budget, kinetics and endurance are major doubts."}
+{"id": "I-07938", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-06088", "theme": "stochastic nanowire decoder", "note": "Same stochastic mesowire decoder with post-fab code discovery."}
+{"id": "I-07494", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "merchant periphery foundry", "note": "Shared U.S. periphery-wafer foundry for bonded DRAM; makers may refuse to outsource co-designed periphery."}
+{"id": "I-02396", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-referenced sensing", "note": "MRAM destructive self-reference ported to DRAM; extra write and latency per read."}
+{"id": "I-02886", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "threshold-coded tier select", "note": "Vt-stepped tiers replace staircase; 150 mV windows across many tiers need very tight doping control."}
+{"id": "I-06079", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-07494", "theme": "merchant periphery foundry", "note": "CMOS-bonded-array is industry roadmap; U.S. foundry sourcing is the twist."}
+{"id": "I-10246", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "bitline air gaps", "note": "Air-gap bitline spacers already in production DRAM; sacrificial polymer route is old."}
+{"id": "I-09759", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-06095", "theme": "parametric bitline amplification", "note": "CaTiO3 tunability too low for 3-4x capacitance swing."}
+{"id": "I-06567", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "back-gate SA trim", "note": "Per-SA FD-SOI back-gate islands for offset nulling; hafnium is not a real chokepoint."}
+{"id": "I-10712", "P": 1, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "self-healing interconnect", "note": "Ga-In capsules too large for TSV scale and gallium attacks Al/Cu metallization."}
+{"id": "I-06112", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "analog in-array parity", "note": "Multi-level charge-sum parity is fragile; at 1% BER many words have errors anyway."}
+{"id": "I-04706", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "time-multiplexed SA", "note": "Held bitline signals resolved sequentially by one SA; coupling during hold is the risk."}
+{"id": "I-01026", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "active common-mode cancellation", "note": "Driving the large plate node at ns speed needs a big amplifier."}
+{"id": "I-07016", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "printed die configuration", "note": "Fuses and bond options already configure one die across SKUs."}
+{"id": "I-09329", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "NVM repair CAM", "note": "Single-poly FG CAM for repair; fuse area is small and PPR antifuses exist."}
+{"id": "I-02864", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "I-04267", "theme": "charge-transfer sensing", "note": "Restore through clamp still swings cell; 10x energy claim overstated."}
+{"id": "I-04707", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "constant-weight self-reference", "note": "Constant-weight codes with rank sensing remove references; WTA circuit area and 15% overhead."}
+{"id": "I-04704", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "on-die photonic I/O", "note": "Monolithic DRAM photonics proposed since 2010; ring thermal tuning at DRAM temperatures is costly."}
+{"id": "I-11132", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "I-06088", "theme": "stochastic nanowire decoder", "note": "Threshold-coded stochastic decoder with BIST map, same core mechanism."}
+{"id": "I-00579", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "kerf test circuitry", "note": "Wires cut at dicing breach seal ring; reliability concern for small area gain."}
+{"id": "I-06564", "P": 4, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "tungsten-free contacts", "note": "Poly/epi plugs already common; contact tungsten volume negligible."}
+{"id": "I-11145", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "hierarchical bitline amplifiers", "note": "Local amplifiers in vertical-channel tier; their Vt variation is the key doubt."}
+{"id": "I-00102", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "soft-decision sensing ECC", "note": "Dual-strobe soft info plus LDPC; decode latency is costly at DRAM access times."}
+{"id": "I-04710", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "array-device periphery", "note": "Decoders from vertical array transistors; NMOS-only drive needs bootstrapping."}
+{"id": "I-00096", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "optical row decoding", "note": "Wavelength-addressed rows are novel but lasers and ring tuning cost more than decoders save."}
+{"id": "I-10241", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "reference level trim", "note": "Per-mat precharge trim; global VBLP trims exist, fuse area per mat adds cost."}
+{"id": "I-05622", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "SA sharing topology", "note": "Three-way SA sharing via brick tiling; ~7% area at activation-constraint cost."}
+{"id": "I-01057", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "charlieplexed selection", "note": "Sneak paths through half-selected rows undermine charlieplexing for wordlines."}
+{"id": "I-01018", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "CCD streaming memory", "note": "CCD serial memories existed; transfer efficiency and leakage over many stages are concerns."}
+{"id": "I-01017", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "crosstalk-cancelling sensing", "note": "DFE-like feedback in staggered sensing; two-phase sensing already known."}
+{"id": "I-01969", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "low-tech periphery wide bus", "note": "Wide-slow bonded port lets poly/SiON periphery return; plausible mask savings."}
+{"id": "I-09763", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "thin-film ESD varistor", "note": "Thin-film varistors clamp too high and leak; ESD area gain small."}
+{"id": "I-04730", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "compressed-sensing reads", "note": "Relies on FeFET columns lacking DRAM endurance; ADC cost offsets savings."}
+{"id": "I-07464", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "charge-sensitive sensing", "note": "Virtual-ground CSA captures full cell charge; pitch area and settling speed of shared amplifier."}
+{"id": "I-05617", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "dithered voting sensing", "note": "Chopping plus majority voting resolves sub-offset signals; latency and sampling-cap charge loss."}
+{"id": "I-10238", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09317", "theme": "bipolar sense amp", "note": "BiCMOS bipolar preamps for low offset, same core idea."}
+{"id": "I-10229", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-06082", "theme": "SA offset trim", "note": "FeFET trim; polarization disturb from SA swings is a doubt."}
+{"id": "I-03342", "P": 4, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "evolved sense amps", "note": "Evolutionary analog design on open shuttle; modest expected gains."}
+{"id": "I-07478", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-00102", "theme": "soft-decision sensing ECC", "note": "Resolution-time erasure flags, same soft-sensing core."}
+{"id": "I-05180", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-04707", "theme": "constant-weight self-reference", "note": "Average reference does not rescue tail cells that decay fastest."}
+{"id": "I-10249", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diode-matrix decoder", "note": "Diode-AND wordline decode; Schottky diodes not native to DRAM flow."}
+{"id": "I-08378", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "negative-capacitance FET SA", "note": "NC-FET gain widely pursued and unproven."}
+{"id": "I-01501", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "oxide-only periphery", "note": "IGZO-only bootstrapped latches enable a low-temperature periphery tier; slow speed."}
+{"id": "I-04252", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "in-situ timing calibration", "note": "On-die equivalent-time sampling to set per-mat timings; AL-DRAM-like gains."}
+{"id": "I-08874", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "OTP weight memory", "note": "3D antifuse ROM for frozen weights; model churn strands write-once chips, HBF competes."}
+{"id": "I-01963", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "piezoelectric power conversion", "note": "AlN piezo transformer on DRAM die is novel; acoustic isolation and area hard."}
+{"id": "I-05618", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-06089", "theme": "shift-register row select", "note": "Token-passing wordline drivers, same mechanism."}
+{"id": "I-00561", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "array-only HBM core dies", "note": "CBA applied to HBM; industry already exploring."}
+{"id": "I-02871", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "offset-as-reference sensing", "note": "Random latch offsets as free reference ladder; drift with BTI and temperature undermines calibration."}
+{"id": "I-07489", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "content-aware refresh skip", "note": "Zero-content refresh skipping is published; on-die bitmap is a twist."}
+{"id": "I-06537", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog activation counter", "note": "Analog per-row counter vs JEDEC PRAC; charge-quantum precision over ~1k steps is hard."}
+{"id": "I-02426", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "off-die test logic", "note": "Test logic in probe card; loses package-level BIST and PPR."}
+{"id": "I-09297", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "TFET sensing", "note": "TFET on-current too low for fast latches; widely pursued with poor results."}
+{"id": "I-01973", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-heated test", "note": "Self-heating test removes PFAS fluids; temperature uniformity is the question."}
+{"id": "I-05645", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic DRAM", "note": "Cryo-DRAM studied; cryocooler overhead largely erases device-level gains."}
+{"id": "I-03318", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "decay-tracking reference", "note": "Reference following average decay helps little for tail cells."}
+{"id": "I-03812", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-01501", "theme": "oxide-only periphery", "note": "NMOS-only bootstrapped periphery from slow array transistor; water claim is the twist."}
+{"id": "I-00570", "P": 1, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "single-electron sensing", "note": "SET readout would allow 50x smaller Cs; room-temperature SET and per-cell RF readout are near miracles."}
+{"id": "I-07031", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "R2R packaging policy", "note": "Roll-to-roll resolution far from advanced packaging needs."}
+{"id": "I-03349", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "open gain-cell compiler", "note": "Open gain-cell eDRAM compiler on U.S. PDKs; academic precedents exist."}
+{"id": "I-07008", "P": 2, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "plate-pulse sensing", "note": "Plate kick shifts 0 and 1 equally, so differential signal does not grow."}
+{"id": "I-07024", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "full-wafer contact test", "note": "Elastomer full-wafer contactors used in wafer-level burn-in."}
+{"id": "I-01955", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-01497", "theme": "negative-capacitance bitline", "note": "Same NC bitline-capacitance cancellation."}
+{"id": "I-08849", "P": 1, "S": 2, "N": 3, "D": 3, "dup_of": "I-05160", "theme": "reactive nondestructive read", "note": "GHz LC tank per bitline is area-prohibitive."}
