@@ -71,7 +71,7 @@ CELL-WAFER FOUNDRY separates the two parts:
 
 All figures come from `models/cell-wafer-foundry.py`, base case **1T1C, 64 tiers, F ~40 nm, 1.5 µm bonds, 32 Gb die**.
 
-**Bond grid.** One bond per bitline group. The group size M is set by sense-amp area, not bond pitch. A ~2.5 µm² 28 nm sense amp needs 2.5 µm² ÷ (0.0258 µm²/cell footprint × fill) ≈ 146 bitlines of array above it. The bond pitch alone would allow M = 101 at 1.5 µm and 41 at 1.0 µm. **So bonding finer than ~1.5 µm buys nothing until the periphery node shrinks.** Bond pitch becomes the limit only at ≥2 µm.
+**Bond grid.** One bond per bitline group. The group size M is set by sense-amp area, not bond pitch. A ~2.5 µm² 28 nm sense amp needs 2.5 ÷ (0.0258 µm² footprint × 0.66) ≈ 146 bitlines of array above it, where 0.66 is the 85% periphery fill less ~19% for 3 V word-line drivers. The bond pitch alone would allow M = 101 at 1.5 µm and 41 at 1.0 µm. **So bonding finer than ~1.5 µm buys nothing until the periphery node shrinks.** Bond pitch becomes the limit only at ≥2 µm.
 
 **Bitline and cell.** Cbl = 0.43 fF (pad+via) + 7.1 fF (a 47 µm global line spanning M rows) + 5.8 fF (off selectors) + 5.1 fF (64 tiers × 0.08 fF) + SA input ≈ **19.9 fF**. With MARGIN STACK's 26 mV threshold and a 474 mV cell swing, Cs = 26 × 19.9 / (474 − 26) = **1.16 fF**, a 123 nm lateral capacitor. At a conventional 50 mV threshold Cs = 2.11 fF.
 
@@ -148,7 +148,7 @@ All figures come from `models/cell-wafer-foundry.py`, base case **1T1C, 64 tiers
 | TSMC SoIC 9 → 6 µm; Intel Foveros Direct shipping 1H26 ([Tom's Hardware](https://www.tomshardware.com/tech-industry/semiconductors/hybrid-bonding-roadmap-examined)) | 2026 | Production pitch |
 | US 10,340,261: cell-array-only chip bonded to a logic chip with SAs and word drivers, plus pitch conversion ([Google Patents](https://patents.google.com/patent/US10340261)); US 11,430,766; US 11,114,453; US 11,094,653 | granted | **The generic split is anticipated** |
 | Adeia/Xperi DBI licences: Micron 2022 ([Business Wire](https://www.businesswire.com/news/home/20220222006259/en/Xperi-and-Micron-Enter-Into-License-Agreement-for-Hybrid-Bonding)); AMD March 2026 after litigation ([MarketBeat](https://www.marketbeat.com/instant-alerts/adeia-q2-earnings-call-highlights-2026-08-03/)) | 2022–26 | Freedom-to-operate gate |
-| Canon NIL trialled at SK hynix and Kioxia ([Bits&Chips](https://bits-chips.com/magazine/bc202308/?pagenr=7)); scanning-beam IL ([US 9,195,146](https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9195146)) | 2018–23 | Optional periodic patterning (N-31) |
+| Canon NIL trialled at SK hynix and Kioxia ([Bits&Chips](https://bits-chips.com/magazine/bc202308/?pagenr=7)); scanning-beam IL ([US 9,195,146](https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9195146)) | 2015–23 | Optional periodic patterning (N-31) |
 | OpenGCRAM, an open gain-cell compiler ([arXiv 2507.10849](https://arxiv.org/abs/2507.10849)) | 2025 | Open periphery IP, not an interface |
 
 **The genuine delta**

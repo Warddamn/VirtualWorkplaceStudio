@@ -42,19 +42,15 @@
 
 ## 1. How it works
 
-DRAM gives every bit its own bucket (a capacitor) and its own tap (a transistor). Shrinking those two parts is the industry's wall. CHARGE-RIVER removes both.
-
-Picture a bucket brigade inside a straw:
+DRAM gives every bit a bucket (capacitor) and a tap (transistor), and shrinking them is the industry's wall. CHARGE-RIVER removes both. Picture a bucket brigade inside a straw:
 
 1. Drill one deep hole through ~200 alternating metal and glass plates, the structure every 3D NAND chip already uses.
 2. Line the hole with a few nanometres of oxide semiconductor (IGZO, as in phone displays).
 3. Pulse three neighbouring plates in sequence, like marquee lights. A puddle of ~300 electrons slides one plate along. A puddle is a "1"; an empty spot is a "0".
 
-Each hole holds 64 bits. No bit position is patterned by lithography: the bits come from deposition.
+Each hole holds 64 bits, made by deposition rather than lithography. At each end, a sense node reads each puddle, decides 1 or 0, and re-injects a fresh full-size puddle, so losses never pile up beyond 32 steps. A correction circuit learns the faint "smear" each puddle leaves, a trick from astronomy cameras, and subtracts it from the next decision.
 
-At each end of the hole, a sense node reads each arriving puddle, decides 1 or 0, and re-injects a fresh full-size puddle. Because of that regeneration, losses never pile up beyond 32 steps. A correction circuit learns the faint "smear" each puddle leaves behind, a trick borrowed from astronomy cameras, and subtracts it from the next decision.
-
-The catch: to read bit 20 you must shift 20 places, and that is why 1970s CCD memories lost to DRAM. The second half of CHARGE-RIVER fixes this. Language models read their weights in the same order on every token and their KV cache append-then-scan, so a scheduler can lay data out to arrive just in time. A small SRAM buffer catches the rare unpredictable request. This is the IBM 650 drum trick, applied to AI serving.
+The catch: reading bit 20 means shifting 20 places, which is why 1970s CCD memories lost to DRAM. Language models, though, read weights in the same order every token and their KV cache append-then-scan, so a scheduler can lay data out to arrive just in time, with a small SRAM buffer for the rare surprise. This is the IBM 650 drum trick applied to AI serving.
 
 ```
         end B: floating diffusion + oxide source follower (top metal)
@@ -151,7 +147,7 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 
 **The buried-channel factor is a guess.** The model assumes buried channel + fat zero cut deferral to 0.18x [ESTIMATE]: (1 − 0.6 interface share × 0.9 removed) × 0.4 for fat zero. **No oxide buried-channel CCD has ever been measured.**
 
-**Step 0 is a $35 paper.** Buying it is the cheapest experiment here. Our judgment: P(pass) ≈ 15-25% if the 98% is per transfer, and ≥ 50% if it is end-to-end.
+**Step 0 is a $35 paper.** Our judgment: P(pass) ≈ 15-25% if the 98% is per transfer, ≥ 50% if end-to-end.
 
 ### 2.5 What each CTE buys
 
@@ -172,9 +168,7 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
   - Each address must be known **one lap (0.64 µs) ahead**; a decode layer takes tens of µs.
   - **Dense 70B decode** (0.5% random floor [ESTIMATE]) averages 17 ns, and meets 40 ns even at imec's 4-6 MHz.
   - **MoE + sparse attention** (2% floor) averages 26 ns at 50 MHz, but 0.7-1.5 µs at 4-6 MHz. That is the real case for 50 MHz.
-- **Bandwidth.** 1.0e6 sense nodes × 50 Mb/s = **6.3 TB/s peak per die** at 3.7 W core.
-  - A 70B FP8 model (batch 32, 8k context) moves 113 GB per step: 3.4 TB/s over 56 dies, or 0.9% of each die's peak.
-  - Bandwidth is not the constraint.
+- **Bandwidth is not the constraint.** 1.0e6 sense nodes × 50 Mb/s = **6.3 TB/s peak per die** (3.7 W core). A 70B FP8 model (batch 32, 8k context) moves 113 GB per step, i.e. 3.4 TB/s over 56 dies, or 0.9% of each die's peak.
 - **Endurance.** Never circulate continuously.
   - Continuous lapping at 50 MHz means ~1.6e6 decisions per bit per second. That tightens the BER target ~37x and costs ~8e15 plate cycles in 5 years.
   - **Park-and-shift** costs 32 × 30/s × 5 yr = **1.5e11 cycles**, 15x beyond imec's >1e10, and a 1e12 test (1.4 h at 200 MHz) settles it.
@@ -200,7 +194,6 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 | 1950s | IBM 650 SOAP drum placement | The placement idea | [UNVERIFIED] |
 | 1975-79 | Intel 2416, Fairchild F464 CCD memories | Lost on serial latency and Si dark current | [UNVERIFIED] |
 | expired | Buried-channel CCD, US 4,285,000 | Packets kept off interface traps (Si) | [USPTO](https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/4285000) |
-| 2008 | High-speed CCD CTI modelling | Trap CTI models at speed | [arXiv](https://arxiv.org/pdf/0811.2503) |
 | 2019, 2024 | MIT Lincoln Laboratory fast CCDs | 4.6 e- at 2.5 MHz; narrow buried troughs; single-poly gates | [JATIS](https://www.spiedigitallibrary.org/journals/JATIS/volume-5/issue-02/021015/Toward-fast-low-noise-charge-coupled-devices-for-Lynx/10.1117/1.JATIS.5.2.021015.full), [SPIE](https://proceedings.spiedigitallibrary.org/conference-proceedings-of-spie/13103/1310317/Directions-for-advancement-of-MIT-LL-CCDs-for-x-ray/10.1117/12.3020459.full) |
 | 2019 | ShiftsReduce racetrack placement | Up to 52.5% fewer shifts | [arXiv](https://arxiv.org/abs/1903.03597) |
 | 2021 | LSST deferred-charge correction | Deferred charge is modelable and reversible | [JATIS](https://spiedigitallibrary.org/journals/Journal-of-Astronomical-Telescopes-Instruments-and-Systems/volume-7/issue-04/048002/Characterization-and-correction-of-serial-deferred-charge-in-LSST-camera/10.1117/1.JATIS.7.4.048002.full) |
@@ -238,7 +231,7 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 | 7 | **Cost ceiling ~2x** | 64 b/hole vs ~600 for NAND | [SPECULATIVE] 2-bit packets (needs ~3x tighter deferral); 300-400 plates with mid-stack regenerators |
 | 8 | **Gallium** | ~98% Chinese, export-licensed (A2) | Ga-free ITZO/ZTO in the matrix from day 1 |
 
-None violates physics. Only number 1 could end the program outright, and it is exactly what the seed measures.
+None violates physics. Only number 1 could end the program, and it is what the seed measures.
 
 ---
 
@@ -246,7 +239,7 @@ None violates physics. Only number 1 could end the program outright, and it is e
 
 **Question.** Does any deposited oxide channel reach median per-transfer CTE ≥ 0.997 (with DFE) at ≥ 150 MT/s, at 25 °C and 85 °C, at a 40 nm-plate packet's sheet charge (~4.5e12 cm⁻²)? And do ≥ 92% of LLM bytes have ≥ 0.64 µs of lead?
 
-**Why planar first.** The traps-per-electron ratio depends on sheet charge, not area. Wide planar CCDs at matched sheet charge therefore measure the vertical-plate physics. Narrow channels then measure granularity and k_ws.
+**Why planar first.** Traps per electron depend on sheet charge, not area, so wide planar CCDs at matched sheet charge measure the vertical-plate physics; narrow channels measure granularity and k_ws.
 
 ### Steps
 
@@ -347,11 +340,8 @@ None violates physics. Only number 1 could end the program outright, and it is e
 - **First hire or contractor: oxide-TFT process engineer.**
   - From IGZO display backplanes (Sharp, LG Display, Samsung Display) [UNVERIFIED].
   - Or from academic oxide groups: Purdue (P. Ye), Georgia Tech (S. Yu, S. Datta), Stanford (H.-S. P. Wong), Notre Dame (K. Ni), Penn (D. Jariwala).
-- **Collaborators:**
-  - the LSST Camera deferred-charge team, for DFE methodology;
-  - the ShiftsReduce authors (TU Dresden [UNVERIFIED]), for placement;
-  - an ex-3D NAND integration engineer.
-- **Non-dilutive funding** (amounts [UNVERIFIED]): NSF SBIR/STTR, DoD microelectronics programs (also a door to MIT LL), DOE user proposals.
+- **Collaborators:** the LSST Camera deferred-charge team (DFE), the ShiftsReduce authors (TU Dresden [UNVERIFIED]) for placement, and an ex-3D NAND integration engineer.
+- **Non-dilutive** [UNVERIFIED amounts]: NSF SBIR/STTR, DoD microelectronics programs (a door to MIT LL), DOE user proposals.
 
 ### IP strategy
 
@@ -378,12 +368,10 @@ None violates physics. Only number 1 could end the program outright, and it is e
 | **imec program partners** | Own the oxide CCD line and its 3D flow | Licence heterochannel + DFE, or co-develop. Fastest route to a vertical string |
 | **Micron** | U.S. DRAM maker with NAND stack expertise and U.S. fabs being built [UNVERIFIED] | Joint development of a U.S.-built CXL or near-HBM streaming tier |
 | **SK hynix** | HBM leader and HBF co-author | CHARGE-RIVER as the write-endurant KV companion to HBF's read-mostly weights |
-| **Samsung** | 3D NAND, DRAM and HBM at scale | Licence |
-| **Kioxia / SanDisk** | BiCS plate stacks; HBF | "A CCD hole in a NAND line" |
+| **Samsung, Kioxia / SanDisk** | 3D NAND plate stacks at scale; HBF | Licence: "a CCD hole in a NAND line" |
 | **Foundries** (GlobalFoundries, SkyWater, TSMC) | 28-40 nm bonded periphery | Supply; pairs with CELL-WAFER FOUNDRY |
 | **Display makers** (Sharp, LG Display, Samsung Display, BOE) | Volume IGZO deposition and reliability data | Channel know-how licence |
-| **Tool makers** (Applied Materials, Lam, TEL, ASM) | ALD heterochannel in a hole | Process co-development |
-| **Accelerator vendors** | Own the serving stack | Controller co-design |
+| **Tool makers** (Applied Materials, Lam, TEL, ASM); **accelerator vendors** | ALD in a hole; the serving stack | Process and controller co-development |
 
 **What $10-50M buys.**
 - **$10-15M over 18 months:** 16-32-plate vertical coupons that test CTE in an ALD-in-hole channel; a 28-40 nm readout/DFE chip; an FPGA CXL Type-3 prototype serving real vLLM traffic.
@@ -415,7 +403,7 @@ None violates physics. Only number 1 could end the program outright, and it is e
 - **The demo is all-U.S.:** university nanofabs, Argonne, LBNL, MIT LL, SkyWater.
 - **Volume has a gap:** the U.S. has no high-volume 3D NAND fab [UNVERIFIED].
 - **The realistic route:** a deposition-heavy array line beside Micron's new U.S. DRAM fabs, U.S.-foundry CMOS (GlobalFoundries NY, SkyWater MN), and U.S. deposition and etch tools.
-- **Why it fits:** needing neither EUV nor a display fab makes this a more natural U.S. build than leading-edge DRAM.
+- **Why it fits:** with no EUV and no display fab, it is a more natural U.S. build than leading-edge DRAM.
 
 ---
 
@@ -440,7 +428,7 @@ All URLs are logged in `research/sources/*.jsonl`; [dcr] = `dos-charge-river.jso
 
 **imec oxide CCD and coverage:** https://imec-publications.be/handle/20.500.12860/59420 [dcr] · https://imec-publications.be/signposting/describedby/50787757-afdf-4351-afd1-5b041dcb6738 [dcr] · https://www.imec-int.com/en/articles/novel-3d-buffer-memory-ai-and-machine-learning [dcr] · https://www.eejournal.com/industry_news/imec-demonstrates-the-first-3d-implementation-of-a-charge-coupled-device-for-ai-memory-applications/ [dcr] · https://siliconsemiconductor.net/article/124234/Imec_demonstrates_the_first_3D_implementation_of_a_charge_coupled_device_for_AI_memory_applications [dcr] · https://www.reinraum.de/en/news/imec-presents-the-first-three-dimensional-implementation-of-a-charge-coupled-device-for-ai-memory-applications.html [dcr] · https://www.eenewseurope.com/en/imec-taps-ccd-for-3d-cxl-memory-in-data-centres [dcr] · https://www.techspot.com/news/112437-researchers-unveil-nand-dram-hybrid-could-outperform-traditional.html [dcr] · https://jyx.jyu.fi/handle/123456789/105533 [dcr] · https://www.eejournal.com/industry_news/imec-demonstrates-capacitor-less-igzo-based-dram-cell-with-400s-retention-time/ [dcr]
 
-**CCD physics and correction:** https://www.spiedigitallibrary.org/journals/JATIS/volume-5/issue-02/021015/Toward-fast-low-noise-charge-coupled-devices-for-Lynx/10.1117/1.JATIS.5.2.021015.full [dcr] · https://proceedings.spiedigitallibrary.org/conference-proceedings-of-spie/13103/1310317/Directions-for-advancement-of-MIT-LL-CCDs-for-x-ray/10.1117/12.3020459.full [dcr] · https://spiedigitallibrary.org/journals/Journal-of-Astronomical-Telescopes-Instruments-and-Systems/volume-7/issue-04/048002/Characterization-and-correction-of-serial-deferred-charge-in-LSST-camera/10.1117/1.JATIS.7.4.048002.full [dcr] · https://arxiv.org/pdf/0811.2503 [dcr] · https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/RE43639 [dcr] · https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/4285000 [dcr]
+**CCD physics and correction:** https://www.spiedigitallibrary.org/journals/JATIS/volume-5/issue-02/021015/Toward-fast-low-noise-charge-coupled-devices-for-Lynx/10.1117/1.JATIS.5.2.021015.full [dcr] · https://proceedings.spiedigitallibrary.org/conference-proceedings-of-spie/13103/1310317/Directions-for-advancement-of-MIT-LL-CCDs-for-x-ray/10.1117/12.3020459.full [dcr] · https://spiedigitallibrary.org/journals/Journal-of-Astronomical-Telescopes-Instruments-and-Systems/volume-7/issue-04/048002/Characterization-and-correction-of-serial-deferred-charge-in-LSST-camera/10.1117/1.JATIS.7.4.048002.full [dcr] · https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/RE43639 [dcr] · https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/4285000 [dcr]
 
 **Oxide channels and traps:** https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5605542/ [dcr] · https://ouci.dntb.gov.ua/works/4Varq057 [dcr] · https://in4.iue.tuwien.ac.at/pdfs/sispad2022/A-dynamic-current-hysteresis-model-for-IGZO-TFT_2022_Solid-State-Electronics.pdf [dcr] · https://doaj.org/article/cc5dc9a2a70046a4bc9083b39931ca09 [dcr] · https://scholarx.skku.edu/item/fde13622-0afc-4041-b0c9-2bc148ffea51 [dcr] · https://scholarworks.bwise.kr/cau/handle/2019.sw.cau/59170 [dcr] · https://www.researching.cn/articles/OJ24629ba9f9864632 [dcr]
 

@@ -301,7 +301,7 @@ Assume M0 = 2027-01-01.
 | Q7 (M18-21) | sky130 flag latch and counters measured (δ vs offset σ; trip spread 25-110 C); OCP/CXL submission; JEDEC grade proposal draft | Flag latch passes kill #8 |
 | Q8 (M21-24) | Raise package: error atlas, soak, spec, IP, partner letters | Raise |
 
-**Budget allocation.** Experiments $388k (41%), people $360k incl. subawards (38%), IP $45k (5%), overhead $80k, contingency $70k.
+**Budget allocation.** Experiments and hardware $408k (43%), people incl. subawards $360k (38%), IP $45k (5%), rent/insurance/travel $60k (6%), contingency $70k (7%).
 
 **Team.**
 - **Founder A, systems/ECC.** A flash-controller ECC architect (BCH/LDPC RTL, Chase decoders) from SSD controller teams: Phison, Silicon Motion, Marvell, Microchip, SanDisk/WD, Kioxia, Samsung [UNVERIFIED-PK as hiring sources]. The concept *is* the NAND playbook, and such people exist in volume.
