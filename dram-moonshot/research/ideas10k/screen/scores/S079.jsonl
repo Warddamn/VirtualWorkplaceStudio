@@ -1,0 +1,105 @@
+{"id": "I-07747", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "varactor RF readout", "note": "Non-destructive phase readout of a tiny varactor against large bitline parasitics is a weak-signal problem."}
+{"id": "I-10986", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "bipolar sense amp", "note": "BiCMOS DRAMs existed in the 1990s; pitch-matched bipolar pairs are costly."}
+{"id": "I-02229", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "ECC-extended idle refresh", "note": "Close to Morphable ECC; strong-code idle refresh skipping is known."}
+{"id": "I-10512", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "multicrystalline substrate mapping", "note": "Intragrain dislocations and metal impurities in cast mc-Si likely ruin retention well beyond boundaries."}
+{"id": "I-03138", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "defect-map erasure ECC", "note": "Known-defect erasure decoding is classic (ArchShield-like fault maps)."}
+{"id": "I-02242", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "air-gap wordline isolation", "note": "Air gaps standard in NAND wordlines and Cu BEOL; new application to stacked DRAM."}
+{"id": "I-08685", "P": 4, "S": 1, "N": 1, "D": 2, "dup_of": "", "theme": "deep trench capacitor", "note": "Old IBM/Qimonda path; large cells forfeit density far more than refresh savings."}
+{"id": "I-05006", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "embedded FeRAM rows", "note": "FeRAM sensing needs plate pulsing; remapping weak rows to strong rows may suffice."}
+{"id": "I-01779", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "adaptive back-gate bias", "note": ""}
+{"id": "I-10511", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "immersion wafer test", "note": "DRAM already does wafer-level retention test at temperature."}
+{"id": "I-11411", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "detect-and-recompute ECC", "note": ""}
+{"id": "I-07727", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "canary-cell adaptive refresh", "note": "Retention tail and VRT are random per cell; a designed canary does not track them."}
+{"id": "I-07295", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "EM reverse-current healing", "note": "Reversing current in power grid segments is impractical; DRAM BEOL already uses Al."}
+{"id": "I-02216", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "sub-spec die salvage", "note": "Binning and salvage of sub-spec dies already practiced (e.g., SpecTek)."}
+{"id": "I-04094", "P": 5, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "vendor-diverse ECC modules", "note": "Decorrelates systematic failure modes under chipkill; mixed-vendor timing qualification is the work."}
+{"id": "I-07277", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "HBM die-level parity", "note": "Related to Citadel-style 3D-stack RAS; needs HBM base-die redesign."}
+{"id": "I-09129", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-02216", "theme": "sub-spec die salvage", "note": ""}
+{"id": "I-04544", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "water-lean JEDEC grade", "note": "Link between relaxed retention and 10x less fab water is tenuous."}
+{"id": "I-07272", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "host-visible bad-mat map", "note": "Partial-good DRAM sales are old; CXL-mapped bad mats is a modern twist."}
+{"id": "I-02711", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "contact oxide antifuse forming", "note": "Breakdown filaments are resistive and variable; per-contact targeting at billions scale doubtful."}
+{"id": "I-03173", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-scale memory", "note": "Anamartic wafer-scale memory (1980s) did exactly this route-around."}
+{"id": "I-02232", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BTI recovery pulsing", "note": "Positive off-state pulse turns access device on; only usable during row-open refresh."}
+{"id": "I-03158", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reliability-based procurement", "note": ""}
+{"id": "I-07311", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "multi-cell per bit 3D", "note": "3x cell cost; 3D blockers are integration, not only per-cell weakness."}
+{"id": "I-09112", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "ECC mandate die bin", "note": "DDR5 on-die ECC already partly addresses; overlaps procurement-led grading."}
+{"id": "I-01760", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "significance-aware refresh", "note": "Sparkk/EDEN already explored per-bit-significance refresh for approximate data."}
+{"id": "I-02230", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "twin-cell weak rows", "note": "CLR-DRAM showed dynamically configurable twin-cell rows."}
+{"id": "I-03624", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "charge-trap DRAM strings", "note": "NAND cost leap if real, but us writes, string-serial access and trap endurance conflict with DRAM-class needs."}
+{"id": "I-09146", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "endurance warranty model", "note": ""}
+{"id": "I-02695", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "template-level defect remap", "note": "Imprint template defects accumulate during use, so a one-time map goes stale."}
+{"id": "I-11435", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "BTI rejuvenation", "note": "BTI recovery and circuit rejuvenation well studied."}
+{"id": "I-03589", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "fleet row-hammer telemetry", "note": "Adversaries can craft novel patterns; cannot safely shrink per-chip trackers."}
+{"id": "I-04553", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "I-02230", "theme": "twin-cell weak rows", "note": "DRAM is not what sets coolant temperature; >10x water claim overreaches."}
+{"id": "I-08686", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "stochastic nanowire decoder", "note": "DeHon-era stochastic nanowire addressing; long studied, never manufacturable."}
+{"id": "I-00846", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reliability-priced memory", "note": ""}
+{"id": "I-03626", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "anodized alumina capacitors", "note": "AAO capacitor templates known; pore registration to the access-transistor grid is the blocker."}
+{"id": "I-05468", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "junctionless gain cell", "note": ""}
+{"id": "I-10529", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "erasure-coded defect-dense arrays", "note": "365 nm UV-LED patterning yields low density even if defects are tolerated."}
+{"id": "I-06350", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "back-gate hammer shield", "note": ""}
+{"id": "I-02701", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "epi junction engineering", "note": ""}
+{"id": "I-06845", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "long bitline with ECC", "note": "Halving transfer ratio drives ~1% raw BER; ECC for that erases area savings."}
+{"id": "I-04520", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "task rollback on DUE", "note": "Checkpoint/rollback (ReVive, SafetyNet) is known art."}
+{"id": "I-08647", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "hydrogen trap re-passivation", "note": "Pb-center passivation needs ~400 C; in-package H2 harms high-k and ferroelectrics."}
+{"id": "I-05921", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "commodity-to-automotive requalification", "note": ""}
+{"id": "I-01752", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "latch-time soft decoding", "note": "TDC per sense-amp group adds periphery area; gain ~1.5-2 dB."}
+{"id": "I-02681", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "I-01752", "theme": "latch-time soft decoding", "note": ""}
+{"id": "I-08653", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "I-01752", "theme": "latch-time soft decoding", "note": ""}
+{"id": "I-00839", "P": 4, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "dedup-based mirroring", "note": ""}
+{"id": "I-08225", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "buffer-side ECC", "note": "Buffer-chip ECC known (e.g., IBM Centaur); MRDIMM twist."}
+{"id": "I-03627", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "defect-scattering interleave", "note": "Particles kill shared lines and periphery, not just isolated cells; dirty-fab claim overreaches."}
+{"id": "I-05447", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "latch-time health monitor", "note": "Victims are measured only when activated, so hammered rows may flip before being seen."}
+{"id": "I-06829", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "asymmetric retention codes", "note": ""}
+{"id": "I-03616", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-02216", "theme": "sub-spec die salvage", "note": ""}
+{"id": "I-01302", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "in-field row sparing", "note": "Post-package repair and soft PPR already exist in DDR4/DDR5."}
+{"id": "I-09571", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "piezo strain tuning", "note": "Thin piezo patches through BEOL transfer little stress to buried-channel devices."}
+{"id": "I-10958", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hot-row SRAM cache", "note": "4-8 entries per bank are defeated by many-sided hammer patterns."}
+{"id": "I-11412", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "ABFT weight protection", "note": "Huang-Abraham ABFT for DNN GEMM is established."}
+{"id": "I-05898", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "rack-scale erasure-coded memory", "note": "Similar to Carbink/Hydra far-memory erasure coding; write parity updates costly."}
+{"id": "I-06824", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-02216", "theme": "sub-spec die salvage", "note": ""}
+{"id": "I-08661", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-clearing electrodes", "note": "A breakdown spot is comparable to the whole cell; isolating it at <1% area is implausible."}
+{"id": "I-05474", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "gain-cell IP licensing", "note": "Gain-cell IP for logic fabs exists; density far below commodity DRAM."}
+{"id": "I-07764", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "redundant printed lines", "note": ""}
+{"id": "I-02239", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "BEOL TFT scrub logic", "note": "DDR5 already has on-die ECS; oxide-TFT logic is slow and n-type only."}
+{"id": "I-03149", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wordline-early-close", "note": ""}
+{"id": "I-00836", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "error-bounded weight encoding", "note": "Exact 1-step bound with 10-bit codes is near Hamming-bound infeasible; approximate version fine."}
+{"id": "I-09590", "P": 2, "S": 4, "N": 4, "D": 1, "dup_of": "", "theme": "electrocaloric-cooled 3D stack", "note": "Electrocaloric films give a few K, not a sustained 20 K; the real lever is an unsolved 64-tier stack."}
+{"id": "I-02215", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "analog charge weights", "note": "Analog eDRAM CIM known; 4-6 bits per leaky cell is very hard."}
+{"id": "I-08663", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "two-tier ECC scrub", "note": "Related to multi-tier ECC (VECC, LOT-ECC); 1 MB parity update per write is costly."}
+{"id": "I-02672", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "lifetime-matched refresh", "note": ""}
+{"id": "I-03129", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "segment-selective refresh", "note": "Partial row activation plus retention binning; VRT still threatens profiled refresh."}
+{"id": "I-02691", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "hot-page co-location", "note": "OS cannot see internal row remapping; attackers choose aggressors anyway."}
+{"id": "I-09576", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "VRT cell quarantine", "note": ""}
+{"id": "I-04049", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "pattern-aware restore boost", "note": ""}
+{"id": "I-03595", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "erasure-flagging sense amp", "note": ""}
+{"id": "I-09602", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "rank-modulation DRAM", "note": "Rank modulation known from flash; four levels on 0.5 fF cells leaves negligible signal."}
+{"id": "I-02250", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "2D-channel access device", "note": "Widely pursued; wafer-scale transfer is unsolved."}
+{"id": "I-00838", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "adaptive-strength ECC", "note": "Variable-strength ECC (VS-ECC, Morphable ECC) is known."}
+{"id": "I-09139", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "MFMIS FeFET", "note": "MFMIS well studied; FeFET endurance far below DRAM-class."}
+{"id": "I-01759", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-02672", "theme": "lifetime-matched refresh", "note": ""}
+{"id": "I-04979", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "I-00836", "theme": "error-bounded weight encoding", "note": ""}
+{"id": "I-05444", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-02216", "theme": "sub-spec die salvage", "note": ""}
+{"id": "I-08650", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-05898", "theme": "rack-scale erasure-coded memory", "note": ""}
+{"id": "I-01764", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "spare-die HBM stack", "note": ""}
+{"id": "I-04082", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-01760", "theme": "significance-aware refresh", "note": ""}
+{"id": "I-10052", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cryogenic DRAM", "note": "Cryo-DRAM well studied; cryocooler overhead offsets refresh savings."}
+{"id": "I-02234", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "I-08661", "theme": "self-clearing electrodes", "note": ""}
+{"id": "I-02703", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "inductive inter-die links", "note": "ThruChip inductive coupling known; power still needs vertical conductors."}
+{"id": "I-11439", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "repairable memory policy", "note": ""}
+{"id": "I-05454", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "pilot reference cells", "note": "Reference cells are standard in MLC flash."}
+{"id": "I-11427", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "speculative strong ECC", "note": "At 1e-4 raw BER ~5% of lines fail CRC; squash and 4-line decode cost may erase the win."}
+{"id": "I-06838", "P": 2, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "multilevel DRAM cell", "note": "MLC DRAM explored since 1980s-90s; charge wall makes four levels harder now."}
+{"id": "I-05897", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "offset-cancelling sense amp", "note": "Offset-cancellation sense amps already published by major vendors."}
+{"id": "I-01299", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline crosstalk cancellation", "note": ""}
+{"id": "I-05930", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "oxygen-reservoir electrode", "note": ""}
+{"id": "I-04987", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "coupling-avoiding constrained code", "note": "Needs in-DRAM encoding since host does not know physical layout."}
+{"id": "I-10028", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "ionic Vt trimming", "note": "Mobile alkali ions are a classic MOS contaminant; stability over 10 years unlikely."}
+{"id": "I-07310", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "redundant TSV voting", "note": ""}
+{"id": "I-10984", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "error concealment", "note": ""}
+{"id": "I-10490", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "charged-cell-minimizing code", "note": ""}
+{"id": "I-02694", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "intra-bank parity mat", "note": ""}
+{"id": "I-04076", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM reuse via CXL", "note": "Hyperscalers already reuse DDR4 behind CXL."}
+{"id": "I-04525", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "software integrity auditing", "note": ""}
+{"id": "I-08208", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "lifetime-matched guardbands", "note": ""}
+{"id": "I-09612", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-01760", "theme": "significance-aware refresh", "note": ""}
+{"id": "I-11448", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-01764", "theme": "spare-die HBM stack", "note": "Rank sparing exists in server RAS."}
