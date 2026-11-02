@@ -1,0 +1,21 @@
+{"id": "I-12585", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "virtual-reserve containers", "note": "Reserve/commit growth is established practice (VirtualAlloc, mremap vectors); modest heap savings."}
+{"id": "I-12586", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "decimal float compression", "note": "ALP already ships in DuckDB; applying it to runtimes and dataframes is incremental."}
+{"id": "I-12587", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "process rejuvenation handoff", "note": "Software rejuvenation and rolling restarts are known; typed live-state handoff is engineering, not a new mechanism."}
+{"id": "I-12588", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "small-buffer routers BEOL", "note": "Appenzeller sqrt(N) rule is known and contested; pairing with BEOL oxide eDRAM to drop router HBM is the new combination."}
+{"id": "I-12589", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "pseudorandom permutation shuffle", "note": "Feistel index permutations already used in loaders; chunk-aligned reads conflict with true per-sample random order."}
+{"id": "I-12590", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "dataless standby replicas", "note": "1 s failover is optimistic for TB-scale state; trades HA DRAM for restore time."}
+{"id": "I-12591", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "skinny bandwidth DIMMs", "note": "Decouples channel bandwidth from capacity; x16 dies weaken chipkill ECC and need platform support."}
+{"id": "I-12592", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "database cracking", "note": "Idreos et al. 2007; well-studied adaptive indexing."}
+{"id": "I-12593", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "hierarchical matrices", "note": "Hackbusch H-matrices are standard in BEM/GP libraries; big savings but already deployed."}
+{"id": "I-12594", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "reserved-memory reuse", "note": "Linux CMA already lends reserved regions to movable pages; crashkernel CMA patches exist."}
+{"id": "I-12595", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "visibility buffer rendering", "note": "Burns and Hunt 2013; shipped in Nanite and many engines."}
+{"id": "I-12596", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "set-associative flash cache", "note": "Kangaroo (SOSP 2021) and CacheLib already deploy this."}
+{"id": "I-12597", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "unused-feature eviction", "note": "Lineage-based pruning of feature stores is data hygiene; savings plausible but tier-specific."}
+{"id": "I-12598", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "MTE retag-on-free", "note": "Scudo and PartitionAlloc with MTE already retag on free and shrink quarantine."}
+{"id": "I-12599", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "ghost clipping DP-SGD", "note": "Goodfellow 2015, Li et al. 2021; in Opacus; niche to private training."}
+{"id": "I-12600", "P": 4, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "historical GNN embeddings", "note": "GNNAutoScale (Fey et al. 2021) is this exact method."}
+{"id": "I-12601", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "idempotent stream operators", "note": "Idempotent sinks and CRDT merges are known; not all operators can be made commutative."}
+{"id": "I-12602", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "single-copy prepacked weights", "note": "Runtimes already share prepacked weights and free originals; fixes an implementation slip."}
+{"id": "I-12603", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "retroactive trace sampling", "note": "Hindsight (NSDI 2023) implements retroactive sampling with local buffers."}
+{"id": "I-12604", "P": 4, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "block-coordinate optimizers", "note": "BAdam and LISA (2024) already rotate trainable blocks; convergence vs full Adam is the doubt."}
+{"id": "I-12605", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "move-semantics DMA", "note": "Chunked copy-then-free already done in software loaders; hardware move mode is a small twist."}
