@@ -1,6 +1,6 @@
 # Stage 2 report: two-lens critique of the 408-idea pool
 
-Reviewed 408 ideas; missing review files: 0 . Final: ADVANCE 30, HOLD 127, DROP 251.
+Reviewed 432 ideas; missing review files: 0 . Final: ADVANCE 30, HOLD 132, DROP 270.
 
 Consensus = mean over the physics and innovation lenses of (1.2·S2 + 1.0·N2 + 0.7·P2 + 0.5·D2)/17, re-scored by the critics.
 

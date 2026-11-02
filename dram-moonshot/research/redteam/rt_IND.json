@@ -1,0 +1,386 @@
+{
+  "persona": "IND",
+  "persona_name": "Memory-industry strategist and deep-tech investor (prior art and patent estates of the memory majors, licensing economics, competitive response, seed and Series-A fundability)",
+  "objections": [
+    {
+      "id": "RT-IND-margin-stack-01",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§0 Verdicts, §2.6 Cost; models/margin-stack.py cap_module_share=0.15 ('concept says 10-20% [unsourced]')",
+      "objection": "By the dossier's own model, $/bit moves +3.6% / +0.4% / -2.8% ($1.44-1.53/GB vs $1.48). Density is 0.701 Gb/mm2 against 0.762 for plain oxide 4F2 VCT (-8%). The capacitor module's share of wafer cost (0.10-0.20) is unsourced. A licensee therefore pays +8.8% die area and one strap mask to delete a capacitor module whose capex value is never stated in dollars. 'AR 62 to 5.7' is an engineering metric that no memory maker pays royalties for. The EV-75 rank-1 score rests on S=3 for a sub-metric (capacitor height), not on a mission axis that has a buyer.",
+      "would_change_my_mind": "A sourced capacitor-module cost (tool count, $/wafer, HAR-etch plus ALD tool-hours) from a teardown or cost house, showing the stub saves >=8-10% of wafer cost net of the +8.8% area. Or a memory maker stating it would pay for capacitor-module deletion on its 4F2 or 3D roadmap."
+    },
+    {
+      "id": "RT-IND-margin-stack-02",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§3 Prior art and genuine delta; §6 IP and FTO",
+      "objection": "Every claimable element maps to a reference the dossier itself lists: local 3T gain per ~32-cell segment: IBM Barth, ISSCC 2007; offset sampling and cancellation in a shipping DRAM sense amp: the OCSA family, US 11,763,878; ECC spent to relax margin or refresh: Hi-ECC (ISCA 2010) and Micron US 7,447,974; oxide 1T1C stacked over Si sense amps on short bitlines: SEL DOSRAM, US 12,230,314 / 11,694,594 / 11,488,528 (claims unread; the Cs values in SEL's DOSRAM papers are unchecked). IBM plus OCSA plus Hi-ECC is a ready obviousness combination against claim 1 (gain FET + CDS + Cs <= 0.5 Cseg). What remains, kick compensation and high-Vt biasing, are circuit details that incumbent sense-amp teams can design around. SEL is the likeliest blocker, not a licensee.",
+      "would_change_my_mind": "A professional patentability/FTO opinion on the three SEL families and the OCSA family showing claim 1 survives. Plus the Cs and bitline length from SEL's DOSRAM papers, showing no prior sub-1 fF short-segment design."
+    },
+    {
+      "id": "RT-IND-margin-stack-03",
+      "dd": "margin-stack",
+      "severity": "MAJOR",
+      "section": "§5 Decisive experiment; §4 #9 emulation gap; models/margin-stack.py avt_oxide_mVum=2.5 ('no IGZO AVT found')",
+      "objection": "The M16-17 GO/NO-GO is a GF 22FDX silicon emulator plus planar IGZO coupons, combined 'by projection'. No oxide VCT array is ever built. The only parties with real oxide 4F2 arrays, Samsung (10a VCT) and Kioxia/Nanya (OCTRAM, 275 Mb), can rerun the 'shrink Cs, add local gain and CDS' experiment on silicon that matters within one design cycle of a pitch or paper. So the demo hands over the insight without handing over leverage. A $10-50M investor will diligence the projection step: Si 1/f and mismatch mapped onto an oxide AVT that is itself an estimate. They will discount the result.",
+      "would_change_my_mind": "A signed JDA or MTA giving access to partner oxide VCT or OCTRAM test arrays before tape-out, so the M16 number is measured on oxide. Or a pre-negotiated option or licence with Nanya or Kioxia that triggers on the §2.9 GO numbers."
+    },
+    {
+      "id": "RT-IND-margin-stack-04",
+      "dd": "margin-stack",
+      "severity": "MINOR",
+      "section": "§7 After the demo; §8 U.S. build",
+      "objection": "MARGIN STACK has no host until oxide-access 4F2 ships in volume. Samsung's VCT targets 2028 production (TrendForce 2026-04). Micron is reportedly skipping 4F2. OCTRAM has no product date. Add 2-3 years of qualification and first royalty-bearing wafers arrive ~2030+, a 6-8-year seed-to-revenue path for a technique with no $/bit lever. Its role as the portfolio's reader chip makes it a shared instrument, not a standalone company.",
+      "would_change_my_mind": "A named first host with a dated oxide-4F2 or 3D-tier product that has capacitor shrink on its roadmap (e.g., a Nanya differentiation program). Or evidence that the margin-test chip has paying users of its own."
+    },
+    {
+      "id": "RT-IND-hot-side-memory-01",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§2 Watts saved per GPU; models/hot-side-memory.py traffic_frac=0.50, hbm_util=0.60",
+      "objection": "The ~190 W/GPU planning saving assumes traffic_frac 0.50. In decode-dominated serving, almost every resident byte (weights, KV) is read once per step, so the near tier's share of traffic tracks its share of resident bytes. The dossier's own table puts the near tier at 44-178 GB per GPU beside 288 GB of HBM. If that capacity is additive, the share is 13-38%, which gives ~50-145 W, not 190 W (the model's own sweep gives 77 W at 20%). At Blackwell's 8 TB/s and 50% share it is already only 70 W. The 12x per-bit energy gain survives. The per-GPU dollar case ($2,313 of datacenter capacity over 5 years) roughly halves.",
+      "would_change_my_mind": "The planned M0-3 traffic-share study, run on production decode traces, showing >=50% of HBM bytes moved come from <=30% of resident capacity (hot KV, activation reuse). Or a placement in which the near tier holds the entire tensor-parallel weight slice while HBM shrinks."
+    },
+    {
+      "id": "RT-IND-hot-side-memory-02",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§1 'Two recent changes'; §2 'saving ~190 W per Rubin-class GPU'; §7 Intel Foundry as first partner",
+      "objection": "The premise that backside power 'already forces a bonded carrier onto every leading-edge logic die' does not hold for the product the saving is quoted against. A 22 TB/s Rubin-class GPU is built on a front-side-power node (TSMC N3P [training knowledge]). Backside-power accelerators arrive only with TSMC A16/A14 or Intel 18A/14A, ~2028+. Intel 18A, the only U.S. backside-power line, has few external logic customers. So the addressable slot in 2028-30 is a handful of tape-outs. Each one requires a foundry to insert a third party's memory wafer into its own wafer-to-wafer flow, with no known-good-die screen.",
+      "would_change_my_mind": "A named backside-power accelerator program (A16, 14A or 18A) with a dated tape-out whose owner wants an active carrier. Or a foundry statement that the carrier slot is open to third-party wafers."
+    },
+    {
+      "id": "RT-IND-hot-side-memory-03",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§3 Prior art and genuine delta; §6 IP strategy; §7 'Logic foundries own the slot'",
+      "objection": "The dossier concedes that the broad claim is barred (Chip Scale Review 2022; imec CMOS 2.0, arXiv 2510.04535) and that the foundries own the slot. What the startup keeps is narrow: thermal-map-aware bits per cell, an analogue of NAND SLC/MLC mode switching; fail-soft binning, i.e. RAIN, Chipkill and bad-block practice, which the Stage-2 critic rated DROP on I-00729. TSMC (BEOL memory over logic, VLSI 2025), imec and Samsung (IGZO VCT plus wafer-to-wafer periphery) each own more of this stack than the startup does. A foundry would build the 'memory carrier option' in-house or through imec's partner program and has no need for a licence.",
+      "would_change_my_mind": "Claims read for US 12,666,958 and US 2025/0167193, plus an FTO opinion, showing a carrier-stack claim a foundry cannot design around (e.g., a backside-proof hydrogen barrier combined with power-map-sized via fill). Or a foundry JDA that names the startup as IP owner."
+    },
+    {
+      "id": "RT-IND-hot-side-memory-04",
+      "dd": "hot-side-memory",
+      "severity": "MAJOR",
+      "section": "§5 Honesty note; §6 'Inside the portfolio seed, only Gate A runs (~$150k)'",
+      "objection": "The portfolio seed funds only Gate A, a 1-4 kb coupon drift study; Gates B and C become raise milestones. The risks a foundry and an accelerator buyer will actually price stay untouched until after the raise: killer-defect density <=1.25e-4/cm2 (university fabs run 'far above' it, per §5); carrier bow against backside-litho overlay; Cu hybrid bonding on production backside-power logic. The $10-50M investor is asked to fund the part that decides adoption on the strength of one coupon's drift sigma.",
+      "would_change_my_mind": "An in-kind commitment from a foundry, MIT LL or NY CREATES to run Gate C on 300 mm backside-power-like wafers within the seed. Or a Gate-B logic-shift result on real 22FDX dies inside the seed budget."
+    },
+    {
+      "id": "RT-IND-hot-side-memory-05",
+      "dd": "hot-side-memory",
+      "severity": "MINOR",
+      "section": "§2 Thermal red flag; §4 #4",
+      "objection": "All logic heat crosses the tier stack: +2.3 K at 1 W/mm2 average and up to +22.9 K over 10 W/mm2 hotspots without Cu via fill. On a thermally capped ~1-1.4 kW accelerator, even the 2.4 K left after 3% via fill is a clock tax that the energy saving must buy back. The memory itself runs at ~100-114 C, exactly where the 2-b drift spec (<=24 mV) is hardest. So 89 GB per die plausibly becomes 44 GB.",
+      "would_change_my_mind": "Gate C heater data showing <=1 K added at 10 W/mm2 with vias, plus a vendor-side model in which perf/W stays net positive after the thermal tax."
+    },
+    {
+      "id": "RT-IND-and-stack-01",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§3 Prior art (NEO 3D X-DRAM row); §7 Partners",
+      "objection": "NEO Semiconductor already occupies 'DRAM on a NAND process'. It launched 3D X-DRAM in 2023-25, with IGZO 1T1C and 3T0C variants announced in 2025. In April 2026 it reported a PoC at NIAR-TSRI with <10 ns read/write, >1 s retention at 85 C and >1e14 endurance, in a round led by Stan Shih (rt-IND log). AND-STACK would arrive ~3 years later, with a ~100 ns 2-b write-verify page write and a 1e12-cycle endurance anchor. Telling for the licensing model: this review found no named NEO licensee or signed partner ~3 years after launch, despite a working PoC.",
+      "would_change_my_mind": "A claim-by-claim comparison against NEO's 3D X-DRAM patents showing the dual-plate floating ring is outside them. Plus one measured AND-STACK advantage NEO does not have, such as 2 b/cell holding >=1 s at 85 C with select-plate CR >= 0.53. Or evidence that any memory maker has licensed a NAND-process DRAM cell."
+    },
+    {
+      "id": "RT-IND-and-stack-02",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§3 'The delta'; §6 FTO (Macronix 'natural licensor')",
+      "objection": "The pillar topology is Macronix 3D AND (US 12,245,428 / 12,156,402 / 12,200,935), and Macronix also holds 3D 2T0C. The select plate wrapping the ring is the coupling capacitor of the familiar capacitively coupled 2T1C gain cell, where a read wordline boosts the storage node through a capacitor. Examples include SEL's NOSRAM-family oxide gain cells [training knowledge] and the per-cell capacitor tied to a wordline in series oxide gain-cell NAND (US 8,421,071). What stays new is geometry: a floating TiN ring in a recess, and BL = SL writing. The 'natural licensor' is also the party best placed to build the cell on its own 3D AND line, which leaves the startup little bargaining power.",
+      "would_change_my_mind": "Claims read on the three Macronix families, SEL NOSRAM and US 8,421,071, showing the dual-plate + floating-ring + BL=SL-write combination is non-obvious and claimable. Ideally backed by a Macronix option or JDA."
+    },
+    {
+      "id": "RT-IND-and-stack-03",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§2.6 Cost and §2.8 Sensitivity; models/and-stack.py comp_1b_usd_gb=1.48, $/tier=30 ('unanchored')",
+      "objection": "The 3.8x bits/$ compares a hypothetical 64-tier 2-b product against 2026 1-beta at $1.48/GB. On the dossier's own path (planar M11, 4-tier M23, 16-tier JDA, 32-64-tier short loops, licensee qualification), first volume is ~2032-33. Incumbent cost per bit falls ~8-12%/yr, which puts the comparison point at ~$0.69-0.90/GB, and 3.8x shrinks to ~1.8-2.3x. That sits inside the model's own 1.8-4.4x range, which an unanchored $30/tier and 1% tier defects set. Incumbent 3D DRAM (Samsung VS-DRAM, SK hynix) will be shipping into the same window.",
+      "would_change_my_mind": "The cost model re-based to the incumbents' ~2032 roadmap (1d, 4F2, 3D) and still showing >=3x, with $/tier anchored to a NAND maker's cost per layer pair."
+    },
+    {
+      "id": "RT-IND-and-stack-04",
+      "dd": "and-stack",
+      "severity": "MAJOR",
+      "section": "§5 Decisive experiment (Phase 1 planar, Phase 2 200-300 nm e-beam holes); §4 #6-7",
+      "objection": "The seed deliverable is a ~$150k planar 64-cell emulation with e-beam floating TiN islands. Phase 2 uses 200-300 nm e-beam holes in a 0.8 um, 4-tier stack. A memory maker's first questions are show-stoppers #6-7: etching 128 alternating metal/dielectric plates at 60:1 (NAND etches oxide/nitride and replaces the nitride later); 18 nm recess ALD; two 22 nm pillars in a 68 nm core at a 24 nm plate web. None of these is touched before the raise. The investor sees a coupling-ratio number, not evidence the structure can be made at 150 nm pitch.",
+      "would_change_my_mind": "A partner short loop (NAND pilot line or Albany) showing a >=32-plate replacement-gate stack etched at <=100 nm CD, with per-tier recess uniformity <=2 nm, even without working cells."
+    },
+    {
+      "id": "RT-IND-and-stack-05",
+      "dd": "and-stack",
+      "severity": "MINOR",
+      "section": "§7 Standards ('Launch as a CXL Type-3 expander'); §2.3 Write ~100 ns, page-buffered",
+      "objection": "A CXL Type-3 launch with ~100 ns page writes behind an SRAM buffer makes AND-STACK a non-drop-in tier at ~2.5-4x lower $/GB than DRAM. Intel Optane held the same position: roughly half DRAM's $/GB and dependent on software tiering. Intel exited in 2022 with a ~$0.5B write-down [training knowledge]. Z-RAM shows that a capacitorless DRAM cell can win licences and still never ship: Innovative Silicon licensed it to AMD and Hynix and shut down in 2010 [training knowledge].",
+      "would_change_my_mind": "A plan for a DDR/HBM-compatible interface (write latency hidden inside JEDEC timings), or a hyperscaler LOI for a CXL capacity tier at the modelled price."
+    },
+    {
+      "id": "RT-IND-raw-ber-contract-01",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§2.7 Energy value ($2.60 per 64 GB over 5 yr); §3 'Not new'; §7 Licensees",
+      "objection": "The dossier values the commodity product at $2.60 per 64 GB module over 5 years (2.7% of module cost) and 14-16% of idle module power. The parties who could ship it can implement every piece in firmware: CXL controller vendors (Marvell Structera, Astera, Montage, Microchip); hyperscalers already running Vistara-style DDR4 reuse. The pieces are re-coding the 25% side band as BCH-12 or RS-8, temperature-tracked refresh and RFM substitution, all of which §3 says not to claim. A royalty on a $2.60 saving does not support a $10-50M company.",
+      "would_change_my_mind": "A controller vendor or hyperscaler quantifying a larger value (e.g., retention-reject DRAM sold as product at a stated $/GB, or measured 64Gb throughput recovered) and agreeing to license. Or a defensible claim on the relaxed-refresh + VRT-sized scrub + RFM combination."
+    },
+    {
+      "id": "RT-IND-raw-ber-contract-02",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§3 Genuine delta #1; §2.3 'flags add ~8%'; §6 Provisional #1",
+      "objection": "The strongest patent, the per-read sense-amp reliability flag, covers the least valuable feature: flags save at most 20 of 90 check bits (~8%); they are worth ~0 for resident data, because refresh latches retention errors to confident values; they need DRAM-vendor silicon and an interface change that JEDEC members (Samsung, SK hynix, Micron) control. The obviousness exposure is real: Razor's delayed-sample latch (MICRO 2003), NAND's soft-bit second sense (US 11,907,545) and time-dependent sense-amp sensitivity (US 4,545,036, 1985). This review's search found no direct anticipation (rt-IND), but the commercial lever stays in the vendors' hands.",
+      "would_change_my_mind": "A DRAM vendor engineering sample or test mode that exports a per-read flag. Or a measured flag value worth >=25% of parity on new-cell (MARGIN STACK) silicon."
+    },
+    {
+      "id": "RT-IND-raw-ber-contract-03",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§2.5 Refresh-blocked time; §2.7 'strategic: defuses the 64Gb tRFC crisis'",
+      "objection": "The large 'strategic' value rests on an extrapolated 64Gb tRFC of ~1.6 us, i.e. 41% refresh-blocked time. JEDEC and the vendors already attack this inside the device with same-bank refresh (REFsb), finer-granularity refresh, PRAC/RFM and new bank organisations [training knowledge]. If 64Gb parts hide tRFC on-die, the controller's benefit falls back to the $2.60-per-module energy case. Memory makers also have little reason to bless relaxed-retention bins that cannibalise full-spec parts.",
+      "would_change_my_mind": "A vendor or JEDEC projection showing 64Gb refresh overhead >15% even with REFsb and FGR, plus one vendor willing to sell a relaxed-retention grade."
+    },
+    {
+      "id": "RT-IND-raw-ber-contract-04",
+      "dd": "raw-ber-contract",
+      "severity": "MAJOR",
+      "section": "§5 Decisive experiment (60 DDR4 modules + post-SEC DDR5); §4 #6",
+      "objection": "The month-6 GO/NO-GO is measured on 60 DDR4 modules (no on-die ECC) from older nodes, plus post-SEC DDR5 statistics. Error geometry, VRT growth and cluster spectra will differ on 1b/1c DDR5 and on the oxide and 3D cells the contract exists to enable. DDR5's on-die SEC turns a 2-bit error into a 3-bit burst ~53% of the time (dossier), which is exactly the cluster regime that breaks BCH-12. A memory maker will call the atlas a description of legacy parts. An investor gets a characterization paper of a kind SAFARI has published for a decade (RAIDR, REAPER, PaCRAM).",
+      "would_change_my_mind": "Vendor test-mode access (under NDA) to raw pre-ECC errors on 1b/1c DDR5, or the same atlas measured on oxide coupons, with <=0.4% of error bits in >=3-bit clusters."
+    },
+    {
+      "id": "RT-IND-raw-ber-contract-05",
+      "dd": "raw-ber-contract",
+      "severity": "MINOR",
+      "section": "§7 Licensees (CXL controller vendors); §7 '$10-15M: 22/28 nm CXL Type-3 controller ASIC'",
+      "objection": "The landing zone is CXL memory expansion, yet the dossier's own examples (Meta Vistara, Marvell Structera X/XA) use retired DDR4 for capacity, where refresh power is noise at server level. A $10-15M controller ASIC (~25 people for ~2 years) would compete with incumbents that already ship CXL controllers with ECC and compression. The differentiation is a firmware feature set.",
+      "would_change_my_mind": "Two module makers or hyperscalers committing to a design-in on the strength of the 1,000 h soak."
+    },
+    {
+      "id": "RT-IND-pixel-stack-01",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§2.4 Wafer cost/yield/$/GB; models/pixel-stack.py tier_yield=0.998, amp_tier_yield=0.995",
+      "objection": "The 0.40x $/bit ($0.58/GB) takes tier_yield = 0.998 as an input, and 0.998 is A1's requirement, not a measurement. The only public data point, SK hynix's 5-tier array at 56.1%, implies ~0.89 per tier raw. At 0.99 per tier, 64-tier stack yield falls from 0.862 to ~0.52 and $/bit rises ~1.7x, to ~0.67x. At 0.98 per tier, yield is ~0.27 and $/bit is ~1.3x, worse than 1-beta. The bits/$ claim, which the dossier already rates low confidence, is the yield assumption restated.",
+      "would_change_my_mind": "A repaired-tier-yield model built from measured per-tier defect densities on a multi-tier oxide stack (Kioxia 3D OCTRAM data or a partner short loop), showing >=0.995 per tier after 16-tier group repair."
+    },
+    {
+      "id": "RT-IND-pixel-stack-02",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§3 Honest caveats ('Against A1's optimistic 3D case there is no density gain'); §2.5 Cost (Smart-Cut comparison)",
+      "objection": "The headline advance is removing a bonded or Smart-Cut c-Si sense layer from every 16-tier group. Incumbents are not planning in-stack Smart-Cut sense layers. Samsung's VS-DRAM uses peri-on-cell bonding with a long vertical bitline, and the mainstream 3D route is a Si/SiGe epitaxial superlattice (imec, 120 bilayers) with sense amps on a bonded base wafer. Against A1's optimistic 3D case (6.7x at 64 tiers), the dossier itself finds no density gain. The licensable delta is therefore 'reach that density at a 70 nm pitch with a 52 nm capacitor'. It is worth what capacitor length costs an incumbent, not ~2.5x.",
+      "would_change_my_mind": "A comparison against incumbent roadmaps (VS-DRAM, SK hynix 3D, Kioxia OCTRAM), using their planned per-tier cell area and capacitor length, that shows PIXEL-STACK >=2x better at equal tier count."
+    },
+    {
+      "id": "RT-IND-pixel-stack-03",
+      "dd": "pixel-stack",
+      "severity": "MAJOR",
+      "section": "§3 Prior art; §6 FTO risks",
+      "objection": "Every element sits in someone else's estate: hierarchical 3D bitlines with local/global switches: US 12,207,458, US 12,603,114, EP 4567797-799, and US 12,010,831 (probably Micron); oxide RST/SF/SEL readout with CDS: US 11,477,398 and De Roose (IISW 2015); oxide pixels on an H-barrier: US 12,615,863; oxide memory over sense amps: SEL DOSRAM, US 10,622,059. The dossier concedes that an examiner can combine the hierarchical-bitline and oxide-APS families against the system claim. In the U.S. home, Micron's vertical-digit-line patents force a cross-licence. What is defensible (pillar-gated SF, decision-feedback CDS, per-group H barrier) is narrow.",
+      "would_change_my_mind": "An FTO opinion clearing claim 1 against the hierarchical-3D-bitline and oxide-APS families, or a cross-licence term sheet with Micron or Kioxia."
+    },
+    {
+      "id": "RT-IND-pixel-stack-04",
+      "dd": "pixel-stack",
+      "severity": "MINOR",
+      "section": "§2.4 Energy per accessed bit (89 fJ vs ~46 fJ); tRC 55 ns",
+      "objection": "Energy per accessed bit is 89 fJ against ~46 fJ (~2x worse), driven by a 2 uA x 16 ns source-follower bias per read, and tRC is 55 ns against ~46 ns. The demand pull for new DRAM is AI memory, where pJ/bit and bandwidth decide purchases (HBM). A density-only cell that is 2x worse on access energy meets resistance in exactly the segment with pricing power.",
+      "would_change_my_mind": "A design point (pulsed SF bias or wider SF sharing) at <=46 fJ/bit that keeps the 14.7 mV residual."
+    },
+    {
+      "id": "RT-IND-pixel-stack-05",
+      "dd": "pixel-stack",
+      "severity": "MINOR",
+      "section": "§5 Decisive experiment (planar SF lots at Purdue/GT); §2.5 Hooge-alpha table",
+      "objection": "GO hinges on the Hooge alpha, which spans 1e-3 to 1e-1 with gate stack and process (Fung 2010; Cho 2009). A university ALD IGZO SF could land at 1e-2 to 1e-1 (20-47 mV residual at 100 x 100 nm) for reasons unrelated to Kioxia's or Samsung's fab-grade IGZO, giving a false NO-GO. Or it could land at 1e-3 and fail to transfer, giving a false GO. Neither result binds a memory maker.",
+      "would_change_my_mind": "Coupons run on a partner's fab-grade IGZO (Kioxia, a display-maker line or Albany) alongside the university splits."
+    },
+    {
+      "id": "RT-IND-diode-tower-01",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§3 Prior art and genuine delta #1; §6 FTO (Kepler US 12096638)",
+      "objection": "Delta #1, a per-tier rectifier between each floating node and the shared pillar in place of coercivity, falls between two estates: Kepler's 1T-nC stack: US 11,423,967 and 11,527,277, plus US 12,096,638, 'one transistor and N memory element', which is not limited to ferroelectrics by title (claims unread); also Intel EP4016625; diode-accessed capacitor memory with a plate line: US 2007/0183191, found in this review, uses a diode instead of a MOSFET as the access device, with the capacitor's other electrode on a plate line (rt-IND log). Kepler's 1T-nC plus diode-access 1D1C is a two-reference obviousness argument against the core cell. Pre-1990 diode-capacitor art remains unsearched.",
+      "would_change_my_mind": "Claims of US 12,096,638 and US 2007/0183191 read, with an FTO opinion showing that the single-pulse dump-read/clamp-write operation and the plate-swing rule are claimable on their own."
+    },
+    {
+      "id": "RT-IND-diode-tower-02",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§2.3 Net bar (>=1.07-1.12 eV vs best IGZO 0.92 eV); §5 Coupon gate; header note 'P should be 2'",
+      "objection": "The decisive experiment is a materials search, not a device proof. The best IGZO contact is 0.92 eV low-field against a 1.07-1.12 eV bar (1.17-1.22 eV for 1 s retention), and the dossier's own notes argue P = 2. If an anode passes, what the company owns is a known oxidized-metal-on-oxide Schottky (AgOx on ZnO, 2008; US 8,508,015) in a particular geometry. Composition results get published, and Kioxia, Micron and Samsung, all running in-hole oxide ALD, can reproduce them in one lot. A PASS creates more value for the field than for the company.",
+      "would_change_my_mind": "A process claim detectable in a competitor's product (e.g., in-hole outer-anode formation with interface-oxygen control that sets sigma <= 0.05 eV), filed alongside the coupon PASS."
+    },
+    {
+      "id": "RT-IND-diode-tower-03",
+      "dd": "diode-tower",
+      "severity": "MAJOR",
+      "section": "§2.2 Versus 1-beta; §2.5 Tier yield; models/diode-tower.py tier_yield=0.998, base_wafer_usd=3000",
+      "objection": "The recess ring forces a 121 nm pitch, so parity needs 18 tiers and 3x needs 50. The 0.35x $/bit at 64 tiers assumes tier_yield 0.998 and $25/tier. At 0.99 per tier, the dossier's own table gives 0.58x at 64 tiers and 0.71x at 32. Re-based to an incumbent cost curve in the ~2032 window (-8-12%/yr), a 32-tier tower is near parity. The portfolio already funds AND-STACK and PIXEL-STACK, which claim more density, so an investor has no reason to fund a third oxide 3D cell with the smallest step.",
+      "would_change_my_mind": "Evidence that the tower's per-tier cost is <=50% of AND-STACK's or PIXEL-STACK's (deposition only, no per-tier litho), plus a multi-tier yield data point >=0.995."
+    },
+    {
+      "id": "RT-IND-diode-tower-04",
+      "dd": "diode-tower",
+      "severity": "MINOR",
+      "section": "§7 Partners ('cross-license our diode delta against their 1T-nC estate'); FE persistent variant",
+      "objection": "The ferroelectric fallback walks into the best-funded programs in the space: Micron's 32 Gb NVDRAM (IEDM 2023), Kepler's 1T-nC program, the 2T-64C consortium (IEDM 2025: Notre Dame, Penn State, IBM, Fraunhofer, NUS) and FMC's HfO2 FeRAM effort [training knowledge]. The cross-licence plan assumes the diode delta is worth something to Kepler or Intel. For the FE variant it is not.",
+      "would_change_my_mind": "A stated interest from Kepler or Micron in a fatigue-free linear variant, or a measured endurance or retention advantage over FE 1T-nC that they lack."
+    },
+    {
+      "id": "RT-IND-charge-river-01",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§3 Honest position ('imec owns vertical oxide CCD memory'); §6 FTO; §7 imec program partners",
+      "objection": "imec owns this direction: a planar 142-bit IGZO CCD (IEDM 2024), the first vertical IGZO CCD (IMW 2026), and a CXL-buffer framing with a '~5x 2D DRAM by 2030' claim. imec's core memory partners [training knowledge] reach that IP through its partner program, so the likely buyers already have a route around the startup. The startup's claims are narrowed on every side: buried heterochannel: oxide heterochannel TFT art from 2017-24; DFE sensing: LSST deferred-charge correction and RE43,639; placement: IBM 650 SOAP and ShiftsReduce. 'A cross-licence, not a fight' presumes the startup holds something imec's partners need.",
+      "would_change_my_mind": "A professional search of imec's 2022-24 oxide-CCD filings showing the buried heterochannel and the partition-noise DFE are unclaimed, plus a measured buried-vs-surface deferral improvement >=3x that imec's devices do not show."
+    },
+    {
+      "id": "RT-IND-charge-river-02",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§2.2 Density and cost; §4 #7 Cost ceiling; models/charge-river.py yield_rel=0.8",
+      "objection": "The cost ceiling is ~2.1x ($0.71/GB; range $0.42-1.47), because a CCD hole stores 64 bits against ~600 for TLC NAND. yield_rel = 0.8 for a never-built bonded 200-plate stack is a guess. On read-mostly weights, CHARGE-RIVER loses to High Bandwidth Flash (SanDisk/SK hynix, OCP spec Aug 2026, 512 GB per stack) at NAND-class $/GB. On random and KV traffic, it needs a scheduler and a front buffer that DRAM does not. A 2x-cheaper, non-drop-in, software-dependent tier is the Optane position, which failed commercially [training knowledge].",
+      "would_change_my_mind": "A buyer (accelerator vendor or hyperscaler) stating a price and latency spec for a write-endurant streaming tier between HBF and HBM that $0.71/GB at >=92% schedulability meets."
+    },
+    {
+      "id": "RT-IND-charge-river-03",
+      "dd": "charge-river",
+      "severity": "MINOR",
+      "section": "§2.4 'Step 0 is a $35 paper'; FINAL_CONCEPTS EV 40 (P=2), tie with LEAN broken on step size",
+      "objection": "The rank-7 EV (P = 2) and the dossier's P(pass) of 15-25% vs >=50% both hinge on whether imec's 'CTE >98%' is per transfer or end-to-end. That $35 paper has not been read. Until it is, the EV ranking against LEAN ARRAY MODULE (tied at 40 and broken on step size) is unsupported in either direction.",
+      "would_change_my_mind": "Read imec's IEDM 2024 and IMW 2026 papers and restate P using the CTE definition they give."
+    },
+    {
+      "id": "RT-IND-charge-river-04",
+      "dd": "charge-river",
+      "severity": "MAJOR",
+      "section": "§5 Decisive experiment (planar e-beam CCDs at Penn/SNF/CNF); §4 #6 vertical integration deferred",
+      "objection": "The seed builds planar e-beam CCDs in university nanofabs, while imec already has a vertical oxide CCD (3 word lines, >4 MHz). A planar result at 150 MT/s would be new physics. To a memory maker it would still read as behind imec on integration and ahead only on clock rate, with the hard part, a buried heterochannel deposited by ALD in a hole (show-stopper #6), deferred to a partner. Investors will ask why this should be a company rather than an imec partner asking imec to run the faster clock.",
+      "would_change_my_mind": "An 8-16-plate vertical coupon with the buried heterochannel inside the seed (via MIT LL or Albany), or a signed imec collaboration that leaves the startup clear ownership of its channel IP."
+    },
+    {
+      "id": "RT-IND-lean-array-module-01",
+      "dd": "lean-array-module",
+      "severity": "FATAL",
+      "section": "§2.4 Honest size of the helium lever; §3 Prior art (US 10,395,963); §6 IP strategy",
+      "objection": "Nothing a $10-50M investor could own survives: H2 as an ESC backside gas is already listed in US 10,395,963 (confirmed by this review's search); the OEMs' live backside-gas-efficiency family (US 9,753,463 and the same-title US 12,493,303, ~2025 by number; family link inferred from title) shows they already engineer helium substitution; the core accommodation dataset is to be published; the residual claims (leak-compensated recipe, per-zone composition, RFO safety) are recipe-level and easy to design around. The economic lever is ~3% of DRAM's helium, $0.32/wafer (104 u$/GB), in fabs that already recapture 80-90%. The value goes to tool OEMs and gas suppliers, and the startup has neither a product nor a royalty base. FATAL to the venture path, not to the physics.",
+      "would_change_my_mind": "An OEM (Lam, AMAT, TEL) or memory maker paying for exclusive access or a licence before the data exists. Or a claim the OEMs must license, e.g., accommodation-mapped pressure control shown to be required for +/-2 K uniformity."
+    },
+    {
+      "id": "RT-IND-lean-array-module-02",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§5 Step 2 (300 mm swap at an OEM demo lab); §7 'First licensees: Lam, Applied Materials and TEL'",
+      "objection": "The decisive 300 mm step runs in an OEM demo lab (Lam, Applied's META Center, TEL) or at Albany, and the first licensees are those same OEMs. Once a public coupon rig shows a_H2 >= 0.17, an OEM can qualify H2 in its own chamber within a quarter, using its own ESC, gas-stick and safety IP. The startup's experiment de-risks the OEM's product for free.",
+      "would_change_my_mind": "A development agreement signed before Step 2 that gives the startup paid NRE or a royalty on H2-capable chucks. Or a chuck-face coating patent, drafted outside US 8,970,818, that the OEM cannot route around."
+    },
+    {
+      "id": "RT-IND-lean-array-module-03",
+      "dd": "lean-array-module",
+      "severity": "MAJOR",
+      "section": "§0 Step change ('EUV ... go to 0'); §2.5 IL/NIL and AAO; §2.6",
+      "objection": "The 'EUV out of array modules' claim holds only for F ~40 nm oxide cells, because IL's per-field overlay (6.3 nm) cannot meet 1-beta's 2.5 nm. Those cells give 0.109 Gb/mm2 per tier (0.24x 1-beta) and need >=5 tiers, so the claim depends on a portfolio 3D cell winning. The PFAS claim also leans on borrowed levers: stub or gain cells from other concepts, or an AAO mold at 35.2 nm pitch, below Masuda's ~40 nm floor. Canon NIL is already in trials at SK hynix and Kioxia. Without the borrowed levers, LEAN is a helium hedge worth ~3%.",
+      "would_change_my_mind": "AAO at <=35 nm pitch with <=1e-4 defective pores, or an IL/NIL overlay result on a real cell layer, inside the seed."
+    },
+    {
+      "id": "RT-IND-lean-array-module-04",
+      "dd": "lean-array-module",
+      "severity": "MINOR",
+      "section": "§2.4 Insurance value (2.4-day payback); §8 Resources (helium storage, U.S. buffer)",
+      "objection": "The 2.4-day payback assumes a stoppage that the dossier's own logic says fabs avoid. Under a partial cut they shed leak check, diluent and purge first and keep backside cooling. The dossier also notes ~6 weeks of storage and that U.S. fabs are 'relatively buffered'. The hedge pays only in a near-total, prolonged cutoff. If Qatar's output resumes (not checked here), the urgency that motivates customers disappears.",
+      "would_change_my_mind": "Fab helium use-split data (the planned M6 requests) showing backside cooling >10% of fab helium, plus a credible scenario in which it is the binding use."
+    },
+    {
+      "id": "RT-IND-cell-wafer-foundry-01",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§3 Genuine delta and 'Not new'; §6 IP ('publish under an open licence with a royalty-free or FRAND pledge')",
+      "objection": "The generic array/periphery split is anticipated (US 10,340,261; 11,430,766; 11,114,453; 11,094,653). Proprietary versions already run in-house: Samsung VCT/PUC and VS-DRAM peri-on-cell, SK hynix VG, Kioxia CBA and YMTC Xtacking. The spec itself is to be published royalty-free. Revenue therefore comes only from narrow implementation patents (domain-switched supply adjacency, bond-link BIST and remap, a grid matched to sense-amp area), which incumbents with large bonding estates can design around. The UCIe/OCP model the dossier cites has made money for no spec originator.",
+      "would_change_my_mind": "One incumbent or foundry agreeing to adopt the spec and license the implementation patents. Or a claim on the supply-adjacency rule shown to be unavoidable at <=1.5 um pitch."
+    },
+    {
+      "id": "RT-IND-cell-wafer-foundry-02",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§2 Capex ($61 -> $8 per GB/month) and Null hypothesis (+$800 per pair; >=$12.5/tier); §9 D1",
+      "objection": "About 4.2x of the 7.6x capex claim is tier density, 'which any in-house 3D DRAM would also get'. That leaves ~1.8x for the split itself. The split costs +$800 per wafer pair and pays only if a NAND-class line processes each tier >=$12.5 cheaper than logic BEOL at 64 tiers (42% of the $30 assumed). No data supports that per-tier advantage. If it fails, the dossier's own D1 demotes the concept to 'an option inside someone else's 3D DRAM'.",
+      "would_change_my_mind": "A fab-cost model from a NAND maker or a cost-analysis house showing per-tier cost on a NAND line >=$12.5 below logic BEOL. Or a thermal or hydrogen reason the cell steps cannot run on the periphery wafer."
+    },
+    {
+      "id": "RT-IND-cell-wafer-foundry-03",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§7 Who partners and why; §8 U.S. manufacturability ('no U.S. NAND-class volume line')",
+      "objection": "There is no merchant buyer or seller. Samsung and SK hynix 'would license implementation patents, not buy merchant wafers'. The only plausible cell-wafer makers (Kioxia, Samsung, SK hynix/Solidigm, Micron, YMTC) are vertically integrated and would arm competitors by selling cell wafers to third-party periphery. No U.S. NAND-class line exists, and an owned 300 mm cell line costs more than the $10-50M round. Memory has no precedent for a merchant array wafer.",
+      "would_change_my_mind": "An LOI from a cell-wafer maker (e.g., a NAND maker with idle decks) and a periphery foundry agreeing to trade wafers under the spec."
+    },
+    {
+      "id": "RT-IND-cell-wafer-foundry-04",
+      "dd": "cell-wafer-foundry",
+      "severity": "MAJOR",
+      "section": "§6 Portfolio caveat (only A, H, I ~$75k seed-funded); §2 Sensitivity (particles: 0.5/cm2 -> W2W yield 0.70); §9 K4",
+      "objection": "Inside the portfolio seed, only ~$75k (spec, IP, standards) is funded. The bond vehicles (~$625k) become partner, grant or raise items, so the seed tests no bond physics at all. Run standalone, the GO bar needs <=0.05 particles/cm2: the model gives W2W yield 0.70 at 0.5/cm2 and 0.24 at 2/cm2. Bonding Purdue coupons at a SkyWater facility could therefore trip K4 because of university-cleanroom particle density, not the concept. Bonding houses (imec, EVG, Adeia) already generate this class of data routinely.",
+      "would_change_my_mind": "A fab-grade bonding partner (imec, NY CREATES, Intel or TSMC packaging) committing in kind to the 8-tier W2W lot within the seed, with particle density documented."
+    },
+    {
+      "id": "RT-IND-cell-wafer-foundry-05",
+      "dd": "cell-wafer-foundry",
+      "severity": "MINOR",
+      "section": "§3 Adeia/Xperi DBI row; §6 FTO; §4 #9",
+      "objection": "A product needs an Adeia DBI licence: Micron licensed in 2022, and AMD settled in March 2026 after litigation. That stacks a hybrid-bonding royalty onto an interface that earns no royalty of its own.",
+      "would_change_my_mind": "The Adeia licence cost quantified per wafer pair and shown to be <1% of the $5,820 pair cost."
+    },
+    {
+      "id": "RT-IND-ai-memory-diet-01",
+      "dd": "ai-memory-diet",
+      "severity": "MAJOR",
+      "section": "§3 Genuine delta #1 (client-deadline restore); §6 IP ('No search has been run'); §7 NVIDIA 'likeliest partner or acquirer'",
+      "objection": "The strongest IP, client-deadline restore, needs both the client and the server. Chat operators (OpenAI, Anthropic, Google, Meta) own both and could ship a typing/send hint in weeks. NVIDIA owns the server-side KV stack (Dynamo/KVBM, NIXL, ICMS on BlueField-4). Prior art for prefetch on user intent (speculation rules, hover prefetch, LiveMind 2024, CachedAttention 2024) makes a broad claim obvious, and no FTO search has been run. The startup controls no deployment surface.",
+      "would_change_my_mind": "An inference provider or chat operator agreeing to run the hint and queue in production under licence. Or an FTO opinion showing the deadline-queue claim survives LiveMind and CachedAttention."
+    },
+    {
+      "id": "RT-IND-ai-memory-diet-02",
+      "dd": "ai-memory-diet",
+      "severity": "MAJOR",
+      "section": "§0 Step change; §2.2 Scenario table (B0 1.50x DRAM / 1.19x wafer); §2.3 Rack and fleet",
+      "objection": "The diet's own contribution is 1.50x less DRAM per conversation, or 1.19x in wafer terms. The 3x latent that lifts this to 4.5x is mostly prior art (MLA, MHA2MLA, xKV). Freed DRAM is worth $18.8k per rack at cost, against a GB300 NVL72 rack priced in the millions [training knowledge]. 10,000 racks avoid 0.13-0.19% of world DDR5-equivalent output. On the mission's axes that is S = 2 at best, and it is not a step change in DRAM bits per user unless the unshown retrofit latent works.",
+      "would_change_my_mind": "G3 showing a retrofit all-layer latent at >=3x with <=1 point RULER loss on a 70B model, plus a production measurement of host-DRAM working set <=64 GB/GPU."
+    },
+    {
+      "id": "RT-IND-ai-memory-diet-03",
+      "dd": "ai-memory-diet",
+      "severity": "MAJOR",
+      "section": "§4 #5 (soldered or busy host DRAM; Vera ~1.5 TB/CPU); §7 OEMs/ODMs",
+      "objection": "GB300's host DRAM is Grace's soldered LPDDR5X (480 GB per Grace), and the next platform goes the other way: Vera with ~1.5 TB per CPU, per the dossier. NVIDIA's ICMS already puts KV on pod-level flash. Depopulation is a decision in NVIDIA's reference design, not an OEM SKU choice, and NVIDIA's roadmap is adding host memory for context. Without NVIDIA, 'publish the node spec' has no adopter.",
+      "would_change_my_mind": "NVIDIA, or a hyperscaler custom-ASIC team (TPU, Trainium, MTIA), committing to a host-lite SKU. Or measured evidence that Vera's extra memory sits idle in serving."
+    },
+    {
+      "id": "RT-IND-ai-memory-diet-04",
+      "dd": "ai-memory-diet",
+      "severity": "MAJOR",
+      "section": "§2.1 KV geometry (70B GQA, 160 KiB/token FP8); §3 Latent KV row",
+      "objection": "The baseline is a 70B GQA model with 160 KiB/token of FP8 KV. Frontier serving is moving to MLA models (DeepSeek-V3/R1, Kimi K2) and hybrid linear-attention models (Qwen3-Next, Kimi Linear, MiniMax), whose KV per token is several-fold smaller from pretraining [training knowledge]. That shrinks scenario A's host and flash load, removes the need for a retrofit latent, and eases the restore-time problem the client signal exists to solve. G2 and G3 may be moot by 2028.",
+      "would_change_my_mind": "The model re-run on an MLA/hybrid-attention traffic mix and still showing >=1.5x DRAM per conversation from host-lite, plus a material p99 benefit from the signal."
+    },
+    {
+      "id": "RT-IND-ai-memory-diet-05",
+      "dd": "ai-memory-diet",
+      "severity": "MINOR",
+      "section": "§5 Lead-time study (300-500 users, forked Open WebUI) and replay node (8-GPU H200/B200)",
+      "objection": "300-500 consenting users on a forked UI for 6 weeks will not reproduce production gap and context distributions, or the agent and API traffic that §4 #7 leaves unmodeled. The replay node (one 8-GPU H200/B200) is not the GB300/Vera platform whose host memory is at stake. An operator will treat the result as a hypothesis, not as grounds to change a node spec.",
+      "would_change_my_mind": "Traces from a production partner (LMArena or an inference provider) that cover chat, agent and API traffic."
+    }
+  ],
+  "overall": {
+    "margin-stack": "Best physics-to-risk ratio and the portfolio's reader chip, but no $/bit or density step and a thin patent position (IBM micro-SA + OCSA + Hi-ECC); fund it as a portfolio tool, not a licensing company, until a memory maker says capacitor-module deletion is worth paying for.",
+    "hot-side-memory": "Cleanest energy story in the set, but TSMC/Intel own the slot, the ~190 W/GPU is ~2x high on traffic share and quoted against a front-side-power product, and the seed tests none of the foundry-only risks; it needs a named backside-power partner before a raise.",
+    "and-stack": "Biggest prize, but ~3 years behind NEO's NAND-process DRAM (PoC April 2026, no licensee yet), inside Macronix's 3D AND pillar estate, and its 3.8x bits/$ is measured against 2026 1-beta; the planar seed proves select coupling, not manufacturability.",
+    "raw-ber-contract": "Sound engineering, weak business: $2.60 of value per module, replicable in firmware by CXL controller incumbents, with the only novel claim on its least valuable feature (flags, ~8% of parity).",
+    "pixel-stack": "Credible read physics, but its bits/$ is the 0.998 tier-yield input restated, the Smart-Cut baseline is a strawman against incumbents' bonded-periphery 3D DRAM, and the patent estate around it is crowded.",
+    "diode-tower": "A materials search with a 0.15-0.3 eV gap, exposed to obviousness (Kepler 1T-nC plus diode-access 1D1C, US 2007/0183191), and the smallest density step of the three oxide 3D cells; lowest priority for capital.",
+    "charge-river": "Boldest and cheapest to kill, but imec owns the direction and its partners own the route to market, and a 2x-cheaper, streaming-only tier is squeezed between HBF and DRAM, the Optane trap.",
+    "lean-array-module": "A real tail-risk hedge with nothing to own: H2 backside gas is already in the patent record, the lever is ~3% of DRAM helium ($0.32/wafer), and the OEMs would capture any value; a grant-funded or OEM-internal project, not a venture.",
+    "cell-wafer-foundry": "The split is anticipated and already done in-house, the open spec earns nothing, the merchant market has neither buyer nor seller, and the seed funds no bond physics; it lives only as the scale path of a cell that wins.",
+    "ai-memory-diet": "A useful systems paper, not a company or a step change: 1.19x in wafer terms without the prior-art latent, IP that needs a client and a server the startup does not control, and NVIDIA's platform moving toward more host memory."
+  }
+}
