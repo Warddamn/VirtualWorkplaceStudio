@@ -37,13 +37,13 @@ Program month M0 = 2027-01-01.
 **Verdicts**
 - **PHYSICALLY POSSIBLE? Yes.** No new physics. The thermal floor at raw BER 1e-4 is 0.024 fF, 20x below the 0.5 fF planning cell. Mismatch, coupling, wordline kick and the oxide leakage tail set the size, and all of them are engineering terms. The cut is legal only with oxide access: a silicon 13 fA tail empties 0.54 fF in ~3 ms.
 - **STEP CHANGE IF IT WORKS? Yes, on capacitor-module capital and PFAS, plus 3D readiness.** The capacitor is ~10.8x smaller: 5.42 → 0.5 fF, 1,300 → 120 nm tall, AR 62 → 5.7. Array energy per access falls ~2.3x [ESTIMATE]. The stretch is 17-40x [SPECULATIVE]. **It is no step on $/bit** (-3% to +4%) **or density** (-8% against plain 4F2).
-- **PROVABLE WITH $1M IN 24 MONTHS? Partly, strongly.** One 22FDX MPW, IGZO coupons and a DRAM Bender study settle the circuit question by M16-17: post-CDS residual, coupling and error clustering. The experiments cost $520k; with two founders the plan is $955k. No oxide VCT array is built. The oxide terms come from coupons and are combined with the silicon results by projection.
+- **PROVABLE WITH $1M IN 24 MONTHS? Partly, strongly.** One 22FDX MPW, IGZO coupons and a DRAM Bender study settle the circuit question by M16-17: post-CDS residual, coupling and error clustering. The decisive experiment costs $520k (the model's $675k "experiments alone" line adds spin 2 and IP); with two founders the plan is $955k. No oxide VCT array is built. The oxide terms come from coupons and are combined with the silicon results by projection.
 
 ---
 
 ## 1. How it works
 
-A DRAM bit is a bucket of charge behind a switch. To read it, the switch opens and the charge spills onto a bitline shared by 512 cells. The bitline holds ~35 fF, seven times the 5.4 fF cell, so the bit shows up as only ~50 mV. A latch must tell that from its own random imbalance (offset) and from neighbour noise, correctly, on ~17 billion cells. That is why the capacitor is a pillar 1.3 µm tall and 21 nm wide. Etching, coating and propping up those pillars is one of the hardest, most chemical-hungry steps in a fab.
+A DRAM bit is a bucket of charge behind a switch. To read it, the switch opens and the charge spills onto a bitline shared by 512 cells. The bitline holds ~35 fF, about 6.4 times the 5.4 fF cell, so the bit shows up as only ~50 mV. A latch must tell that from its own random imbalance (offset) and from neighbour noise, correctly, on ~17 billion cells. That is why the capacitor is a pillar 1.3 µm tall and 21 nm wide. Etching, coating and propping up those pillars is one of the hardest, most chemical-hungry steps in a fab.
 
 MARGIN STACK stacks three tricks:
 
@@ -183,7 +183,7 @@ Required Cs (fF) by random residual and coupling (32-cell segment, kick included
 - **Thresholds.** Cs ≤ 0.5 fF needs σ_res ≤ 23.5 / 20.5 / 14.5 mV at α 0.05 / 0.10 / 0.20; Cs ≤ 0.25 fF needs ≤ 12.3 / 10.6 / 7.1 mV; above 34 mV (α 0.10), Cs ≥ 1 fF.
 - **Segment length.** 64 cells cost 4.4% of the die and need 0.20 fF. 16 cells cost 17.5% for 0.11 fF. 32-64 is the sweet spot.
 - **Kick limits only the stretch.** At 0.5 fF with *zero* cancellation, D ≈ 43 mV and the central case still closes: 86 - 43 = 43 mV, against 27 mV needed [ESTIMATE, hand].
-- **Without ECC** (k = 7), central CDS needs ~0.26 fF and pessimistic ~0.8 fF [ESTIMATE, hand, outside the model]. If CDS works, ECC is insurance, not the lever.
+- **Without ECC** (k = 7), central CDS needs ~0.25 fF and pessimistic ~0.77 fF [ESTIMATE, model functions at k = 7, not printed by the model]. If CDS works, ECC is insurance, not the lever.
 
 ### 2.9 GO / NO-GO (pre-set)
 
@@ -201,14 +201,17 @@ Required Cs (fF) by random residual and coupling (32-cell segment, kick included
 | Prior art | Date | Gap left |
 |---|---|---|
 | IBM (Barth et al.): 3T micro-SA per ~32-cell local bitline, 1.5 ns | ISSCC 2007 / JSSC 2008 | Si eDRAM; no CDS; no capacitor co-design |
+| Hierarchical / local-bitline sensing; selective bitline activation (Udipi, ISCA 2010); FGDRAM (MICRO 2017) [Stage 2 critics, training knowledge] | 2010-17 | Segmentation for energy, not to shrink Cs |
+| Gain-cell eDRAM: Si 2T/3T GC-eDRAM (BGU), UT Austin IGZO eDRAM, imec/Kioxia IGZO 2T0C [Stage 2 critics] | 2010s-20s | Removes the capacitor but needs 2-3 FETs per cell and a different read; not a 1T1C capacitor cut |
 | SEL DOSRAM: oxide 1T1C over Si SAs (US 12,230,314; 11,694,594; 11,488,528) | 2010s-20s | No Cs or CDS seen; main FTO risk |
-| Hi-ECC (Wilkerson et al.): strong BCH cuts eDRAM refresh ~93% | ISCA 2010 | ECC never used to shrink the capacitor |
+| Hi-ECC (Wilkerson et al.): strong BCH cuts eDRAM refresh ~93%; ECC(552,512) gain-cell refresh study (arXiv 2607.16042, named by a Stage 2 critic, not re-checked) | ISCA 2010; 2026 | ECC spent on refresh; no logged source spends it on capacitor size (Stage 2: "none found") |
 | Offset-cancellation SAs (US 11,763,878) | shipping | Global bitline only |
-| Charge-transfer SAs (US 8,320,208); NC SA (US 8,872,938); SRAM NC bitlines; Blalock clamped-bitline SA | 2000s-10s | No DRAM neutraliser |
+| Charge-transfer SAs (US 8,320,208); NC SA (US 8,872,938); SRAM NC bitlines; Blalock clamped-bitline SA; electrophysiology headstage capacitance neutralisation | 2000s-10s | No DRAM neutraliser found |
 | Kioxia + Nanya OCTRAM, 275 Mb vertical IGZO, Ioff < 1 aA | Dec 2024 | Keeps the HAR capacitor |
 | Kioxia 3D OCTRAM, 8 IGZO layers | Dec 2025 | No retention data |
 | Samsung 16Gb 4F2 VCT (ISSCC 2026); 10a IGZO VCT die | Feb / Apr 2026 | No capacitor cut published |
 | Samsung 16-tier VS-DRAM: back gate, bitline shield, horizontal capacitor | 2024-26 | Long capacitor per tier |
+| Sequential / M3D sense tiers: CEA-Leti CoolCube, M3D DRAM periphery tier (arXiv 2008.11367), Monolithic 3D ion-cut patents [Stage 2 critics] | 2010s-20s | Si sense tiers; capacitor not sized to the segment |
 | SK hynix vertical-gate 4F2 with bitline shielding | VLSI 2026 | No local gain |
 | ETH SAFARI SoftMC, DRAM Bender, PaCRAM (388 DDR4 chips) | 2018-25 | Our test method |
 | NAND soft-bit sensing (US 11,907,545); XED [training knowledge] | 2016-24 | Not in DRAM silicon |
@@ -230,7 +233,7 @@ No oxide VCT program has published a capacitor cut. If DOSRAM already runs ~1 fF
 | # | Show-stopper | Number | Workaround |
 |---|---|---|---|
 | 1 | Data-dependent coupling, which CDS cannot cancel | 0.5 fF needs σ_res ≤ 20.5 mV at α 0.1, ≤ 14.5 at α 0.2 | Shields (SK hynix, VS-DRAM); alternate-segment activation; differential reference; 64-cell segments |
-| 2 | Oxide 1/f + RTN [SPECULATIVE] | 4 mV central; 10 mV gives 0.32 fF | Shorter sample gap; 4-pillar gain FET; H-lean anneal (imec, ~30x less H-doping); multi-sample averaging |
+| 2 | Oxide 1/f + RTN [SPECULATIVE] | 4 mV central; 10 mV alone gives ~0.25 fF [ESTIMATE, model functions]; the full pessimistic case (also α 0.15, 5.4 mV comparator) gives 0.32 fF | Shorter sample gap; 4-pillar gain FET; H-lean anneal (imec, ~30x less H-doping); multi-sample averaging |
 | 3 | Wordline kick on 1.7 fF | 46 mV mean; D 8.1 mV after cancellation | Dummy edge; reference sample; lower overdrive. Threatens only ≤ 0.25 fF |
 | 4 | Gain-FET bias and spread | Off at 0.5 V; -4σ FET keeps 53% gm | Pulsed read source; back gate; one Vt-adjust mask |
 | 5 | Unknown IGZO leakage tail | ≤ 586 aA at 0.5 fF; 13 fA gives 3 ms | Retreat to 1 fF (≤ 1,172 aA, still 5.4x); droop optimisation; negative WL hold; repair tail cells |
@@ -271,7 +274,7 @@ No oxide VCT program has published a capacitor cut. If DOSRAM already runs ~1 fF
 | IGZO coupons: ~400 cleanroom h, staff, materials, readout | 120,000 | M3-12 |
 | **Total** | **520,000** | |
 
-In the portfolio, Bender and coupons are shared, so MARGIN STACK's increment is ~$260-320k.
+In the portfolio, Bender and coupons are shared, so MARGIN STACK's increment is ~$260-320k [ESTIMATE: $520k less the $80k Bender study and part or all of the $120k coupons].
 
 **Pass/fail, fixed now.** GO: σ_res ≤ 20 mV, pairs < 1%, tail ≤ 586 aA. NO-GO: σ_res > 34 mV or pairs > 10%. Add-ons: the neutraliser passes if stable at Cn/Cbl ≥ 0.5; charge-transfer pre-sense passes at ≤ 1.6 mV.
 
@@ -292,7 +295,7 @@ In the portfolio, Bender and coupons are shared, so MARGIN STACK's increment is 
 
 **Budget.** Decisive experiment $520k; spin 2 (after GO only) $110k; IP (2 provisionals, PCT, FTO search) $45k; two founders at $5k/month $240k; overhead $40k; reserve $45k. **Total $1.0M.**
 
-Honest risk: $60k a year will not hire a seasoned DRAM designer. Fixes: equity, portfolio cost-sharing (~$250k freed), NSF SBIR/DARPA/NSTC grants [training knowledge].
+Honest risk: $60k a year will not hire a seasoned DRAM designer. Fixes: equity, portfolio cost-sharing (~$200-260k freed [ESTIMATE]), NSF SBIR/DARPA/NSTC grants [training knowledge].
 
 **Team**
 - *Founder 1, architect/test/ECC:* from ETH SAFARI alumni or U.S. memory-systems groups.
@@ -348,8 +351,8 @@ Honest risk: $60k a year will not hire a seasoned DRAM designer. Fixes: equity, 
 
 Physics-only. Each has a date and a revival condition.
 
-1. **K1, 2027-07-01 (pairs).** Three vendors at emulated 1e-4 show ≥ 10% same-codeword pairs after remapping. This kills the ECC lever (allowed 1.7e-5). The concept survives if CDS meets the no-ECC numbers (~0.26 fF). *Revival:* < 1% pairs on oxide cells.
-2. **K2, 2028-01-31 (tail).** The extrapolated IGZO 1e-10 tail at 85 °C is > 1,172 aA on two splits. That kills any cut beyond ~4.6x. *Revival:* an anneal or channel (imec H+O, In-lean) reaching ≤ 586 aA.
+1. **K1, 2027-07-01 (pairs).** Three vendors at emulated 1e-4 show ≥ 10% same-codeword pairs after remapping. This kills the ECC lever (allowed 1.7e-5). The concept survives if CDS meets the no-ECC numbers (~0.25 fF). *Revival:* < 1% pairs on oxide cells.
+2. **K2, 2028-01-31 (tail).** The extrapolated IGZO 1e-10 tail at 85 °C is > 1,172 aA on two splits. That kills any cut beyond ~5.4x (Cs > 1 fF at 64 ms). *Revival:* an anneal or channel (imec H+O, In-lean) reaching ≤ 586 aA.
 3. **K3, 2028-01-31 (hard tail).** The tail is > 6,352 aA, which fails 64 ms even at 5.42 fF. That kills the oxide-access premise. *Revival:* another access device below 586 aA.
 4. **K4, 2028-06-30 (residual).** The projected oxide σ_res is > 34 mV with measured α. That kills the lever beyond ~5x. *Revival:* α ≤ 0.05 with shields and 64-cell segments.
 5. **K5, 2028-06-30 (CDS).** CDS removes < 75% of the gain-FET offset. That kills CDS; the fallback is row H (0.60 fF, 4-pillar FETs, +9% array). *Revival:* spin 2 finds and fixes the drift source.

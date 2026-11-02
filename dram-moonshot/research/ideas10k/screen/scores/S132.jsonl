@@ -1,0 +1,105 @@
+{"id": "I-11640", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "ODT current recycling", "note": "POD termination sources current from the receiver's own VDDQ; little incoming energy to recover without a new signaling scheme."}
+{"id": "I-11641", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "body-effect popcount detection", "note": "Per-cell body-effect gate charge is sub-electron; 10-bit row popcount precision looks implausible."}
+{"id": "I-11642", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "bitline-junction JFET preamp", "note": ""}
+{"id": "I-11643", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "ECC-steered defect permutation", "note": "Sort-time permutation search lets on-die SEC absorb defects; spends ECC headroom needed for VRT and retention errors."}
+{"id": "I-11644", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "bitline-biased hammer sweep", "note": ""}
+{"id": "I-11645", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "command-timed droop injection", "note": ""}
+{"id": "I-11646", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "segmented spare rows", "note": ""}
+{"id": "I-11647", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "TSV-gated keep-out transistor", "note": ""}
+{"id": "I-11648", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "open-row delta ECC update", "note": ""}
+{"id": "I-11649", "P": 2, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "cell plate signaling", "note": ""}
+{"id": "I-11650", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "row-buffer write inversion", "note": ""}
+{"id": "I-11651", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "switched-cap ZQ reference", "note": ""}
+{"id": "I-11652", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "stack-shared TSV ESD", "note": ""}
+{"id": "I-11653", "P": 5, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "delta-coded fuse trims", "note": ""}
+{"id": "I-11654", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "distributed micro charge pumps", "note": ""}
+{"id": "I-11655", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "EXISTING:stepwise adiabatic charging", "theme": "predictive wordline pre-bias", "note": "Supplying part of the wordline swing from a cheaper rail before VPP boost is stepwise charging; mat-wide pre-bias may cost more than it saves."}
+{"id": "I-11656", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "row-copy test fill", "note": ""}
+{"id": "I-11657", "P": 4, "S": 1, "N": 2, "D": 1, "dup_of": "", "theme": "COAG sense-amp layout", "note": ""}
+{"id": "I-11658", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "time-shared row/column decoder", "note": ""}
+{"id": "I-11659", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "serial internal command bus", "note": ""}
+{"id": "I-11660", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "bidirectional global data lines", "note": ""}
+{"id": "I-11661", "P": 1, "S": 4, "N": 4, "D": 2, "dup_of": "", "theme": "field-steered sub-pitch FE bits", "note": "Coercive-field steering cannot confine switching to sub-pitch spots in continuous HZO; domain spreading and disturb likely defeat it."}
+{"id": "I-11662", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "thermal-select ferroelectric crosspoint", "note": ""}
+{"id": "I-11663", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "kinetic half-select FE crosspoint", "note": ""}
+{"id": "I-11664", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "sneak-current read reference", "note": ""}
+{"id": "I-11665", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "magnetoelectric coincidence write", "note": ""}
+{"id": "I-11666", "P": 1, "S": 3, "N": 4, "D": 1, "dup_of": "", "theme": "acoustic time-of-flight FE read", "note": "At 5 um/ns, 50 nm pitch cells arrive 10 ps apart; needs ~100 GHz acoustic bandwidth."}
+{"id": "I-11667", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "charge-metered FE write", "note": ""}
+{"id": "I-11668", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "FE fatigue rejuvenation", "note": ""}
+{"id": "I-11669", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "antiferroelectric tier selector", "note": ""}
+{"id": "I-11670", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "stray-field multiplexed MTJ read", "note": ""}
+{"id": "I-11671", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "sliding-ferroelectric 2D gate", "note": ""}
+{"id": "I-11672", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pre-poled out-of-place FE writes", "note": ""}
+{"id": "I-11673", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "capacitive threshold decoder", "note": ""}
+{"id": "I-11674", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "write-credit memory contract", "note": ""}
+{"id": "I-11675", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "BiFeO3 vector two-bit cell", "note": ""}
+{"id": "I-11676", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "imprint-mirrored shared decks", "note": ""}
+{"id": "I-11677", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "microwave-VCMA resonant write", "note": ""}
+{"id": "I-11678", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "nucleation-onset FE sensing", "note": ""}
+{"id": "I-11679", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "balanced-code plate current cancel", "note": ""}
+{"id": "I-11680", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "half-select compensation pulses", "note": ""}
+{"id": "I-11681", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "anomalous Nernst magnetic read", "note": ""}
+{"id": "I-12060", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "comparator ensemble voting", "note": ""}
+{"id": "I-12061", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "pulse-collision row decoder", "note": ""}
+{"id": "I-12062", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "NLTL wordline steepening", "note": ""}
+{"id": "I-12063", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "graded-Vt tier select", "note": ""}
+{"id": "I-12064", "P": 3, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "thermomagnetic repair fuses", "note": ""}
+{"id": "I-12065", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "voltage-stacked VPP domains", "note": ""}
+{"id": "I-12066", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "leakage-balanced local references", "note": ""}
+{"id": "I-12067", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "injection-locked bank clocks", "note": ""}
+{"id": "I-12068", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "noise cross-correlation test", "note": ""}
+{"id": "I-12069", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "defect-signature fuse compression", "note": ""}
+{"id": "I-12070", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11654", "theme": "distributed micro charge pumps", "note": ""}
+{"id": "I-12071", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "log-binned hammer tracker", "note": ""}
+{"id": "I-12072", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "braided redundant routing", "note": ""}
+{"id": "I-12073", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "droop-triggered ACT throttle", "note": ""}
+{"id": "I-12074", "P": 3, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "single-ended global data lines", "note": ""}
+{"id": "I-12075", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-11645", "theme": "feedforward supply correction", "note": ""}
+{"id": "I-12076", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "ZTC-biased sense amp", "note": ""}
+{"id": "I-12077", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "iso-potential driver parking", "note": ""}
+{"id": "I-12078", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "relaxed-timing die binning", "note": ""}
+{"id": "I-12079", "P": 2, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "liquid-metal self-healing wires", "note": ""}
+{"id": "I-12080", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "SA-off bitline page hold", "note": ""}
+{"id": "I-12081", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "micro spark-gap ESD", "note": ""}
+{"id": "I-12082", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "anodic-alumina VPP reservoir", "note": ""}
+{"id": "I-12083", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "hot-carrier OTP fuses", "note": ""}
+{"id": "I-12084", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "peaked MOS decap", "note": ""}
+{"id": "I-12085", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "phantom-mode signaling", "note": ""}
+{"id": "I-12086", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "group-testing retention screen", "note": ""}
+{"id": "I-12087", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "periphery-array thermal isolation", "note": ""}
+{"id": "I-12088", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "optimal-network power grid", "note": ""}
+{"id": "I-12089", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "standing-wave clocking", "note": ""}
+{"id": "I-12090", "P": 3, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "JFET sense-amp pair", "note": ""}
+{"id": "I-12091", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "electret reference voltage", "note": ""}
+{"id": "I-12092", "P": 3, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "zeolite low-k dielectric", "note": ""}
+{"id": "I-12093", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "tapered-impedance trace gain", "note": ""}
+{"id": "I-12094", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "TSV reflectometry test", "note": ""}
+{"id": "I-12095", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "damped decap snubbers", "note": ""}
+{"id": "I-12096", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "vacuum field-emission drivers", "note": ""}
+{"id": "I-12097", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "dispersive chirp row select", "note": ""}
+{"id": "I-12098", "P": 3, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "on-die coaxial air-gap wires", "note": ""}
+{"id": "I-12099", "P": 3, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "silicided contact plugs", "note": ""}
+{"id": "I-12100", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "vertical surround-gate periphery", "note": ""}
+{"id": "I-12101", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "wire-delay thermometry", "note": ""}
+{"id": "I-12480", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "plate-strip differential sensing", "note": ""}
+{"id": "I-12481", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "DFE global data lines", "note": ""}
+{"id": "I-12482", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-11673", "theme": "capacitive threshold decoder", "note": ""}
+{"id": "I-12483", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-12061", "theme": "pulse-collision row decoder", "note": ""}
+{"id": "I-12484", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CDMA global data lines", "note": ""}
+{"id": "I-12485", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "partial-charge sip read", "note": ""}
+{"id": "I-12486", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-12065", "theme": "voltage-stacked VPP domains", "note": ""}
+{"id": "I-12487", "P": 4, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "coded fault-tolerant decoding", "note": ""}
+{"id": "I-12488", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "floating-wordline decoder sharing", "note": ""}
+{"id": "I-12489", "P": 2, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "analog-level address decode", "note": ""}
+{"id": "I-12490", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "array-transistor periphery", "note": ""}
+{"id": "I-12491", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-12087", "theme": "periphery-array thermal isolation", "note": ""}
+{"id": "I-12492", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-12096", "theme": "vacuum field-emission drivers", "note": ""}
+{"id": "I-12493", "P": 1, "S": 1, "N": 4, "D": 1, "dup_of": "", "theme": "acoustic mat select", "note": ""}
+{"id": "I-12494", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "randomized bitline twists", "note": ""}
+{"id": "I-12495", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "wordline-heater trap anneal", "note": ""}
+{"id": "I-12496", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "cell-dielectric antifuse", "note": ""}
+{"id": "I-12497", "P": 3, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "plate-capacitance ESD sink", "note": ""}
+{"id": "I-12498", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "scribe-line test circuitry", "note": ""}
+{"id": "I-12499", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "shared-line rotated tiers", "note": ""}
+{"id": "I-12500", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "shaped wordline fall edge", "note": ""}
