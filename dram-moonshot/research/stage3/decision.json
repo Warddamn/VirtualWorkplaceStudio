@@ -1,0 +1,70 @@
+{
+ "as_of": "2026-11-02",
+ "method": "Three independent judges (physicist-founder, deep-tech investor, Thiel-fellow operator) read the red-teamed dossiers without seeing each other; all three picked the same BEST BET, FASTEST PROOF and MOONSHOT. Judge files: research/stage3/judge_{physicist,investor,operator}.json.",
+ "BEST_BET": {
+  "slug": "hot-side-memory",
+  "confidence_range": "0.45-0.55",
+  "why": "~10x lower energy per bit delivered than HBM (0.37 vs 3.95 pJ/b) survived every correction because it comes from geometry (no PHY/interposer/TSV path), not heroic cell physics; 1 bit/cell, 16 tiers; refresh-light (~225x rarer than Si at 105-125 C); ~90 W/GPU saved in the planning case (48-169 W).",
+  "decisive_experiment": "Gate A+ by month 11 (~$240k standalone): 2T0C oxide coupons (IGZO / In-poor IGZO / IGO / Ga-free ZTO), single vs series write gate, -0.5 vs -0.7 V hold, after a real D2O-labelled fusion bond; >=1e5 cells per split measured for drift, cross-temperature, RTN and the directly measured 1e-4 retention quantile.",
+  "kill": "Kill the capacity claim at M11 if every split fails 1e-4-tail retention >=1 s at 105 C, drift sigma <=75 mV, or RTN 1e-4 quantile <=100 mV."
+ },
+ "FASTEST_PROOF": {
+  "slug": "raw-ber-contract",
+  "confidence_range": "0.6-0.7",
+  "why": "No fab, no new physics: ~$124k on DRAM Bender + open DDR5 testers gives a binary by month 6 and the error budget every cell concept relies on (~9x refresh-energy cut on DDR5 RDIMMs at 85 C with chipkill kept; ~13x on retired DDR4 behind CXL).",
+  "kill": "NO-GO if the chipkill-safe interval incl. VRT is <4x the JEDEC window at 65 C, multi-chip events >10%, or the 1 h grade holds on <95% of modules over 1,000 h."
+ },
+ "MOONSHOT": {
+  "slug": "and-stack",
+  "confidence_range": "0.12-0.6 (judges differ; physicist 0.12)",
+  "why": "Highest remaining ceiling: 64 tiers x 2 b = 5.9x 1-beta density, ~2.3x bits/$ vs 2026 (1.1-1.4x vs projected 2032), ~25x lower refresh power, no EUV; the single-film closure was killed, the two-film notched write pocket needs three never-built process modules (P(closure) ~20%) \u2014 a process-integration problem where persistence has many knobs.",
+  "decisive_experiment": "Planar GO #1A at M9 on the shared lot; 2-tier vertical closure coupon GO #1B at M14-16 (~$0.4M standalone to the gate).",
+  "kill": "M18: if the 2-tier coupon has not closed, kill single-etch and fall back to the coaxial per-tier cell."
+ },
+ "PORTFOLIO": {
+  "thesis": "One shared Oxide Tail Statistics lot answers the question seven concepts share, so the $1M funds evidence for most of the portfolio at once; the DRAM-error study sets the ECC budget every cell model uses; conditional spends (AND-stack closure coupon, Hot-Side Gate B) release only after gates pass.",
+  "judge_budgets_k$": {
+   "physicist": {
+    "founders_2x24mo_at_5k": 240,
+    "ip_provisionals_fto_claim_reading": 45,
+    "shared_bench_aA_floating_node_plus_ns_sampling_hot_chuck": 60,
+    "oxide_tail_statistics_lot_x2_purdue_gt": 220,
+    "ots_addon_splits_diode_anodes30_ccd40_and_planar30": 100,
+    "raw_ber_phase1_bender_ddr5_testers": 120,
+    "oxide_on_cmos_carrier_sky130_hot_side_gateB_margin_rtn": 85,
+    "and_stack_2tier_closure_coupon_conditional": 100,
+    "contingency_travel_legal": 30
+   },
+   "investor": {
+    "founder_salaries_2x_5k_per_month_24mo": 240,
+    "overhead_travel_legal_insurance": 30,
+    "ip_fto_claim_reads_provisionals": 50,
+    "C1_dram_error_atlas_rawber_phase1": 110,
+    "C2_oxide_tail_atlas_shared_lot_bench80_fab140_d2o_bond35_sky130_25": 280,
+    "C2_side_splits_andstack35_diode20_ccd15": 70,
+    "C3_andstack_vertical_closure_coupon_gated_M9": 120,
+    "C4_hotside_gateB_lite_logic_shift_bond_proxies_gated_M11": 70,
+    "reserve_for_winner_contingency": 30,
+    "total": 1000
+   },
+   "operator": {
+    "founders_2x24mo_lean_salary_equity_heavy": 260000,
+    "ops_legal_insurance_travel": 30000,
+    "ip_provisionals_and_FTO_reads (hot-side US 12,666,958 / US 2025/0167193; imec/SEL CCD; Macronix/NEO AND)": 40000,
+    "shared_oxide_tails_lot_Purdue_GT (hot-side Gate A+ core incl. D2O real-bond split; 1e5-1e6 leakage cells single vs series write gate; 65k small-area SF RTN array with on-coupon 15 ns S/H; drift + cross-T maps; 1x/2x/4x H dose; Ga-free ZTO/In2O3 splits)": 210000,
+    "lot_riders (AND planar CR/disturb cells 15k; charge-river overlapping-gate planar CCDs 40k, only if imec read passes; pixel lateral-cavity caps 20k; diode-tower integrable-anode splits 5k)": 80000,
+    "metrology_and_user_facilities (SIMS/ToF-SIMS D2O, FIB/TEM, Argonne XPS, used B1500A+WGFMU, hot-chuck time)": 60000,
+    "sky130_BEOL_IGZO_carrier (1-3 ns fF sample nodes for margin/pixel/charge-river RTN; RO/Vt monitors for hot-side Gate B; 4:1 DS comparator block)": 80000,
+    "dram_bender_raw_ber_phase1 (shared with margin-stack pair study)": 90000,
+    "and_stack_TCAD_G0_plus_2tier_closure_coupon (released only after G0 and #1A)": 110000,
+    "contingency": 40000,
+    "deferred_to_raise_or_partner_in_kind (22FDX margin MPW, hot-side Gate C carrier emulation, pixel/AND 4-tier stacks, CWF bond vehicles, LEAN 300 mm swap via JDA/grant, AI-diet replay)": 0
+   }
+  },
+  "facility_first": "Purdue Birck Nanotechnology Center (external user), with Georgia Tech IEN as second site",
+  "recruit_first": "An oxide-semiconductor device-reliability physicist (IGZO-class PBTI/hydrogen/RTN, aA leakage-tail metrology on >=1e4-device arrays, 2T0C experience)"
+ },
+ "biggest_unknown": "The statistical tails of scaled amorphous-oxide transistors (IGZO/IGO/ZTO, <=0.01-0.02 um2) after the full <=400 C hydrogen, thermal and bonding budget at 85-125 C: the 1e-4 to 2e-5 quantile of aA-level off-state leakage and the 1e-4 quantile of ns-to-s RTN.",
+ "monday_action": "In <=2 hours, write a one-page 'Oxide Tail Spec' (rows: device structures; columns: channel splits, device area, timescale, temperature, H/thermal dose, bond split, pass/kill line per concept) from the dossiers' section 5 and 11 thresholds, and send it to one oxide-FET university group with external-user access (the judges name Purdue Birck) to ask whether they can run it and at what cost.",
+ "headline": "No free lunch and no physics kill: 10,525 distinct ideas funneled to 10 concepts; all 10 survived 181 red-team objections but were downgraded (~2x on headline claims). The durable step changes are energy per bit moved next to compute (~10x), refresh bought with coding (~9x), and density from tier count without EUV (4.6-5.9x) \u2014 not cheap bits (<=1.6x bits/$ vs a projected 2032 incumbent)."
+}
