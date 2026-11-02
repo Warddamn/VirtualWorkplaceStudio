@@ -26,6 +26,7 @@ Reading: at the He operating point, N2 (a~0.85) gives a similar *average* h, but
 ## B. The key unknown: H2 thermal accommodation on film-coated backsides
 
 First-principles prior (Baule hard-cube mass ratio, surface mass 20 amu): a_H2/a_He = 0.200/0.333 = 0.60; applied to the measured He value 0.45 -> **a_H2 ~ 0.27** before the rotational-mode penalty. Planning value 0.20; the card's pessimistic case is 0.10. [ESTIMATE]
+RED-TEAM (RT-DEV-01): Baule is a translational prior. With H2 rotational accommodation 0.1-0.3x translational, the effective coefficient (the one h_gas() fits, with (gamma+1)/(gamma-1) = 6) is 0.27 x (4+2r)/6 = **0.19-0.21**, so the planning value 0.20 is the effective prior, not a pessimistic one (section I1).
 
 Target: He at 15 Torr, a=0.45, gap 10 um -> h = 1180 W/m2K. Break-even symmetric a_H2:
 - drop-in at the same 15 Torr: **a_H2 >= 0.241**
@@ -78,7 +79,8 @@ Backside He per DRAM wafer: 150 chucked steps x 2.5 min x 20 sccm = **7.5 L (STP
 Cross-check: Samsung HeRS first line ~4.7 t/yr over ~1.2M wafers/yr = 22 L/wafer recovered (HeRS scope not disclosed; same order of magnitude).
 Fleet backside He: 166 thousand m3/yr = 0.10 % of world He; **~3 % of DRAM's pro-rata helium** (6.1 M m3/yr) [ESTIMATE]. Range for 3-30 L/wafer: 1-11 %.
 Cost: 0.32 $/wafer at $1200/Mcf = 104 u$/GB vs $1.48/GB (0.008 % of wafer cost). H2 replacement: 15.9 L = 1.43 g = $0.007/wafer.
-Outage insurance: a 100k-wpm fab books ~$32M revenue/day; an H2 retrofit of 1500 chambers x $50k = $75M pays back after **2.4 days** of avoided full stoppage [ESTIMATE].
+Outage insurance: a 100k-wpm fab books ~$32M revenue/day; an H2 retrofit of 1500 chambers x $50k = $75M of hardware pays back after 2.4 days of avoided full stoppage [ESTIMATE].
+RED-TEAM (RT-PROC-05): adding requalification (50 chamber families x $1.5M) gives $150M and **4.7 days** (brownfield; old 2.4 days was hardware only). Range and greenfield case in section I5.
 **Honest consequence:** if backside cooling is only ~3 % of a DRAM fab's helium, a fab under a partial cut keeps backside cooling and sheds other uses first (leak check -> H2/N2 tracer, PECVD diluent -> Ar). H2 backside matters only in a near-total cutoff (>~97 % loss), or as the last step to a fully He-free line. It is a tail-risk hedge and a He-free enabler, not a volume or cost lever. The backside share is unverified and is the second number this dossier must pin down.
 
 ## F. AAO capacitor mold for Si-access cells (no fluorocarbon HAR etch)
@@ -136,16 +138,154 @@ Bias-power sensitivity (a_H2 = planning value): dT for He and H2 at He pressure 
 | 5 | 56.6 | 48.0 | 58.0 | 40.3 |
 | 10 | 113.2 | 95.9 | 115.9 | 80.6 |
 
+## I. RED-TEAM VARIANTS (objection ids from research/redteam/rt_*.json)
+
+### I1. Rotational accommodation of H2 (RT-DEV-lean-array-module-01)
+
+Free-molecular energy flux per molecule: translation carries 2kT (factor 4 in (gamma+1)/(gamma-1) units), H2 rotation kT (factor 2). With rotational accommodation r x translational: effective a = a_trans x (4+2r)/6. Baule gives a_trans ~ 0.27.
+
+| r = a_rot/a_trans | (4+2r)/6 | H2/He FM ratio per unit a_trans | effective a_H2 prior | parity pressure (Torr) | verdict |
+|---|---|---|---|---|---|
+| 0.05 | 0.68 | 1.43x | 0.184 | 20.3 | GO (raise p) |
+| 0.10 | 0.70 | 1.46x | 0.189 | 19.8 | GO (raise p) |
+| 0.20 | 0.73 | 1.53x | 0.198 | 18.8 | GO (raise p) |
+| 0.30 | 0.77 | 1.60x | 0.207 | 17.9 | GO (raise p) |
+| 0.50 | 0.83 | 1.74x | 0.225 | 16.3 | GO (raise p) |
+| 1.00 | 1.00 | 2.09x | 0.269 | 13.2 | GO (drop-in) |
+
+Lognormal prior (1-sigma factor 1.5): P(a >= GO 0.168) = **88 %** with the old median 0.27 -> **66 %** with the effective median 0.198; P(NO-GO, a < 0.098) = 4 %. GO needs the WORST of four films (SiO2, SiN, poly, CFx) to pass: with 1-2 effectively independent draws, P = 43-66 % (old median: 77-88 %). Adsorbate films (H on W 0.54 -> 0.14) add a fat lower tail this lognormal does not hold, so carry P3 (~35-55 %), not P4 (50-75 %).
+
+D2 as a rig diagnostic and CONDITIONAL-chamber fallback: same mass as He (same Baule a_trans ~0.45), rotational quanta half H2's.
+
+| gas | a_eff | h at 15 Torr (W/m2K) | vs He | parity pressure (Torr) |
+|---|---|---|---|---|
+| D2 (r=0.3) | 0.345 | 1248 | 1.06x | 14.1 |
+| D2 (r=0.6) | 0.390 | 1423 | 1.21x | 12.1 |
+Reading: H2 vs D2 on the same coupon separates the mass (translational) term from the rotational term; if D2 passes where H2 fails, the shortfall is rotational and a blend or D2 (recaptured; [SPECULATIVE] cost) is the fallback. D is also a donor in oxide channels, so I3 applies to D2 too.
+
+### I2. Where the leaked H2 sits on the wafer (RT-PROC-lean-array-module-01)
+
+1-D radial advection-diffusion above the wafer: process gas injected uniformly, flowing outward (v grows with r); the seal leak enters at r = R. Upstream of the source the steady profile is c(r)/c(R) = exp(-k (R^2 - r^2)/2), k = Q_vol/(2 pi R^2 h D). Downstream of the source c equals the fully mixed value, so **the wafer edge sees the section-D H/F figure and the interior sees less**.
+
+| chamber p (mTorr) | flow (sccm) | D_H2 (cm2/s) | v at edge (cm/s) | Peclet (1 cm) | c(centre)/c(edge) | edge H/F (molecular-viscous) |
+|---|---|---|---|---|---|---|
+| 30 | 500 | 21,027 | 820 | 0.04 | 0.75 | 0.50-1.19 % |
+| 80 | 1500 | 7,885 | 923 | 0.12 | 0.42 | 0.17-0.40 % |
+
+Edge-He guard zone: run He (or Ar) in the outer zone (r > 130 mm, 25 % of the area) and H2 inside. The outer seal then leaks He, so H2 into the plasma falls to ~0 (only the inner-zone seal leaks H2, into the He zone). Helium kept: (25 % x 19.5 + 0.5) / 20 sccm = **27 %**; H2 still replaces **73 %** of backside He in that chamber. Per-zone composition is already one of the dossier's claimable actuators.
+
+### I3. Hydrogen and oxide channels (RT-DEV-02, RT-CIRC-01)
+
+Leak H atoms at the viscous bound: 5.0 sccm-equivalent. Against the H already in a recipe [ESTIMATE flows]:
+
+| step | recipe H atoms (sccm-eq.) | leak share | rule |
+|---|---|---|---|
+| PECVD SiN (100 SiH4 + 400 NH3) | 1600 | 0.3 % | H2 allowed |
+| PECVD TEOS oxide (~107 sccm TEOS x 20 H) | 2140 | 0.2 % | H2 allowed |
+| HAR FC etch with 10 sccm CH2F2 | 20 | 20.0 % | H2 allowed, monitor |
+| O2-plasma ALD / PVD (Ar) on an exposed oxide channel | 0 | dominant | EXCLUDE (keep He/Ar) |
+
+Share of backside He that H2 can replace (steps excluded keep He or Ar; edge guard only in HAR etch chambers):
+
+| line | oxide-exposed step share | H2 share, no guard | H2 share, guard in HAR chambers |
+|---|---|---|---|
+| Si-access DRAM (today) | 0 % | 100 % | 92 % |
+| oxide-cell line | 10 % | 90 % | 83 % |
+| oxide-cell line | 15 % | 85 % | 78 % |
+| oxide-cell line | 25 % | 75 % | 69 % |
+
+### I4. Cryogenic chucks (-70 C) (RT-PROC-lean-array-module-04)
+
+Gas at 220 K: normal-H2 gamma 1.43 (rotation partly frozen), FM ratio per unit a = 1.99x (300 K: 2.09x). He at 15 Torr, a = 0.45: h = 1327 W/m2K (300 K: 1180).
+Break-even a_H2 at 220 K: drop-in **0.251**, 1.5x pressure **0.175**, clamp limit **0.102** (300 K: 0.241 / 0.168 / 0.098). The GO line moves by +0.007: the gas physics barely changes; the risk is the surface (condensed by-products, adsorbed H) at -70 C, which only a cryo rig measurement settles.
+
+### I5. Requalification cost and insurance value (RT-PROC-05, RT-IND-04)
+
+| case | families | $/family | total ($M) | payback (days of full stoppage) |
+|---|---|---|---|---|
+| brownfield low | 30 | 0.5M | 90 | 2.8 |
+| brownfield mid | 50 | 1.5M | 150 | 4.7 |
+| brownfield high | 80 | 3.0M | 315 | 9.9 |
+| greenfield (qualify during ramp) | - | - | 82 | 2.6 |
+
+Backside cooling is the binding helium use only when a fab's cut exceeds (1 - backside share) after storage: 99 % for a 1 % share, 97 % for a 3 % share, 89 % for a 11 % share.
+
+| P(binding cutoff)/yr [SPECULATIVE] | expected value ($M/yr) | years to recover brownfield mid | greenfield |
+|---|---|---|---|
+| 0.5 % | 4.8 | 32 | 17.4 |
+| 1.0 % | 9.5 | 16 | 8.7 |
+| 3.0 % | 28.5 | 5 | 2.9 |
+Reading: dual qualification is option value for tail risk, best bought on greenfield lines (Micron Idaho/New York, new Korean fabs), not a brownfield retrofit with a days-scale payback. Qualification takes months, so it must exist before the crisis.
+
+### I6. AAO: geometry closure at the 1-beta pitch, retarget to 80 nm, missing-pore budget (RT-DEV-03, RT-CIRC-02, RT-PROC-03)
+
+1-beta pitch 35.2 nm: pore 22.8 nm; ZrO2 at EOT 0.55 nm and k 40 is 5.64 nm; outer TiN 3 nm. Mid-plane 11.2 nm (model used 11.8); **inner-electrode core 5.6 nm**.
+
+| depth (um) | mold AR | ALD dose vs AR-62 (AR^2) | core AR | core TiN rod R (kOhm) | distributed RC (ns) |
+|---|---|---|---|---|---|
+| 2.5 | 109 | 3.1x | 449 | 308 | 0.90 |
+| 3.0 | 131 | 4.5x | 539 | 370 | 1.30 |
+Reading: RC is not the blocker; a conformal three-layer fill leaving a ~5.6 nm core at AR ~450, with 3 nm outer TiN, is. The 1-beta-pitch leg is killed (revival: TEM-verified fill >=2 um at <=36 nm pitch, >=5 fF/pore, <=1e-7 A/cm2).
+
+Retarget: F = 40 nm oxide 1T1C tiers (4F2 = 6,400 nm2), pitch 80 nm square (imprint/DUV-pretextured) or 86 nm hexagonal; pore 0.65 x pitch; 5 nm TiN electrodes; same EOT.
+
+| pitch (nm) | pore (nm) | mid-plane (nm) | Cs per um (fF) | depth for 5.4 fF (um) | cup AR at that depth | inner hole after top TiN (nm) |
+|---|---|---|---|---|---|---|
+| 80 | 52.0 | 36.4 | 7.17 | 0.75 | 14 | 20.7 |
+| 86 | 55.9 | 40.3 | 7.94 | 0.68 | 12 | 24.6 |
+Barrier at 80 nm pitch: ~32 V anodization -> ~35 nm barrier (1.0-1.2 nm/V). Wet-only opening would widen the pore by ~70 nm (> pitch), so it needs current-limited voltage ramp-down to ~3-5 nm first, then a short H3PO4 dip (~8-10 nm widening) [UNVERIFIED-PK]; no fluorocarbon or chlorine plasma. At 35 nm pitch the same trick works, but the fill does not.
+
+Missing/branched-pore budget on a 16 Gb die with on-die SEC (136-bit words), random defects:
+
+| defect fraction | dead cells/die | words with >=2 dead (need repair) | verdict |
+|---|---|---|---|
+| 1e-04 | 1,717,987 | 12,321 | fails (eats SEC and repair) |
+| 1e-05 | 171,799 | 123 | marginal |
+| 1e-06 | 17,180 | 1 | OK |
+| 1e-07 | 1,718 | 0 | OK |
+Kill line 1e-4 -> **1e-6** (RT-PROC-03). Showing <=1e-6 at 95 % needs >=3e6 pores with zero defects: 19,200 um2 = 0.019 mm2 at 80 nm pitch (automated SEM count).
+
+### I7. Signal and retention on A1's convention (RT-CIRC-lean-array-module-03)
+
+A1: end-of-retention signal 50 mV on Cbl 34.7 fF; allowed droop = VARY - Vpre - dV_min (Cs+Cbl)/Cs.
+
+| capacitor | Cs (fF) | fresh signal (mV) | allowed droop (mV) | retention @13 fA Si tail (ms) | retention / 2x VRT guard vs 64 ms | retention @1 aA oxide tail |
+|---|---|---|---|---|---|---|
+| 1-beta pillar | 5.40 | 71 | 154 | 64 | 0.50x | 829 s |
+| AAO 35.2 nm, 2.5 um (killed) | 5.84 | 76 | 178 | 80 | 0.62x | 1,039 s |
+| AAO 35.2 nm, 3.0 um (killed) | 7.01 | 88 | 227 | 123 | 0.96x | 1,594 s |
+| AAO 80 nm, 1.0 um (oxide access) | 7.17 | 90 | 233 | 128 | 1.00x | 1,670 s |
+Reading: on A1's convention the Si-access AAO cup gives 1.25-1.9x the 1-beta retention before any VRT guard, i.e. no refresh relief once a 2x guard is held; any refresh relief comes from the oxide access device, not the AAO cup.
+
+### I8. Fluorocarbon etch-gas inventory per wafer [ESTIMATE] (RT-PROC-02, RT-CIRC-04)
+
+| flow | FC scc/wafer | vs 1-beta |
+|---|---|---|
+| 1-beta DDR5 (baseline) | 3,200 | +0 % |
+| MARGIN STACK-class planar oxide 4F2 + 120 nm stub (LEAN) | 2,340 | -27 % |
+| F40 oxide 1T1C + AAO cup at 80 nm (LEAN) | 2,300 | -28 % |
+| 3D oxide cell (AND-STACK class), no capacitor mold | 6,000 | +88 % |
+| 3D oxide cell + cryo HF/PF3 deep etch (industry lever, not LEAN's) | 2,800 | -12 % |
+Reading: the capacitor mold is ~38 % of a 1-beta wafer's fluorocarbon etch gas; LEAN deletes it only where the cell has no other deep etch. PFAS-class etch is cut ~25-30 %, not removed; 3D cells add deep FC etches unless cryo HF/PF3 is adopted.
+
+### I9. Gallium in an oxide-cell fab (RT-DEV-lean-array-module-05)
+
+Ga per tier-wafer: 10 nm x 707 cm2 x 3 x 6.4 g/cm3 x 0.222 / 0.3 = 10 mg; x 5 tiers x 1.2M wafers = **60 kg/yr** per 100k-wpm fab. A 10-year stockpile costs ~$0.4M ($700/kg), 0.3 hours of fab revenue. Gallium exposure is a stockpile item, not a reason to accept ZTO's leakage risk.
+
 ## HEADLINE
 
 - H2 per unit accommodation conducts **2.09x** He (free-molecular) and **1.17x** (continuum); with a_H2 = 0.2 vs a_He = 0.45 it reaches He parity at 18.5 Torr (He: 15 Torr).
 - Break-even a_H2: 0.24 (drop-in), 0.17 (<=1.5x pressure), 0.10 (clamp limit 40 Torr). Baule prior: 0.27.
 - Paschen minimum H2/He = 2.3x (less backside arcing).
 - Leak into plasma at the GO pressure: 1.06-2.50 sccm; H/F 0.5 %; foreline 2.1 % LFL (single fault 10 % LFL).
-- Helium lever: ~7.5 L He/wafer, ~3 % of DRAM's pro-rata helium, $0.32/wafer (104 u$/GB vs $1.48/GB). Retrofit pays back after ~2.4 days of avoided stoppage. Hedge, not cost lever.
-- AAO at the 1-beta pitch, 2.5-3 um: 5.8-7.0 fF vs 5.4 fF; value is the deleted fluorocarbon etch.
+- Helium lever: ~7.5 L He/wafer, ~3 % of DRAM's pro-rata helium, $0.32/wafer (104 u$/GB vs $1.48/GB). Retrofit pays back after ~4.7 days of avoided stoppage (brownfield incl. requalification; 2.6 days greenfield; old hardware-only 2.4). Hedge, not cost lever.
+- AAO at the 1-beta pitch, 2.5-3 um: 5.8-7.0 fF vs 5.4 fF only with an unshown ~5.6 nm-core, AR ~450 fill: leg KILLED (RT-CIRC-02). Retarget: 80 nm pitch gives 7.2 fF/um, 5.4 fF at 0.75 um (cup AR 14).
+- RED-TEAM: effective a_H2 prior 0.20 (was 0.27 translational); P(GO) 88 % -> 66 % before the adsorbate tail; carry P3. Cryo GO line 0.175. Edge-He guard keeps 27 % He in HAR chambers.
+- RED-TEAM: H2 can replace 100 % of backside He in a Si-access line, ~85 % in an oxide-cell line (oxide-exposed steps keep He/Ar). Capacitor mold = ~38 % of FC etch gas: LEAN cuts PFAS-class etch ~25-30 % in planar oxide cells, not to zero. Ga ~60 kg/yr per fab: stockpile, not ZTO.
 - EUV-free IL: ~10 nm overlay only (F~40 nm oxide cells, 0.109 Gb/mm2 per tier -> >=5 tiers for 1-beta parity).
 
 ## GO / NO-GO
 
 **GO** if the Step-1 rig measures an effective H2 accommodation **a_H2 >= 0.17** (symmetric equivalent; wafer-side SiN/SiO2/poly films against an Al2O3/AlN chuck counterface, 20-60 C, including fluorocarbon-polymer-contaminated backsides). H2 then matches He wafer cooling at <= 22.5 Torr. **NO-GO** if a_H2 < 0.10: parity would need > 40 Torr, past the clamp limit (fallbacks: He recapture, H2/He blend, or a chuck coating that raises a_H2). Step 2 (300 mm chamber) must then show wafer temperature within +/-2 K of He across the wafer, HAR oxide etch-rate drift <= 2 % and mask-selectivity drift <= 5 % at 2x the predicted 1.1 sccm leak, and foreline H2 <= 10 % LFL in single fault.
+
+**RED-TEAM ADDITIONS (revised after red team).** The GO must hold on plasma-pretreated coupons (Ar, O2, C4F8-polymer, H2 plasma; RT-DEV-04) and at -70 to 0 C (cryo GO line 0.175; RT-PROC-04); H2 vs D2 separates the rotational term (RT-DEV-01). Step 1b thermocouple-wafer a_H2 must agree with the rig within +/-0.03. Step 2 adds edge-zone metrics at r = 140-148 mm on AR >=40 wafers at 2x leak: hole tilt <=0.1 deg, bottom CD within 1 nm, bow in spec (RT-PROC-01), with the edge-He guard zone as the fallback. IGZO/ZTO TFT monitor wafers through every H2-cooled chamber type at 2x leak: delta Vt <=5 mV, no Ioff tail shift at 85 C (RT-DEV-02, RT-CIRC-01); a failing chamber class keeps He/Ar.

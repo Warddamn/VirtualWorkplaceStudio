@@ -900,6 +900,669 @@ def section_go(thr, s_flag, ber_res, cs_cases, droop):
       f"without CDS already gives), or if pairs exceed ~10% of errors (allowed BER {ber_res[(0.0,0.1)]:.0e}, margin lost).")
 
 
+# ============================================================================================
+# RED-TEAM REVISIONS  (owner response 2026-11-02; objections in research/redteam/rt_*.json,
+# dd == "margin-stack", 19 objections; responses in research/redteam/responses_margin-stack.json)
+#
+# Sections 0-12 above are the PRE-red-team model, printed unchanged for traceability.
+# rt_apply() then overwrites INPUTS (old -> new, objection id) and adds new inputs, and
+# sections R1-R12 recompute the planning case. Objection ids are abbreviated, e.g.
+# DEV-01 = RT-DEV-margin-stack-01.
+# ============================================================================================
+OCTRAM = "https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology"
+RT_REVISIONS = {
+    # key: (old, new, objection ids, basis).  new = None means "now computed from new inputs".
+    "n_seg": (32, 64, "CIRC-01, PROC-01",
+              "16 x 64-cell segments per 1,024-cell global line, so one column gets 0.885 um2 under the array; halves the gain rows"),
+    "n_gain_pillars": (1, 2, "DEV-02, CIRC-06, DEV-03, CIRC-04",
+                       "two parallel same-step pillars: 2x gm, RTN step per trap halved"),
+    "c_seg_fixed_fF": (0.20, 0.25, "DEV-02", "second gain-pillar gate ~0.05 fF"),
+    "sites_extra_per_seg": (3, 4, "DEV-02, CIRC-01", "gain FET (2 pillars) + reset + write-back; strap still +1"),
+    "vov_gain_V": (0.40, 0.60, "DEV-02, CIRC-06",
+                   "deeper pulsed read source (~-1.1 V for a ~1 V Vt); Vds <= ~2 V is within IGZO's wide-gap tolerance [ESTIMATE]"),
+    "i_gain_uA": (5.0, None, "DEV-02, CIRC-06", "COMPUTED: square law through OCTRAM >15 uA at an assumed 2.0 V overdrive"),
+    "gain_local": (3.0, None, "DEV-02, CIRC-06, CIRC-01", "COMPUTED: G = gm x t_sample / C_GBL"),
+    "c_gbl_fF": (6.0, 12.0, "CIRC-01", "1,024-cell GBL: 30 um x 0.25 fF/um + 16 two-pillar drains"),
+    "c_sample_fF": (10.0, 5.0, "CIRC-01", "caps shared by 4 columns, sized for area (2 x 5 fF MOS caps ~0.4 um2)"),
+    "sigma_1f_rtn_mV": (4.0, 2.0, "DEV-03, CIRC-04",
+                        "Gaussian term is now 1/f only; RTN moves to an explicit exponential heavy tail (rtn_* inputs)"),
+    "added_mask_frac": (0.012, None, "PROC-01", "COMPUTED: added critical layers x EUV $/layer / wafer cost"),
+}
+RT_NEW_INPUTS = {
+    "k_gain_uA_V2": (3.75, "uA/V2 per pillar", "ESTIMATE: square law through OCTRAM Ion >15 uA at an assumed 2.0 V overdrive (DEV-02: undisclosed, typically 1.5-2.5 V) " + OCTRAM),
+    "t_sample_ns": (1.2, "ns", "ESTIMATE: integration time per double-sampling sample (DEV-02/CIRC-06: G=3 in 0.72 ns was unsupported)"),
+    "t_reset_ns": (0.3, "ns", "ESTIMATE: segment reset between the signal and reset samples"),
+    "t_comp_ns": (0.5, "ns", "ESTIMATE: comparator decision (unchanged)"),
+    "comp_mux": (4, "columns per comparator", "CIRC-01: one auto-zeroed comparator + caps does not fit a 29.4 nm column"),
+    "sigma_reset_inj_mV": (1.0, "mV", "ESTIMATE: random reset-switch charge injection, uncancelled in signal-first double sampling"),
+    "rtn_perc_mult": (2.5, "x q/(Cox W L)", "DEV-03 2-3x, CIRC-04 2-5x (percolation); heavy tail in percolative channels https://www.iue.tuwien.ac.at/pdf/ib_2016/CP_2016_Rzepa_3.pdf"),
+    "rtn_f_active": (0.10, "per pillar", "DEV-03: 1-30% of gain FETs carry a trap with tau within 10x of the sample gap"),
+    "rtn_p_toggle": (0.25, "", "ESTIMATE: chance such a trap switches between the two samples"),
+    "ss_igzo_85C_mVdec": (90.0, "mV/dec", "DEV-01: 85-100 mV/dec at 85 C (ideal 71); a planar 2T0C reports 161 at 300 K (rt-CIRC log) = pessimistic bound"),
+    "p_ret_budget": (1e-5, "of raw BER", "ESTIMATE: share of the 1e-4 budget given to retention-weak cells, persistent between patrol scrubs (Hi-ECC precedent https://courses.grainger.illinois.edu/CS534/fa2021/reading_list/9a.pdf)"),
+    "ret_data_factor": (0.5, "", "a leaky cell errs only while it holds the vulnerable value"),
+    "vt_drift_mV": (75.0, "mV", "DEV-05: 50-100 mV negative Vt drift over 10 years at 85-105 C for unbarriered IGZO"),
+    "v_nwl_hold_V": (0.10, "V", "ESTIMATE: extra negative WL hold reserved for drift (DEV-01/05); wide-gap IGZO has no GIDL/BTBT penalty"),
+    "euv_usd_per_layer": (165.0, "$/layer", "models/dram_cell_physics.py s8 base; PROC-01 uses the same $165"),
+    "added_crit_layers": ((2, 3, 4), "layers lo/central/hi", "PROC-01: WL-island cut, gate-to-BL strap, buried-BL cut + read-source wiring, 2F-pitch GBL metal; lo assumes two merge into existing SAQP cut masks"),
+    "ecc_ratio_baseline": (136 / 128, "", A1 + " (16Gb + 6.25% on-die ECC baseline, CIRC-02)"),
+    "ecc_logic_die_frac": (0.005, "of die", "ESTIMATE: per-bank BCH t=8 decoders (CIRC-05)"),
+    "f_4f2_nm": (14.7, "nm", A1),
+    "col_devices_um2": (0.35, "um2/column", "ESTIMATE: GBL precharge, mux switch, 4T restore latch, write driver (~7 devices x 0.05 um2)"),
+    "comp_block_um2": (0.80, "um2/comparator", "ESTIMATE: auto-zeroed comparator ~0.3 + 2 x 5 fF MOS caps ~0.4 + flag latch ~0.1"),
+    "t_rcd_ns": (14.0, "ns", "DDR5 tRCD class"),
+    "t_wl_rise_ns": (2.0, "ns", "ESTIMATE"),
+    "bch_slow_ns": (15.0, "ns", "CIRC-05: 10-20 ns Berlekamp-Massey + Chien at DRAM-periphery speed [ESTIMATE]"),
+    "c_plate_strip_fF": (2.0, "fF", "I-12302 top-up: ~2 fF plate strip (stage2_results.jsonl)"),
+}
+
+# scenario knobs for the revised residual
+RT_SCEN = {
+    #             rtn_mult f_active p_toggle k(uA/V2) vov  comp_mV alpha  s1f_mV
+    "optimistic":  (2.0,    0.01,    0.25,    6.67,    0.70, 1.5,    0.05,  1.0),
+    "central":     (2.5,    0.10,    0.25,    3.75,    0.60, 3.0,    0.10,  2.0),
+    "pessimistic": (3.0,    0.30,    0.50,    2.40,    0.50, 4.5,    0.15,  3.0),
+}
+
+
+def rt_apply():
+    for k, (old, new, _, _) in RT_REVISIONS.items():
+        if new is not None:
+            v, u, s = INPUTS[k]
+            INPUTS[k] = (new, u, s + f" | RED-TEAM: {old} -> {new}")
+    for k, v in RT_NEW_INPUTS.items():
+        INPUTS[k] = v
+    # computed replacements
+    gm = rt_gm_uS(I("k_gain_uA_V2"), I("vov_gain_V"), I("n_gain_pillars"))
+    INPUTS["i_gain_uA"] = (I("k_gain_uA_V2") * I("vov_gain_V") ** 2 * I("n_gain_pillars"), "uA", "COMPUTED (red team)")
+    INPUTS["gain_local"] = (rt_G(gm), "V/V", "COMPUTED (red team)")
+    INPUTS["added_mask_frac"] = (I("added_crit_layers")[1] * I("euv_usd_per_layer") / I("wafer_cost_usd"), "of wafer cost", "COMPUTED (red team)")
+
+
+def rt_gm_uS(k, vov, npill):
+    return 2 * k * vov * npill
+
+
+def rt_G(gm_uS, t_ns=None, cgbl=None):
+    t_ns = I("t_sample_ns") if t_ns is None else t_ns
+    cgbl = I("c_gbl_fF") if cgbl is None else cgbl
+    return gm_uS * 1e-6 * t_ns * 1e-9 / (cgbl * 1e-15)
+
+
+def rt_qcoxwl_mV(npill):
+    cox = 3.9 * EPS0 / (I("eot_gate_nm") * 1e-9)
+    area = math.pi * I("vct_channel_d_nm") * 1e-9 * I("vct_lg_nm") * 1e-9 * npill
+    return QE / (cox * area) * 1e3
+
+
+def rt_rtn(npill, mult, f, ptog):
+    """Exponential RTN tail: eta = mean between-sample jump of an active trap; w = per-read probability
+    that a gain FET has an active trap that toggles in the harmful direction between the two samples."""
+    eta = rt_qcoxwl_mV(npill) * mult
+    w = min(1.0, f * npill) * ptog * 0.5
+    return eta, w
+
+
+def rt_gauss(cs, cseg, sc, npill=None, cgbl=None):
+    mult, f, ptog, k, vov, comp, alpha, s1f = sc
+    npill = I("n_gain_pillars") if npill is None else npill
+    gm = rt_gm_uS(k, vov, npill)
+    G = rt_G(gm, cgbl=cgbl)
+    svt = sigma_vt_gain_mV(npill)
+    tail = max(0.05, (vov - 4 * svt / 1e3) / vov)
+    s_comp = comp / (G * tail)
+    s_ktc = math.sqrt(2 * KB * T_HOT / (I("c_sample_fF") * 1e-15)) * 1e3 / G
+    s_rst = math.sqrt(KB * T_HOT / ((cs + cseg) * 1e-15)) * 1e3
+    s_inj = I("sigma_reset_inj_mV")
+    _, s_kick, det, _ = kick_terms(cs, cseg)
+    tot = math.sqrt(s_comp ** 2 + s_ktc ** 2 + s_rst ** 2 + s_inj ** 2 + s1f ** 2 + s_kick ** 2)
+    return dict(G=G, gm=gm, tail=tail, svt=svt, s_comp=s_comp, s_ktc=s_ktc, s_rst=s_rst, s_inj=s_inj,
+                s_1f=s1f, s_kick=s_kick, tot=tot, det=det)
+
+
+def p_err_mix(m, sig, eta, w):
+    """P(Gaussian(0,sig) + J > m), J = 0 w.p. 1-w, Exp(mean eta) w.p. w. Closed form."""
+    if m <= 0:
+        return 1.0
+    pg = Q(m / sig)
+    if w <= 0:
+        return pg
+    a = -m / eta + sig ** 2 / (2 * eta ** 2)
+    phi = 1 - Q(m / sig - sig / eta)
+    return pg + w * math.exp(a) * phi
+
+
+def rt_p_target():
+    return I("ber_raw") - I("p_ret_budget")
+
+
+def rt_perr_at(cs, cseg, sc, npill=None, cgbl=None, vsig=None):
+    vsig = VSIG if vsig is None else vsig
+    npill = I("n_gain_pillars") if npill is None else npill
+    mult, f, ptog, k, vov, comp, alpha, s1f = sc
+    g = rt_gauss(cs, cseg, sc, npill=npill, cgbl=cgbl)
+    s = vsig * cs / (cs + cseg) * 1e3
+    m = s * (1 - 2 * alpha) - g["det"]
+    sig = math.sqrt(g["tot"] ** 2 + (I("cs_var_frac") * s) ** 2)
+    eta, w = rt_rtn(npill, mult, f, ptog)
+    return p_err_mix(m, sig, eta, w), s, m, sig, eta, w
+
+
+def rt_solve_cs(cseg, sc, npill=None, cgbl=None, vsig=None, target=None):
+    target = rt_p_target() if target is None else target
+    lo, hi = 1e-3, 60.0
+    if rt_perr_at(hi, cseg, sc, npill, cgbl, vsig)[0] > target:
+        return float("inf")
+    for _ in range(120):
+        mid = math.sqrt(lo * hi)
+        if rt_perr_at(mid, cseg, sc, npill, cgbl, vsig)[0] <= target:
+            hi = mid
+        else:
+            lo = mid
+    return hi
+
+
+def rt_tail_aA(q, sigma_vt=None, ss=None, drift=0.0, nwl=0.0, med=None):
+    sigma_vt = I("sigma_vt_access_mV") if sigma_vt is None else sigma_vt
+    ss = I("ss_igzo_85C_mVdec") if ss is None else ss
+    med = I("ioff_igzo_median_aA") if med is None else med
+    return med * 10 ** ((Qinv(q) * sigma_vt + drift - nwl * 1e3) / ss)
+
+
+def rt_imax_aA(cs, droop_mV, t_s):
+    return cs * 1e-15 * droop_mV * 1e-3 / t_s * 1e18
+
+
+def rt_max_droop(cs, cseg, sc):
+    lo, hi = 0.0, 0.49
+    for _ in range(50):
+        mid = 0.5 * (lo + hi)
+        vs = I("vary_ox_V") / 2 - mid
+        if rt_perr_at(cs, cseg, sc, vsig=vs)[0] <= rt_p_target():
+            lo = mid
+        else:
+            hi = mid
+    return lo * 1e3
+
+
+def section_rt_revisions():
+    p("")
+    p("# RED-TEAM REVISIONS (owner response, 2026-11-02)")
+    p("")
+    p("Sections 0-12 above are the pre-red-team model, unchanged. Below, INPUTS are revised (old -> new, objection id) and the")
+    p("planning case is recomputed. Ids: DEV-01 = RT-DEV-margin-stack-01 etc. (research/redteam/rt_*.json).")
+    hr("R1. Input revisions")
+    p("| key | old | new | objection(s) | basis |")
+    p("|---|---|---|---|---|")
+    for k, (old, new, ids, why) in RT_REVISIONS.items():
+        nv = f"{I(k):.3g} (computed)" if new is None else f"{new:g}"
+        p(f"| {k} | {old:g} | {nv} | {ids} | {why} |")
+    p("")
+    p("New inputs:")
+    p("")
+    p("| key | value | unit | source / basis |")
+    p("|---|---|---|---|")
+    for k, (v, u, s) in RT_NEW_INPUTS.items():
+        vs = "/".join(f"{x:g}" for x in v) if isinstance(v, tuple) else f"{v:g}"
+        p(f"| {k} | {vs} | {u} | {s} |")
+    p("")
+    p("Architecture change carried by these inputs (CIRC-01): the per-column CDS comparator is replaced by one comparator per")
+    p("4 columns, read in SIGNAL-FIRST double sampling (DS): with the WL open, sample the gain-FET output (signal), reset the")
+    p("segment through the reset FET, sample again (reset level), compare, latch, then restore from a 4T per-column latch.")
+    p("The gain-FET Vt still cancels (same FET, both samples); the segment reset kTC and reset injection no longer cancel and")
+    p("are budgeted. The comparator holds the signal sample, so the destroyed segment is rewritten from the decision.")
+
+
+def section_rt_gain():
+    hr("R2. Gain-FET drive and local gain (DEV-02, CIRC-06)")
+    k_old = I("k_gain_uA_V2")
+    p(f"OCTRAM reports Ion >15 uA at an undisclosed overdrive. Square law through 15 uA at 1.5 / 2.0 / 2.5 V gives "
+      f"k = {15/1.5**2:.2f} / {15/2**2:.2f} / {15/2.5**2:.2f} uA/V2 per pillar.")
+    p("")
+    p("| design | k uA/V2 | Vov V | pillars | I uA | gm uS | t_sample ns | C_GBL fF | G |")
+    p("|---|---|---|---|---|---|---|---|---|")
+    for name, k, vov, npl, t, cg in (("pre-red-team claim", None, 0.40, 1, 0.72, 6.0),
+                                     ("pre-red-team design, k from 2.0 V", 3.75, 0.40, 1, 0.72, 6.0),
+                                     ("pre-red-team design, k from 1.5 V", 6.67, 0.40, 1, 0.72, 6.0),
+                                     ("revised, pessimistic", 2.40, 0.50, 2, I("t_sample_ns"), I("c_gbl_fF")),
+                                     ("revised, central", 3.75, 0.60, 2, I("t_sample_ns"), I("c_gbl_fF")),
+                                     ("revised, optimistic", 6.67, 0.70, 2, I("t_sample_ns"), I("c_gbl_fF"))):
+        if k is None:
+            p(f"| {name} | - | {vov} | {npl} | 5.0 | 25 | {t} | {cg:g} | 3.0 |")
+            continue
+        gm = rt_gm_uS(k, vov, npl)
+        p(f"| {name} | {k:.2f} | {vov} | {npl} | {k*vov**2*npl:.2f} | {gm:.1f} | {t} | {cg:g} | {rt_G(gm, t, cg):.2f} |")
+    p("")
+    p("The reviewers are right: the pre-red-team design gives G ~0.4-0.6, not 3. The revision buys back gm with a second pillar")
+    p("and a deeper read-source pulse, then accepts G ~1 on a longer (1,024-cell) global line that the comparator pitch forces")
+    p("(R7). The input-referred comparator term rises from 1.9 mV to ~4 mV (R3); the 0.5 fF planning cell does not depend on G = 3.")
+
+
+def section_rt_residual():
+    hr("R3. Revised residual: Gaussian terms plus an explicit RTN heavy tail (DEV-03, CIRC-04)")
+    cseg = c_seg()
+    p(f"64-cell segment: Cseg = 64 x {I('c_lbl_per_cell_fF')} + {I('c_seg_fixed_fF')} = **{cseg:.2f} fF**. Evaluated at Cs = 0.5 fF; "
+      f"sense-error target {rt_p_target():.0e} per bit (1e-4 minus {I('p_ret_budget'):.0e} given to retention, R5).")
+    p(f"One trap in one 15 x 60 nm pillar at EOT {I('eot_gate_nm')} nm: q/(Cox W L) = {rt_qcoxwl_mV(1):.2f} mV (two pillars: {rt_qcoxwl_mV(2):.2f} mV).")
+    p("")
+    p("| scenario | G | comparator | sample kTC | segment reset kTC | reset inj. | 1/f | kick rnd | Gaussian sigma | RTN eta | RTN w | RTN 1e-4 quantile | P(err) at 0.5 fF |")
+    p("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+    out = {}
+    for name, sc in RT_SCEN.items():
+        g = rt_gauss(0.5, cseg, sc)
+        pe, s, m, sig, eta, w = rt_perr_at(0.5, cseg, sc)
+        q4 = eta * math.log(w / 1e-4) if w > 1e-4 else 0.0
+        out[name] = (g, pe, s, m, sig, eta, w, q4)
+        p(f"| {name} | {g['G']:.2f} | {g['s_comp']:.2f} | {g['s_ktc']:.2f} | {g['s_rst']:.2f} | {g['s_inj']:.1f} | {g['s_1f']:.1f} | "
+          f"{g['s_kick']:.2f} | {g['tot']:.2f} | {eta:.2f} | {w:.4f} | {q4:.1f} | {pe:.1e} |")
+    p("")
+    # pre-red-team single-pillar RTN tail for the record
+    for name in ("central", "pessimistic"):
+        mult, f, ptog = RT_SCEN[name][:3]
+        e1, w1 = rt_rtn(1, mult, f, ptog)
+        p(f"- Pre-red-team 1-pillar gain FET, {name} RTN: eta {e1:.1f} mV, w {w1:.4f} -> 1e-4 quantile of between-sample jumps "
+          f"{e1*math.log(w1/1e-4):.0f} mV, against the 3.72 x 4 = 15 mV a Gaussian 4 mV implied. The reviewers' 13-70 mV is confirmed.")
+    g, pe, s, m, sig, eta, w, q4 = out["central"]
+    p(f"- Central at 0.5 fF: signal {s:.1f} mV, after 2 x alpha coupling and {g['det']:.1f} mV kick residual, margin {m:.1f} mV against "
+      f"Gaussian sigma {sig:.1f} mV (incl. 5% Cs spread) and an RTN tail of eta {eta:.1f} mV: P(err) = {pe:.1e}, far below {rt_p_target():.0e}.")
+    p("- A sigma-based GO line is the wrong statistic for RTN. The GO line becomes a projected BER from the measured Gaussian residual")
+    p("  (22FDX) plus the measured per-device RTN jump distribution of IGZO gain FETs (BEOL carrier, R12).")
+    return out
+
+
+def section_rt_cases():
+    hr("R4. Required Cs after the red team")
+    cseg = c_seg()
+    rows = []
+    for name, sc in RT_SCEN.items():
+        rows.append((f"64-cell, 2-pillar, {name}", rt_solve_cs(cseg, sc)))
+    sc = RT_SCEN["central"]
+    rows.append(("64-cell, 1-pillar gain FET, central", rt_solve_cs(c_seg(fixed=0.20), sc, npill=1)))
+    rows.append(("64-cell, 4-pillar gain FET, central", rt_solve_cs(c_seg(fixed=0.35), sc, npill=4)))
+    rows.append(("32-cell, 2-pillar, central (GBL 1,024 cells: 32 drains, 16.5 fF)",
+                 rt_solve_cs(c_seg(n=32), sc, cgbl=16.5)))
+    rows.append(("32-cell, 1-pillar, central (pre-red-team geometry, revised noise, GBL 6 fF)",
+                 rt_solve_cs(c_seg(n=32, fixed=0.20), sc, npill=1, cgbl=6.0)))
+    p("| case | Cs needed fF | cut vs 5.42 fF | stub h nm | AR |")
+    p("|---|---|---|---|---|")
+    res = {}
+    for nm, cs in rows:
+        res[nm] = cs
+        h = stub_h_nm(cs)
+        p(f"| {nm} | {cs:.2f} | {I('cs_1b_fF')/cs:.1f}x | {h:,.0f} | {h/I('pillar_d_1b_nm'):.1f} |")
+    p("")
+    # alpha sensitivity
+    p("Coupling sensitivity (central noise, 64-cell, 2-pillar): required Cs vs alpha (PROC-02, CIRC-03).")
+    p("")
+    p("| alpha | 0.05 | 0.10 | 0.15 | 0.20 | 0.25 | 0.30 |")
+    p("|---|---|---|---|---|---|---|")
+    vals = []
+    for a in (0.05, 0.10, 0.15, 0.20, 0.25, 0.30):
+        s2 = sc[:6] + (a,) + sc[7:]
+        vals.append(rt_solve_cs(cseg, s2))
+    p("| Cs fF | " + " | ".join(f"{v:.2f}" for v in vals) + " |")
+    # max alpha at Cs 0.5 / 1.0
+    def amax(cs_t, scen):
+        lo, hi = 0.0, 0.49
+        for _ in range(50):
+            mid = 0.5 * (lo + hi)
+            s2 = scen[:6] + (mid,) + scen[7:]
+            if rt_perr_at(cs_t, cseg, s2)[0] <= rt_p_target():
+                lo = mid
+            else:
+                hi = mid
+        return lo
+    p("")
+    am = {}
+    for nm in ("central", "pessimistic"):
+        am[nm] = (amax(0.5, RT_SCEN[nm]), amax(1.0, RT_SCEN[nm]))
+        p(f"- Largest tolerable alpha per side ({nm} noise): {am[nm][0]:.2f} at Cs 0.5 fF, {am[nm][1]:.2f} at 1.0 fF.")
+    p("")
+    p("RTN sensitivity (central otherwise): required Cs (fF) vs percolation multiplier and active-trap fraction.")
+    p("")
+    p("| rtn mult \\ f_active | 0.01 | 0.10 | 0.30 | 1.00 |")
+    p("|---|---|---|---|---|")
+    for mult in (2.0, 2.5, 3.0, 5.0):
+        cells = []
+        for f in (0.01, 0.10, 0.30, 1.0):
+            s2 = (mult, f) + sc[2:]
+            cells.append(rt_solve_cs(cseg, s2))
+        p(f"| {mult} | " + " | ".join(f"{c:.2f}" for c in cells) + " |")
+    p("")
+    s_strip = VSIG * 0.5 / (0.5 + I("c_plate_strip_fF")) * 1e3
+    s_seg = VSIG * 0.5 / (0.5 + cseg) * 1e3
+    p(f"I-12302 plate-strip variant (clamped BL, sense a {I('c_plate_strip_fF'):.0f} fF plate strip): 0.5 fF gives {s_strip:.0f} mV vs "
+      f"{s_seg:.0f} mV on the 64-cell buried segment. Same signal class; its value is integration (no buried-BL cut, gain FET as a")
+    p("separate BEOL oxide FET with its own Vt), so it is carried as a process-emulation alternative for PROC-01, not as a margin lever.")
+    p("")
+    cen = res["64-cell, 2-pillar, central"]
+    p(f"Reading: the sensing-limited cell is {res['64-cell, 2-pillar, optimistic']:.2f} / {cen:.2f} / "
+      f"{res['64-cell, 2-pillar, pessimistic']:.2f} fF (optimistic / central / pessimistic). The pre-red-team 0.09-0.32 fF")
+    p("stretch (17-40x) is withdrawn: RTN tails and the weaker gain FET put the floor near 0.13-0.74 fF. The 0.5 fF planning cell")
+    p("closes in the central case with margin (P(err) ~1e-6 vs 9e-5) but FAILS the pessimistic case, which needs ~0.74 fF;")
+    p("1.0 fF (5.4x) is the fallback that closes in all three. A 1-pillar gain FET misses 0.5 fF even with DS (0.51 fF): the second pillar is required.")
+    return res, am
+
+
+def section_rt_leakage():
+    hr("R5. IGZO leakage tail derived from the model's own inputs, and an ECC-budgeted retention quantile (DEV-01, PROC-03, DEV-05)")
+    q10 = 1e-10
+    q_ret = I("p_ret_budget") / I("ret_data_factor")
+    p(f"Tail(q) = Ioff_median x 10^((Q^-1(q) x sigma_Vt,access + drift - V_NWL) / SS), with the OCTRAM '<1 aA' bound read, pessimistically,")
+    p(f"as the 85 C median at the hold bias; sigma_Vt,access {I('sigma_vt_access_mV'):.0f} mV (model input).")
+    p("")
+    p(f"| quantile | SS mV/dec | fresh, V_NWL 0 | aged ({I('vt_drift_mV'):.0f} mV drift), V_NWL 0 | aged, V_NWL -{I('v_nwl_hold_V'):.1f} V | aged, V_NWL -0.3 V |")
+    p("|---|---|---|---|---|---|")
+    tails = {}
+    for q in (q10, q_ret):
+        for ss in (85.0, 90.0, 100.0):
+            a = rt_tail_aA(q, ss=ss)
+            b = rt_tail_aA(q, ss=ss, drift=I("vt_drift_mV"))
+            c = rt_tail_aA(q, ss=ss, drift=I("vt_drift_mV"), nwl=I("v_nwl_hold_V"))
+            d = rt_tail_aA(q, ss=ss, drift=I("vt_drift_mV"), nwl=0.3)
+            tails[(q, ss)] = (a, b, c, d)
+            p(f"| {q:.0e} ({Qinv(q):.2f} sigma) | {ss:.0f} | {a:,.0f} aA | {b:,.0f} aA | {c:,.0f} aA | {d:,.1f} aA |")
+    p("")
+    im05 = rt_imax_aA(0.5, 75, I("t_ref_ddr5_s"))
+    im10 = rt_imax_aA(1.0, 75, I("t_ref_ddr5_s"))
+    a10 = tails[(q10, 90.0)][0]
+    p(f"- DEV-01 confirmed: at 1e-10 the fresh tail is {a10:,.0f} aA (SS 90), {a10/im05:.1f}x over the 586 aA line for 0.5 fF at 64 ms "
+      f"(75 mV droop). The pre-red-team 917 ms refresh and 28x refresh-power claims do not survive a 1e-10 requirement.")
+    p(f"- Redesign: give retention-weak cells {I('p_ret_budget'):.0e} of the 1e-4 raw-BER budget. A leaky cell errs only while holding the")
+    p(f"  vulnerable value, so the allowed leaky-cell fraction is {q_ret:.0e} ({Qinv(q_ret):.2f} sigma, not 6.36). Averaged over codewords the")
+    pt = fail_hard(I("ber_raw"))
+    p(f"  failure rate is unchanged, because Poisson counts add: P(>8 errors) at 592 x (9e-5 + 1e-5) = {pt:.2e} = the pre-red-team target.")
+    lam_h = I("ecc_n") * I("p_ret_budget")
+    lam_s = I("ecc_n") * rt_p_target()
+    p2 = 1 - math.exp(-lam_h) * (1 + lam_h)
+    f2 = pois_tail_gt(I("ecc_t") - 2, lam_s)
+    ncw = I("cells_16gb") / I("ecc_n")
+    p(f"  Persistent errors concentrate: {p2:.1e} of codewords ({p2*ncw:,.0f} per 16Gb die) hold >=2 weak cells and fail {f2:.1e} per read;")
+    p("  sort-time retention test + repair removes the static ones and patrol scrub bounds VRT accumulation (RAW-BER CONTRACT rule).")
+    c = tails[(q_ret, 90.0)][2]
+    p(f"- At {q_ret:.0e}, aged, V_NWL -{I('v_nwl_hold_V'):.1f} V, SS 90: tail {c:,.0f} aA vs {im05:,.0f} aA (0.5 fF, 64 ms, 75 mV) -> "
+      f"{'PASS' if c <= im05 else 'FAIL'}; at SS 100: {tails[(q_ret, 100.0)][2]:,.0f} aA. And it is directly observable: 1e6 cells show ~{1e6*q_ret:.0f} tail cells.")
+    # I-12627 series write devices
+    q_each = math.sqrt(q_ret)
+    d_sig = (Qinv(q_ret) - Qinv(q_each)) * I("sigma_vt_access_mV")
+    p(f"- I-12627 (two series access gates): if their tails are independent, each gate needs only q = {q_each:.1e} ({Qinv(q_each):.2f} sigma), "
+      f"i.e. {d_sig:.0f} mV less Vt excursion = {d_sig/I('ss_igzo_85C_mVdec'):.1f} decades, plus a ~10x stack effect. In a same-step VCT the")
+    p("  second gate also lengthens the gain FET (gm/2), and film-level variation along one pillar is shared, so it is a coupon")
+    p("  split (measure tail correlation), not the central design.")
+    p(f"- DEV-05 drift: {I('vt_drift_mV'):.0f} mV of negative drift multiplies the tail by "
+      f"{10**(I('vt_drift_mV')/I('ss_igzo_85C_mVdec')):.1f}x; the -{I('v_nwl_hold_V'):.1f} V hold reserve cancels it. The coupons add a 1,000 h 105 C hold-bias stress.")
+    return tails, q_ret
+
+
+def section_rt_retention(tails, q_ret):
+    hr("R6. Droop, refresh interval and refresh power with the revised noise and the aged ECC-budgeted tail")
+    cseg = c_seg()
+    sc = RT_SCEN["central"]
+    i_aged = tails[(q_ret, 90.0)][2]
+    i_aged_hi = tails[(q_ret, 100.0)][1]   # SS 100, drift, no NWL reserve
+    p(f"Leakage used: {i_aged:,.0f} aA (aged, SS 90, NWL reserve) and {i_aged_hi:,.0f} aA (aged, SS 100, no reserve).")
+    p("")
+    p("| Cs fF | max droop mV (central) | Imax 64 ms aA | retention @ central tail | refresh interval (guard 2x) | retention @ high tail | refresh (guard 2x) |")
+    p("|---|---|---|---|---|---|---|")
+    out = {}
+    for cs in (0.3, 0.5, 1.0):
+        d = rt_max_droop(cs, cseg, sc)
+        im = rt_imax_aA(cs, d, I("t_ref_ddr5_s"))
+        r1 = retention_s(cs, i_aged, d)
+        r2 = retention_s(cs, i_aged_hi, d)
+        out[cs] = (d, im, r1, r2)
+        p(f"| {cs} | {d:.0f} | {im:,.0f} | {fmt_t(r1)} | {fmt_t(r1/I('refresh_guard'))} | {fmt_t(r2)} | {fmt_t(r2/I('refresh_guard'))} |")
+    p("")
+    e_ref = None
+    cbl = I("cells_per_bl") * I("cbl_per_cell_6f2_fF") + I("cbl_fixed_fF")
+    e_conv = cbl * I("vary_1b_V") ** 2 / 2 / I("reg_eff")
+    e_ms = rt_energy(0.5)
+    e_ref_conv = (e_conv + I("e_wl_per_bit_fJ")) * I("periph_factor")
+    e_ref_ms = (e_ms + I("e_wl_per_bit_fJ")) * I("periph_factor")
+    n = I("cells_16gb")
+    p_conv = e_ref_conv * 1e-15 * n / I("t_ref_ddr5_s") * 1e3
+    d, im, r1, r2 = out[0.5]
+    for lab, r in (("central tail", r1), ("high tail", r2)):
+        tref = max(I("t_ref_ddr5_s"), r / I("refresh_guard"))
+        pw = e_ref_ms * 1e-15 * n / tref * 1e3
+        p(f"- 0.5 fF, {lab}: refresh every {fmt_t(tref)} -> {pw:.2f} mW vs {p_conv:.1f} mW at 1-beta 64 ms ({p_conv/pw:.1f}x).")
+    p("- Most of that gain comes from oxide access, and a plain oxide 4F2 cell (4.6 fF) gets more of it than a 0.5 fF cell. The")
+    p("  refresh-power step is no longer claimed for MARGIN STACK: it is 'not worse than DDR5' at 64 ms and a conditional bonus.")
+    return out
+
+
+def rt_energy(cs):
+    v = I("vary_ox_V")
+    cseg = c_seg()
+    e_lbl = (cs + cseg) * v ** 2 / 2
+    e_gbl = I("c_gbl_fF") * v ** 2 / 2
+    e_samp = 2 * I("c_gbl_fF") * I("v_sample_swing_V") * v
+    return (e_lbl + e_gbl + e_samp + I("e_comp_fJ")) / I("reg_eff")
+
+
+def section_rt_pitch_timing():
+    hr("R7. Comparator pitch and sense timing (CIRC-01, DEV-02, CIRC-06)")
+    f = I("f_4f2_nm")
+    a_cell = (2 * f) ** 2 * 1e-6   # um2
+    for ncell in (512, 1024):
+        avail = ncell * a_cell
+        need1 = I("col_devices_um2") + I("comp_block_um2")
+        needm = I("col_devices_um2") + I("comp_block_um2") / I("comp_mux")
+        verdict = "fits, leaving the rest for sub-WL and line drivers" if needm < 0.75 * avail else "does NOT fit"
+        p(f"- {ncell}-cell column: {avail:.3f} um2 under the array. 1 comparator per column needs ~{need1:.2f} um2 "
+          f"({need1/avail*100:.0f}%); 1 per {I('comp_mux')} columns needs ~{needm:.2f} um2 ({needm/avail*100:.0f}%: {verdict}).")
+    p("- CIRC-01 is right for the pre-red-team 512-cell, per-column CDS layout. The revision uses 1,024-cell columns and 4:1 muxing.")
+    cseg = c_seg()
+    gm = rt_gm_uS(I("k_gain_uA_V2"), I("vov_gain_V"), I("n_gain_pillars"))
+    r_on = (I("vary_ox_V") / 2) / (I("ion_access_uA") * 1e-6)
+    tau = r_on * 0.5 * cseg / (0.5 + cseg) * 1e-15
+    slot = 2 * I("t_sample_ns") + I("t_reset_ns")      # comparator decision overlaps the next slot
+    t_dec = 5 * tau * 1e9 + I("comp_mux") * slot + I("t_comp_ns")
+    t_rest = 3 * (I("c_gbl_fF") + cseg + 0.5) * 1e-15 * I("vary_ox_V") / (I("ion_access_uA") * 1e-6) * 1e9
+    p(f"- Charge sharing 5 tau = {5*tau*1e12:.0f} ps; per column slot 2 x {I('t_sample_ns')} + {I('t_reset_ns')} ns = {slot:.1f} ns; "
+      f"{I('comp_mux')} slots + compare -> last decision at **{t_dec:.1f} ns**; + WL rise {I('t_wl_rise_ns')} ns = {t_dec+I('t_wl_rise_ns'):.1f} ns vs tRCD {I('t_rcd_ns'):.0f} ns.")
+    p(f"- Restore of all columns in parallel from per-column latches through the write FET: {t_rest:.1f} ns (inside tRAS). Total ~{t_dec+t_rest:.0f} ns.")
+    p("- The pre-red-team 3.6 ns read chain is withdrawn: MARGIN STACK is DDR5-timing-compatible, with no latency advantage.")
+    p("  RTN window = one slot (~2.7 ns) between signal and reset samples, inside the 1-10 ns band the BEOL carrier measures.")
+    return t_dec, t_rest
+
+
+def section_rt_ecc():
+    hr("R8. ECC parity, latency and access granularity (CIRC-02, CIRC-05)")
+    ratio = (I("ecc_n") / 512) / I("ecc_ratio_baseline")
+    eff = I("array_eff_4f2_puc")
+    p(f"- Parity: BCH t=8 is {I('ecc_n')-512} check bits per 512 (15.6%) against the baseline's 6.25% on-die ECC: x{ratio:.4f} array bits.")
+    p(f"  Array is {eff*100:.0f}% of the 4F2 PUC die, so die x{1+eff*(ratio-1):.3f} (CIRC-02 applied x{ratio:.3f} to the whole die; the")
+    p(f"  array-only scaling is used here, plus {I('ecc_logic_die_frac')*100:.1f}% of die for per-bank decoders).")
+    for ber in (1e-4, 1e-5, 1e-6):
+        slow = 1 - (1 - ber) ** I("ecc_n")
+        p(f"- Raw BER {ber:.0e}: {slow*100:.2f}% of codeword reads take the BCH slow path (+~{I('bch_slow_ns'):.0f} ns); mean +{slow*I('bch_slow_ns'):.2f} ns.")
+    p("- 1e-4 is the 85 C worst-pattern design corner; the slow path is a p95 tail only near that corner. A 592-bit on-die")
+    p("  codeword fits wide-IO parts (HBM pseudo-channel, LPDDR x16 BL32 = 512 bits per access). For DDR5 x4 RDIMMs the code")
+    p("  moves to the module side band (512 + 128 bits, BCH-12, RAW-BER CONTRACT): no extra array bits and no on-die decode,")
+    p("  but chipkill is given up. Narrow writes on on-die codewords are read-modify-write, as in DDR5 on-die ECC.")
+    return ratio
+
+
+def section_rt_cost(cs_plan):
+    hr("R9. Area, density and cost per bit after the red team (PROC-01, CIRC-02, PROC-04, IND-01)")
+    eff = I("array_eff_4f2_puc")
+    sites = I("sites_extra_per_seg") + I("sites_strap")
+    g_seg = eff * sites / I("n_seg")
+    ratio = (I("ecc_n") / 512) / I("ecc_ratio_baseline")
+    g_par = eff * (ratio - 1)
+    g_log = I("ecc_logic_die_frac")
+    die = (1 + g_seg) * (1 + g_par) * (1 + g_log)
+    dens = I("density_4f2_gb_mm2") / die
+    p(f"- Die growth: segments {sites}/{I('n_seg')} sites x {eff} = +{g_seg*100:.1f}%; parity +{g_par*100:.1f}%; decoders +{g_log*100:.1f}% "
+      f"-> x{die:.3f}. Density {I('density_4f2_gb_mm2'):.3f} -> **{dens:.3f} Gb/mm2** ({(dens/I('density_4f2_gb_mm2')-1)*100:+.0f}% vs plain 4F2, "
+      f"{dens/I('density_1b_gb_mm2'):.2f}x 1-beta).")
+    r_h = stub_h_nm(cs_plan) / I("cap_h_1b_nm")
+    layers = I("added_crit_layers")
+    p(f"- Added critical layers {layers[0]}/{layers[1]}/{layers[2]} x ${I('euv_usd_per_layer'):.0f} = "
+      + "/".join(f"{n*I('euv_usd_per_layer')/I('wafer_cost_usd')*100:.1f}%" for n in layers) + " of a $3,800 wafer (pre-red-team: 1 DUV, 1.2%).")
+    p(f"- Capacitor height x{r_h:.3f} at {cs_plan} fF; module share of wafer cost is UNSOURCED (a red-team search found no teardown split).")
+    p("")
+    p("| cap-module share | layers | module saving | net wafer | die | $/bit vs plain 4F2 |")
+    p("|---|---|---|---|---|---|")
+    res = {}
+    for share in (0.10, 0.15, 0.20, 0.30):
+        for n in layers:
+            sav = share * I("cap_height_scaled_frac") * (1 - r_h)
+            wafer = 1 - sav + n * I("euv_usd_per_layer") / I("wafer_cost_usd")
+            rel = wafer * die
+            res[(share, n)] = rel
+            p(f"| {share*100:.0f}% | {n} | -{sav*100:.1f}% | {wafer:.3f} | x{die:.3f} | {(rel-1)*100:+.1f}% |")
+    p("")
+    lo = min(res.values())
+    hi = max(v for (s, n), v in res.items() if s <= 0.20)
+    p(f"Verdict: $/bit is a PENALTY of {(res[(0.20, layers[0])]-1)*100:+.0f}% to {(hi-1)*100:+.0f}% (central {(res[(0.15, layers[1])]-1)*100:+.0f}%) "
+      f"against plain oxide 4F2 for a 10-20% module share; even a 30% share with {layers[0]} layers gives {(res[(0.30, layers[0])]-1)*100:+.0f}%.")
+    p("MARGIN STACK is not scored on $/bit or fab $ per bit. Its claim narrows to the capacitor module's resource intensity")
+    p("(AR-62 fluorocarbon etch, He-cooled etch hours, ~100x less ZrO2/TiN ALD exposure, no Ru/k>50 push) and to 3D readiness (R10).")
+    return dens, res, die
+
+
+def section_rt_3d():
+    hr("R10. 3D readiness with the revised noise")
+    cpn = c_per_nm_fF(I("lat_cap_d_nm"), I("eot_cap_nm"))
+    cseg3 = I("c_seg_3d_fF")
+    cs3 = rt_solve_cs(cseg3, RT_SCEN["central"])
+    cs3p = rt_solve_cs(cseg3, RT_SCEN["pessimistic"])
+    p(f"16-tier vertical BL segment {cseg3} fF: sensing-limited Cs {cs3:.2f} fF (central), {cs3p:.2f} fF (pessimistic).")
+    p("")
+    p("| Cs fF | lateral cap nm | cell nm2 | Gb/mm2 per tier | x A1 base | tiers to match 1-beta |")
+    p("|---|---|---|---|---|---|")
+    base_gb = 1e6 / (I("tier_pitch_nm") * 600 * 1e-6) * I("tier_eff") / 1.0625 / 1e9
+    out = {}
+    for cs in (cs3, 0.5, cs3p, 1.0):
+        L = cs / cpn
+        cell = I("tier_pitch_nm") * (I("lat_fet_len_nm") + L)
+        gb = 1e6 / (cell * 1e-6) * I("tier_eff") / 1.0625 / 1e9
+        tiers = I("density_1b_gb_mm2") / (gb * 16 / 17)
+        out[cs] = (L, gb / base_gb, tiers)
+        p(f"| {cs:.2f} | {L:.0f} | {cell:,.0f} | {gb:.4f} | {gb/base_gb:.2f}x | {tiers:.1f} |")
+    p("")
+    p("The 3D lever survives at 0.5-1.0 fF: lateral capacitor ~63-126 nm instead of ~450 nm, per-tier density 2.2-2.8x, break-even")
+    p("~10-13 tiers instead of ~26. It needs a 3D host (PIXEL-STACK-type sense tiers), so it is a conditional, shared upside.")
+    return out
+
+
+def section_rt_energy(cs_plan):
+    hr("R11. Energy per access after the red team")
+    cbl = I("cells_per_bl") * I("cbl_per_cell_6f2_fF") + I("cbl_fixed_fF")
+    e_conv = cbl * I("vary_1b_V") ** 2 / 2 / I("reg_eff")
+    e = rt_energy(cs_plan)
+    p(f"- 1,024-cell GBL ({I('c_gbl_fF'):.0f} fF), 64-cell segment, Cs {cs_plan} fF: {e:.1f} fJ per sensed bit vs {e_conv:.1f} fJ at 1-beta "
+      f"({e_conv/e:.1f}x lower; pre-red-team 2.3x). GBL restore and two samples on 12 fF dominate.")
+    return e, e_conv
+
+
+RT_BUDGET = [
+    ("DRAM Bender error-tail study (shared with RAW-BER CONTRACT)", 80000, "M0-6"),
+    ("SPICE Monte Carlo + 3D field-solver alpha extraction on published VCT geometry + process emulation (PROC-01/02)", 55000, "M0-5"),
+    ("22FDX MPW, 5 mm2 at $17,997/mm2 + 20% U.S. route (neutraliser/charge-transfer add-on block dropped)", 108000, "M7"),
+    ("EDA/PDK access", 25000, "M2-7"),
+    ("Layout/verification contractor (22FDX emulator + SKY130 carrier)", 55000, "M2-7"),
+    ("Packages, PCBs, probe cards", 30000, "M9-12"),
+    ("Bench: SMUs (used), thermal forcer, FPGA, low-noise ns sampler", 50000, "M6-11"),
+    ("IGZO coupons: planar + etched-sidewall + dual-series-gate splits; 1/f spectra", 60000, "M3-12"),
+    ("BEOL-IGZO-on-CMOS carrier: 2 SKY130 runs ($30k) + die-level IGZO post-processing (~250 cleanroom h + staff)", 90000, "M4-13"),
+    ("1,000 h 105 C hold-bias stress on coupons/carriers (DEV-05)", 10000, "M12-15"),
+]
+RT_PLAN = [
+    ("Spin 2 (after GO only), 4 mm2 minimum", 86000),
+    ("IP: 2 provisionals, PCT, patentability/FTO opinion on SEL DOSRAM + OCSA families (IND-02)", 55000),
+    ("Capacitor-module cost split: teardown cost report or cost-model licence (IND-01, PROC-04)", 15000),
+    ("Two founders, $5k/month each x 24 months", 240000),
+    ("Overhead", 40000),
+]
+
+
+def section_rt_go(cs_res, am, tails, q_ret, ret):
+    hr("R12. Revised decisive experiment, budget and GO / NO-GO")
+    tot = sum(u for _, u, _ in RT_BUDGET)
+    p("| item | $ | when |")
+    p("|---|---|---|")
+    for n, u, w in RT_BUDGET:
+        p(f"| {n} | {u:,} | {w} |")
+    p(f"| **Decisive experiment total** | **{tot:,}** | M0-17 |")
+    plan = tot + sum(u for _, u in RT_PLAN)
+    p("")
+    for n, u in RT_PLAN:
+        p(f"- {n}: ${u:,}")
+    p(f"- **Plan total ${plan:,}** (reserve ${1_000_000-plan:,}; portfolio sharing of Bender + coupons frees ~$140-200k [ESTIMATE] as the real reserve).")
+    p("")
+    cseg = c_seg()
+    sc = RT_SCEN["central"]
+    # max Gaussian sigma at 0.5 fF given central RTN, and max RTN 1e-4 quantile given central Gaussian
+    def max_extra_sigma(cs_t):
+        lo, hi = 0.0, 60.0
+        g = rt_gauss(cs_t, cseg, sc)
+        for _ in range(60):
+            mid = 0.5 * (lo + hi)
+            s = VSIG * cs_t / (cs_t + cseg) * 1e3
+            m = s * (1 - 2 * sc[6]) - g["det"]
+            sig = math.sqrt(mid ** 2 + (I("cs_var_frac") * s) ** 2)
+            eta, w = rt_rtn(I("n_gain_pillars"), sc[0], sc[1], sc[2])
+            if p_err_mix(m, sig, eta, w) <= rt_p_target():
+                lo = mid
+            else:
+                hi = mid
+        return lo
+    def max_rtn_q4(cs_t):
+        lo, hi = 1.0, 200.0
+        g = rt_gauss(cs_t, cseg, sc)
+        eta0, w = rt_rtn(I("n_gain_pillars"), sc[0], sc[1], sc[2])
+        for _ in range(60):
+            mid = 0.5 * (lo + hi)        # candidate 1e-4 quantile
+            eta = mid / math.log(w / 1e-4)
+            s = VSIG * cs_t / (cs_t + cseg) * 1e3
+            m = s * (1 - 2 * sc[6]) - g["det"]
+            sig = math.sqrt(g["tot"] ** 2 + (I("cs_var_frac") * s) ** 2)
+            if p_err_mix(m, sig, eta, w) <= rt_p_target():
+                lo = mid
+            else:
+                hi = mid
+        return lo
+    sg05, sg10 = max_extra_sigma(0.5), max_extra_sigma(1.0)
+    rq05, rq10 = max_rtn_q4(0.5), max_rtn_q4(1.0)
+    im05_75 = rt_imax_aA(0.5, 75, I("t_ref_ddr5_s"))
+    im05 = rt_imax_aA(0.5, ret[0.5][0], I("t_ref_ddr5_s"))
+    im10_75 = rt_imax_aA(1.0, 75, I("t_ref_ddr5_s"))
+    im10 = rt_imax_aA(1.0, ret[1.0][0], I("t_ref_ddr5_s"))
+    p(f"GO thresholds (central otherwise, alpha at the extracted VCT value): Gaussian post-DS residual <= {sg05:.0f} mV at 0.5 fF "
+      f"({sg10:.0f} mV at 1.0 fF); IGZO gain-FET 1e-4 between-sample jump quantile <= {rq05:.0f} mV at 0.5 fF ({rq10:.0f} mV at 1.0 fF); "
+      f"alpha <= {am['central'][0]:.2f} at 0.5 fF. Leakage at the {q_ret:.0e} quantile, 85 C, after stress: GO <= {im05_75:,.0f} aA "
+      f"(0.5 fF, 75 mV droop, noise-independent); conditional GO <= {im05:,.0f} aA if the measured residual supports the "
+      f"{ret[0.5][0]:.0f} mV droop; the 1.0 fF fallback holds to {im10_75:,.0f} aA (75 mV) or {im10:,.0f} aA ({ret[1.0][0]:.0f} mV); "
+      f"NO-GO for any cut beyond 5.4x above that.")
+    p("")
+    p("**GO/NO-GO (revised):** GO if the PROJECTED raw BER at Cs 0.5 fF, 85 C, worst-case data, is <= 9e-5, built from (a) the 22FDX")
+    p("emulator's measured BER and Gaussian residual with ratio-matched coupling set to the field-solver VCT alpha (sensitivity at 1.5x),")
+    p("(b) the measured per-device RTN jump distribution of >=1e4 IGZO gain FETs on the BEOL carrier at a 1-3 ns gap, and")
+    p("(c) <1% same-codeword pairs; AND the leaky-cell fraction above the 0.5 fF limit is <= 2e-5, observed directly on >=1e6")
+    p("BEOL-carrier and coupon cells (planar and etched-sidewall) after the 1,000 h stress. NO-GO if the projected BER exceeds 1e-4")
+    p("at 1.0 fF, pairs exceed 10%, or the 2e-5 leakage quantile exceeds the 1.0 fF limit.")
+    return tot, plan
+
+
+def run_red_team():
+    rt_apply()
+    section_rt_revisions()
+    section_rt_gain()
+    section_rt_residual()
+    cs_res, am = section_rt_cases()
+    tails, q_ret = section_rt_leakage()
+    ret = section_rt_retention(tails, q_ret)
+    section_rt_pitch_timing()
+    section_rt_ecc()
+    section_rt_cost(0.5)
+    section_rt_3d()
+    section_rt_energy(0.5)
+    section_rt_go(cs_res, am, tails, q_ret, ret)
+
+
 def main():
     section_inputs()
     cbl = section_baseline()
@@ -915,6 +1578,7 @@ def main():
     thr = section_sensitivity()
     section_mpw(target)
     section_go(thr, s_flag, ber_res, cs_cases, droop)
+    run_red_team()
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.normpath(os.path.join(here, "..", "research", "stage3", "margin-stack_model_output.md"))
     with open(out, "w") as f:

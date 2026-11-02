@@ -1,0 +1,123 @@
+{
+ "dd": "lean-array-module",
+ "slug": "lean-array-module",
+ "title": "LEAN ARRAY MODULE: helium-free, PFAS-light, EUV-free process modules for periodic memory arrays",
+ "final_status": "DOWNGRADED",
+ "status_reason": "The core H2 physics stands, but with lower odds (effective a_H2 prior 0.19-0.21 against a 0.17 GO line; P4 -> P3) and four tests it was missing (plasma-pretreated surfaces, -70 C chucks, edge-zone etch, IGZO monitors). The step change narrows to the backside-helium hedge: ~3% of DRAM helium, 1.0x $/bit. The PFAS and EUV claims depend on borrowed portfolio cells, AAO at the 1-beta pitch is killed, ZTO is dropped, and the venture IP is thin, so the program is re-scoped as a JDA- and grant-co-funded resilience program.",
+ "revised_verdicts": {
+  "possible": "Yes, with lower odds. H2 backside cooling violates no physics, but rotational accommodation puts the effective a_H2 prior at 0.19-0.21 against a 0.17 GO line. P(GO on the worst film) is ~35-55% (P3, was P4). Fallbacks are D2, H2/He blends and asymmetric chuck faces; the cryo GO line is 0.175. AAO is possible only at >= 80 nm pitch (cup AR 12-14); the 1-beta-pitch leg is killed.",
+  "profitable": "Axis: supply-chain exposure, narrowed. Backside helium goes from 7.5 L/wafer to 0 in Si-access lines (75-90% of it in oxide-cell lines): ~3% (1-11%) of DRAM helium, the closing step to a helium-free line, at $/bit 1.0x. Fluorocarbon etch gas falls only -25-30%, and only for planar or 80 nm-pitch oxide cells (was 'capacitor fluorocarbon -> 0'). EUV goes to 0 only if a portfolio F~40 nm oxide cell wins. Downgraded from three chokepoints to zero, to one owned lever plus two conditional options.",
+  "doable": "Partly. Yes for the H2 module physics: a $630k three-step experiment (rig M8, small tool M10, 300 mm M20), now with plasma-pretreated, cryo, edge-zone and IGZO-monitor tests, inside a $1.0M/24-month plan. A first look only for the 80 nm AAO cup ($70k coupon). No for IL. No for an investable IP position from data alone; it needs a paid JDA by M10."
+ },
+ "revised_experiment": "Step 1 (M1-8, $145k): a parallel-plate accommodation rig (Sandia template). Coupons: plasma-pretreated, vacuum-transferred SiO2, SiN, poly, CFx and partner-pulled production backsides, against Al2O3/AlN/Y2O3 chuck faces at -70 to 60 C. Gases: He, H2, D2, N2, Ar and H2/He blends. GO = effective a_H2 >= 0.17 on the worst film (>= 0.175 for the cryo set); NO-GO < 0.10. Step 1b (M4-10, $145k): a university ICP with an H2 line. Thermocouple-wafer a_H2 within +/-0.03 of the rig. A 0-5 sccm H2 bleed into a C4F6/C4F8 oxide etch: etch-rate drift <= 2% and selectivity drift <= 5% at 2.5 sccm, plus a first look at edge tilt and CD. IGZO TFT monitors at 2x the leak: delta Vt <= 5 mV, no Ioff-tail shift at 85 C, RTN spectra 10 us-10 s. Gate at M10: a paid JDA/NRE, or Step 2 shrinks to Albany-only thermal and edge maps. Step 2 (M10-20, $300k cash plus partner in-kind): 300 mm chamber swap. +/-2 K maps at 2-5 kW. AR >= 40 HAR etch at 2x the leak, with tilt <= 0.1 deg, bottom CD within 1 nm and bow in spec at r = 140-148 mm. An edge-He guard split and 300 mm IGZO monitors. >= 100 wafer-hours, zero arcs, <= 10% LFL in single fault, and the partner's requalification cost estimate. Plus a $30k safety review and $10k of edge-transport simulation. Decisive total $630k by month 20. Plan total $1.0M, including a $70k 80 nm-pitch AAO coupon: no-fluorocarbon barrier opening, TEM fill, >= 5.4 fF/pore at <= 1 um, <= 1e-7 A/cm2, <= 1e-6 missing pores over >= 3e6 counted, comb shorts and TDS.",
+ "responses": [
+  {
+   "id": "RT-DEV-lean-array-module-01",
+   "response": "Valid. Baule's 0.27 is a translational prior. The 2.09x H2/He free-molecular ratio uses (gamma+1)/(gamma-1) = 6, which assumes full rotational exchange. ORNL measured H2/D2 rotational accommodation on graphite at ~0.05-0.2 (logged). Model I1: effective a = 0.27 x (4+2r)/6 = 0.189-0.207 at r = 0.1-0.3. The free-molecular ratio per unit translational accommodation is then 1.46-1.60x, not 2.09x. Parity pressure is 17.9-19.8 Torr, still inside the 22.5 Torr GO pressure, but the margin over the 0.168 break-even is only +0.02-0.04. The planning value 0.20 was already effective, but the verdict text '0.27 clears 0.17' overstated plausibility. A lognormal prior (1-sigma factor 1.5) gives P(a >= 0.168) of 88% at the old median and 66% at the effective one. The GO needs the worst of four films, which gives 43-66%. With the adsorbate tail (H on W 0.54 -> 0.14), I carry P3 (~35-55%), not P4. D2 has helium's mass and half H2's rotational quanta (model a_eff 0.35-0.39, 1.06-1.21x He's h at 15 Torr). It is added to separate the rotational term from the mass term, and as a recapture-only fallback.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Prior restated as 0.19-0.21 effective. Plausibility P4 -> P3: P(GO) ~50-75% -> ~35-55%, EV 40 -> 30. D2 added to the Step 1 rig. DEV's test (effective a_H2 >= 0.20 on SiO2/SiN/CFx) is adopted as the marker for a likely drop-in. The GO line stays at 0.17."
+  },
+  {
+   "id": "RT-DEV-lean-array-module-02",
+   "response": "Valid: Steps 1b and 2 tested only etch. At the viscous bound the leak carries 5 sccm of H atoms (model I3). That is 0.2-0.3% of the H in recipes that already carry it (PECVD SiN ~1,600 sccm-eq., TEOS ~2,100). In O2-plasma ALD or Ar PVD over an exposed oxide channel it is the dominant H source. Rule adopted: H2 cooling only in chambers whose wafers have no exposed or near-surface oxide channel, or whose recipe carries >= 100x the leak's H. Other chambers keep He or Ar; PVD chucks commonly use Ar already. Share of backside He still replaced: 100% for today's Si-access DRAM, which has no oxide channels, and 75-90% for an oxide-cell line where 10-25% of chucked steps are excluded.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Step 1b and Step 2 add IGZO (and ZTO if available) TFT monitor wafers through each H2-cooled chamber class at 2x the predicted leak. Pass: delta Vt <= 5 mV (stricter than DEV's 10 mV), an unchanged Ioff tail at 85 C, a PBTI shift no worse than He, and RTN spectra from 10 us to 10 s. Failing chamber classes keep He/Ar (kill #3b, a re-scope)."
+  },
+  {
+   "id": "RT-DEV-lean-array-module-03",
+   "response": "Valid at 35.2 nm. Model I6: mold AR 109-131 means 3.1-4.5x the AR-squared ALD dose of today's AR-62 pillar, and the barrier at ~14 V (~15 nm) must be opened. The PFAS-free and parity claims at the 1-beta pitch rested on unshown steps, and that leg is killed under RT-CIRC-02. Retarget: the portfolio's F = 40 nm oxide 1T1C tiers at an 80 nm square (DUV/imprint-pretextured) or 86 nm hexagonal pitch. Pores are 52-56 nm with 5 nm TiN electrodes, giving 7.2-7.9 fF/um, so 5.4 fF needs 0.68-0.75 um at a cup AR of 12-14. The barrier (~35 nm at ~32 V) cannot be opened by wet etch alone, which would widen the pore ~70 nm, more than the pitch. It is opened by a current-limited voltage ramp-down to ~3-5 nm, then a short H3PO4 dip (~8-10 nm widening) [UNVERIFIED-PK]. No fluorocarbon or chlorine plasma is used. Si-access cells lose the PFAS-free capacitor.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "AAO scoped to >= 80 nm pitch oxide 1T1C only. The $70k seed coupon is re-specified: barrier opening without fluorocarbon, proven by pad contact resistance; TEM of a conformal TiN/ZrO2/TiN down to the pore bottom; >= 5.4 fF per pore at <= 1 um; <= 1e-7 A/cm2."
+  },
+  {
+   "id": "RT-DEV-lean-array-module-04",
+   "response": "Valid. Accommodation is set by the outermost monolayer, and Sandia's Ar-plasma clean moved He by up to 0.10, which is more than the 0.17-0.24 GO-to-drop-in band. The rig changes:\n- Coupons are pretreated in situ in a load-locked side chamber (Ar, O2, C4F8 polymer, H2 plasmas) and measured without an air break.\n- Production backsides pulled from a partner's HAR flow are measured as received.\n- The GO is judged on the worst pretreated surface.\nDEV's test becomes a formal gate: the Step 1b thermocouple-wafer a_H2 under plasma must agree with the rig within +/-0.03 at M10. If it does not, kill #1 is re-judged on in-plasma data (kill #3c).",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "+$20k for plasma pretreatment and vacuum transfer in Step 1; production-backside coupons added; M10 rig-vs-plasma gate (+/-0.03) added to sections 5 and 9."
+  },
+  {
+   "id": "RT-DEV-lean-array-module-05",
+   "response": "Valid. Short-channel ZTO made at <= 400 C with aA-class Ioff is unshown, and its Sn2+ subgap states, hysteresis and PBTI make it a leakage risk. Model I9 shows the gallium it was meant to remove is small. A fab of oxide cells uses 10 nm of IGZO at 3x the wafer area, over 5 tiers at 30% utilisation. That is ~60 kg of Ga a year per 100k-wpm fab, and a 10-year stockpile costs ~$0.4M, under an hour of fab revenue. Gallium exposure is a stockpile item, so ZTO's leakage risk is not worth taking.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "N-26 ZTO is dropped from LEAN's claims and seed budget. The materials claim changes from 'Ga out' to 'Ga stockpiled (~60 kg/yr per fab)'. Revival (kill #9) is DEV's test: anyone reports Lg <= 40 nm ZTO at <= 400 C with SS <= 90 mV/dec and Ioff <= 10 aA at 85 C."
+  },
+  {
+   "id": "RT-PROC-lean-array-module-01",
+   "response": "Valid in substance, overstated in magnitude. Model I2 treats the gas above the wafer as radial advection and diffusion. The H2 diffusivity is 7,900-21,000 cm2/s at 30-80 mTorr, and the Peclet number over 1 cm is 0.04-0.12. The leak enters at r = R, so the edge sees the fully mixed value the dossier quoted: H/F 0.5-1.2% at 500 sccm, 0.17-0.40% at 1,500 sccm. The centre sees 0.42-0.75x of that. The H is therefore not concentrated above the chamber average. But a 1.3-2.4x radial gradient peaks on the outer die, where tilt and CD are already tuned, and the bevel gap sees near-pure H2. Global etch-rate and selectivity criteria could miss that. Redesign: an edge-He guard zone, with He or Ar in the outer backside zone (r > 130 mm) and H2 inside. H2 entering the plasma drops to ~0, and H2 still replaces 73% of that chamber's backside He. In a Si line with guards in HAR chambers, that is 92% overall.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Step 2 pass criteria add PROC's test: r = 140-148 mm on AR >= 40 patterned wafers at 2x leak, tilt <= 0.1 deg, bottom CD within 1 nm, bow in spec vs He. The edge-guard split runs as the fallback. Step 1b adds a first look at the edge on 200 mm. Kill #5 revised."
+  },
+  {
+   "id": "RT-PROC-lean-array-module-02",
+   "response": "Valid. The PFAS claim belonged to the capacitor, not the line. Model I8 inventory [ESTIMATE, scc of fluorocarbon etch gas per wafer, NF3 cleans excluded]:\n- The capacitor mold is ~38% of a 1-beta wafer's 3,200 scc.\n- A planar oxide 4F2 with a stub (MARGIN STACK class), or an F40 oxide 1T1C with an 80 nm AAO cup, gives -27-28%.\n- A 3D oxide cell (AND-STACK class) adds ~4,000 scc of deep etch: +88%.\n- TEL's HF/PF3 cryo etch ('greatly reduces' CF partial pressure, logged) would bring a 3D cell to about -12%. That is the industry's lever, not LEAN's; patent alternatives such as US 11,075,084 are still hydrofluorocarbons.\nSo LEAN removes the AR-60 capacitor etch, not PFAS-class etch.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "PFAS claim lowered from 'capacitor fluorocarbon -> 0' (read as PFAS out) to '-25-30% of fluorocarbon etch gas, only for planar or 80 nm-pitch oxide cells'. The deep etches of 3D cells are listed as needing cryo HF/PF3 or the carbon mold (N-29), and are tracked as revival, not claimed."
+  },
+  {
+   "id": "RT-PROC-lean-array-module-03",
+   "response": "Valid for the 35.2 nm pitch. Imprint-to-pad registration at 3-4 nm brings nm-class lithography back. At 1e-4 missing pores, 1.7M cells per 16 Gb die are dead, and 12,321 SEC words have two or more failures (model I6), beyond repair and the raw-BER budget. Changes:\n1. AAO moves to an 80-86 nm pitch. The overlay budget there is ~F/4 = 10 nm, so the pretexture is an ordinary 193i (or imprint) layer aligned to the pads, with no EUV or nm-class tool.\n2. The kill line tightens to <= 1e-6 missing or branched pores: 17k cells per die and ~1 SEC word needing repair. It is shown by counting >= 3e6 pores (0.019 mm2 at 80 nm pitch) with zero defects.\n3. Al-residue shorts are tested with interdigitated combs over the pad array.\n4. Sulfate and oxalate outgassing is measured by TDS to 450 C, with an ALD Al2O3 seal liner.\nAnodization uniformity across 300 mm is post-raise.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "AAO coupon re-specified: 80 nm pitch, 1 mm2 e-beam pad array, automated pore count, combs, TDS. Kill #6 revised to <= 1e-6 at 80-86 nm pitch. 300 mm registration of >= 99.9999% moves to the $10-15M round."
+  },
+  {
+   "id": "RT-PROC-lean-array-module-04",
+   "response": "Valid. Cryogenic HAR etchers run their chucks at about -60 to -70 C (TEL's HF/PF3 cryo etch is logged at about -60 C), and that is where high-bias heat removal is hardest. Model I4 uses 220 K gas. Normal H2 has gamma 1.43 there (rotation partly frozen), which lowers the free-molecular ratio per unit a from 2.09x to 1.99x. The break-even moves from 0.168 to 0.175 (drop-in 0.251, clamp limit 0.102). The gas physics barely moves. The risk is the surface: condensed by-products and adsorbed H, which shifted H on W from 0.54 to 0.14. The matrix therefore extends to -70 C.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "An LN2-cooled cold plate (-70 to 60 C) is added to the rig. The cryo GO is a_H2 >= 0.175, judged separately from the 20-60 C set. Kill #1c added. If cryo fails, cryo chambers alone keep He."
+  },
+  {
+   "id": "RT-PROC-lean-array-module-05",
+   "response": "Valid: the $50k per chamber was hardware only. Model I5 adds per-family requalification at 30-80 families x $0.5-3M. That gives $90-315M per 100k-wpm brownfield fab and a payback of 2.8-9.9 days of full stoppage (mid case 4.7, was 2.4). It also takes 6-12 months of lead time, so it cannot be done during a crisis. Qualifying H2 during a greenfield ramp costs ~10% incremental, ~$82M, with a 2.6-day payback. The workaround is dual-gas qualification at new fabs (Micron Idaho/New York, new Korean lines), not brownfield retrofits.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Payback restated in sections 2.4 and 2.6. Go-to-market moved to greenfield dual qualification. PROC's test (an OEM or fab estimate of requalification cost and time) is requested from the Step 2 partner by M14."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-01",
+   "response": "Same physics as RT-DEV-02, judged against the portfolio's tightest budgets: PIXEL-STACK 3-20 mV, HOT-SIDE 24 mV at ~3 ppm H, AND-STACK's H-lean mold. I adopt CIRC's stricter test and the restriction. Share of helium that leaves the H2 scope:\n- Today's Si-access DRAM: none.\n- An oxide-cell line: 10-25% of chucked steps see an exposed or near-surface channel, so H2 replaces 75-90% of backside He, or 69-83% with edge guards in HAR chambers (model I3).\nPost-channel chambers that run H-rich chemistry anyway (PECVD SiN, TEOS) stay allowed, because the leak adds 0.2-0.3% to their H. The leak's effect on molecular H2 is also tiny: ~0.15 mTorr partial pressure against ~30 Torr in a forming-gas anneal. The risk is atomic H in plasma steps, which the split measures directly.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "An IGZO/ZTO FET split, H2 vs He backside in every chucked step after channel formation: on a university TFT line in Step 1b and at 300 mm in Step 2. Pass: delta Vt < 5 mV and no Ioff-tail shift at 85 C. The restriction rule and the 10-25% excluded share go into the OEM package."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-02",
+   "response": "Valid, and fatal to the 1-beta-pitch AAO leg. Model I6: the pore is 22.8 nm. ZrO2 at EOT 0.55 nm and k 40 is 5.64 nm, and the outer TiN is 3 nm. That leaves a 5.6 nm inner core at AR ~450 for 2.5 um (539 for 3.0 um). The cup offers only concave area, so parity Cs needs this three-layer conformal fill at ~7x today's AR. Resistance is not the blocker (distributed RC ~0.9 ns); the fill is. No plausible variant beats the AR-60 pillar it replaces, and the leg gives no retention gain either (RT-CIRC-03). The module is retargeted to an 80 nm-pitch oxide 1T1C: cup AR 14, with a 20.7 nm hole left inside the top TiN.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Leg 'AAO capacitor at the 1-beta 35 nm pitch for Si-access cells' killed (kill #6x). Revival condition is CIRC's test: TEM-verified TiN/ZrO2/TiN fill of >= 2 um AAO pores at <= 36 nm pitch, >= 5 fF per pore, <= 1e-7 A/cm2. The rest of the concept is unaffected."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-03",
+   "response": "Valid on substance. The convention point cuts the other way. On A1's convention (50 mV end-of-retention signal, Cbl 34.7 fF; model I7):\n- The 1-beta pillar gives 71 mV fresh and 64 ms.\n- The 35 nm AAO cup gives 76-88 mV fresh and 80-123 ms (1.25-1.9x). The original 67 ms, on a fixed 0.15 V droop, understated it rather than flattering it.\n- With a >= 2x VRT guard, none clears 128 ms with margin, so there is no refresh relief, and the leg is killed anyway (RT-CIRC-02).\n- Refresh relief can only come from oxide access: the 80 nm cup (7.2 fF) on a 1 aA IGZO tail holds ~1,670 s.\nTop-ups: I-12302 plate-strip sensing (~135 vs ~14 mV) is a 3D-array sensing circuit with planar Micron prior art, outside a process module. I-12627's series write transistors do not stack the Si storage-node junction/GIDL leakage. Neither rescues Si-access AAO.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "AAO claims no retention or refresh benefit. Signal and retention are restated on A1's convention in section 2.5 and model I7. Refresh credit goes to the oxide access device only. I-12302 and I-12627 are not adopted."
+  },
+  {
+   "id": "RT-CIRC-lean-array-module-04",
+   "response": "Valid. Inventory per model I8 [ESTIMATE, scc of C4F6/C4F8/CF4/CHF3 per wafer]:\n- 1-beta: 3,200, of which the capacitor mold is 1,200.\n- MARGIN STACK + LEAN: 2,340 (-27%). The 120 nm stub, VCT pillar and buried-bitline etches stay fluorocarbon.\n- F40 oxide 1T1C + 80 nm AAO: 2,300 (-28%).\n- AND-STACK class: 6,000 (+88%).\nThe module deletes the AR-60 step, not PFAS-class etch. The circuit dependence CIRC names (MARGIN STACK's GO) holds: without a planar or oxide cell, LEAN's fluorocarbon lever is zero.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Thesis reworded to 'delete the AR-60 capacitor-mold etch (~25-30% of fluorocarbon etch gas) where a planar or 80 nm-pitch oxide cell allows it'. Inventory table added (section 2.8), to be refined with partner gas-use data in Step 2."
+  },
+  {
+   "id": "RT-IND-lean-array-module-01",
+   "response": "Accepted as a venture finding, not a physics kill: the mission re-scopes business findings rather than killing on them. The facts stand:\n- H2 is named as a backside gas in US 10,395,963.\n- The OEMs' gas-efficiency family (US 9,753,463 / 12,493,303) is active.\n- The lever is ~3% (1-11%) of DRAM helium, $0.32/wafer.\n- The insurance binds only above an 89-99% cut (model I5).\nWhat survives to own is narrow:\n(a) the first H2 accommodation dataset on process films, kept confidential until a JDA;\n(b) an asymmetric-accommodation chuck face (wafer 0.10 against chuck 0.45 reaches parity at 23 Torr), drafted outside US 8,970,818;\n(c) the edge-He guard / per-zone composition and the leak-compensated recipe;\n(d) the oxide-channel exclusion rule and monitor protocol, as a qualification package.\nNone of these is a royalty base a $10-50M investor would underwrite alone. Re-scope: an OEM- or gas-supplier-co-funded program (paid JDA or NRE), grant support for helium resilience (CHIPS R&D/Natcast, DOE), or a module inside the portfolio's lean-line package.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Venture claim downgraded from 'licensing company' to 'co-funded resilience program'. M10 paid-JDA gate added (RT-IND-02). Dataset publication deferred until after a JDA or M20. The 'provable with $1M' verdict for an investable IP position is now 'no' without a paying partner. The physics verdicts are unchanged by this objection."
+  },
+  {
+   "id": "RT-IND-lean-array-module-02",
+   "response": "Valid: a public coupon result plus an OEM-hosted Step 2 hands the OEM the product. Plan changes:\n1. Step 1 data stays confidential until the provisionals are filed and a JDA is signed.\n2. A gate before Step 2 (M10): a signed JDA with paid NRE, or a royalty on H2-capable chucks and gas sticks. Without one, Step 2 runs at NY CREATES Albany, a neutral site, as thermal and edge maps only (~$150k), funded from the seed.\n3. The asymmetric chuck-face and edge-guard claims are filed before any OEM disclosure.\n4. A gas supplier (Linde or Air Products, which sell both He and on-site H2) is approached as a second counterparty, so the startup does not depend on one OEM.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "M10 JDA gate added to sections 5, 6 and 9. Publication policy changed. Provisional #2 (chuck-face asymmetry, edge-He guard) moved before any OEM meeting. $15k JDA legal budgeted."
+  },
+  {
+   "id": "RT-IND-lean-array-module-03",
+   "response": "Valid: without borrowed levers, LEAN is the helium hedge.\n- EUV-free IL serves only F~40 nm oxide tiers (0.109 Gb/mm2 per tier, >= 5 tiers for 1-beta parity), and Canon NIL trials at SK hynix and Kioxia already occupy that space.\n- The PFAS cut (-25-30%) needs a planar oxide cell (MARGIN STACK) or the 80 nm AAO cup on an oxide 1T1C.\n- AAO at 35 nm pitch is killed (RT-CIRC-02).\nNeither an IL/NIL overlay result on a real cell layer nor sub-35 nm AAO fits inside the seed, so IND's test cannot be met there.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Step-change claim narrowed to backside He -> 0, the concept's own lever. PFAS (-25-30%, conditional) and EUV (conditional on a portfolio oxide cell) are relabelled 'enabling options for portfolio cells', not LEAN's claim. The FINAL_CONCEPTS line should drop 'PFAS HAR etch and EUV out of array modules'."
+  },
+  {
+   "id": "RT-IND-lean-array-module-04",
+   "response": "Valid. Backside cooling binds only when a fab's cut exceeds 97% (89-99%) after ~6 weeks of storage. A logged search (gasworld, AGBI 2026) shows Qatar has partly restarted Helium 2:\n- output is estimated at below ~30% of normal;\n- two damaged LNG trains need 3-5 years of repair.\nSo 2026-27 tightness persists, but a full fab stoppage is not the base case. Model I5 [SPECULATIVE probabilities]: at a 0.5-3% annual chance of a binding 30-day cutoff, the expected value is $5-29M/yr per fab. That recovers $150M brownfield in 5-32 years, or $82M greenfield in 3-17 years. The value is option value for tail risk, plus the closing step to a fully helium-free line.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "'2.4-day payback' replaced by the binding-threshold and expected-value table (section 2.4). The M6 use-split re-scope gate is kept (if backside is > 10% of fab He, the hedge value rises). The pitch moves to greenfield dual qualification."
+  }
+ ]
+}

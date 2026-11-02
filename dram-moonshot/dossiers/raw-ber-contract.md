@@ -3,7 +3,8 @@
 NEW DRAM Stage 3 dossier. Author: agent `dosw-raw-ber-contract`, 2026-11-02. Concept slug `raw-ber-contract`.
 
 Inputs:
-- Model `models/raw-ber-contract.py`, re-run 2026-11-02 (exit 0; matches `research/stage3/raw-ber-contract_model_output.md`).
+- Model `models/raw-ber-contract.py`, re-run 2026-11-02 (exit 0; matches `research/stage3/raw-ber-contract_model_output.md`). Re-run again after the red team with a "RED-TEAM REVISIONS" block and a new section 10 (exit 0).
+- Red team: `research/redteam/rt_{DEV,PROC,CIRC,IND}.json` (19 objections on this dossier); responses in `research/redteam/responses_raw-ber-contract.json`; sources `research/sources/resp-raw-ber-contract.jsonl` (8 entries). Outcome in §11.
 - Notes `research/stage3/raw-ber-contract_notes.md`; assumptions `research/assumptions/dos-raw-ber-contract.md`.
 - Sources `research/sources/dos-raw-ber-contract.jsonl` (43 entries) plus A1, A2 and other dossier logs.
 
@@ -20,6 +21,7 @@ Tags: [REPORTED] a logged source, usually a search snippet; [ESTIMATE] model ari
 | Rank / EV | 4 of 10. EV 60 = S3 x P4 x D5 (ranks 2-4 sit within scoring noise) |
 | Category | system/architecture |
 | Lineage | Device-lens RAW-BER CONTRACT (contract framing, analog counter, flag sense stack) + system-lens ECC-Native Memory (typed pages, refresh arithmetic, experiment) + the JEDEC "ECC-native" grade from the cut Memory Bits Compact |
+| Status (revised after red team) | **DOWNGRADED** (§11.7). Flag leg killed; commodity headline ~9x (DDR5, chipkill kept) instead of 15x; provable "partly" |
 
 **Constituent ideas and their creativity-technique lineage**
 
@@ -38,11 +40,20 @@ Tags: [REPORTED] a logged source, usually a search snippet; [ESTIMATE] model ari
 | N-62 | ECC-paid capacitor (B4-01) | Phase-B lens "Architecture: do DRAM's job with less DRAM" | Triage ALIVE, TWIST | Margin |
 | N-63 | Scrub-as-refresh (B4-02) | Same lens | Triage ALIVE, TWIST | Refresh |
 
-**Verdicts**
+**Verdicts (revised after red team; the pre-red-team verdicts are kept in §11.6)**
 
-- **PHYSICALLY POSSIBLE? Yes.** Standard coding theory on measured retention tails; the commodity half needs no new physics. The one unknown, the error statistics at 1e-4 (cluster geometry, VRT growth, flaggable share), is a measurement, not a law.
-- **STEP CHANGE IF IT WORKS? Yes on refresh energy: ~15x (range 7.7-30x) on today's DRAM.** Refresh-blocked time falls 7.6% → 0.5% at 16Gb and 41% → 2.6% at 64Gb. On margin, 1.88x for new cells (50 → 26.6 mV, Cs halved). But margin and refresh share one error budget, flags add only ~8%, and at module level idle power falls just 14-16% ($0.041/GB).
-- **PROVABLE WITH $1M IN 24 MONTHS? Yes** for the binary error-physics GO/NO-GO (~$96k, month 6) and an FPGA CXL soak (~$943k all-in). **Partly** for flags (timing proxy plus a sky130 latch, not new-cell silicon). **No** for proving 2e-19 per read directly; it is extrapolated.
+- **PHYSICALLY POSSIBLE? Yes** for relaxed refresh behind a code: standard coding theory on measured retention tails, no new physics. **No** for the delayed-strobe sense-amp flag as specified. Its 3.6 mV window is only τ·ln2 ≈ 14-35 ps of latch time, against 50-150 ps of strobe skew (RT-CIRC-01). That leg is killed.
+- **STEP CHANGE IF IT WORKS? Yes on refresh energy and refresh-busy time, but smaller than first claimed.** Keeping chipkill (RS-8) gives:
+  - **~9x on DDR5 RDIMMs at 85 C.** The range is 6-20x by tail model, 18x without the DDR5 retention derate, ~35x at 65 C and 2.9x in degraded mode.
+  - **~13x on retired DDR4 behind CXL** (7.8x pessimistic).
+
+  The original 15x gave up chipkill. At module level, refresh falls 0.98 → 0.11 W per 64 GB (DDR5's real 32 ms window), worth ~$3.9 per module over 5 years at 20% self-refresh residency. 64Gb refresh-busy time falls 18% → 2%, not 41% → 2.6%. Margin for new cells stays 1.88x (50 → 26.6 mV, Cs halved), with no flag bonus.
+- **PROVABLE WITH $1M IN 24 MONTHS? Partly.**
+  - **Yes:** DDR4 raw physics; DDR5 post-on-die-ECC statistics (JEDEC ECS counts, open DDR5 RDIMM testers); a failure-mode census; a per-module servo test; 1,000 h soaks. Phase 1 (decisive) costs ~$124k; the plan is $946k all-in.
+  - **No:**
+    - raw ECC-off 1b/1c maps, which need a vendor test mode;
+    - 2e-19 per read directly, which is bounded by census plus model instead;
+    - the sort flow for new dies, which stays a paper study.
 
 ---
 
@@ -84,6 +95,16 @@ The same box works today on commodity DDR5 (refresh 64 ms → ~0.5-1.5 s) and on
 
 All figures come from `models/raw-ber-contract.py` unless tagged otherwise.
 
+**(revised after red team)** Model section 10 changes six things:
+1. **Chipkill is now the default.** The headline code is RS-8, which keeps chipkill, not BCH-12 (RT-CIRC-03).
+2. **DDR5's real refresh window is 32 ms.** That is tREFI 3.9 µs × 8,192 REF. The original paired DDR5's tREFI with a 64 ms window, so its relaxed-interval tRFC loss was 2x too high and its DDR5 refresh-power baseline 2x too low.
+3. **DDR5 retention is derated 0.5x versus the DDR3/DDR4-era anchors** (RT-DEV-02, RT-PROC-01).
+4. **On DDR5 the controller code sits behind on-die SEC, which *hurts* RS-8.** SEC turns doublets into 3-symbol events, so the limit falls from 5.4e-5 to 1.5e-5.
+5. **64Gb tRFC is 700 ns, not 1,600** (RT-PROC-04).
+6. **The flag leg is killed** (§2.3).
+
+The subsections below keep the original arithmetic, with notes where it changed.
+
 ### 2.1 The reliability target (critic correction: ~100x tighter)
 
 A 64 GB module at 10 GB/s average serves 10e9 / 64 = 1.56e8 line reads/s, or 4.93e15 per year. A budget of ≤1e-3 uncorrectable errors (UE) per module-year from random raw errors therefore needs **≤2e-19 failures per 64 B read** [ESTIMATE; field UE rates of ~0.2-1%/yr are UNVERIFIED-PK]. The concept's t=8 BCH fails 2.3e-17 per read at raw BER 1e-4, i.e. ~0.1 UE per module-year: **too loose by ~100x.** The corrected code is **t=9: 90 check bits per 512 data bits (17.6%)**, which fails 1.6e-19.
@@ -115,6 +136,12 @@ Sensitivity on the key unknown (raw BER 1e-4, δ = 0.5σ, target 2e-19):
 | 1.00 | 9 | 9 | 90 | 5.9e-5 | no margin banked |
 
 At best, flags save 20 check bits (90 → 70) or add ~8% to the code's 1.88x. The concept's "d=5 code, 3.9%" ignored false flags and the real target.
+
+**(revised after red team) Leg killed** (RT-CIRC-01, RT-CIRC-02, RT-IND-02; model §10.5):
+- **The circuit cannot resolve its window.** A delayed-strobe flag sees 50-150 ps of strobe skew. That equals 6 mV to >1 V of amplitude noise against a 3.6 mV window. Only a locally referenced strobe with ≤15 ps skew and τ ≥ 50 ps reaches the critic's 1.5 mV line.
+- **Even ideal flags lose density.** They net −2.2% to −0.2% of die once transport (≥11 bits per line; 0.40 flags per line) and the second SA latch (+2-4% die) are paid.
+- **They barely help inside a fixed 128-bit side band.** There, flags buy at most +9% raw-BER headroom over plain BCH-12, and −7% with 1.5 mV comparator noise.
+- **The reduced-tRCD proxy measures the wrong population** (RT-DEV-01).
 
 ### 2.4 Error geometry (new finding: as important as flaggability)
 
@@ -151,6 +178,21 @@ BCH-12 tolerates only **~0.4% of error bits in 3-bit clusters** at 1e-4, and ess
 
 **VRT sensitivity.** At 100x/day growth with a 24 h scrub, the interval falls to 375 ms; a 10-minute scrub (3.4 mW) holds 1.3 s.
 
+**(revised after red team) DDR5 RDIMMs versus retired DDR4.** The tables above use DDR3/DDR4-era tails with no on-die ECC, so they describe retired DDR4. With chipkill kept (model §10.1):
+
+| Part / code (chipkill kept) | 85 C central | 85 C pessimistic | 65 C central | Degraded (one chip dead), 85 C |
+|---|---|---|---|---|
+| Retired DDR4 / RS-8 | 837 ms (13.1x of 64 ms) | 500 ms (7.8x) | 3.3 s | 258 ms (4.0x) |
+| DDR5 / RS-8 behind on-die SEC, retention ×0.5 | 285 ms (8.9x of 32 ms) | 194 ms (6.1x) | 1.14 s (35x) | 92 ms (2.9x); 366 ms at 65 C |
+| DDR5, no retention derate | 569 ms (17.8x) | - | 2.3 s | - |
+| DDR5 / BCH-12 behind SEC (no chipkill, for comparison) | 603 ms (18.9x) | - | 2.4 s | not correctable |
+
+- **Power and value.** DDR5 refresh at its 32 ms window is 0.98 W per 64 GB [A1 per-cell energy; ESTIMATE]. At the central interval it falls to 0.11 W, saving 0.87 W. A hybrid self-refresh policy keeps 0.69 W at 20% self-refresh residency, worth $3.94 per module over 5 years (RT-CIRC-04).
+- **Refresh-blocked time at 1 s** is 0.24% for 16Gb, not 0.48%.
+- **64Gb at tRFC 700 ns** goes from 17.9% blocked to 2.0% at the DDR5 central interval. Same-bank refresh already hides perhaps half to two thirds of the 17.9% (RT-IND-03).
+- **Latency.** The decoder slow path is small. On raw DDR4, 1.2% of lines hold an error, almost all single-symbol, so a ~4 ns lookup fixes them; only 0.007% need Berlekamp-Massey. Behind DDR5's on-die SEC, ~0% of lines need any fix. The CXL hop (70-150 ns) makes the commodity product a capacity tier (RT-CIRC-05).
+- **A new correlated-fault term.** Relaxed refresh turns benign chip faults into UE risk through coincidence with random errors. On DDR4 that requires marking a chip on its first chip-confined correction: 1.1e-4 UE per module-year with first-read marking, against 1.1e-3 after 10 reads (RT-DEV-04; model §10.6).
+
 **Positive finding.** The commodity path needs **no new storage and no page code**: the RDIMM's 25% side band, re-coded as BCH-12 or RS-8, carries it.
 
 ### 2.6 One budget, two ways to spend it (critic correction)
@@ -159,17 +201,21 @@ Margin errors and retention errors draw on the same allowance. On a new cell wit
 
 ### 2.7 Against 1-beta DDR5
 
+**(revised after red team)** The "today" and "same die" columns are corrected to DDR5's 32 ms window and to chipkill-kept RS-8 behind on-die SEC. Original values are in brackets.
+
 | Metric | 1-beta DDR5 RDIMM today | Contract on the same die | New 1-beta-class die built to contract |
 |---|---|---|---|
-| Refresh interval | 64 ms | 0.5-1.5 s (85 C), longer when cooler | 0.37-1.5 s, depending on the margin split |
-| Refresh power / 64 GB | 0.49 W | 0.03-0.06 W | similar |
-| Refresh-blocked time | 7.6% (16Gb) | 0.5-1% | <1% |
+| Refresh interval | 32 ms [was 64 ms] | 0.19-0.64 s at 85 C, central 0.29 s; 1.1 s at 65 C; 92 ms in degraded mode [was 0.5-1.5 s, no chipkill] | 0.37-1.5 s, depending on the margin split |
+| Refresh power / 64 GB | 0.98 W [was 0.49 W] | 0.11 W central [was 0.03-0.06 W] | similar |
+| Refresh-blocked time | 7.6% (16Gb) | 0.85% central [was 0.5-1%] | <1% |
 | Required signal / Cs | 50 mV / 5.4 fF | unchanged | 26.6 mV / 2.7 fF |
 | Check-bit overhead | 6.25% on-die + 25% module side band | the same 25%, re-coded | 17.6% (t=9) |
 | Density | 0.447 Gb/mm² | unchanged | **0.404 Gb/mm² (0.90x) on the same planar cell** |
-| Cost | $1.48/GB | +$0 bits; energy saving worth $0.041/GB over 5 yr | pays off only via cells it enables |
+| Cost | $1.48/GB | +$0 bits; energy saving worth $0.062/GB over 5 yr at 20% self-refresh residency [was $0.041/GB] | pays off only via cells it enables |
 
 Energy value: 0.456 W × 43,830 h × 1.3 PUE = 26 kWh = **$2.60 per 64 GB over 5 years** at $0.10/kWh (2.7% of module cost), or 7.1 MW per exabyte. The large value is **strategic**: it defuses the 64Gb tRFC crisis and lets new cells qualify against a controller instead of 7σ.
+
+**(revised after red team)** On DDR5's 32 ms basis the value is $3.94 per module (~4% of module cost) with 20% self-refresh residency. The "64Gb tRFC crisis" shrinks: 18% blocked at a 700 ns tRFC, not 41%, and same-bank refresh hides part of it. That leaves ~6-16 points recovered, not ~38 (RT-PROC-04, RT-IND-03). The strategic value now rests mainly on letting new cells qualify against a controller, which the $1M plan cannot prove.
 
 ### 2.8 Hammer and page codes
 
@@ -178,7 +224,7 @@ Energy value: 0.456 W × 43,830 h × 1.3 PUE = 26 kWh = **$2.60 per 64 GB over 5
 
 ### 2.9 GO/NO-GO threshold (pre-set)
 
-**GO** if the measured error stream (including VRT over a 1 h scrub) fits the side band at 2e-19 per read with refresh ≥0.5 s at 85 C: BCH-12 ≤3.3e-4 with ≤0.4% of error bits in ≥3-bit clusters, or RS-8 ≤5.4e-5 with byte-confined clusters. **And** ≥50% of half-charge errors must be flaggable at a ≤0.5σ window. **NO-GO** if the safe interval is <256 ms at 65 C even with RS-8 (RAIDR-class profiling gets ~4x without ECC), or >10% of error events span more than one byte, or <25% of margin errors are flaggable.
+**(revised after red team: superseded by the revised gate in §5 and §11.4; the flag condition is removed.)** **GO** if the measured error stream (including VRT over a 1 h scrub) fits the side band at 2e-19 per read with refresh ≥0.5 s at 85 C: BCH-12 ≤3.3e-4 with ≤0.4% of error bits in ≥3-bit clusters, or RS-8 ≤5.4e-5 with byte-confined clusters. **And** ≥50% of half-charge errors must be flaggable at a ≤0.5σ window. **NO-GO** if the safe interval is <256 ms at 65 C even with RS-8 (RAIDR-class profiling gets ~4x without ECC), or >10% of error events span more than one byte, or <25% of margin errors are flaggable.
 
 ---
 
@@ -237,6 +283,83 @@ None is a physics wall. Items 1-4 are the measurement that decides the concept.
 
 ## 5. The decisive experiment
 
+### 5.R Revised decisive experiment (revised after red team)
+
+**Question (revised).** With chipkill kept (RS-8), does each part's error stream fit the 128-bit side band at 2e-19 per read with refresh ≥6x its own JEDEC window at 85 C, and ≥24x at 65 C? The windows are 64 ms for DDR4 and 32 ms for DDR5. The stream must include:
+- VRT accumulated over the scrub period;
+- the post-on-die-ECC event structure of 1a/1b DDR5;
+- the chip-fault coincidence term.
+
+Does a per-module servo hold the grade it predicts? The flag question is dropped: that leg is killed (§2.3).
+
+**What changed and why.**
+- **DDR5 is measured, not inferred from DDR4** (RT-DEV-02, RT-PROC-01, RT-IND-04).
+- **A failure-mode census replaces the "Poisson to 6 errors" check** (RT-DEV-04).
+- **VRT coincidence and dwell time (RTN at the right timescale) are added** (RT-DEV-03).
+- **The population spans ≥30 lots per vendor, and the gate tests a servo** rather than a population floor (RT-PROC-02).
+- **A 1 h grade is checked against a 1,000 h hold**, a sort-flow proxy (RT-PROC-03).
+- **Phase 2 measures latency at injected 1e-4 and idle power**, self-refresh versus power-down (RT-CIRC-04, RT-CIRC-05).
+
+**Facility.** As before, plus two open Antmicro DDR5 RDIMM testers. These are Apache-2.0 boards on an AMD Artix UltraScale+ FPGA; Google funded them and Google/ETH used them for the DDR5 "Phoenix" study [REPORTED, `resp-raw-ber-contract.jsonl`].
+
+**Phase 1 steps (M0-6), revised.**
+1. **DDR4 population (retired-DDR4 / CXL landing zone).**
+   - Quick screen: 150 modules spanning ≥30 lots (date codes) per vendor, 85 C, two intervals.
+   - Deep maps: 60 modules covering 1x/1y/1z/1a date codes, to fit a node trend.
+   - 20 retention-reject modules.
+2. **Retention map.** 0.128-4 s × {45, 65, 85} C × 4 patterns; fit pow3, lognormal or pow5.
+3. **DDR5 leg.** At least 24 1a/1b DDR5 RDIMMs from 2-3 vendors, on the open testers.
+   - Measure per-die singleton counts through JEDEC ECS codeword-count mode. Its 256/Gb threshold masks only BER below ~2.4e-7 on a 16Gb die, below the regime of interest [REPORTED: ECS counts codewords with errors; thresholds 256/1,024/4,096 per Gb].
+   - Add post-SEC 2-3-bit event maps; their geometry is visible because SEC events are chip-confined.
+   - Invert to raw BER with BEER-style recovery of the on-die H-matrix.
+   - Compute the RS-8-behind-SEC safe interval directly from the post-SEC stream, which is what the controller decodes.
+4. **VRT.**
+   - Hourly whole-module re-maps for 1,000 h (6 weeks) on 20 modules at 65/85 C: growth rate g, and VRT arrivals per codeword per scrub period (overdispersion against Poisson).
+   - A dwell-time (RTN) spectrum from row subsets re-mapped every 20 s-20 min at 85 C.
+5. **Failure-mode census.** Classify every multi-bit event by chip, DQ, beat, row, column and MAT. Measure each mechanism's event rate at 1 s against 32/64 ms. Fold in the chip-fault coincidence term (model §10.6). Test first-read chip marking in the controller RTL.
+6. **Servo and sort proxy.** Grade each module from ≤1 h of test (interval, cluster spectrum). Check that the grade holds over the 1,000 h soak, for ≥95% of modules.
+7. **Hammer × relaxed refresh** with controller RFM in place of TRR (unchanged).
+8. **Flag-proxy validation, as revival data only.** Compare truncated-tRAS cells (known |dV|) with reduced-tRCD flags: overlap, and column/subarray correlation against random. Also test a biased-precharge amplitude proxy [UNVERIFIED-PK method].
+9. **GO/NO-GO #1 at M6** (table below).
+
+**Phases 2-3 (M4-18), revised.**
+- **CXL soak.** The Agilex CXL Type-3 controller runs on retired DDR4. Controller RTL also runs on the open DDR5 tester. Both get 1,000 h soaks at the servoed interval.
+- **Latency.** Measure p50/p99 load-to-use at injected raw BER 1e-4, plus an ASIC projection for a host-IMC decoder.
+- **Idle power.** Measure RDIMM + PHY power in self-refresh versus power-down with controller REF.
+- **sky130.** One slot carries the reset-on-REF counters and one amplitude-domain flag test structure (revival data). The second slot is dropped.
+
+**Budget (revised; standalone, under $1M).** Inside the portfolio seed only Phase 1 (~$124k) is funded.
+
+| # | Item | Cost | Change |
+|---|---|---|---|
+| 1 | 4 DRAM Bender stations | $56k | - |
+| 1a | 2 open DDR5 RDIMM testers (fab, assembly, FPGA) | $20k | new [ESTIMATE] |
+| 2 | 150 DDR4 (≥30 lots/vendor) + 20 reject + 24 DDR5 RDIMM | $24k | +$6k |
+| 3 | Thermal (6 rigs) | $14k | +$2k |
+| 4 | 50 TB analysis server | $10k | - |
+| | **Phase 1 (decisive)** | **$124k** | +$28k |
+| 5-9 | Agilex kits, CXL IP, hosts, RTL contractor, soak ops (DDR4 CXL + DDR5 tester) | $262k | - |
+| 10 | 1 sky130 slot (counters + amplitude-flag structure) | $30k | -$20k |
+| 11 | Collaborator subawards | $60k | - |
+| 12 | IP: 2 provisionals + 1 PCT (grade/test method; servoed latching-aware refresh with first-read chip marking) | $35k | -$10k |
+| 13-14 | Founders; rent, insurance, travel | $360k | - |
+| 15 | Contingency (~8.6%) | $75k | +$5k |
+| | **Total** | **$946k** | was $943k |
+
+**Pre-set pass/fail numbers (revised).**
+
+| Measurement | PASS | FAIL |
+|---|---|---|
+| RS-8 safe interval incl. VRT (1 h scrub), 2e-19 | ≥6x window at 85 C (DDR5 ≥0.19 s; DDR4 ≥0.38 s) and ≥24x at 65 C | <4x window at 65 C (DDR5 <128 ms; DDR4 <256 ms) |
+| Multi-byte (multi-chip) error events | ≤10% of events; no mechanism >2x its 32/64 ms rate | >10% of events, or a new multi-chip mechanism |
+| VRT | g ≤700x/day (10-min scrub holds the interval); per-codeword pairs within 2x of Poisson | 10-min scrub cannot hold 6x window at 85 C (85 C claim killed; 45-65 C kept) |
+| Servo / sort proxy | 1 h grade holds ≥1,000 h for ≥95% of modules | <90% |
+| DDR5 inference | ECS counts resolve singletons at the operating BER; post-SEC model within 2x | ECS masked and no vendor test mode → DDR5 claim stays unproven |
+| 1,000 h soaks (DDR4 CXL, DDR5 tester) | 0 UE; corrected errors within 2x of model | any UE |
+| Latency (Phase 2) | p99 adder from decoding ≤5 ns at injected 1e-4 | BM path on >1% of lines |
+
+### 5.O Original decisive experiment (pre-red-team; superseded where §5.R differs)
+
 **Question.** At raw BER 1e-4, are DRAM errors isolated, byte-confined and slow-growing enough for the 128-bit side band at 2e-19 per read with refresh ≥0.5 s at 85 C? And are ≥50% of margin errors flaggable?
 
 **Facility.** A bench lab, not a cleanroom. Four DRAM Bender stations (open source, CMU-SAFARI) on Xilinx/BittWare DDR4 boards, with heater-pad PID and VPP control. A subaward to a lab that already runs DRAM Bender: CMU (SAFARI lineage), Rutgers (Minesh Patel) or Georgia Tech (Moinuddin Qureshi). DDR5 comes through a collaborator or the Phase 2 FPGA PHY.
@@ -291,6 +414,13 @@ None is a physics wall. Items 1-4 are the measurement that decides the concept.
 ---
 
 ## 6. The $1M, 24-month plan
+
+**(revised after red team)** The changes are in §5.R and §11.2:
+- The budget is now $946k, with Phase 1 at $124k. The DDR5 leg is added, and one sky130 slot is dropped.
+- The IP order changes: grade/test method and servoed refresh first, with flag filings optional and defensive.
+- The flag latch milestones (Q7, kill #7) are moot.
+
+The quarter table below is the original.
 
 Assume M0 = 2027-01-01.
 
@@ -368,16 +498,22 @@ Assume M0 = 2027-01-01.
 
 ## 9. Kill criteria
 
-M0 = 2027-01-01. Each criterion is physics or measurement; standards adoption is not one.
+M0 = 2027-01-01. Each criterion is physics or measurement; standards adoption is not one. **(revised after red team:** #1, #3 and #7 rewritten, #9-#10 added; the originals are kept struck through where replaced.)
 
-1. **By 2027-06-30 (M6): kill the commodity relaxed-refresh product** if the safe interval is <256 ms at 65 C even with RS-8, including VRT over a 1 h scrub. *Revival:* re-run the identical test on oxide (IGZO) cells, whose retention tail sits 1e3-1e4x to the right.
+1. **By 2027-06-30 (M6): kill the commodity relaxed-refresh product** if the RS-8 (chipkill) safe interval is <4x the part's own JEDEC window at 65 C, including VRT over a 1 h scrub. That is <256 ms for DDR4 and <128 ms for DDR5. *Revival (revised after red team, RT-DEV-05):* an oxide or gain-cell array whose measured retention CDF reaches ≤1e-6 at 85 C, sits ≥10x right of Si at the same Cs, and has PBTI/hydrogen drift and RTN-like Ioff switching characterised as extra error terms. Or stacked write devices (I-12627) with a measured tail-correlation share ρ ≤0.1: model §10.10 gives 0.84 → 1.8 s at ρ = 0.1, and 5.6 s only at ρ = 0. ~~Revival: re-run on IGZO cells "1e3-1e4x to the right"~~: that was a typical-Ioff ratio, not a tail.
 2. **By M6: kill binary BCH** if >0.4% of error bits arrive in ≥3-bit clusters per codeword; **kill both line codes** if >10% of error events span more than one byte. *Revival:* chip-symbol codes in a wider side band (DDR6/LPDDR6 organisations [UNVERIFIED-PK]).
-3. **By M6: kill the SA flag latch** (provisional #1 becomes defensive) if <25% of half-charge errors are flaggable at ≤0.5σ with ≤6 false flags per error. *Revival:* CDS-derived flags on MARGIN STACK silicon.
+3. **KILLED by the red team (RT-CIRC-01, RT-CIRC-02): the per-read sense-amp flag leg.** A delayed strobe sees 50-150 ps skew against a 14-35 ps window. Even ideal flags net −2.2% to −0.2% of die after transport and the second SA latch. ~~By M6: kill the SA flag latch if <25% flaggable~~. *Revival:* silicon with a flag-window σ ≤1.5 mV across ≥1k SAs at 85 C without per-SA trim (amplitude-domain, or a locally referenced strobe with ≤15 ps skew), **and** a positive measured ledger. That ledger means check bits saved exceed transport bits plus SA area, e.g. on new cells where margin errors dominate and the parity saving is ≥25% (RT-IND-02). CDS-derived flags on MARGIN STACK silicon remain a candidate.
 4. **By 2027-09-30 (M9): kill the 85 C claim** (keep 45-65 C temperature-tracking) if measured VRT growth is so fast that a 10-minute scrub cannot hold ≥0.5 s at 85 C. In the model (lognormal tail) that needs growth above ~700x static BER per day with RS-8 or ~5,000x with BCH-12; at 100x/day a 10-minute scrub still holds 0.72 s (RS-8) to 1.3 s (BCH-12) [ESTIMATE].
 5. **By 2027-12-31 (M12): kill relaxed refresh on non-PRAC parts** if weakened victims at 1 s show HCfirst <50% of the 64 ms value *and* controller RFM at ≤8% bank time cannot hold zero flips under many-sided patterns.
 6. **By 2028-04-30 (M16): stop and diagnose before any raise** if the 1,000 h soak shows any UE or corrected errors >2x the Phase 1 model.
-7. **By 2028-07-31 (M19): kill the flag latch** if the sky130 latch needs a window >1σ of its own offset to catch ≥50% of near-threshold bits (>30 false flags per error).
+7. ~~By M19: kill the flag latch if the sky130 latch needs a window >1σ~~ **(revised after red team: moot; the leg is already killed, see #3).** The single sky130 slot's amplitude-flag structure only measures the revival condition.
 8. **By M6 (re-scope, not kill):** with no CXL IP path at ≤$100k, soak through PCIe-BAR emulation instead.
+9. **(new, revised after red team) By M6: kill the DDR5 commodity claim, keeping retired DDR4 behind CXL,** if either:
+   - the DDR5 RS-8-behind-on-die-SEC safe interval, inferred from ECS singleton counts plus post-SEC event maps, is <4x the 32 ms window (128 ms) at 65 C; or
+   - ECS masking prevents resolving singletons at the operating BER and no vendor test mode is obtained. In that case the claim is "unproven", not "killed".
+
+   *Revival:* vendor ECC-off maps under NDA (RT-DEV-02, RT-PROC-01, RT-IND-04).
+10. **(new, revised after red team) By M12: kill relaxed refresh beyond 4x on raw DDR4** if the controller cannot mark a chip on its first chip-confined multi-symbol correction in the soak. Marking after 10 reads uses the whole 1e-3 UE budget (model §10.6; RT-DEV-04).
 
 ---
 
@@ -450,4 +586,148 @@ All URLs below are logged in `research/sources/*.jsonl` (mostly `dos-raw-ber-con
 - https://allaboutcircuits.com/news/mosis-partners-with-globalfoundries-extending-40-year-prototyping-legacy
 - https://www.cmc.ca/globalfoundries-22fdx-fdsoi-22-nm-process/
 
+**Red-team response (logged in `research/sources/resp-raw-ber-contract.jsonl`)**
+- https://lkml.iu.edu/2411.2/07040.html
+- https://kernel.org/doc/Documentation/ABI/testing/sysfs-edac-ecs
+- https://patents.google.com/patent/US12430203
+- https://en.wikipedia.org/wiki/DDR5_SDRAM
+- https://faculty-web.msoe.edu/johnsontimoj/ELE4142/files4142/DDR5_Spec.pdf
+- https://github.com/antmicro/ddr5-tester
+- https://blog.google/security/supporting-rowhammer-research-to/
+- https://chipsalliance.org/news/versatile-rowhammer-testing-platform/
+
 No-URL items: field DIMM UE rates (Schroeder 2009 and Sridharan field studies); Razor, FLY-DRAM, Flikker, EDEN, COP, CREAM, NAND RAIN and chipkill chip marking (named by Stage 2 critics); XED, Morphable ECC, AVATAR, BEER/HARP, GreenSKU and HBM3 ECC reporting; US 8,458,568 and US 10,964,378 (cited in Stage 2 and notes without a logged URL); A2's use-phase energy estimate (internal); named researchers' affiliations marked [UNVERIFIED].
+
+---
+
+## 11. Red-team outcome
+
+Four reviewers attacked this dossier on 2026-11-02 (`research/redteam/rt_*.json`): DEV, the device physicist; PROC, the DRAM/3D-NAND process veteran; CIRC, the sense-amp designer; and IND, the industry strategist. They raised **19 objections**: DEV 5, PROC 4, CIRC 5, IND 5.
+
+**Dispositions: 0 REFUTED, 10 ACCEPTED-MITIGATED, 7 ACCEPTED-DOWNGRADE, 2 ACCEPTED-KILL.** Both kills hit the same leg, the per-read sense-amp flag.
+
+Full responses with numbers are in `research/redteam/responses_raw-ber-contract.json`. The model variants are in `models/raw-ber-contract.py` section 10 and the RED-TEAM REVISIONS block. Sources are in `research/sources/resp-raw-ber-contract.jsonl`. Every objection is answered; none is deleted.
+
+### 11.1 Disposition table
+
+| Id | Severity | Disposition | One-line action |
+|---|---|---|---|
+| RT-DEV-raw-ber-contract-01 | MAJOR | ACCEPTED-MITIGATED | GO-B (>=50% flaggable) deleted from the M6 gate. |
+| RT-DEV-raw-ber-contract-02 | MAJOR | ACCEPTED-DOWNGRADE | Commodity DDR5 headline cut from 15x (DDR4-derived, no chipkill) to ~9x central (6-20x) at 85 C. |
+| RT-DEV-raw-ber-contract-03 | MINOR | ACCEPTED-MITIGATED | Phase 1 step 4: VRT coincidence counts and a dwell-time (RTN) spectrum. |
+| RT-DEV-raw-ber-contract-04 | MINOR | ACCEPTED-MITIGATED | Failure-mode census replaces the overdispersion-to-6 pass line. |
+| RT-DEV-raw-ber-contract-05 | MINOR | ACCEPTED-MITIGATED | Kill #1 revival rewritten as a measurable condition (CDF to 1e-6 at 85 C plus drift and RTN terms). |
+| RT-PROC-raw-ber-contract-01 | MAJOR | ACCEPTED-MITIGATED | DDR5 leg (ECS + post-SEC maps + H-matrix inversion) and a DDR4 node-trend axis added. |
+| RT-PROC-raw-ber-contract-02 | MAJOR | ACCEPTED-MITIGATED | Per-module servoed interval added to the controller; population widened to >=30 lots/vendor; servo pass line (1 h grade holds 1,000 h for >=95%) in the M6 gate. |
+| RT-PROC-raw-ber-contract-03 | MAJOR | ACCEPTED-MITIGATED | Sort-flow test-time estimate added (model 10.9). |
+| RT-PROC-raw-ber-contract-04 | MINOR | ACCEPTED-DOWNGRADE | trfc_ns[64Gb] 1600 -> 700 ns in the RED-TEAM REVISIONS block. |
+| RT-CIRC-raw-ber-contract-01 | MAJOR | ACCEPTED-KILL | Kill the per-read SA flag leg (named leg: delayed-sample flag latch). |
+| RT-CIRC-raw-ber-contract-02 | MAJOR | ACCEPTED-KILL | Same leg as RT-CIRC-01: the flag interface is removed from the contract and the headline. |
+| RT-CIRC-raw-ber-contract-03 | MAJOR | ACCEPTED-DOWNGRADE | Server headline restated as ~9x (DDR5) / ~13x (retired DDR4) at 85 C with chipkill, plus a degraded-mode fallback of 2.9-4x. |
+| RT-CIRC-raw-ber-contract-04 | MAJOR | ACCEPTED-MITIGATED | Hybrid self-refresh policy in the controller. |
+| RT-CIRC-raw-ber-contract-05 | MAJOR | ACCEPTED-MITIGATED | Single-symbol fast path specified in the controller. |
+| RT-IND-raw-ber-contract-01 | MAJOR | ACCEPTED-DOWNGRADE | Commodity value restated at ~$3.9 per module over 5 yr. |
+| RT-IND-raw-ber-contract-02 | MAJOR | ACCEPTED-DOWNGRADE | IP strategy reordered: grade/test method and servoed refresh first, flag filing optional and defensive. |
+| RT-IND-raw-ber-contract-03 | MAJOR | ACCEPTED-DOWNGRADE | Strategic 64Gb claim restated as ~6-16 points recovered. |
+| RT-IND-raw-ber-contract-04 | MAJOR | ACCEPTED-MITIGATED | Demo redefined around DDR5 + retired-DDR4 system soaks. |
+| RT-IND-raw-ber-contract-05 | MINOR | ACCEPTED-DOWNGRADE | Section 7's '$10-15M ASIC' is demoted to contingent. |
+
+### 11.2 Redesigns adopted
+
+1. **Chipkill by default** (RT-CIRC-03). The headline code is RS(80,64) over bytes, not BCH-12. When a chip is marked dead, its rank drops to a degraded interval until service: 258 ms on retired DDR4 and 92 ms on DDR5 at 85 C, or 366 ms at 65 C. BCH-12 is kept only for tiers that waive chipkill.
+2. **DDR5 is measured, on the right basis** (RT-DEV-02, RT-PROC-01, RT-IND-04).
+   - **The 32 ms window.** The model now uses DDR5's real 32 ms JEDEC window. The original paired DDR5's 3.9 µs tREFI with 64 ms.
+   - **Derate and SEC.** DDR5 retention is derated 0.5x, and the controller code sits behind on-die SEC. A new model finding: SEC hurts RS-8, because doublets become 3-symbol events, so the limit falls from 5.4e-5 to 1.5e-5.
+   - **The DDR5 leg.** Phase 1 adds ≥24 1a/1b RDIMMs on open Antmicro DDR5 testers. It reads ECS singleton counts, maps post-SEC events and inverts them to raw BER.
+3. **A per-module servo replaces a fleet-wide interval** (RT-PROC-02, RT-PROC-03).
+   - **Servo.** The controller servos each rank's interval on its own corrected-error telemetry, at a 3x BER guard. That gives a ~6x fleet-mean cut, against 1-3x for a fixed worst-lot interval.
+   - **Grade test.** The demo proves that a 1 h grade holds for 1,000 h.
+   - **Sort flow.** A sort flow for new dies is sketched at ~40 s per batch (~0.08 s per die).
+4. **First-read chip marking and a failure-mode census** (RT-DEV-04). Relaxed refresh turns benign chip faults into UE risk through coincidence with random errors. Marking a chip on its first chip-confined correction keeps raw DDR4 at 1.1e-4 UE per module-year; marking after 10 reads costs 1.1e-3. A census of multi-bit events by mechanism replaces the "Poisson to 6 errors" check.
+5. **VRT coincidence and dwell time** (RT-DEV-03). Same-codeword VRT pairs are counted, and a dwell-time (RTN) spectrum is taken with 20 s-20 min re-maps. RS-8 is insensitive to pairs; BCH-12 loses 3.3x at a 10% pair share.
+6. **A hybrid self-refresh policy** (RT-CIRC-04). Idle ranks use the die's own self-refresh, so the policy never loses power. A programmable self-refresh interval is added to the JEDEC grade ask, and Phase 2 measures the background power.
+7. **A single-symbol decoder fast path, with the host memory controller as the DRAM-class path** (RT-CIRC-05). Only 0.007% of lines need Berlekamp-Massey at the servoed DDR4 BER, and ~0% behind DDR5 SEC. The CXL product is labelled a capacity tier.
+8. **The flag leg is killed** (RT-CIRC-01, RT-CIRC-02, RT-IND-02, RT-DEV-01). The controller keeps a generic erasure input (chip marks, XED-style hints) at no cost. The flag-proxy validation runs as revival data only.
+9. **Strategy changes** (RT-IND-01, RT-IND-03, RT-IND-05).
+   - **IP.** Lead with the grade and test method, plus servoed latching-aware refresh with first-read chip marking. Flag filings become optional and defensive.
+   - **Commercial vehicle.** License firmware into incumbent CXL controllers. The ASIC is built only if a new-cell partner needs it. Venture-scale value is contingent on new-cell partners.
+10. **Top-up ideas.**
+    - **I-12627 (two series write transistors).** Recorded as an oxide/gain-cell tail route. It only works if shared-defect share ρ ≤0.1: the RS-8 interval goes 0.84 → 1.8 s at ρ = 0.1, and to 5.6 s only at ρ = 0.
+    - **I-12302 (plate-strip sensing).** Recorded as the new-cell margin route: Cs 0.30 → 0.15 fF with the contract, against 5.42 → 2.68 fF on the bitline. It is ~18x larger than the flag's +8%, but has planar Micron prior art, so it is not this dossier's IP.
+
+**Model inputs changed (RED-TEAM REVISIONS block):**
+- `trfc_ns[64Gb]`: 1600 → 700 ns (RT-PROC-04, RT-IND-03).
+- `trefw_ddr5_s`: implicit 0.064 → 0.032 s (RT-DEV-02, RT-PROC-01).
+- `ret_time_scale_ddr5`: 1.0 → 0.5 (RT-DEV-02).
+- Headline code: BCH-12 → RS-8 (RT-CIRC-03).
+- New `RT_INPUTS` for self-refresh, latency, fault rate, lot spread, servo guard, sort, stacked-write correlation, plate strip, flag noise and transport.
+
+The model exits 0, and the output is overwritten in `research/stage3/raw-ber-contract_model_output.md`.
+
+### 11.3 Revised step-change claim
+
+**The step change is in refresh energy and refresh-busy time on commodity DRAM, with chipkill kept.**
+
+| Product | 85 C central | Range | 65 C | Degraded mode |
+|---|---|---|---|---|
+| DDR5 RDIMMs (vs the 32 ms spec) | ~9x | 6.1x pessimistic to 20x optimistic; 17.8x without the DDR5 retention derate | ~35x | 2.9x |
+| Retired DDR4 behind CXL (vs 64 ms) | ~13x | 7.8x pessimistic | - | 4x |
+
+That compares with 15x (7.7-30x) claimed without chipkill.
+- **Module level.** DDR5 refresh falls 0.98 → 0.11 W per 64 GB, 23-29% of a 3 W idle module. That is worth ~$3.9 per module over 5 years ($0.062/GB, ~4% of module cost) at 20% self-refresh residency.
+- **64Gb.** Refresh-busy time falls 18% → 2% on an all-bank basis, ~6-16 points after same-bank refresh. The original claim was 41% → 2.6%.
+- **New cells.** Margin stays 1.88x (50 → 26.6 mV, Cs 5.4 → 2.7 fF) with **no flag bonus**. The concept's largest value, new cells qualified against the grade, stays conditional and outside the $1M proof.
+
+### 11.4 Revised decisive experiment (full version in §5.R)
+
+**Phase 1 (M0-6, ~$124k, decisive).**
+- **Retired-DDR4 raw physics:** 150 modules screened over ≥30 lots per vendor, plus a node trend.
+- **DDR5 leg:** ≥24 1a/1b RDIMMs on open Antmicro testers. ECS singleton counts plus post-SEC maps, inverted to raw BER.
+- **Newly added measurements:**
+  - VRT per-codeword coincidence and a **dwell-time (RTN) spectrum at the right timescale** (20 s-20 min re-maps at 85 C);
+  - a **failure-mode census** with the chip-fault coincidence term;
+  - **1 h grade vs 1,000 h hold** (servo and sort proxy);
+  - hammer with controller RFM;
+  - flag-proxy validation, as revival data only.
+
+**GO at M6** requires three things:
+- the RS-8 safe interval, including VRT, is ≥6x the part's window at 85 C (DDR5 ≥0.19 s, DDR4 ≥0.38 s) and ≥24x at 65 C;
+- multi-chip events are ≤10%, with no new mechanism at >2x its 32/64 ms rate;
+- the servo grade holds for ≥95% of modules.
+
+**NO-GO** if the interval is <4x the window at 65 C.
+
+**Phases 2-3 (M4-18).**
+- DDR4 CXL and DDR5-tester soaks of 1,000 h: 0 UE, corrected errors within 2x of model.
+- p50/p99 latency at injected 1e-4.
+- Self-refresh vs power-down power.
+- One sky130 slot.
+
+**Total $946k over 24 months** (was $943k).
+
+### 11.5 Revised verdicts
+
+- **PHYSICALLY POSSIBLE? Yes** for relaxed refresh behind a side-band code. **No** for the delayed-strobe sense-amp flag as specified (killed).
+- **STEP CHANGE IF IT WORKS? Yes, smaller:** refresh energy and busy time ~9x (DDR5) to ~13x (retired DDR4) at 85 C with chipkill. The range and module value are in §11.3. New-cell margin stays 1.88x with no flag bonus.
+- **PROVABLE WITH $1M? Partly.**
+  - **Yes:** DDR4 physics; DDR5 post-SEC statistics; census; servo test; soaks. Phase 1 is ~$124k and decides at M6.
+  - **No:**
+    - raw 1b/1c maps (vendor test mode);
+    - 2e-19 per read directly (bounded by census plus model);
+    - the new-die sort flow (paper only).
+
+### 11.6 Pre-red-team verdicts (kept for the record)
+
+- **PHYSICALLY POSSIBLE? Yes.** Standard coding theory on measured retention tails; the commodity half needs no new physics. The one unknown, the error statistics at 1e-4 (cluster geometry, VRT growth, flaggable share), is a measurement, not a law.
+- **STEP CHANGE IF IT WORKS? Yes on refresh energy: ~15x (range 7.7-30x) on today's DRAM.** Refresh-blocked time falls 7.6% → 0.5% at 16Gb and 41% → 2.6% at 64Gb. On margin, 1.88x for new cells (50 → 26.6 mV, Cs halved). But margin and refresh share one error budget, flags add only ~8%, and at module level idle power falls just 14-16% ($0.041/GB).
+- **PROVABLE WITH $1M IN 24 MONTHS? Yes** for the binary error-physics GO/NO-GO (~$96k, month 6) and an FPGA CXL soak (~$943k all-in). **Partly** for flags (timing proxy plus a sky130 latch, not new-cell silicon). **No** for proving 2e-19 per read directly; it is extrapolated.
+
+### 11.7 FINAL STATUS: DOWNGRADED
+
+**Reason.** All 19 objections are valid in whole or part, and no physics wall appeared for relaxed refresh behind a side-band code. Four things changed:
+- **The flag leg is killed.** A delayed strobe sees skew, not signal, and even ideal flags are net negative on die area.
+- **The commodity headline falls from 15x to ~9x** at 85 C on DDR5. Three corrections drive this: chipkill kept, DDR5's real 32 ms window, and its post-on-die-SEC error structure. Retired DDR4 behind CXL stays ~13x.
+- **The strategic 64Gb and value claims shrink.** Recovery falls from ~38 to ~6-16 points, and the value is ~$3.9 per module.
+- **Provability falls from "yes" to "partly".**
+
+The concept's promise (weak bits ship behind a controller) stands, as a smaller, better-specified claim.

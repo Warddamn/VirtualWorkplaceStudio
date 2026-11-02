@@ -16,18 +16,18 @@ All numbers are [ESTIMATE] model outputs unless an input row cites a source. Inp
 
 | Scenario | KV/session GB | active/GPU | conversations/GPU | host-tier share of returns | flash rho | coverage | p99 added TTFT s | HBM hold s/turn | DRAM GB/GPU | DRAM GB per conversation | DDR5-wafer-eq GB per conversation |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| A. Today: HBM + 240 GB host KV tier + flash, FP8 GQA | 2.13 | 89 | 1,820 | 5.0% | 0.38 | n/a | 0.30 | 0.00 | 528 | 0.290 | 0.607 |
-| B0. Host-lite 64 GB + flash-direct, NO client signal, FP8 | 2.13 | 89 | 1,820 | 0.0% | 0.40 | n/a | 0.33 | 0.00 | 352 | 0.193 | 0.510 |
-| B. Diet: host 64 GB, flash-direct + client prefetch, FP8 | 2.13 | 76 | 1,557 | 0.0% | 0.51 | 88.7% | 0.11 | 1.69 | 352 | 0.226 | 0.596 |
-| C. Today + latent 3x | 0.71 | 266 | 5,459 | 5.0% | 0.38 | n/a | 0.10 | 0.00 | 528 | 0.097 | 0.202 |
-| D0. Host-lite + latent 3x, NO client signal | 0.71 | 266 | 5,459 | 0.0% | 0.40 | n/a | 0.11 | 0.00 | 352 | 0.064 | 0.170 |
-| D. Diet + latent 3x | 0.71 | 230 | 4,713 | 0.0% | 0.51 | 89.2% | 0.03 | 1.58 | 352 | 0.075 | 0.197 |
+| A. Today: HBM + 240 GB host KV tier + flash, FP8 GQA | 2.13 | 89 | 1,820 | 5.0% | 0.43 | n/a | 0.35 | 0.00 | 528 | 0.290 | 0.607 |
+| B0. Host-lite 64 GB + flash-direct, NO client signal, FP8 | 2.13 | 89 | 1,820 | 0.0% | 0.45 | n/a | 0.38 | 0.00 | 352 | 0.193 | 0.510 |
+| B. Diet: host 64 GB, flash-direct + client prefetch, FP8 | 2.13 | 76 | 1,553 | 0.0% | 0.55 | 88.4% | 0.13 | 1.72 | 352 | 0.227 | 0.597 |
+| C. Today + latent 3x | 0.71 | 144 | 2,945 | 13.6% | 0.20 | n/a | 0.07 | 0.00 | 528 | 0.179 | 0.375 |
+| D0. Host-lite + latent 3x, NO client signal | 0.71 | 144 | 2,945 | 0.0% | 0.23 | n/a | 0.08 | 0.00 | 352 | 0.120 | 0.315 |
+| D. Diet + latent 3x | 0.71 | 144 | 2,945 | 0.0% | 0.34 | 89.9% | 0.02 | 1.56 | 352 | 0.120 | 0.315 |
 
-- **DRAM GB per served conversation vs today (A): B0 1.50x, B 1.28x, C 3.00x, D0 4.50x, D 3.89x fewer.** The diet's share beyond the latent: C/D0 = 1.50x, C/D = 1.30x.
-- DDR5-wafer-equivalent per conversation (HBM x3) vs A: B0 1.19x, B 1.02x, D0 3.57x, D 3.08x. In wafer terms the client-signal prefetch's HBM hold cancels most of the host-DRAM saving unless the hold is driven well below ~1 s/turn.
-- Host-lite WITHOUT client signals (B0) lands just over the p99 budget (0.33 s vs 0.3 s) at this context mix and 3 drive-eq/GPU; about one more drive-eq/GPU closes it (section 6b). The client signal cuts p99 to 0.11 s at the cost of 1.69 s/turn of HBM hold. So the signal is a flash-bandwidth and long-context lever, not the thing that makes host-DRAM-lite possible at short contexts.
-- Host-DRAM tier in today's design holds sessions for only ~9 s (LRU), so it serves **5.0%** of returning turns; flash already serves the rest. With the latent it holds ~9 s and serves 5.0%.
-- Baseline p99 added TTFT with no client prefetch (flash returns on demand, same fallback): 0.30 s (FP8), 0.10 s (latent). The diet's client prefetch improves on this: 0.11 s / 0.03 s.
+- **DRAM GB per served conversation vs today (A): B0 1.50x, B 1.28x, C 1.62x, D0 2.43x, D 2.43x fewer.** The diet's share beyond the latent: C/D0 = 1.50x, C/D = 1.50x.
+- DDR5-wafer-equivalent per conversation (HBM x3) vs A: B0 1.19x, B 1.02x, D0 1.93x, D 1.93x. In wafer terms the client-signal prefetch's HBM hold cancels most of the host-DRAM saving unless the hold is driven well below ~1 s/turn.
+- Host-lite WITHOUT client signals (B0) lands just over the p99 budget (0.38 s vs 0.3 s) at this context mix and 3 drive-eq/GPU; about one more drive-eq/GPU closes it (section 6b). The client signal cuts p99 to 0.13 s at the cost of 1.72 s/turn of HBM hold. So the signal is a flash-bandwidth and long-context lever, not the thing that makes host-DRAM-lite possible at short contexts.
+- Host-DRAM tier in today's design holds sessions for only ~9 s (LRU), so it serves **5.0%** of returning turns; flash already serves the rest. With the latent it holds ~26 s and serves 13.6%.
+- Baseline p99 added TTFT with no client prefetch (flash returns on demand, same fallback): 0.35 s (FP8), 0.07 s (latent). The diet's client prefetch improves on this: 0.13 s / 0.02 s.
 - The diet's HBM hold (prefetched KV waiting for the send) costs 17% extra HBM KV per active session (FP8), which is why B serves 76 vs 89 active sessions/GPU when HBM capacity binds.
 
 ## 3. Rack and fleet (GB300 NVL72 class)
@@ -41,69 +41,69 @@ All numbers are [ESTIMATE] model outputs unless an input row cites a source. Inp
 | 120 | 8.6 | 22.7% | $12,787 | $172,800 | $308,448 | 3,629 | 22,464 |
 | 160 | 5.8 | 15.2% | $8,525 | $115,200 | $205,632 | 2,419 | 14,976 |
 
-- Per 10,000 racks: 0.086-0.127 EB of host DRAM not bought = 0.13-0.19% of ~68 EB/yr DDR5-equivalent output; $1.7-2.5B at $20/GB; 36-53 GWh fab electricity; use-phase ~1.3-1.9 kW per rack at 0.15 W/GB [UNVERIFIED].
-- HBM bits per conversation (latent's main effect): A 0.158 GB -> D 0.061 GB (2.59x fewer HBM GB per conversation, each HBM GB ~3x DDR5 wafer).
+- Per 10,000 racks: 0.086-0.127 EB of host DRAM not bought = 0.13-0.19% of ~68 EB/yr DDR5-equivalent output; $1.7-2.5B at $20/GB; 36-53 GWh fab electricity; use-phase ~0.3-0.5 kW per rack at 0.04 W/GB [UNVERIFIED].
+- HBM bits per conversation (latent's main effect): A 0.158 GB -> D 0.098 GB (1.62x fewer HBM GB per conversation, each HBM GB ~3x DDR5 wafer).
 
 ## 4. Flash bandwidth, endurance and capacity per GPU
 
-| Scenario | read demand GB/s | writes TB/day | DWPD on base drives | stored TB (1 h retention) | drives needed @1 DWPD | drives needed @3 DWPD | SSD $/rack @3 DWPD |
+| Scenario | read demand GB/s | host writes TB/day | NAND DWPD on base drives (WAF 1.1) | stored TB (1 h retention) | drives needed @1 DWPD | drives needed @3 DWPD | SSD $/rack @3 DWPD |
 |---|---|---|---|---|---|---|---|
-| A. Today: HBM + 240 GB host KV tier + flash, FP8 GQA | 15.8 | 125.6 | 2.72 | 5.5 | 9 | 3 | $663,552 |
-| B0. Host-lite 64 GB + flash-direct, NO client signal, FP8 | 16.6 | 125.6 | 2.72 | 5.5 | 9 | 3 | $663,552 |
-| B. Diet: host 64 GB, flash-direct + client prefetch, FP8 | 21.3 | 107.4 | 2.33 | 4.7 | 7 | 3 | $663,552 |
-| C. Today + latent 3x | 15.8 | 125.6 | 2.72 | 5.5 | 9 | 3 | $663,552 |
-| D0. Host-lite + latent 3x, NO client signal | 16.6 | 125.6 | 2.72 | 5.5 | 9 | 3 | $663,552 |
-| D. Diet + latent 3x | 21.5 | 108.4 | 2.35 | 4.7 | 8 | 3 | $663,552 |
+| A. Today: HBM + 240 GB host KV tier + flash, FP8 GQA | 15.8 | 125.6 | 3.00 | 5.5 | 9 | 3 | $663,552 |
+| B0. Host-lite 64 GB + flash-direct, NO client signal, FP8 | 16.6 | 125.6 | 3.00 | 5.5 | 9 | 3 | $663,552 |
+| B. Diet: host 64 GB, flash-direct + client prefetch, FP8 | 21.3 | 107.2 | 2.56 | 4.7 | 8 | 3 | $663,552 |
+| C. Today + latent 3x | 7.4 | 67.7 | 1.62 | 3.0 | 5 | 2 | $442,368 |
+| D0. Host-lite + latent 3x, NO client signal | 8.6 | 67.7 | 1.62 | 3.0 | 5 | 2 | $442,368 |
+| D. Diet + latent 3x | 13.0 | 67.7 | 1.62 | 3.0 | 5 | 2 | $442,368 |
 
-- Memory + flash bill per 1,000 concurrent conversations [ESTIMATE: DRAM $20/GB, HBM priced at 3x DRAM (wafer-proportional), flash $0.2/GB at the 3-DWPD drive count]: A $17,200, B0 $15,265, B $17,844, C $5,733, D0 $5,088, D $5,893. Host-lite alone (B0) saves 11% vs A; latent + host-lite (D0) saves 70%.
+- Memory + flash bill per 1,000 concurrent conversations [ESTIMATE: DRAM $20/GB, HBM priced at 3x DRAM (wafer-proportional), flash $0.2/GB at the 3-DWPD drive count]: A $17,200, B0 $15,265, B $17,883, C $9,583, D0 $8,388, D $8,388. Host-lite alone (B0) saves 11% vs A; latent + host-lite (D0) saves 51%.
 
-- **Flash-supply law [ESTIMATE]:** when HBM capacity binds, flash must re-supply the GPU's whole HBM KV pool once per generation time: read demand ~= HBM KV budget / (T_gen + hold) x P(return) x (1 + p_fp) = 16.6 GB/s per GPU before hold and false positives, independent of KV compression. The latent cuts flash load per conversation (13.7 -> 4.6 MB/s per conversation), not per GPU. Writes follow the same law. So the critics' 'latent fixes flash wear' holds per user, not per drive.
+- **Flash-supply law [ESTIMATE]:** when HBM capacity binds, flash must re-supply the GPU's whole HBM KV pool once per generation time: read demand ~= HBM KV budget / (T_gen + hold) x P(return) x (1 + p_fp) = 16.6 GB/s per GPU before hold and false positives, independent of KV compression. The latent cuts flash load per conversation (13.7 -> 4.4 MB/s per conversation), not per GPU. Writes follow the same law. So the critics' 'latent fixes flash wear' holds per user, not per drive.
 
-- FP8 diet needs 3 drives/GPU at 3 DWPD (bandwidth 2.54, endurance 2.33, capacity 0.31 drive-equivalents); latent needs 3. Writes per 8-GPU node: 859 TB/day FP8 vs 867 TB/day latent (critic's figure: ~280 TB/day).
-- Rack DRAM $ saved at $20/GB (64 GB host-lite): $253,440 vs flash for the KV tier $663,552 (FP8) / $663,552 (latent) at $0.2/GB. Today's design (A) needs 3 drive-eq/GPU too, because flash already serves ~95% of returns and absorbs the same writes, so the diet's incremental flash is ~0 against a 2026 LMCache/ICMS-style design and large only against a no-flash design. At cost ($1.48/GB) the DRAM saved is only $18,755: the economics are a shortage-price story; the bit savings are not.
+- FP8 diet needs 3 drives/GPU at 3 DWPD (bandwidth 2.76, endurance 2.56, capacity 0.30 drive-equivalents); latent needs 2. Writes per 8-GPU node: 857 TB/day FP8 vs 542 TB/day latent (critic's figure: ~280 TB/day).
+- Rack DRAM $ saved at $20/GB (64 GB host-lite): $253,440 vs flash for the KV tier $663,552 (FP8) / $442,368 (latent) at $0.2/GB. Today's design (A) needs 3 drive-eq/GPU too, because flash already serves ~95% of returns and absorbs the same writes, so the diet's incremental flash is ~0 against a 2026 LMCache/ICMS-style design and large only against a no-flash design. At cost ($1.48/GB) the DRAM saved is only $18,755: the economics are a shortage-price story; the bit savings are not.
 
 ## 5. Sensitivity A: fixed context length x KV format (3 drive-eq/GPU; diet = client prefetch, jit m=3, deadline-aware flash queue)
 
 | context | KV format | KV GB | mean restore s | flash rho | coverage | urgent share of flash bytes | p90 added TTFT s | p99 added TTFT s | p99, host-lite no signal s | p99, today (A) s | diet GO (p99 <= budget)? |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 4k | FP8 GQA | 0.66 | 0.016 | 0.51 | 89.2% | 5% | 0.00 | 0.03 | 0.06 | 0.05 | GO |
-| 4k | latent 3x | 0.22 | 0.005 | 0.51 | 89.2% | 5% | 0.00 | 0.01 | 0.02 | 0.02 | GO |
-| 16k | FP8 GQA | 2.62 | 0.062 | 0.51 | 88.6% | 5% | 0.01 | 0.13 | 0.22 | 0.21 | GO |
-| 16k | latent 3x | 0.87 | 0.021 | 0.51 | 89.1% | 5% | 0.00 | 0.04 | 0.07 | 0.07 | GO |
-| 32k | FP8 GQA | 5.24 | 0.125 | 0.50 | 87.5% | 7% | 0.05 | 0.27 | 0.44 | 0.42 | GO |
-| 32k | latent 3x | 1.75 | 0.042 | 0.51 | 88.9% | 5% | 0.01 | 0.08 | 0.15 | 0.14 | GO |
-| 64k | FP8 GQA | 10.49 | 0.250 | 0.48 | 85.5% | 12% | 0.11 | 0.57 | 0.88 | 0.85 | NO-GO |
-| 64k | latent 3x | 3.50 | 0.083 | 0.50 | 88.2% | 5% | 0.02 | 0.18 | 0.29 | 0.28 | GO |
-| 128k | FP8 GQA | 20.97 | 0.499 | 0.46 | 79.1% | 18% | 0.25 | 1.21 | 1.76 | 1.69 | NO-GO |
-| 128k | latent 3x | 6.99 | 0.166 | 0.49 | 86.9% | 9% | 0.07 | 0.37 | 0.59 | 0.56 | NO-GO |
+| 4k | FP8 GQA | 0.66 | 0.016 | 0.43 | 89.4% | 5% | 0.00 | 0.02 | 0.05 | 0.04 | GO |
+| 4k | latent 3x | 0.22 | 0.005 | 0.12 | 90.5% | 5% | 0.00 | 0.00 | 0.01 | 0.01 | GO |
+| 16k | FP8 GQA | 2.62 | 0.062 | 0.54 | 88.3% | 5% | 0.02 | 0.14 | 0.24 | 0.23 | GO |
+| 16k | latent 3x | 0.87 | 0.021 | 0.40 | 89.6% | 5% | 0.00 | 0.03 | 0.06 | 0.05 | GO |
+| 32k | FP8 GQA | 5.24 | 0.125 | 0.52 | 87.2% | 7% | 0.06 | 0.29 | 0.46 | 0.44 | GO |
+| 32k | latent 3x | 1.75 | 0.042 | 0.53 | 88.8% | 5% | 0.01 | 0.09 | 0.15 | 0.15 | GO |
+| 64k | FP8 GQA | 10.49 | 0.250 | 0.49 | 85.3% | 12% | 0.12 | 0.57 | 0.90 | 0.86 | NO-GO |
+| 64k | latent 3x | 3.50 | 0.083 | 0.51 | 88.1% | 5% | 0.03 | 0.18 | 0.30 | 0.29 | GO |
+| 128k | FP8 GQA | 20.97 | 0.499 | 0.47 | 79.0% | 18% | 0.25 | 1.21 | 1.78 | 1.70 | NO-GO |
+| 128k | latent 3x | 6.99 | 0.166 | 0.50 | 86.9% | 9% | 0.07 | 0.37 | 0.59 | 0.57 | NO-GO |
 
-Reading: p99 added TTFT scales with the restore time of the context. With FP8 KV the diet passes the 0.3 s budget up to 32k tokens; with the 3x latent up to 64k. At every length the client signal cuts p99 by ~1.7x versus host-lite without signals, because it turns most restores into deadline-tolerant background traffic.
+Reading: p99 added TTFT scales with the restore time of the context. With FP8 KV the diet passes the 0.3 s budget up to 32k tokens; with the 3x latent up to 64k. At every length the client signal cuts p99 by ~1.8x versus host-lite without signals, because it turns most restores into deadline-tolerant background traffic.
 
 ## 6. Sensitivity B (KEY UNKNOWN): share of turns with no useful client lead (one-click + no-signal)
 
 | no-lead share | base mix FP8, 3 drive-eq: p99 s | base mix FP8, 2.5 drive-eq: p99 s | base mix FP8, 2 drive-eq: p99 s | 64k FP8: coverage | 64k FP8: p99 s | 128k latent: p99 s | 128k latent, 6 drive-eq: p99 s |
 |---|---|---|---|---|---|---|---|
-| 0% | 0.10 | 0.16 | 0.37 | 92.3% | 0.49 | 0.33 | 0.08 |
-| 2% | 0.10 | 0.16 | 0.36 | 91.5% | 0.51 | 0.34 | 0.08 |
-| 5% | 0.10 | 0.16 | 0.37 | 90.3% | 0.51 | 0.35 | 0.08 |
-| 10% | 0.11 | 0.18 | 0.39 | 88.0% | 0.53 | 0.36 | 0.08 |
-| 15% | 0.11 | 0.18 | 0.39 | 85.5% | 0.57 | 0.37 | 0.08 |
-| 25% | 0.13 | 0.20 | 0.44 | 81.2% | 0.61 | 0.39 | 0.07 |
-| 40% | 0.15 | 0.22 | 0.44 | 73.9% | 0.70 | 0.42 | 0.09 |
-| 60% | 0.17 | 0.28 | 0.63 | 63.7% | 0.82 | 0.53 | 0.09 |
+| 0% | 0.11 | 0.18 | 0.44 | 92.2% | 0.51 | 0.33 | 0.08 |
+| 2% | 0.12 | 0.18 | 0.54 | 91.3% | 0.54 | 0.34 | 0.08 |
+| 5% | 0.12 | 0.19 | 0.50 | 90.2% | 0.53 | 0.35 | 0.08 |
+| 10% | 0.12 | 0.20 | 0.52 | 87.9% | 0.55 | 0.36 | 0.08 |
+| 15% | 0.13 | 0.19 | 0.57 | 85.3% | 0.57 | 0.37 | 0.08 |
+| 25% | 0.14 | 0.24 | 0.59 | 80.9% | 0.62 | 0.39 | 0.07 |
+| 40% | 0.17 | 0.25 | 0.70 | 73.5% | 0.72 | 0.43 | 0.09 |
+| 60% | 0.19 | 0.31 | 0.91 | 63.4% | 0.84 | 0.53 | 0.09 |
 
-Reading: with a deadline-aware flash queue, the no-lead share matters most when flash is lean. At 3 drive-eq/GPU the base mix passes at every share tested. At 2.5 drive-eq/GPU it passes up to a 60% no-lead share; at 2 drive-eq it passes at no share tested. Long contexts fail on restore time regardless of the share. The concept card's '>=80% coverage' threshold is therefore the wrong form. The real thresholds are flash utilisation, the p99 context's restore time, and (for lean flash) the no-lead share.
+Reading: with a deadline-aware flash queue, the no-lead share matters most when flash is lean. At 3 drive-eq/GPU the base mix passes at every share tested. At 2.5 drive-eq/GPU it passes up to a 40% no-lead share; at 2 drive-eq it passes at no share tested. Long contexts fail on restore time regardless of the share. The concept card's '>=80% coverage' threshold is therefore the wrong form. The real thresholds are flash utilisation, the p99 context's restore time, and (for lean flash) the no-lead share.
 
 ## 6b. Flash drive-equivalents per GPU needed for p99 added TTFT <= budget (host-lite, 64 GB/GPU)
 
 | workload | with client prefetch | without client signal | drives saved by the signal |
 |---|---|---|---|
-| base mix FP8 | 2.2 | 3.2 | 1.1 |
-| base mix latent 3x | 1.7 | 2.0 | 0.3 |
+| base mix FP8 | 2.3 | 3.5 | 1.1 |
+| base mix latent 3x | 1.2 | 1.4 | 0.2 |
 | 32k FP8 | 2.8 | 3.9 | 1.1 |
-| 64k FP8 | 3.9 | 6.1 | 2.2 |
-| 128k latent 3x | 3.3 | 4.6 | 1.4 |
-| 128k FP8 | 5.5 | 10.1 | 4.7 |
+| 64k FP8 | 3.9 | 6.2 | 2.2 |
+| 128k latent 3x | 3.3 | 4.7 | 1.4 |
+| 128k FP8 | 5.5 | 10.2 | 4.7 |
 
 Reading: the client signal's measurable value is flash bandwidth it saves (and the long contexts it rescues), not host DRAM. Flash bandwidth is cheap, so the signal is an efficiency feature; host-DRAM-lite stands without it at short contexts.
 
@@ -111,15 +111,15 @@ Reading: the client signal's measurable value is flash bandwidth it saves (and t
 
 | policy | false-positive prefetches/turn | coverage | p99 added TTFT s | HBM hold s/turn | extra HBM KV % | active/GPU | DRAM GB per conversation | wafer-eq GB per conversation |
 |---|---|---|---|---|---|---|---|---|
-| no client signal (host-lite only) | 0 | n/a | 0.33 | 0.00 | 0% | 88 | 0.195 | 0.514 |
-| restore at first keystroke/focus | 0.5 | 94.5% | 0.04 | 8.22 | 82% | 48 | 0.355 | 0.936 |
-| fixed delay 2 s | 0.5 | 91.0% | 0.08 | 6.96 | 70% | 52 | 0.330 | 0.870 |
-| fixed delay 4 s | 0.5 | 79.5% | 0.15 | 5.84 | 58% | 56 | 0.309 | 0.814 |
-| send-predictor, margin m=2 | 0.5 | 83.9% | 0.16 | 1.62 | 16% | 76 | 0.226 | 0.597 |
-| send-predictor, margin m=3 | 0 | 89.8% | 0.09 | 0.66 | 7% | 83 | 0.208 | 0.548 |
-| send-predictor, margin m=3 | 0.5 | 88.6% | 0.11 | 1.70 | 17% | 75 | 0.228 | 0.601 |
-| send-predictor, margin m=3 | 1 | 88.1% | 0.15 | 2.75 | 28% | 69 | 0.248 | 0.655 |
-| send-predictor, margin m=5 | 0.5 | 92.1% | 0.08 | 1.85 | 18% | 74 | 0.231 | 0.609 |
+| no client signal (host-lite only) | 0 | n/a | 0.39 | 0.00 | 0% | 88 | 0.195 | 0.514 |
+| restore at first keystroke/focus | 0.5 | 94.5% | 0.05 | 8.23 | 82% | 48 | 0.355 | 0.937 |
+| fixed delay 2 s | 0.5 | 90.9% | 0.08 | 6.95 | 70% | 52 | 0.330 | 0.871 |
+| fixed delay 4 s | 0.5 | 79.3% | 0.16 | 5.87 | 59% | 56 | 0.309 | 0.815 |
+| send-predictor, margin m=2 | 0.5 | 83.6% | 0.18 | 1.63 | 16% | 76 | 0.227 | 0.598 |
+| send-predictor, margin m=3 | 0 | 89.1% | 0.09 | 0.68 | 7% | 82 | 0.208 | 0.549 |
+| send-predictor, margin m=3 | 0.5 | 88.3% | 0.13 | 1.72 | 17% | 75 | 0.228 | 0.602 |
+| send-predictor, margin m=3 | 1 | 87.9% | 0.18 | 2.77 | 28% | 69 | 0.249 | 0.656 |
+| send-predictor, margin m=5 | 0.5 | 92.0% | 0.08 | 1.89 | 19% | 74 | 0.232 | 0.611 |
 
 Reading: restoring at the first keystroke maximises coverage but parks KV in HBM for the whole composition time, which eats the HBM the diet was meant to save. A client send predictor (typing pause, cursor on send, end of speech) with few false positives is required: today's wafer-equivalent per conversation is 0.607 GB, and only policies with hold <~1 s/turn beat it.
 
@@ -127,10 +127,10 @@ Reading: restoring at the first keystroke maximises coverage but parks KV in HBM
 
 | host GB/GPU | FP8: LRU hold s | FP8: share of returns from host | FP8 p99 added TTFT s | latent: share from host | latent p99 s | DRAM GB per conversation (FP8) |
 |---|---|---|---|---|---|---|
-| 64 | 0 | 0.0% | 0.34 | 0.0% | 0.11 | 0.195 |
-| 240 | 9 | 5.0% | 0.30 | 5.0% | 0.10 | 0.292 |
-| 750 | 36 | 25.2% | 0.24 | 25.2% | 0.08 | 0.575 |
-| 2000 | 102 | 54.6% | 0.15 | 54.6% | 0.05 | 1.267 |
+| 64 | 0 | 0.0% | 0.38 | 0.0% | 0.08 | 0.195 |
+| 240 | 9 | 5.0% | 0.35 | 13.5% | 0.07 | 0.292 |
+| 750 | 36 | 25.2% | 0.27 | 40.8% | 0.05 | 0.575 |
+| 2000 | 102 | 54.6% | 0.16 | 70.3% | 0.03 | 1.267 |
 
 Reading: because human gaps are heavy-tailed (median ~110 s), even 2 TB of host DRAM per GPU catches only a minority of returns; flash serves the rest either way. A host-DRAM KV tier is a poor use of DRAM bits for human chat.
 
@@ -146,10 +146,130 @@ Reading: because human gaps are heavy-tailed (median ~110 s), even 2 TB of host 
 
 ## 10. GO / NO-GO
 
-- Base-case diet (FP8, host 64 GB/GPU, 3 drive-eq/GPU): p99 added TTFT 0.11 s vs budget 0.3 s; coverage 88.7%; flash rho 0.51; 2.33 DWPD.
-- Longest fixed context that passes p99 <= 0.3 s: with client prefetch ~38k tokens FP8, ~113k latent; without client signal ~21k FP8, ~63k latent.
+- Base-case diet (FP8, host 64 GB/GPU, 3 drive-eq/GPU): p99 added TTFT 0.13 s vs budget 0.3 s; coverage 88.4%; flash rho 0.55; 2.56 DWPD.
+- Longest fixed context that passes p99 <= 0.3 s: with client prefetch ~38k tokens FP8, ~111k latent; without client signal ~20k FP8, ~63k latent.
 
-**GO/NO-GO:** GO if, replaying consented real chat traces on one 8-GPU node with host memory capped at <=64 GB/GPU and no host-DRAM KV tier, three things hold. (1) p99 added TTFT is <=0.3 s versus a 240 GB/GPU host-DRAM-tier baseline at equal tokens/s and <=3 Gen5 drive-equivalents per GPU. For the base context mix the model predicts 0.33 s without client signals and 0.11 s with them. A workload whose sessions all sit at one length passes up to ~38k tokens at FP8. (2) Flash stays <=3 DWPD. The model gives 2.33 DWPD at 3 x 15.36 TB. (3) For the client signal to earn its place, the send predictor must hold prefetched KV in HBM for <=1.0 s per turn, and, if flash is trimmed to 2.5 drive-eq/GPU, the share of turns with no usable client lead (one-click plus no-signal) must stay <= 60%. The latent gate is >=3x over FP8 GQA at <=1 point RULER-average loss at 32k; it makes contexts up to ~113k pass. NO-GO for the full concept if p99 fails at the measured context distribution even with the latent and 3 drive-eq/GPU, because a DRAM KV tier would then have to return. The host-lite saving of ~8.6-12.7 TB per rack survives any client-signal result for workloads whose p99 context stays under the FP8 limit.
+**GO/NO-GO:** GO if, replaying consented real chat traces on one 8-GPU node with host memory capped at <=64 GB/GPU and no host-DRAM KV tier, three things hold. (1) p99 added TTFT is <=0.3 s versus a 240 GB/GPU host-DRAM-tier baseline at equal tokens/s and <=3 Gen5 drive-equivalents per GPU. For the base context mix the model predicts 0.38 s without client signals and 0.13 s with them. A workload whose sessions all sit at one length passes up to ~38k tokens at FP8. (2) Flash stays <=3 DWPD. The model gives 2.56 DWPD at 3 x 15.36 TB. (3) For the client signal to earn its place, the send predictor must hold prefetched KV in HBM for <=1.0 s per turn, and, if flash is trimmed to 2.5 drive-eq/GPU, the share of turns with no usable client lead (one-click plus no-signal) must stay <= 40%. The latent gate is >=3x over FP8 GQA at <=1 point RULER-average loss at 32k; it makes contexts up to ~111k pass. NO-GO for the full concept if p99 fails at the measured context distribution even with the latent and 3 drive-eq/GPU, because a DRAM KV tier would then have to return. The host-lite saving of ~8.6-12.7 TB per rack survives any client-signal result for workloads whose p99 context stays under the FP8 limit.
+
+**Revised GO/NO-GO (after red team; numbers in section 11):** GO if, replaying a measured human-chat plus agent/API trace mix on one 8-GPU node at equal tokens/s against a 240 GB/GPU LRU host-tier baseline, with a gap-aware host tier (human-chat KV bypasses host; host = 64 GB/GPU plus the measured agent working set): (1) p99 added TTFT <= 0.3 s for both human and agent turns at <= 3.5 Gen5 drive-eq/GPU (2 local + shelf), measured under the full read-plus-write mix on FDP drives, including a pre-cycled (>= 80% rated wear) arm and a 24 h soak at rack inlet temperature; (2) NAND-side WAF <= 1.25 and NAND-side writes <= 3 DWPD from the vendor log page; (3) full-KV-path DRAM (host RSS + SSD controller DRAM + shelf heads) gives >= 1.4x fewer DRAM GB per human-chat conversation; (4) the same holds on one MLA-class model with <= 2 local drives. NO-GO if host-lite on the human-chat share fails p99 at <= 5 drive-eq/GPU at end of life, or the full-path ratio is < 1.25x. The single all-layer latent is dropped; the latent gate becomes a decode-tokens/s-at-batch check of prior-art per-layer retrofits.
+
+## 11. RED-TEAM REVISIONS (2026-11-02)
+
+Owner runs answering `research/redteam/rt_*.json`. Sections 1-10 above already include the revised inputs (WAF 1.1, program/erase die-time in the flash queue, compute bound, per-layer latent, LPDDR5X W/GB).
+
+### 11.1 Latent geometry vs decode reads [RT-CIRC-02]
+
+A latent shared by g layers at 3x capacity compression: each layer reads its group's whole latent, so per-step KV reads = GQA x g / 3 (k_bw = 3 / g).
+
+| layers per latent g | k_bw | KV read per decode step, 32k session GB | n_bw (HBM-bandwidth sessions) | n_comp | active/GPU | conversations/GPU | DRAM GB/conv gain vs A (host-lite) |
+|---|---|---|---|---|---|---|---|
+| 1 | 3.000 | 1.75 | 274.6 | 143 | 143.4 | 2,941 | 2.42x |
+| 2 | 1.500 | 3.50 | 137.3 | 143 | 137.3 | 2,817 | 2.32x |
+| 3 | 1.000 | 5.24 | 91.5 | 143 | 91.5 | 1,878 | 1.55x |
+| 8 | 0.375 | 13.98 | 34.3 | 143 | 34.3 | 704 | 0.58x |
+| 80 | 0.037 | 139.81 | 3.4 | 143 | 3.4 | 70 | 0.06x |
+
+Reading: the all-layer latent (g = 80) reads 140 GB per step for one 32k session versus 5.2 GB for GQA FP8; HBM bandwidth then allows only ~3 active sessions per GPU (vs 89). **The single all-layer latent is killed.** Per-layer (g = 1) keeps reads 3x below GQA, but even then the GPU's FLOPs (decode + prompt prefill, n_comp ~143) bind before HBM capacity (264), so a 3x latent buys 1.62x active sessions, not 3x.
+
+### 11.2 DRAM across the full KV path [RT-CIRC-03]
+
+Drive-eq/GPU for p99 <= 0.3 s with write interference (WAF 1.1): today A 3.3, host-lite B0 3.5. Local E1.S bays: 2 per GPU; the rest comes from pod shelves.
+
+| accounting | A DRAM GB/GPU | B0 DRAM GB/GPU | gain B0 vs A (DRAM GB/conv) | A wafer-eq | B0 wafer-eq | gain (wafer-eq) |
+|---|---|---|---|---|---|---|
+| HBM + host only (dossier v1), 3 drive-eq | 528 | 352 | 1.50x | 1104 | 928 | 1.19x |
+| + SSD FTL DRAM (4 KiB IU), 3 drive-eq | 574 | 398 | 1.44x | 1150 | 974 | 1.18x |
+| + FTL 4 KiB + shelf DRAM for drive-eq beyond 2 local, 3 drive-eq | 584 | 408 | 1.43x | 1160 | 984 | 1.18x |
+| FTL 4 KiB + shelf, drive-eq sized for p99 (A 3.3, B0 3.5) | 591 | 420 | 1.40x | 1167 | 996 | 1.17x |
+| large-IU/ZNS drives (64 KiB) + shelf, p99-sized | 544 | 370 | 1.47x | 1120 | 946 | 1.18x |
+| critic host floor 120 GB, FTL 4 KiB + shelf, p99-sized | 591 | 476 | 1.24x | 1167 | 1052 | 1.11x |
+
+Reading: SSD controller DRAM and shelf heads cost host-lite ~0.05-0.1x of its gain; large-indirection-unit or ZNS drives (KV chunks are ~40 MB sequential appends) recover most of it. B0 stays >= 1.4x on DRAM GB per conversation at the 64 GB host floor, and ~1.25x at the critic's 120 GB floor.
+
+### 11.3 Write amplification and endurance [RT-DEV-01]
+
+| WAF | B NAND DWPD on 3 x 15.36 TB | B0 NAND DWPD | endurance drive-eq @3 DWPD (B0) | B0 p99 s @3 drive-eq | B p99 s @3 drive-eq |
+|---|---|---|---|---|---|
+| 1 | 2.31 | 2.71 | 2.71 | 0.39 | 0.13 |
+| 1.1 | 2.54 | 2.98 | 2.98 | 0.39 | 0.13 |
+| 1.3 | 3.00 | 3.52 | 3.52 | 0.41 | 0.13 |
+| 1.5 | 3.46 | 4.06 | 4.06 | 0.40 | 0.13 |
+| 2 | 4.61 | 5.41 | 5.41 | 0.41 | 0.15 |
+
+Reading: at WAF 1.3-2.0 (no placement control) endurance, not bandwidth, sets the drive count (3.5-5.5 drive-eq). With FDP placement by expiry class (WAF ~1.0-1.1; CacheLib+FDP reached ~1 on production traces) 3 drive-eq hold at <= 3 NAND DWPD. G2 must read NAND-side writes (vendor/OCP log page), not host writes.
+
+### 11.4 Program/erase interference, end-of-life and thermal throttling [RT-CIRC-04, RT-DEV-02, RT-DEV-04]
+
+| case (base mix, FP8, 3 drive-eq) | B0 p99 s | B (signal) p99 s | B0 drive-eq for p99 <= budget | B drive-eq for p99 <= budget |
+|---|---|---|---|---|
+| reads only (dossier v1 queue) | 0.33 | 0.11 | 3.2 | 2.2 |
+| + program/erase die-time, WAF 1.1 (revised base) | 0.39 | 0.13 | 3.5 | 2.3 |
+| + WAF 2.0 (no FDP) | 0.41 | 0.15 | 3.6 | 2.4 |
+| end of life (read x 0.85) | 0.53 | 0.19 | 4.2 | 2.7 |
+| 1 of 3 drives throttled to 50% | 0.56 | 0.19 | 4.2 | 2.7 |
+| EOL + throttled + WAF 1.1 | 0.84 | 0.43 | 5.0 | 3.3 |
+
+Reading: program/erase die-time, wear and throttling cost up to ~1.7 drive-eq/GPU of margin without the signal and ~1.1 with it. Host-lite without the signal needs ~3.5 drive-eq/GPU fresh, ~4.2 at end of life or with one drive throttled, and ~5.0 with both; with the deadline queue 2.3-3.3. The fix is flash (and FDP / program-suspend drives), not DRAM, but the GO line must be tested on pre-cycled drives at rack inlet temperature.
+
+### 11.5 Energy in use [RT-DEV-03]
+
+- Freed host LPDDR5X per rack: 12.7 TB x 0.04 W/GB = **0.51 kW** (range 0.38-0.63 kW at 0.03-0.05 W/GB; dossier v1 said 1.9 kW at 0.15 W/GB).
+- 3 drive-eq/GPU = 216 drives per rack x 20 W = 4.3 kW (range 3.2-5.4 kW).
+- Against a 2026 flash-tier baseline with the same drives the diet saves ~0.4-0.6 kW per rack (well under 1% of a ~130 kW rack). Against a DGX-class rack with 72 local drives it adds ~1.5-3.2 kW per rack, but that rack serves far fewer conversations per GPU (11.8).
+
+### 11.6 Agent and API traffic [RT-CIRC-01, RT-IND-05]
+
+Agent class [ESTIMATE]: tool-wait gap log-normal median 3 s (sigma 1.2), step time 4 s, context median 24k (sigma 0.8), 1000 tool-output tokens prefilled per step, no client signal. s_a = share of GPU capacity serving agent/API traffic. Placements: **A_mix** today's 240 GB host, one exclusive LRU over spare HBM + host; **B_flash** host-lite, agents restored from flash on arrival; **B_gap** gap-aware: human-chat KV bypasses host; host right-sized so agents keep A_mix's hold time (same agent DRAM hit rate as today).
+
+| s_a | agent active/GPU (cap / comp) | A_mix: agent / human returns from DRAM | A_mix flash GB/s, drive-eq | B_flash: flash GB/s, drive-eq | B_flash agent p99 s | B_flash drive-eq for agent p99 <= budget | B_gap host GB/GPU | B_gap agent / human p99 s | DRAM GB/conv gain vs A_mix: B_flash / B_gap |
+|---|---|---|---|---|---|---|---|---|---|
+| 0.00 | 0.0 (0 / 0) | n/a / 4.5% | 15.8, 3.0 | 16.6, 3.0 | n/a | n/a | 64 | n/a / 0.40 | 1.50x / 1.50x |
+| 0.25 | 7.9 (9 / 8) | 84% / 4.8% | 13.5, 3.1 | 22.9, 3.1 | 1.02 | 5.8 | 103 | 0.26 / 0.32 | 1.50x / 1.35x |
+| 0.50 | 15.9 (18 / 16) | 85% / 5.2% | 11.0, 3.2 | 28.7, 3.7 | 0.86 | 6.2 | 143 | 0.22 / 0.25 | 1.50x / 1.22x |
+| 0.75 | 23.8 (27 / 24) | 87% / 5.9% | 8.1, 3.4 | 34.1, 4.4 | 0.78 | 6.7 | 187 | 0.19 / 0.22 | 1.50x / 1.11x |
+| 1.00 | 31.7 (36 / 32) | 90% / 7.5% | 4.3, 3.5 | 39.4, 5.0 | 0.66 | 7.3 | 240 | 0.13 / 0.18 | 1.50x / 1.00x |
+
+Reading: agent tool waits are seconds long, so today's host tier catches most agent returns (85% at s_a = 0.5) while catching almost no human-chat returns. Host-lite with agents on flash (restore on arrival, no server-side deadline) keeps the 1.50x DRAM figure but needs ~6.2 drive-eq/GPU at s_a = 0.5 for the agent p99 (70B GQA FP8 contexts of ~5.3 GB; today's A_mix agent p99 is 0.22 s): more flash than the 2 local bays plus one shelf drive. The gap-aware design keeps a right-sized host tier for agents and deletes only the human-chat share: 103 / 143 / 187 GB/GPU at s_a = 0.25 / 0.5 / 0.75; an agent-only node keeps ~240 GB/GPU (1.00x). **So the diet is a human-chat-pool design: the DRAM gain scales with the human-chat share of serving capacity.**
+
+| human-chat share of fleet capacity | fleet DRAM GB/conv gain (human pools B0 1.50x incl. host only; agent pools gap-aware) | with full-path DRAM (11.2, p99-sized) |
+|---|---|---|
+| 100% | 1.50x | 1.40x |
+| 75% | 1.33x | 1.28x |
+| 50% | 1.20x | 1.17x |
+| 25% | 1.09x | 1.08x |
+
+### 11.7 MLA and hybrid linear-attention models [RT-IND-04]
+
+| model (base context mix) | KV/token KiB | KV/session GB | n_cap / n_bw / n_comp | active/GPU | conv/GPU | A: returns from spare HBM / host | B0 flash read GB/s | host writes TB/day | B0 drive-eq @3 DWPD (bw, end.) | B0 p99 s @2 local drives | B p99 s @2 | DRAM GB/conv gain B0 vs A |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 70B GQA FP8 (dossier base) | 160.0 | 2.15 | 88 / 92 / 143 | 88 | 1,807 | 0% / 5% | 16.6 | 124.7 | 2.25, 2.98 | 1.02 | 0.57 | 1.50x |
+| MLA, DeepSeek-V3-class FP8 | 34.3 | 0.46 | 380 / 396 / 84 | 84 | 1,728 | 24% / 23% | 2.6 | 25.6 | 0.36, 0.61 | 0.05 | 0.01 | 1.50x |
+| hybrid, Qwen3-Next-class (+40 MB state/turn) | 12.0 | 0.20 | 891 / 928 / 2914 | 891 | 18,277 | 0% / 5% | 15.8 | 402.5 | 2.73, 9.61 | 0.14 | 0.12 | 1.50x |
+
+Reading: host-lite's DRAM ratio does not depend on bytes per token; it is set by how long the host tier can hold a session versus human gaps. MLA models are compute-bound at ~84 active sessions, so ~136 GB of HBM per GPU sits idle and itself holds idle KV; host-lite then needs ~0.6 drive-eq/GPU (fits the 2 local bays, no shelf) and restores in tens of ms, so the client signal and the latent become unnecessary. Hybrid models are HBM-bound again (turnover law: 16 GB/s per GPU), and rewriting the ~40 MB recurrent state every turn makes endurance bind (~9.6 drive-eq/GPU at 3 DWPD, for today's flash-tier design as much as for host-lite) unless the state is quantized (FP8 halves it), spilled only for sessions predicted to return, or written to higher-endurance flash. That is a measured item, not a DRAM cost.
+
+### 11.8 Against a DGX-class baseline with no KV flash [RT-PROC-01]
+
+No-flash node (240 GB host, 3.84 TB/GPU NVMe not used for KV, misses recomputed): prefill FLOPs cap it at **18 active / 378 conversations per GPU** (vs 89 / 1,820 with a flash tier); idle KV hits DRAM 42% of the time; a miss adds ~1.0 s mean and ~10 s p99 TTFT (full-GPU recompute), far past the 0.3 s budget. MLA-class: 30 active / 623 conversations per GPU.
+
+| design (70B GQA FP8 unless noted) | host GB/GPU | flash TB/GPU | conv/GPU | DRAM GB/conv | DRAM wafers per 1,000 conv | NAND wafers per 1,000 conv | total wafers per 1,000 conv | fab kWh per 1,000 conv |
+|---|---|---|---|---|---|---|---|---|
+| DGX-class, no KV flash (recompute) | 240 | 3.8 | 378 | 1.397 | 0.952 | 0.085 | 1.037 | 1,337 |
+| A: 2026 flash tier, 3 drive-eq (dossier v1) | 240 | 46.1 | 1,820 | 0.290 | 0.198 | 0.211 | 0.409 | 529 |
+| A: 2026 flash tier, 3.3 drive-eq (p99-sized) | 240 | 50.0 | 1,820 | 0.290 | 0.198 | 0.229 | 0.427 | 552 |
+| B0: host-lite, 3.5 drive-eq (p99-sized) | 64 | 53.5 | 1,820 | 0.193 | 0.166 | 0.245 | 0.411 | 533 |
+| MLA: DGX-class no KV flash | 240 | 3.8 | 623 | 0.848 | 0.578 | 0.051 | 0.629 | 811 |
+| MLA: B0 host-lite, 2 local drives | 64 | 30.7 | 1,728 | 0.204 | 0.175 | 0.148 | 0.323 | 418 |
+
+Reading: per rack the reviewer is right: 3 drive-eq/GPU instead of DGX-class 3.84 TB/GPU adds ~25 NAND wafers per rack, against ~4.1 DRAM wafer-eq of host DRAM freed. Per served conversation it is the other way round: the flash tier (prior art, ICMS/LMCache) is what lets a GPU serve ~4.8x more conversations, so total wafer starts per 1,000 conversations fall ~2.5x. Credit for that belongs to the flash tier, not to the diet. The diet's own increment over A at equal p99 (3.3 vs 3.5 drive-eq) is 1.04x in total (DRAM + NAND) wafer starts per conversation: on resource intensity it is close to neutral.
+
+### 11.9 Revised step-change claim [RT-IND-02, RT-PROC-02]
+
+- Human-chat pool, 70B GQA FP8, host-lite 64 GB vs today, full KV path, p99-sized flash: **1.40x fewer DRAM GB per conversation, 1.17x in wafer terms** (large-IU drives 1.47x / 1.18x; critic's 120 GB floor 1.24x / 1.11x).
+- MLA-class models: 1.50x on HBM + host with 2 local drives and no shelf; wafer terms 1.19x.
+- Fleet with 50% of capacity on agent/API traffic: ~1.17x DRAM GB per conversation.
+- Latent: per-layer only (all-layer killed); compute-bound at 1.62x active sessions; it is prior art (MHA2MLA, TransMLA) or moot for MLA-native models, so it is not counted as the diet's step.
+- **On FINAL_CONCEPTS' scale this is S = 1 (<= 1.3x in wafer terms; 1.25-1.45x in DRAM GB on human-chat pools).** EV 2 x 3 x 5 = 30 -> 1 x 3 x 5 = 15.
 
 ## Inputs
 
@@ -200,15 +320,45 @@ Reading: because human gaps are heavy-tailed (median ~110 s), even 2 TB of host 
 | f_fb | 0.5 | - | ESTIMATE: Cake-style parallel load+recompute halves the uncovered residual (https://arxiv.org/html/2410.03065v2, via search snippet) |
 | ttft_budget_s | 0.3 | s | ESTIMATE: p99 added TTFT allowed (~15% of a 2 s interactive TTFT SLO) |
 | k_cap_latent | 3.0 | x | ESTIMATE: planning case; MHA2MLA 92.19% on MHA Llama2-7B (~3.2x beyond GQA-8) https://arxiv.org/abs/2502.14837v1 ; xKV 8x on GQA Llama-3.1-8B https://arxiv.org/abs/2503.18893 ; X-EcoMLA 6.4x https://arxiv.org/html/2503.11132v1 (all via search snippet) |
-| k_bw_latent | 3.0 | x | ESTIMATE: assumes per-step KV reads fall like capacity (per-layer-group latent); a single all-layer latent re-read by every layer falls less |
+| k_bw_latent | 3.0 | x | RED-TEAM [RT-CIRC-02]: = k_cap_latent / latent_group_layers; per-layer latent (g=1) keeps per-step KV reads 3x below GQA FP8. A single latent shared by all 80 layers gives k_bw = 3/80 (26.7x MORE reads than GQA) and is killed (section 11.1) |
+| latent_group_layers | 1 | layers per latent | RED-TEAM [RT-CIRC-02]: old design = 80 (one latent for all layers) -> 1 (per-layer, MHA2MLA/TransMLA-style prior art) |
 | dram_cost_usd_gb | 1.48 | $/GB | ram-venture models/dram_cost_stack.py (1-beta DDR5 cost) |
 | dram_price_usd_gb | 20.0 | $/GB | ESTIMATE: 2026 server DRAM/LPDDR contract; retail DDR5 RDIMM medians ~$31.75-35.70/GB (https://capitalandcompute.net/memory-prices/server/ , via search snippet) |
 | hbm_wafer_mult | 3.0 | x DDR5 wafer/bit | https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation |
 | kwh_per_gb | 0.42 | kWh/GB | dram-moonshot research/models/A2_resource_intensity.py (A2 ESTIMATE) |
 | water_l_per_gb | 2.6 | L/GB | dram-moonshot A2 ESTIMATE |
 | world_dram_eb | 68.0 | EB/yr DDR5-eq | ESTIMATE: A2 fleet 22.2M wafers/yr x 3,068 GB/wafer (upper bound) |
-| dram_w_per_gb | 0.15 | W/GB | A2 [UNVERIFIED-PK] server DRAM power |
+| dram_w_per_gb | 0.04 | W/GB | RED-TEAM [RT-DEV-03]: 0.15 (A2 DDR5 RDIMM class) -> 0.04, LPDDR5X background+active power per GB under serving load on Grace, range 0.03-0.05 [UNVERIFIED-PK] |
 | racks_unit | 10000 | racks | ESTIMATE: scaling unit only, not a shipment forecast |
+| waf | 1.1 | - | RED-TEAM [RT-DEV-01]: implicit 1.0 -> 1.1; KV chunks appended and expired in bulk, placed by expiry class with NVMe FDP; CacheLib+FDP reaches device WAF ~1 on Meta/Twitter traces (https://arxiv.org/abs/2503.11665, via search snippet). Sensitivity 1.0-2.0 |
+| write_interf | 1.0 | - | RED-TEAM [RT-CIRC-04]: share of NAND program/erase die-time that blocks reads (1.0 = no program/erase suspend; conservative) |
+| ssd_write_gbs | 10.0 | GB/s per drive | RED-TEAM [RT-CIRC-04]: ESTIMATE Gen5 15.36 TB TLC sustained sequential write ~8-10 GB/s [training knowledge] |
+| eol_read_derate | 0.85 | x | RED-TEAM [RT-DEV-02]: ESTIMATE read throughput at >=80% rated P/E (read-retry, soft LDPC); measured in the pre-cycled arm |
+| throttle_derate | 0.8333333333333334 | x | RED-TEAM [RT-DEV-04]: ESTIMATE 1 of 3 drives thermally throttled to 50% bandwidth |
+| ssd_w | 20.0 | W per drive | RED-TEAM [RT-DEV-03]: ESTIMATE Gen5 drive under mixed read/write load, range 15-25 W |
+| local_bays_per_gpu | 2.0 | drives | RED-TEAM [RT-CIRC-03]: 8 E1.S bays per 4-GPU GB300 tray (https://www.cudocompute.com/products/nvidia-gb300/, logged by rt-CIRC) |
+| ftl_gb_per_tb | 1.0 | GB DRAM per TB | RED-TEAM [RT-CIRC-03]: page-mapped FTL, 4 B per 4 KiB indirection unit [training knowledge] |
+| ftl_gb_per_tb_large_iu | 0.0625 | GB DRAM per TB | RED-TEAM [RT-CIRC-03]: 64 KiB indirection unit (QLC-style large-IU drives) or ZNS; fits KV chunks of ~40 MB (256 tokens x 160 KiB) written sequentially [training knowledge] |
+| shelf_dram_gb_per_drive | 10.0 | GB per drive | RED-TEAM [RT-CIRC-03]: ESTIMATE pod flash shelf: ~256 GB of storage-head + DPU DRAM per ~24-26 drives [UNVERIFIED-PK] |
+| gpu_fp8_pflops | 5.0 | PFLOP/s dense | RED-TEAM [RT-IND-04, RT-CIRC-02]: ESTIMATE Blackwell-Ultra FP8 dense per GPU [training knowledge] |
+| mfu_serve | 0.4 | - | RED-TEAM: ESTIMATE serving MFU for decode+prefill mix; gives ~11-14k tok/s/GPU on 70B dense, in line with MLPerf-class B200 results [training knowledge] |
+| active_params_b | 70.0 | B params | RED-TEAM: 70B dense (Llama-3.1-70B); MLA case 37B active (DeepSeek-V3), hybrid 3B active (Qwen3-Next-80B-A3B) [training knowledge] |
+| q_heads | 64 | - | RED-TEAM: Llama-3.1-70B query heads; attention FLOPs per context token = layers x 4 x q_heads x head_dim [training knowledge] |
+| attn_flops_ctx_override | 0.0 | FLOP per ctx token per token | RED-TEAM [RT-IND-04]: 0 = GQA formula; MLA absorbed attention 61 x 2 x 128 x (576+512) = 17.0 MFLOP |
+| kv_elems_layer | 0 | elements/token/layer | RED-TEAM [RT-IND-04]: 0 = GQA 2 x kv_heads x head_dim; MLA latent 512 + 64 RoPE = 576 (DeepSeek-V3) [training knowledge] |
+| state_gb | 0.0 | GB per session | RED-TEAM [RT-IND-04]: fixed recurrent state per session (hybrid linear attention ~0.04 GB, rewritten every turn) [ESTIMATE] |
+| prompt_tok_per_turn | 500.0 | tokens | RED-TEAM: new prompt tokens prefilled per human turn (the other ~500 of tok_new_per_turn are decoded) |
+| agent_tgen_s | 4.0 | s | RED-TEAM [RT-CIRC-01]: ESTIMATE agent step: prefill tool output + emit ~100-300 tokens of reasoning/tool call |
+| agent_gap_median_s | 3.0 | s | RED-TEAM [RT-CIRC-01]: ESTIMATE tool-call wait median (reviewer: 1-10 s) |
+| agent_gap_sigma | 1.2 | ln-units | RED-TEAM [RT-CIRC-01]: ESTIMATE -> P90 ~14 s, P95 ~22 s, P99 ~49 s |
+| agent_ctx_median | 24000.0 | tokens | RED-TEAM [RT-CIRC-01]: ESTIMATE agent/API context (log-normal, mean ~33k) |
+| agent_ctx_sigma | 0.8 | ln-units | RED-TEAM [RT-CIRC-01]: ESTIMATE |
+| agent_prompt_tok | 1000.0 | tokens | RED-TEAM [RT-CIRC-01]: ESTIMATE tool-output tokens prefilled per agent step |
+| agent_new_tok | 1300.0 | tokens | RED-TEAM [RT-CIRC-01]: ESTIMATE new KV tokens per agent step (tool output + generated) |
+| dgx_flash_tb_per_gpu | 3.84 | TB | RED-TEAM [RT-PROC-01]: DGX B200 8 x 3.84 TB NVMe per 8 GPUs (reviewer figure) [training knowledge] |
+| dram_gb_per_wafer | 3068.0 | GB DDR5-eq per wafer | dram-moonshot A2 ESTIMATE (same basis as world_dram_eb) |
+| nand_tb_per_wafer | 120.0 | TB per wafer | RED-TEAM [RT-PROC-01]: reviewer 100-140 TB per 300 mm 2xx-layer TLC wafer |
+| nand_kwh_per_wafer | 1300.0 | kWh per wafer | RED-TEAM [RT-PROC-01]: ESTIMATE, taken equal to a DRAM wafer (0.42 kWh/GB x 3,068 GB) [SPECULATIVE parity] |
 | mc_n | 40000 | turns | model setting |
 | seed | 20261102 | - | model setting |
 

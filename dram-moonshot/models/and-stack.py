@@ -13,6 +13,10 @@ the SAME data voltage, so a film that touches both pillars can charge the ring t
 channel without a read-path short. During a read the SL is grounded and only the selected tier's select
 plate is raised; the 63 other select plates sit at a cutoff bias.
 
+RED-TEAM REVISIONS (2026-11-02): the single-film BL = SL closure above is topologically impossible (a ring
+contact on a single wall-lining film always abuts the ring's own read channel). The model now describes the
+two-film "notched write pocket" redesign; see the RED-TEAM REVISIONS block after INPUTS and section 11.
+
 Run from dram-moonshot/:  python3 models/and-stack.py
 Writes research/stage3/and-stack_model_output.md. Pure standard library. Exits 0.
 """
@@ -122,6 +126,76 @@ INPUTS = {
     "backend_1b_usd_gb": (1.48 - 3800.0 / 3069.0, "derived: 1-beta component $1.48 minus wafer-level $1.238/GB"),
 }
 
+# --------------------------------------------------------------------------------------------
+# RED-TEAM REVISIONS (owner response resp-and-stack, 2026-11-02).
+# Objections: research/redteam/rt_{DEV,PROC,CIRC,IND}.json; responses: research/redteam/responses_and-stack.json.
+# Each row: input, old value, new value, objection id(s), reason. The original value is asserted so the
+# block fails loudly if the base inputs drift. The pre-red-team design is reproduced by setting
+# APPLY_RT_REVISIONS = False (exit 0 either way).
+# Redesign summary: the single-film "BL = SL" closure is topologically impossible (RT-PROC-and-stack-01), so the
+# cell becomes a TWO-FILM cell: the ring's top face is contacted by a per-hole write film confined in a hole-side
+# notch of the write-plate level (notched write pocket), which kills the sandwich select wrap (wrap 1 -> 0). The
+# stack becomes SiO2 / doped poly-SiGe select plate (gate-first, Micron-FG-style) / SiO2 / SiN write-plate
+# sacrificial layer (replaced from slits by an H-free O2-based ALD Ru fill). Select plates idle LOW (rings parked
+# below cutoff) and write plates hold at -3.0 V. Twin pillars need a 110 nm hole at 170 nm pitch.
+# --------------------------------------------------------------------------------------------
+APPLY_RT_REVISIONS = True
+RT_REVISIONS = [
+    ("hole_pitch_nm", 150.0, 170.0, "RT-PROC-and-stack-03",
+     "two isolated W-core pillars need a ~88 nm core; 110 nm hole + 2x18 nm recess + 24 nm web"),
+    ("hole_d_nm", 90.0, 110.0, "RT-PROC-and-stack-03", "core 110-2x(6+5) = 88 nm for two 28 nm pillars"),
+    ("pillar_w_nm", 22.0, 28.0, "RT-PROC-and-stack-03 / RT-CIRC-and-stack-04",
+     "Macronix-style twin plugs (8-34 layers shown) with a W core; ~10 kOhm per pillar"),
+    ("tier_pitch_nm", 80.0, 90.0, "RT-PROC-and-stack-02",
+     "per tier SiO2 15 / poly-SiGe select 30 / SiO2 15 / SiN write-plate sacrificial 30 nm (4 layers, 256 at 64 tiers)"),
+    ("wrap", 1.0, 0.0, "RT-PROC-and-stack-01 / RT-PROC-and-stack-02",
+     "ring top face becomes the write contact, so the W/X/W sandwich select plate is dropped (back face only)"),
+    ("ipd_eot_nm", 2.5, 2.0, "RT-PROC-and-stack-01 (consequence)", "1 nm SiO2 + 5 nm HfO2 IPD to recover CR without wrap"),
+    ("ss_mv_dec_85c", 90.0, 120.0, "RT-CIRC-and-stack-01 / RT-DEV-and-stack-04",
+     "IGZO 2T0C shows 161 mV/dec at 300 K (Frontiers of Physics 2025, rt-CIRC log); 120 central, 160 worst"),
+    ("guard_v", 0.10, 0.15, "RT-DEV-and-stack-02",
+     "corrected Vt-tail arithmetic (see section 11b) needs little; +50 mV for Vt tail and temperature"),
+    ("v_plate_max", 2.5, 3.0, "RT-DEV-and-stack-02", "NAND-class plate drivers on thick-oxide periphery; IPD <=3 MV/cm still enforced"),
+    ("cr_sigma", 0.03, 0.045, "RT-PROC-and-stack-05 / RT-CIRC-and-stack-05",
+     "within-tier sigma after per-tier trims; tier-to-tier taper is trimmed per plate"),
+    ("v_wp_hold", -1.5, -3.0, "RT-CIRC-and-stack-01 / RT-DEV-and-stack-04",
+     "deep write-plate hold with idle-low select plates; write FET >=1.9 V below Vt even at the -3.7 sigma tail"),
+    ("ecc_parity", 0.10, 0.12, "RT-CIRC-and-stack-02", "+2% in-page reference cells for cross-temperature MLC reads"),
+    ("array_eff", 0.70, 0.66, "RT-PROC-and-stack-02 / RT-DEV-and-stack-05",
+     "poly-SiGe select plates (~300 ohm/sq) force ~60 um plate segments, roughly doubling the staircase share"),
+    ("plate_rs_ohm_sq", 15.0, 300.0, "RT-DEV-and-stack-05 / RT-PROC-and-stack-02",
+     "no CVD W in the stack: doped poly-SiGe select plate, H/F driven out at >=800 C before the oxide films"),
+    ("plate_len_um", 200.0, 60.0, "RT-DEV-and-stack-05", "keeps select-plate RC ~5 ns with poly plates"),
+    ("tier_usd", 30.0, 50.0, "RT-PROC-and-stack-04", "a tier is ~1.5-2 NAND ONON-pair equivalents (rt-PROC: $20-38 per pair)"),
+    ("array_base_usd", 1000.0, 2200.0, "RT-PROC-and-stack-04 / RT-PROC-and-stack-01 / RT-PROC-and-stack-03",
+     "cell module + notched write pocket + slit Ru replacement + twin sub-hole pillars + bottom select + 2nd SADP level"),
+    ("y_hole", 0.97, 0.93, "RT-PROC-and-stack-03", "pillar-pair shorts are hole-level (all 64 tiers); column repair only"),
+]
+RT_NEW_INPUTS = {
+    "ss_write_mv_dec_85c": (120.0, "RED-TEAM RT-CIRC-and-stack-01: write-FET slope, 90-160 mV/dec swept"),
+    "sigma_vt_mV": (40.0, "RED-TEAM RT-CIRC-and-stack-01 / RT-DEV-and-stack-02: 30-50 mV per-cell Vt sigma"),
+    "dibl_write_V": (0.15, "RED-TEAM RT-DEV-and-stack-04: short (~10 nm) WP-wrapped write segment, DIBL/curvature penalty"),
+    "write_L_nm": (10.0, "RED-TEAM: write-film floor segment between read-film contact and ring top (notch geometry)"),
+    "wgd_phys_nm": (8.0, "RED-TEAM: separate write-gate dielectric (SiO2/Al2O3) deposited from the slit side"),
+    "tempco_vt_mV_K": (-17.0, "RED-TEAM RT-CIRC-and-stack-02: a-IGZO TFT Vt tempco (Chen, IEEE TED 2009, rt-CIRC log)"),
+    "tempco_spread": (0.05, "RED-TEAM RT-CIRC-and-stack-02: cell-to-cell tempco spread"),
+    "dT_trigger_K": (5.0, "RED-TEAM: on-die sensor forces a refresh of a region when |T - T_write| > 5 K"),
+    "rho_w_core_uohm_cm": (35.0, "ESTIMATE: thin W core in a ~20 nm plug (size effect)"),
+    "rho_poly_mohm_cm": (1.0, "rt-PROC: doped poly pillar ~1 mOhm.cm"),
+    "sa_area_um2": (12.0, "RED-TEAM RT-CIRC-and-stack-03: clamped current-mode 2-b SA + write driver at 28 nm (10-20 um2)"),
+    "t_group_drive_ns": (5.0, "ESTIMATE: hole-top select on, drive BL + 2 pillars + ring, select off"),
+    "ddr5_GBps_per_GB": (3.2, "DDR5-6400 x8 die (6.4 GB/s) per 2 GB"),
+    "incumbent_decline_lo": (0.08, "RED-TEAM RT-IND-and-stack-03: incumbent $/bit decline per year, low"),
+    "incumbent_decline_hi": (0.12, "RED-TEAM RT-IND-and-stack-03: incumbent $/bit decline per year, high"),
+    "years_to_volume": (6, "RED-TEAM RT-IND-and-stack-03: 2026 -> ~2032 first volume"),
+    "deck2_usd": (400.0, "ESTIMATE: second deck hole etch + inter-deck pillar plug for >64 tiers"),
+}
+if APPLY_RT_REVISIONS:
+    for _k, _old, _new, _ids, _why in RT_REVISIONS:
+        assert abs(INPUTS[_k][0] - _old) < 1e-9, (_k, INPUTS[_k][0], _old)
+        INPUTS[_k] = (_new, f"RED-TEAM {_ids}: {_old:g} -> {_new:g} ({_why}). Pre-red-team basis: {INPUTS[_k][1]}")
+INPUTS.update(RT_NEW_INPUTS)
+
 
 def V(k):
     return INPUTS[k][0]
@@ -228,7 +302,7 @@ def ring_caps(wrap=None, ipd_eot=None, gox_eot=None, ring_h=None):
 def section_ring():
     h2("2. Floating-ring storage node: capacitance and select-plate coupling ratio (CR)")
     c = ring_caps()
-    out(f"- Base (sandwich select plate, wrap={V('wrap')}): C_ipd {c['c_ipd']*1e15:.3f} fF, C_gate {c['c_gox']*1e15:.3f} fF, "
+    out(f"- Base (wrap={V('wrap')}; 1 = sandwich select plate, 0 = back face only): C_ipd {c['c_ipd']*1e15:.3f} fF, C_gate {c['c_gox']*1e15:.3f} fF, "
         f"C_par {c['c_par']*1e15:.3f} fF -> **C_SN {c['c_sn']*1e15:.3f} fF, CR {c['cr']:.2f}**.")
     b = ring_caps(wrap=0.0)
     out(f"- Back-face-only ring (Micron FG-NAND-style recess): C_SN {b['c_sn']*1e15:.3f} fF, CR {b['cr']:.2f}.")
@@ -320,10 +394,10 @@ def section_select(c):
         "passes ~3 MV/cm during every read. A low CR costs plate swing, IPD stress and IPD leakage, not cutoff physics.")
     # the write-plate hold bias consequence
     ring_min = 0.0 - s["shift"]
-    out(f"- Lowest ring potential during reads = {ring_min:+.2f} V. With write-plate hold {V('v_wp_hold')} V the write FET sits "
-        f"{(ring_min + V('vt_write') - V('v_wp_hold'))*1000:.0f} mV below threshold (referenced to the ring as source) -> "
-        f"{(ring_min + V('vt_write') - V('v_wp_hold'))*1000/V('ss_mv_dec_85c'):.1f} decades of subthreshold suppression; "
-        "the zA floor is then set by traps and dielectrics, not subthreshold.")
+    out(f"- Lowest ring potential with the select plates low = {ring_min:+.2f} V. With write-plate hold {V('v_wp_hold')} V the "
+        f"write FET sits {(ring_min + V('vt_write') - V('v_wp_hold'))*1000:.0f} mV below threshold (referenced to the ring as "
+        f"source) -> {(ring_min + V('vt_write') - V('v_wp_hold'))*1000/V('ss_write_mv_dec_85c'):.1f} decades at "
+        f"{V('ss_write_mv_dec_85c'):.0f} mV/dec (nominal cell; tails and DIBL in section 11a).")
     return s
 
 
@@ -361,7 +435,8 @@ def section_read(c, s):
     out("")
     table(["bits/cell", "level step mV", "dI per level nA", "t to resolve 50 mV on C_BL (ns)", "comparators/BL"], rows)
     # energy per read and write
-    e_read = (cbl * V("vds_read") * 0.5 + 0.30e-15 * 1.0 ** 2) * V("periph_overhead")
+    dvp = select_requirements(c["cr"])["dv_unsel"]  # RED-TEAM: selected plate swings the full dV from idle-low
+    e_read = (cbl * V("vds_read") * 0.5 + 0.30e-15 * dvp ** 2) * V("periph_overhead")
     e_bl_w = 2 * cbl * V("v_data_max") ** 2 / 2
     c_wp_hole = V("c_wp_ring_fF") * 1e-15 + 0.06e-15
     e_wp = c_wp_hole * (V("v_wp_on") - V("v_wp_hold")) ** 2 / V("pump_eff")

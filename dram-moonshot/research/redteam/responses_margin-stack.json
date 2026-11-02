@@ -1,0 +1,129 @@
+{
+ "dd": "margin-stack",
+ "slug": "margin-stack",
+ "title": "MARGIN STACK: segment-gain, double-sampled, ECC-budgeted sensing that cuts the cell capacitor ~10x on oxide-access DRAM",
+ "final_status": "DOWNGRADED",
+ "status_reason": "The physics stands: with a 2-pillar gain FET, 64-cell segments and 4:1-muxed signal-first double sampling, the sensing-limited cell is 0.13/0.29/0.74 fF (optimistic/central/pessimistic), so the 0.5 fF planning cell closes in the central case, and the 1.0 fF fallback closes in all three. But the promise shrinks. (1) RTN heavy tails and a weaker gain FET kill the 17-40x stretch. (2) A leakage tail derived from the model's own inputs kills the 28x refresh claim; the retention requirement becomes an ECC-budgeted 2e-5 quantile. (3) 2-4 added EUV-class layers plus BCH parity turn $/bit into a +9% to +25% penalty and density into -11% vs plain 4F2. (4) The $1M experiment still cannot measure VCT coupling, the VCT sidewall leakage tail or the real mask count. (5) SEL prior art narrows novelty.",
+ "revised_verdicts": {
+  "possible": "Yes (revised after red team). No new physics. Sensing-limited Cs is 0.13/0.29/0.74 fF; 0.5 fF closes in the central case (P(err) 8e-7 vs a 9e-5 target) but not the pessimistic one, and the 1.0 fF fallback closes in all cases. Retention needs the aged 2e-5 IGZO leakage quantile <= 586 aA (model estimate ~100-260 aA); the 1e-10 tail derived from the inputs is 1.5-5.5 fA fresh.",
+  "profitable": "Narrowed. Axis: capacitor-module resource intensity plus 3D readiness. The capacitor goes 5.42 -> 0.5 fF: 10.8x shorter, AR 62 -> 5.7 (5.4x at the 1.0 fF fallback), i.e. ~10x less HAR capacitor etch, ~100x less ZrO2/TiN ALD exposure, and no Ru/k>50 push. A 3D-tier lateral capacitor shrinks to 63-127 nm from ~450 nm (per-tier density 2.2-2.8x, break-even ~10-13 tiers vs ~26), conditional on a 3D host. It is NOT a step on $/bit (+9% to +25% penalty, central +17%), density (-11% vs plain 4F2), latency or array energy (1.3x). Refresh gains of 2-12x are conditional and belong mostly to oxide access.",
+  "doable": "Partly. A $563k decisive experiment ($999k plan, 17 months) measures four things: the circuit residual and muxed double sampling on a 22FDX emulator with ratio-matched coupling, error pairs (DRAM Bender), IGZO gain-FET RTN at a 1-3 ns gap on an oxide-on-CMOS carrier, and the 2e-5 leakage quantile directly on >=1e6 planar and etched-sidewall IGZO cells after a 1,000 h stress. VCT coupling alpha, the VCT sidewall tail and the added mask count stay projections (field solver, process emulation) until partner silicon."
+ },
+ "revised_experiment": "M0-17, $563k inside a $999k plan. (1) M0-5: SPICE Monte Carlo, 3D field-solver alpha on published 4F2 VCT geometry, and process emulation of the same-step and I-12302 plate-strip integrations (gate: <=3 added critical layers). (2) M0-6: DRAM Bender pair study (pairs < 1%). (3) M2-7: 22FDX MPW, 5 mm2: 64-cell segments, emulated 1/2/4-pillar gain stages, 4:1-muxed signal-first double-sampling comparators in a <=0.885 um2/column layout, ratio-matched programmable coupling (alpha 0.05-0.30), kick compensation, BIST. (4) M4-13: BEOL-IGZO-on-SKY130 carrier with IGZO gain FETs on on-chip fF sample nodes: >=1e4 FETs at 1- and 2-pillar gate area, RTN jump distribution at a 1-3 ns gap at 85 C, plus >=1e6 hybrid 2T leakage cells. (5) M3-12: coupons with planar, etched-sidewall and dual-series-gate (I-12627) splits; 1/f spectra. (6) M12-15: 1,000 h, 105 C hold-bias stress. (7) M11-16: test. (8) M17 GO: projected raw BER <= 9e-5 at 0.5 fF, 85 C, worst-case data, built from measured silicon BER and Gaussian residual (<= 12 mV) at the extracted alpha (sensitivity case at 1.5x), measured IGZO RTN (1e-4 jump quantile <= 44 mV), and pairs < 1%; AND the aged 2e-5 leakage quantile <= 586 aA (conditional <= 1,881 aA). NO-GO: projected BER > 1e-4 at 1.0 fF, pairs > 10%, or the leakage quantile above the 1.0 fF limit (1,172 aA at 75 mV droop; 5,529 aA if the residual supports 354 mV).",
+ "responses": [
+  {
+   "id": "RT-DEV-margin-stack-01",
+   "response": "Valid. The model now derives the tail from its own inputs (model R5): Tail(q) = Ioff_med x 10^((Q^-1(q) x sigma_Vt + drift - V_NWL)/SS). Reading OCTRAM's '<1 aA' as the 85 C median, sigma_Vt,access 50 mV and SS 85/90/100 mV/dec, the fresh 1e-10 tail is 5,520/3,420/1,516 aA (2.6-9.4x over the 586 aA line for 0.5 fF at 64 ms and 75 mV droop), and 8.5-42 fA after 75 mV of drift. The pre-red-team 917 ms refresh and 28x refresh-power claims, and a 1e-10 GO line, do not survive. Redesign 1, an ECC-budgeted retention quantile: 1e-5 of the 1e-4 raw-BER budget goes to retention-weak cells (Hi-ECC precedent). A leaky cell errs only while it holds the vulnerable value, so the allowed leaky-cell fraction is 2e-5 (4.11 sigma, not 6.36). Averaged codeword failure is unchanged because Poisson counts add (592 x (9e-5 + 1e-5) gives 2.33e-17). The 501 codewords per die with >=2 weak cells are handled by sort-time repair and patrol scrub. At 2e-5 the tail is 113-261 aA fresh and 101 aA aged with a -0.1 V negative-WL reserve (SS 90). That passes 586 aA with 5.8x margin, and >=1e6 cells see it directly (~20 tail cells), so no 3-sigma extrapolation is needed. Redesign 2, negative WL hold: wide-gap IGZO has no GIDL/BTBT penalty, so each ~90 mV of hold buys a decade of channel leakage. -0.3 V brings even the aged 1e-10 tail to ~11 aA, but only for the subthreshold-channel component, not for trap-assisted or dielectric paths. Refresh: with the revised noise, 0.5 fF tolerates 241 mV of droop, giving a 591 ms (central tail) to 94 ms (SS 100, no reserve) refresh, i.e. 11.8x to 1.9x less refresh power. That gain belongs mostly to oxide access; a plain oxide 4F2 cell gets more of it.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Refresh-power claim withdrawn (28x becomes a conditional 2-12x, not credited to MARGIN STACK). The 1e-10 requirement is replaced by an aged 2e-5 quantile <= 586 aA (conditional <= 1,881 aA at 241 mV droop), measured directly on >=1e6 cells on the BEOL-IGZO-on-CMOS carrier and on coupons, with a 0 to -0.5 V negative-WL-hold sweep. Model R5/R6 added; GO 3, K2 and K3 rewritten; 0.5 fF planning cell kept with a 1.0 fF fallback."
+  },
+  {
+   "id": "RT-DEV-margin-stack-02",
+   "response": "Valid; reproduced in model R2. A square law through OCTRAM's 15 uA at an assumed 2.0 V (1.5 V) overdrive gives 0.60 (1.07) uA and gm 3.0 (5.3) uS at 0.4 V, so G = 0.36 (0.64) in 0.72 ns on 6 fF, not 3. Redesign: two parallel same-step gain pillars (+1 site per segment, carried in the area: 5 sites per 64 cells, +5.5% die), a deeper pulsed read source to Vov 0.6 V (about -1.1 V for a ~1 V Vt; Vds <= ~2 V suits wide-gap IGZO), and 1.2 ns samples. That gives gm 9 uS, I 2.7 uA and G 0.90 on the 12 fF global line CIRC-01 forces (pessimistic 0.48, optimistic 1.87). The input-referred comparator term is 4.3 mV central (12.8 pessimistic), not 1.9 mV. With all terms and the RTN tail, the sensing-limited Cs is 0.13 / 0.29 / 0.74 fF (optimistic / central / pessimistic). 0.5 fF closes in the central case (P(err) 8e-7 vs 9e-5) but not the pessimistic one, so weak drive moves the planning cell to 1.0 fF. Timing: 4:1-muxed signal-first double-sampling decisions at 11.4 ns (13.4 ns with WL rise, vs a 14 ns tRCD), plus a 3.1 ns parallel restore. The 3.6 ns read-chain claim is withdrawn.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model inputs changed: n_gain_pillars 1 -> 2, vov_gain_V 0.4 -> 0.6, t_sample 1.2 ns, and i_gain and G now computed from k = 3.75 uA/V2. The MPW emulates 1/2/4-pillar gain stages. The BEOL carrier measures Id-Vg and gm of IGZO FETs at gate areas matched to 1 and 2 pillars, at 0.3-0.8 V overdrive and 85 C. Pass: >= 2.7 uA at 0.6 V for the 2-pillar area. Below G 0.5, the planning cell moves to 1.0 fF."
+  },
+  {
+   "id": "RT-DEV-margin-stack-03",
+   "response": "Valid. RTN is now an explicit exponential heavy tail (model R3), not a 4 mV Gaussian. The mean jump of an active trap is eta = m x q/(Cox W L), where q/(Cox W L) = 3.28 mV for one 15 x 60 nm pillar at 2 nm EOT and 1.64 mV for two, and m = 2-3 for percolation (a logged TU Wien source gives heavy tails in percolative channels). The active-trap fraction is 1-30% per pillar and the toggle probability 0.25-0.5. Error probability is P = Q(m/sigma) + w exp(-m/eta + sigma^2/2eta^2) Phi(m/sigma - sigma/eta), replacing the RSS. For the pre-red-team 1-pillar FET, the 1e-4 between-sample quantile is 40 mV central and 65 mV pessimistic, confirming the reviewer's 13-70 mV and killing the 0.09-0.32 fF stretch. Two pillars halve the per-trap step: the 1e-4 quantile becomes 22.6 mV central and 36 mV pessimistic. Against the 47 mV margin at 0.5 fF, central P(err) is 8e-7. The required Cs spans 0.23-0.68 fF across m = 2-5 and f = 1-100%. Sort-time screening of ns-RTN gain FETs plus segment repair is extra margin and is not counted.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Stretch claim (17-40x, 0.09-0.32 fF) withdrawn. Central sensing limit is 0.29 fF (18.8x); the 0.5 fF planning cell is kept. The GO line becomes a projected BER built from the measured RTN jump distribution of >=1e4 IGZO gain FETs at matched gate area, a 1-3 ns gap and 85 C on the BEOL carrier. Pass: 1e-4 quantile <= 44 mV at 0.5 fF (<= 82 mV for 1.0 fF). New kill criterion K9."
+  },
+  {
+   "id": "RT-DEV-margin-stack-04",
+   "response": "Valid: probe-coupled coupons cannot sample at ns, and silicon FD-SOI has the wrong trap physics. Added an oxide-native vehicle: a SKY130 readout carrier (two U.S.-fabbed runs, ~$30k, ~100 dies each) with an on-chip fF sample-and-hold under each top-metal landing site. IGZO gain FETs, and hybrid 2T leakage cells (IGZO write FET over a Si read FET), are post-processed on the dies at <=350 C in a university fab (Purdue Birck, Georgia Tech IEN or Stanford SNF). An oxide FET then drives an on-chip fF node sampled at 1-3 ns, which is the measurement the reviewer asked for. Cost +$90k, offset by halving the standalone coupon line to $60k. Risks: die-level process yield and passivation-via alignment. Mitigations: cheap dies, a second run at M9, and a fallback to coupon PSDs flagged as projection. The 22FDX emulator stays for density, coupling and comparator statistics.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Plan step 5b added (SKY130 tape-out M4, post-processing M8-13, test M12-16) with a $90k budget line. The GO uses measured carrier RTN and residual, not Hz-MHz PSD extrapolation."
+  },
+  {
+   "id": "RT-DEV-margin-stack-05",
+   "response": "Valid. 75 mV of negative drift (central of 50-100 mV) multiplies the tail 6.8x at 90 mV/dec (model R5). Mitigations: a -0.1 V negative-WL reserve more than cancels it (aged 2e-5 tail 101 aA vs 191 aA fresh); hydrogen-barrier encapsulation splits on the coupons; and ECC corrected-error telemetry to shorten refresh adaptively over life. Measurement: a 1,000 h, 105 C hold-bias stress with tail re-measurement; <=2x growth passes.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Stress line budgeted ($10k, M12-15). GO 3 is evaluated on post-stress data. vt_drift_mV and v_nwl_hold_V added to the model."
+  },
+  {
+   "id": "RT-PROC-margin-stack-01",
+   "response": "Valid. A same-step 3T segment amp needs four new things: a WL-island cut in the gain row, a gate-to-buried-BL strap, a buried-BL cut with separate read-source wiring, and a 2F-pitch global line. That is 2-4 EUV-class levels, not 1 DUV. At $165 per layer they cost 8.7 / 13.0 / 17.4% of a $3,800 wafer (model R9). With BCH parity and segment area the die is x1.125. $/bit is then a +9% to +25% penalty (central +17%) against plain oxide 4F2 at a 10-20% capacitor-module share; even a 30% share gives +2% to +12%. 'No EUV added' is withdrawn. Mitigations to test: (a) merge the BL and WL-island cuts into the existing SAQP cut masks (the 2-layer low case); (b) the I-12302 plate-strip variant. It keeps the buried BL continuous and clamped, senses a top plate strip (85 mV at 0.5 fF on a 2 fF strip vs 64 mV on the 64-cell segment), and builds the gain FET as a separate BEOL oxide FET with its own Vt. That removes the buried cut and the bias conflict but adds plate patterning, so it is probably still ~3 layers. (c) The 120 nm stub makes the array thinner, which shortens through-array contacts.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "The $/bit claim moves from -3..+4% to a +9..+25% penalty; MARGIN STACK is no longer scored on $/bit or fab $ per bit. added_crit_layers (2/3/4) and euv_usd_per_layer are in the model. A process-emulation flow (SEMulator3D-class, academic or partner) of the same-step and plate-strip variants runs in M0-5 inside the $55k simulation line. Gate: <=3 added critical layers, target <=2."
+  },
+  {
+   "id": "RT-PROC-margin-stack-02",
+   "response": "Valid: 22FDX metal at >=80 nm pitch cannot reproduce VCT buried-BL/WL coupling. Two mitigations. (1) alpha becomes an extraction problem. A 3D field solver runs on published 4F2 VCT geometry (Samsung ISSCC 2026 VCT, SK hynix VLSI 2026 shielded vertical gate), sweeping dimensions +-30%: static capacitance ratios of a stated geometry are reliable even when the geometry is uncertain. (2) The MPW gets ratio-matched, programmable coupling structures: explicit MOM caps between neighbour segment nodes and from a WL-emulation line. These set Cbl-bl/Cseg and Cwl-bl/Cseg to the extracted values within 20% and step alpha from 0.05 to 0.30, which is the reviewer's alternative criterion. The silicon then measures how double sampling, kick compensation and the muxed comparator respond to alpha. Model R4 margins: with central noise, 0.5 fF tolerates alpha <= 0.25 per side (1.0 fF: 0.34); with pessimistic noise only 0.02 (1.0 fF: 0.22). The real VCT alpha stays a projection until partner silicon exists.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Programmable coupling block added to the MPW; field-solver extraction in M0-5. K6 restated: extracted alpha > 0.25 moves the planning cell to 1.0 fF; > 0.34 ends any cut beyond 5.4x. The GO is evaluated at the extracted alpha, with a sensitivity case at 1.5x it."
+  },
+  {
+   "id": "RT-PROC-margin-stack-03",
+   "response": "Valid: 1,000 cells see only ~1e-3, DRAM tails are defect-driven, and a planar university IGZO FET is not an etched VCT sidewall. Two changes. (1) The requirement moves from a 1e-10 tail to an ECC-budgeted 2e-5 leaky-cell fraction (see DEV-01), which >=1e6 cells observe directly (~20 tail cells), so no 3.3-sigma lognormal extrapolation is needed. (2) Those >=1e6 cells come from hybrid 2T leakage cells on the SKY130 carrier (>=2.5e5 per die over >=4 dies) plus coupons, with planar AND plasma-etched-sidewall IGZO splits to probe the sidewall-damage and hydrogen mechanisms. It is still not a VCT array: the VCT-specific tail remains a projection until partner data on >=1e7 cells.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "GO 3 rewritten to the measured aged 2e-5 quantile. The leakage carrier and sidewall split are budgeted. Partner-array tail data becomes the first milestone of the raise. K2/K3 move to 2028-04-30. Provability lowered (D 5 -> 3, with CIRC-03 and IND-03)."
+  },
+  {
+   "id": "RT-PROC-margin-stack-04",
+   "response": "Valid. A red-team WebSearch for a teardown capacitor-module cost split (TechInsights / IC Knowledge) found none (logged in resp-margin-stack.jsonl), so cap_module_share and cap_height_scaled_frac remain unsourced. Model R9 shows $/bit loses at every plausible share: +9% to +25% at 10-20%, and +2% to +12% even at 30%. The fair claim is the reviewer's: capacitor capital and PFAS only.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "$/bit removed from the step-change claim. $15k budgeted for a teardown cost report or cost-model licence to size the module, its ALD/HAR-etch tool-hours and its PFAS share."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-01",
+   "response": "Valid: per-column CDS needs ~1.15 um2 against 0.443 um2 (260%; model R7). Redesign: 64-cell segments, 16 per 1,024-cell global line, which gives 0.885 um2 under the array per column. One auto-zeroed comparator (two 5 fF caps) serves 4 columns using signal-first double sampling: sample the signal with the WL open, reset the segment, sample the reset level, compare. Each column keeps only a precharge, a mux switch, a 4T restore latch and a write driver: ~0.55 um2 (62%), leaving room for sub-WL and line drivers. The comparator holds the signal sample, so muxing never loses the destructively read segment; all columns restore in parallel from their latches (3.1 ns). Consequences, re-run: C_GBL 12 fF, so G 0.9 and a 4.3 mV comparator term; segment-reset kTC (1.22 mV) and 1 mV of reset injection are no longer cancelled; decisions at 11.4 ns (13.4 ns with WL rise vs 14 ns tRCD); array energy 15.2 fJ (1.3x below 1-beta, was 2.3x). Net: central Cs 0.29 fF, and 0.5 fF closes.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Model R7 and the new inputs (n_seg 64, c_gbl 12 fF, comp_mux 4, c_sample 5 fF). The MPW includes the full column cell. Gate at M7: layout <= 0.885 um2 per column including 1/4 comparator, else 2,048-cell columns at G ~0.45. Energy claim revised to 1.3x."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-02",
+   "response": "Valid in substance. BCH t=8 adds 80 check bits per 512 against the baseline's 6.25% on-die ECC: x1.088 array bits. Scaling only the array (70% of a PUC die) gives die x1.062 plus 0.5% for decoders, not x1.088 on the whole die. After segments and parity, density is 0.677 Gb/mm2 (-11% vs plain 4F2, 1.51x 1-beta). Combined with PROC-01's layers, $/bit is +9% to +25%: the reviewer's 'penalty, not flat' holds. A server variant carries the code in the existing RDIMM side band (512 + 128 bits, BCH-12, as in RAW-BER CONTRACT) with no on-die code and no extra array bits, at the cost of chipkill.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Parity and decoder area added to model R9. Density and $/bit revised in sections 0 and 2.7. The side-band variant is noted for x4 server parts."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-03",
+   "response": "Valid: neither alpha nor the oxide gain-FET residual is measured in situ. Mitigations: ratio-matched programmable coupling plus field-solver alpha (PROC-02); oxide-native double sampling on >=1e4 IGZO gain FETs at the pillar gate area (2,827 and 5,655 nm2) at 1-3 ns on the BEOL-IGZO carrier (DEV-04); 22FDX gain FETs used only for circuit statistics (comparator, kTC, kick, muxing). Remaining gap: real VCT geometry and pillar-sidewall IGZO. The decisive binary becomes 'circuit plus oxide device statistics', not 'VCT array'.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "D lowered from 5 to 3 in section 0. The GO/NO-GO reports a projected BER with a measured-vs-projected column and an uncertainty band. Partner VCT/OCTRAM silicon is the first raise milestone."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-04",
+   "response": "Valid; confirmed in model R3. For one pillar the 1e-4 between-sample jump quantile is 40 mV central and 65 mV pessimistic, against 15 mV for a Gaussian 4 mV. A toggling gain FET can err on any of the 64 cells it serves, but only one cell per segment is read per activation, and row codewords put each of those cells in a different codeword, so its errors stay iid across codewords. With two pillars and the heavy-tail statistic, the central quantile is 22.6 mV and 0.5 fF survives with P(err) 8e-7, as the reviewer predicted; the 17-40x stretch does not. GO is restated as a projected BER tail, not sigma_res.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Stretch withdrawn. GO = projected BER <= 9e-5 at 0.5 fF from the measured Gaussian residual plus a measured per-device RTN distribution (>=1e4 IGZO FETs, 1-3 ns gap, 85 C). K9 added."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-05",
+   "response": "Valid. At raw BER 1e-4, 5.75% of 592-bit codeword reads take the BCH slow path (+~15 ns); the mean penalty is +0.86 ns. At 1e-5 it is 0.59% and at 1e-6 0.06% (model R8). 1e-4 is the 85 C worst-pattern design corner, so the slow path is a p95 tail only near that corner. Granularity: a 592-bit on-die codeword suits wide-IO parts (HBM pseudo-channel, LPDDR x16 BL32 = 512 bits per access). For DDR5 x4 RDIMMs the code moves to the module side band (BCH-12 over 512 + 128 bits, decoded in the controller), giving up chipkill. Narrow on-die writes are read-modify-write, as in DDR5 on-die ECC. Decoder area (0.5% of die) is in the cost.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Contractor scope M2-7: synthesis estimate of the t=8 BCH decoder (latency, area per bank) in a 22-28 nm-class library. Model R8. The latency penalty and the wide-IO / side-band split are stated in section 2.10."
+  },
+  {
+   "id": "RT-CIRC-margin-stack-06",
+   "response": "Valid (same finding as DEV-02). The square law gives ~0.6 uA, gm ~3 uS and G ~0.36 at 0.4 V and 0.72 ns (model R2). Fix: 2 pillars, Vov 0.6 V via a deeper pulsed read source, 1.2 ns samples. That gives gm 9 uS and G 0.9 on 12 fF, a 4.3 mV comparator term, and decisions at 11.4 ns, so the read chain is ~14 ns with restore, not 3.6 ns. 0.5 fF still closes centrally.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Same as DEV-02. The BEOL carrier measures Id-Vg and gm of matched-area IGZO FETs at 0.3-0.5 V overdrive with a pulsed negative source."
+  },
+  {
+   "id": "RT-IND-margin-stack-01",
+   "response": "Valid. No sourced module cost exists (red-team search logged, none found). With PROC-01 and CIRC-02, $/bit is a +9% to +25% penalty and density -11% against plain oxide 4F2. MARGIN STACK is re-scoped to two claims. (a) Capacitor-module resource intensity: a 10.8x shorter capacitor (5.4x at the 1 fF fallback), ~100x less ZrO2/TiN ALD exposure, no AR-60 fluorocarbon etch, no Ru/k>50 push. That is a mission axis, but its scope is one module, and the fab-level share is unknown. (b) A 3D-tier enabler: lateral capacitor 450 -> 63-127 nm, per-tier density 2.2-2.8x, break-even ~10-13 tiers vs ~26. That is where a buyer would plausibly pay.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "$15k cost-split study. Before the raise, ask Nanya, Kioxia and Samsung contacts whether they would pay for capacitor-module deletion on 4F2 or 3D. Suggested EV re-score: S 3 -> 2 (EV 75 -> 24 with P4, D3)."
+  },
+  {
+   "id": "RT-IND-margin-stack-02",
+   "response": "Valid, and sharpened by our own search. SEL DOSRAM patents (US 12,051,726 / US 12,230,314) stack the cell array over local SAs, with ~8-WL local arrays, and state that a shorter bit line 'allows the storage capacitance of the memory cell to be reduced'. So 'short bitline -> smaller Cs' is SEL prior art, and IBM micro-SA + OCSA + Hi-ECC is a ready obviousness combination against a broad claim 1. Remaining candidates: (i) a same-step in-array oxide gain FET whose Vt cancels by double sampling through that FET, including muxed signal-first DS; (ii) kick compensation for short segments; (iii) high-Vt same-step biasing by a pulsed read source; (iv) a lateral stub sized to a 3D sense tier. These are narrow and can be designed around. The ECC-budgeted retention quantile is Hi-ECC prior art and is not claimed.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Patentability/FTO opinion on the SEL DOSRAM and OCSA families before the first provisional (IP line raised to $55k). Claims narrowed to (i)-(iv); section 3 delta revised. MARGIN STACK is funded as a portfolio instrument, not as a licensing company, until the opinion and a host say otherwise."
+  },
+  {
+   "id": "RT-IND-margin-stack-03",
+   "response": "Valid. Mitigation: the BEOL-IGZO-on-CMOS carrier puts the oxide device terms on measured oxide (RTN at ns on >=1e4 FETs; leakage to the 2e-5 quantile on >=1e6 cells, before and after stress). The projection then covers only geometry: alpha, the sidewall tail and the mask count. We will seek an MTA or JDA with Kioxia/Nanya or imec for test-array access but do not assume one. Incumbents could rerun the experiment after a paper, so provisionals go in before any disclosure. The investor discount stands.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "MTA outreach M0-6 (Nanya, Kioxia, imec). Provisional before any partner disclosure. GO report carries a measured-vs-projected column. Provability verdict lowered to 'partly'."
+  },
+  {
+   "id": "RT-IND-margin-stack-04",
+   "response": "Factually right on timing: Samsung VCT targets ~2028, so first royalties come ~2030+. But time to revenue is excluded as a kill criterion by the mission. Hosts, in order: Samsung and SK hynix 4F2 (2028+); Kioxia/Nanya OCTRAM; 3D-tier DRAM with PIXEL-STACK sense tiers; BEOL oxide eDRAM on logic through foundries. Until one commits, the margin-test chip and BEOL carrier serve the portfolio as its reader instruments (RAW-BER CONTRACT, PIXEL-STACK, DIODE-TOWER).",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Named-host search and a licensee question before the raise. MARGIN STACK is treated as the portfolio's reader instrument until a host commits. No change to the physics verdicts."
+  }
+ ]
+}

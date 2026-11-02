@@ -4,121 +4,139 @@
 
 ## Headline
 
-- **Cell:** Cs 0.27 fF (843 e- at 0.5 V), ring diode 2639 nm2, pillar 1.00 fF at 32 tiers; footprint 0.0165 um2 (121 nm pitch, 60 nm hole).
-- **Signal:** 106 mV fresh / 85 mV end-of-retention at 32 tiers (z = 5.8 at 7 mV CDS residual); 73 mV at 64 tiers (z = 4.1).
-- **Density:** parity with 1-beta at 18 tiers; 0.87 Gb/mm2 (1.9x) at 32 tiers; 1.76 Gb/mm2 (3.9x) at 64; 3x at 50 tiers.
-- **Cost:** 0.55x 1-beta $/bit ($0.81/GB) at 32 tiers, 0.35x ($0.52/GB) at 64, if tier yield >= 0.998.
-- **Energy:** 28 fJ/bit per access vs ~46 fJ DDR5-class; refresh win only if 1 s retention is reached.
-- **Key unknown, quantified:** the 1e-4-tail tier must leak <= 422 aA (64 ms, DRAM parity) or <= 27 aA (1 s) at 85 C. With patch sigma 0.05 eV that needs a mean tier effective barrier >= 0.96 / 1.04 eV, i.e. a thick-film (low-field) barrier >= 1.07-1.12 eV (64 ms) or 1.17-1.22 eV (1 s) in a 15 nm coaxial IGZO shell. Best demonstrated on IGZO: ~0.92 eV (thick film).
-- **New physics flags vs the concept:** (1) a thin depleted shell lowers the reverse barrier by ~0.18-0.25 eV at 15 nm (image force + thermionic-field emission; ~0.35-0.45 eV at 10 nm), so the concept's 1.05-1.1 eV zero-bias bar for 1 s becomes 1.17-1.22 eV; (2) barrier inhomogeneity adds ~0.14 eV for the 1e-4 tail; (3) the concept's sigma margin was double-counted (signal/sigma vs signal/2sigma); (4) a plate-swing rule (swing >= Vdata + Vf + guard) is needed or unselected tiers are hammered within ~1e4 accesses.
+- **Revision:** red-team base (2026-11-02): wrapped-capacitor tier on Mo replacement plates, stacked 2T top (access + gain FET, one merged bitline), RTN-inclusive readout budget, tier yield 0.995, $3,450 base wafer + $38/tier, staircase priced. Section 12 has the objection-by-objection numbers.
+- **Cell:** Cs 0.59 fF (1853 e- at 0.5 V), ring diode 2639 nm2, pillar 1.21 fF at 32 tiers; footprint 0.0155 um2 before staircase (121 nm pitch, 60 nm hole, 65 nm tier).
+- **Signal:** 164 mV fresh / 131 mV end-of-retention at 32 tiers (z = 14.1 with a 20 mV RTN tail); 114 mV at 64 tiers (z = 8.3). Allowed PIXEL-STACK-style readout residual 58 / 40 mV at 32 / 64 tiers.
+- **Density:** parity with 1-beta at 17 tiers; 0.88 Gb/mm2 (2.0x) at 32 tiers; 1.74 Gb/mm2 (3.9x) at 64; 3x at 50 tiers.
+- **Cost:** 0.73x 1-beta $/bit ($1.08/GB) at 32 tiers, 0.55x ($0.81/GB) at 64, at tier yield 0.995 (0.45x at 0.998, 0.76x at 0.99).
+- **Energy:** 31 fJ/bit per access vs ~46 fJ DDR5-class; refresh win only if 1 s retention is reached.
+- **Key unknown, quantified:** the 1e-4-tail tier must leak <= 928 aA (64 ms, DRAM parity) or <= 59 aA (1 s) at 85 C. With patch sigma 0.05 eV that needs a mean tier effective barrier >= 0.93 / 1.02 eV, i.e. a thick-film (low-field) barrier >= 1.06-1.11 eV (64 ms) or 1.15-1.21 eV (1 s) in a 15 nm coaxial IGZO shell if leakage is thermionic; 1.18-1.33 eV (64 ms) if Poole-Frenkel/TAT-limited (RT-DEV-02). Best demonstrated on IGZO: ~0.92 eV (thick film, Pt, not process-integrable); no integrable anode (RuO2, MoOx, WOx) has an IGZO datum; the AgOx class (1.0-1.2 eV on ZnO) does not survive the flow (RT-DEV-01, RT-PROC-01).
+- **New physics flags vs the concept:** (1) a thin depleted shell lowers the reverse barrier by ~0.19-0.26 eV at 15 nm (image force + thermionic-field emission; ~0.35-0.45 eV at 10 nm), so the concept's 1.05-1.1 eV zero-bias bar for 1 s becomes 1.15-1.21 eV; (2) barrier inhomogeneity adds ~0.14 eV for the 1e-4 tail; (3) the concept's sigma margin was double-counted (signal/sigma vs signal/2sigma); (4) a plate-swing rule (swing >= Vdata + Vf + guard) is needed or unselected tiers are hammered within ~1e4 accesses.
 
 ## 1. Geometry -> capacitances and footprint
-Hole 60 nm, IGZO shell 15 nm (metal core radius 15 nm), node ring 15 nm radial x 14.0 nm tall, ZrO2 5.5 nm k=40, tier pitch 50 nm.
+Base cell (wrapped tier on Mo plates, red-team revision): hole 60 nm, IGZO shell 15 nm (metal core radius 15 nm), node ring 15 nm radial x 14.0 nm tall, ZrO2 5.5 nm k=40, tier pitch 65 nm (back-wall tier 50 nm).
 
 | Quantity | Value | Note |
 |---|---|---|
-| Storage cap Cs (back-wall ring) | 0.270 fF | concept assumed 0.27 fF |
-| Cs with plate wrapping node top+bottom | 0.725 fF | TiN/SiN/TiN tier option, +1 deposition per tier |
-| Stored charge for 0.5 V | 843 e- | DRAM 1-beta ~17,700 e- (C0) |
+| Storage cap Cs, back-wall ring (pre-red-team base) | 0.270 fF | concept assumed 0.27 fF |
+| Storage cap Cs, wrapped (Mo top+bottom, n+ poly back wall, 5 nm pull-back) | 0.594 fF | red-team base; 4 films per tier |
+| Plate-edge-to-pillar coupling per tier | 0.0114 fF | back-wall fringe 0.0050 fF |
+| Stored charge for 0.5 V | 1853 e- | DRAM 1-beta ~17,700 e- (C0) |
 | Diode ring area Aj | 2639 nm2 (0.0026 um2) | concept range 0.002-0.0057 um2 |
 | Diode (depleted shell) capacitance | 0.013 fF | coaxial, fully depleted IGZO |
-| Unselected-tier load on pillar | 0.018 fF/tier | Cj in series with Cs, + fringe |
-| Pillar capacitance, 16 tiers | 0.72 fF | concept assumed ~1.5 fF |
-| Pillar capacitance, 32 tiers | 1.00 fF | concept assumed ~1.5 fF |
-| Pillar capacitance, 64 tiers | 1.57 fF | concept assumed ~1.5 fF |
+| Unselected-tier load on pillar | 0.025 fF/tier | Cj in series with Cs, + fringe |
+| Pillar capacitance, 16 tiers | 0.82 fF | concept assumed ~1.5 fF |
+| Pillar capacitance, 32 tiers | 1.21 fF | concept assumed ~1.5 fF |
+| Pillar capacitance, 64 tiers | 2.00 fF | concept assumed ~1.5 fF |
 | Hole pitch | 121 nm | hole + 2 x (recess + ZrO2) + plate web |
-| Footprint per pillar (square, incl. slit every 4 rows) | 0.0165 um2 | concept assumed 0.010-0.012 um2; slit factor 1.124 |
+| Footprint per pillar (square, incl. slit every 8 rows) | 0.0155 um2 | concept assumed 0.010-0.012 um2; slit factor 1.062 |
 
-Insight: the fully depleted shell makes each unselected tier load the pillar by only ~0.018 fF, so the pillar is lighter than the concept assumed at 16-32 tiers; but the recess ring needed for a ~0.25 fF capacitor pushes the pitch to ~121 nm, so the footprint is ~1.5x the concept's.
+Insight: the fully depleted shell makes each unselected tier load the pillar by only ~0.025 fF, so the pillar is lighter than the concept assumed at 16-32 tiers; but the recess ring needed for a ~0.25 fF capacitor pushes the pitch to ~121 nm, so the footprint is ~1.4x the concept's.
 
 ## 2. Signal, noise and raw BER vs tier count
-Signal = Cs x Vdata / (Cs + Cpillar). Decision margin z = (end-of-retention signal / 2) / sigma_total, sigma_total = sqrt(CDS residual^2 + kT/C + diode soft-reset noise). Raw-BER target 1e-04 needs z >= 3.72.
+Signal = Cs x Vdata / (Cs + Cpillar). RED-TEAM budget (RT-CIRC-01/02): margin = end-of-retention signal/2 - (1e-4 RTN tail 20 mV + coupling 1.2 mV + write/read dVf); z = margin / sigma_random, sigma_random = sqrt(SF 2.5 mV^2 + kT/C + diode soft-reset). Raw-BER target 1e-04 needs z >= 3.72. 'Allowed residual' is the PIXEL-STACK-style residual (3.72 sigma_SF + RTN + coupling) the tier count tolerates.
 
-| Tiers | Cpillar fF | Fresh signal mV | After 100 mV droop mV | kT/C mV | sigma_total mV | z | raw BER |
-|---|---|---|---|---|---|---|---|
-| 8 | 0.57 | 159.9 | 127.9 | 2.42 | 7.53 | 8.49 | 1.0e-17 |
-| 16 | 0.72 | 136.8 | 109.4 | 2.24 | 7.44 | 7.35 | 9.8e-14 |
-| 24 | 0.86 | 119.5 | 95.6 | 2.09 | 7.38 | 6.48 | 4.6e-11 |
-| 32 | 1.00 | 106.1 | 84.9 | 1.97 | 7.33 | 5.79 | 3.5e-09 |
-| 48 | 1.29 | 86.7 | 69.3 | 1.78 | 7.26 | 4.77 | 9.0e-07 |
-| 64 | 1.57 | 73.2 | 58.6 | 1.64 | 7.22 | 4.06 | 2.5e-05 |
-| 96 | 2.15 | 55.9 | 44.7 | 1.43 | 7.16 | 3.12 | 8.9e-04 |
-| 128 | 2.72 | 45.2 | 36.2 | 1.29 | 7.13 | 2.54 | 5.6e-03 |
+**wrapped (base), Cs 0.59 fF**
 
-Correction to the concept's arithmetic: the concept compared signal/sigma (7-15) with BCH t=8's 3.72 sigma, but 3.72 is the half-margin (signal/2) requirement. Signal/(2 sigma) is the right comparison, which halves the quoted margin.
+| Tiers | Cpillar fF | Fresh signal mV | After 100 mV droop mV | kT/C mV | sigma_random mV | deterministic mV | z | raw BER | allowed residual mV |
+|---|---|---|---|---|---|---|---|---|---|
+| 8 | 0.62 | 244.1 | 195.3 | 2.02 | 3.51 | 21.6 | 21.68 | 1.5e-104 | 88.1 |
+| 16 | 0.82 | 210.1 | 168.1 | 1.87 | 3.35 | 21.6 | 18.66 | 5.6e-78 | 75.4 |
+| 24 | 1.02 | 184.4 | 147.5 | 1.75 | 3.23 | 21.5 | 16.16 | 4.8e-59 | 65.8 |
+| 32 | 1.21 | 164.3 | 131.4 | 1.65 | 3.14 | 21.5 | 14.07 | 2.8e-45 | 58.4 |
+| 48 | 1.61 | 134.9 | 107.9 | 1.50 | 3.02 | 21.4 | 10.78 | 2.1e-27 | 47.5 |
+| 64 | 2.00 | 114.4 | 91.5 | 1.38 | 2.93 | 21.4 | 8.32 | 4.6e-17 | 39.9 |
+| 96 | 2.79 | 87.8 | 70.2 | 1.21 | 2.82 | 21.3 | 4.87 | 5.4e-07 | 30.1 |
+| 128 | 3.58 | 71.2 | 57.0 | 1.09 | 2.76 | 21.3 | 2.60 | 4.7e-03 | 24.0 |
 
-CDS residual tolerance (max tiers with z >= 3.72 at end of retention):
+**back-wall (pre-red-team), Cs 0.27 fF**
 
-| CDS residual mV | max tiers (back-wall Cs) | max tiers (wrapped Cs) |
+| Tiers | Cpillar fF | Fresh signal mV | After 100 mV droop mV | kT/C mV | sigma_random mV | deterministic mV | z | raw BER | allowed residual mV |
+|---|---|---|---|---|---|---|---|---|---|
+| 8 | 0.57 | 159.9 | 127.9 | 2.42 | 3.74 | 21.5 | 11.36 | 3.2e-30 | 53.3 |
+| 16 | 0.72 | 136.8 | 109.4 | 2.24 | 3.55 | 21.4 | 9.36 | 3.9e-21 | 45.1 |
+| 24 | 0.86 | 119.5 | 95.6 | 2.09 | 3.42 | 21.4 | 7.73 | 5.5e-15 | 38.9 |
+| 32 | 1.00 | 106.1 | 84.9 | 1.97 | 3.31 | 21.4 | 6.36 | 1.0e-10 | 34.2 |
+| 48 | 1.29 | 86.7 | 69.3 | 1.78 | 3.16 | 21.3 | 4.22 | 1.2e-05 | 27.3 |
+| 64 | 1.57 | 73.2 | 58.6 | 1.64 | 3.05 | 21.3 | 2.61 | 4.5e-03 | 22.7 |
+| 96 | 2.15 | 55.9 | 44.7 | 1.43 | 2.92 | 21.3 | 0.37 | 3.6e-01 | 16.7 |
+| 128 | 2.72 | 45.2 | 36.2 | 1.29 | 2.84 | 21.3 | -1.12 | 5.0e-01 | 13.0 |
+
+Correction to the concept's arithmetic: the concept compared signal/sigma (7-15) with BCH t=8's 3.72 sigma, but 3.72 is the half-margin (signal/2) requirement. Signal/(2 sigma) is the right comparison, which halves the quoted margin. The pre-red-team model used a 7 mV rms 'CDS residual', equivalent to a PIXEL-STACK-style residual of ~3.72 x 7 = 26 mV; the RTN-corrected oxide-SF residual is 24-35 mV.
+
+1e-4 RTN tail tolerance (max tiers with z >= 3.72 at end of retention):
+
+| RTN tail mV | max tiers (back-wall Cs) | max tiers (wrapped Cs) |
 |---|---|---|
-| 3 | 216 | 512 |
-| 5 | 117 | 358 |
-| 7 | 73 | 238 |
-| 10 | 40 | 148 |
-| 15 | 14 | 78 |
+| 5 | 141 | 258 |
+| 13 | 79 | 156 |
+| 20 | 52 | 110 |
+| 25 | 39 | 89 |
+| 35 | 22 | 60 |
+| 45 | 11 | 42 |
 
 ## 3. Density vs tier count
-User Gb/mm2 = (1e6 / footprint um2) x (tiers - reference - spares) x array efficiency 0.55 / ECC 1.156. Baseline 1-beta DDR5 = 0.447 Gb/mm2.
+User Gb/mm2 = (1e6 / (footprint um2 x staircase factor)) x (tiers - reference - spares) x array efficiency 0.55 / ECC 1.156. Staircase factor = 1 + tiers x 0.35 um / 300 um segment (RT-CIRC-03). Baseline 1-beta DDR5 = 0.447 Gb/mm2.
 
 | Tiers | bits/pillar | Stack height um | Hole AR | Gb/mm2 (60 nm hole) | x 1-beta | Gb/mm2 (concept 0.011 um2) | x 1-beta |
 |---|---|---|---|---|---|---|---|
-| 8 | 6 | 0.40 | 7 | 0.173 | 0.39 | 0.259 | 0.58 |
-| 16 | 14 | 0.80 | 13 | 0.405 | 0.91 | 0.605 | 1.35 |
-| 24 | 22 | 1.20 | 20 | 0.636 | 1.42 | 0.951 | 2.13 |
-| 32 | 30 | 1.60 | 27 | 0.867 | 1.94 | 1.297 | 2.90 |
-| 48 | 45 | 2.40 | 40 | 1.301 | 2.91 | 1.946 | 4.35 |
-| 64 | 61 | 3.20 | 53 | 1.763 | 3.94 | 2.638 | 5.90 |
-| 96 | 92 | 4.80 | 80 | 2.659 | 5.95 | 3.978 | 8.90 |
-| 128 | 123 | 6.40 | 107 | 3.555 | 7.95 | 5.319 | 11.90 |
+| 8 | 6 | 0.52 | 9 | 0.182 | 0.41 | 0.259 | 0.58 |
+| 16 | 14 | 1.04 | 17 | 0.420 | 0.94 | 0.605 | 1.35 |
+| 24 | 22 | 1.56 | 26 | 0.655 | 1.46 | 0.951 | 2.13 |
+| 32 | 30 | 2.08 | 35 | 0.885 | 1.98 | 1.297 | 2.90 |
+| 48 | 45 | 3.12 | 52 | 1.304 | 2.92 | 1.946 | 4.35 |
+| 64 | 61 | 4.16 | 69 | 1.737 | 3.88 | 2.638 | 5.90 |
+| 96 | 92 | 6.24 | 104 | 2.531 | 5.66 | 3.978 | 8.90 |
+| 128 | 123 | 8.32 | 139 | 3.274 | 7.32 | 5.319 | 11.90 |
 
-Density parity with 1-beta at 18 tiers; 3x at 50 tiers (this geometry). The concept's '2x at 16 tiers' needs the 0.011 um2 footprint, which leaves no room for the recess ring at 60 nm holes.
+Density parity with 1-beta at 17 tiers; 3x at 50 tiers (this geometry). The concept's '2x at 16 tiers' needs the 0.011 um2 footprint, which leaves no room for the recess ring at 60 nm holes.
 
 ## 4. Diode physics: leakage budget and thin-shell barrier lowering
 Thermionic reverse current I = Aj x A* x T^2 x exp(-phi_eff/kT), A* = 40.9 A/cm2K2 (m* = 0.34 m0), Aj = 0.0026 um2, T = 85 C. Budget I <= Cs x droop / t_refresh.
 
 | Refresh interval | Leakage budget per tier | Required homogeneous phi_eff (85 C) | Required at 95 C |
 |---|---|---|---|
-| 32 ms (JEDEC >85 C) | 844 aA | 0.797 eV | 0.821 eV |
-| 64 ms (JEDEC) | 422 aA | 0.818 eV | 0.843 eV |
-| 256 ms | 106 aA | 0.861 eV | 0.887 eV |
-| 1 s (concept target) | 27 aA | 0.903 eV | 0.930 eV |
-| 10 s | 3 aA | 0.974 eV | 1.003 eV |
+| 32 ms (JEDEC >85 C) | 1856 aA | 0.773 eV | 0.796 eV |
+| 64 ms (JEDEC) | 928 aA | 0.794 eV | 0.818 eV |
+| 256 ms | 232 aA | 0.837 eV | 0.862 eV |
+| 1 s (concept target) | 59 aA | 0.879 eV | 0.905 eV |
+| 10 s | 6 aA | 0.950 eV | 0.978 eV |
 
 Leakage per tier for a homogeneous effective barrier (85 C):
 
 | phi_eff eV | I per tier aA | Retention (100 mV) |
 |---|---|---|
-| 0.80 | 764.70 | 35 ms |
-| 0.85 | 151.32 | 179 ms |
-| 0.90 | 29.94 | 902 ms |
-| 0.92 | 15.66 | 1.7 s |
-| 0.95 | 5.93 | 4.6 s |
-| 1.00 | 1.17 | 23.0 s |
-| 1.05 | 0.23 | 116.4 s |
-| 1.10 | 0.05 | 588.4 s |
+| 0.80 | 764.70 | 78 ms |
+| 0.85 | 151.32 | 392 ms |
+| 0.90 | 29.94 | 2.0 s |
+| 0.92 | 15.66 | 3.8 s |
+| 0.95 | 5.93 | 10.0 s |
+| 1.00 | 1.17 | 50.6 s |
+| 1.05 | 0.23 | 255.9 s |
+| 1.10 | 0.05 | 1.3e+03 s |
 
-Thin-shell lowering. A thin IGZO shell between the node (anode) and an ohmic core is fully depleted, so the field at the anode is ~(Vbi + Vrev)/shell, not the ~0.2 MV/cm of a thick lightly doped film. Image-force lowering sqrt(qE/(4 pi eps)) and thermionic-field emission through the thin barrier top (WKB, triangular barrier, optimum energy dE* = (1.5 c kT)^-2, lowering dE*/3) both scale with that field. Zero-field barrier 1.20 eV, worst hold reverse bias = Vdata + guard = 0.7 V, 85 C:
+Thin-shell lowering. A thin IGZO shell between the node (anode) and an ohmic core is fully depleted, so the field at the anode is ~(Vbi + Vrev)/shell, not the ~0.2 MV/cm of a thick lightly doped film. Image-force lowering sqrt(qE/(4 pi eps)) and thermionic-field emission through the thin barrier top (WKB, triangular barrier, optimum energy dE* = (1.5 c kT)^-2, lowering dE*/3) both scale with that field. Zero-field barrier 1.20 eV, worst hold reverse bias = Vdata + guard = 0.8 V, 85 C:
 
 | Shell nm | Field MV/cm | Image force (eps 4) eV | Image force (eps 12) eV | TFE eV | Total (eps 4) eV | Total (eps 12) eV |
 |---|---|---|---|---|---|---|
-| 5 | 3.29 | 0.344 | 0.199 | 0.600 | 0.944 | 0.799 |
-| 8 | 1.93 | 0.264 | 0.152 | 0.367 | 0.631 | 0.519 |
-| 10 | 1.48 | 0.231 | 0.133 | 0.215 | 0.445 | 0.348 |
-| 15 | 0.87 | 0.177 | 0.102 | 0.073 | 0.250 | 0.175 |
-| 20 | 0.55 | 0.140 | 0.081 | 0.029 | 0.169 | 0.110 |
+| 5 | 3.47 | 0.354 | 0.204 | 0.600 | 0.954 | 0.804 |
+| 8 | 2.04 | 0.271 | 0.157 | 0.409 | 0.680 | 0.565 |
+| 10 | 1.56 | 0.237 | 0.137 | 0.239 | 0.476 | 0.376 |
+| 15 | 0.91 | 0.181 | 0.105 | 0.082 | 0.263 | 0.187 |
+| 20 | 0.58 | 0.144 | 0.083 | 0.033 | 0.177 | 0.116 |
 
-At the design shell (15 nm) the hold-state barrier is ~0.25 eV below the zero-field barrier (eps 4; ~0.18 eV with eps 12), against ~0.09 eV in a thick-film diode at ~0.2 MV/cm. Image force uses the optical permittivity (~4) because an electron crosses the ~1 nm to the barrier maximum in ~10 fs, faster than the lattice polarises; eps 12 is the optimistic bound. The TFE term uses a triangular-barrier WKB estimate and is uncertain to ~+/-50%. The literature's barriers (0.75-0.92 eV on IGZO, up to 1.0-1.2 eV for AgOx on ZnO) come from thick-film diodes at low field, so they overstate what a tier will see. Coupons must be thin-shell vertical diodes at the design thickness.
+At the design shell (15 nm) the hold-state barrier is ~0.26 eV below the zero-field barrier (eps 4; ~0.19 eV with eps 12), against ~0.09 eV in a thick-film diode at ~0.2 MV/cm. Image force uses the optical permittivity (~4) because an electron crosses the ~1 nm to the barrier maximum in ~10 fs, faster than the lattice polarises; eps 12 is the optimistic bound. The TFE term uses a triangular-barrier WKB estimate and is uncertain to ~+/-50%. The literature's barriers (0.75-0.92 eV on IGZO, up to 1.0-1.2 eV for AgOx on ZnO) come from thick-film diodes at low field, so they overstate what a tier will see. Coupons must be thin-shell vertical diodes at the design thickness.
 
 ## 5. Barrier inhomogeneity: the per-tier leakage tail
 Each ring diode is modelled as 12 parallel patches (15 x 15 nm, the pinch-off scale of a depleted shell), each with a Gaussian barrier around the mean (Werner-Guttler/Tung picture). Monte Carlo of 40,000 diodes per sigma (seed fixed) gives the 99.9900% leakage quantile, the tier that the raw-BER-1e-4 contract must still read correctly.
 
 | Patch sigma eV | Mean leakage multiplier | 1e-4 tail multiplier | Tail barrier penalty eV | Mean phi_eff needed, 64 ms | Mean phi_eff needed, 1 s |
 |---|---|---|---|---|---|
-| 0.00 | 1.00 | 1.0 | 0.000 | 0.818 eV | 0.903 eV |
-| 0.03 | 1.60 | 6.4 | 0.058 | 0.876 eV | 0.961 eV |
-| 0.05 | 3.71 | 93.7 | 0.140 | 0.958 eV | 1.043 eV |
-| 0.07 | 12.80 | 928.5 | 0.211 | 1.029 eV | 1.114 eV |
-| 0.10 | 211.85 | 291549.0 | 0.388 | 1.207 eV | 1.292 eV |
+| 0.00 | 1.00 | 1.0 | 0.000 | 0.794 eV | 0.879 eV |
+| 0.03 | 1.60 | 6.4 | 0.058 | 0.852 eV | 0.936 eV |
+| 0.05 | 3.71 | 93.7 | 0.140 | 0.934 eV | 1.019 eV |
+| 0.07 | 12.80 | 928.5 | 0.211 | 1.005 eV | 1.090 eV |
+| 0.10 | 211.85 | 291549.0 | 0.388 | 1.182 eV | 1.267 eV |
 
 Patch-size sensitivity at sigma 0.05 eV (fewer, larger patches -> heavier diode-to-diode tail):
 
@@ -134,40 +152,40 @@ Monte Carlo noise at the 1e-4 quantile is ~+/-30% in the multiplier (~+/-0.01 eV
 Reading: with sigma = 0.05 eV the 1e-4 tier leaks ~94x the homogeneous value, so the mean effective barrier must sit ~0.14 eV above the homogeneous requirement. With sigma = 0.10 eV the penalty is ~0.39 eV and no demonstrated oxide-Schottky barrier is close.
 
 ## 5b. What a thick-film (literature-style) barrier must be for a tier to pass
-Low-field barrier = what a thick-film diode at ~0.2 MV/cm reports (the literature numbers). Required tier effective barrier at sigma 0.05 eV: 0.958 eV (G1, 64 ms) and 1.043 eV (G2, 1 s).
+Low-field barrier = what a thick-film diode at ~0.2 MV/cm reports (the literature numbers). Required tier effective barrier at sigma 0.05 eV: 0.934 eV (G1, 64 ms) and 1.019 eV (G2, 1 s).
 
 | Shell nm | Anode field MV/cm | Low-field barrier for G1 (eps 4) | G1 (eps 12) | G2 (eps 4) | G2 (eps 12) |
 |---|---|---|---|---|---|
-| 8 | 1.93 | 2.03 eV | 1.72 eV | 2.32 eV | 1.93 eV |
-| 10 | 1.48 | 1.41 eV | 1.30 eV | 1.54 eV | 1.42 eV |
-| 15 | 0.87 | 1.12 eV | 1.07 eV | 1.22 eV | 1.17 eV |
-| 20 | 0.55 | 1.03 eV | 1.01 eV | 1.12 eV | 1.10 eV |
-| 25 | 0.33 | 0.99 eV | 0.97 eV | 1.07 eV | 1.06 eV |
+| 8 | 2.04 | 2.19 eV | 1.80 eV | 2.56 eV | 2.04 eV |
+| 10 | 1.56 | 1.43 eV | 1.30 eV | 1.56 eV | 1.43 eV |
+| 15 | 0.91 | 1.11 eV | 1.06 eV | 1.21 eV | 1.15 eV |
+| 20 | 0.58 | 1.02 eV | 0.99 eV | 1.11 eV | 1.08 eV |
+| 25 | 0.35 | 0.96 eV | 0.95 eV | 1.05 eV | 1.04 eV |
 
-Demonstrated barriers mapped into a 15 nm shell tier (85 C, 0.7 V hold, sigma 0.05 eV tail):
+Demonstrated barriers mapped into a 15 nm shell tier (85 C, 0.8 V hold, sigma 0.05 eV tail):
 
 | Contact (thick-film report) | Low-field eV | Tier phi_eff (eps 4) | Tail retention | Tier phi_eff (eps 12) | Tail retention |
 |---|---|---|---|---|---|
-| Passivated a-IGZO SBD (PKU) | 0.82 | 0.70 eV | 13 us | 0.73 eV | 41 us |
-| Best Pt-IGZO, O2 in deposition (KIT secondary) | 0.92 | 0.78 eV | 219 us | 0.82 eV | 758 us |
-| AgOx/ZnO, single crystal (AVS 2008) | 1.10 | 0.94 eV | 35 ms | 0.98 eV | 140 ms |
-| Hypothetical 1.30 eV contact | 1.30 | 1.11 eV | 9.7 s | 1.16 eV | 44.3 s |
+| Passivated a-IGZO SBD (PKU) | 0.82 | 0.68 eV | 19 us | 0.72 eV | 65 us |
+| Best Pt-IGZO, O2 in deposition (KIT secondary) | 0.92 | 0.77 eV | 319 us | 0.81 eV | 1 ms |
+| AgOx/ZnO, single crystal (AVS 2008) | 1.10 | 0.93 eV | 51 ms | 0.97 eV | 216 ms |
+| Hypothetical 1.30 eV contact | 1.30 | 1.10 eV | 13.7 s | 1.15 eV | 66.5 s |
 
-Bottom line: no demonstrated oxide Schottky contact clears DRAM parity inside a thin coaxial shell. The bar for the coupon run is a low-field barrier of ~1.07-1.12 eV with patch sigma <= 0.05 eV, i.e. AgOx/ZnO-class barriers (1.0-1.2 eV) transferred to IGZO and then improved by ~0.1-0.2 eV, or a lower-electron-affinity shell (Ga-rich IGZO, Ga2O3) that raises every anode's barrier.
+Bottom line: no demonstrated oxide Schottky contact clears DRAM parity inside a thin coaxial shell. The bar for the coupon run is a low-field barrier of ~1.06-1.11 eV with patch sigma <= 0.05 eV on the as-integrated (bottom-anode, etch-back) interface, from a process-integrable anode (RuO2, MoOx, WOx; AgOx is excluded after the red team), or a lower-electron-affinity shell (Ga-rich IGZO, Ga2O3) that raises every anode's barrier. If the leakage is Poole-Frenkel/TAT-limited the bar is higher (section 12g).
 
 ## 6. Sensitivity: 1e-4-tail retention at 85 C vs mean effective barrier and patch sigma
 Effective barrier = barrier at the hold field (after image-force and TFE lowering). Cells marked `P` reach DRAM parity (>= 64 ms); `R` reach the concept's 1 s refresh-saving target.
 
 | mean phi_eff eV | sigma 0.00 | sigma 0.03 | sigma 0.05 | sigma 0.07 | sigma 0.10 |
 |---|---|---|---|---|---|
-| 0.80 | 35 ms | 5 ms | 377 us | 38 us | 121 ns |
-| 0.85 | 179 ms P | 28 ms | 2 ms | 192 us | 612 ns |
-| 0.90 | 902 ms P | 140 ms P | 10 ms | 972 us | 3 us |
-| 0.95 | 4.6 s R | 707 ms P | 49 ms | 5 ms | 16 us |
-| 1.00 | 23.0 s R | 3.6 s R | 246 ms P | 25 ms | 79 us |
-| 1.05 | 116.4 s R | 18.1 s R | 1.2 s R | 125 ms P | 399 us |
-| 1.10 | 588.4 s R | 91.3 s R | 6.3 s R | 634 ms P | 2 ms |
-| 1.15 | 3.0e+03 s R | 461.2 s R | 31.7 s R | 3.2 s R | 10 ms |
+| 0.80 | 78 ms P | 12 ms | 829 us | 84 us | 266 ns |
+| 0.85 | 392 ms P | 61 ms | 4 ms | 423 us | 1 us |
+| 0.90 | 2.0 s R | 308 ms P | 21 ms | 2 ms | 7 us |
+| 0.95 | 10.0 s R | 1.6 s R | 107 ms P | 11 ms | 34 us |
+| 1.00 | 50.6 s R | 7.9 s R | 540 ms P | 55 ms | 174 us |
+| 1.05 | 255.9 s R | 39.7 s R | 2.7 s R | 276 ms P | 878 us |
+| 1.10 | 1.3e+03 s R | 200.6 s R | 13.8 s R | 1.4 s R | 4 ms |
+| 1.15 | 6.5e+03 s R | 1.0e+03 s R | 69.7 s R | 7.0 s R | 22 ms |
 
 Section 5b maps the demonstrated (thick-film) barriers onto this table.
 
@@ -176,116 +194,249 @@ Clamp-write: the node discharges through its diode into the driven pillar; after
 
 Forward bias flattens the shell, so the forward barrier is ~the low-field barrier, not the lowered reverse one: a contact good enough for retention is also one that needs a large forward voltage.
 
-| Low-field barrier eV | T C | V_f at I_end | I_end nA | V_f at 13.6 nA avg | Plate swing needed V |
+| Low-field barrier eV | T C | V_f at I_end | I_end nA | V_f at 29.7 nA avg | Plate swing needed V |
 |---|---|---|---|---|---|
-| 1.00 | 0 | 0.95 V | 0.83 | 1.03 V | 1.65 |
-| 1.00 | 25 | 0.91 V | 0.90 | 1.00 V | 1.61 |
-| 1.00 | 85 | 0.83 V | 1.08 | 0.93 V | 1.53 |
-| 1.10 | 0 | 1.08 V | 0.83 | 1.16 V | 1.78 |
-| 1.10 | 25 | 1.04 V | 0.90 | 1.13 V | 1.74 |
-| 1.10 | 85 | 0.96 V | 1.08 | 1.06 V | 1.66 |
-| 1.12 | 0 | 1.10 V | 0.83 | 1.19 V | 1.80 |
-| 1.12 | 25 | 1.07 V | 0.90 | 1.16 V | 1.77 |
-| 1.12 | 85 | 0.98 V | 1.08 | 1.09 V | 1.68 |
-| 1.20 | 0 | 1.21 V | 0.83 | 1.29 V | 1.91 |
-| 1.20 | 25 | 1.17 V | 0.90 | 1.26 V | 1.87 |
-| 1.20 | 85 | 1.09 V | 1.08 | 1.19 V | 1.79 |
-| 1.30 | 0 | 1.34 V | 0.83 | 1.42 V | 2.04 |
-| 1.30 | 25 | 1.30 V | 0.90 | 1.39 V | 2.00 |
-| 1.30 | 85 | 1.22 V | 1.08 | 1.32 V | 1.92 |
+| 1.00 | 0 | 0.97 V | 1.82 | 1.06 V | 1.77 |
+| 1.00 | 25 | 0.94 V | 1.98 | 1.03 V | 1.74 |
+| 1.00 | 85 | 0.86 V | 2.38 | 0.96 V | 1.66 |
+| 1.10 | 0 | 1.10 V | 1.82 | 1.19 V | 1.90 |
+| 1.10 | 25 | 1.07 V | 1.98 | 1.16 V | 1.87 |
+| 1.10 | 85 | 0.99 V | 2.38 | 1.09 V | 1.79 |
+| 1.11 | 0 | 1.12 V | 1.82 | 1.20 V | 1.92 |
+| 1.11 | 25 | 1.08 V | 1.98 | 1.17 V | 1.88 |
+| 1.11 | 85 | 1.00 V | 2.38 | 1.10 V | 1.80 |
+| 1.20 | 0 | 1.23 V | 1.82 | 1.32 V | 2.03 |
+| 1.20 | 25 | 1.20 V | 1.98 | 1.29 V | 2.00 |
+| 1.20 | 85 | 1.12 V | 2.38 | 1.22 V | 1.92 |
+| 1.30 | 0 | 1.36 V | 1.82 | 1.45 V | 2.16 |
+| 1.30 | 25 | 1.33 V | 1.98 | 1.42 V | 2.13 |
+| 1.30 | 85 | 1.25 V | 2.38 | 1.35 V | 2.05 |
 
-Average forward current density during write: 515 A/cm2 on a 2639 nm2 ring - well above the ~1-100 A/cm2 at which thick-film IGZO rectifiers are usually characterised, so forward-pulse endurance must be tested at this density, not inferred.
+Average forward current density during write: 1125 A/cm2 on a 2639 nm2 ring - well above the ~1-100 A/cm2 at which thick-film IGZO rectifiers are usually characterised, so forward-pulse endurance must be tested at this density, not inferred.
 
 Design rule (new in this model): plate swing >= Vdata + V_f + guard puts every stored level below the lowest pillar level, so no unselected node is ever forward-biased. Stored levels = V_pillar,write + V_f - plate swing. Without the rule (stored levels = pillar levels) the pillar-hammer disturb is:
 
 | Barrier eV | Forward bias on victim | Charge lost per 10 ns event | Events to 100 mV droop |
 |---|---|---|---|
-| 0.9 | +0.5 V | 4.83e-01 e- | 3.49e+02 |
-| 0.9 | -0.2 V | 0.00e+00 e- | inf |
-| 1.0 | +0.5 V | 1.89e-02 e- | 8.92e+03 |
-| 1.0 | -0.2 V | 0.00e+00 e- | inf |
-| 1.1 | +0.5 V | 7.40e-04 e- | 2.28e+05 |
-| 1.1 | -0.2 V | 0.00e+00 e- | inf |
+| 0.9 | +0.5 V | 4.83e-01 e- | 7.68e+02 |
+| 0.9 | -0.3 V | 0.00e+00 e- | inf |
+| 1.0 | +0.5 V | 1.89e-02 e- | 1.96e+04 |
+| 1.0 | -0.3 V | 0.00e+00 e- | inf |
+| 1.1 | +0.5 V | 7.40e-04 e- | 5.01e+05 |
+| 1.1 | -0.3 V | 0.00e+00 e- | inf |
 
-A pillar can be accessed ~2e7 times per second, so the naive biasing fails in well under one refresh interval; with the rule the victim stays reverse-biased (zero events). Cost: the plate swing rises to ~1.8 V at 0 C for the G1-passing contact (1.12 eV low-field), paid in plate CV^2 energy (section 8) and a ~2 V plate driver under the array. ZrO2 itself never sees more than ~Vdata + guard, because the floating node follows the plate.
+A pillar can be accessed ~2e7 times per second, so the naive biasing fails in well under one refresh interval; with the rule the victim stays reverse-biased (zero events). Cost: the plate swing rises to ~1.9 V at 0 C for the G1-passing contact (1.11 eV low-field), paid in plate CV^2 energy (section 8) and a ~2 V plate driver under the array. ZrO2 itself never sees more than ~Vdata + guard, because the floating node follows the plate.
 
 ## 7b. Escape routes: thicker shell in a bigger hole, or a wrapped capacitor
 Each row sets the shell as stated (metal core radius = hole/2 - shell) and recomputes Cs, ring area, pitch, the sigma-0.05 tail (Monte Carlo, patch = shell) and the low-field barrier a contact needs for G1 (64 ms) at 85 C.
 
 | Hole nm | Shell nm | Wrapped Cs | Cs fF | Footprint um2 | Gb/mm2 @64 tiers | x 1-beta | Signal @64 tiers mV | Low-field barrier for G1 (eps 4 / 12) |
 |---|---|---|---|---|---|---|---|---|
-| 60 | 15 | no | 0.27 | 0.0165 | 1.76 | 3.9 | 73 | 1.11 / 1.07 eV |
-| 60 | 20 | no | 0.27 | 0.0165 | 1.76 | 3.9 | 87 | 1.04 / 1.01 eV |
-| 60 | 15 | yes | 0.73 | 0.0165 | 1.76 | 3.9 | 156 | 1.09 / 1.04 eV |
-| 80 | 25 | no | 0.33 | 0.0220 | 1.32 | 3.0 | 98 | 1.04 / 1.02 eV |
-| 80 | 30 | yes | 0.90 | 0.0220 | 1.32 | 3.0 | 216 | 0.97 / 0.96 eV |
-| 100 | 35 | no | 0.38 | 0.0283 | 1.02 | 2.3 | 118 | 1.00 / 0.99 eV |
-| 100 | 40 | yes | 1.08 | 0.0283 | 1.02 | 2.3 | 245 | 0.96 / 0.96 eV |
+| 60 | 15 | no | 0.27 | 0.0155 | 1.74 | 3.9 | 73 | 1.13 / 1.08 eV |
+| 60 | 20 | no | 0.27 | 0.0155 | 1.74 | 3.9 | 87 | 1.04 / 1.02 eV |
+| 60 | 15 | yes | 0.59 | 0.0155 | 1.74 | 3.9 | 114 | 1.11 / 1.06 eV |
+| 80 | 25 | no | 0.33 | 0.0209 | 1.29 | 2.9 | 98 | 1.04 / 1.02 eV |
+| 80 | 30 | yes | 0.73 | 0.0209 | 1.29 | 2.9 | 176 | 0.98 / 0.97 eV |
+| 100 | 35 | no | 0.38 | 0.0271 | 1.00 | 2.2 | 118 | 1.00 / 0.99 eV |
+| 100 | 40 | yes | 0.87 | 0.0271 | 1.00 | 2.2 | 205 | 0.97 / 0.97 eV |
 
-The geometry levers lower the G1 bar from 1.07 eV (60 nm hole, 15 nm shell) to 0.96 eV (100 nm hole, 40 nm shell, wrapped Cs) at a density cost (1.76 -> 1.02 Gb/mm2 at 64 tiers). That brings the bar into the range already shown for AgOx on ZnO (1.0-1.2 eV), but still above the best IGZO report (~0.92 eV). The wrapped capacitor (TiN/SiN/TiN tier) is the cheapest lever: ~2.7x Cs and ~2x signal at the same footprint.
+The geometry levers lower the G1 bar from 1.08 eV (60 nm hole, 15 nm shell) to 0.97 eV (100 nm hole, 40 nm shell, wrapped Cs) at a density cost (1.74 -> 1.00 Gb/mm2 at 64 tiers). That brings the bar into the range already shown for AgOx on ZnO (1.0-1.2 eV; not process-integrable, RT-DEV-01/RT-PROC-01), but still above the best IGZO report (~0.92 eV). The wrapped capacitor (Mo/poly/Mo tier, now the base cell) gives ~2.2x Cs and ~1.6x signal at the same footprint; its retention-bar gain alone is small (~0.02 eV) because the leakage budget scales only as Cs.
 
 ## 8. Energy per access and refresh (32 tiers)
 | Component (per bit, read + clamp write-back) | fJ |
 |---|---|
-| Plate pulse (Cs + plate-plate) x swing^2 | 0.94 |
-| Pillar precharge/write-back | 0.32 |
+| Plate pulse (Cs + plate-plate) x swing^2 | 2.32 |
+| Pillar precharge/write-back | 0.45 |
 | Read bitline (CDS) | 2.48 |
 | Write bitline | 8.25 |
 | Access WL (pumped) | 2.08 |
-| Core sum | 14.1 |
-| x periphery overhead 2.0 | **28.1** |
+| Core sum | 15.6 |
+| x periphery overhead 2.0 | **31.2** |
 | DDR5-class reference (dram_cell_physics.refresh_energy_per_bit_fJ()) | 45.9 |
 
 | Refresh interval | DIODE-TOWER refresh mW/GB | DDR5-class mW/GB |
 |---|---|---|
-| 32 ms | 8.13 | 12.19 |
-| 64 ms | 4.07 | 6.10 |
-| 1.0 s | 0.26 | 0.39 |
+| 32 ms | 9.00 | 12.19 |
+| 64 ms | 4.50 | 6.10 |
+| 1.0 s | 0.29 | 0.39 |
 
 No energy step-change per access: bitline wiring dominates as in DRAM. The energy win exists only if the barrier reaches the 1 s target (16x fewer refreshes).
 
 ## 9. Cost per bit vs 1-beta DDR5 ($1.48/GB)
-Relative $/bit = [(base wafer + $/tier x tiers) / (density x tier yield^tiers)] / ($3,800 / 0.447). Same wafer area and edge loss as 1-beta; tier yield after repair.
+Relative $/bit = [(base wafer $3,450 + $38/tier x tiers) / (density x tier yield^tiers)] / ($3,800 / 0.447). Same wafer area and edge loss as 1-beta; tier yield after repair. Red-team inputs (RT-PROC-03/04, RT-IND-03); the pre-red-team case ($3,000 + $25/tier, back-wall cell, yield 0.998, no staircase) is the last column.
 
-| Tiers | Wafer $ | Gb/mm2 | Tier yield factor | $/bit vs 1-beta | $/GB | ($20/tier, $2.8k base) | ($45/tier, $3.4k base) |
+| Tiers | Wafer $ | Gb/mm2 | $/bit, yield 0.995 | $/GB | yield 0.998 | yield 0.99 | pre-red-team |
 |---|---|---|---|---|---|---|---|
-| 16 | 3,400 | 0.405 | 0.968 | 1.02x | $1.51 | 0.94x | 1.24x |
-| 24 | 3,600 | 0.636 | 0.953 | 0.70x | $1.03 | 0.64x | 0.87x |
-| 32 | 3,800 | 0.867 | 0.938 | 0.55x | $0.81 | 0.50x | 0.70x |
-| 48 | 4,200 | 1.301 | 0.908 | 0.42x | $0.62 | 0.37x | 0.55x |
-| 64 | 4,600 | 1.763 | 0.880 | 0.35x | $0.52 | 0.31x | 0.48x |
-| 96 | 5,400 | 2.659 | 0.825 | 0.29x | $0.43 | 0.25x | 0.41x |
-| 128 | 6,200 | 3.555 | 0.774 | 0.27x | $0.39 | 0.23x | 0.39x |
+| 16 | 4,058 | 0.420 | 1.23x | $1.82 | 1.17x | 1.33x | 1.02x |
+| 24 | 4,362 | 0.655 | 0.88x | $1.31 | 0.82x | 1.00x | 0.70x |
+| 32 | 4,666 | 0.885 | 0.73x | $1.08 | 0.66x | 0.86x | 0.55x |
+| 48 | 5,274 | 1.304 | 0.61x | $0.90 | 0.52x | 0.77x | 0.42x |
+| 64 | 5,882 | 1.737 | 0.55x | $0.81 | 0.45x | 0.76x | 0.35x |
+| 96 | 7,098 | 2.531 | 0.53x | $0.79 | 0.40x | 0.87x | 0.29x |
+| 128 | 8,314 | 3.274 | 0.57x | $0.84 | 0.39x | 1.08x | 0.27x |
 
-Tier yield and $/tier are the cost unknowns once the diode passes; the diode itself adds no per-tier lithography. A 64-tier tower reaches ~0.35x 1-beta $/bit in the base case.
+Tier yield and $/tier are the cost unknowns once the diode passes; the diode itself adds no per-tier lithography. A 64-tier tower reaches ~0.55x 1-beta $/bit in the red-team base case (was 0.35x).
 
 ## 10. Endurance budget per diode
 Every access to a tier = 1 forward dump (read) + 1 forward clamp (write-back) = 2 forward pulses.
 
 | Use case (10 years) | Forward pulses | Charge fluence C/cm2 | vs 1e12-pulse test |
 |---|---|---|---|
-| Refresh only, 64 ms | 9.9e+09 | 5.0e+04 | 0.0099x |
-| Refresh only, 1 s | 6.3e+08 | 3.2e+03 | 0.00063x |
-| Hot row, 1% duty (C0) | 1.4e+14 | 7.2e+08 | 1.4e+02x |
+| Refresh only, 64 ms | 9.9e+09 | 1.1e+05 | 0.0099x |
+| Refresh only, 1 s | 6.3e+08 | 7.1e+03 | 0.00063x |
+| Hot row, 1% duty (C0) | 1.4e+14 | 1.6e+09 | 1.4e+02x |
 
-Per pulse: 843 e- through 2639 nm2 = 5.1e-06 C/cm2. Charge crosses a semiconductor barrier (thermionic), not an insulator, so the C0 insulator charge-fluence rule (1e2-1e5 cycles) does not apply; Si Schottky and p-n rectifiers carry >1e8 C/cm2 in service [ESTIMATE: 100 A/cm2 for 10 years = 3e10 C/cm2]. Oxide-Schottky barrier drift under this fluence has not been measured. A 1e12-pulse test covers refresh-only life ~100x and a hot row to within ~2 decades (hammer remapping or extrapolation covers the rest).
+Per pulse: 1853 e- through 2639 nm2 = 1.1e-05 C/cm2. Charge crosses a semiconductor barrier (thermionic), not an insulator, so the C0 insulator charge-fluence rule (1e2-1e5 cycles) does not apply; Si Schottky and p-n rectifiers carry >1e8 C/cm2 in service [ESTIMATE: 100 A/cm2 for 10 years = 3e10 C/cm2]. Oxide-Schottky barrier drift under this fluence has not been measured. A 1e12-pulse test covers refresh-only life ~100x and a hot row to within ~2 decades (hammer remapping or extrapolation covers the rest).
 
 Drift budget: a barrier drop of d_phi multiplies leakage by exp(d_phi/kT): 30 meV -> 2.6x, 60 meV -> 7.0x at 85 C.
 
 ## 11. GO / NO-GO
-Default sigma 0.05 eV, shell 15 nm, Cs 0.27 fF, ring 2639 nm2, 85 C.
+Default sigma 0.05 eV, shell 15 nm, Cs 0.59 fF, ring 2639 nm2, 85 C.
 
-| Gate | Threshold (measured on thin-shell coupons at design thickness, 85 C, 0.7 V reverse hold) |
+| Gate | Threshold (measured on thin-shell coupons at design thickness, 85 C, 0.8 V reverse hold) |
 |---|---|
-| G1 DRAM-parity retention (64 ms) | 99.99th-percentile ring-diode leakage <= 422 aA; equivalently mean tier effective barrier >= 0.96 eV at sigma 0.05 (low-field barrier >= 1.07-1.12 eV) |
-| G2 refresh-saving retention (1 s) | 99.99th-percentile leakage <= 27 aA; mean effective barrier >= 1.04 eV (low-field >= 1.17-1.22 eV) |
-| G3 write | >= 0.8 nA forward per ring-sized diode at <= 1.2 V and 0 C, ideality <= 1.3 (plate swing <= ~1.9 V) |
-| G4 endurance | effective-barrier drop <= 30 meV (leakage <= 2.6x) after 1e12 forward pulses at ~515 A/cm2, 85 C |
-| G5 signal (stage b) | post-CDS residual <= 7 mV for >= 32 tiers (density 0.87 Gb/mm2, 1.9x 1-beta) |
+| G1 DRAM-parity retention (64 ms) | 99.99th-percentile ring-diode leakage <= 928 aA; equivalently mean tier effective barrier >= 0.93 eV at sigma 0.05 (low-field barrier >= 1.06-1.11 eV) |
+| G2 refresh-saving retention (1 s) | 99.99th-percentile leakage <= 59 aA; mean effective barrier >= 1.02 eV (low-field >= 1.15-1.21 eV) |
+| G3 write | >= 1.8 nA forward per ring-sized diode at <= 1.2 V and 0 C, ideality <= 1.3 (plate swing <= ~2.0 V) |
+| G4 endurance | effective-barrier drop <= 30 meV (leakage <= 2.6x) after 1e12 forward pulses at ~1125 A/cm2, 85 C |
+| G5 readout (RT-CIRC-01) | post-CDS readout residual (3.72 sigma random + 1e-4 RTN tail + coupling, 85 C, ~15 ns CDS gap, >= 65k in-hole-sized gain FETs) <= 40 mV for 64 tiers (1.74 Gb/mm2, 3.9x) or <= 58 mV for 32 tiers (0.88 Gb/mm2, 2.0x) |
 
-**GO/NO-GO:** GO to the 4-tier stack if any one anode (RuOx, PtOx, PdO, MoOx, AgOx) on a >=15 nm IGZO shell after <=400 C passes G1 + G3 + G4 (DRAM-class tower, 1.9-4x density at 32-64 tiers), with G2 as the stretch that adds the refresh-energy win. NO-GO (park the linear-capacitor tower, keep the FE persistent variant) if the best anode's 1e-4-tail leakage exceeds 422 aA per ring at 85 C (mean effective barrier < 0.96 eV at sigma 0.05), or if the barrier drifts > 60 meV within 1e10 pulses. Revival condition: a contact that clears the 80-nm-hole / wrapped-capacitor bar of section 7b (~0.96-0.97 eV low-field at sigma <= 0.05 eV, 3x 1-beta at 64 tiers), or a lower-electron-affinity shell (Ga-rich IGZO, Ga2O3) or p-oxide/n-oxide heterojunction that does.
+**GO/NO-GO (revised after red team):** GO to the 4-tier stack if any one process-integrable anode (RuO2 from a Ru node ring, MoOx, WOx; AgOx/PtOx/Pt/Pd are planar diagnostics only) on a >=15 nm IGZO, Ga-rich or Ga2O3 shell, formed bottom-anode with the real etch-back chemistry and after <=400 C, passes G1 + G3 + G4 measured as ring leakage on thin-shell vertical structures (not thick-film barrier), with G2 as the stretch that adds the refresh-energy win. NO-GO (park the linear-capacitor tower; the FE variant is not a fallback) if the best anode's 1e-4-tail leakage exceeds 928 aA per ring at 85 C (mean effective barrier < 0.93 eV at sigma 0.05), or if the barrier drifts > 60 meV within 1e10 pulses. Revival condition: a contact that clears the 80-nm-hole / wrapped-capacitor bar of section 7b (~0.97-0.98 eV low-field at sigma <= 0.05 eV, ~2.9x 1-beta at 64 tiers), or a lower-electron-affinity shell (Ga-rich IGZO, Ga2O3) or p-oxide/n-oxide heterojunction that does.
 
-Density context: parity at 18 tiers and 3x at 50 tiers in this geometry; the step change is a 32-64-tier claim, not a 16-tier one.
+Density context: parity at 17 tiers and 3x at 50 tiers in this geometry; the step change is a 32-64-tier claim, not a 16-tier one.
+
+## 12. Red-team variants (owner response, 2026-11-02)
+
+### 12a. RED-TEAM REVISIONS (inputs changed)
+
+| Input | old -> new | Objection | Why |
+|---|---|---|---|
+| sigma_cds_mV | 7 mV rms -> removed; sigma_rand_mV 2.5 rms + rtn_tail_mV 20 + coupling_mV 1.2 (deterministic) + dVf(slew) | RT-CIRC-01, RT-CIRC-02 | RTN tail is a deterministic add (PIXEL-STACK model + RT-CIRC-pixel-stack-02); same units as PIXEL-STACK's residual |
+| cell_wrap | False (back-wall Cs 0.27 fF) -> True (wrapped Cs ~0.59 fF, Mo plates, 5 nm pull-back, 65 nm tier) | RT-CIRC-01, RT-CIRC-03, RT-CIRC-04 | restores 64-tier signal under the RTN budget; Mo plates cut plate RC ~10x; own plate shields neighbours |
+| rows_per_plate | 4 -> 8 | RT-CIRC-03 | halves slit overhead and plate drivers per mm2 |
+| seg_len_um / stair_step_um | unpriced -> 300 um centre-driven segment, 0.35 um/tier staircase priced in density | RT-CIRC-03 | plate RC <= 10 ns and staircase area now in the footprint |
+| m_rev | 0.2 V -> 0.3 V | RT-CIRC-04 | guard covers droop + plate-to-neighbour coupling |
+| base_wafer_usd | $3,000 -> $3,450 | RT-PROC-03, RT-PROC-04 | stacked 2T top + single merged bitline masks, replacement-metal steps |
+| usd_per_tier | $25 -> $38 | RT-PROC-04, RT-IND-03 | wrapped tri-layer tier + replacement + poly recess |
+| tier_yield | 0.998 -> 0.995 | RT-IND-03 | 0.998 is a requirement, not a demonstration; 0.998/0.99 kept as sensitivity |
+| contact list | AgOx 1.10 eV counted as the reachable class -> AgOx/PtOx/Pt/Ag/Pd = planar diagnostics only | RT-DEV-01, RT-PROC-01 | Ag2O decomposes 300-400 C; no volatile etch products; fab contaminants |
+| leakage model | thermionic only -> + Poole-Frenkel/TAT sensitivity (extra lowering = image-force term) | RT-DEV-02 | gate decisions move to measured ring leakage, not thick-film barrier |
+
+### 12b. Plate RC, drivers and staircase (RT-CIRC-03)
+
+Distributed-RC (Elmore 0.5 r c L^2) of one plate segment. Mesh sheet resistance = R_sq x (1+f)/(1-f) for insulating circular openings of area fraction f (Maxwell-Garnett). Load per node during the dump = Cs x Cp/(Cs+Cp) + plate-to-plate. 'Centre-driven' halves the effective length.
+
+| Plate | R_sq ohm/sq | Opening radius nm | Mesh R ohm/sq | Load per node fF | Rows | Segment um | Drive | RC ns | Drivers per mm2 (32 tiers) | um2 per driver | Staircase overhead 32 / 64 tiers |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| TiN 25 nm back-wall (pre-red-team) | 60.0 | 50.5 | 205 | 0.231 | 4 | 50 | end | 4.0 | 1.18M | 0.85 | 22% / 45% |
+| TiN 25 nm back-wall (pre-red-team) | 60.0 | 50.5 | 205 | 0.231 | 4 | 200 | end | 64.7 | 0.29M | 3.40 | 6% / 11% |
+| Mo 25 nm back-wall | 10.0 | 50.5 | 34 | 0.231 | 8 | 300 | centre | 6.1 | 0.10M | 9.64 | 4% / 7% |
+| Mo 2 x 10 nm wrapped (base) | 12.5 | 35.0 | 21 | 0.436 | 8 | 300 | centre | 7.2 | 0.10M | 9.64 | 4% / 7% |
+
+Reading: the critic's TiN numbers reproduce (50 um segments for <=10 ns need ~1.2M drivers/mm2 at 0.85 um2 each). Mo replacement plates (10x lower R_sq) plus the wrapped tier (Mo layers are perforated only by the 60 nm hole) allow 300 um centre-driven segments at <=10 ns: ~0.1M drivers/mm2, ~10 um2 each, room for a ~2 V thick-oxide driver or a NAND-style pass gate fed by global plate drivers. The staircase is now priced in density (one per segment).
+
+### 12c. Readout budget and the gain-FET length lever (RT-CIRC-01)
+
+RTN tail scales ~1/(W L) and SF random noise ~1/sqrt(W L); the gate capacitance scales ~L. Wrapped base cell:
+
+| Gain-FET L nm | c_gain fF | RTN tail mV | sigma_SF mV | max tiers (z >= 3.72) | allowed residual @64 mV | x 1-beta @ max tiers |
+|---|---|---|---|---|---|---|
+| 50 | 0.25 | 20.0 | 2.50 | 110 | 39.9 | 6.4 |
+| 100 | 0.50 | 10.0 | 1.77 | 206 | 36.2 | 10.9 |
+| 150 | 0.75 | 6.7 | 1.44 | 281 | 33.0 | 14.0 |
+
+Reading: in PIXEL-STACK units the back-wall cell tolerated ~26 mV of residual at 32 tiers but fails at 64 tiers once a 13-25 mV RTN tail is added; the wrapped cell holds 64 tiers with a 20-25 mV tail, and a longer in-hole gain FET pushes the ceiling further. RTN-outlier pillars can also be screened and spared at test (1% spare pillars caps an exponential RTN tail at ~4.6x instead of ~9.2x its mean).
+
+### 12d. Write/read temperature mismatch (RT-CIRC-02)
+
+Clamp-write V_f temperature coefficient (1.10 eV contact, I_end): 1.33 mV/K. Every refresh is a dump read plus a clamp write-back, so a stored level is re-written at the current temperature at least once per refresh interval; write-to-read temperature difference <= slew x interval.
+
+| Case | dT K | dV_f mV | Pillar offset 32 tiers mV | Pillar offset 64 tiers mV | Share of half-margin @64 |
+|---|---|---|---|---|---|
+| Critic: write 85 C, read 25 C (never refreshed) | 60.00 | 79.6 | 26.15 | 18.21 | 39.8% |
+| 64 ms refresh, 10 K/s slew | 0.64 | 0.8 | 0.28 | 0.19 | 0.4% |
+| 64 ms refresh, 100 K/s slew | 6.40 | 8.5 | 2.79 | 1.94 | 4.2% |
+| 1 s refresh (G2 mode), 10 K/s slew | 10.00 | 13.3 | 4.36 | 3.04 | 6.6% |
+
+### 12e. Plate-to-adjacent-node coupling (RT-CIRC-04)
+
+| Cell | Coupling to plate k+1 / node k+1 fF | Node total fF | Coupled step on node k mV (swing 1.9 V) | Guard 0.3 V left after 100 mV droop mV |
+|---|---|---|---|---|
+| back-wall, node-node only (parallel plate) | 0.0045 | 0.284 | 29 | 171 |
+| back-wall, + plate fringe 0.003-0.01 fF | 0.0145 | 0.284 | 92 | 108 |
+| wrapped: own Mo layers shield node k+1 [ESTIMATE <= 0.0005 fF] | 0.0005 | 0.607 | 2 | 198 |
+
+### 12f. Contacts, integrability and tail retention in the base cell (RT-DEV-01/02/03, RT-PROC-01)
+
+Tier phi_eff from the thick-film barrier (eps 4 / 12), tail at the stated sigma, 85 C, hold 0.8 V. 'PF' = Poole-Frenkel/TAT-limited case (activation = barrier - 2 x image force - TFE).
+
+| Contact | Low-field eV | sigma eV | Process-integrable? | Tail retention, thermionic (eps 4 / 12) | Tail retention, PF (eps 4 / 12) |
+|---|---|---|---|---|---|
+| Pt-IGZO, O2 in deposition (KIT secondary) | 0.92 | 0.05 | no: Pt not dry-etchable, fab contaminant | 214 us / 800 us | 815 ns / 33 us |
+| AgOx/ZnO single crystal (AVS 2008) | 1.10 | 0.05 | no: Ag2O decomposes 300-400 C; Ag diffuses | 34 ms / 145 ms | 97 us / 5 ms |
+| Pd on a-HIZO (JBNU), mean, Werner-Guttler | 1.40 | 0.14 | no (Pd), but shows high means on amorphous oxides | 2 ms / 10 ms | 4 us / 277 us |
+| RuO2 / IrO2 on GaN (POSTECH), analogue only | 1.45 | 0.05 | Ru yes (RuO4 etch); IGZO value unknown | 591.3 s / 3.2e+03 s | 1.0 s / 82.3 s |
+| Hypothetical integrable RuO2/IGZO, bottom anode | 1.20 | 0.05 | target of the coupon matrix | 563 ms / 2.6 s | 1 ms / 82 ms |
+
+### 12g. G1 bar: thermionic vs Poole-Frenkel, and the bottom-anode penalty (RT-DEV-02, RT-DEV-03)
+
+| Leakage mechanism | Thick-film barrier needed for G1, eps 12 - eps 4 | Top-contact-equivalent if the bottom anode loses 0.1-0.3 eV |
+|---|---|---|
+| Thermionic + image force + TFE (model) | 1.06-1.11 eV | 1.16-1.41 eV |
+| Poole-Frenkel / trap-assisted (2x image-force lowering) | 1.18-1.33 eV | 1.28-1.63 eV |
+
+No process-integrable anode has an IGZO datum. Against the best IGZO datum of any kind (Pt, 0.92 eV, not integrable) the gap is 0.14-0.41 eV before any bottom-anode loss (0.24-0.71 eV with it). Every 0.031 eV is a factor e in leakage at 85 C.
+
+### 12h. Flipped polarity (anode = pillar core, deposited last onto IGZO) - evaluated and rejected
+
+A core anode is a top contact (as in the literature) and needs no anode etch-back, but it sits at the inner radius of the coaxial shell, where the charge-free field is highest.
+
+| Hole / shell nm | Outer-anode field MV/cm | Lowering eps 4 / 12 eV | Inner-anode field MV/cm | Lowering eps 4 / 12 eV | Penalty eV |
+|---|---|---|---|---|---|
+| 60 / 15 | 0.91 | 0.26 / 0.19 | 1.83 | 0.58 / 0.48 | 0.29-0.32 |
+| 80 / 15 | 1.01 | 0.29 / 0.21 | 1.62 | 0.50 / 0.40 | 0.19-0.21 |
+| 100 / 20 | 0.74 | 0.22 / 0.15 | 1.24 | 0.36 / 0.27 | 0.12-0.14 |
+
+Reading: the flip costs ~0.2-0.3 eV of extra lowering, as much as or more than the 0.1-0.3 eV bottom-anode loss it avoids. It stays a planar diagnostic (top-anode controls), not the design.
+
+### 12i. Squaring the leakage tail: series diodes (I-12627) vs profiled tier repair
+
+| Option | Effective quantile | Tail multiplier | Barrier credit eV | Cost |
+|---|---|---|---|---|
+| Base (one diode, no profiling) | 1e-4 | 96 | 0 | - |
+| Two series diodes per tier (I-12627 logic; min of two independent leakages) | 1e-2 | 17 | 0.053 | second shell + anode liner: pitch 121 -> 147 nm (footprint x1.48); V_f doubles (+~1.1 V plate swing); defects in one hole are likely correlated |
+| Profiled tier repair: map out the worst 2% of tiers at test (2 spares per 32) | 2e-2 | 13 | 0.061 | -3% bits per pillar; needs leakage stable in time (no VRT) - a 1,000 h re-test |
+
+### 12j. Plate-strip sensing (I-12302) vs the tower's pillar
+
+I-12302 clamps the bitline and senses a ~3.7 fF plate strip (~135 mV vs ~14 mV on a long bitline). The tower already senses a short local node: the pillar is 1.21 fF at 32 tiers and gives 164 mV. Its plates are page-wide (thousands of nodes), so plate sensing would raise, not cut, the sense capacitance. I-12302 is already embodied; it does not fix the gain-FET noise.
+
+### 12k. Stack stress (RT-PROC-04)
+
+Stoney: bow = 3 sigma t_f r^2 / (E' t_s^2), 300 mm wafer (r 150 mm), 775 um Si, E' 180.5 GPa.
+
+| Stack | Metal um | 1.0 GPa | 0.5 GPa | 0.3 GPa | 0.15 GPa |
+|---|---|---|---|---|---|
+| 64 x 25 nm TiN (pre-red-team) | 1.60 | 996 um | 498 um | 299 um | 149 um |
+| 32 x 2 x 10 nm Mo | 0.64 | 398 um | 199 um | 120 um | 60 um |
+| 64 x 2 x 10 nm Mo | 1.28 | 797 um | 398 um | 239 um | 120 um |
+
+Hole aspect ratio with the 65 nm wrapped tier: 35 at 32 tiers, 69 at 64 (two 32-tier decks, NAND-style). The <=150 um bow target needs <=~0.15-0.2 GPa net film stress or a backside compensation film.
+
+### 12l. Cost vs the incumbent curve (RT-IND-03)
+
+| Tiers | x 1-beta density | $/bit vs 1-beta today (yield 0.99 / 0.995 / 0.998) | vs 2032 incumbent at -8%/yr (0.61x) | at -12%/yr (0.46x) |
+|---|---|---|---|---|
+| 32 | 2.0 | 0.86 / 0.73 / 0.66 | 1.20 | 1.57 |
+| 64 | 3.9 | 0.76 / 0.55 / 0.45 | 0.91 | 1.18 |
+| 96 | 5.7 | 0.87 / 0.53 / 0.40 | 0.88 | 1.15 |
+| 128 | 7.3 | 1.08 / 0.57 / 0.39 | 0.94 | 1.22 |
+
+Per-tier cost $38 vs AND-STACK $30 and PIXEL-STACK $25 + $250 per 16-tier deck (their models): the tower's tier is not <= 50% of theirs. Its distinct portfolio value is the two-terminal per-tier device (no per-tier transistor), not the cost per tier.
+
+### 12m. Top of pillar (RT-PROC-03)
+
+Read-select device removed (gain-FET source = read word line, as in 2T0C); write and read bitlines merged; access and gain FETs stacked in-line as vertical channel-all-around IGZO devices in the pillar's own footprint (IMECAS vertical CAA 2T0C beyond 4F2, IEDM 2021). Bitline pitch = pillar pitch = 121 nm (single ArFi exposure, >= ~80 nm). Transistors per user bit: 2/30 = 0.067 at 32 tiers, 2/61 = 0.033 at 64. Added masks priced as +$450 in base_wafer_usd.
 
 ## Inputs
 | Name | Value | Unit | Source |
@@ -304,7 +455,15 @@ Density context: parity at 18 tiers and 3x at 50 tiers in this geometry; the ste
 | ild_nm | 25 | nm | ESTIMATE: inter-tier SiO2 |
 | plate_web_nm | 20 | nm | ESTIMATE: minimum continuous plate metal between neighbouring recesses |
 | slit_nm | 60 | nm | ESTIMATE: plate-segment slit width (3D-NAND-like block slit) |
-| rows_per_plate | 4 | rows | ESTIMATE: pillar rows sharing one plate segment (a page = all pillars on a segment) |
+| rows_per_plate | 8 | rows | RED-TEAM (RT-CIRC-03): was 4. 8 rows halves slit overhead and plate-driver count; replacement slits every ~1 um |
+| cell_wrap | True | - | RED-TEAM (RT-CIRC-01): was back-wall only. Node sits in a poly recess between two Mo plate layers (plate wraps top, bottom, back) |
+| wrap_plate_nm | 10 | nm | ESTIMATE: each of the two Mo plate layers per wrapped tier (replacement metal, NAND-style) |
+| wrap_node_layer_nm | 25 | nm | ESTIMATE: sacrificial/back-wall n+ poly layer that is recessed to hold the node (node height = 25 - 2 x ZrO2) |
+| ild_wrap_nm | 20 | nm | ESTIMATE: inter-tier SiO2 between plate k top layer and plate k+1 bottom layer |
+| wrap_pullback_nm | 5 | nm | ESTIMATE: Mo plate edge pulled back from the hole face and back-filled with SiO2 (limits plate-to-pillar coupling) |
+| rho_plate_uohm_cm | 25 | uOhm.cm | ESTIMATE: 10 nm ALD/CVD Mo (thin-film size effect; bulk 5.3); TiN 25 nm ~100-150 for comparison |
+| seg_len_um | 300 | um | RED-TEAM (RT-CIRC-03): plate segment length, driven from its centre (RC of a 150 um end-driven line) |
+| stair_step_um | 0.35 | um/tier | ESTIMATE: staircase step per tier at each segment (3D-NAND-like); binary-chop multi-depth contacts would cut it ~5x |
 | eps_igzo | 12 | - | ESTIMATE: a-IGZO static permittivity ~10-16 (training knowledge) |
 | m_eff_igzo | 0.34 | m0 | ESTIMATE: a-IGZO electron effective mass ~0.3-0.35 m0 (training knowledge) |
 | c_gain_fF | 0.25 | fF | ESTIMATE: vertical IGZO gain-FET gate, 60 nm dia x 50 nm, 6 nm HfO2 |
@@ -312,10 +471,14 @@ Density context: parity at 18 tiers and 3x at 50 tiers in this geometry; the ste
 | c_top_fF | 0.1 | fF | ESTIMATE: pillar top wiring |
 | c_fringe_tier_fF | 0.005 | fF | ESTIMATE: pillar core to plate fringe through ILD per tier |
 | v_data | 0.5 | V | FINAL_CONCEPTS step_change: 0.5 V data swing |
-| m_rev | 0.2 | V | ESTIMATE: reverse-bias guard so no unselected node ever forward-biases |
+| m_rev | 0.3 | V | RED-TEAM (RT-CIRC-04): was 0.2. Guard covers 100 mV droop of '1' nodes plus plate-to-neighbour coupling |
 | t_write_ns | 10 | ns | FINAL_CONCEPTS: <=10-20 ns write |
 | ideality | 1.3 | - | PtOx/ZnO n=1.31 (https://livrepository.liverpool.ac.uk/3015044/); IGZO SBD n=1.35 (PKU poster, sources log) |
-| sigma_cds_mV | 7 | mV | ESTIMATE: midpoint of concept's 5-10 mV post-CDS residual (PIXEL-STACK/MARGIN-STACK key unknown) |
+| sigma_rand_mV | 2.5 | mV rms | models/pixel-stack.py: random post-CDS readout sigma 2.49 mV for a 0.01 um2 oxide SF (thermal + 1/f after CDS) |
+| rtn_tail_mV | 20 | mV | RT-CIRC-pixel-stack-02: 1e-4 RTN tail 9-18 x q/(Cox W L) = 13-25 mV for a ~0.01 um2 oxide FET; midpoint |
+| coupling_mV | 1.2 | mV | models/pixel-stack.py: neighbour coupling after decision feedback |
+| gain_L_nm | 50 | nm | ESTIMATE: in-hole gain-FET channel length (sets c_gain_fF and the RTN tail; lever in section 12) |
+| temp_slew_K_s | 10 | K/s | ESTIMATE [UNVERIFIED]: LPDDR MR4-polling examples assume ~10 C/s die temperature gradient |
 | droop_mV | 100 | mV | FINAL_CONCEPTS: 100 mV node droop budget |
 | ber_target | 0.0001 | - | RAW-BER CONTRACT: BCH t=8 per 512 b at raw BER 1e-4 (stage2 I-11559) |
 | ecc_rawber | 1.156 | - | stage2 I-11559: 80 check bits per 512 data bits |
@@ -328,9 +491,9 @@ Density context: parity at 18 tiers and 3x at 50 tiers in this geometry; the ste
 | phi_agox_zno_eV | 1.1 | eV | AgOx/ZnO 1.00-1.20 eV (https://www2.avs.org/symposium2008/Papers/Paper_EM-TuM3.html) |
 | sigma_patch_eV | 0.05 | eV | ESTIMATE: patch-barrier sigma after pinch-off; Gaussian-inhomogeneity literature spans ~0.03-0.15 eV |
 | eps_if | 4 | - | ESTIMATE: optical permittivity n^2 ~4 for image force (fast electrons); 12 (static) is the optimistic bound |
-| base_wafer_usd | 3000 | $ | A1 section 6 base 3D scenario (CMOS-under-array + top layers) |
-| usd_per_tier | 25 | $/tier | ESTIMATE: between A1 optimistic $20 and base $30 (2 depositions/tier, no per-tier litho) |
-| tier_yield | 0.998 | - | A1 section 6: >=0.998 per tier after repair needed |
+| base_wafer_usd | 3450 | $ | RED-TEAM (RT-PROC-03, RT-PROC-04): was 3000 (A1 base 3D). +~7 masks for the stacked 2T top and bitline, slit/replacement steps, ~$450 |
+| usd_per_tier | 38 | $/tier | RED-TEAM (RT-PROC-04, RT-IND-03): was 25. 4 films/tier (SiO2, SiN, poly, SiN) + share of Mo replacement and poly recess |
+| tier_yield | 0.995 | - | RED-TEAM (RT-IND-03): was 0.998 (A1 requirement, undemonstrated). 0.998 and 0.99 shown as sensitivity |
 | c_rbl_fF | 15 | fF | ESTIMATE: read bitline, 128 pillars x 0.08 fF + 5 fF |
 | c_wbl_fF | 15 | fF | ESTIMATE: write bitline, same loading |
 | dv_rbl | 0.15 | V | ESTIMATE: read-bitline swing for the CDS comparator |

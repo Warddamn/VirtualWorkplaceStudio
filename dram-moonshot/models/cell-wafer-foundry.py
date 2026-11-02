@@ -22,6 +22,10 @@ What this model computes (pure stdlib; run from dram-moonshot/ with `python3 mod
 
 Every input carries a source URL / repo pointer or "ESTIMATE: basis". Output is printed and written to
 research/stage3/cell-wafer-foundry_model_output.md.
+
+RED-TEAM REVISIONS (2026-11-02): see the RED_TEAM_REVISIONS block after INPUTS (old -> new, objection id) and
+section 10 of the output. `python3 models/cell-wafer-foundry.py --original` reproduces the pre-red-team numbers
+(printed only; the output file is not overwritten).
 """
 import math
 import os
@@ -105,7 +109,59 @@ INPUTS = {
     "tier_yield_repaired": (0.998, "A1 s6: per-tier killer-defect probability must reach <=0.2% after repair"),
     "particle_density_cm2": (0.05, "ESTIMATE: >=0.5 um particles per cm2 on a fab-grade pre-bond surface; university-fab surfaces are likely 10-100x worse"),
     "cell_tool_intensity": (0.8, "ESTIMATE: capex per $ of processing for a dep/etch cell line relative to an EUV DRAM line"),
+    # ---- keys added by the red team (neutral values here = the pre-red-team model; revised values below) ----
+    "ecc_gain": (1.0625, "models/dram_cell_physics.py INPUTS ecc_factor: gain cells sense a 100 mV current-mode swing, not the MARGIN STACK 26 mV threshold, so DDR5 on-die ECC parity applies"),
+    "c_cpl_fF_per_um": (0.0, "pre-red-team model: global-line to global-line coupling omitted"),
+    "shield_factor": (1.0, "multiplier on neighbour coupling (1 = unshielded)"),
+    "tier_t_nm": (70.0, "geometry: 64 tiers in ~4.5 um of stack (RT-PROC-cell-wafer-foundry-02)"),
+    "har_cd_nm": (40.0, "FINAL_CONCEPTS.json F ~40 nm: per-cell isolation slit CD along the WL at 80 nm pitch"),
+    "ar_max": (60.0, "RT-PROC-cell-wafer-foundry-02: production HAR etch limit ~50-70; 60 = mid"),
+    "deck_cost": (0.0, "pre-red-team model: no per-deck HAR/staircase module cost (all folded into $/tier)"),
+    "cell_common_adders": (0.0, "pre-red-team model: no shielded global-line metal, sub-WL driver TFT plane or hydrogen-barrier stack"),
+    "dbi_royalty_frac": (0.0, "pre-red-team model: no hybrid-bonding (Adeia DBI) royalty"),
+    "c_wl_cell_fF": (0.04, "ESTIMATE: GAA oxide-cell gate load per cell on a tier word line"),
+    "i_tft_uA_per_um": (200.0, "ESTIMATE: short-channel ALD In2O3 TFT drive at ~2 V overdrive (Purdue ALD In2O3 class devices; [UNVERIFIED-training])"),
+    "a_swd_um2": (0.45, "ESTIMATE: bootstrapped n-only sub-WL driver = pass TFT (W ~0.8 um, ~0.32 um2 with contacts) + VNWL clamp TFT (~0.1 um2)"),
+    "bootstrap_beta": (0.7, "ESTIMATE: Cgs/(Cgs+Cpar) bootstrap ratio of the pass TFT gate node (1980s NMOS DRAM SWD practice)"),
+    "vpp_V": (3.0, "dossier s5 spec v0.1: VPP <= 3.0 V"),
+    "vt_tft_V": (0.8, "ESTIMATE: oxide pass-TFT Vt at end of life incl. +0.1 V PBTI drift (I-02936 critics 50-100 mV)"),
+    "r_sel_kohm": (100.0, "RT-CIRC-cell-wafer-foundry-03: oxide group-select R_on ~50-100 kOhm at 40 nm IGZO (upper value)"),
+    "saddle_bow_um": ((300.0, -550.0), "SPIE 11326 (3D NAND bow +300/-550 um; RT-PROC-cell-wafer-foundry-01 reads it as a saddle)"),
+    "d2w_place_3s_um": (0.10, "Besi Datacon 8800 CHAMEO ultra plus AC: 100 nm @ 3 sigma (research/sources/resp-cell-wafer-foundry.jsonl)"),
+    "die_side_mm": (4.0, "geometry: ~16 mm2 die -> ~4 mm side; die-level flattening run-out uses half-side 2 mm"),
+    "h_inventory_cm2": ((2e14, 5e14), "RT-DEV-cell-wafer-foundry-01: Si-OH condensation releases ~2-5e14 H2O/cm2 at the bond plane"),
+    "eot_tft_nm": (3.0, "RT-DEV-cell-wafer-foundry-01: donor-sheet Vt arithmetic at EOT 3 nm"),
+    "dvt_spec_mV": (20.0, "dossier GO: post-bond dVt <= 20 mV"),
+    "barrier_atten_single": (18.0, "Ajou ALD Al2O3 H barrier: -12 V (H2O-Al2O3) vs -0.66 V (O3-Al2O3) shift under H exposure = ~18x (resp-cell-wafer-foundry.jsonl)"),
+    "D0_H2_sio2_cm2s": (5.65e-4, "H2 in vitreous silica, D = 5.65e-4 exp(-0.45 eV/kT) cm2/s [UNVERIFIED-training, classic Shelby-type value]"),
+    "Ea_H2_sio2_eV": (0.45, "as above [UNVERIFIED-training]"),
+    "cell_kgd_capture": (1.0, "pre-red-team model: D2W discards every bad cell die before bonding (perfect cell-side known-good-die)"),
 }
+
+# ============================================================================================
+# RED-TEAM REVISIONS (2026-11-02; owner response to research/redteam/rt_{DEV,PROC,CIRC,IND}.json)
+# Each entry: key, old -> new, objection id(s). ORIGINAL keeps the pre-red-team inputs so s10 can
+# print the original base case next to the revised one. Run with --original to reproduce the
+# pre-red-team output exactly.
+# ============================================================================================
+ORIGINAL = dict(INPUTS)
+RED_TEAM_REVISIONS = [
+    # key, new value, justification, objection id(s)
+    ("ecc", 1.156, "1.0625 -> 1.156: the 26 mV MARGIN STACK threshold exists only with BCH t=8 (15.6% parity) at raw BER 1e-4", "RT-CIRC-cell-wafer-foundry-02"),
+    ("c_cpl_fF_per_um", 0.05, "0 -> 0.05 fF/um per side: ~2/3 of the 0.15 fF/um global line is lateral coupling to the neighbour line at 80 nm pitch [ESTIMATE]; gives alpha ~0.12-0.14 unshielded, inside CIRC's 0.1-0.2", "RT-CIRC-cell-wafer-foundry-02"),
+    ("shield_factor", 0.25, "1.0 -> 0.25: redesign routes global lines on 2 metal levels with a grounded shield between neighbours; residual = second-neighbour + inter-level coupling [ESTIMATE]", "RT-CIRC-cell-wafer-foundry-02"),
+    ("a_sa_um2", 4.0, "2.5 -> 4.0 um2: offset-cancelled SA with ECC-grade ~7 mV sigma, write driver and restore through an oxide group select, in 28 nm logic devices", "RT-CIRC-cell-wafer-foundry-03"),
+    ("deck_cost", 800.0, "0 -> $800 per deck: AR-110 per-cell isolation at 80 nm pitch forces decks of <= AR 60 (2 decks at 64 tiers, 4 at 128), each repeating HAR modules, staircase and inter-deck plug [ESTIMATE; 64-tier cell wafer ~1.7x the original, RT-PROC's 2x as the high case]", "RT-PROC-cell-wafer-foundry-02"),
+    ("cell_common_adders", 200.0, "0 -> $200/cell wafer: 2 shielded global-line metal levels (~$120), a dedicated bootstrapped sub-WL driver TFT plane (~$60), Al2O3/low-H SiN/Al2O3 hydrogen-barrier stack (~$20) [ESTIMATE]; also needed by monolithic CuA, so excluded from the null-hypothesis delta", "RT-CIRC-cell-wafer-foundry-01/02, RT-DEV-cell-wafer-foundry-01/03"),
+    ("bond_cost_pair", 500.0, "$400 -> $500/pair: contamination-segregated or qualified bond/CMP line (bevel and backside encapsulation, VPD-ICPMS monitoring <=1e10 at/cm2 In/Ga/Zn) [ESTIMATE]", "RT-PROC-cell-wafer-foundry-03"),
+    ("d2w_extra_cost", 600.0, "$300 -> $600/pair: D2W becomes the primary mode, so price it by throughput: ~3,000 x 20 mm2 dies per wafer at ~1,000 CPH real (2,000 CPH dry cycle) = ~3 h of a ~$200/h hybrid bonder plus singulation/clean [ESTIMATE]", "RT-PROC-cell-wafer-foundry-01"),
+    ("cell_kgd_capture", 0.5, "1.0 -> 0.5: a cell-only wafer has no sense amps, so only WL/BL continuity-short e-test via probe pads and inline inspection screen cell dies before bonding; half of tier killers caught [ESTIMATE]; owner self-correction found while answering", "RT-PROC-cell-wafer-foundry-01, RT-IND-cell-wafer-foundry-02"),
+    ("dbi_royalty_frac", 0.01, "0 -> 1% of pair cost: hybrid-bonding (Adeia DBI) licence [ESTIMATE; terms confidential]", "RT-IND-cell-wafer-foundry-05"),
+]
+REVISED = "--original" not in sys.argv
+if REVISED:
+    for _k, _v, _why, _ids in RED_TEAM_REVISIONS:
+        INPUTS[_k] = (_v, f"RED-TEAM REVISION ({_ids}): {_why}; was {ORIGINAL[_k][0]}")
 
 
 def V(k):
@@ -157,7 +213,7 @@ def solve_group(cell, n_tiers, pitch_um, dv_min_mV=None, max_iter=60, a_sa=None)
     cell: '1T1C' (lateral capacitor sized to the sense criterion) or 'GAIN' (fixed footprint).
     Returns dict or None if infeasible."""
     px = V("p_x_nm") * 1e-3
-    dv_min = dv_min_mV if dv_min_mV is not None else V("dv_min_margin_mV")
+    dv_min0 = dv_min_mV if dv_min_mV is not None else V("dv_min_margin_mV")
     L_cap = 0.4  # um, start
     res = None
     for _ in range(max_iter):
@@ -180,24 +236,28 @@ def solve_group(cell, n_tiers, pitch_um, dv_min_mV=None, max_iter=60, a_sa=None)
         L_glob = math.sqrt(M * a_fp) if cell == "GAIN" else M * row
         c_bond = bond_pad_cap_fF(pitch_um)
         cbl = n_tiers * V("c_tier_fF") + (M - 1) * V("c_off_fF") + L_glob * V("c_wire_fF_per_um") + c_bond + V("c_sa_in_fF")
+        # RED-TEAM (RT-CIRC-02): data-dependent coupling from the two neighbouring global lines (worst case: both swing
+        # opposite) removes 2*alpha of the signal, so the raw signal must be dv_min / (1 - 2 alpha).
+        alpha = V("c_cpl_fF_per_um") * V("shield_factor") * L_glob / cbl
+        dv_min = dv_min0 / (1 - 2 * alpha) if cell == "1T1C" else dv_min0
         if cell == "1T1C":
             cs = dv_min * cbl / (V("dv_cell_mV") - dv_min)
             L_new = cs / (c_area_fF_per_um2(V("eot_nm")) * V("cap_perim_nm") * 1e-3)
-            res = dict(a_fp=a_fp, row=row, M=M, m_bond=m_bond, m_sa=m_sa, n_wl=n_wl, cbl=cbl, cs=cs, L_cap=L_new, a_sa=a_sa_v,
-                       c_bond=c_bond, L_glob=L_glob, limiter="bond" if m_bond >= m_sa else "SA area")
+            res = dict(cell=cell, a_fp=a_fp, row=row, M=M, m_bond=m_bond, m_sa=m_sa, n_wl=n_wl, cbl=cbl, cs=cs, L_cap=L_new, a_sa=a_sa_v,
+                       c_bond=c_bond, L_glob=L_glob, alpha=alpha, dv_req=dv_min, limiter="bond" if m_bond >= m_sa else "SA area")
             if abs(L_new - L_cap) < 1e-4:
                 break
             L_cap = 0.5 * (L_cap + L_new)
         else:
             t_read_ns = cbl * 1e-15 * V("dv_sense_gain_mV") * 1e-3 / (V("i_read_uA") * 1e-6) * 1e9
-            res = dict(a_fp=a_fp, row=row, M=M, m_bond=m_bond, m_sa=m_sa, n_wl=n_wl, cbl=cbl, cs=0.0, L_cap=0.0, a_sa=a_sa_v,
-                       c_bond=c_bond, L_glob=L_glob, t_read_ns=t_read_ns, limiter="bond" if m_bond >= m_sa else "SA area")
+            res = dict(cell=cell, a_fp=a_fp, row=row, M=M, m_bond=m_bond, m_sa=m_sa, n_wl=n_wl, cbl=cbl, cs=0.0, L_cap=0.0, a_sa=a_sa_v,
+                       c_bond=c_bond, L_glob=L_glob, alpha=alpha, dv_req=dv_min, t_read_ns=t_read_ns, limiter="bond" if m_bond >= m_sa else "SA area")
             break
     return res
 
 
 def die_model(g, n_tiers):
-    bits = V("die_gbit") * 1e9 * V("ecc")
+    bits = V("die_gbit") * 1e9 * (V("ecc") if g.get("cell", "1T1C") == "1T1C" else V("ecc_gain"))
     array_mm2 = bits * g["a_fp"] / n_tiers * 1e-6
     stair = n_tiers * V("stair_step_um") / V("wl_len_um")
     cell_side = array_mm2 * (1 + stair + V("cell_edge_frac"))
@@ -273,12 +333,23 @@ def utilisation():
     return area_used / V("wafer_area_mm2") / V("ddr5_yield"), gb_per_wafer
 
 
+def n_decks(n_tiers):
+    """RED-TEAM (RT-PROC-02): decks forced by the per-cell isolation slit aspect ratio."""
+    deck_h = V("har_cd_nm") * V("ar_max")
+    return max(1, math.ceil(n_tiers * V("tier_t_nm") / deck_h))
+
+
+def cell_wafer_cost(n_tiers, tc=None):
+    tc = mid(V("tier_cost")) if tc is None else tc
+    return V("cell_base_cost") + V("cell_common_adders") + n_tiers * tc + n_decks(n_tiers) * V("deck_cost")
+
+
 def cost_per_gb(die, n_tiers, p_link, pitch, tier_cost=None, periph_cost=None, particle=None, d2w=False, f_global=None):
     util, _ = utilisation()
     tc = mid(V("tier_cost")) if tier_cost is None else tier_cost
     pc = mid(V("periph_wafer_cost")) if periph_cost is None else periph_cost
-    c_cell = V("cell_base_cost") + n_tiers * tc
-    c_pair = c_cell + pc + V("bond_cost_pair")
+    c_cell = cell_wafer_cost(n_tiers, tc)
+    c_pair = (c_cell + pc + V("bond_cost_pair")) * (1 + V("dbi_royalty_frac"))
     y_cell = V("tier_yield_repaired") ** n_tiers
     y_per = periph_yield(die["die_mm2"])
     y_link = link_yield(die["n_sig"] + die["n_wl"], p_link) * short_yield(die["n_sig"] + die["n_wl"], p_link, f_global)
@@ -286,9 +357,12 @@ def cost_per_gb(die, n_tiers, p_link, pitch, tier_cost=None, periph_cost=None, p
     y_void = void_yield(die["die_mm2"], R, V("particle_density_cm2") if particle is None else particle, w2w=not d2w)
     gb = V("wafer_area_mm2") * util * die["dens"] / 8.0
     if d2w:
-        # known-good-die: discard bad halves before bonding; pay each half / its own yield
-        good_cost = c_cell / y_cell + pc / y_per + V("bond_cost_pair") + V("d2w_extra_cost")
-        y = y_link * y_void
+        # known-good-die: periphery dies are fully tested (logic BIST); cell dies are screened with capture k (RED-TEAM:
+        # cell_kgd_capture). Passed cell dies = y_c + (1-k)(1-y_c); undetected bad cell dies still reach the bond.
+        k = V("cell_kgd_capture")
+        passed = y_cell + (1 - k) * (1 - y_cell)
+        good_cost = c_cell / passed + pc / y_per + V("bond_cost_pair") + V("d2w_extra_cost") + V("dbi_royalty_frac") * (c_cell + pc + V("bond_cost_pair"))
+        y = (y_cell / passed) * y_link * y_void
         return (good_cost / (gb * y) if y > 1e-9 else float("inf")), dict(y_cell=y_cell, y_per=y_per, y_link=y_link, y_void=y_void, y=y, c_pair=c_pair)
     y = y_cell * y_per * y_link * y_void
     return (c_pair / (gb * y) if y > 1e-9 else float("inf")), dict(y_cell=y_cell, y_per=y_per, y_link=y_link, y_void=y_void, y=y, c_pair=c_pair)
@@ -517,12 +591,17 @@ def s5_yield(table):
       f"350 C / 16 h = {doses[(350, 16, e0)]:.0f}-{doses[(350, 16, e1)]:.0f} yr.")
     p("  If the cell's 85 C drift is pre-characterised, the bond-induced shift is predictable. Keep the anneal <=250 C (Cu/SiCN bonding at")
     p("  180 C has been reported) so the bond consumes <~0.4 yr of the 10-yr drift budget.")
+    if REVISED:
+        p("- RED-TEAM CAVEAT (RT-DEV-cell-wafer-foundry-02, RT-PROC-04): this single-Ea map is a LOWER BOUND, not a basis for the <=250 C spec.")
+        p("  At bond temperatures H release from SiCN/SiN, H transport through barriers and O exchange in IGZO switch on; none runs at 85 C.")
+        p("  The spec temperature is set by measured dVt vs anneal (150/200/250/300 C) plus 3 x 260 C reflow on coupons (s10).")
 
 
 def s6_cost(table, util, gbw):
     hr("6. Cost per GB, EUV removed, capex, and the monolithic null hypothesis")
-    p(f"Cell wafer = ${V('cell_base_cost'):.0f} + tiers x $/tier; periphery 28 nm = ${mid(V('periph_wafer_cost')):,.0f}; bond+thin = ${V('bond_cost_pair'):.0f} per pair "
-      f"(D2W +${V('d2w_extra_cost'):.0f}); per-tier repaired yield {V('tier_yield_repaired')}; p_link {V('p_link_base'):.0e}; particles {V('particle_density_cm2')}/cm2.")
+    p(f"Cell wafer = ${V('cell_base_cost'):.0f} + ${V('cell_common_adders'):.0f} adders + tiers x $/tier + decks x ${V('deck_cost'):.0f} (deck <= AR {V('ar_max'):.0f} at {V('har_cd_nm'):.0f} nm CD); "
+      f"periphery 28 nm = ${mid(V('periph_wafer_cost')):,.0f}; bond+thin = ${V('bond_cost_pair'):.0f} per pair "
+      f"(D2W +${V('d2w_extra_cost'):.0f}); DBI royalty {V('dbi_royalty_frac'):.0%} of pair; per-tier repaired yield {V('tier_yield_repaired')}; p_link {V('p_link_base'):.0e}; particles {V('particle_density_cm2')}/cm2.")
     p("")
     p("| cell | tiers | pitch | Gb/mm2 | wafer-pair $ | periphery share | Y total | $/GB W2W | x DDR5 | $/GB D2W (KGD) | $/GB @$20/tier | @$45/tier | @$1.9k periphery |")
     p("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
@@ -568,8 +647,9 @@ def s6_cost(table, util, gbw):
     p("  repaired tier yield and ~$30/tier -- the cell's risk, not the bond's.")
     p("")
     p("Monolithic CMOS-under-array (oxide cells built directly on the periphery wafer, no bond) is the null hypothesis:")
-    extra = V("cell_base_cost") + V("bond_cost_pair") - V("mono_base_cost")
     for nt in (32, 64, 128):
+        # split-specific delta only: second substrate + bond + DBI royalty (decks and common adders occur in CuA too)
+        extra = V("cell_base_cost") + V("bond_cost_pair") - V("mono_base_cost") + V("dbi_royalty_frac") * (cell_wafer_cost(nt) + mid(V("periph_wafer_cost")) + V("bond_cost_pair"))
         need = extra / nt
         p(f"- {nt} tiers: the bonded split costs ${extra:.0f}/wafer more (second substrate + bond) -> the cell line must be >= ${need:.1f}/tier cheaper "
           f"than the same tier in a logic foundry's BEOL ({need / mid(V('tier_cost')) * 100:.0f}% of a ${mid(V('tier_cost')):.0f} tier)")
@@ -580,7 +660,7 @@ def s6_cost(table, util, gbw):
     g, d = table[("1T1C", 64, 1.5)]
     c, y = res[("1T1C", 64, 1.5)]
     gb_pair = V("wafer_area_mm2") * util * d["dens"] / 8.0 * y["y"]
-    c_cell = V("cell_base_cost") + 64 * mid(V("tier_cost"))
+    c_cell = cell_wafer_cost(64)
     capex_cell_wpm = mid(V("dram_capex_per_wpm")) * c_cell / V("ddr5_wafer_cost") * V("cell_tool_intensity")
     cap_ref = mid(V("dram_capex_per_wpm")) / gbw
     cap_cell = capex_cell_wpm / gb_pair
@@ -662,6 +742,227 @@ def s9_go_nogo(ceilings):
     p("Model margins: with 1% spares, repaired opens keep die yield >0.9 to a few 1e-3/link, so the 1e-5 open bar has >100x headroom for")
     p("random opens; it is kept as a proxy for bridge and reliability tails. Bridges onto global supplies, overlay on bowed wafers and")
     p("particle voids are the binding failure modes.")
+    if REVISED:
+        p("RED-TEAM ADDITIONS to GO (see s10): D2W is the primary bond mode for multi-tier wafers; W2W continues only if the anisotropic")
+        p("(saddle) warp half-difference is <=~40 um after compensation (RT-PROC-01); bond-origin hydrogen traced by D-labelled bond surfaces")
+        p("(ToF-SIMS) with dVt <=20 mV on top-tier cells AND selector/predecode TFTs after bond + 3 x 260 C reflow + 1,000 h at 125 C")
+        p("(RT-DEV-01, RT-PROC-04); bootstrapped oxide sub-WL driver delivering VPP with <=50 mV level loss, <=10 ns edges and an active")
+        p("<=-0.5 V clamp after 1,000 h at 125 C (RT-CIRC-01, RT-DEV-03); tier-stack 4-point-bend Gc >=5 J/m2 and FIB on every failed chain")
+        p("(RT-DEV-04); opens/bridges counted only on CSAM-void-free fields, with particle density logged per wafer (RT-IND-04);")
+        p("VPD-ICPMS <=1e10 at/cm2 In/Ga/Zn on bevel/backside before the bond line (RT-PROC-03).")
+
+
+def s10_redteam():
+    """RED-TEAM section: original vs revised base case, attribution by objection, and the new physics checks."""
+    hr("10. RED-TEAM REVISIONS: original vs revised, attribution, and new checks")
+    p("Revisions applied (old -> new, objection):")
+    for k, v, why, ids in RED_TEAM_REVISIONS:
+        p(f"- `{k}`: {ORIGINAL[k][0]} -> {v} ({ids}). {why}")
+    p("- Primary bond mode: W2W -> D2W for multi-tier cell wafers (RT-PROC-cell-wafer-foundry-01); headline $/GB below is the D2W/KGD column.")
+    p("")
+    saved = dict(INPUTS)
+    util, gbw = utilisation()
+
+    def base(cell, nt=64, pitch=1.5):
+        g = solve_group(cell, nt, pitch)
+        d = die_model(g, nt)
+        c, y = cost_per_gb(d, nt, V("p_link_base"), pitch)
+        cd, yd = cost_per_gb(d, nt, V("p_link_base"), pitch, d2w=True)
+        c_cell = cell_wafer_cost(nt)
+        gb_pair = V("wafer_area_mm2") * util * d["dens"] / 8.0 * y["y"]
+        capex = mid(V("dram_capex_per_wpm")) * c_cell / V("ddr5_wafer_cost") * V("cell_tool_intensity") / gb_pair
+        return g, d, c, y, cd, c_cell, capex
+
+    # --- 10a: original vs revised
+    rows = []
+    for label, inp in (("original", ORIGINAL), ("revised", saved)):
+        INPUTS.clear()
+        INPUTS.update(inp)
+        for cell in ("1T1C", "GAIN"):
+            rows.append((label, cell) + base(cell))
+    INPUTS.clear()
+    INPUTS.update(saved)
+    cap_ref = mid(V("dram_capex_per_wpm")) / gbw
+    p("| case | cell-64 @1.5 um | M | alpha | S req mV | Cbl fF | Cs fF | Gb/mm2 | x1b | cell wafer $ | pair $ | $/GB W2W | $/GB D2W | x DDR5 (D2W) | capex $/GB/mo | x less than DDR5 |")
+    p("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+    for label, cell, g, d, c, y, cd, c_cell, capex in rows:
+        cs = f"{g['cs']:.2f}" if cell == "1T1C" else "-"
+        sreq = f"{g['dv_req']:.1f}" if cell == "1T1C" else f"{V('dv_sense_gain_mV'):.0f}"
+        p(f"| {label} | {cell} | {g['M']} | {g['alpha']:.3f} | {sreq} | {g['cbl']:.1f} | {cs} | {d['dens']:.2f} | {d['dens'] / V('ddr5_density_gbmm2'):.1f} | "
+          f"{c_cell:,.0f} | {y['c_pair']:,.0f} | {c:.2f} | {cd:.2f} | {cd / V('ddr5_cost_per_gb'):.2f} | {capex:.1f} | {cap_ref / capex:.1f} |")
+    p("")
+
+    # --- 10b: cumulative attribution
+    p("Cumulative attribution (1T1C-64 @1.5 um), applying one objection's revision at a time to the original inputs:")
+    p("| step | revision | Gb/mm2 | x1b | Cs fF | $/GB W2W | $/GB D2W | capex $/GB/mo |")
+    p("|---|---|---|---|---|---|---|---|")
+    INPUTS.clear()
+    INPUTS.update(ORIGINAL)
+    g, d, c, y, cd, c_cell, capex = base("1T1C")
+    p(f"| 0 | original | {d['dens']:.2f} | {d['dens'] / V('ddr5_density_gbmm2'):.1f} | {g['cs']:.2f} | {c:.2f} | {cd:.2f} | {capex:.1f} |")
+    for i, (k, v, why, ids) in enumerate(RED_TEAM_REVISIONS, 1):
+        INPUTS[k] = saved[k]
+        g, d, c, y, cd, c_cell, capex = base("1T1C")
+        p(f"| {i} | `{k}` -> {v} ({ids.replace('cell-wafer-foundry-', '')}) | {d['dens']:.2f} | {d['dens'] / V('ddr5_density_gbmm2'):.1f} | {g['cs']:.2f} | {c:.2f} | {cd:.2f} | {capex:.1f} |")
+    INPUTS.clear()
+    INPUTS.update(saved)
+    p("")
+
+    # --- 10c: coupling x ECC x threshold
+    p("Sense threshold, ECC parity and global-line coupling (1T1C-64 @1.5 um, revised SA and cost; RT-CIRC-02):")
+    p("| threshold | parity | shielding | alpha | S req mV | Cs fF | Gb/mm2 | x1b | $/GB D2W |")
+    p("|---|---|---|---|---|---|---|---|---|")
+    for dv, ecc, sf, lab in ((26.0, 1.0625, 0.0, "none (pre-red-team)"), (26.0, 1.156, 0.0, "coupling ignored"), (26.0, 1.156, 1.0, "unshielded"),
+                             (26.0, 1.156, 0.25, "2-level shielded (revised)"), (50.0, 1.0625, 1.0, "unshielded"), (50.0, 1.0625, 0.25, "2-level shielded")):
+        INPUTS["ecc"] = (ecc, "sweep")
+        INPUTS["shield_factor"] = (sf, "sweep")
+        g = solve_group("1T1C", 64, 1.5, dv_min_mV=dv)
+        d = die_model(g, 64)
+        cd, _ = cost_per_gb(d, 64, V("p_link_base"), 1.5, d2w=True)
+        p(f"| {dv:.0f} mV | {ecc - 1:.1%} | {lab} | {g['alpha']:.3f} | {g['dv_req']:.1f} | {g['cs']:.2f} | {d['dens']:.2f} | {d['dens'] / V('ddr5_density_gbmm2'):.1f} | {cd:.2f} |")
+    INPUTS.clear()
+    INPUTS.update(saved)
+    p("- Shielding costs ~$120/cell wafer (two extra relaxed-pitch metal levels) and buys back most of the coupling penalty. The MARGIN STACK")
+    p("  26 mV threshold still pays only if its 15.6% parity is booked; the 50 mV / 6.25% conventional option is shown for comparison.")
+    p("")
+
+    # --- 10d: SA area and cell-wafer cost (decks)
+    p("SA footprint and deck cost (1T1C-64 @1.5 um, revised otherwise; RT-CIRC-03, RT-PROC-02):")
+    p("| SA um2 | deck $ | decks @64 | cell wafer $ | Gb/mm2 | x1b | $/GB W2W | $/GB D2W | 1T1C break-even tiers (W2W) |")
+    p("|---|---|---|---|---|---|---|---|---|")
+    for asa, dc in ((2.5, 800.0), (4.0, 0.0), (4.0, 800.0), (4.0, 1300.0), (5.0, 800.0)):
+        INPUTS["a_sa_um2"] = (asa, "sweep")
+        INPUTS["deck_cost"] = (dc, "sweep")
+        g = solve_group("1T1C", 64, 1.5)
+        d = die_model(g, 64)
+        c, y = cost_per_gb(d, 64, V("p_link_base"), 1.5)
+        cd, _ = cost_per_gb(d, 64, V("p_link_base"), 1.5, d2w=True)
+        be = "none <=256"
+        for nt in range(4, 257, 4):
+            gg = solve_group("1T1C", nt, 1.5)
+            if gg is None:
+                continue
+            cc, _ = cost_per_gb(die_model(gg, nt), nt, V("p_link_base"), 1.5)
+            if cc <= V("ddr5_cost_per_gb"):
+                be = str(nt)
+                break
+        p(f"| {asa} | {dc:.0f} | {n_decks(64)} | {cell_wafer_cost(64):,.0f} | {d['dens']:.2f} | {d['dens'] / V('ddr5_density_gbmm2'):.1f} | {c:.2f} | {cd:.2f} | {be} |")
+    INPUTS.clear()
+    INPUTS.update(saved)
+    p(f"- Deck $1,300 gives a 64-tier cell wafer of ${V('cell_base_cost') + V('cell_common_adders') + 64 * mid(V('tier_cost')) + 2 * 1300:,.0f}, above RT-PROC's ~2x case (~$5.2k); $800 is the revised central case.")
+    p("")
+
+    # --- 10e: anisotropic warp and D2W
+    bx, by = V("saddle_bow_um")
+    rx, ry = runout_um(bx), runout_um(by)
+    mean = (rx + ry) / 2
+    resid = abs(rx - ry) / 2
+    budget = V("overlay_rule") * V("pad_frac") * 1.5
+    aniso_allow = budget * 150e-3 / (V("t_wafer_um") * 1e-6)
+    kappa = 2 * abs(by) * 1e-6 / (150e-3) ** 2
+    die_ro = kappa * V("t_wafer_um") * 1e-6 / 2 * (V("die_side_mm") / 2 * 1e-3) * 1e6
+    p("Anisotropic (saddle) warp and the D2W fix (RT-PROC-cell-wafer-foundry-01), Delta = b * t / r at r = 150 mm:")
+    p(f"- Saddle +{bx:.0f} / {by:.0f} um: run-out {rx:+.2f} um along x and {ry:+.2f} um along y; isotropic magnification removes the mean ({mean:+.2f} um)")
+    p(f"  and leaves +/-{resid:.2f} um, {resid / budget:.1f}x the {budget:.3f} um budget at 1.5 um pitch. W2W needs the anisotropic half-difference")
+    p(f"  |bx - by|/2 <= {aniso_allow:.0f} um with perfect isotropic correction; RT-PROC's ~40 um gate keeps ~45% for non-linear residual and bonder error.")
+    p(f"- D2W: each ~{V('die_side_mm'):.0f} mm die is flattened alone; the worst wafer curvature ({kappa:.3f} /m) gives a die-level run-out of {die_ro:.3f} um at the")
+    p(f"  die corner, plus {V('d2w_place_3s_um'):.2f} um (3 sigma) placement = {die_ro + V('d2w_place_3s_um'):.2f} um vs the {budget:.3f} um budget ({budget / (die_ro + V('d2w_place_3s_um')):.1f}x margin).")
+    g15, g20 = solve_group("1T1C", 64, 1.5), solve_group("1T1C", 64, 2.0)
+    d15, d20 = die_model(g15, 64), die_model(g20, 64)
+    b20 = V("overlay_rule") * V("pad_frac") * 2.0
+    p(f"- Spec pitch 1.5 -> 2.0 um (redesign): with a {V('a_sa_um2')} um2 SA the group is SA-area-limited up to 2.0 um (M {g15['M']} vs {g20['M']}), so density is")
+    p(f"  unchanged ({d15['dens']:.2f} vs {d20['dens']:.2f} Gb/mm2) while the overlay budget grows to {b20:.2f} um (D2W margin {b20 / (die_ro + V('d2w_place_3s_um')):.1f}x; W2W saddle")
+    p(f"  allowance {b20 * 150e-3 / (V("t_wafer_um") * 1e-6):.0f} um), and the pad-to-pad gap widens from 0.75 to 1.0 um against Cu-extrusion bridges.")
+    p("- Stress-balanced layout (die-level array orientation alternated 0/90 deg across the reticle) averages the anisotropic stress at wafer")
+    p("  scale; it is a W2W-revival lever, not relied on.")
+    p("")
+
+    # --- 10f: oxide sub-WL driver (predecode) feasibility
+    g, d = solve_group("1T1C", 64, 1.5), None
+    d = die_model(g, 64)
+    n_seg = d["n_wl"] * V("predecode")
+    cells_per_wl = V("wl_len_um") / (V("p_x_nm") * 1e-3)
+    c_wl = cells_per_wl * V("c_wl_cell_fF") + V("wl_len_um") * V("c_wire_fF_per_um")
+    i_need = c_wl * 1e-15 * V("vpp_V") / 5e-9 * 1e6
+    w_need = i_need / V("i_tft_uA_per_um")
+    a_swd = n_seg * V("a_swd_um2") * 1e-6
+    v_boot = V("vpp_V") + V("bootstrap_beta") * V("vpp_V")
+    vov = v_boot - V("vpp_V") - V("vt_tft_V")
+    p("Oxide sub-word-line driver (RT-CIRC-cell-wafer-foundry-01, RT-DEV-cell-wafer-foundry-03): the predecode is an analog switch in the WL path.")
+    p(f"- Load per tier WL segment: {cells_per_wl:,.0f} cells x {V('c_wl_cell_fF')} fF + {V('wl_len_um'):.0f} um wire = {c_wl:.0f} fF; a 5 ns ramp to {V('vpp_V')} V needs {i_need:.0f} uA,")
+    p(f"  i.e. a pass TFT of W ~{w_need:.1f} um at {V('i_tft_uA_per_um'):.0f} uA/um (short-channel ALD In2O3, not display IGZO; display drivers are us-class because of pF")
+    p("  panel loads and um-long channels).")
+    p(f"- Level: a self-bootstrapped gate reaches ~{V('vpp_V')} + {V('bootstrap_beta')} x {V('vpp_V')} = {v_boot:.1f} V, so the pass TFT keeps {vov:.1f} V of overdrive at VPP with an")
+    p(f"  end-of-life Vt of {V('vt_tft_V')} V. WL high = the silicon FX-line level; a 0.1 V Vt drift then changes R_on by ~{0.1 / vov * 100:.0f}% (edge time), not the level.")
+    p("  An active n-TFT clamp per WL ties unselected WLs to the silicon VNWL rail (<=-0.5 V) instead of letting them float.")
+    p(f"- Area: {n_seg:.2e} WL segments x {V('a_swd_um2')} um2 = {a_swd:.1f} mm2 = {a_swd / d['array_mm2'] * 100:.0f}% of the {d['array_mm2']:.1f} mm2 array: it does NOT fit the")
+    p("  8% edge budget; it needs a dedicated TFT driver plane over the array (costed in cell_common_adders, ~$60).")
+    p("")
+
+    # --- 10g: restore through the oxide group select (RT-CIRC-03)
+    tau = V("r_sel_kohm") * 1e3 * g["cbl"] * 1e-15 * 1e9
+    p(f"Restore through the oxide group select (RT-CIRC-03): tau = {V('r_sel_kohm'):.0f} kOhm x {g['cbl']:.1f} fF = {tau:.1f} ns; 5 tau = {5 * tau:.0f} ns vs ~32 ns tRAS. "
+      "Feasible, but it sets tRAS; a 2x-wide selector halves it.")
+    p("")
+
+    # --- 10h: bond-plane hydrogen (RT-DEV-01, RT-PROC-04)
+    c_ox = EPS0 * 3.9 / (V("eot_tft_nm") * 1e-9) * 1e-4  # F/cm2
+    n_allow = V("dvt_spec_mV") * 1e-3 * c_ox / 1.602e-19
+    lo, hi = V("h_inventory_cm2")
+    p("Bond-plane hydrogen (RT-DEV-cell-wafer-foundry-01, RT-PROC-cell-wafer-foundry-04):")
+    p(f"- {V('dvt_spec_mV'):.0f} mV at EOT {V('eot_tft_nm'):.0f} nm allows {n_allow:.2e} donors/cm2 = {n_allow / hi * 100:.3f}-{n_allow / lo * 100:.3f}% of the {lo:.0e}-{hi:.0e} H2O/cm2 inventory.")
+    for T, t_s, lab in ((250, 7200, "250 C x 2 h bond anneal"), (260, 3 * 90, "3 x 260 C reflow (90 s each)"), (85, 10 * 3.156e7, "85 C x 10 yr")):
+        D = V("D0_H2_sio2_cm2s") * math.exp(-V("Ea_H2_sio2_eV") / (KB_EV * (T + 273.15)))
+        p(f"- H2 diffusion length in SiO2, {lab}: sqrt(D t) = {math.sqrt(D * t_s) * 1e4:,.0f} um (D = {D:.1e} cm2/s) [UNVERIFIED-training D0, Ea]")
+    att_need = (lo / n_allow, hi / n_allow)
+    p(f"- Molecular H2 therefore crosses any oxide standoff; only barriers help. If all of the inventory were mobile, the barrier stack must attenuate")
+    p(f"  {att_need[0]:,.0f}-{att_need[1]:,.0f}x. One O3-ALD Al2O3 barrier gave ~{V('barrier_atten_single'):.0f}x in an IGZO TFT H-exposure test; a three-layer")
+    p(f"  Al2O3 / low-H SiN / Al2O3 stack is ~{V('barrier_atten_single') ** 2:,.0f}-{V('barrier_atten_single') ** 3:,.0f}x IF layers act independently [SPECULATIVE]. Not settled by")
+    p("  arithmetic: this is a measured gate (D-labelled bond surfaces + ToF-SIMS + dVt after 1,000 h at 125 C).")
+    p("")
+
+    # --- 10i: null hypothesis with royalty and D2W/KGD
+    p("Null hypothesis revisited (monolithic CuA vs bonded split; RT-IND-02, RT-IND-05):")
+    p("| tiers | W2W split premium $ | per-tier advantage needed (W2W) | D2W premium net of KGD saving $ | per-tier advantage needed (D2W) |")
+    p("|---|---|---|---|---|")
+    for nt in (32, 64, 128):
+        gg = solve_group("1T1C", nt, 1.5)
+        dd = die_model(gg, nt)
+        pc = mid(V("periph_wafer_cost"))
+        cc = cell_wafer_cost(nt)
+        roy = V("dbi_royalty_frac") * (cc + pc + V("bond_cost_pair"))
+        prem = V("cell_base_cost") + V("bond_cost_pair") - V("mono_base_cost") + roy
+        y_cell = V("tier_yield_repaired") ** nt
+        y_per = periph_yield(dd["die_mm2"])
+        mono_cell = cc - V("cell_base_cost") + V("mono_base_cost")
+        kgd = pc * (1 - y_cell) * V("cell_kgd_capture") + mono_cell * (1 - y_per)
+        prem_d2w = prem + V("d2w_extra_cost") - kgd
+        p(f"| {nt} | {prem:,.0f} | ${prem / nt:.1f} ({prem / nt / mid(V('tier_cost')) * 100:.0f}% of a $30 tier) | {prem_d2w:,.0f} (KGD saves {kgd:,.0f}) | ${prem_d2w / nt:.1f} |")
+    p("- Counter-evidence that the split can win: Samsung chose W2W peri-under-cell bonding for its IGZO 4F2 VCT (TrendForce 2026-04-24) and Kioxia/YMTC")
+    p("  bond NAND (CBA/Xtacking): incumbents with both options pick the bond. That supports the in-house split, not the merchant split.")
+    p("")
+
+    # --- 10j: revised headline
+    INPUTS.clear()
+    INPUTS.update(saved)
+    g, d, c, y, cd, c_cell, capex = base("1T1C")
+    g2, d2, c2, y2, cd2, _, capex2 = base("GAIN")
+    _, d16, c16, _, cd16, _, _ = base("1T1C", 16)
+    _, d32, c32, _, cd32, _, _ = base("1T1C", 32)
+    e1 = 0.5 * g["cbl"] * V("vary_V") ** 2
+    e_ref = 0.5 * V("ddr5_cbl_fF") * V("vary_V") ** 2
+    p("Revised headline (1T1C-64 @1.5 um, D2W/KGD):")
+    p(f"- Density {d['dens']:.2f} Gb/mm2 = {d['dens'] / V('ddr5_density_gbmm2'):.1f}x 1b (gain cell {d2['dens']:.2f} = {d2['dens'] / V('ddr5_density_gbmm2'):.1f}x); array efficiency {d['eff']:.2f}; Cbl {g['cbl']:.1f} fF, Cs {g['cs']:.2f} fF.")
+    p(f"- $/GB {cd:.2f} D2W ({cd / V('ddr5_cost_per_gb'):.2f}x DDR5), {c:.2f} W2W; gain cell {cd2:.2f} D2W ({cd2 / V('ddr5_cost_per_gb'):.2f}x). 32 tiers: {cd32:.2f}; 16 tiers: {cd16:.2f} ({cd16 / V('ddr5_cost_per_gb'):.2f}x).")
+    p(f"- New memory-fab capex ${capex:.1f} per GB/month vs ${cap_ref:.0f} ({cap_ref / capex:.1f}x less); bitline energy {e1:.1f} fJ vs {e_ref:.1f} fJ ({e_ref / e1:.1f}x lower); EUV 0 vs 5-7 layers.")
+    gb_pair = V("wafer_area_mm2") * util * d["dens"] / 8.0 * y["y"]
+    mono_capex = capex + mid(V("periph_capex_per_wpm")) / gb_pair
+    p(f"- Attribution: {gb_pair / gbw:.1f}x of the {cap_ref / capex:.1f}x capex factor is good GB per wafer (tier density), which any in-house 3D DRAM also gets; a")
+    p(f"  monolithic in-house 3D DRAM that must also process its periphery needs ~${mono_capex:.1f} per GB/month ({cap_ref / mono_capex:.1f}x less than DDR5). The split's own share")
+    p(f"  is therefore ~{mono_capex / capex:.1f}x, and only while existing 28 nm logic capacity absorbs the periphery (1.0x if it must be built).")
+    p(f"  Gain-cell variant: ${capex2:.1f} per GB/month ({cap_ref / capex2:.1f}x less than DDR5).")
+    INPUTS.clear()
+    INPUTS.update(saved)
 
 
 def main():
@@ -678,9 +979,14 @@ def main():
     s7_sensitivity(table)
     s8_test_vehicle()
     s9_go_nogo(ceilings)
+    if REVISED:
+        s10_redteam()
     hr("INPUTS (value | source)")
     for k, (v, src) in INPUTS.items():
         p(f"- `{k}` = {v} | {src}")
+    if not REVISED:
+        print("[info] --original: pre-red-team inputs; output file not overwritten", file=sys.stderr)
+        return 0
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(here, "..", "research", "stage3", "cell-wafer-foundry_model_output.md")
     try:

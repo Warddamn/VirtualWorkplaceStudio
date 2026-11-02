@@ -24,7 +24,13 @@ Sections
  10. Plate RC (clock distribution)
  11. Cost per bit vs $1.48/GB DDR5 (and NAND price cross-check)
  12. GO / NO-GO
+ 13. Seed budget;  14. RED-TEAM REVISIONS summary
 Every input carries a source URL / in-study file, or "ESTIMATE: basis".
+
+RED-TEAM REVISIONS (2026-11-02): see the RT_REVISIONS block after INPUTS. Key changes: segments are injected at the
+bottom and sensed at the top (no return path existed); 2-row clock strips with replacement-metal slits; staircase,
+spares, joint-tier and per-plate cost added; RTN tail (4b), buried-channel electrostatics (5a), gap barriers (5b),
+regeneration topology (4c), like-for-like energy (8). New sections are marked RED-TEAM.
 """
 
 import math
@@ -143,6 +149,64 @@ INPUTS = {
     "yield_rel": (0.8, "ESTIMATE: die yield relative to mature 1-beta (new 3D stack, bonded)"),
 }
 
+# =============================================================================================
+# RED-TEAM REVISIONS (2026-11-02, owner response to research/redteam/rt_{DEV,PROC,CIRC,IND}.json;
+# responses in research/redteam/responses_charge-river.json). Objections are answered, never deleted.
+# Format: key, old -> new, objection id(s), reason.  New keys have old = None.
+# =============================================================================================
+RT_REVISIONS = [
+    ("holes_per_row", 1, 2, "RT-PROC-charge-river-01/-02, RT-CIRC-charge-river-01",
+     "2-row clock strips with NAND-style staggered holes and column lines at half the hole pitch (SADP): each hole of a strip "
+     "has its own column line, so both rows are read at once (no extra cycling) and slits are amortised over 2 rows"),
+    ("slit_nm", 60.0, 100.0, "RT-PROC-charge-river-01",
+     "gate-first 5 um W stack bows a 300 mm wafer ~3 mm (Stoney) and a 60 nm slit in metal is AR ~130; adopt NAND's ONON + "
+     "replacement-W flow (slits >=100 nm), channel-LAST so WF6/H2 never touches the oxide channel"),
+    ("per_plate_usd", 10.0, 25.0, "RT-PROC-charge-river-04",
+     "NAND per-layer economics ($20-38 per ONON pair, rt-PROC from Choe/TechInsights 10-15% gain 64->96 layers); range $12-35 carried"),
+    ("array_base_usd", 1200.0, 1500.0, "RT-CIRC-charge-river-01",
+     "top FD/RST/SF/SEL oxide-TFT tier (one set per 2 holes) and bottom per-column injection lines now priced"),
+    ("c_fd_fF", 0.30, 0.40, "RT-CIRC-charge-river-01, RT-PROC-charge-river-03",
+     "floating diffusion shared by 2 holes on one column line (adjacent strips, never read together): 2 contacts + 0.4 um "
+     "strip + bootstrapped SF gate + RST overlap; I-12302-style local strip with a local gain FET, column line clamped"),
+    ("sigma_read_e", 8.0, 10.0, "RT-CIRC-charge-river-01, RT-PROC-charge-river-03",
+     "3 mV rms at 0.40 fF = 7.5 e- + coupling 4 e- + offset 2 e- = 8.7 e-, rounded up; Gaussian part only (RTN tail is now "
+     "a separate term, section 4b)"),
+    ("eta_buried", 0.9, 0.5, "RT-DEV-charge-river-01",
+     "a 4.5e12 cm^-2 packet consumes most of a 0.3 eV offset (E_F +36 meV, ~0.17 V across a 2.5 nm cap): interface-loss "
+     "removal cut to 50% until a ->=0.5 eV offset is measured (section 5a)"),
+    ("eta_rec", 0.5, 0.33, "RT-CIRC-charge-river-03",
+     "no on-chip LC at 50 MHz (uH inductors); 3-phase charge sharing / 3-step stepwise charging recovers ~1/3 realistically"),
+    ("topology", None, "joint", "RT-CIRC-charge-river-02, RT-PROC-charge-river-03",
+     "a straight hole has no return path: every segment now injects at its BOTTOM (fill-and-spill from a per-column line, no "
+     "per-hole TFT) and is sensed at its TOP; decisions return through the CMOS. 'joint' = two 100-plate decks with a "
+     "[SPECULATIVE] regenerator tier at the deck joint (keeps 2 x 32 stages, 98 transfers); fallback 'oneway' = one 64-stage "
+     "string, 194 transfers, no new tier"),
+    ("joint_tier_usd", None, 500.0, "RT-CIRC-charge-river-02",
+     "ESTIMATE: deck-joint tier = oxide-TFT sense set for the lower deck + injection nodes for the upper deck + 2 line levels + TAV landings"),
+    ("joint_tav_eff", None, 0.96, "RT-CIRC-charge-river-02",
+     "ESTIMATE: area for through-array vias carrying joint-tier column/injection lines down to the CMOS (NAND bit-line TAV class)"),
+    ("stair_step_um", None, 0.30, "RT-PROC-charge-river-02",
+     "every buried plate needs its own contact step: ~0.3 um per step (rt-PROC)"),
+    ("strip_len_um", None, 150.0, "RT-PROC-charge-river-02",
+     "ESTIMATE: driven strip length per staircase; plate RC allows ~100-200 um at a 50 MHz stage clock (section 10)"),
+    ("spare_frac", None, 0.03, "RT-DEV-charge-river-05, RT-CIRC-charge-river-04, RT-DEV-charge-river-02",
+     "ESTIMATE: spare strings (screened at k_ws x median, NAND bad-block style) ~2% + spare sense nodes (RTN screen) ~1%"),
+    ("rtn_eta_mV", None, 2.8, "RT-CIRC-charge-river-04, RT-DEV-charge-river-02",
+     "mean exponential RTN step of a ~0.01 um^2 oxide SF; reviewers' range 1.4-4.2 mV (q/(Cox W L))"),
+    ("rtn_p_fast", None, 0.20, "RT-DEV-charge-river-02", "share of SFs carrying a trap with tau near the 2-5 ns CDS interval (rt-DEV)"),
+    ("rtn_p_switch", None, 0.25, "RT-DEV-charge-river-02", "ESTIMATE: probability such a trap switches between the two CDS samples"),
+    ("io_pj_bit", None, 1.0, "RT-CIRC-charge-river-03",
+     "ESTIMATE: HBM-class PHY + TSV/interposer I/O energy, added so the comparison with HBM3 3.44 pJ/bit is like for like"),
+    ("dEc_eV", None, 0.30, "RT-DEV-charge-river-01",
+     "dossier's original core/cap offset spec; measured IGZO/beta-Ga2O3 0.71+-0.1 eV (NYCU XPS), high-In IGZO/IGZO ~0.4 eV (search snippets)"),
+    ("t_cap_nm", None, 2.5, "RT-DEV-charge-river-01", "ESTIMATE: cap between core and gate dielectric (rt-DEV: 2-3 nm)"),
+    ("eps_cap", None, 12.0, "RT-DEV-charge-river-01", "ESTIMATE: relative permittivity of an amorphous oxide cap"),
+    ("e0_sub_eV", None, 0.05, "RT-DEV-charge-river-01", "ESTIMATE: ground-subband energy of a ~5 nm core under the packet's field"),
+]
+for _k, _old, _new, _ids, _why in RT_REVISIONS:
+    _src = INPUTS[_k][1] + " | " if _k in INPUTS else ""
+    INPUTS[_k] = (_new, _src + "RED-TEAM: %s -> %s (%s): %s" % (_old, _new, _ids, _why))
+
 
 def V(key):
     return INPUTS[key][0]
@@ -218,10 +282,33 @@ def ecc_rate():
     return V("ecc_data_bits") / (V("ecc_data_bits") + V("ecc_parity_bits"))
 
 
-def density_gb_mm2(bits_per_hole):
+def stair_eff(n_plates, strip_um=None, step_um=None):
+    # RED-TEAM (RT-PROC-charge-river-02): every buried plate needs a contact step at each driven strip end
+    strip_um = V("strip_len_um") if strip_um is None else strip_um
+    step_um = V("stair_step_um") if step_um is None else step_um
+    s = n_plates * step_um
+    return strip_um / (strip_um + s)
+
+
+def topo_eff(topology=None):
+    topology = V("topology") if topology is None else topology
+    return V("joint_tav_eff") if topology == "joint" else 1.0
+
+
+def density_gb_mm2(bits_per_hole, n_plates=None, topology=None, stair=None):
+    # RED-TEAM: x staircase efficiency x (1 - spares) x joint-tier TAV efficiency (was slit x periphery x ECC only)
+    n_plates = V("n_plates") if n_plates is None else n_plates
     _, eff, _ = array_eff()
     holes_mm2 = 1e6 / V("hole_cell_um2")
-    return bits_per_hole * holes_mm2 * eff * ecc_rate() / 1e9
+    st = stair_eff(n_plates) if stair is None else stair
+    return bits_per_hole * holes_mm2 * eff * st * (1 - V("spare_frac")) * topo_eff(topology) * ecc_rate() / 1e9
+
+
+def density_original(bits_per_hole):
+    # the pre-red-team formula, kept for the old -> new comparison (slit 60 nm, 1-row strips)
+    pitch = math.sqrt(V("hole_cell_um2")) * 1000.0
+    slit_eff = pitch / (pitch + 60.0)
+    return bits_per_hole * 1e6 / V("hole_cell_um2") * slit_eff * V("periph_eff") * ecc_rate() / 1e9
 
 
 # =============================================================================================
@@ -278,6 +365,82 @@ def cte_min(n_t, n_s, p_req, dfe=True, **kw):
     return hi
 
 
+# ---- RED-TEAM (RT-CIRC-charge-river-04, RT-DEV-charge-river-02): RTN tail of the oxide source followers ----
+def eye_parts(cte, n_t, n_s, k_ws=None, kappa=None, sig_r=None):
+    kappa = V("kappa") if kappa is None else kappa
+    k_ws = V("k_ws") if k_ws is None else k_ws
+    sig_r = V("sigma_read_e") if sig_r is None else sig_r
+    eps = min(1.0, k_ws * (1.0 - cte))
+    h0 = (1.0 - eps) ** n_t
+    tail = (1.0 - h0) * n_s
+    base = sig_r ** 2 + V("sigma_fz_e") ** 2
+    sep = h0 * n_s - 2.0 * kappa * tail
+    s1 = math.sqrt(base + n_s * h0 * (1.0 - h0) + tail)
+    s0 = math.sqrt(base + tail)
+    return sep, s0, s1
+
+
+def ber_rtn(cte, n_t, n_s, eta_e, screen_e=None, p_fast=None, p_sw=None, **kw):
+    """Die-average BER with DFE when a share p_fast of sense nodes carries one fast trap whose step A ~ Exp(eta_e)
+    switches between the CDS samples with probability p_sw. Nodes with A > screen_e are spared (mapped out)."""
+    p_fast = V("rtn_p_fast") if p_fast is None else p_fast
+    p_sw = V("rtn_p_switch") if p_sw is None else p_sw
+    sep, s0, s1 = eye_parts(cte, n_t, n_s, **kw)
+    if sep <= 0:
+        return 0.5
+    d1 = sep * s1 / (s0 + s1)
+    d0 = sep * s0 / (s0 + s1)
+
+    def err(a):
+        return 0.25 * (qfunc((d1 - a) / s1) + qfunc((d1 + a) / s1) + qfunc((d0 - a) / s0) + qfunc((d0 + a) / s0))
+
+    e0 = err(0.0)
+    a_max = 40.0 * eta_e if screen_e is None else screen_e
+    n = 400
+    acc, norm = 0.0, 0.0
+    for i in range(n):
+        a = (i + 0.5) * a_max / n
+        w = math.exp(-a / eta_e)
+        acc += w * ((1 - p_sw) * e0 + p_sw * err(a))
+        norm += w
+    return (1 - p_fast) * e0 + p_fast * acc / norm
+
+
+def cte_min_rtn(n_t, n_s, p_req, eta_e, screen_e=None, **kw):
+    lo, hi = 0.80, 1.0 - 1e-9
+    if ber_rtn(hi, n_t, n_s, eta_e, screen_e, **kw) > p_req:
+        return None
+    for _ in range(80):
+        mid = 0.5 * (lo + hi)
+        if ber_rtn(mid, n_t, n_s, eta_e, screen_e, **kw) <= p_req:
+            hi = mid
+        else:
+            lo = mid
+    return hi
+
+
+# ---- RED-TEAM (RT-DEV-charge-river-01): is a 4.5e12 cm^-2 packet still buried? ----
+def buried_margin(n_sheet_cm2, dEc, t_cap_nm, eps_cap=None, e0=None, temp_k=358.0):
+    eps_cap = V("eps_cap") if eps_cap is None else eps_cap
+    e0 = V("e0_sub_eV") if e0 is None else e0
+    g2d = V("m_eff") * 9.1093837e-31 / (math.pi * 1.054571817e-34 ** 2) * Q_E * 1e-4   # states / (eV cm^2)
+    ef = n_sheet_cm2 / g2d                                                                  # eV above subband
+    v_cap = Q_E * n_sheet_cm2 * 1e4 * t_cap_nm * 1e-9 / (eps_cap * EPS0)                    # V across the cap
+    delta = dEc - v_cap - e0 - ef
+    kt = K_B_EV * temp_k
+    f_if = min(1.0, math.exp(-delta / kt))
+    return dict(ef=ef, v_cap=v_cap, delta=delta, d_kt=delta / kt, f_if=f_if, eta_b=1 - f_if)
+
+
+# ---- RED-TEAM (RT-DEV-charge-river-04): inter-plate gap barrier / pocket ----
+def gap_strand(dv_ev, temp_k, t_dwell_s, f0=0.1, gap_nm=None):
+    gap_nm = V("plate_iso_nm") if gap_nm is None else gap_nm
+    d_cm2_s = 10.0 * K_B_EV * temp_k                    # Einstein, mu = 10 cm^2/Vs
+    tau_diff = ((V("plate_thk_nm") + gap_nm) * 1e-7) ** 2 / d_cm2_s
+    tau_b = tau_diff * math.exp(dv_ev / (K_B_EV * temp_k))
+    return tau_b, f0 * math.exp(-t_dwell_s / tau_b)
+
+
 def max_transfers(cte, n_s, p_req, dfe=True, cap=10000, **kw):
     best = 0
     for n_t in range(1, cap + 1):
@@ -316,12 +479,16 @@ def good_area_mm2():
     return V("wafer_1b_usd") / V("ddr5_usd_gb") * 8.0 / V("d1b_gb_mm2")
 
 
-def wafer_cost(n_plates):
-    return V("array_base_usd") + V("per_plate_usd") * n_plates + V("cmos_wafer_usd") + V("bond_usd")
+def wafer_cost(n_plates, topology=None, per_plate=None):
+    topology = V("topology") if topology is None else topology
+    per_plate = V("per_plate_usd") if per_plate is None else per_plate
+    joint = V("joint_tier_usd") if topology == "joint" else 0.0      # RED-TEAM RT-CIRC-charge-river-02
+    return V("array_base_usd") + joint + per_plate * n_plates + V("cmos_wafer_usd") + V("bond_usd")
 
 
-def usd_per_gb(dens, n_plates):
-    return wafer_cost(n_plates) / (dens * good_area_mm2() * V("yield_rel") / 8.0)
+def usd_per_gb(dens, n_plates, topology=None, per_plate=None, yld=None):
+    yld = V("yield_rel") if yld is None else yld
+    return wafer_cost(n_plates, topology, per_plate) / (dens * good_area_mm2() * yld / 8.0)
 
 
 def lognorm_sf(t, med, sig):
@@ -388,11 +555,20 @@ def main():
         ["hole pitch", "%.0f nm" % pitch, "sqrt(%.3f um^2)" % V("hole_cell_um2")],
         ["slit efficiency", "%.2f" % slit_eff, "%d x %.0f / (%d x %.0f + %.0f)" % (V("holes_per_row"), pitch, V("holes_per_row"), pitch, V("slit_nm"))],
         ["array efficiency", "%.2f" % eff, "slit x periphery %.2f" % V("periph_eff")],
+        ["staircase efficiency (RED-TEAM, RT-PROC-02)", "%.3f" % stair_eff(V("n_plates")), "%.0f um strip / (%.0f um + %d plates x %.2f um)" % (
+            V("strip_len_um"), V("strip_len_um"), V("n_plates"), V("stair_step_um"))],
+        ["spares (RED-TEAM, RT-DEV-05 / RT-CIRC-04)", "%.2f" % (1 - V("spare_frac")), "1 - %.2f spare strings + sense nodes" % V("spare_frac")],
+        ["joint-tier TAV efficiency (RED-TEAM, RT-CIRC-02)", "%.2f" % topo_eff(), "topology = %s" % V("topology")],
         ["ECC rate", "%.3f" % ecc_rate(), "512 / 532"],
-        ["**user density**", "**%.2f Gb/mm^2**" % dens, "bits/hole / hole area x eff x ECC rate"],
-        ["**vs 1-beta (0.447)**", "**%.2fx**" % (dens / V("d1b_gb_mm2")), ""],
+        ["**user density**", "**%.2f Gb/mm^2**" % dens, "bits/hole / hole area x all efficiencies x ECC rate"],
+        ["**vs 1-beta (0.447)**", "**%.2fx**" % (dens / V("d1b_gb_mm2")), "pre-red-team: %.2f Gb/mm^2 (%.2fx)" % (
+            density_original(bits_hole), density_original(bits_hole) / V("d1b_gb_mm2"))],
         ["16 Gb die area (array efficiency included)", "%.1f mm^2" % (V("die_gbit") / dens), "vs 35.8 mm^2 for 1-beta 16 Gb"],
     ])
+    p("RED-TEAM (RT-CIRC-charge-river-02): the %d bits per hole are now two 32-stage segments, each injected at its bottom and "
+      "sensed at its top, with a [SPECULATIVE] regenerator tier at the joint of two 100-plate decks. Without that tier the "
+      "same 64 bits need one 64-stage string (194 transfers; section 4c)." % bits_hole)
+    p()
 
     # ---------------------------------------------------------------- 3 reliability
     p("## 3. Reliability target (raw BER per segment read)")
@@ -457,6 +633,88 @@ def main():
     p()
     table(["read noise (e-)", "k_ws", "kappa", "min CTE (DFE)"], rows)
 
+    # ---------------------------------------------------------------- 4b RTN (RED-TEAM)
+    p("## 4b. RED-TEAM: RTN tail of ~1e6 oxide source followers (RT-CIRC-charge-river-04, RT-DEV-charge-river-02)")
+    p()
+    p("A Gaussian read-noise term hides the 6-sigma tail. Model: a share p_fast = %.2f of sense nodes carries one trap with tau "
+      "near the CDS interval; its step A is exponential with mean eta; it switches between the two CDS samples with "
+      "probability %.2f. The die-average raw BER must still meet %.1e. 'Screen' = nodes whose measured step exceeds the "
+      "threshold are mapped out (spare fraction = p_fast x exp(-T/eta)). Conversion gain %.0f uV/e-." % (
+          V("rtn_p_fast"), V("rtn_p_switch"), p_req, pk["cg_uv"]))
+    p()
+    rows = []
+    rtn_base = None
+    for eta_mv in (1.4, 2.8, 4.2):
+        eta_e = eta_mv * 1000.0 / pk["cg_uv"]
+        for scr in (None, 60.0, 40.0, 25.0):
+            c = cte_min_rtn(n_t, n_s, p_req, eta_e, scr)
+            spare = 0.0 if scr is None else V("rtn_p_fast") * math.exp(-scr / eta_e)
+            rows.append(["%.1f mV (%.1f e-)" % (eta_mv, eta_e), "none" if scr is None else "%.0f e-" % scr,
+                         "%.4f" % c if c else "FAILS at any CTE", "%.2g%%" % (100 * spare),
+                         "%.0f e-" % (eta_e * math.log(V("rtn_p_fast") * V("rtn_p_switch") / 1e-9))])
+            if abs(eta_mv - V("rtn_eta_mV")) < 1e-9 and scr == 25.0:
+                rtn_base = (c, spare, eta_e)
+    table(["mean RTN step eta", "screen threshold", "min CTE (DFE) incl. RTN", "nodes spared", "unscreened 1e-9 per-read step quantile"], rows)
+    sep_b, s0_b, s1_b = eye_parts(c_dfe, n_t, n_s)
+    p("**Finding.** At the Gaussian floor the eye is %.0f e- wide (half-width ~%.0f e-). The reviewers are right that a "
+      "Gaussian 8-10 e- term hides the tail: unscreened, eta = 2.8 mV moves the floor to ~0.9993 and 4.2 mV fails at any "
+      "CTE. Screening nodes whose measured between-sample step exceeds ~25 e- (0.6%% of nodes spared at 2.8 mV, 1.8%% at "
+      "4.2 mV; each spare costs only the 2 holes on that FD) brings the floor back to ~0.9975, within ~3e-4 of the "
+      "Gaussian value. This only holds if the screen sees the traps: the decisive experiment must measure the step "
+      "distribution AT the 2-5 ns CDS interval on >= 1e4 nodes, and the scrub must re-screen in the field because traps "
+      "activate over life. Insurance (I-12627 principle): two independent SFs on each FD, averaged, with a disagreement "
+      "flag that re-samples the still-held FD. An undetected large step then needs both SFs to step together: the event "
+      "probability per read falls from p_fast x p_switch = %.0e to ~%.0e and the amplitude tail exp(-A/eta) enters "
+      "squared, if trap sites are independent (hydrogen clusters could correlate them). It costs one TFT per FD, so it "
+      "needs a second TFT sub-layer and is held as a later option." % (
+          sep_b, sep_b / 2, V("rtn_p_fast") * V("rtn_p_switch"), (V("rtn_p_fast") * V("rtn_p_switch")) ** 2))
+    p()
+
+    # ---------------------------------------------------------------- 4c topology (RED-TEAM)
+    p("## 4c. RED-TEAM: regeneration topology (RT-CIRC-charge-river-02, RT-PROC-charge-river-03)")
+    p()
+    p("Readout at a segment end is destructive and a straight hole has no return path, so the original 'sense and re-inject "
+      "at each end' scheme was not physical. Every segment must be injected at one end and sensed at the other, with the "
+      "decided bit carried back through the CMOS. Fill-and-spill (potential-equilibration) injection from a per-column line "
+      "needs no per-hole TFT and is insensitive to the line's capacitance, so it can sit at the hole bottom; the low-noise "
+      "floating diffusion sits only where a TFT tier can be built (hole top, or a deck joint).")
+    p()
+    rows = []
+    topo_rows = []
+    for label, topo, segs, st, npl, ntr in [
+            ("original claim (2 x 32, sense+inject at both ends) [not physical]", "orig", 2, 32, 200, 98),
+            ("joint: 2 decks x 100 plates, regenerator tier at joint [SPECULATIVE]", "joint", 2, 32, 200, 98),
+            ("oneway: one 64-stage string, inject bottom, sense top", "oneway", 1, 64, 200, 194),
+            ("oneway-100: 100-plate stack, one 32-stage string", "oneway", 1, 32, 100, 98),
+            ("LIFO: bidirectional at each end (worst bit in+out)", "oneway", 2, 32, 200, 194)]:
+        bh = segs * st
+        floor = cte_min(ntr, n_s, p_req, True)
+        floor_r = cte_min_rtn(ntr, n_s, p_req, rtn_base[2], 25.0) if rtn_base else None
+        if topo == "orig":
+            d = density_original(bh)
+            c = (V("array_base_usd") - 300 + 10.0 * npl + V("cmos_wafer_usd") + V("bond_usd")) / (d * good_area_mm2() * V("yield_rel") / 8.0)
+        else:
+            d = density_gb_mm2(bh, npl, topo)
+            c = usd_per_gb(d, npl, topo)
+        lap_st = st
+        lap_us = lap_st / V("f_stage_hz") * 1e6
+        s_req = 1 - (V("l_avg_ns") - V("t_hit_ns")) * 1e-9 / (lap_us * 1e-6 / 2)
+        laps_mult = 2 if label.startswith("LIFO") else 1
+        cyc = lap_st * laps_mult * V("laps_per_s") * 3.15e7 * 5
+        rows.append([label, bh, ntr, "%.4f / %.4f" % (floor, floor_r if floor_r else float('nan')),
+                     "%.2f (%.1fx)" % (d, d / V("d1b_gb_mm2")), "$%.2f (%.2fx)" % (c, V("ddr5_usd_gb") / c),
+                     "%.2f us / %.1f%%" % (lap_us * laps_mult, 100 * (1 - (V("l_avg_ns") - V("t_hit_ns")) * 1e-9 / (lap_us * laps_mult * 1e-6 / 2))),
+                     "%.1e" % cyc])
+        topo_rows.append((label, d, c, floor))
+    table(["topology", "bits/hole", "transfers per read (worst bit)", "min CTE: Gaussian / incl. RTN (eta 2.8 mV, 25 e- screen)",
+           "user Gb/mm^2 (x1b)", "$/GB (x cheaper than DDR5)", "lap / s needed for 40 ns", "plate cycles, 5 yr"], rows)
+    p("**Finding.** The joint-regenerator design keeps 64 bits/hole at the old ~0.997 floor but adds a never-built TFT tier "
+      "between decks (+$%.0f/wafer). Without it, 64 bits/hole need a one-way 64-stage string whose floor is ~0.9985 (2x less "
+      "deferral allowed), a 1.28 us lap (s >= 96%%) and 3e11 plate cycles. A bidirectional (LIFO) scheme is strictly worse "
+      "(same 194-transfer worst bit, a bottom sense node, a 32-bit buffer per node and 2x cycles). Cutting to a 100-plate "
+      "stack keeps the 0.997 floor but halves bits/hole and loses to DDR5 on cost." % V("joint_tier_usd"))
+    p()
+
     # ---------------------------------------------------------------- 5 trap kinetics
     p("## 5. Trap kinetics: carrying imec's 6.25 MHz point to a 50 MHz stage clock")
     p()
@@ -509,6 +767,60 @@ def main():
           (1 - c_dfe) / (1 - V("imec_cte") ** (1.0 / (V("imec_bits") * V("imec_phases"))))))
     p()
 
+    p("RED-TEAM (RT-IND-charge-river-03): a search on 2026-11-02 found the IEDM 2024 record (paper 37-6, Kishore et al., "
+      "DOI 10.1109/iedm50854.2024.10873539) still says only 'CTE >98%' and adds 'multilevel capability'. The definition is "
+      "still unread; the $35 purchase stays task 1 of month 0 and both readings are carried.")
+    p()
+
+    # ---------------------------------------------------------------- 5a buried electrostatics (RED-TEAM)
+    p("## 5a. RED-TEAM: does a 4.5e12 cm^-2 packet stay buried? (RT-DEV-charge-river-01)")
+    p()
+    p("Margin of the cap conduction band above the packet's Fermi level at the gate-dielectric interface: Delta = dEc - "
+      "q n t_cap / eps_cap - E0 - n / g2D (m* %.2f). The share of interface-trap loss left is approximated as exp(-Delta/kT) "
+      "(optimistic: ignores wavefunction penetration and tunnelling to border traps). 85 C." % V("m_eff"))
+    p()
+    rows = []
+    for dec in (0.30, 0.40, 0.50, 0.70):
+        for tc in (2.0, 2.5, 3.0):
+            for ns_cm2 in (4.5e12, 2.5e12):
+                bm = buried_margin(ns_cm2, dec, tc)
+                rows.append(["%.2f" % dec, "%.1f" % tc, "%.1e" % ns_cm2, "%.0f" % (1000 * bm["ef"]), "%.0f" % (1000 * bm["v_cap"]),
+                             "%.0f meV (%.1f kT)" % (1000 * bm["delta"], bm["d_kt"]), "%.2f" % bm["eta_b"]])
+    table(["dEc (eV)", "cap (nm)", "sheet charge (cm^-2)", "E_F above subband (meV)", "drop across cap (mV)", "Delta",
+           "interface-loss removal (est.)"], rows)
+    bm0 = buried_margin(pk["n_sheet"], V("dEc_eV"), V("t_cap_nm"))
+    p("**Finding.** At the dossier's spec (0.30 eV, 2.5 nm cap, full fill) Delta is only %.1f kT, so the top of each '1' packet "
+      "does reach the cap interface, as RT-DEV says. Small composition swings (+-0.05 eV, RT-DEV-03 / RT-PROC-06) move the "
+      "removal between ~0.3 and ~0.9, so the model now carries eta_buried = %.1f, not 0.9. The redesign spec is dEc >= 0.5 eV "
+      "with a <= 2.5 nm cap (Delta >= ~6 kT at full fill). That offset exists in the literature for IGZO on Ga2O3 "
+      "(0.71 +- 0.1 eV, crystalline beta-Ga2O3, XPS) but has not been measured for ALD amorphous stacks, and a Ga-rich cap "
+      "conflicts with the Ga-free goal (ZTO/ITZO caps must be measured). Reaching dEc >= 0.5 eV at <= 3e12 cm^-2 is the "
+      "fallback (smaller packets cost CTE floor: 150 e- needs ~0.999)." % (bm0["d_kt"], V("eta_buried")))
+    p()
+
+    # ---------------------------------------------------------------- 5b gap barrier (RED-TEAM)
+    p("## 5b. RED-TEAM: inter-plate gap barriers and pockets (RT-DEV-charge-river-04, RT-PROC-charge-river-05)")
+    p()
+    t_dw = 1.0 / (V("phases") * V("f_stage_hz"))
+    budget_eps = 0.2 * (1 - c_dfe) / V("k_ws")
+    rows = []
+    for dv_kt in (0.5, 1, 2, 3, 4, 5, 6):
+        for tk in (300.0, 358.0):
+            tau_b, fs = gap_strand(dv_kt * K_B_EV * tk, tk, t_dw)
+            rows.append(["%.1f kT (%.0f mV)" % (dv_kt, 1000 * dv_kt * K_B_EV * tk), "%.0f C" % (tk - 273), "%.3f ns" % (tau_b * 1e9),
+                         "%.1e" % fs, "OK" if fs <= budget_eps else "strands charge"])
+    table(["static barrier in the gap", "T", "escape time over barrier", "stranded fraction after %.2f ns dwell (10%% left behind)" % (t_dw * 1e9),
+           "vs 20%% of the deferral budget (%.1e)" % budget_eps], rows)
+    c_gap = pk["cox"] * math.pi * pk["d_ch_nm"] * 1e-9 * V("plate_iso_nm") * 1e-9 * 0.5
+    p("**Finding.** A static barrier in the 15 nm gap is tolerable up to ~2.5-3 kT (~65-90 mV) at a 6.7 ns dwell, so RT-DEV's "
+      "< 0.5 kT criterion is stricter than the transport needs. A static pocket is neutralised by the fat zero (%.0f e-) as "
+      "long as its capacity is below it: with ~%.3f fF of gap coupling (half of Cox over the gap) that is a pocket up to ~%.0f mV deep. Signal-dependent "
+      "pockets are not neutralised and only electrostatics plus measurement can bound them, so a 2D/3D gap solve is a month-2 "
+      "deliverable, planar CTE is measured against gap width, and run 1 adds overlapping two-level gates as the "
+      "process-clean reference (RT-PROC-05). The vertical gap is set by a deposited oxide, not e-beam lithography, so it is "
+      "more uniform than the planar proxy." % (pk["n_fz"], c_gap * 1e15, pk["n_fz"] * Q_E / c_gap * 1000))
+    p()
+
     # ---------------------------------------------------------------- 6 sensitivity key unknown
     p("## 6. KEY-UNKNOWN SENSITIVITY: CTE -> segment length -> density and $/GB")
     p()
@@ -526,15 +838,25 @@ def main():
             rows.append(["%.4f" % cte, nt_max, 0, "-", "-", "-", "-", "DEAD"])
             continue
         npl = plates_for_stages(st)
-        d = density_gb_mm2(bh)
+        d = density_gb_mm2(bh, npl)
         c = usd_per_gb(d, npl)
-        verdict = "GO" if d / V("d1b_gb_mm2") >= 3 else ("weak" if d / V("d1b_gb_mm2") >= 1.5 else "NO-GO")
+        # RED-TEAM fallback: one-way string (no joint tier), up to 64 stages in the same 200 plates
+        st1 = max(0, min(2 * max_st, (nt_max - 2) // V("phases")))
+        if st1 > 0:
+            npl1 = V("phases") * st1 + V("overhead_plates")
+            d1 = density_gb_mm2(st1, npl1, "oneway")
+            c1 = usd_per_gb(d1, npl1, "oneway")
+            ow = "%d b, %.2f (%.1fx), $%.2f" % (st1, d1, d1 / V("d1b_gb_mm2"), c1)
+        else:
+            ow = "-"
+        verdict = "GO" if d / V("d1b_gb_mm2") >= 2.5 else ("weak" if d / V("d1b_gb_mm2") >= 1.5 else "NO-GO")
         rows.append(["%.4f" % cte, nt_max, st, bh, npl, "%.2f (%.1fx)" % (d, d / V("d1b_gb_mm2")),
-                     "$%.2f (%.1fx cheaper)" % (c, V("ddr5_usd_gb") / c), verdict])
-    table(["median CTE", "max transfers/segment", "stages/segment", "bits/hole", "plates", "user Gb/mm^2 (x1b)",
-           "$/GB (vs $1.48)", "verdict"], rows)
-    p("A mid-stack oxide-TFT regenerator tier every 32 stages (PIXEL-STACK-style amp tier) [SPECULATIVE] would let a "
-      "CTE ~0.99 device keep its full plate count, at the cost of one transistor tier per segment.")
+                     "$%.2f (%.2fx)" % (c, V("ddr5_usd_gb") / c), ow, verdict])
+    table(["median CTE", "max transfers/segment", "stages/segment", "bits/hole", "plates", "joint: user Gb/mm^2 (x1b)",
+           "joint: $/GB (x cheaper than $1.48)", "oneway fallback: bits/hole, Gb/mm^2, $/GB", "verdict (density)"], rows)
+    p("RED-TEAM: verdict thresholds now key on density (GO >= 2.5x, weak >= 1.5x) because cost per bit no longer beats DDR5 "
+      "materially at $%.0f/plate (section 11). The 'joint' columns assume the [SPECULATIVE] deck-joint regenerator tier "
+      "(two regenerated 32-stage segments); the one-way fallback needs CTE >= ~0.9985 for the full 64 bits." % V("per_plate_usd"))
     p()
 
     # ---------------------------------------------------------------- 7 latency & schedulability
@@ -565,6 +887,17 @@ def main():
                      "%.1f%% -> %.0f ns" % (100 * s_dense, l_dense), "%.1f%% -> %.0f ns" % (100 * s_moe, l_moe)])
     table(["stage clock", "32-stage lap", "s needed for 40 ns", "dense 70B decode: s -> avg latency",
            "MoE + sparse attention: s -> avg latency"], rows)
+    t_lap64 = 64 / V("f_stage_hz")
+    wsh_, ksh_ = w_bytes / total, kv_bytes / total
+    sw64 = (1 - V("expert_share_moe")) + V("expert_share_moe") * lognorm_sf(t_lap64 * 1e6, V("expert_lead_med_us"), V("lead_sigma_ln"))
+    sk64 = (1 - V("sparse_kv_share")) + V("sparse_kv_share") * lognorm_sf(t_lap64 * 1e6, V("sparse_kv_lead_med_us"), V("lead_sigma_ln"))
+    s_moe64 = (1 - V("random_share_moe")) * (wsh_ * sw64 + ksh_ * sk64)
+    p("RED-TEAM (RT-CIRC-charge-river-02): the joint topology keeps the 32-stage lap above. The one-way 64-stage fallback "
+      "has a %.2f us lap at 50 MHz: s >= %.1f%% is needed for 40 ns; dense decode gives %.0f ns and MoE + sparse attention "
+      "%.0f ns (s = %.1f%%)." % (t_lap64 * 1e6, 100 * (1 - 25e-9 / (t_lap64 / 2)),
+                                  V("t_hit_ns") + V("random_share_dense") * t_lap64 / 2 * 1e9,
+                                  V("t_hit_ns") + (1 - s_moe64) * t_lap64 / 2 * 1e9, 100 * s_moe64))
+    p()
     p("Workload per decode step (dense 70B FP8, batch %d, %d context): weights %.0f GB + KV %.1f GB, all in a fixed or "
       "append-then-scan order. **Finding:** an access only has to be known ONE LAP ahead (0.64 us at 50 MHz), and "
       "a decode layer takes tens of microseconds, so most routed-expert and top-k KV reads are schedulable at 50 MHz. "
@@ -601,7 +934,7 @@ def main():
         ["plate-to-plate C per hole (each side)", "%.3f fF" % c_pp, "3.9 eps0/%.0f nm x %.4f um^2" % (V("plate_iso_nm"), plate_area_um2)],
         ["switched C per plate per hole", "%.3f fF" % c_plate, "gate + 2 x plate-plate"],
         ["shift energy per bit (CV^2)", "%.0f fJ" % e_shift_bit_cv2, "%d plates x C x %.1f V^2 / %d bits per stage" % (act_plates, V("v_clk"), V("segments"))],
-        ["shift energy per bit (recycled)", "%.0f fJ" % e_shift_bit, "x (1 - %.1f)" % V("eta_rec")],
+        ["shift energy per bit (recycled)", "%.0f fJ" % e_shift_bit, "x (1 - %.2f)" % V("eta_rec")],
         ["column + SA + SF + DFE", "%.0f fJ" % e_sense, "C_col %.0f fF x %.2f V x %.1f V + %.0f + %.0f + %.0f" % (
             c_col, V("v_col_swing"), V("vdd"), V("e_sa_fj"), V("e_sf_fj"), V("e_dfe_fj"))],
         ["**core energy per bit read**", "**%.0f fJ (%.2f pJ)**" % (e_bit, e_bit / 1000), "vs HBM3 %.2f pJ/bit total incl. I/O" % V("hbm3_pj_bit")],
@@ -616,6 +949,26 @@ def main():
     p("**Refresh:** scrubbing every %.0f s costs %.3f mW per 16 Gb die, against DDR5's %.1f mW (46 fJ/bit every 64 ms): "
       "~%.0fx lower. Read energy is DRAM-like (~0.1 pJ/bit core), so the system energy win comes from refresh and from "
       "placing the tier near compute, not from the array." % (V("t_scrub_s"), scrub_w * 1e3, ref_w * 1e3, ref_w / scrub_w))
+    p()
+    # RED-TEAM (RT-CIRC-charge-river-03): like-for-like energy per USEFUL bit, with I/O and a realistic clock-recovery figure
+    strip_holes = V("strip_len_um") * 1000.0 / pitch * V("holes_per_row")
+    lap_e_strip = strip_holes * stages * e_stage * (1 - V("eta_rec"))                     # J to lap one clock strip
+    e_rand_useful = (lap_e_strip / 512 + e_sense * 1e-15) * 1e12                          # pJ per useful bit, 64 B access
+    e_stream = e_bit / 1000 + V("io_pj_bit")
+    e_rand = e_rand_useful + V("io_pj_bit")
+    rows = []
+    for lab, rshare in [("dense decode", V("random_share_dense")), ("MoE + sparse attention", V("random_share_moe"))]:
+        mix = (1 - rshare) * e_stream + rshare * e_rand
+        rows.append([lab, "%.1f%%" % (100 * rshare), "%.2f pJ" % mix, "%.1fx" % (V("hbm3_pj_bit") / mix)])
+    p("**RED-TEAM energy per useful bit (RT-CIRC-charge-river-03).** Clock recovery is now %.0f%% (3-phase charge sharing / "
+      "stepwise charging; on-chip LC is not feasible at 50 MHz) and an HBM-class I/O cost of %.1f pJ/bit is added. A clock "
+      "strip (%.0f um, %d rows) holds %.0f holes, so a random 64 B access that laps one strip for 512 useful bits costs "
+      "%.1f pJ per useful bit plus I/O (worse than a DRAM row activation for 64 B). Streaming costs %.2f pJ/bit incl. I/O." % (
+          100 * V("eta_rec"), V("io_pj_bit"), V("strip_len_um"), V("holes_per_row"), strip_holes, e_rand_useful, e_stream))
+    p()
+    table(["workload", "random (unscheduled) share", "energy per useful bit incl. I/O", "vs HBM3 3.44 pJ/bit"], rows)
+    p("The like-for-like energy step is ~2-3x per streamed bit, not the ~48x a 0.07 pJ core vs 3.44 pJ total comparison "
+      "suggests. The ~%.0fx refresh/standby saving stands." % (ref_w / scrub_w))
     p()
 
     # ---------------------------------------------------------------- 9 retention & endurance
@@ -647,9 +1000,10 @@ def main():
     # ---------------------------------------------------------------- 10 plate RC
     p("## 10. Plate RC (clock distribution)")
     p()
-    w_metal_nm = pitch * V("holes_per_row") - V("hole_d_nm")
+    # RED-TEAM: metal left beside the holes and capacitance both scale with strip width (holes_per_row), so RC/um^2 does not
+    w_metal_nm = V("holes_per_row") * (pitch - V("hole_d_nm"))
     r_um = V("rho_w_ohm_m") / (V("plate_thk_nm") * 1e-9 * w_metal_nm * 1e-9) * 1e-6       # ohm/um
-    c_um = c_plate / pitch * 1000.0                                                        # fF/um
+    c_um = c_plate * V("holes_per_row") / pitch * 1000.0                                   # fF/um
     rows = []
     for f in (6.25e6, 50e6, 200e6):
         t_phase = 1.0 / (3 * f)
@@ -657,11 +1011,28 @@ def main():
         rc_max = 0.3 * t_phase / 5 / 0.38
         l_max = math.sqrt(rc_max / (r_um * c_um * 1e-15))
         rows.append(["%.2f MHz" % (f / 1e6), "%.2f ns" % (t_phase * 1e9), "%.0f um" % l_max])
-    p("One-hole-wide clock row: W left beside the hole = %.0f nm, r = %.0f ohm/um, c = %.2f fF/um." % (w_metal_nm, r_um, c_um))
+    p("%d-hole-wide clock strip (RED-TEAM: was 1): W left beside the holes = %.0f nm, r = %.0f ohm/um, c = %.2f fF/um." % (
+        V("holes_per_row"), w_metal_nm, r_um, c_um))
     p()
     table(["stage clock", "phase time", "max plate length between straps/drivers"], rows)
     p("Clocking at 50 MHz needs a strap or driver every ~0.1 mm of row, which is routine on a bonded CMOS wafer. "
       "This is NOT the 5 mm word-plane RC (~160 ns) problem the critics raised, because CHARGE-RIVER's clock rows are short.")
+    p()
+    p("**RED-TEAM correction (RT-PROC-charge-river-02).** A buried plate cannot be 'strapped': each driven strip end needs a "
+      "staircase with one step per plate. The strip length is set by RC (above; a laxer 3-tau-in-50% settle gives ~1.65x "
+      "longer), and RC per um^2 is independent of strip width, so wider strips do not help. Staircase efficiency:")
+    p()
+    rows = []
+    for npl_ in (100, 200, 300):
+        rows.append([npl_, "%.0f um" % (npl_ * V("stair_step_um"))] +
+                    ["%.2f" % stair_eff(npl_, L) for L in (100.0, 150.0, 200.0)] + ["%.2f" % stair_eff(npl_, 150.0, 0.015)])
+    table(["plates", "staircase length", "eff, 100 um strip", "eff, 150 um strip (base)", "eff, 200 um strip",
+           "[SPECULATIVE] 3-trench selective-recess phase contacts (~3 um/end)"], rows)
+    p("At 200 plates the staircase costs ~%.0f%% of array area (rt-PROC: 23-38%%). Per-row slits cannot simply be dropped: "
+      "shared plates would multiply park-and-shift cycles. The base design widens strips to 2 rows only to amortise the "
+      "wider replacement-metal slits, not to save staircase. A staircase-free contact (three sacrificial plate materials, "
+      "each phase contacted through its own trench after selectively recessing the other two) would recover it, but no "
+      "such process exists [SPECULATIVE]." % (100 * (1 - stair_eff(V("n_plates")))))
     p()
 
     # ---------------------------------------------------------------- 11 cost
@@ -672,10 +1043,11 @@ def main():
     nand_xcheck = V("nand_tlc_usd_gb") * V("nand_bits_per_hole") / bits_hole
     table(["quantity", "value", "arithmetic"], [
         ["effective good area per wafer", "%.0f mm^2" % good_area_mm2(), "calibrated: $3.8k / $1.48 x 8 / 0.447"],
-        ["CHARGE-RIVER wafer (array + CMOS + bond)", "$%.0f" % wafer_cost(npl), "%.0f + %d x %.0f + %.0f + %.0f" % (
-            V("array_base_usd"), npl, V("per_plate_usd"), V("cmos_wafer_usd"), V("bond_usd"))],
-        ["**$/GB**", "**$%.2f (%.1fx below DDR5)**" % (c_cr, V("ddr5_usd_gb") / c_cr), "wafer / (density x area x yield %.1f / 8)" % V("yield_rel")],
-        ["NAND-price cross-check", "~$%.2f/GB" % nand_xcheck, "$0.09/GB TLC x %d b per NAND hole / %d b per CR hole (price, incl. margin)" % (
+        ["CHARGE-RIVER wafer (array + joint tier + plates + CMOS + bond/CuA)", "$%.0f" % wafer_cost(npl), "%.0f + %.0f + %d x %.0f + %.0f + %.0f" % (
+            V("array_base_usd"), V("joint_tier_usd") if V("topology") == "joint" else 0.0, npl, V("per_plate_usd"),
+            V("cmos_wafer_usd"), V("bond_usd"))],
+        ["**$/GB**", "**$%.2f (%.2fx vs DDR5; >1 = cheaper)**" % (c_cr, V("ddr5_usd_gb") / c_cr), "wafer / (density x area x yield %.1f / 8)" % V("yield_rel")],
+        ["NAND-price cross-check", "~$%.2f/GB" % nand_xcheck, "$0.09/GB TLC x %d b per NAND hole / %d b per CR hole (price, incl. margin; NAND spreads its staircase over 9x more bits per plate-hole, so this is not a CR cost floor)" % (
             V("nand_bits_per_hole"), bits_hole)],
     ])
     rows = []
@@ -687,6 +1059,26 @@ def main():
     p("The cost step is ~2x, not 10x: a CCD hole stores %d bits where a TLC NAND hole stores ~%d, so CHARGE-RIVER "
       "inherits NAND's process but not its bits per hole." % (bits_hole, V("nand_bits_per_hole")))
     p()
+    p("**RED-TEAM cost sensitivity (RT-PROC-charge-river-04, RT-IND-charge-river-02, RT-PROC-charge-river-02).** $/GB at "
+      "yield %.1f for per-plate cost x staircase x topology:" % V("yield_rel"))
+    p()
+    rows = []
+    for pp in (10.0, 15.0, 25.0, 35.0):
+        row = ["$%.0f" % pp]
+        for topo, bh_, npl_, stair_ in [("joint", 64, 200, None), ("oneway", 64, 200, None), ("joint", 64, 200, stair_eff(200, 150.0, 0.015))]:
+            d_ = density_gb_mm2(bh_, npl_, topo, stair_)
+            c_ = usd_per_gb(d_, npl_, topo, pp)
+            row.append("$%.2f (%.2fx)" % (c_, V("ddr5_usd_gb") / c_))
+        rows.append(row)
+    table(["per plate pair", "joint (base)", "oneway fallback (needs CTE ~0.9985)", "joint + [SPECULATIVE] staircase-free contacts"], rows)
+    d_base = density_gb_mm2(bits_hole, npl)
+    p("**Finding: the cost leg does not survive.** At $%.0f per plate (rt-PROC's NAND-derived $20-38, range $12-35 carried) "
+      "plus the staircase, the joint tier and spares, CHARGE-RIVER costs $%.2f/GB, %.2fx DDR5's $1.48: parity, not a step. "
+      "Even at yield 0.95 it is $%.2f/GB. It beats DDR5 by >= 1.4x only with per-plate cost <= ~$15 AND staircase-free "
+      "contacts, both unproven. The density step (%.1fx 1-beta) and the refresh/standby step remain." % (
+          V("per_plate_usd"), usd_per_gb(d_base, npl), V("ddr5_usd_gb") / usd_per_gb(d_base, npl),
+          usd_per_gb(d_base, npl, yld=0.95), d_base / V("d1b_gb_mm2")))
+    p()
 
     # ---------------------------------------------------------------- 12 GO / NO-GO
     p("## 12. GO / NO-GO")
@@ -697,49 +1089,93 @@ def main():
         cte = 0.98 + i * 0.00001
         nt_max = max_transfers(cte, n_s, p_req, True, cap=3 * max_st + 2)
         st = max(0, min(max_st, (nt_max - 2) // V("phases")))
-        if st > 0 and density_gb_mm2(V("segments") * st) / V("d1b_gb_mm2") >= 1.5:
+        if st > 0 and density_gb_mm2(V("segments") * st, plates_for_stages(st)) / V("d1b_gb_mm2") >= 1.5:
             nogo = cte
             break
     nogo_cost = None
     if nogo:
         st_n = max(0, min(max_st, (max_transfers(nogo, n_s, p_req, True, cap=3 * max_st + 2) - 2) // V("phases")))
-        nogo_cost = usd_per_gb(density_gb_mm2(V("segments") * st_n), plates_for_stages(st_n))
+        nogo_cost = usd_per_gb(density_gb_mm2(V("segments") * st_n, plates_for_stages(st_n)), plates_for_stages(st_n))
     p("**GO/NO-GO:** GO if planar test CCDs (sheet charge ~%.1e cm^-2, i.e. <= %.0f e- per 40 nm-plate packet; worst-case 1-after-0s pattern) "
       "show a median per-transfer CTE >= **%.4f with DFE** (deferral <= %.1e per transfer) at a >= 50 MHz STAGE clock "
       "(>= 150 M transfers/s) at BOTH 25 C and 85 C, and a 98-transfer loop with FPGA regeneration logs raw BER <= %.0e. "
       "The chief's 0.999 spec is the STRONG-GO line: it buys 64-stage segments or 3x the worst-string spread. "
       "NO-GO if every channel variant stays below CTE %.4f at >= 50 M transfers/s, where density drops under 1.5x 1-beta "
-      "and cost rises to ~$%.2f/GB, close to DDR5 parity. System half: GO if trace replay shows >= %.0f%% of bytes known >= one lap (0.64 us) ahead." % (
+      "and cost rises to ~$%.2f/GB, worse than DDR5. System half: GO if trace replay shows >= %.0f%% of bytes known >= one lap (0.64 us) ahead." % (
           pk["n_sheet"], pk["full_well"], c_dfe, 1 - c_dfe, p_req, nogo if nogo else float('nan'), nogo_cost if nogo_cost else float('nan'),
           100 * (1 - (V("l_avg_ns") - V("t_hit_ns")) * 1e-9 / (V("lap_stages") / V("f_stage_hz") / 2))))
     p()
-    p("Headline: %.2f Gb/mm^2 user (%.1fx 1-beta), ~$%.2f/GB (%.1fx below DDR5), %.0f e- packets (%.0f mV at the FD, %.0f e- noise), "
+    p("Headline: %.2f Gb/mm^2 user (%.1fx 1-beta), ~$%.2f/GB (%.2fx vs DDR5; >1 = cheaper), %.0f e- packets (%.0f mV at the FD, %.0f e- noise), "
       "~%.2f pJ/bit core read, scrub power ~%.0fx below DDR5 refresh, and a minimum CTE of %.4f (DFE) / %.4f (no DFE) at %d transfers." % (
           dens, dens / V("d1b_gb_mm2"), c_cr, V("ddr5_usd_gb") / c_cr, n_s, pk["sig_mV"], V("sigma_read_e"),
           e_bit / 1000, ref_w / scrub_w, c_dfe, c_nodfe, n_t))
+    p()
+    c_ow = cte_min(194, n_s, p_req, True)
+    c_rtn = rtn_base[0] if rtn_base else float('nan')
+    p("**RED-TEAM GO/NO-GO additions.** (1) GO line for the base (joint) topology stays at median CTE >= %.4f (DFE, Gaussian); "
+      "with the RTN tail at eta 2.8 mV and a 25 e- screen it is %.4f. Without the joint tier (one-way 64-stage fallback) "
+      "the GO line is %.4f, i.e. the old STRONG-GO region. (2) Sense-node RTN: measured 1e-9 per-read step quantile "
+      "<= 30 e- after sparing <= 2%% of >= 1e4 nodes, at the real 2-5 ns CDS interval. (3) Buried vs surface deferral >= 3x "
+      "at matched 4.5e12 cm^-2 on the overlapping-gate reference, with an XPS-measured dEc >= 0.5 eV. (4) Density GO is "
+      ">= 2.5x 1-beta; the cost claim is withdrawn (section 11)." % (c_dfe, c_rtn, c_ow))
     p()
 
     # ---------------------------------------------------------------- 13 budget roll-up
     p("## 13. Seed budget roll-up (CHARGE-RIVER standalone, 24 months)")
     p()
+    # RED-TEAM revised budget (old total $990k): adds overlapping-gate reference level (RT-PROC-05), RTN node array at the real
+    # CDS interval (RT-CIRC-04, RT-DEV-02), ALD composition-vs-depth + XPS offsets (RT-DEV-01/-03, RT-PROC-06), a 12-plate
+    # vertical coupon (RT-IND-04, RT-DEV-04), professional FTO (RT-IND-01) and per-plate cost check (RT-PROC-04); run 2 merged
+    # into the vertical-coupon run, contingency cut.
     budget = [
         ("Founder salaries, 2 x 24 months lean, incl. payroll tax", 330e3, "ESTIMATE"),
         ("CCD/device advisor (ex-Lincoln/LBNL/Teledyne-class), ~10% time", 40e3, "ESTIMATE"),
-        ("University nanofab fees: ~1,400 h blended ~$140/h (industry door + tools + staff)", 200e3, "Penn 2025 industry: door $66-77/h, tools $0-495/h, staff $150/h (https://www.nano.upenn.edu/resources/fee-structure)"),
-        ("E-beam lithography for 25-50 nm gates/gaps, ~150 h", 40e3, "ESTIMATE: ~$250/h industry e-beam"),
-        ("Wafers, ALD precursors, IGZO/IGO/ITZO/ZTO targets, masks", 45e3, "ESTIMATE"),
-        ("National-lab user time (Argonne CNM ALD/XPS, LBNL Foundry TEM)", 15e3, "ESTIMATE: non-proprietary proposals at no cost [UNVERIFIED]; proprietary at cost recovery"),
-        ("Test hardware: >=200 MHz 4-ch pattern gen (used), charge amp + digitizer, FPGA, hot/cold chuck access", 95e3, "ESTIMATE"),
+        ("University nanofab fees: ~1,200 h blended ~$140/h (was 1,400 h; run 2 merged with coupon run)", 170e3, "Penn 2025 industry: door $66-77/h, tools $0-495/h, staff $150/h (https://www.nano.upenn.edu/resources/fee-structure)"),
+        ("E-beam lithography for 25-50 nm gates/gaps and coupon contacts, ~140 h", 35e3, "ESTIMATE: ~$250/h industry e-beam"),
+        ("Wafers, ALD precursors, oxide targets, masks (+ overlapping-gate level, composition corners)", 50e3, "ESTIMATE; RED-TEAM RT-PROC-05, RT-PROC-06"),
+        ("National-lab user time (Argonne CNM ALD/XPS band offsets, LBNL TEM/EDX of high-AR coupons)", 25e3, "ESTIMATE; RED-TEAM RT-DEV-01, RT-DEV-03"),
+        ("High-aspect-ratio conformality test chips for multi-cation ALD (AR 40-80 equivalent)", 5e3, "ESTIMATE [UNVERIFIED vendor pricing]; RED-TEAM RT-PROC-06"),
+        ("12-plate vertical CCD coupon (W or Mo/SiO2 stack, ~250 nm holes, buried heterochannel)", 50e3, "ESTIMATE; RED-TEAM RT-IND-04, RT-DEV-04"),
+        ("RTN node array: >=1e4 oxide FD-SF cells with on-die oxide sample-and-hold at 2-5 ns CDS", 15e3, "ESTIMATE; RED-TEAM RT-CIRC-04, RT-DEV-02"),
+        ("Test hardware: >=200 MHz 4-ch pattern gen (used), charge amp + digitizer, FPGA, hot/cold chuck access", 85e3, "ESTIMATE"),
         ("sky130 readout/regenerator/DFE test chip (ChipFoundry slot)", 15e3, "~$15k per 100 chips (https://www.eenewseurope.com/en/tiny-tapeout-sees-industrial-boost-as-it-recovers-from-efabless-closure/)"),
-        ("Packaging, PCBs, wire bonding", 15e3, "ESTIMATE"),
-        ("Trace-driven SOAP simulator: GPU time for vLLM/SGLang trace capture", 15e3, "ESTIMATE (software written by the founders)"),
-        ("IP: 3 US provisionals + 1 PCT", 45e3, "ESTIMATE"),
-        ("Legal, accounting, insurance", 35e3, "ESTIMATE"),
-        ("Travel (IEDM, IMW, imec/Lincoln visits)", 20e3, "ESTIMATE"),
-        ("Contingency", 80e3, "~9% of the above"),
+        ("Packaging, PCBs, wire bonding", 12e3, "ESTIMATE"),
+        ("Trace-driven SOAP simulator: GPU time for vLLM/SGLang trace capture", 12e3, "ESTIMATE (software written by the founders)"),
+        ("Per-plate cost check (NAND reverse-costing report or ex-NAND cost engineer)", 5e3, "ESTIMATE; RED-TEAM RT-PROC-04"),
+        ("IP: 3 US provisionals + 1 PCT", 40e3, "ESTIMATE"),
+        ("Professional FTO/patentability search on imec / SEL oxide-CCD filings, before provisionals", 20e3, "ESTIMATE; RED-TEAM RT-IND-01"),
+        ("Legal, accounting, insurance", 28e3, "ESTIMATE"),
+        ("Travel (IEDM, IMW, imec/Lincoln visits)", 12e3, "ESTIMATE"),
+        ("Contingency", 45e3, "~5% of the above (cut from $80k)"),
     ]
     tot = sum(b[1] for b in budget)
     table(["item", "USD", "basis"], [[b[0], "$%.0fk" % (b[1] / 1e3), b[2]] for b in budget] + [["**TOTAL**", "**$%.0fk**" % (tot / 1e3), "must be < $1,000k: %s" % ("OK" if tot < 1e6 else "OVER")]])
+
+    # ---------------------------------------------------------------- 14 RED-TEAM summary
+    p("## 14. RED-TEAM REVISIONS (old -> new, objection id)")
+    p()
+    table(["input", "old", "new", "objection(s)"], [["`%s`" % k, str(o), str(n), ids] for k, o, n, ids, _ in RT_REVISIONS])
+    d_old = density_original(64)
+    c_old = (1200.0 + 10.0 * 198 + 1800.0 + 300.0) / (d_old * good_area_mm2() * V("yield_rel") / 8.0)
+    c_ow = cte_min(194, n_s, p_req, True)
+    table(["headline", "pre-red-team", "post-red-team (joint, base)", "post-red-team (one-way fallback)"], [
+        ["user density", "%.2f Gb/mm^2 (%.1fx)" % (d_old, d_old / V("d1b_gb_mm2")), "%.2f Gb/mm^2 (%.1fx)" % (dens, dens / V("d1b_gb_mm2")),
+         "%.2f Gb/mm^2 (%.1fx)" % (density_gb_mm2(64, 200, "oneway"), density_gb_mm2(64, 200, "oneway") / V("d1b_gb_mm2"))],
+        ["$/GB (x vs DDR5)", "$%.2f (%.2fx)" % (c_old, V("ddr5_usd_gb") / c_old), "$%.2f (%.2fx)" % (c_cr, V("ddr5_usd_gb") / c_cr),
+         "$%.2f (%.2fx)" % (usd_per_gb(density_gb_mm2(64, 200, "oneway"), 200, "oneway"),
+                            V("ddr5_usd_gb") / usd_per_gb(density_gb_mm2(64, 200, "oneway"), 200, "oneway"))],
+        ["min median CTE (DFE)", "0.9970 (8 e-, 98 transfers)", "%.4f Gaussian / %.4f incl. RTN screen" % (c_dfe, rtn_base[0] if rtn_base else float('nan')),
+         "%.4f (194 transfers)" % c_ow],
+        ["buried + fat-zero deferral factor", "0.18", "%.2f" % ((1 - V("f_it") * V("eta_buried")) * V("eta_fz")), "same"],
+        ["energy per useful bit vs HBM3", "0.072 pJ core (no I/O)", "%.2f pJ streaming, %.2f-%.2f pJ with 0.5-2%% random, incl. I/O (~%.1f-%.1fx better)" % (
+            e_stream, (1 - V("random_share_dense")) * e_stream + V("random_share_dense") * e_rand,
+            (1 - V("random_share_moe")) * e_stream + V("random_share_moe") * e_rand,
+            V("hbm3_pj_bit") / ((1 - V("random_share_moe")) * e_stream + V("random_share_moe") * e_rand), V("hbm3_pj_bit") / e_stream), "same"],
+        ["refresh/scrub power vs DDR5", "~191x lower", "~%.0fx lower" % (ref_w / scrub_w), "same"],
+        ["seed budget", "$990k", "$%.0fk" % (tot / 1e3), "same"],
+    ])
+    p("Model exits 0. Responses to all 19 objections: research/redteam/responses_charge-river.json.")
+    p()
 
     text = "\n".join(OUT)
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

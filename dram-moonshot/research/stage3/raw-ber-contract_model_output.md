@@ -120,13 +120,14 @@ Retention tail at 85 C, random data. pow3 = B4 calibration BER ~ t^3; lognormal 
 
 | refresh interval | BER pow3 | BER lognormal | BER pow5 | refresh W / 64 GB | tRFC loss 16Gb | 32Gb | 64Gb |
 |---|---|---|---|---|---|---|---|
-| 64 ms | 1.8e-09 | 1.8e-09 | 1.8e-09 | 0.488 | 7.56% | 10.51% | 41.03% |
-| 128 ms | 1.4e-08 | 4.3e-08 | 5.8e-08 | 0.244 | 3.78% | 5.26% | 20.51% |
-| 256 ms | 1.2e-07 | 7.7e-07 | 1.8e-06 | 0.122 | 1.89% | 2.63% | 10.26% |
-| 512 ms | 9.2e-07 | 1.0e-05 | 5.9e-05 | 0.061 | 0.95% | 1.31% | 5.13% |
-| 1000 ms | 6.9e-06 | 9.2e-05 | 1.7e-03 | 0.031 | 0.48% | 0.67% | 2.63% |
-| 2000 ms | 5.5e-05 | 6.7e-04 | 5.4e-02 | 0.016 | 0.24% | 0.34% | 1.31% |
-(64 ms row: formula extrapolation; real parts have those cells repaired at test. 64Gb tRFC uses DDR5's 3.9 us tREFI; A1 quotes ~20% on a 7.8 us basis.)
+| 32 ms | 2.2e-10 | 5.5e-11 | 5.6e-11 | 0.975 | 7.56% | 10.51% | 17.95% |
+| 64 ms | 1.8e-09 | 1.8e-09 | 1.8e-09 | 0.488 | 3.78% | 5.26% | 8.97% |
+| 128 ms | 1.4e-08 | 4.3e-08 | 5.8e-08 | 0.244 | 1.89% | 2.63% | 4.49% |
+| 256 ms | 1.2e-07 | 7.7e-07 | 1.8e-06 | 0.122 | 0.95% | 1.31% | 2.24% |
+| 512 ms | 9.2e-07 | 1.0e-05 | 5.9e-05 | 0.061 | 0.47% | 0.66% | 1.12% |
+| 1000 ms | 6.9e-06 | 9.2e-05 | 1.7e-03 | 0.031 | 0.24% | 0.34% | 0.57% |
+| 2000 ms | 5.5e-05 | 6.7e-04 | 5.4e-02 | 0.016 | 0.12% | 0.17% | 0.29% |
+(32/64 ms rows: formula extrapolation; real parts have those cells repaired at test. tRFC loss uses DDR5's 3.9 us tREFI at its 32 ms window and scales tREFI with the interval [RED-TEAM fix: the original scaled from 64 ms, doubling the relaxed-interval loss]. 64Gb tRFC revised 1600 -> 700 ns [RT-PROC-04]. BER columns use the DDR3/DDR4-era anchors; DDR5 is ~2x left, see section 10.)
 
 Largest refresh interval whose static BER x (1 + VRT growth x scrub interval) fits the 128-bit side band: BCH t=12 for iid errors (max 3.32e-04) or RS(80,64) when errors cluster (max 5.45e-05); scrub every 1 h, VRT growth 1.0/day:
 
@@ -150,14 +151,14 @@ VRT sensitivity (lognormal model, 85 C): largest interval vs VRT growth and scru
 
 Power per 64 GB RDIMM at the chosen interval (refresh + scrub; scrub reads every bit once per interval):
 
-| interval | refresh W | scrub W | total W | cut vs 64 ms | idle-power saving (3 W idle) | tRFC loss 16Gb |
-|---|---|---|---|---|---|---|
-| 256 ms | 0.122 | 0.57 m | 0.122 | 4.0x | 12% | 1.89% |
-| 500 ms | 0.062 | 0.57 m | 0.063 | 7.7x | 14% | 0.97% |
-| 1000 ms | 0.031 | 0.57 m | 0.032 | 15.3x | 15% | 0.48% |
-| 2000 ms | 0.016 | 0.57 m | 0.016 | 30.2x | 16% | 0.24% |
+| interval | refresh W | scrub W | total W | cut vs 64 ms (DDR4) | cut vs 32 ms (DDR5 spec) | idle-power saving vs 64 ms (3 W idle) | tRFC loss 16Gb |
+|---|---|---|---|---|---|---|---|
+| 256 ms | 0.122 | 0.57 m | 0.122 | 4.0x | 8.0x | 12% | 0.95% |
+| 500 ms | 0.062 | 0.57 m | 0.063 | 7.7x | 15.5x | 14% | 0.48% |
+| 1000 ms | 0.031 | 0.57 m | 0.032 | 15.3x | 30.7x | 15% | 0.24% |
+| 2000 ms | 0.016 | 0.57 m | 0.016 | 30.2x | 60.3x | 16% | 0.12% |
 
-Caveats: (1) DRAM self-refresh runs on the die's own timer, so idle savings need the controller to keep ranks in power-down and issue REF itself (small DLL/clock background cost, not modelled). (2) At 85 C the central (lognormal) model allows 1526 ms with iid errors and 837 ms if clustering forces RS; the pessimistic bound with RS is 500 ms. Most servers run DIMMs at 45-65 C, where a temperature-tracking controller (DDR5 RDIMM thermal sensor) stretches 4-16x further. (3) The 64 Gb tRFC crisis is where the time win is largest. (4) Retention-reject bins sit left of these curves by construction: the experiment must measure them, not assume them.
+Caveats: (1) DRAM self-refresh runs on the die's own timer, so idle savings need the controller to keep ranks in power-down and issue REF itself (background cost 0.3-1 W per RDIMM per RT-CIRC-04; hybrid policy in section 10.3). (2) At 85 C the central (lognormal) model allows 1526 ms with iid errors and 837 ms if clustering forces RS; the pessimistic bound with RS is 500 ms. Most servers run DIMMs at 45-65 C, where a temperature-tracking controller (DDR5 RDIMM thermal sensor) stretches 4-16x further. (3) The 64 Gb tRFC crisis is where the time win is largest. (4) Retention-reject bins sit left of these curves by construction: the experiment must measure them, not assume them.
 
 ## 6. One error budget, two ways to spend it
 
@@ -194,9 +195,9 @@ Refresh energy saved by 64 ms -> 1 s: 0.67 pJ per bit per second. Break-even rea
 
 At 1000 ms: saves 0.46 W per 64 GB RDIMM -> 26 kWh over 5 yr at PUE 1.3 = $2.60 ($0.041/GB, 2.7% of $1.48/GB).
 Fleet scale: 7.1 MW saved per exabyte of server DRAM (before PUE).
-  16Gb: refresh-blocked time 7.6% -> 0.48% (bandwidth/latency recovered ~7.1 pts)
-  32Gb: refresh-blocked time 10.5% -> 0.67% (bandwidth/latency recovered ~9.8 pts)
-  64Gb: refresh-blocked time 41.0% -> 2.63% (bandwidth/latency recovered ~38.4 pts)
+  16Gb: refresh-blocked time 7.6% -> 0.24% (bandwidth/latency recovered ~7.3 pts)
+  32Gb: refresh-blocked time 10.5% -> 0.34% (bandwidth/latency recovered ~10.2 pts)
+  64Gb: refresh-blocked time 17.9% -> 0.57% (bandwidth/latency recovered ~17.4 pts)
 
 New-die check-bit cost: t=9 line BCH = 17.6% vs on-die 6.25% -> same 1b cell gives 0.404 Gb/mm2 (0.90x of 0.447). The contract pays for itself only through the cells it enables (shorter pillar, 3D tiers), never on today's planar cell.
 Commodity path: the 25% ECC side band already exists on RDIMMs, so the contract adds zero bits there; the choice is BCH-12 (6x more random-bit headroom, no chipkill) or RS-8 (keeps chipkill, section 4).
@@ -211,11 +212,184 @@ NO-GO: largest safe interval <256 ms at 65 C even with RS-8 (RAIDR-class profili
 
 GO/NO-GO LINE: GO if the measured error stream fits the 128-bit side band (BCH-12 <= 3.3e-04 iid, or RS-8 <= 5.4e-05 clustered) at the 2e-19/read target with refresh >= 0.5 s at 85 C, AND >=50% of half-charge errors are flaggable; NO-GO if the largest safe interval is <256 ms at 65 C.
 
-## Headline
+## 10. RED-TEAM REVISIONS: variants run for the 19 objections
+
+Owner response, 2026-11-02. Objections in research/redteam/rt_*.json; responses in research/redteam/responses_raw-ber-contract.json. Inputs added here are in the RT_INPUTS table at the end.
+
+## 10.1 DDR5 basis with chipkill kept (RT-CIRC-03, RT-DEV-02, RT-PROC-01)
+
+Code limits at the 2e-19/read target (max internal raw BER, iid errors; DDR5 rows include on-die SEC(136,128) with 53% doublet miscorrection in front of the controller code):
+
+| part | controller code | chipkill | max raw BER |
+|---|---|---|---|
+| DDR4 (no on-die ECC) | BCH-12 | no | 3.32e-04 |
+| DDR4 | RS(80,64) bytes | yes | 5.45e-05 |
+| DDR4 | RS(80,64), one chip marked dead | degraded | 8.26e-07 |
+| DDR5 behind on-die SEC | BCH-12 | no | 1.68e-04 |
+| DDR5 behind on-die SEC | RS(80,64) bytes | yes | 1.52e-05 |
+| DDR5 behind on-die SEC | RS(80,64), one chip marked dead | degraded | 2.07e-07 |
+
+On-die SEC HURTS the chipkill code (a red-team-run finding): it strips singletons but turns doublets into 2-3-bit chip-confined events that each consume 2-3 RS symbols, so three such events on one read exceed t=8 (failure ~p^6 instead of ~p^9 for iid singles). RS-8 behind SEC tolerates ~3.6x less internal BER than RS-8 on raw DDR4. The symbol count is an upper bound (each post-SEC bit in its own byte; for 3 bits in 8 bytes that holds 66% of the time anyway).
+
+Safe refresh interval (1 h scrub, VRT 1x/day). DDR5 retention = DDR3/DDR4-era anchors x 0.5 in time [RT-DEV-02 derate; 1.0 = no derate]. 'cut' = interval / the part's own JEDEC window (DDR4 64 ms, DDR5 32 ms).
+
+| part / code | retention model | ret. scale | 85 C | cut at 85 C | 65 C | 45 C |
+|---|---|---|---|---|---|---|
+| DDR4 / RS-8 chipkill | logn | 1 | 837 ms | 13.1x | 3346 ms | 13384 ms |
+| DDR4 / RS-8 chipkill | pow5 | 1 | 500 ms | 7.8x | 1999 ms | 7997 ms |
+| DDR4 / RS-8 degraded (chip dead) | logn | 1 | 258 ms | 4.0x | 1031 ms | 4125 ms |
+| DDR5 / RS-8 behind SEC | pow3 | 0.5 | 643 ms | 20.1x | 2574 ms | 10294 ms |
+| DDR5 / RS-8 behind SEC | logn | 0.5 | 285 ms | 8.9x | 1139 ms | 4556 ms |
+| DDR5 / RS-8 behind SEC | pow5 | 0.5 | 194 ms | 6.1x | 775 ms | 3099 ms |
+| DDR5 / RS-8 behind SEC | logn | 1 | 569 ms | 17.8x | 2278 ms | 9112 ms |
+| DDR5 / RS-8 degraded (chip dead) | logn | 0.5 | 92 ms | 2.9x | 366 ms | 1465 ms |
+| DDR5 / RS-8 degraded (chip dead) | pow5 | 0.5 | 82 ms | 2.6x | 328 ms | 1312 ms |
+| DDR5 / BCH-12 behind SEC (no chipkill) | logn | 0.5 | 603 ms | 18.9x | 2413 ms | 9652 ms |
+
+Revised commodity headline (DDR5 RDIMM, chipkill kept, 85 C): central 285 ms = 8.9x refresh energy vs the 32 ms spec; pessimistic (pow5) 194 ms = 6.0x; optimistic (pow3) 643 ms; degraded mode 92 ms = 2.9x until the DIMM is serviced. At 65 C: 1139 ms (35x, capped at 4 s), degraded 366 ms.
+DDR5 refresh baseline at its real 32 ms window: 0.975 W per 64 GB (A1 per-cell energy; the original model's 0.488 W was a 64 ms figure). Saving at the central interval: 0.865 W.
+
+## 10.2 64Gb refresh-blocked time (RT-PROC-04, RT-IND-03)
+
+| 64Gb tRFC | blocked, all-bank REF at 3.9 us | same-bank REF equivalent (x0.33-0.5) | at central interval | at pessimistic interval |
+|---|---|---|---|---|
+| 600 ns | 15.4% | 5.1-7.7% | 1.73% | 2.54% |
+| 700 ns | 17.9% | 5.9-9.0% | 2.02% | 2.97% |
+| 800 ns | 20.5% | 6.8-10.3% | 2.31% | 3.39% |
+| 1600 ns (old) | 41.0% | 13.5-20.5% | 4.61% | 6.78% |
+
+Reading: at 700 ns the 64Gb blocked time is 18% (not 41%); same-bank refresh hides perhaps half to two thirds of it. Relaxed refresh still divides whatever remains by ~9x, so the recovered bandwidth is ~6-18 points, not ~38.
+
+## 10.3 Self-refresh and the idle saving (RT-CIRC-04)
+
+Refresh saving while the controller issues REF: 0.865 W per 64 GB at the central interval. Policy A keeps ranks in power-down with controller REF even when idle (pays the background cost); policy B lets idle ranks enter the die's own self-refresh (no saving there, no loss).
+
+| self-refresh residency | policy A, background 0.3 W | policy A, background 1.0 W | policy B (hybrid) | 5-yr value, policy B |
+|---|---|---|---|---|
+| 0.0 | +0.865 W | +0.865 W | +0.865 W | $4.93 |
+| 0.1 | +0.835 W | +0.765 W | +0.779 W | $4.44 |
+| 0.2 | +0.805 W | +0.665 W | +0.692 W | $3.94 |
+| 0.5 | +0.715 W | +0.365 W | +0.433 W | $2.46 |
+
+Reading: always-on controller REF goes negative once self-refresh residency exceeds 87% (1 W background) or 100% (0.3 W). The hybrid policy never loses; at 20% residency it keeps $3.94 per module over 5 years ($0.062/GB). A programmable self-refresh interval (an LPDDR-style temperature-compensated rate, [UNVERIFIED-PK]) would recover the rest; it is a JEDEC ask, not a controller feature.
+
+## 10.4 Decoder slow path and latency (RT-CIRC-05)
+
+Fast path 2 ns (syndrome zero), single-symbol fix 4 ns, multi-symbol Berlekamp-Massey + Chien 25 ns. The operating BER is the code limit / 3 (servo guard, 10.8) or the limit itself (worst case).
+
+| case | operating raw BER | lines with any error | lines needing BM | mean added ns | p99 path |
+|---|---|---|---|---|---|
+| DDR4, RS-8 at limit | 5.4e-05 | 3.425% | 0.0594% | 2.15 | single fix |
+| DDR4, RS-8 servoed | 1.8e-05 | 1.155% | 0.0067% | 2.05 | single fix |
+| DDR4, BCH-12 at 1e-4 (critic case) | 1.0e-04 | 6.200% | 0.1963% | 2.29 | single fix |
+| DDR5 behind SEC, RS-8 at limit | 1.5e-05 | 0.002% | 0.0007% | 2.00 | fast |
+| DDR5 behind SEC, RS-8 servoed | 5.1e-06 | 0.000% | 0.0001% | 2.00 | fast |
+
+Reading: the critic's 5.6% slow path is real for raw DDR4 at 1e-4, but almost all of it is single-symbol errors that a lookup fixes in a few ns; BM is needed on <0.2% of lines. Behind DDR5's on-die SEC the controller rarely sees an error at all. The CXL hop itself adds 70-150 ns: the commodity product is a capacity tier, and DRAM-class latency needs the decoder in the host memory controller (where chipkill decoders already sit) or on-die.
+
+## 10.5 Flag ledger (RT-CIRC-01, RT-CIRC-02, RT-IND-02, RT-DEV-01)
+
+(a) Time-domain (delayed-strobe) flag: window delta = 3.6 mV. Resolution time t = tau ln(V/dV), so a timing error s shifts the effective threshold by exp(s/tau); equivalent amplitude noise ~ delta (exp(s/tau) - 1).
+
+| tau ps | window tau ln2 ps | skew 15 ps | skew 50 ps | skew 150 ps |
+|---|---|---|---|---|
+| 20 | 14 | 4.0 mV | 39.9 mV | >1 V |
+| 50 | 35 | 1.2 mV | 6.1 mV | 68.2 mV |
+
+(b) Amplitude-domain flag (offset-cancelled dual-reference comparator) with comparator noise sigma_f; all errors soft (best case for flags), raw BER 1e-4, delta = 0.5 sigma:
+
+| sigma_f mV | flagged share of errors | false flags per error | Chase t | max raw BER at t=8 |
+|---|---|---|---|---|
+| 0.0 | 88% | 5.4 | 7 | 1.73e-04 |
+| 1.5 | 82% | 7.2 | 8 | 1.48e-04 |
+| 3.6 | 60% | 18.8 | 9 | 9.90e-05 |
+| 7.1 | 37% | 97.9 | 9 | 6.51e-05 |
+
+(c) Transport: 0.40 flags per 640-bit line at 1e-4 (ideal flag). Naming F positions costs 10 F + 2 bits; overflow P(flags > F): F=1 0.063, F=2 0.0081, F=3 0.00080.
+
+(d) Inside a fixed 128-bit side band (ideal flags, all errors soft):
+
+| allocation | bits used | max raw BER |
+|---|---|---|
+| BCH t=12, no flags | 120 | 3.32e-04 |
+| BCH t=11 + 0 flag positions | 110 | 2.38e-04 |
+| BCH t=10 + 2 flag positions | 122 | 3.62e-04 |
+| BCH t=9 + 3 flag positions | 122 | 2.51e-04 |
+| BCH t=8 + 4 flag positions | 122 | 1.62e-04 |
+| BCH t=10 + 2 flag positions, comparator noise 1.5 mV | 122 | 3.08e-04 |
+
+(e) New-die ledger at raw BER 1e-4, ideal flags: check bits saved 90-70 = 20 per 512 (3.9% of die bits); transport >= 1 position + overflow bit = 2.1% (or one extra beat in 16 = 6.25% bandwidth); second SA latch +2-4% die. Net: -2.2% to -0.2% of die. Within a fixed side band, ideal flags on all-soft errors buy at most +9% raw-BER headroom over plain BCH-12 (-7% with 1.5 mV comparator noise), before any confident (refresh-latched) errors, which erase the gain.
+
+## 10.6 Correlated faults and the 2e-19 target (RT-DEV-04)
+
+Multi-bit (row/column/bank) faults: 30 FIT/die x 40 dies = 0.0105 per module-year. RS-8 corrects one fully corrupted chip slice (8 symbols) but then has no spare: a UE needs one more symbol error in the other 9 chips on the same read. After the first chip-confined correction the controller marks the chip (erasure mode, degraded refresh). UE per module-year = faults x reads-before-marking x q.
+
+| case | operating raw BER | q = P(other-chip symbol error) | mark after 1 read | after 10 | after 100 |
+|---|---|---|---|---|---|
+| 64 ms today (DDR4 anchors) | 1.8e-09 | 1.04e-06 | 1.1e-08 | 1.1e-07 | 1.1e-06 |
+| DDR4 RS-8 at limit | 5.4e-05 | 3.09e-02 | 3.2e-04 | 3.2e-03 | 3.2e-02 |
+| DDR4 RS-8 servoed | 1.8e-05 | 1.04e-02 | 1.1e-04 | 1.1e-03 | 1.1e-02 |
+| DDR5 behind SEC, RS-8 at limit | 1.5e-05 | 1.52e-05 | 1.6e-07 | 1.6e-06 | 1.6e-05 |
+| DDR5 behind SEC, RS-8 servoed | 5.1e-06 | 1.70e-06 | 1.8e-08 | 1.8e-07 | 1.8e-06 |
+
+Reading: relaxed refresh turns benign chip faults into UE risk through coincidence with random errors (q rises ~1e4x vs 64 ms on raw DDR4). On DDR4 the controller must mark a chip on its first chip-confined multi-symbol correction; marking after 10 reads already uses the whole 1e-3 budget. Behind DDR5 on-die SEC, q stays small.
+Census power: 1.8e+05 module-hours with zero events of a mechanism bound its rate at <= 0.15 per module-year (95%). With immediate marking, that bounds its UE share at <= 1.5e-03 (DDR4 servoed) and <= 2.5e-07 (DDR5) per module-year, against the 1e-3 budget. Each mechanism's rate is measured as events, not inferred from 1e15 codeword reads; multi-chip common-mode events (VPP droop, thermal slew faster than the scheduler) remain the residual that only fleet telemetry bounds.
+
+## 10.7 VRT coincidence inside a codeword (RT-DEV-03)
+
+Share of VRT/retention error bits arriving as same-codeword pairs (b=2) vs the BCH-12 limit (RS-8: a pair in one byte is one symbol, across chips two, so RS sees pairs as at most iid):
+
+| pair share | BCH-12 max raw BER |
+|---|---|
+| 0.00 | 3.32e-04 |
+| 0.01 | 2.64e-04 |
+| 0.10 | 1.02e-04 |
+| 0.30 | 4.56e-05 |
+
+VRT state dwell times at 85 C run minutes to hours (RT-DEV-03), so the soak must re-map a subset of rows every ~20 s-20 min (<= 1/3 of the shortest dwell) as well as whole modules hourly, and must count VRT arrivals per codeword per scrub period (overdispersion vs Poisson) to feed this table.
+
+## 10.8 Lot-to-lot spread and per-module adaptive intervals (RT-PROC-02)
+
+Lot retention scale L ~ lognormal(0, sigma). Local tail slope at 285 ms (DDR5 central): BER ~ t^3.4, so a 3x BER guard costs 0.73x in interval.
+
+| lot sigma (ln) | fixed fleet interval (covers 1-in-1000 lot) | cut | adaptive per module (servoed), fleet-mean cut |
+|---|---|---|---|
+| 0.35 | 97 ms | 3.0x | 6.1x |
+| 0.70 | 33 ms | 1.0x | 5.1x |
+
+Reading: a fixed worst-lot interval throws away most of the gain; an adaptive controller that servos each rank on its own corrected-error telemetry keeps most of it. Proving a 1-in-100 worst lot directly needs ~298 lots, so the demo proves the servo (per-module grade predicted in 1 h, held for 1,000 h), not a population floor; a vendor 1 s retention screen remains an optional bin, not a requirement.
+
+## 10.9 Sort-flow test time for a die built to contract (RT-PROC-03)
+
+Pauses (0.5, 1.0, 2.0) s x 4 patterns x 2 temperatures = 28 s of pause plus 12 s of write/read passes = 40 s per batch, i.e. 0.08 s per die at 512 sites [ESTIMATE]. The same maps give each die's cluster spectrum (repair clusters, leave singletons). VRT growth cannot be screened at sort: it becomes a lot statistic from sampled 24-48 h soaks plus the field controller's servo and chip marking.
+
+## 10.10 New-cell routes: oxide revival, stacked write (I-12627), plate-strip sensing (I-12302) (RT-DEV-05)
+
+Stacked write devices square the leakage-tail fraction only for independent defects: p_eff = p (rho + (1 - rho) p), rho = shared-defect share. Applies to gain/oxide cells whose hold leakage is the write path, not to Si 1T1C storage-node junction/GIDL leakage. DDR4-anchor tail, RS-8 limit, 85 C:
+
+| rho | p_eff at 1 s | safe interval |
+|---|---|---|
+| 0.00 | 8.4e-09 | 5.6 s |
+| 0.01 | 9.2e-07 | 4.1 s |
+| 0.10 | 9.2e-06 | 1.8 s |
+| 0.30 | 2.7e-05 | 1.3 s |
+
+Plate-strip sense node (2.7 fF, 0.5 V swing): Cs for 50 mV = 0.30 fF; for the contract's 26.6 mV = 0.15 fF (bitline sensing: 5.42 -> 2.68 fF). If I-12302 works in 3D it is a ~18x margin lever (vs the contract's 1.88x) and dwarfs flags (+8%); the contract still halves the remaining Cs. Smaller Cs shortens retention at fixed leakage (section 6), so these cells need the oxide/stacked-write tail as well.
+
+Oxide revival (RT-DEV-05): no published IGZO array retention CDF reaches 1e-6 at 85 C; the '1e3-1e4x' figure was a typical-Ioff ratio, not a tail. The revival condition is restated as a measurement.
+
+## Headline (revised after red team)
+
+- Commodity DDR5 RDIMM, chipkill kept (RS-8 behind on-die SEC, max internal BER 1.5e-05), DDR5 retention derated 0.5x: safe interval at 85 C 285 ms central / 194 ms pessimistic = 8.9x / 6.0x refresh energy vs the 32 ms spec; degraded mode (chip dead) 92 ms = 2.9x; at 65 C 1139 ms.
+- Refresh power 0.98 W -> 0.110 W per 64 GB; with 20% self-refresh residency (hybrid policy) $3.94 per module over 5 yr. 64Gb (tRFC 700 ns) blocked time 18% -> 2.0% (all-bank basis).
+- Flag leg: net -2.2% to -0.2% of die even with ideal flags; a delayed-strobe flag sees skew, not signal. Removed from the headline and the GO/NO-GO.
+- Margin for new cells unchanged at 1.88x (50 -> 26.6 mV, Cs 5.4 -> 2.7 fF) without flags; plate-strip sensing (I-12302) would need only 0.30 -> 0.15 fF.
+
+## Headline (original dossier basis, superseded by the revised headline above)
 
 - Target 2.0e-19 per 64 B read; the concept's t=8 is ~100x short; t=9 (17.6%) needed at 1e-4 with hard decisions.
 - A commodity DDR5 ECC RDIMM's existing 128-bit side band takes iid raw BER up to 3.3e-04 (BCH-12) or 5.4e-05 with byte-confined clusters and chipkill (RS-8); behind DDR5 on-die SEC, internal BER up to 1.7e-04. BCH-12 tolerates only ~0.41% of error bits in 3-bit clusters at 1e-4.
-- Refresh interval at 85 C, iid / clustered: pow3 3.59 / 1.97 s; lognormal 1.53 / 0.84 s; pow5 0.72 / 0.50 s. At 1 s: refresh 0.49 -> 0.03 W per 64 GB (15x), $0.041/GB of energy over 5 yr; tRFC loss 7.6% -> 0.5% (16Gb).
+- Refresh interval at 85 C, iid / clustered: pow3 3.59 / 1.97 s; lognormal 1.53 / 0.84 s; pow5 0.72 / 0.50 s. At 1 s: refresh 0.49 -> 0.03 W per 64 GB (15x vs 64 ms), $0.041/GB of energy over 5 yr; tRFC loss 7.6% -> 0.24% (16Gb, 32 ms-window fix).
 - Margin: 1e-4 buys 7 -> 3.72 sigma (50 -> 26.6 mV, Cs 5.4 -> 2.7 fF). Flags add only ~8% more (Chase t=7 vs hard t=9) and nothing for refresh-latched errors.
 
 ## Inputs
@@ -248,7 +422,7 @@ GO/NO-GO LINE: GO if the measured error stream fits the 128-bit side band (BCH-1
 | e_scrub_pJ_bit | 3.0 | ESTIMATE: sequential open-page read inside the CXL device: IO ~2 pJ + array share + syndrome |
 | e_refresh_fJ_bit | 45.9 | A1 model refresh_energy_per_bit_fJ() (models/dram_cell_physics.py), ~46 fJ |
 | trefi_ns | 3900.0 | DDR5 tREFI <85 C (https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7134/SQR-RD5N16G5K6HZZG.pdf via A1) |
-| trfc_ns | {'16Gb': 295.0, '32Gb': 410.0, '64Gb': 1600.0} | A1 model: 16Gb datasheet; 32Gb [UNVERIFIED]; 64Gb extrapolated (https://arxiv.org/pdf/1712.08304) |
+| trfc_ns | {'16Gb': 295.0, '32Gb': 410.0, '64Gb': 700.0} | A1 model: 16Gb datasheet; 32Gb [UNVERIFIED]; 64Gb was 1600 ns extrapolated (https://arxiv.org/pdf/1712.08304); revised to 700 ns ESTIMATE (critic range 600-800 ns: JEDEC held tRFC1 at 410 ns from 24Gb to 32Gb; resp-raw-ber-contract search did not confirm any 64Gb value) |
 | rdimm_idle_W | 3.0 | A1 model [UNVERIFIED: training knowledge, 2-4 W class] |
 | rdimm_active_W | 12.0 | A1 model [UNVERIFIED: training knowledge, 8-15 W class] |
 | tRC_ns | 46.0 | ESTIMATE: DDR5 tRC ~46-48 ns [UNVERIFIED: training knowledge] |
@@ -263,3 +437,35 @@ GO/NO-GO LINE: GO if the measured error stream fits the 128-bit side band (BCH-1
 | elec_usd_kWh | 0.1 | ESTIMATE: U.S. industrial/data-centre electricity |
 | pue | 1.3 | ESTIMATE: hyperscale PUE |
 | years | 5.0 | ESTIMATE: server life |
+
+## RT_INPUTS (red-team revisions)
+
+| key | value | source / basis |
+|---|---|---|
+| trefw_ddr5_s | 0.032 | DDR5 refresh window 32 ms up to 85 C (https://en.wikipedia.org/wiki/DDR5_SDRAM, via search snippet) = tREFI 3.9 us x 8192; DDR4 64 ms |
+| ret_time_scale_ddr5 | 0.5 | ESTIMATE: DDR5 1a/1b retention times = 0.5x the DDR3/DDR4-era anchors (JEDEC halved the window to 32 ms; 1b Cs ~5.4 fF); swept 0.5-1.0. RT-DEV-02 / RT-PROC-01 |
+| trfc64_range_ns | (600.0, 700.0, 800.0, 1600.0) | RT-PROC-04 critic range 600-800 ns; old 1600 ns extrapolation |
+| refsb_factor | (0.33, 0.5) | ESTIMATE: same-bank refresh (tRFCsb) keeps other banks serving; rank-level throughput loss ~1/3-1/2 of all-bank REF [UNVERIFIED: training knowledge]. RT-IND-03 |
+| sr_residency | (0.0, 0.1, 0.2, 0.5) | ESTIMATE: share of server time a rank spends in self-refresh (deep idle); swept. RT-CIRC-04 |
+| pd_background_W | (0.3, 1.0) | RT-CIRC-04 critic estimate: clock, CA bus, RCD and PHY kept awake per RDIMM in power-down with controller REF [ESTIMATE, training knowledge] |
+| lat_fast_ns | 2.0 | ESTIMATE: syndrome-zero check, 28 nm, pipelined |
+| lat_single_ns | 4.0 | ESTIMATE: single-symbol correction by syndrome lookup / closed form, 28 nm |
+| lat_bm_ns | 25.0 | RT-CIRC-05 critic: Berlekamp-Massey + Chien ~15-30 ns at 28 nm |
+| cxl_adder_ns | (70.0, 150.0) | RT-CIRC-05 critic: CXL Type-3 load-to-use adder over local DDR5 [training knowledge] |
+| multibit_fault_fit_per_die | 30.0 | ESTIMATE: row/column/bank (multi-bit) DRAM faults ~half of ~25-70 FIT per device in field studies [UNVERIFIED-PK: Sridharan & Liberty SC12, Sridharan et al. ASPLOS 2015]. RT-DEV-04 |
+| census_module_hours | 180000.0 | ESTIMATE: Phase 1 + Phase 2 exposure: ~80 modules x ~2,000 h campaigns + 20 x 1,000 h soak. RT-DEV-04 |
+| lot_sigma_ln | (0.35, 0.7) | ESTIMATE: lot-to-lot spread of retention-time scale (1 sigma, ln units); swept. RT-PROC-02 |
+| servo_ber_guard | 3.0 | ESTIMATE: the controller servos each rank's interval so measured corrected BER stays <= 1/3 of the code's limit (NAND-style adaptive trim). RT-PROC-02 |
+| sort_pauses_s | (0.5, 1.0, 2.0) | ESTIMATE: sort retention pauses for a contract grade. RT-PROC-03 |
+| sort_patterns | 4 | ESTIMATE: data patterns per pause |
+| sort_temps | 2 | ESTIMATE: hot + room insertions |
+| sort_pass_s | 0.25 | ESTIMATE: one full-die write + read pass in test mode |
+| sort_sites | 512 | ESTIMATE: dies tested in parallel per memory test head [UNVERIFIED-PK] |
+| stack_corr | (0.0, 0.01, 0.1, 0.3) | ESTIMATE: share of leakage-tail defects shared by both series write devices (idea I-12627 needs independence). RT-DEV-05 |
+| plate_node_fF | 2.7 | idea I-12302: ~2 fF plate strip + parasitics; 1 fF cell into ~3.7 fF total gives ~135 mV (research/ideas10k/stage2/stage2_results.jsonl) |
+| plate_swing_V | 0.5 | derived from I-12302's 135 mV for 1 fF into 3.7 fF |
+| tau_latch_ps | (20.0, 50.0) | RT-CIRC-01 critic: latch regeneration time constant |
+| strobe_skew_ps | (15.0, 50.0, 150.0) | RT-CIRC-01 critic: SAN/SAP enable skew + droop along a 1k-SA strip |
+| flag_cmp_noise_mV | (0.0, 1.5, 3.6, 7.1) | ESTIMATE: flag comparator offset/noise (1.5 mV = critic's pass line) |
+| flag_pos_bits | 10 | log2(640) rounded up: bits to name one flagged position in a 640-bit line. RT-CIRC-02 |
+| flag_sa_area_die | (0.02, 0.04) | RT-CIRC-02 critic: second latch + comparator per SA = +20-40% SA strip = +2-4% die [ESTIMATE] |

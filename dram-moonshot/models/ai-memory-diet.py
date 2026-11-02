@@ -26,11 +26,38 @@ What it computes (per GPU, then per GB300-NVL72-class rack, then per 10,000 rack
 
 Every input carries a source URL (logged in research/sources/dos-ai-memory-diet.jsonl) or
 "ESTIMATE: basis" (logged in research/assumptions/dos-ai-memory-diet.md).
+
+RED-TEAM REVISIONS (2026-11-02, owner response to research/redteam/rt_*.json; sources in
+research/sources/resp-ai-memory-diet.jsonl). Format: input or mechanism: old -> new [objection id].
+  - waf (NAND write amplification): implicit 1.0 -> 1.1 with FDP placement by expiry class; DWPD and
+    endurance drive count are now NAND-side; sensitivity 1.0-2.0 in section 11.3   [RT-DEV-01]
+  - flash queue: reads only -> reads + NAND program/erase die-time (write_interf 1.0, ssd_write_gbs
+    10 GB/s per drive) added to flash utilisation                                  [RT-CIRC-04, RT-DEV-04]
+  - bw_derate stress cases: none -> end-of-life read derate 0.85 and 1-of-3 drives throttled to 50%
+    (bandwidth x 5/6), section 11.4                                                 [RT-DEV-02, RT-DEV-04]
+  - latent geometry: "single latent shared by all layers" (g = 80 layers per latent, so per-step KV
+    reads x 80/3 = 26.7x GQA) -> per-layer latent (latent_group_layers 1, k_bw = k_cap / g = 3);
+    all-layer case shown in section 11.1 as a kill                                  [RT-CIRC-02]
+  - compute bound: none -> active sessions also capped by GPU FLOPs (decode + prompt prefill;
+    gpu_fp8_pflops 5.0 x mfu_serve 0.4); spare HBM then acts as an idle-KV tier. This changes the
+    latent scenarios C/D/D0 (compute binds before HBM) and is needed for MLA models  [RT-CIRC-02, RT-IND-04]
+  - dram_w_per_gb: 0.15 (DDR5 RDIMM class) -> 0.04 (LPDDR5X on Grace); ssd_w 20 W   [RT-DEV-03]
+  - full-KV-path DRAM bill: HBM + host only -> + SSD FTL DRAM (1 GB/TB at 4 KiB IU; 1/16 at 64 KiB
+    IU) + pod-shelf server/DPU DRAM for drive-eq beyond 2 local bays per GPU         [RT-CIRC-03]
+  - traffic mix: human chat only -> + agent/API class (tool-wait gaps median 3 s) with three
+    placements (today's LRU, host-lite flash-only, gap-aware right-sized host tier)  [RT-CIRC-01, RT-IND-05]
+  - model mix: 70B GQA only -> + MLA (DeepSeek-V3-class) and hybrid linear-attention
+    (Qwen3-Next-class, with per-turn recurrent-state rewrite)                       [RT-IND-04]
+  - baselines: today's flash-tier design only -> + no-KV-flash DGX-class baseline (3.84 TB/GPU,
+    misses recomputed), with DRAM + NAND wafer starts per 1,000 conversations         [RT-PROC-01]
+  - step-change scoring: headline now human-chat pool host-lite with full-path DRAM (section 11.9)
+                                                                                    [RT-IND-02, RT-PROC-02]
 """
 
 import math
 import os
 import random
+from contextlib import contextmanager
 
 # --------------------------------------------------------------------------------------------
 # INPUTS  (value, unit, source)
@@ -88,7 +115,8 @@ INPUTS = {
     "ttft_budget_s": (0.30, "s", "ESTIMATE: p99 added TTFT allowed (~15% of a 2 s interactive TTFT SLO)"),
     # ---- Latent KV ----
     "k_cap_latent": (3.0, "x", "ESTIMATE: planning case; MHA2MLA 92.19% on MHA Llama2-7B (~3.2x beyond GQA-8) https://arxiv.org/abs/2502.14837v1 ; xKV 8x on GQA Llama-3.1-8B https://arxiv.org/abs/2503.18893 ; X-EcoMLA 6.4x https://arxiv.org/html/2503.11132v1 (all via search snippet)"),
-    "k_bw_latent": (3.0, "x", "ESTIMATE: assumes per-step KV reads fall like capacity (per-layer-group latent); a single all-layer latent re-read by every layer falls less"),
+    "k_bw_latent": (3.0, "x", "RED-TEAM [RT-CIRC-02]: = k_cap_latent / latent_group_layers; per-layer latent (g=1) keeps per-step KV reads 3x below GQA FP8. A single latent shared by all 80 layers gives k_bw = 3/80 (26.7x MORE reads than GQA) and is killed (section 11.1)"),
+    "latent_group_layers": (1, "layers per latent", "RED-TEAM [RT-CIRC-02]: old design = 80 (one latent for all layers) -> 1 (per-layer, MHA2MLA/TransMLA-style prior art)"),
     # ---- Economics and resources ----
     "dram_cost_usd_gb": (1.48, "$/GB", "ram-venture models/dram_cost_stack.py (1-beta DDR5 cost)"),
     "dram_price_usd_gb": (20.0, "$/GB", "ESTIMATE: 2026 server DRAM/LPDDR contract; retail DDR5 RDIMM medians ~$31.75-35.70/GB (https://capitalandcompute.net/memory-prices/server/ , via search snippet)"),
@@ -96,8 +124,38 @@ INPUTS = {
     "kwh_per_gb": (0.42, "kWh/GB", "dram-moonshot research/models/A2_resource_intensity.py (A2 ESTIMATE)"),
     "water_l_per_gb": (2.6, "L/GB", "dram-moonshot A2 ESTIMATE"),
     "world_dram_eb": (68.0, "EB/yr DDR5-eq", "ESTIMATE: A2 fleet 22.2M wafers/yr x 3,068 GB/wafer (upper bound)"),
-    "dram_w_per_gb": (0.15, "W/GB", "A2 [UNVERIFIED-PK] server DRAM power"),
+    "dram_w_per_gb": (0.04, "W/GB", "RED-TEAM [RT-DEV-03]: 0.15 (A2 DDR5 RDIMM class) -> 0.04, LPDDR5X background+active power per GB under serving load on Grace, range 0.03-0.05 [UNVERIFIED-PK]"),
     "racks_unit": (10000, "racks", "ESTIMATE: scaling unit only, not a shipment forecast"),
+    # ---- RED-TEAM additions (2026-11-02) ----
+    "waf": (1.1, "-", "RED-TEAM [RT-DEV-01]: implicit 1.0 -> 1.1; KV chunks appended and expired in bulk, placed by expiry class with NVMe FDP; CacheLib+FDP reaches device WAF ~1 on Meta/Twitter traces (https://arxiv.org/abs/2503.11665, via search snippet). Sensitivity 1.0-2.0"),
+    "write_interf": (1.0, "-", "RED-TEAM [RT-CIRC-04]: share of NAND program/erase die-time that blocks reads (1.0 = no program/erase suspend; conservative)"),
+    "ssd_write_gbs": (10.0, "GB/s per drive", "RED-TEAM [RT-CIRC-04]: ESTIMATE Gen5 15.36 TB TLC sustained sequential write ~8-10 GB/s [training knowledge]"),
+    "eol_read_derate": (0.85, "x", "RED-TEAM [RT-DEV-02]: ESTIMATE read throughput at >=80% rated P/E (read-retry, soft LDPC); measured in the pre-cycled arm"),
+    "throttle_derate": (5.0 / 6.0, "x", "RED-TEAM [RT-DEV-04]: ESTIMATE 1 of 3 drives thermally throttled to 50% bandwidth"),
+    "ssd_w": (20.0, "W per drive", "RED-TEAM [RT-DEV-03]: ESTIMATE Gen5 drive under mixed read/write load, range 15-25 W"),
+    "local_bays_per_gpu": (2.0, "drives", "RED-TEAM [RT-CIRC-03]: 8 E1.S bays per 4-GPU GB300 tray (https://www.cudocompute.com/products/nvidia-gb300/, logged by rt-CIRC)"),
+    "ftl_gb_per_tb": (1.0, "GB DRAM per TB", "RED-TEAM [RT-CIRC-03]: page-mapped FTL, 4 B per 4 KiB indirection unit [training knowledge]"),
+    "ftl_gb_per_tb_large_iu": (1.0 / 16, "GB DRAM per TB", "RED-TEAM [RT-CIRC-03]: 64 KiB indirection unit (QLC-style large-IU drives) or ZNS; fits KV chunks of ~40 MB (256 tokens x 160 KiB) written sequentially [training knowledge]"),
+    "shelf_dram_gb_per_drive": (10.0, "GB per drive", "RED-TEAM [RT-CIRC-03]: ESTIMATE pod flash shelf: ~256 GB of storage-head + DPU DRAM per ~24-26 drives [UNVERIFIED-PK]"),
+    "gpu_fp8_pflops": (5.0, "PFLOP/s dense", "RED-TEAM [RT-IND-04, RT-CIRC-02]: ESTIMATE Blackwell-Ultra FP8 dense per GPU [training knowledge]"),
+    "mfu_serve": (0.40, "-", "RED-TEAM: ESTIMATE serving MFU for decode+prefill mix; gives ~11-14k tok/s/GPU on 70B dense, in line with MLPerf-class B200 results [training knowledge]"),
+    "active_params_b": (70.0, "B params", "RED-TEAM: 70B dense (Llama-3.1-70B); MLA case 37B active (DeepSeek-V3), hybrid 3B active (Qwen3-Next-80B-A3B) [training knowledge]"),
+    "q_heads": (64, "-", "RED-TEAM: Llama-3.1-70B query heads; attention FLOPs per context token = layers x 4 x q_heads x head_dim [training knowledge]"),
+    "attn_flops_ctx_override": (0.0, "FLOP per ctx token per token", "RED-TEAM [RT-IND-04]: 0 = GQA formula; MLA absorbed attention 61 x 2 x 128 x (576+512) = 17.0 MFLOP"),
+    "kv_elems_layer": (0, "elements/token/layer", "RED-TEAM [RT-IND-04]: 0 = GQA 2 x kv_heads x head_dim; MLA latent 512 + 64 RoPE = 576 (DeepSeek-V3) [training knowledge]"),
+    "state_gb": (0.0, "GB per session", "RED-TEAM [RT-IND-04]: fixed recurrent state per session (hybrid linear attention ~0.04 GB, rewritten every turn) [ESTIMATE]"),
+    "prompt_tok_per_turn": (500.0, "tokens", "RED-TEAM: new prompt tokens prefilled per human turn (the other ~500 of tok_new_per_turn are decoded)"),
+    "agent_tgen_s": (4.0, "s", "RED-TEAM [RT-CIRC-01]: ESTIMATE agent step: prefill tool output + emit ~100-300 tokens of reasoning/tool call"),
+    "agent_gap_median_s": (3.0, "s", "RED-TEAM [RT-CIRC-01]: ESTIMATE tool-call wait median (reviewer: 1-10 s)"),
+    "agent_gap_sigma": (1.2, "ln-units", "RED-TEAM [RT-CIRC-01]: ESTIMATE -> P90 ~14 s, P95 ~22 s, P99 ~49 s"),
+    "agent_ctx_median": (24000.0, "tokens", "RED-TEAM [RT-CIRC-01]: ESTIMATE agent/API context (log-normal, mean ~33k)"),
+    "agent_ctx_sigma": (0.8, "ln-units", "RED-TEAM [RT-CIRC-01]: ESTIMATE"),
+    "agent_prompt_tok": (1000.0, "tokens", "RED-TEAM [RT-CIRC-01]: ESTIMATE tool-output tokens prefilled per agent step"),
+    "agent_new_tok": (1300.0, "tokens", "RED-TEAM [RT-CIRC-01]: ESTIMATE new KV tokens per agent step (tool output + generated)"),
+    "dgx_flash_tb_per_gpu": (3.84, "TB", "RED-TEAM [RT-PROC-01]: DGX B200 8 x 3.84 TB NVMe per 8 GPUs (reviewer figure) [training knowledge]"),
+    "dram_gb_per_wafer": (3068.0, "GB DDR5-eq per wafer", "dram-moonshot A2 ESTIMATE (same basis as world_dram_eb)"),
+    "nand_tb_per_wafer": (120.0, "TB per wafer", "RED-TEAM [RT-PROC-01]: reviewer 100-140 TB per 300 mm 2xx-layer TLC wafer"),
+    "nand_kwh_per_wafer": (1300.0, "kWh per wafer", "RED-TEAM [RT-PROC-01]: ESTIMATE, taken equal to a DRAM wafer (0.42 kWh/GB x 3,068 GB) [SPECULATIVE parity]"),
     # ---- Monte Carlo ----
     "mc_n": (40000, "turns", "model setting"),
     "seed": (20261102, "-", "model setting"),
@@ -141,7 +199,40 @@ def gap_e_min(t):
 # KV geometry
 # --------------------------------------------------------------------------------------------
 def kv_bytes_per_token(k=1.0):
-    return 2 * v("layers") * v("kv_heads") * v("head_dim") * v("kv_bytes") / k
+    elems = v("kv_elems_layer") or 2 * v("kv_heads") * v("head_dim")
+    return v("layers") * elems * v("kv_bytes") / k
+
+
+def attn_flops_per_ctx_token():
+    """Attention FLOPs per decoded token per context token (RED-TEAM compute bound)."""
+    return v("attn_flops_ctx_override") or v("layers") * 4 * v("q_heads") * v("head_dim")
+
+
+@contextmanager
+def patched(**kw):
+    """Temporarily override INPUT values (RED-TEAM model-mix runs)."""
+    old = {k: INPUTS[k] for k in kw}
+    for k, val in kw.items():
+        INPUTS[k] = (val,) + tuple(INPUTS[k][1:])
+    try:
+        yield
+    finally:
+        INPUTS.update(old)
+
+
+def ln_p_lt(t, mu, sig):
+    if t <= 0:
+        return 0.0
+    return phi((math.log(t) - mu) / sig)
+
+
+def ln_e_min(t, mu, sig):
+    """E[min(G, t)] for G ~ log-normal(mu, sig)."""
+    if t <= 0:
+        return 0.0
+    mean = math.exp(mu + sig ** 2 / 2)
+    lt = math.log(t)
+    return mean * phi((lt - mu - sig ** 2) / sig) + t * (1 - phi((lt - mu) / sig))
 
 
 def ctx_samples(median, sigma, n, seed):
@@ -173,9 +264,11 @@ def seg_table(nolead_share=None):
 # --------------------------------------------------------------------------------------------
 def serve(mode="diet", ctx_median=None, ctx_sigma=None, k_cap=1.0, k_bw=1.0, host_gb=None,
           n_ssd=None, policy=None, nolead_share=None, p_fp=None, mc_n=None, prefetch=True,
-          sched="edf"):
+          sched="edf", waf=None, bw_derate=1.0, write_interf=None, compute=True):
     """mode: 'baseline' = HBM + LRU host-DRAM KV tier + flash, no client prefetch.
-             'diet'     = HBM + flash direct (GDS), no host KV tier, client-signal prefetch."""
+             'diet'     = HBM + flash direct (GDS), no host KV tier, client-signal prefetch.
+    RED-TEAM additions: waf (NAND writes), bw_derate (EOL / throttling), write_interf (program/erase
+    die-time in the flash queue), compute bound on active sessions with spare HBM as idle tier."""
     ctx_median = v("ctx_median") if ctx_median is None else ctx_median
     ctx_sigma = v("ctx_sigma") if ctx_sigma is None else ctx_sigma
     host_gb = (v("host_per_gpu_gb") if mode == "baseline" else v("host_lite_gb")) if host_gb is None else host_gb
@@ -183,22 +276,29 @@ def serve(mode="diet", ctx_median=None, ctx_sigma=None, k_cap=1.0, k_bw=1.0, hos
     policy = v("policy") if policy is None else policy
     p_fp = (v("p_fp") if (mode == "diet" and prefetch) else 0.0) if p_fp is None else p_fp
     mc_n = v("mc_n") if mc_n is None else mc_n
+    waf = v("waf") if waf is None else waf
+    write_interf = v("write_interf") if write_interf is None else write_interf
     seed = v("seed")
 
     ctxs = ctx_samples(ctx_median, ctx_sigma, mc_n, seed)
     ctx_mean = sum(ctxs) / len(ctxs)
     kvt_cap = kv_bytes_per_token(k_cap)
     kvt_bw = kv_bytes_per_token(k_bw)
-    kv_gb = ctx_mean * kvt_cap / 1e9            # mean session KV stored (GB)
-    kv_read_gb = ctx_mean * kvt_bw / 1e9        # mean KV read per decode step per session
+    state_gb = v("state_gb")
+    kv_gb = ctx_mean * kvt_cap / 1e9 + state_gb            # mean session KV stored (GB)
+    kv_read_gb = ctx_mean * kvt_bw / 1e9 + state_gb        # mean KV read per decode step per session
 
     t_gen = v("t_gen_s")
     hbm_kv_budget = v("hbm_per_gpu_gb") * v("hbm_util") - v("weights_gb")
     step_gb = v("hbm_bw_tbs") * 1e3 / v("target_tps_user")
     n_bw = (step_gb - v("weights_gb")) / kv_read_gb
+    # RED-TEAM compute bound: decode at target_tps plus prompt prefill, per active session
+    per_tok = 2 * v("active_params_b") * 1e9 + attn_flops_per_ctx_token() * ctx_mean
+    eff_flops = v("gpu_fp8_pflops") * 1e15 * v("mfu_serve")
+    n_comp = eff_flops / ((v("target_tps_user") + v("prompt_tok_per_turn") / t_gen) * per_tok) if compute else float("inf")
     p_ret = gap_p_lt(v("ttl_s"))
     host_kv_gb = max(0.0, host_gb - v("host_os_gb"))
-    ssd_bw = v("ssd_read_gbs") * n_ssd
+    ssd_bw = v("ssd_read_gbs") * n_ssd * bw_derate
     segs = seg_table(nolead_share)
     cum = []
     acc = 0.0
@@ -211,16 +311,22 @@ def serve(mode="diet", ctx_median=None, ctx_sigma=None, k_cap=1.0, k_bw=1.0, hos
     res = {}
     for it in range(6):
         n_cap = hbm_kv_budget / (kv_gb * (1 + hold / t_gen))
-        n_a = min(n_cap, n_bw)
+        n_a = min(n_cap, n_bw, n_comp)
         lam = n_a / t_gen                                  # turns started per s per GPU
+        # RED-TEAM: HBM left over when bandwidth or compute binds holds idle KV (LRU) first
+        spare = max(0.0, hbm_kv_budget - n_a * kv_gb * (1 + hold / t_gen))
+        t_hbm = spare / (lam * kv_gb) if lam > 0 else 0.0
+        p_hbm = min(gap_p_lt(t_hbm), p_ret) if spare > 1e-9 else 0.0
         if mode == "baseline":
-            t_dram = host_kv_gb / (lam * kv_gb) if lam > 0 else 0.0
-            p_host = min(gap_p_lt(t_dram), p_ret)
+            t_dram = (spare + host_kv_gb) / (lam * kv_gb) if lam > 0 else 0.0
+            p_host = max(0.0, min(gap_p_lt(t_dram), p_ret) - p_hbm)
         else:
-            t_dram = 0.0
+            t_dram = t_hbm
             p_host = 0.0
-        demand = lam * (p_ret - p_host) * kv_gb * (1 + p_fp)   # GB/s flash reads
-        rho = demand / ssd_bw
+        demand = lam * (p_ret - p_host - p_hbm) * kv_gb * (1 + p_fp)   # GB/s flash reads
+        w_gbs = lam * (v("tok_new_per_turn") * kvt_cap / 1e9 + state_gb) * v("spill_frac")
+        rho_w = write_interf * w_gbs * waf / (v("ssd_write_gbs") * n_ssd * bw_derate)
+        rho = demand / ssd_bw + rho_w
         sat = rho >= 0.98
         rho_c = min(rho, 0.98)
         rng = random.Random(seed)
@@ -238,8 +344,16 @@ def serve(mode="diet", ctx_median=None, ctx_sigma=None, k_cap=1.0, k_bw=1.0, hos
             kv_i = ctxs[i] * kvt_cap / 1e9
             s_i = kv_i / ssd_bw
             # which tier serves this returning turn
-            if mode == "baseline" and rng.random() < (p_host / p_ret if p_ret > 0 else 0):
-                extras.append(kv_i / v("c2c_gbs"))
+            if mode == "baseline":
+                u_t = rng.random()
+                if u_t < (p_hbm / p_ret if p_ret > 0 else 0):
+                    extras.append(0.0)
+                    continue
+                if u_t < ((p_hbm + p_host) / p_ret if p_ret > 0 else 0):
+                    extras.append(kv_i / v("c2c_gbs"))
+                    continue
+            elif p_hbm > 0 and rng.random() < p_hbm / p_ret:
+                extras.append(0.0)
                 continue
             n_flash += 1
             flash_bytes += kv_i
@@ -287,14 +401,18 @@ def serve(mode="diet", ctx_median=None, ctx_sigma=None, k_cap=1.0, k_bw=1.0, hos
                    demand=demand, rho=rho, sat=sat, p99_extra=(float("inf") if sat else p99),
                    p90_extra=(float("inf") if sat else p90), prefetch=use_lead,
                    coverage=(covered / n_flash if n_flash else 1.0), hold=mean_hold, users=users,
-                   host_gb=host_gb, s_mean=kv_gb / ssd_bw, urgent_frac=urgent_frac)
+                   host_gb=host_gb, s_mean=kv_gb / ssd_bw, urgent_frac=urgent_frac,
+                   n_comp=n_comp, spare=spare, p_hbm_of_returns=(p_hbm / p_ret if p_ret else 0.0),
+                   rho_w=rho_w, w_gbs=w_gbs, n_ssd=n_ssd, waf=waf)
         if mode == "baseline":
             break
-    # NAND writes and capacity
-    writes_gb_day = res["lam"] * v("tok_new_per_turn") * kvt_cap / 1e9 * v("spill_frac") * 86400
+    # NAND writes and capacity (RED-TEAM: NAND-side = host writes x WAF)
+    writes_gb_day = res["w_gbs"] * 86400
     stored_gb = res["lam"] * gap_e_min(v("retain_ssd_s")) * kv_gb
     res["writes_gb_day"] = writes_gb_day
-    res["dwpd"] = writes_gb_day / (v("ssd_cap_gb") * n_ssd)
+    res["nand_writes_gb_day"] = writes_gb_day * waf
+    res["dwpd_host"] = writes_gb_day / (v("ssd_cap_gb") * n_ssd)
+    res["dwpd"] = writes_gb_day * waf / (v("ssd_cap_gb") * n_ssd)
     res["stored_gb"] = stored_gb
     res["dram_gb_gpu"] = v("hbm_per_gpu_gb") + host_gb
     res["dram_per_user"] = res["dram_gb_gpu"] / res["users"]
@@ -303,9 +421,10 @@ def serve(mode="diet", ctx_median=None, ctx_sigma=None, k_cap=1.0, k_bw=1.0, hos
 
 
 def drives_needed(r, dwpd):
-    """Drives per GPU to satisfy bandwidth (rho_max), endurance (dwpd) and capacity."""
-    n_bw = r["demand"] / (v("ssd_read_gbs") * v("rho_max"))
-    n_end = r["writes_gb_day"] / (v("ssd_cap_gb") * dwpd)
+    """Drives per GPU to satisfy bandwidth (rho_max, reads + program die-time), endurance (dwpd,
+    NAND-side writes incl. WAF) and capacity."""
+    n_bw = (r["demand"] / v("ssd_read_gbs") + v("write_interf") * r["w_gbs"] * r["waf"] / v("ssd_write_gbs")) / v("rho_max")
+    n_end = r["nand_writes_gb_day"] / (v("ssd_cap_gb") * dwpd)
     n_capy = r["stored_gb"] / v("ssd_cap_gb")
     return max(1, math.ceil(max(n_bw, n_end, n_capy) - 1e-9)), n_bw, n_end, n_capy
 
@@ -318,6 +437,220 @@ def lead_required(r):
     w99 = s * math.log(100 * rho) / (1 - rho) if rho > 0.01 else 0.0
     r99 = s + max(0.0, w99)
     return max(0.0, r99 - v("ttft_budget_s") / v("f_fb")), r99
+
+
+# --------------------------------------------------------------------------------------------
+# RED-TEAM helpers (2026-11-02)
+# --------------------------------------------------------------------------------------------
+MLA_PATCH = dict(layers=61, kv_elems_layer=576, weights_gb=84.0, active_params_b=37.0,
+                 attn_flops_ctx_override=61 * 2 * 128 * (576 + 512))
+# ESTIMATE [training knowledge]: DeepSeek-V3/R1-class MLA, 671B total / 37B active, FP8 weights
+# sharded 8 ways (~84 GB per GPU, all read per decode step at large batch).
+HYB_PATCH = dict(layers=12, kv_heads=2, head_dim=256, q_heads=16, weights_gb=80.0, active_params_b=3.0,
+                 state_gb=0.04)
+# ESTIMATE [training knowledge]: Qwen3-Next-80B-A3B-class hybrid: 12 of 48 layers full attention
+# (2 KV heads x 256), 36 Gated-DeltaNet layers with ~40 MB bf16 recurrent state per session.
+
+
+def min_drives_rt(mode="diet", prefetch=False, budget=None, mc_n=8000, **kw):
+    """Drive-equivalents per GPU for p99 added TTFT <= budget (bisection)."""
+    budget = v("ttft_budget_s") if budget is None else budget
+    lo, hi = 0.5, 24.0
+    if serve(mode, n_ssd=hi, prefetch=prefetch, mc_n=mc_n, **kw)["p99_extra"] > budget:
+        return float("inf")
+    for _ in range(9):
+        mid = (lo + hi) / 2
+        if serve(mode, n_ssd=mid, prefetch=prefetch, mc_n=mc_n, **kw)["p99_extra"] <= budget:
+            hi = mid
+        else:
+            lo = mid
+    return hi
+
+
+def path_dram(host_gb, n_ssd, ftl, shelf=True, hbm_mult=1.0):
+    """Full KV-path DRAM per GPU [RT-CIRC-03]: HBM (x hbm_mult) + host + SSD FTL + shelf heads."""
+    local = min(n_ssd, v("local_bays_per_gpu"))
+    remote = max(0.0, n_ssd - local) if shelf else 0.0
+    ftl_gb = n_ssd * v("ssd_cap_gb") / 1e3 * ftl
+    shelf_gb = remote * v("shelf_dram_gb_per_drive")
+    return v("hbm_per_gpu_gb") * hbm_mult + host_gb + ftl_gb + shelf_gb, ftl_gb, shelf_gb
+
+
+def lru_T(pool_gb, classes):
+    """Exclusive LRU hold time T with sum_c E_c * E[min(g_c, T)] = pool. classes: (E, mu, sig)."""
+    if pool_gb <= 0:
+        return 0.0
+    lo, hi = 0.0, 1e5
+    for _ in range(80):
+        mid = (lo + hi) / 2
+        occ = sum(E * ln_e_min(mid, mu, sg) for E, mu, sg in classes)
+        if occ < pool_gb:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+def agent_mix(s_a, mc_n=20000):
+    """[RT-CIRC-01] GPU share s_a serves agent/API traffic, 1 - s_a human chat (base mix, no signal).
+    Returns per-GPU results for A_mix (240 GB host, shared exclusive LRU over spare HBM + host),
+    B_flash (host-lite 64 GB; agents restored from flash on arrival) and B_gap (gap-aware: humans
+    bypass host; host right-sized so agents keep today's A_mix hold time, i.e. the same agent hit rate)."""
+    A = serve("baseline", mc_n=mc_n)
+    kvt = kv_bytes_per_token()
+    h_mu, h_sig = GAP_MU, GAP_SIG
+    a_mu, a_sig = math.log(v("agent_gap_median_s")), v("agent_gap_sigma")
+    p_ret_h = gap_p_lt(v("ttl_s"))
+    # human class, scaled from the share-1 baseline
+    hs = 1.0 - s_a
+    kv_h = A["kv_gb"]
+    lam_h = hs * A["lam"]
+    E_h = lam_h * kv_h
+    spare_h = hs * A["spare"]
+    w_h = lam_h * v("tok_new_per_turn") * kvt / 1e9
+    # agent class
+    rng = random.Random(v("seed") + 11)
+    cap = v("ctx_cap")
+    actx = [min(cap, rng.lognormvariate(math.log(v("agent_ctx_median")), v("agent_ctx_sigma"))) for _ in range(mc_n)]
+    actx_mean = sum(actx) / len(actx)
+    kv_a = actx_mean * kvt / 1e9
+    budget = v("hbm_per_gpu_gb") * v("hbm_util") - v("weights_gb")
+    step_gb = v("hbm_bw_tbs") * 1e3 / v("target_tps_user")
+    per_tok = 2 * v("active_params_b") * 1e9 + attn_flops_per_ctx_token() * actx_mean
+    eff = v("gpu_fp8_pflops") * 1e15 * v("mfu_serve")
+    n_cap_a = s_a * budget / kv_a
+    n_bw_a = s_a * (step_gb - v("weights_gb")) / kv_a
+    n_comp_a = s_a * eff / ((v("target_tps_user") + v("agent_prompt_tok") / v("agent_tgen_s")) * per_tok)
+    n_ag = min(n_cap_a, n_bw_a, n_comp_a)
+    spare_a = max(0.0, s_a * budget - n_ag * kv_a)
+    lam_a = n_ag / v("agent_tgen_s")
+    E_a = lam_a * kv_a
+    w_a = lam_a * v("agent_new_tok") * kvt / 1e9
+    host_kv_A = v("host_per_gpu_gb") - v("host_os_gb")
+    cls = [(E_h, h_mu, h_sig), (E_a, a_mu, a_sig)]
+
+    def drives_for(demand, w):
+        n_bw = (demand / v("ssd_read_gbs") + v("write_interf") * w * v("waf") / v("ssd_write_gbs")) / v("rho_max")
+        n_end = w * v("waf") * 86400 / (v("ssd_cap_gb") * v("dwpd_mixed"))
+        return max(n_bw, n_end)
+
+    def p99s(hit_h, host_h, hit_a, host_a, demand, w, n_ssd):
+        """MC p99 added TTFT per class; hit_* = served from spare HBM, host_* = from host DRAM."""
+        bw = v("ssd_read_gbs") * n_ssd
+        rho = min(0.98, demand / bw + v("write_interf") * w * v("waf") / (v("ssd_write_gbs") * n_ssd))
+        r2 = random.Random(v("seed") + 13)
+        hctx = ctx_samples(v("ctx_median"), v("ctx_sigma"), mc_n, v("seed"))
+        out = []
+        for ctxs, hit, hst, ret in ((hctx, hit_h, host_h, p_ret_h), (actx, hit_a, host_a, 1.0)):
+            ex = []
+            for c in ctxs:
+                kv_i = c * kvt / 1e9
+                u = r2.random() * ret
+                if u < hit:
+                    ex.append(0.0)
+                elif u < hit + hst:
+                    ex.append(kv_i / v("c2c_gbs"))
+                else:
+                    s_i = kv_i / bw
+                    wq = r2.expovariate((1 - rho) / s_i) if r2.random() < rho else 0.0
+                    ex.append(v("f_fb") * (s_i + wq))
+            ex.sort()
+            out.append(ex[int(0.99 * (len(ex) - 1))])
+        return out[0], out[1], rho
+
+    res = {}
+    # A_mix: shared exclusive LRU over spare HBM + 176 GB host KV
+    T_hbm = lru_T(spare_h + spare_a, cls)
+    T_A = lru_T(spare_h + spare_a + host_kv_A, cls)
+    hh_hbm, ha_hbm = min(gap_p_lt(T_hbm), p_ret_h), ln_p_lt(T_hbm, a_mu, a_sig)
+    hh_A, ha_A = min(gap_p_lt(T_A), p_ret_h), ln_p_lt(T_A, a_mu, a_sig)
+    dem_A = lam_h * (p_ret_h - hh_A) * kv_h + lam_a * (1 - ha_A) * kv_a
+    nA = max(v("ssd_per_gpu"), drives_for(dem_A, w_h + w_a))
+    pA = p99s(hh_hbm, hh_A - hh_hbm, ha_hbm, ha_A - ha_hbm, dem_A, w_h + w_a, nA)
+    res["A"] = dict(host=v("host_per_gpu_gb"), T=T_A, hit_h=hh_A, hit_a=ha_A, demand=dem_A, w=w_h + w_a,
+                    n_ssd=nA, p99_h=pA[0], p99_a=pA[1], rho=pA[2])
+    # B_flash: host-lite, idle pool = spare HBM only, agents from flash on arrival
+    dem_B = lam_h * (p_ret_h - hh_hbm) * kv_h + lam_a * (1 - ha_hbm) * kv_a
+    nB = max(v("ssd_per_gpu"), drives_for(dem_B, w_h + w_a))
+    pB = p99s(hh_hbm, 0.0, ha_hbm, 0.0, dem_B, w_h + w_a, nB)
+    lo, hi = nB, 40.0
+    if p99s(hh_hbm, 0.0, ha_hbm, 0.0, dem_B, w_h + w_a, hi)[1] > v("ttft_budget_s"):
+        n_p99 = float("inf")
+    else:
+        for _ in range(10):
+            mid = (lo + hi) / 2
+            if p99s(hh_hbm, 0.0, ha_hbm, 0.0, dem_B, w_h + w_a, mid)[1] <= v("ttft_budget_s"):
+                hi = mid
+            else:
+                lo = mid
+        n_p99 = hi
+    res["B_flash"] = dict(host=v("host_lite_gb"), hit_h=hh_hbm, hit_a=ha_hbm, demand=dem_B, w=w_h + w_a,
+                          n_ssd=nB, p99_h=pB[0], p99_a=pB[1], rho=pB[2], n_p99_agent=n_p99)
+    # B_gap: humans bypass host (pool = their spare HBM); agents get spare HBM + right-sized host
+    Th = lru_T(spare_h, [cls[0]])
+    hh_G = min(gap_p_lt(Th), p_ret_h)
+    T_star = T_A
+    host_kv_a = max(0.0, E_a * ln_e_min(T_star, a_mu, a_sig) - spare_a) if s_a > 0 else 0.0
+    Ta_hbm = lru_T(spare_a, [cls[1]])
+    ha_hbm_G = ln_p_lt(Ta_hbm, a_mu, a_sig) if s_a > 0 else 0.0
+    ha_G = ln_p_lt(T_star, a_mu, a_sig) if s_a > 0 else 0.0
+    ha_G = max(ha_G, ha_hbm_G)
+    dem_G = lam_h * (p_ret_h - hh_G) * kv_h + lam_a * (1 - ha_G) * kv_a
+    w_G = w_h + w_a                                  # write-through of new chunks, as in A_mix
+    nG = max(v("ssd_per_gpu") if s_a < 1 else 1.0, drives_for(dem_G, w_G))
+    pG = p99s(hh_G, 0.0, ha_hbm_G, ha_G - ha_hbm_G, dem_G, w_G, nG)
+    res["B_gap"] = dict(host=v("host_lite_gb") + host_kv_a, hit_h=hh_G, hit_a=ha_G, demand=dem_G, w=w_G,
+                        n_ssd=nG, p99_h=pG[0], p99_a=pG[1], rho=pG[2], T_star=T_star)
+    res["meta"] = dict(n_ag=n_ag, n_cap_a=n_cap_a, n_comp_a=n_comp_a, kv_a=kv_a, actx_mean=actx_mean,
+                       spare_a=spare_a, E_a=E_a, E_h=E_h, lam_a=lam_a)
+    return res
+
+
+def noflash_baseline(host_gb=None, mc_n=20000):
+    """[RT-PROC-01] DGX-class node without a KV flash tier: idle KV in spare HBM + host LRU,
+    misses recomputed by prefill. Active sessions are cut until prefill + decode FLOPs fit."""
+    host_gb = v("host_per_gpu_gb") if host_gb is None else host_gb
+    ctxs = ctx_samples(v("ctx_median"), v("ctx_sigma"), mc_n, v("seed"))
+    ctx_mean = sum(ctxs) / len(ctxs)
+    kv = ctx_mean * kv_bytes_per_token() / 1e9
+    t_gen = v("t_gen_s")
+    budget = v("hbm_per_gpu_gb") * v("hbm_util") - v("weights_gb")
+    step_gb = v("hbm_bw_tbs") * 1e3 / v("target_tps_user")
+    n_max = min(budget / kv, (step_gb - v("weights_gb")) / kv)
+    per_tok = 2 * v("active_params_b") * 1e9 + attn_flops_per_ctx_token() * ctx_mean
+    eff = v("gpu_fp8_pflops") * 1e15 * v("mfu_serve")
+    p_ret = gap_p_lt(v("ttl_s"))
+    host_kv = max(0.0, host_gb - v("host_os_gb"))
+    rec = (2 * v("active_params_b") * 1e9 + attn_flops_per_ctx_token() * ctx_mean / 2) * ctx_mean
+
+    def comp(n):
+        lam = n / t_gen
+        spare = max(0.0, budget - n * kv)
+        T = (spare + host_kv) / (lam * kv)
+        p_hit = min(gap_p_lt(T), p_ret)
+        return n * (v("target_tps_user") + v("prompt_tok_per_turn") / t_gen) * per_tok + lam * (p_ret - p_hit) * rec, p_hit, T
+
+    lo, hi = 0.1, n_max
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if comp(mid)[0] <= eff:
+            lo = mid
+        else:
+            hi = mid
+    n = lo
+    _, p_hit, T = comp(n)
+    users = n * (t_gen + gap_e_min(v("ttl_s"))) / t_gen
+    c99 = sorted(ctxs)[int(0.99 * (len(ctxs) - 1))]
+    rec99 = (2 * v("active_params_b") * 1e9 + attn_flops_per_ctx_token() * c99 / 2) * c99
+    return dict(n_a=n, users=users, p_hit=p_hit, T=T, ttft_mean=rec / eff, ttft_p99=rec99 / eff,
+                dram_per_user=(v("hbm_per_gpu_gb") + host_gb) / users)
+
+
+def wafers_per_k(host_gb, flash_tb, users):
+    """DRAM (DDR5-eq, HBM x3) and NAND 300 mm wafer starts per 1,000 conversations."""
+    d = (v("hbm_per_gpu_gb") * v("hbm_wafer_mult") + host_gb) / v("dram_gb_per_wafer") * 1000 / users
+    n = flash_tb / v("nand_tb_per_wafer") * 1000 / users
+    return d, n
 
 
 def frac_lead_at_least(x, nolead_share=None, n=100000):
@@ -423,7 +756,7 @@ def main():
     # ---- 4. flash budget
     P("## 4. Flash bandwidth, endurance and capacity per GPU")
     P("")
-    P("| Scenario | read demand GB/s | writes TB/day | DWPD on base drives | stored TB (1 h retention) | drives needed @1 DWPD | drives needed @3 DWPD | SSD $/rack @3 DWPD |")
+    P(f"| Scenario | read demand GB/s | host writes TB/day | NAND DWPD on base drives (WAF {v('waf'):g}) | stored TB (1 h retention) | drives needed @1 DWPD | drives needed @3 DWPD | SSD $/rack @3 DWPD |")
     P("|---|---|---|---|---|---|---|---|")
     bill = {}
     for key, r in (("A", A), ("B0", B0), ("B", B), ("C", C), ("D0", D0), ("D", D)):
@@ -585,6 +918,187 @@ def main():
     P(f"- Longest fixed context that passes p99 <= {v('ttft_budget_s')} s: with client prefetch {kfmt(cmB)} tokens FP8, {kfmt(cmD)} latent; without client signal {kfmt(cmB0)} FP8, {kfmt(cmD0)} latent.")
     P("")
     P(f"**GO/NO-GO:** GO if, replaying consented real chat traces on one 8-GPU node with host memory capped at <=64 GB/GPU and no host-DRAM KV tier, three things hold. (1) p99 added TTFT is <={v('ttft_budget_s')} s versus a 240 GB/GPU host-DRAM-tier baseline at equal tokens/s and <={v('ssd_per_gpu'):.0f} Gen5 drive-equivalents per GPU. For the base context mix the model predicts {f(B0['p99_extra'])} s without client signals and {f(B['p99_extra'])} s with them. A workload whose sessions all sit at one length passes up to {kfmt(cmB)} tokens at FP8. (2) Flash stays <=3 DWPD. The model gives {B['dwpd']:.2f} DWPD at {v('ssd_per_gpu'):.0f} x 15.36 TB. (3) For the client signal to earn its place, the send predictor must hold prefetched KV in HBM for <=1.0 s per turn, and, if flash is trimmed to 2.5 drive-eq/GPU, the share of turns with no usable client lead (one-click plus no-signal) must stay <= {('%.0f%%' % (nl_max2*100)) if nl_max2 is not None else 'n/a'}. The latent gate is >=3x over FP8 GQA at <=1 point RULER-average loss at 32k; it makes contexts up to {kfmt(cmD)} pass. NO-GO for the full concept if p99 fails at the measured context distribution even with the latent and 3 drive-eq/GPU, because a DRAM KV tier would then have to return. The host-lite saving of ~{fr120/1e3:.1f}-{fr64/1e3:.1f} TB per rack survives any client-signal result for workloads whose p99 context stays under the FP8 limit.")
+    P("")
+    P(f"**Revised GO/NO-GO (after red team; numbers in section 11):** GO if, replaying a measured human-chat plus agent/API trace mix on one 8-GPU node at equal tokens/s against a 240 GB/GPU LRU host-tier baseline, with a gap-aware host tier (human-chat KV bypasses host; host = {v('host_lite_gb'):.0f} GB/GPU plus the measured agent working set): (1) p99 added TTFT <= {v('ttft_budget_s')} s for both human and agent turns at <= 3.5 Gen5 drive-eq/GPU (2 local + shelf), measured under the full read-plus-write mix on FDP drives, including a pre-cycled (>= 80% rated wear) arm and a 24 h soak at rack inlet temperature; (2) NAND-side WAF <= 1.25 and NAND-side writes <= 3 DWPD from the vendor log page; (3) full-KV-path DRAM (host RSS + SSD controller DRAM + shelf heads) gives >= 1.4x fewer DRAM GB per human-chat conversation; (4) the same holds on one MLA-class model with <= 2 local drives. NO-GO if host-lite on the human-chat share fails p99 at <= 5 drive-eq/GPU at end of life, or the full-path ratio is < 1.25x. The single all-layer latent is dropped; the latent gate becomes a decode-tokens/s-at-batch check of prior-art per-layer retrofits.")
+    P("")
+
+    # ---- 11. RED-TEAM REVISIONS
+    P("## 11. RED-TEAM REVISIONS (2026-11-02)")
+    P("")
+    P("Owner runs answering `research/redteam/rt_*.json`. Sections 1-10 above already include the revised inputs (WAF 1.1, program/erase die-time in the flash queue, compute bound, per-layer latent, LPDDR5X W/GB).")
+    P("")
+    # 11.1 latent geometry
+    P("### 11.1 Latent geometry vs decode reads [RT-CIRC-02]")
+    P("")
+    P("A latent shared by g layers at 3x capacity compression: each layer reads its group's whole latent, so per-step KV reads = GQA x g / 3 (k_bw = 3 / g).")
+    P("")
+    P("| layers per latent g | k_bw | KV read per decode step, 32k session GB | n_bw (HBM-bandwidth sessions) | n_comp | active/GPU | conversations/GPU | DRAM GB/conv gain vs A (host-lite) |")
+    P("|---|---|---|---|---|---|---|---|")
+    lat_rows = {}
+    for g_l in (1, 2, 3, 8, 80):
+        kb = v("k_cap_latent") / g_l
+        r = serve("diet", k_cap=v("k_cap_latent"), k_bw=kb, prefetch=False, mc_n=20000)
+        lat_rows[g_l] = r
+        P(f"| {g_l} | {kb:.3f} | {32000*kv_bytes_per_token(kb)/1e9:.2f} | {r['n_bw']:.1f} | {r['n_comp']:.0f} | {r['n_a']:.1f} | {r['users']:,.0f} | {A['dram_per_user']/r['dram_per_user']:.2f}x |")
+    P("")
+    P(f"Reading: the all-layer latent (g = 80) reads {32000*kv_bytes_per_token(v('k_cap_latent')/80)/1e9:.0f} GB per step for one 32k session versus {32000*kv_bytes_per_token()/1e9:.1f} GB for GQA FP8; HBM bandwidth then allows only ~{lat_rows[80]['n_a']:.0f} active sessions per GPU (vs {A['n_a']:.0f}). **The single all-layer latent is killed.** Per-layer (g = 1) keeps reads 3x below GQA, but even then the GPU's FLOPs (decode + prompt prefill, n_comp ~{lat_rows[1]['n_comp']:.0f}) bind before HBM capacity ({lat_rows[1]['n_cap']:.0f}), so a 3x latent buys {lat_rows[1]['n_a']/A['n_a']:.2f}x active sessions, not 3x.")
+    P("")
+    # 11.2 full KV path DRAM bill
+    P("### 11.2 DRAM across the full KV path [RT-CIRC-03]")
+    P("")
+    nA_p99 = min_drives_rt("baseline")
+    nB0_p99 = min_drives_rt("diet", prefetch=False)
+    P(f"Drive-eq/GPU for p99 <= {v('ttft_budget_s')} s with write interference (WAF {v('waf'):g}): today A {nA_p99:.1f}, host-lite B0 {nB0_p99:.1f}. Local E1.S bays: {v('local_bays_per_gpu'):.0f} per GPU; the rest comes from pod shelves.")
+    P("")
+    P("| accounting | A DRAM GB/GPU | B0 DRAM GB/GPU | gain B0 vs A (DRAM GB/conv) | A wafer-eq | B0 wafer-eq | gain (wafer-eq) |")
+    P("|---|---|---|---|---|---|---|")
+    path_rows = []
+    for lab, nA_, nB_, ftl, shelf, hostB in (
+            ("HBM + host only (dossier v1), 3 drive-eq", 3, 3, 0.0, False, 64),
+            ("+ SSD FTL DRAM (4 KiB IU), 3 drive-eq", 3, 3, v("ftl_gb_per_tb"), False, 64),
+            ("+ FTL 4 KiB + shelf DRAM for drive-eq beyond 2 local, 3 drive-eq", 3, 3, v("ftl_gb_per_tb"), True, 64),
+            ("FTL 4 KiB + shelf, drive-eq sized for p99 (A %.1f, B0 %.1f)" % (nA_p99, nB0_p99), nA_p99, nB0_p99, v("ftl_gb_per_tb"), True, 64),
+            ("large-IU/ZNS drives (64 KiB) + shelf, p99-sized", nA_p99, nB0_p99, v("ftl_gb_per_tb_large_iu"), True, 64),
+            ("critic host floor 120 GB, FTL 4 KiB + shelf, p99-sized", nA_p99, nB0_p99, v("ftl_gb_per_tb"), True, 120)):
+        a = path_dram(v("host_per_gpu_gb"), nA_, ftl, shelf)[0]
+        b = path_dram(hostB, nB_, ftl, shelf)[0]
+        aw = path_dram(v("host_per_gpu_gb"), nA_, ftl, shelf, hbm_mult=v("hbm_wafer_mult"))[0]
+        bw_ = path_dram(hostB, nB_, ftl, shelf, hbm_mult=v("hbm_wafer_mult"))[0]
+        path_rows.append((lab, a / b, aw / bw_))
+        P(f"| {lab} | {a:.0f} | {b:.0f} | {a/b:.2f}x | {aw:.0f} | {bw_:.0f} | {aw/bw_:.2f}x |")
+    P("")
+    P("Reading: SSD controller DRAM and shelf heads cost host-lite ~0.05-0.1x of its gain; large-indirection-unit or ZNS drives (KV chunks are ~40 MB sequential appends) recover most of it. B0 stays >= 1.4x on DRAM GB per conversation at the 64 GB host floor, and ~1.25x at the critic's 120 GB floor.")
+    P("")
+    # 11.3 WAF
+    P("### 11.3 Write amplification and endurance [RT-DEV-01]")
+    P("")
+    P("| WAF | B NAND DWPD on 3 x 15.36 TB | B0 NAND DWPD | endurance drive-eq @3 DWPD (B0) | B0 p99 s @3 drive-eq | B p99 s @3 drive-eq |")
+    P("|---|---|---|---|---|---|")
+    for wf in (1.0, 1.1, 1.3, 1.5, 2.0):
+        rb = serve("diet", waf=wf, mc_n=20000)
+        rb0 = serve("diet", waf=wf, prefetch=False, mc_n=20000)
+        P(f"| {wf:g} | {rb['dwpd']:.2f} | {rb0['dwpd']:.2f} | {rb0['nand_writes_gb_day']/(v('ssd_cap_gb')*v('dwpd_mixed')):.2f} | {f(rb0['p99_extra'])} | {f(rb['p99_extra'])} |")
+    P("")
+    P("Reading: at WAF 1.3-2.0 (no placement control) endurance, not bandwidth, sets the drive count (3.5-5.5 drive-eq). With FDP placement by expiry class (WAF ~1.0-1.1; CacheLib+FDP reached ~1 on production traces) 3 drive-eq hold at <= 3 NAND DWPD. G2 must read NAND-side writes (vendor/OCP log page), not host writes.")
+    P("")
+    # 11.4 interference / EOL / throttling
+    P("### 11.4 Program/erase interference, end-of-life and thermal throttling [RT-CIRC-04, RT-DEV-02, RT-DEV-04]")
+    P("")
+    P("| case (base mix, FP8, 3 drive-eq) | B0 p99 s | B (signal) p99 s | B0 drive-eq for p99 <= budget | B drive-eq for p99 <= budget |")
+    P("|---|---|---|---|---|")
+    stress = (("reads only (dossier v1 queue)", dict(write_interf=0.0, waf=1.0)),
+              ("+ program/erase die-time, WAF 1.1 (revised base)", dict()),
+              ("+ WAF 2.0 (no FDP)", dict(waf=2.0)),
+              ("end of life (read x 0.85)", dict(bw_derate=v("eol_read_derate"))),
+              ("1 of 3 drives throttled to 50%", dict(bw_derate=v("throttle_derate"))),
+              ("EOL + throttled + WAF 1.1", dict(bw_derate=v("eol_read_derate") * v("throttle_derate"))))
+    st_rows = {}
+    for lab, kw in stress:
+        r0 = serve("diet", prefetch=False, mc_n=20000, **kw)
+        r1 = serve("diet", mc_n=20000, **kw)
+        d0 = min_drives_rt("diet", prefetch=False, **kw)
+        d1 = min_drives_rt("diet", prefetch=True, **kw)
+        st_rows[lab] = (r0, r1, d0, d1)
+        P(f"| {lab} | {f(r0['p99_extra'])} | {f(r1['p99_extra'])} | {f(d0, 1)} | {f(d1, 1)} |")
+    P("")
+    P(f"Reading: program/erase die-time, wear and throttling cost up to ~{st_rows[stress[-1][0]][2]-st_rows[stress[0][0]][2]:.1f} drive-eq/GPU of margin without the signal and ~{st_rows[stress[-1][0]][3]-st_rows[stress[0][0]][3]:.1f} with it. Host-lite without the signal needs ~{st_rows[stress[1][0]][2]:.1f} drive-eq/GPU fresh, ~{st_rows[stress[3][0]][2]:.1f} at end of life or with one drive throttled, and ~{st_rows[stress[-1][0]][2]:.1f} with both; with the deadline queue {st_rows[stress[1][0]][3]:.1f}-{st_rows[stress[-1][0]][3]:.1f}. The fix is flash (and FDP / program-suspend drives), not DRAM, but the GO line must be tested on pre-cycled drives at rack inlet temperature.")
+    P("")
+    # 11.5 energy
+    P("### 11.5 Energy in use [RT-DEV-03]")
+    P("")
+    fr_tb = fr64 / 1e3
+    P(f"- Freed host LPDDR5X per rack: {fr_tb:.1f} TB x {v('dram_w_per_gb')} W/GB = **{fr64*v('dram_w_per_gb')/1e3:.2f} kW** (range {fr64*0.03/1e3:.2f}-{fr64*0.05/1e3:.2f} kW at 0.03-0.05 W/GB; dossier v1 said 1.9 kW at 0.15 W/GB).")
+    P(f"- 3 drive-eq/GPU = {3*g:.0f} drives per rack x {v('ssd_w'):.0f} W = {3*g*v('ssd_w')/1e3:.1f} kW (range {3*g*15/1e3:.1f}-{3*g*25/1e3:.1f} kW).")
+    P(f"- Against a 2026 flash-tier baseline with the same drives the diet saves ~{fr64*0.03/1e3:.1f}-{fr64*0.05/1e3:.1f} kW per rack (well under 1% of a ~130 kW rack). Against a DGX-class rack with {g:.0f} local drives it adds ~{(3*g-g)*15/1e3 - fr64*0.05/1e3:.1f}-{(3*g-g)*25/1e3 - fr64*0.03/1e3:.1f} kW per rack, but that rack serves far fewer conversations per GPU (11.8).")
+    P("")
+    # 11.6 agent mix
+    P("### 11.6 Agent and API traffic [RT-CIRC-01, RT-IND-05]")
+    P("")
+    P(f"Agent class [ESTIMATE]: tool-wait gap log-normal median {v('agent_gap_median_s'):.0f} s (sigma {v('agent_gap_sigma')}), step time {v('agent_tgen_s'):.0f} s, context median {v('agent_ctx_median')/1000:.0f}k (sigma {v('agent_ctx_sigma')}), {v('agent_prompt_tok'):.0f} tool-output tokens prefilled per step, no client signal. s_a = share of GPU capacity serving agent/API traffic. Placements: **A_mix** today's 240 GB host, one exclusive LRU over spare HBM + host; **B_flash** host-lite, agents restored from flash on arrival; **B_gap** gap-aware: human-chat KV bypasses host; host right-sized so agents keep A_mix's hold time (same agent DRAM hit rate as today).")
+    P("")
+    P("| s_a | agent active/GPU (cap / comp) | A_mix: agent / human returns from DRAM | A_mix flash GB/s, drive-eq | B_flash: flash GB/s, drive-eq | B_flash agent p99 s | B_flash drive-eq for agent p99 <= budget | B_gap host GB/GPU | B_gap agent / human p99 s | DRAM GB/conv gain vs A_mix: B_flash / B_gap |")
+    P("|---|---|---|---|---|---|---|---|---|---|")
+    ag_rows = {}
+    for s_a in (0.0, 0.25, 0.5, 0.75, 1.0):
+        m = agent_mix(s_a)
+        ag_rows[s_a] = m
+        mt, ra, rbf, rg = m["meta"], m["A"], m["B_flash"], m["B_gap"]
+        gbf = 528.0 / (v("hbm_per_gpu_gb") + rbf["host"])
+        ggp = 528.0 / (v("hbm_per_gpu_gb") + rg["host"])
+        na = (lambda x: "n/a") if s_a == 0 else (lambda x: x)
+        hit_a_txt = "%.0f%%" % (ra["hit_a"] * 100)
+        P(f"| {s_a:.2f} | {mt['n_ag']:.1f} ({mt['n_cap_a']:.0f} / {mt['n_comp_a']:.0f}) | {na(hit_a_txt)} / {ra['hit_h']*100:.1f}% | {ra['demand']:.1f}, {ra['n_ssd']:.1f} | {rbf['demand']:.1f}, {rbf['n_ssd']:.1f} | {na(f(rbf['p99_a']))} | {na(f(rbf['n_p99_agent'], 1))} | {rg['host']:.0f} | {na(f(rg['p99_a']))} / {f(rg['p99_h'])} | {gbf:.2f}x / {ggp:.2f}x |")
+    P("")
+    g1 = 528.0 / (v("hbm_per_gpu_gb") + ag_rows[1.0]["B_gap"]["host"])
+    P(f"Reading: agent tool waits are seconds long, so today's host tier catches most agent returns ({ag_rows[0.5]['A']['hit_a']*100:.0f}% at s_a = 0.5) while catching almost no human-chat returns. Host-lite with agents on flash (restore on arrival, no server-side deadline) keeps the 1.50x DRAM figure but needs ~{ag_rows[0.5]['B_flash']['n_p99_agent']:.1f} drive-eq/GPU at s_a = 0.5 for the agent p99 (70B GQA FP8 contexts of ~{ag_rows[0.5]['meta']['kv_a']:.1f} GB; today's A_mix agent p99 is {f(ag_rows[0.5]['A']['p99_a'])} s): more flash than the 2 local bays plus one shelf drive. The gap-aware design keeps a right-sized host tier for agents and deletes only the human-chat share: {ag_rows[0.25]['B_gap']['host']:.0f} / {ag_rows[0.5]['B_gap']['host']:.0f} / {ag_rows[0.75]['B_gap']['host']:.0f} GB/GPU at s_a = 0.25 / 0.5 / 0.75; an agent-only node keeps ~{ag_rows[1.0]['B_gap']['host']:.0f} GB/GPU ({g1:.2f}x). **So the diet is a human-chat-pool design: the DRAM gain scales with the human-chat share of serving capacity.**")
+    P("")
+    P("| human-chat share of fleet capacity | fleet DRAM GB/conv gain (human pools B0 1.50x incl. host only; agent pools gap-aware) | with full-path DRAM (11.2, p99-sized) |")
+    P("|---|---|---|")
+    g_h_path = path_rows[3][1]
+    for sh in (1.0, 0.75, 0.5, 0.25):
+        gf = 1.0 / (sh / 1.50 + (1 - sh) / g1)
+        gfp = 1.0 / (sh / g_h_path + (1 - sh) / g1)
+        P(f"| {sh*100:.0f}% | {gf:.2f}x | {gfp:.2f}x |")
+    P("")
+    # 11.7 MLA / hybrid
+    P("### 11.7 MLA and hybrid linear-attention models [RT-IND-04]")
+    P("")
+    P("| model (base context mix) | KV/token KiB | KV/session GB | n_cap / n_bw / n_comp | active/GPU | conv/GPU | A: returns from spare HBM / host | B0 flash read GB/s | host writes TB/day | B0 drive-eq @3 DWPD (bw, end.) | B0 p99 s @2 local drives | B p99 s @2 | DRAM GB/conv gain B0 vs A |")
+    P("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+    mm_rows = {}
+    for lab, patch in (("70B GQA FP8 (dossier base)", {}), ("MLA, DeepSeek-V3-class FP8", MLA_PATCH), ("hybrid, Qwen3-Next-class (+40 MB state/turn)", HYB_PATCH)):
+        with patched(**patch):
+            ra = serve("baseline", mc_n=20000)
+            rb0 = serve("diet", prefetch=False, mc_n=20000)
+            rb0_2 = serve("diet", prefetch=False, n_ssd=2.0, mc_n=20000)
+            rb_2 = serve("diet", n_ssd=2.0, mc_n=20000)
+            dn = drives_needed(rb0, v("dwpd_mixed"))
+            kvt_k = kv_bytes_per_token() / 1024
+        mm_rows[lab] = (ra, rb0, rb0_2, rb_2, dn)
+        P(f"| {lab} | {kvt_k:.1f} | {ra['kv_gb']:.2f} | {ra['n_cap']:.0f} / {ra['n_bw']:.0f} / {ra['n_comp']:.0f} | {ra['n_a']:.0f} | {ra['users']:,.0f} | {ra['p_hbm_of_returns']*100:.0f}% / {ra['p_host_of_returns']*100:.0f}% | {rb0['demand']:.1f} | {rb0['writes_gb_day']/1e3:.1f} | {dn[1]:.2f}, {dn[2]:.2f} | {f(rb0_2['p99_extra'])} | {f(rb_2['p99_extra'])} | {ra['dram_per_user']/rb0['dram_per_user']:.2f}x |")
+    P("")
+    mla = mm_rows["MLA, DeepSeek-V3-class FP8"]
+    hyb = mm_rows["hybrid, Qwen3-Next-class (+40 MB state/turn)"]
+    P(f"Reading: host-lite's DRAM ratio does not depend on bytes per token; it is set by how long the host tier can hold a session versus human gaps. MLA models are compute-bound at ~{mla[0]['n_comp']:.0f} active sessions, so ~{mla[0]['spare']:.0f} GB of HBM per GPU sits idle and itself holds idle KV; host-lite then needs ~{max(mla[4][1], mla[4][2]):.1f} drive-eq/GPU (fits the 2 local bays, no shelf) and restores in tens of ms, so the client signal and the latent become unnecessary. Hybrid models are HBM-bound again (turnover law: {hyb[1]['demand']:.0f} GB/s per GPU), and rewriting the ~40 MB recurrent state every turn makes endurance bind (~{hyb[4][2]:.1f} drive-eq/GPU at 3 DWPD, for today's flash-tier design as much as for host-lite) unless the state is quantized (FP8 halves it), spilled only for sessions predicted to return, or written to higher-endurance flash. That is a measured item, not a DRAM cost.")
+    P("")
+    # 11.8 no-flash baseline
+    P("### 11.8 Against a DGX-class baseline with no KV flash [RT-PROC-01]")
+    P("")
+    nf = noflash_baseline()
+    nf_m = None
+    with patched(**MLA_PATCH):
+        nf_m = noflash_baseline()
+    P(f"No-flash node (240 GB host, {v('dgx_flash_tb_per_gpu')} TB/GPU NVMe not used for KV, misses recomputed): prefill FLOPs cap it at **{nf['n_a']:.0f} active / {nf['users']:,.0f} conversations per GPU** (vs {A['n_a']:.0f} / {A['users']:,.0f} with a flash tier); idle KV hits DRAM {nf['p_hit']*100:.0f}% of the time; a miss adds ~{nf['ttft_mean']:.1f} s mean and ~{nf['ttft_p99']:.0f} s p99 TTFT (full-GPU recompute), far past the {v('ttft_budget_s')} s budget. MLA-class: {nf_m['n_a']:.0f} active / {nf_m['users']:,.0f} conversations per GPU.")
+    P("")
+    P("| design (70B GQA FP8 unless noted) | host GB/GPU | flash TB/GPU | conv/GPU | DRAM GB/conv | DRAM wafers per 1,000 conv | NAND wafers per 1,000 conv | total wafers per 1,000 conv | fab kWh per 1,000 conv |")
+    P("|---|---|---|---|---|---|---|---|---|")
+    kwh_dw = v("kwh_per_gb") * v("dram_gb_per_wafer")
+    B0_ = B0
+    wrows = (("DGX-class, no KV flash (recompute)", v("host_per_gpu_gb"), v("dgx_flash_tb_per_gpu"), nf["users"]),
+             ("A: 2026 flash tier, 3 drive-eq (dossier v1)", v("host_per_gpu_gb"), 3 * v("ssd_cap_gb") / 1e3, A["users"]),
+             ("A: 2026 flash tier, %.1f drive-eq (p99-sized)" % nA_p99, v("host_per_gpu_gb"), nA_p99 * v("ssd_cap_gb") / 1e3, A["users"]),
+             ("B0: host-lite, %.1f drive-eq (p99-sized)" % nB0_p99, v("host_lite_gb"), nB0_p99 * v("ssd_cap_gb") / 1e3, B0_["users"]),
+             ("MLA: DGX-class no KV flash", v("host_per_gpu_gb"), v("dgx_flash_tb_per_gpu"), nf_m["users"]),
+             ("MLA: B0 host-lite, 2 local drives", v("host_lite_gb"), 2 * v("ssd_cap_gb") / 1e3, mla[1]["users"]))
+    wtab = {}
+    for lab, h, ftb, us in wrows:
+        dwf, nwf = wafers_per_k(h, ftb, us)
+        wtab[lab] = (dwf, nwf)
+        P(f"| {lab} | {h:.0f} | {ftb:.1f} | {us:,.0f} | {(v('hbm_per_gpu_gb')+h)/us:.3f} | {dwf:.3f} | {nwf:.3f} | {dwf+nwf:.3f} | {dwf*kwh_dw + nwf*v('nand_kwh_per_wafer'):,.0f} |")
+    P("")
+    add_nand = (3 * v("ssd_cap_gb") / 1e3 - v("dgx_flash_tb_per_gpu")) * g / v("nand_tb_per_wafer")
+    save_dram = fr64 / v("dram_gb_per_wafer")
+    P(f"Reading: per rack the reviewer is right: 3 drive-eq/GPU instead of DGX-class 3.84 TB/GPU adds ~{add_nand:.0f} NAND wafers per rack, against ~{save_dram:.1f} DRAM wafer-eq of host DRAM freed. Per served conversation it is the other way round: the flash tier (prior art, ICMS/LMCache) is what lets a GPU serve ~{A['users']/nf['users']:.1f}x more conversations, so total wafer starts per 1,000 conversations fall ~{(sum(wtab['DGX-class, no KV flash (recompute)']))/(sum(wtab[list(wtab)[3]])):.1f}x. Credit for that belongs to the flash tier, not to the diet. The diet's own increment over A at equal p99 ({nA_p99:.1f} vs {nB0_p99:.1f} drive-eq) is {sum(wtab[list(wtab)[2]])/sum(wtab[list(wtab)[3]]):.2f}x in total (DRAM + NAND) wafer starts per conversation: on resource intensity it is close to neutral.")
+    P("")
+    # 11.9 revised headline
+    P("### 11.9 Revised step-change claim [RT-IND-02, RT-PROC-02]")
+    P("")
+    g_wafer_path = path_rows[3][2]
+    P(f"- Human-chat pool, 70B GQA FP8, host-lite 64 GB vs today, full KV path, p99-sized flash: **{path_rows[3][1]:.2f}x fewer DRAM GB per conversation, {g_wafer_path:.2f}x in wafer terms** (large-IU drives {path_rows[4][1]:.2f}x / {path_rows[4][2]:.2f}x; critic's 120 GB floor {path_rows[5][1]:.2f}x / {path_rows[5][2]:.2f}x).")
+    P(f"- MLA-class models: {mla[0]['dram_per_user']/mla[1]['dram_per_user']:.2f}x on HBM + host with 2 local drives and no shelf; wafer terms {((v('hbm_per_gpu_gb')*3+240)/(v('hbm_per_gpu_gb')*3+64)):.2f}x.")
+    P(f"- Fleet with 50% of capacity on agent/API traffic: ~{1.0/(0.5/g_h_path + 0.5/g1):.2f}x DRAM GB per conversation.")
+    P(f"- Latent: per-layer only (all-layer killed); compute-bound at {lat_rows[1]['n_a']/A['n_a']:.2f}x active sessions; it is prior art (MHA2MLA, TransMLA) or moot for MLA-native models, so it is not counted as the diet's step.")
+    P(f"- **On FINAL_CONCEPTS' scale this is S = 1 (<= 1.3x in wafer terms; 1.25-1.45x in DRAM GB on human-chat pools).** EV 2 x 3 x 5 = 30 -> 1 x 3 x 5 = 15.")
     P("")
 
     # ---- inputs

@@ -85,8 +85,12 @@ INPUTS = {
     "e_refresh_fJ_bit": (None, "A1 model refresh_energy_per_bit_fJ() (models/dram_cell_physics.py), ~46 fJ"),
     "trefi_ns": (3900.0, "DDR5 tREFI <85 C (https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7134/"
                          "SQR-RD5N16G5K6HZZG.pdf via A1)"),
-    "trfc_ns": ({"16Gb": 295.0, "32Gb": 410.0, "64Gb": 1600.0},
-                "A1 model: 16Gb datasheet; 32Gb [UNVERIFIED]; 64Gb extrapolated (https://arxiv.org/pdf/1712.08304)"),
+    # RED-TEAM REVISION: 64Gb 1600 -> 700 ns (RT-PROC-raw-ber-contract-04, RT-IND-raw-ber-contract-03); 1600 kept
+    # only as the upper sensitivity in section 10.
+    "trfc_ns": ({"16Gb": 295.0, "32Gb": 410.0, "64Gb": 700.0},
+                "A1 model: 16Gb datasheet; 32Gb [UNVERIFIED]; 64Gb was 1600 ns extrapolated (https://arxiv.org/pdf/"
+                "1712.08304); revised to 700 ns ESTIMATE (critic range 600-800 ns: JEDEC held tRFC1 at 410 ns from 24Gb "
+                "to 32Gb; resp-raw-ber-contract search did not confirm any 64Gb value)"),
     "rdimm_idle_W": (3.0, "A1 model [UNVERIFIED: training knowledge, 2-4 W class]"),
     "rdimm_active_W": (12.0, "A1 model [UNVERIFIED: training knowledge, 8-15 W class]"),
     # --- hammer ---
@@ -105,6 +109,75 @@ INPUTS = {
     "pue": (1.3, "ESTIMATE: hyperscale PUE"),
     "years": (5.0, "ESTIMATE: server life"),
 }
+
+
+# --------------------------------------------------------------------------------------------
+# RED-TEAM REVISIONS (2026-11-02, owner response to research/redteam/rt_{DEV,PROC,CIRC,IND}.json;
+# responses in research/redteam/responses_raw-ber-contract.json). old -> new (objection id):
+#   trfc_ns["64Gb"]        1600 -> 700 ns central; 600-800 and 1600 as sensitivity      (RT-PROC-04, RT-IND-03)
+#   trefw_ddr5_s           implicit 0.064 -> 0.032 s. DDR5 tREFI 3.9 us x 8192 REF = 32 ms; the original
+#                          model paired DDR5's 3.9 us tREFI with a 64 ms window, so relaxed-interval tRFC
+#                          loss was 2x too high and the DDR5 refresh-power baseline 2x too low. Found while
+#                          answering RT-DEV-02 / RT-PROC-01 (DDR4 data vs the DDR5 product).
+#   ret_time_scale_ddr5    implicit 1.0 -> 0.5 (DDR5 retention tail ~2x left of the DDR3/DDR4 anchors;
+#                          the halved JEDEC window is the evidence; 1.0 kept as sensitivity)  (RT-DEV-02, RT-PROC-01)
+#   headline code          BCH-12 (no chipkill) -> RS(80,64) byte code with chipkill; on DDR5, RS-8 sits
+#                          behind on-die SEC; degraded mode (one chip marked dead) gets its own interval  (RT-CIRC-03)
+#   flag leg               removed from the headline and from the GO/NO-GO; ledger added in section 10.5
+#                          (RT-CIRC-01, RT-CIRC-02, RT-IND-02, RT-DEV-01)
+#   NEW inputs below:      self-refresh residency and power-down background (RT-CIRC-04); decoder latency
+#                          (RT-CIRC-05); multi-bit chip-fault rate and marking delay (RT-DEV-04); VRT pair
+#                          share (RT-DEV-03); lot-to-lot retention spread and online servo guard (RT-PROC-02);
+#                          sort-flow test time (RT-PROC-03); stacked-write tail correlation (RT-DEV-05,
+#                          idea I-12627); plate-strip sense node (idea I-12302); flag-comparator noise and
+#                          strobe skew (RT-CIRC-01); flag transport (RT-CIRC-02)
+# --------------------------------------------------------------------------------------------
+RT_INPUTS = {
+    "trefw_ddr5_s": (0.032, "DDR5 refresh window 32 ms up to 85 C (https://en.wikipedia.org/wiki/DDR5_SDRAM, "
+                            "via search snippet) = tREFI 3.9 us x 8192; DDR4 64 ms"),
+    "ret_time_scale_ddr5": (0.5, "ESTIMATE: DDR5 1a/1b retention times = 0.5x the DDR3/DDR4-era anchors (JEDEC halved "
+                                 "the window to 32 ms; 1b Cs ~5.4 fF); swept 0.5-1.0. RT-DEV-02 / RT-PROC-01"),
+    "trfc64_range_ns": ((600.0, 700.0, 800.0, 1600.0), "RT-PROC-04 critic range 600-800 ns; old 1600 ns extrapolation"),
+    "refsb_factor": ((0.33, 0.5), "ESTIMATE: same-bank refresh (tRFCsb) keeps other banks serving; rank-level "
+                                  "throughput loss ~1/3-1/2 of all-bank REF [UNVERIFIED: training knowledge]. RT-IND-03"),
+    "sr_residency": ((0.0, 0.1, 0.2, 0.5), "ESTIMATE: share of server time a rank spends in self-refresh (deep idle); "
+                                           "swept. RT-CIRC-04"),
+    "pd_background_W": ((0.3, 1.0), "RT-CIRC-04 critic estimate: clock, CA bus, RCD and PHY kept awake per RDIMM in "
+                                    "power-down with controller REF [ESTIMATE, training knowledge]"),
+    "lat_fast_ns": (2.0, "ESTIMATE: syndrome-zero check, 28 nm, pipelined"),
+    "lat_single_ns": (4.0, "ESTIMATE: single-symbol correction by syndrome lookup / closed form, 28 nm"),
+    "lat_bm_ns": (25.0, "RT-CIRC-05 critic: Berlekamp-Massey + Chien ~15-30 ns at 28 nm"),
+    "cxl_adder_ns": ((70.0, 150.0), "RT-CIRC-05 critic: CXL Type-3 load-to-use adder over local DDR5 [training knowledge]"),
+    "multibit_fault_fit_per_die": (30.0, "ESTIMATE: row/column/bank (multi-bit) DRAM faults ~half of ~25-70 FIT per "
+                                         "device in field studies [UNVERIFIED-PK: Sridharan & Liberty SC12, Sridharan "
+                                         "et al. ASPLOS 2015]. RT-DEV-04"),
+    "census_module_hours": (1.8e5, "ESTIMATE: Phase 1 + Phase 2 exposure: ~80 modules x ~2,000 h campaigns + 20 x "
+                                   "1,000 h soak. RT-DEV-04"),
+    "lot_sigma_ln": ((0.35, 0.7), "ESTIMATE: lot-to-lot spread of retention-time scale (1 sigma, ln units); swept. "
+                                  "RT-PROC-02"),
+    "servo_ber_guard": (3.0, "ESTIMATE: the controller servos each rank's interval so measured corrected BER stays "
+                             "<= 1/3 of the code's limit (NAND-style adaptive trim). RT-PROC-02"),
+    "sort_pauses_s": ((0.5, 1.0, 2.0), "ESTIMATE: sort retention pauses for a contract grade. RT-PROC-03"),
+    "sort_patterns": (4, "ESTIMATE: data patterns per pause"),
+    "sort_temps": (2, "ESTIMATE: hot + room insertions"),
+    "sort_pass_s": (0.25, "ESTIMATE: one full-die write + read pass in test mode"),
+    "sort_sites": (512, "ESTIMATE: dies tested in parallel per memory test head [UNVERIFIED-PK]"),
+    "stack_corr": ((0.0, 0.01, 0.1, 0.3), "ESTIMATE: share of leakage-tail defects shared by both series write "
+                                          "devices (idea I-12627 needs independence). RT-DEV-05"),
+    "plate_node_fF": (2.7, "idea I-12302: ~2 fF plate strip + parasitics; 1 fF cell into ~3.7 fF total gives ~135 mV "
+                           "(research/ideas10k/stage2/stage2_results.jsonl)"),
+    "plate_swing_V": (0.5, "derived from I-12302's 135 mV for 1 fF into 3.7 fF"),
+    "tau_latch_ps": ((20.0, 50.0), "RT-CIRC-01 critic: latch regeneration time constant"),
+    "strobe_skew_ps": ((15.0, 50.0, 150.0), "RT-CIRC-01 critic: SAN/SAP enable skew + droop along a 1k-SA strip"),
+    "flag_cmp_noise_mV": ((0.0, 1.5, 3.6, 7.1), "ESTIMATE: flag comparator offset/noise (1.5 mV = critic's pass line)"),
+    "flag_pos_bits": (10, "log2(640) rounded up: bits to name one flagged position in a 640-bit line. RT-CIRC-02"),
+    "flag_sa_area_die": ((0.02, 0.04), "RT-CIRC-02 critic: second latch + comparator per SA = +20-40% SA strip = "
+                                       "+2-4% die [ESTIMATE]"),
+}
+
+
+def R(k):
+    return RT_INPUTS[k][0]
 
 
 def V(k):
@@ -374,16 +447,37 @@ def section_margin(tgt):
 KMAX = 45
 
 
+FLAG_NOISE = [0.0]  # RED-TEAM (RT-CIRC-01): flag-comparator noise in sigma_eff units; 0 = ideal flag (original model)
+
+
 def flag_rates(p, conf_frac, delta):
     """Per-bit rates: flagged errors, unflagged soft errors, false flags (correct but flagged)."""
     p_soft = (1 - conf_frac) * p
     if p_soft <= 0:
         return 0.0, 0.0, 0.0
     s = Qinv(p_soft)
-    p_ef = Q(s) - Q(s + delta)
-    p_eu = Q(s + delta)
-    p_ff = Q(s - delta) - Q(s)
-    return p_ef, p_eu, p_ff
+    sf_ = FLAG_NOISE[0]
+    if sf_ <= 0:
+        p_ef = Q(s) - Q(s + delta)
+        p_eu = Q(s + delta)
+        p_ff = Q(s - delta) - Q(s)
+        return p_ef, p_eu, p_ff
+    # Noisy flag: bit signal x ~ N(s, 1) relative to the main threshold (x<0 = error); the flag comparator sees
+    # x + n, n ~ N(0, sf_), and flags if |x + n| < delta.
+    L = delta + 8 * sf_ + 1.0
+    N = 4000
+    dx = 2 * L / N
+    p_ef = p_ff = 0.0
+    for i in range(N):
+        x = -L + (i + 0.5) * dx
+        dens = math.exp(-0.5 * (x - s) ** 2) / math.sqrt(2 * math.pi)
+        pf = Q((-delta - x) / sf_) - Q((delta - x) / sf_)
+        if x < 0:
+            p_ef += dens * pf * dx
+        else:
+            p_ff += dens * pf * dx
+    p_ef = min(p_ef, p_soft)
+    return p_ef, p_soft - p_ef, p_ff
 
 
 def fail_probs(p, t, conf_frac, delta, burst_frac=0.0, b=3, kbits=512, m=10, fmax=8):
@@ -592,9 +686,9 @@ def p_max_interval(model, pmax_code, temp_scale=1.0, vrt=None, scrub_h=None):
     vrt = V("vrt_growth_per_day") if vrt is None else vrt
     scrub_h = V("scrub_interval_h") if scrub_h is None else scrub_h
     mult = 1 + vrt * scrub_h / 24.0
-    lo, hi = math.log(0.064), math.log(120.0)
-    if ber_ret(0.064, model, temp_scale) * mult > pmax_code:
-        return 0.064
+    lo, hi = math.log(0.016), math.log(120.0)  # RED-TEAM: floor 64 -> 16 ms so DDR5/degraded cases can resolve
+    if ber_ret(0.016, model, temp_scale) * mult > pmax_code:
+        return 0.016
     for _ in range(80):
         mid = (lo + hi) / 2
         if ber_ret(math.exp(mid), model, temp_scale) * mult <= pmax_code:
@@ -622,14 +716,16 @@ def section_refresh(p_sb, p_rs):
     out("| refresh interval | BER pow3 | BER lognormal | BER pow5 | refresh W / 64 GB | tRFC loss 16Gb | 32Gb | 64Gb |")
     out("|---|---|---|---|---|---|---|---|")
     trfc = V("trfc_ns")
-    for P in (0.064, 0.128, 0.256, 0.512, 1.0, 2.0):
+    for P in (0.032, 0.064, 0.128, 0.256, 0.512, 1.0, 2.0):
         p_ref, _, _ = refresh_numbers(P)
-        trefi = V("trefi_ns") * P / 0.064
+        trefi = V("trefi_ns") * P / R("trefw_ddr5_s")  # RED-TEAM fix: DDR5 tREFI 3.9 us belongs to a 32 ms window
         out(f"| {P*1e3:.0f} ms | {ber_ret(P,'pow3'):.1e} | {ber_ret(P,'logn'):.1e} | {ber_ret(P,'pow5'):.1e} | "
             f"{p_ref:.3f} | {trfc['16Gb']/trefi*100:.2f}% | {trfc['32Gb']/trefi*100:.2f}% | "
             f"{trfc['64Gb']/trefi*100:.2f}% |")
-    out("(64 ms row: formula extrapolation; real parts have those cells repaired at test. 64Gb tRFC uses DDR5's "
-        "3.9 us tREFI; A1 quotes ~20% on a 7.8 us basis.)")
+    out("(32/64 ms rows: formula extrapolation; real parts have those cells repaired at test. tRFC loss uses DDR5's "
+        "3.9 us tREFI at its 32 ms window and scales tREFI with the interval [RED-TEAM fix: the original scaled from "
+        "64 ms, doubling the relaxed-interval loss]. 64Gb tRFC revised 1600 -> 700 ns [RT-PROC-04]. BER columns use "
+        "the DDR3/DDR4-era anchors; DDR5 is ~2x left, see section 10.)")
     out("")
     out(f"Largest refresh interval whose static BER x (1 + VRT growth x scrub interval) fits the 128-bit side band: "
         f"BCH t=12 for iid errors (max {p_sb:.2e}) or RS(80,64) when errors cluster (max {p_rs:.2e}); scrub every "
@@ -655,20 +751,21 @@ def section_refresh(p_sb, p_rs):
     base_ref, _, cells = refresh_numbers(0.064)
     out("Power per 64 GB RDIMM at the chosen interval (refresh + scrub; scrub reads every bit once per interval):")
     out("")
-    out("| interval | refresh W | scrub W | total W | cut vs 64 ms | idle-power saving (3 W idle) | tRFC loss 16Gb |")
-    out("|---|---|---|---|---|---|---|")
+    out("| interval | refresh W | scrub W | total W | cut vs 64 ms (DDR4) | cut vs 32 ms (DDR5 spec) | idle-power saving vs 64 ms (3 W idle) | tRFC loss 16Gb |")
+    out("|---|---|---|---|---|---|---|---|")
+    base32 = refresh_numbers(R("trefw_ddr5_s"))[0]
     for P in (0.256, 0.5, 1.0, 2.0):
         p_ref, p_scr, _ = refresh_numbers(P)
         tot = p_ref + p_scr
-        trefi = V("trefi_ns") * P / 0.064
-        out(f"| {P*1e3:.0f} ms | {p_ref:.3f} | {p_scr*1e3:.2f} m | {tot:.3f} | {base_ref/tot:.1f}x | "
+        trefi = V("trefi_ns") * P / R("trefw_ddr5_s")
+        out(f"| {P*1e3:.0f} ms | {p_ref:.3f} | {p_scr*1e3:.2f} m | {tot:.3f} | {base_ref/tot:.1f}x | {base32/tot:.1f}x | "
             f"{(base_ref-tot)/V('rdimm_idle_W')*100:.0f}% | {trfc['16Gb']/trefi*100:.2f}% |")
     out("")
     lc = pm[("logn", "BCH-12 iid")][0]
     lr = pm[("logn", "RS-8 clustered")][0]
     p5 = pm[("pow5", "RS-8 clustered")][0]
     out(f"Caveats: (1) DRAM self-refresh runs on the die's own timer, so idle savings need the controller to keep ranks "
-        "in power-down and issue REF itself (small DLL/clock background cost, not modelled). (2) At 85 C the central "
+        "in power-down and issue REF itself (background cost 0.3-1 W per RDIMM per RT-CIRC-04; hybrid policy in section 10.3). (2) At 85 C the central "
         f"(lognormal) model allows {lc*1e3:.0f} ms with iid errors and {lr*1e3:.0f} ms if clustering forces RS; the "
         f"pessimistic bound with RS is {p5*1e3:.0f} ms. Most servers run DIMMs at 45-65 C, where a temperature-tracking "
         "controller (DDR5 RDIMM thermal sensor) stretches 4-16x further. (3) The 64 Gb tRFC crisis is where the "
@@ -754,7 +851,7 @@ def section_value(base_ref, P_choice, res_t):
     trfc = V("trfc_ns")
     for d in ("16Gb", "32Gb", "64Gb"):
         b0 = trfc[d] / V("trefi_ns")
-        b1 = trfc[d] / (V("trefi_ns") * P_choice / 0.064)
+        b1 = trfc[d] / (V("trefi_ns") * P_choice / R("trefw_ddr5_s"))  # RED-TEAM fix (32 ms window)
         out(f"  {d}: refresh-blocked time {b0*100:.1f}% -> {b1*100:.2f}% (bandwidth/latency recovered ~{(b0-b1)*100:.1f} pts)")
     t4 = res_t[1e-4]
     par = V("bch_m_line") * t4 / V("line_data_bits")
@@ -814,6 +911,399 @@ def section_go(tgt, p_sb, p_rs, flag_table, pm):
     return bf3
 
 
+# --------------------------------------------------------------------------------------------
+# 10. RED-TEAM REVISIONS: variants run for the 19 objections (see the RED-TEAM REVISIONS block at the top)
+# --------------------------------------------------------------------------------------------
+def max_p_rs_ondie(tgt, erased=False):
+    """RS(80,64) over bytes behind DDR5 on-die SEC(136,128). Each x4 chip's 64-bit slice = 8 byte symbols; post-SEC
+    bit errors in a slice count as min(k, 8) symbols (upper bound: every bit in its own byte). Healthy: fail if
+    > 8 symbol errors over 10 chips. One chip marked dead (erased): 9 chips, fail if > 4 symbol errors."""
+    chips = int(V("chips_per_line")) - (1 if erased else 0)
+    cap = 4 if erased else 8
+    lo, hi = -7.0, -2.0
+    for _ in range(45):
+        mid = (lo + hi) / 2
+        sym = slice_symbol_pmf(10 ** mid)
+        tot = [1.0] + [0.0] * 40
+        for _ in range(chips):
+            tot = conv(tot, sym, 40)
+        if sum(tot[cap + 1:]) <= tgt:
+            lo = mid
+        else:
+            hi = mid
+    return 10 ** lo
+
+
+def slice_symbol_pmf(p):
+    sl = ondie_slice_pmf(p, 40)
+    sym = [0.0] * 9
+    for k, w in enumerate(sl):
+        sym[min(k, 8)] += w
+    return sym
+
+
+def line_symbol_pmf_ondie(p, chips):
+    sym = slice_symbol_pmf(p)
+    tot = [1.0] + [0.0] * 40
+    for _ in range(chips):
+        tot = conv(tot, sym, 40)
+    return tot
+
+
+def local_slope(P, model, ts):
+    return (math.log(ber_ret(P * 1.01, model, ts)) - math.log(ber_ret(P, model, ts))) / math.log(1.01)
+
+
+def max_p_chase_F(t, F, tgt, delta=None):
+    """All-soft margin errors (best case for flags); Chase/erasure over at most F transported flag positions."""
+    delta = V("flag_window_sigma") if delta is None else delta
+    lo, hi = -8.0, -1.5
+    for _ in range(34):
+        mid = (lo + hi) / 2
+        f = fail_probs(10 ** mid, t, 0.0, delta, fmax=F)
+        if min(f[2], f[3]) <= tgt:
+            lo = mid
+        else:
+            hi = mid
+    return 10 ** lo
+
+
+def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
+    RES = {}
+    hr("10. RED-TEAM REVISIONS: variants run for the 19 objections")
+    out("Owner response, 2026-11-02. Objections in research/redteam/rt_*.json; responses in research/redteam/"
+        "responses_raw-ber-contract.json. Inputs added here are in the RT_INPUTS table at the end.")
+
+    # ---------------- 10.1 DDR5 basis, chipkill kept ----------------
+    hr("10.1 DDR5 basis with chipkill kept (RT-CIRC-03, RT-DEV-02, RT-PROC-01)")
+    p_rs_od = max_p_rs_ondie(tgt)
+    p_rs_od_er = max_p_rs_ondie(tgt, erased=True)
+    RES.update(p_rs_od=p_rs_od, p_rs_od_er=p_rs_od_er)
+    out("Code limits at the 2e-19/read target (max internal raw BER, iid errors; DDR5 rows include on-die "
+        "SEC(136,128) with 53% doublet miscorrection in front of the controller code):")
+    out("")
+    out("| part | controller code | chipkill | max raw BER |")
+    out("|---|---|---|---|")
+    out(f"| DDR4 (no on-die ECC) | BCH-12 | no | {p_sb:.2e} |")
+    out(f"| DDR4 | RS(80,64) bytes | yes | {p_rs:.2e} |")
+    out(f"| DDR4 | RS(80,64), one chip marked dead | degraded | {p_rs_er:.2e} |")
+    out(f"| DDR5 behind on-die SEC | BCH-12 | no | {p_od:.2e} |")
+    out(f"| DDR5 behind on-die SEC | RS(80,64) bytes | yes | {p_rs_od:.2e} |")
+    out(f"| DDR5 behind on-die SEC | RS(80,64), one chip marked dead | degraded | {p_rs_od_er:.2e} |")
+    out("")
+    out("On-die SEC HURTS the chipkill code (a red-team-run finding): it strips singletons but turns doublets into "
+        "2-3-bit chip-confined events that each consume 2-3 RS symbols, so three such events on one read exceed "
+        "t=8 (failure ~p^6 instead of ~p^9 for iid singles). RS-8 behind SEC tolerates ~3.6x less internal BER than "
+        "RS-8 on raw DDR4. The symbol count is an upper bound (each post-SEC bit in its own byte; for 3 bits in "
+        "8 bytes that holds 66% of the time anyway).")
+    out("")
+    sc = R("ret_time_scale_ddr5")
+    w5, w4 = R("trefw_ddr5_s"), 0.064
+    out(f"Safe refresh interval (1 h scrub, VRT 1x/day). DDR5 retention = DDR3/DDR4-era anchors x {sc} in time "
+        f"[RT-DEV-02 derate; 1.0 = no derate]. 'cut' = interval / the part's own JEDEC window (DDR4 64 ms, DDR5 32 ms).")
+    out("")
+    out("| part / code | retention model | ret. scale | 85 C | cut at 85 C | 65 C | 45 C |")
+    out("|---|---|---|---|---|---|---|")
+    cases = [
+        ("DDR4 / RS-8 chipkill", p_rs, "logn", 1.0, w4),
+        ("DDR4 / RS-8 chipkill", p_rs, "pow5", 1.0, w4),
+        ("DDR4 / RS-8 degraded (chip dead)", p_rs_er, "logn", 1.0, w4),
+        ("DDR5 / RS-8 behind SEC", p_rs_od, "pow3", sc, w5),
+        ("DDR5 / RS-8 behind SEC", p_rs_od, "logn", sc, w5),
+        ("DDR5 / RS-8 behind SEC", p_rs_od, "pow5", sc, w5),
+        ("DDR5 / RS-8 behind SEC", p_rs_od, "logn", 1.0, w5),
+        ("DDR5 / RS-8 degraded (chip dead)", p_rs_od_er, "logn", sc, w5),
+        ("DDR5 / RS-8 degraded (chip dead)", p_rs_od_er, "pow5", sc, w5),
+        ("DDR5 / BCH-12 behind SEC (no chipkill)", p_od, "logn", sc, w5),
+    ]
+    iv = {}
+    for name, plim, mdl, scale, win in cases:
+        r = [p_max_interval(mdl, plim, ts * scale) for ts in (1.0, 4.0, 16.0)]
+        iv[(name, mdl, scale)] = r
+        out(f"| {name} | {mdl} | {scale:g} | {r[0]*1e3:.0f} ms | {r[0]/win:.1f}x | {r[1]*1e3:.0f} ms | {r[2]*1e3:.0f} ms |")
+    I_c = iv[("DDR5 / RS-8 behind SEC", "logn", sc)][0]
+    I_p = iv[("DDR5 / RS-8 behind SEC", "pow5", sc)][0]
+    I_o = iv[("DDR5 / RS-8 behind SEC", "pow3", sc)][0]
+    I_d = iv[("DDR5 / RS-8 degraded (chip dead)", "logn", sc)][0]
+    I_c65 = iv[("DDR5 / RS-8 behind SEC", "logn", sc)][1]
+    I_d65 = iv[("DDR5 / RS-8 degraded (chip dead)", "logn", sc)][1]
+    I_4c = iv[("DDR4 / RS-8 chipkill", "logn", 1.0)][0]
+    RES.update(I_c=I_c, I_p=I_p, I_o=I_o, I_d=I_d, I_c65=I_c65, I_d65=I_d65, I_4c=I_4c)
+    base32 = refresh_numbers(w5)[0]
+    pr, ps, _ = refresh_numbers(I_c)
+    sav = base32 - pr - ps
+    RES.update(base32=base32, sav=sav, cut_c=base32 / (pr + ps))
+    pr_p, ps_p, _ = refresh_numbers(I_p)
+    RES["cut_p"] = base32 / (pr_p + ps_p)
+    pr_d, ps_d, _ = refresh_numbers(I_d)
+    RES["cut_d"] = base32 / (pr_d + ps_d)
+    pr65, ps65, _ = refresh_numbers(min(I_c65, 4.0))
+    RES["cut_65"] = base32 / (pr65 + ps65)
+    out("")
+    out(f"Revised commodity headline (DDR5 RDIMM, chipkill kept, 85 C): central {I_c*1e3:.0f} ms = "
+        f"{RES['cut_c']:.1f}x refresh energy vs the 32 ms spec; pessimistic (pow5) {I_p*1e3:.0f} ms = "
+        f"{RES['cut_p']:.1f}x; optimistic (pow3) {I_o*1e3:.0f} ms; degraded mode {I_d*1e3:.0f} ms = "
+        f"{RES['cut_d']:.1f}x until the DIMM is serviced. At 65 C: {I_c65*1e3:.0f} ms ({RES['cut_65']:.0f}x, "
+        f"capped at 4 s), degraded {I_d65*1e3:.0f} ms.")
+    out(f"DDR5 refresh baseline at its real 32 ms window: {base32:.3f} W per 64 GB (A1 per-cell energy; the "
+        f"original model's 0.488 W was a 64 ms figure). Saving at the central interval: {sav:.3f} W.")
+
+    # ---------------- 10.2 tRFC ----------------
+    hr("10.2 64Gb refresh-blocked time (RT-PROC-04, RT-IND-03)")
+    out("| 64Gb tRFC | blocked, all-bank REF at 3.9 us | same-bank REF equivalent (x0.33-0.5) | at central interval | at pessimistic interval |")
+    out("|---|---|---|---|---|")
+    for tr in R("trfc64_range_ns"):
+        b0 = tr / V("trefi_ns")
+        bc = tr / (V("trefi_ns") * I_c / w5)
+        bp = tr / (V("trefi_ns") * I_p / w5)
+        f1, f2 = R("refsb_factor")
+        out(f"| {tr:.0f} ns{' (old)' if tr == 1600 else ''} | {b0*100:.1f}% | {b0*f1*100:.1f}-{b0*f2*100:.1f}% | "
+            f"{bc*100:.2f}% | {bp*100:.2f}% |")
+    b0 = 700 / V("trefi_ns")
+    RES.update(b64=b0, b64c=700 / (V("trefi_ns") * I_c / w5))
+    out("")
+    out(f"Reading: at 700 ns the 64Gb blocked time is {b0*100:.0f}% (not 41%); same-bank refresh hides perhaps half to "
+        f"two thirds of it. Relaxed refresh still divides whatever remains by ~{I_c/w5:.0f}x, so the recovered "
+        f"bandwidth is ~{(b0*0.33)*100:.0f}-{b0*100:.0f} points, not ~38.")
+
+    # ---------------- 10.3 self-refresh ----------------
+    hr("10.3 Self-refresh and the idle saving (RT-CIRC-04)")
+    out(f"Refresh saving while the controller issues REF: {sav:.3f} W per 64 GB at the central interval. Policy A keeps "
+        "ranks in power-down with controller REF even when idle (pays the background cost); policy B lets idle "
+        "ranks enter the die's own self-refresh (no saving there, no loss).")
+    out("")
+    out("| self-refresh residency | policy A, background 0.3 W | policy A, background 1.0 W | policy B (hybrid) | 5-yr value, policy B |")
+    out("|---|---|---|---|---|")
+    for f in R("sr_residency"):
+        a1 = sav - f * R("pd_background_W")[0]
+        a2 = sav - f * R("pd_background_W")[1]
+        b = sav * (1 - f)
+        usd = b * V("years") * 8766 / 1000 * V("pue") * V("elec_usd_kWh")
+        out(f"| {f:.1f} | {a1:+.3f} W | {a2:+.3f} W | {b:+.3f} W | ${usd:.2f} |")
+    usd02 = sav * 0.8 * V("years") * 8766 / 1000 * V("pue") * V("elec_usd_kWh")
+    RES["usd02"] = usd02
+    out("")
+    out(f"Reading: always-on controller REF goes negative once self-refresh residency exceeds "
+        f"{sav/R('pd_background_W')[1]*100:.0f}% (1 W background) or {min(sav/R('pd_background_W')[0],1)*100:.0f}% "
+        f"(0.3 W). The hybrid policy never loses; at 20% residency it keeps ${usd02:.2f} per module over 5 years "
+        f"(${usd02/V('module_GB'):.3f}/GB). A programmable self-refresh interval (an LPDDR-style temperature-"
+        "compensated rate, [UNVERIFIED-PK]) would recover the rest; it is a JEDEC ask, not a controller feature.")
+
+    # ---------------- 10.4 latency ----------------
+    hr("10.4 Decoder slow path and latency (RT-CIRC-05)")
+    out(f"Fast path {R('lat_fast_ns'):.0f} ns (syndrome zero), single-symbol fix {R('lat_single_ns'):.0f} ns, "
+        f"multi-symbol Berlekamp-Massey + Chien {R('lat_bm_ns'):.0f} ns. The operating BER is the code limit / "
+        f"{R('servo_ber_guard'):.0f} (servo guard, 10.8) or the limit itself (worst case).")
+    out("")
+    out("| case | operating raw BER | lines with any error | lines needing BM | mean added ns | p99 path |")
+    out("|---|---|---|---|---|---|")
+    for name, p_op, ondie in (("DDR4, RS-8 at limit", p_rs, False), ("DDR4, RS-8 servoed", p_rs / R("servo_ber_guard"), False),
+                              ("DDR4, BCH-12 at 1e-4 (critic case)", 1e-4, False),
+                              ("DDR5 behind SEC, RS-8 at limit", p_rs_od, True),
+                              ("DDR5 behind SEC, RS-8 servoed", p_rs_od / R("servo_ber_guard"), True)):
+        if ondie:
+            pm = line_symbol_pmf_ondie(p_op, int(V("chips_per_line")))
+            p1 = 1 - pm[0]
+            p2 = 1 - pm[0] - pm[1]
+        else:
+            lam = 640 * p_op
+            p1 = 1 - math.exp(-lam)
+            p2 = 1 - math.exp(-lam) * (1 + lam)
+        mean = R("lat_fast_ns") + (p1 - p2) * R("lat_single_ns") + p2 * R("lat_bm_ns")
+        path = "BM" if p2 > 0.01 else ("single fix" if p1 > 0.01 else "fast")
+        out(f"| {name} | {p_op:.1e} | {p1*100:.3f}% | {p2*100:.4f}% | {mean:.2f} | {path} |")
+    out("")
+    out(f"Reading: the critic's 5.6% slow path is real for raw DDR4 at 1e-4, but almost all of it is single-symbol "
+        "errors that a lookup fixes in a few ns; BM is needed on <0.2% of lines. Behind DDR5's on-die SEC the "
+        f"controller rarely sees an error at all. The CXL hop itself adds {R('cxl_adder_ns')[0]:.0f}-"
+        f"{R('cxl_adder_ns')[1]:.0f} ns: the commodity product is a capacity tier, and DRAM-class latency needs the "
+        "decoder in the host memory controller (where chipkill decoders already sit) or on-die.")
+
+    # ---------------- 10.5 flag ledger ----------------
+    hr("10.5 Flag ledger (RT-CIRC-01, RT-CIRC-02, RT-IND-02, RT-DEV-01)")
+    dmv = V("flag_window_sigma") * sig
+    out(f"(a) Time-domain (delayed-strobe) flag: window delta = {dmv:.1f} mV. Resolution time t = tau ln(V/dV), so a "
+        "timing error s shifts the effective threshold by exp(s/tau); equivalent amplitude noise ~ delta (exp(s/tau) - 1).")
+    out("")
+    out("| tau ps | window tau ln2 ps | skew 15 ps | skew 50 ps | skew 150 ps |")
+    out("|---|---|---|---|---|")
+    for tau in R("tau_latch_ps"):
+        cells = []
+        for sk in R("strobe_skew_ps"):
+            eq = dmv * (math.exp(sk / tau) - 1)
+            cells.append(f"{eq:.1f} mV" if eq < 1000 else ">1 V")
+        out(f"| {tau:.0f} | {tau*math.log(2):.0f} | " + " | ".join(cells) + " |")
+    out("")
+    out("(b) Amplitude-domain flag (offset-cancelled dual-reference comparator) with comparator noise sigma_f; all "
+        "errors soft (best case for flags), raw BER 1e-4, delta = 0.5 sigma:")
+    out("")
+    out("| sigma_f mV | flagged share of errors | false flags per error | Chase t | max raw BER at t=8 |")
+    out("|---|---|---|---|---|")
+    for nmv in R("flag_cmp_noise_mV"):
+        FLAG_NOISE[0] = nmv / sig
+        pe, pu, pf = flag_rates(1e-4, 0.0, V("flag_window_sigma"))
+        tc = min_t_strategy(1e-4, 0.0, V("flag_window_sigma"), tgt, "Chase")
+        pm8 = max_p_strategy(8, 0.0, V("flag_window_sigma"), tgt, "Chase")
+        out(f"| {nmv:.1f} | {pe/1e-4*100:.0f}% | {pf/1e-4:.1f} | {tc} | {pm8:.2e} |")
+    FLAG_NOISE[0] = 0.0
+    pe, pu, pf = flag_rates(1e-4, 0.0, V("flag_window_sigma"))
+    lam_f = 640 * (pe + pf)
+    out("")
+    out(f"(c) Transport: {lam_f:.2f} flags per 640-bit line at 1e-4 (ideal flag). Naming F positions costs "
+        f"{R('flag_pos_bits')} F + 2 bits; overflow P(flags > F): F=1 {1-math.exp(-lam_f)*(1+lam_f):.3f}, "
+        f"F=2 {1-math.exp(-lam_f)*(1+lam_f+lam_f**2/2):.4f}, F=3 {1-math.exp(-lam_f)*(1+lam_f+lam_f**2/2+lam_f**3/6):.5f}.")
+    out("")
+    out("(d) Inside a fixed 128-bit side band (ideal flags, all errors soft):")
+    out("")
+    out("| allocation | bits used | max raw BER |")
+    out("|---|---|---|")
+    out(f"| BCH t=12, no flags | 120 | {p_sb:.2e} |")
+    for t, F in ((11, 0), (10, 2), (9, 3), (8, 4)):
+        bits = 10 * t + (R("flag_pos_bits") * F + 2 if F else 0)
+        if F == 0:
+            pm_ = max_p_hard(t, 512, 10, tgt)
+        else:
+            pm_ = max_p_chase_F(t, F, tgt)
+        out(f"| BCH t={t} + {F} flag positions | {bits} | {pm_:.2e} |")
+    FLAG_NOISE[0] = 1.5 / sig
+    pm_n = max_p_chase_F(10, 2, tgt)
+    FLAG_NOISE[0] = 0.0
+    out(f"| BCH t=10 + 2 flag positions, comparator noise 1.5 mV | 122 | {pm_n:.2e} |")
+    RES["sb_flag_ideal"] = max_p_chase_F(10, 2, tgt)
+    RES["sb_flag_noisy"] = pm_n
+    th = min_t_strategy(1e-4, 1.0, V("flag_window_sigma"), tgt, "hard")
+    tcb = min_t_strategy(1e-4, 0.0, V("flag_window_sigma"), tgt, "Chase")
+    saved = (th - tcb) * 10 / 512
+    tr1 = (R("flag_pos_bits") + 1) / 512
+    a1, a2 = R("flag_sa_area_die")
+    RES.update(flag_net_lo=saved - tr1 - a2, flag_net_hi=saved - tr1 - a1, flag_saved=saved)
+    out("")
+    out(f"(e) New-die ledger at raw BER 1e-4, ideal flags: check bits saved {th*10}-{tcb*10} = {(th-tcb)*10} per 512 "
+        f"({saved*100:.1f}% of die bits); transport >= 1 position + overflow bit = {tr1*100:.1f}% (or one extra beat "
+        f"in 16 = 6.25% bandwidth); second SA latch +{a1*100:.0f}-{a2*100:.0f}% die. Net: "
+        f"{(saved-tr1-a2)*100:+.1f}% to {(saved-tr1-a1)*100:+.1f}% of die. Within a fixed side band, ideal flags on "
+        f"all-soft errors buy at most {(RES['sb_flag_ideal']/p_sb-1)*100:+.0f}% raw-BER headroom over plain BCH-12 "
+        f"({(RES['sb_flag_noisy']/p_sb-1)*100:+.0f}% with 1.5 mV comparator noise), before any confident "
+        "(refresh-latched) errors, which erase the gain.")
+
+    # ---------------- 10.6 correlated-fault coincidence ----------------
+    hr("10.6 Correlated faults and the 2e-19 target (RT-DEV-04)")
+    nf = dcp.INPUTS["rdimm_dies"] * R("multibit_fault_fit_per_die") * 1e-9 * 8766
+    out(f"Multi-bit (row/column/bank) faults: {R('multibit_fault_fit_per_die'):.0f} FIT/die x "
+        f"{dcp.INPUTS['rdimm_dies']} dies = {nf:.4f} per module-year. RS-8 corrects one fully corrupted chip slice "
+        "(8 symbols) but then has no spare: a UE needs one more symbol error in the other 9 chips on the same read. "
+        "After the first chip-confined correction the controller marks the chip (erasure mode, degraded refresh). "
+        "UE per module-year = faults x reads-before-marking x q.")
+    out("")
+    out("| case | operating raw BER | q = P(other-chip symbol error) | mark after 1 read | after 10 | after 100 |")
+    out("|---|---|---|---|---|---|")
+    p64 = ber_ret(0.064, "logn")
+    rows = (("64 ms today (DDR4 anchors)", p64, False),
+            ("DDR4 RS-8 at limit", p_rs, False), ("DDR4 RS-8 servoed", p_rs / R("servo_ber_guard"), False),
+            ("DDR5 behind SEC, RS-8 at limit", p_rs_od, True),
+            ("DDR5 behind SEC, RS-8 servoed", p_rs_od / R("servo_ber_guard"), True))
+    for name, p_op, ondie in rows:
+        if ondie:
+            q = 1 - line_symbol_pmf_ondie(p_op, int(V("chips_per_line")) - 1)[0]
+        else:
+            q = 1 - math.exp(-576 * p_op)
+        ue = [nf * n * q for n in (1, 10, 100)]
+        RES[("q", name)] = q
+        out(f"| {name} | {p_op:.1e} | {q:.2e} | {ue[0]:.1e} | {ue[1]:.1e} | {ue[2]:.1e} |")
+    ev = 3.0 / R("census_module_hours") * 8766
+    RES["census_bound"] = ev
+    out("")
+    out("Reading: relaxed refresh turns benign chip faults into UE risk through coincidence with random errors "
+        "(q rises ~1e4x vs 64 ms on raw DDR4). On DDR4 the controller must mark a chip on its first chip-confined "
+        "multi-symbol correction; marking after 10 reads already uses the whole 1e-3 budget. Behind DDR5 on-die SEC, "
+        "q stays small.")
+    out(f"Census power: {R('census_module_hours'):.1e} module-hours with zero events of a mechanism bound its rate "
+        f"at <= {ev:.2f} per module-year (95%). With immediate marking, that bounds its UE share at <= "
+        f"{ev*RES[('q','DDR4 RS-8 servoed')]:.1e} (DDR4 servoed) and <= {ev*RES[('q','DDR5 behind SEC, RS-8 servoed')]:.1e} "
+        "(DDR5) per module-year, against the 1e-3 budget. Each mechanism's rate is measured as events, not "
+        "inferred from 1e15 codeword reads; multi-chip common-mode events (VPP droop, thermal slew faster than the "
+        "scheduler) remain the residual that only fleet telemetry bounds.")
+
+    # ---------------- 10.7 VRT pairs ----------------
+    hr("10.7 VRT coincidence inside a codeword (RT-DEV-03)")
+    out("Share of VRT/retention error bits arriving as same-codeword pairs (b=2) vs the BCH-12 limit (RS-8: a pair "
+        "in one byte is one symbol, across chips two, so RS sees pairs as at most iid):")
+    out("")
+    out("| pair share | BCH-12 max raw BER |")
+    out("|---|---|")
+    for bf in (0.0, 0.01, 0.1, 0.3):
+        out(f"| {bf:.2f} | {max_p_strategy(12, 1.0, 0.5, tgt, 'hard', bf, 2):.2e} |")
+    out("")
+    out("VRT state dwell times at 85 C run minutes to hours (RT-DEV-03), so the soak must re-map a subset of rows "
+        "every ~20 s-20 min (<= 1/3 of the shortest dwell) as well as whole modules hourly, and must count VRT "
+        "arrivals per codeword per scrub period (overdispersion vs Poisson) to feed this table.")
+
+    # ---------------- 10.8 lot-to-lot ----------------
+    hr("10.8 Lot-to-lot spread and per-module adaptive intervals (RT-PROC-02)")
+    k = local_slope(I_c, "logn", sc)
+    servo = R("servo_ber_guard") ** (-1.0 / k)
+    out(f"Lot retention scale L ~ lognormal(0, sigma). Local tail slope at {I_c*1e3:.0f} ms (DDR5 central): BER ~ "
+        f"t^{k:.1f}, so a {R('servo_ber_guard'):.0f}x BER guard costs {servo:.2f}x in interval.")
+    out("")
+    out("| lot sigma (ln) | fixed fleet interval (covers 1-in-1000 lot) | cut | adaptive per module (servoed), fleet-mean cut |")
+    out("|---|---|---|---|")
+    for sl in R("lot_sigma_ln"):
+        fixed = I_c * math.exp(-3.09 * sl)
+        ad = (I_c / w5) * servo * math.exp(-sl ** 2 / 2)
+        RES[("lot", sl)] = (fixed, ad)
+        out(f"| {sl:.2f} | {fixed*1e3:.0f} ms | {fixed/w5:.1f}x | {ad:.1f}x |")
+    n100 = math.log(0.05) / math.log(0.99)
+    out("")
+    out(f"Reading: a fixed worst-lot interval throws away most of the gain; an adaptive controller that servos each "
+        f"rank on its own corrected-error telemetry keeps most of it. Proving a 1-in-100 worst lot directly needs "
+        f"~{n100:.0f} lots, so the demo proves the servo (per-module grade predicted in 1 h, held for 1,000 h), "
+        "not a population floor; a vendor 1 s retention screen remains an optional bin, not a requirement.")
+
+    # ---------------- 10.9 sort flow ----------------
+    hr("10.9 Sort-flow test time for a die built to contract (RT-PROC-03)")
+    pause = sum(R("sort_pauses_s")) * R("sort_patterns") * R("sort_temps")
+    passes = len(R("sort_pauses_s")) * R("sort_patterns") * R("sort_temps") * 2 * R("sort_pass_s")
+    out(f"Pauses {R('sort_pauses_s')} s x {R('sort_patterns')} patterns x {R('sort_temps')} temperatures = {pause:.0f} s "
+        f"of pause plus {passes:.0f} s of write/read passes = {pause+passes:.0f} s per batch, i.e. "
+        f"{(pause+passes)/R('sort_sites'):.2f} s per die at {R('sort_sites')} sites [ESTIMATE]. The same maps give each "
+        "die's cluster spectrum (repair clusters, leave singletons). VRT growth cannot be screened at sort: it "
+        "becomes a lot statistic from sampled 24-48 h soaks plus the field controller's servo and chip marking.")
+
+    # ---------------- 10.10 new-cell routes ----------------
+    hr("10.10 New-cell routes: oxide revival, stacked write (I-12627), plate-strip sensing (I-12302) (RT-DEV-05)")
+    out("Stacked write devices square the leakage-tail fraction only for independent defects: p_eff = p (rho + "
+        "(1 - rho) p), rho = shared-defect share. Applies to gain/oxide cells whose hold leakage is the write path, "
+        "not to Si 1T1C storage-node junction/GIDL leakage. DDR4-anchor tail, RS-8 limit, 85 C:")
+    out("")
+    out("| rho | p_eff at 1 s | safe interval |")
+    out("|---|---|---|")
+    for rho in R("stack_corr"):
+        b1 = ber_ret(1.0, "logn")
+        pe_ = b1 * (rho + (1 - rho) * b1)
+        lo, hi = math.log(0.064), math.log(1e4)
+        for _ in range(80):
+            mid = (lo + hi) / 2
+            bb = ber_ret(math.exp(mid), "logn")
+            if bb * (rho + (1 - rho) * bb) <= p_rs:
+                lo = mid
+            else:
+                hi = mid
+        out(f"| {rho:.2f} | {pe_:.1e} | {math.exp(lo):.1f} s |")
+    out("")
+    cn, sw = R("plate_node_fF"), R("plate_swing_V")
+    c50 = cn * 0.050 / (sw - 0.050)
+    c27 = cn * 0.0266 / (sw - 0.0266)
+    RES.update(c50=c50, c27=c27)
+    out(f"Plate-strip sense node ({cn} fF, {sw} V swing): Cs for 50 mV = {c50:.2f} fF; for the contract's 26.6 mV = "
+        f"{c27:.2f} fF (bitline sensing: 5.42 -> 2.68 fF). If I-12302 works in 3D it is a ~{c1b_fF()/c50:.0f}x margin lever (vs the contract's 1.88x) "
+        "and dwarfs flags (+8%); the contract still halves the remaining Cs. Smaller Cs "
+        "shortens retention at fixed leakage (section 6), so these cells need the oxide/stacked-write tail as well.")
+    out("")
+    out("Oxide revival (RT-DEV-05): no published IGZO array retention CDF reaches 1e-6 at 85 C; the '1e3-1e4x' "
+        "figure was a typical-Ioff ratio, not a tail. The revival condition is restated as a measurement.")
+    return RES
+
+
 def write_md():
     hdr = ["# RAW-BER CONTRACT: model output",
            "",
@@ -824,6 +1314,9 @@ def write_md():
     for k, (v, s) in INPUTS.items():
         if v is None:
             v = f"{dcp.refresh_energy_per_bit_fJ()[0]:.1f}"
+        inp.append(f"| {k} | {v} | {s} |")
+    inp += ["", "## RT_INPUTS (red-team revisions)", "", "| key | value | source / basis |", "|---|---|---|"]
+    for k, (v, s) in RT_INPUTS.items():
         inp.append(f"| {k} | {v} | {s} |")
     os.makedirs(os.path.dirname(OUT_MD), exist_ok=True)
     with open(OUT_MD, "w") as f:
@@ -843,7 +1336,20 @@ def main():
     section_hammer_pages()
     usd_gb = section_value(base_ref, 1.0, res_t)
     bf3 = section_go(tgt, p_sb, p_rs, flag_table, pm)
-    hr("Headline")
+    RT = section_redteam(tgt, p_sb, p_od, p_rs, burst_res[(3, 0.0)][2], sig)
+    hr("Headline (revised after red team)")
+    out(f"- Commodity DDR5 RDIMM, chipkill kept (RS-8 behind on-die SEC, max internal BER {RT['p_rs_od']:.1e}), DDR5 "
+        f"retention derated 0.5x: safe interval at 85 C {RT['I_c']*1e3:.0f} ms central / {RT['I_p']*1e3:.0f} ms "
+        f"pessimistic = {RT['cut_c']:.1f}x / {RT['cut_p']:.1f}x refresh energy vs the 32 ms spec; degraded mode "
+        f"(chip dead) {RT['I_d']*1e3:.0f} ms = {RT['cut_d']:.1f}x; at 65 C {RT['I_c65']*1e3:.0f} ms.")
+    out(f"- Refresh power {RT['base32']:.2f} W -> {RT['base32']-RT['sav']:.3f} W per 64 GB; with 20% self-refresh "
+        f"residency (hybrid policy) ${RT['usd02']:.2f} per module over 5 yr. 64Gb (tRFC 700 ns) blocked time "
+        f"{RT['b64']*100:.0f}% -> {RT['b64c']*100:.1f}% (all-bank basis).")
+    out(f"- Flag leg: net {RT['flag_net_lo']*100:+.1f}% to {RT['flag_net_hi']*100:+.1f}% of die even with ideal flags; "
+        "a delayed-strobe flag sees skew, not signal. Removed from the headline and the GO/NO-GO.")
+    out(f"- Margin for new cells unchanged at 1.88x (50 -> 26.6 mV, Cs 5.4 -> 2.7 fF) without flags; plate-strip "
+        f"sensing (I-12302) would need only {RT['c50']:.2f} -> {RT['c27']:.2f} fF.")
+    hr("Headline (original dossier basis, superseded by the revised headline above)")
     out(f"- Target {tgt:.1e} per 64 B read; the concept's t=8 is ~100x short; t={res_t[1e-4]} (17.6%) needed at 1e-4 "
         "with hard decisions.")
     out(f"- A commodity DDR5 ECC RDIMM's existing 128-bit side band takes iid raw BER up to {p_sb:.1e} (BCH-12) or "
@@ -853,8 +1359,8 @@ def main():
     out(f"- Refresh interval at 85 C, iid / clustered: pow3 {L[('pow3','BCH-12 iid')][0]:.2f} / "
         f"{L[('pow3','RS-8 clustered')][0]:.2f} s; lognormal {L[('logn','BCH-12 iid')][0]:.2f} / "
         f"{L[('logn','RS-8 clustered')][0]:.2f} s; pow5 {L[('pow5','BCH-12 iid')][0]:.2f} / "
-        f"{L[('pow5','RS-8 clustered')][0]:.2f} s. At 1 s: refresh 0.49 -> 0.03 W per 64 GB (15x), "
-        f"${usd_gb:.3f}/GB of energy over 5 yr; tRFC loss 7.6% -> 0.5% (16Gb).")
+        f"{L[('pow5','RS-8 clustered')][0]:.2f} s. At 1 s: refresh 0.49 -> 0.03 W per 64 GB (15x vs 64 ms), "
+        f"${usd_gb:.3f}/GB of energy over 5 yr; tRFC loss 7.6% -> 0.24% (16Gb, 32 ms-window fix).")
     out(f"- Margin: 1e-4 buys 7 -> 3.72 sigma (50 -> 26.6 mV, Cs 5.4 -> 2.7 fF). Flags add only ~"
         f"{(Qinv(max_p_strategy(8, 0.0, V('flag_window_sigma'), tgt, 'hard'))/Qinv(flag_table[0.0][4])-1)*100:.0f}% "
         f"more (Chase t={flag_table[0.0][3]} vs hard t={flag_table[1.0][0]}) and nothing for refresh-latched errors.")

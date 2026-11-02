@@ -22,6 +22,7 @@ Sections
   8  yield coupling: logic scrap from memory tiers and bonds
   9  cost per GB of carrier and BEOL tiers vs DDR5 cost and HBM price
   10 GO / NO-GO
+  11 RED-TEAM VARIANTS (added 2026-11-02 after the four-persona red team; see RED-TEAM REVISIONS block)
 """
 
 import importlib.util
@@ -129,6 +130,67 @@ INPUTS = {
     "wafer_mm": (300.0, "standard"),
 }
 
+# --------------------------------------------------------------------------------------------
+# RED-TEAM REVISIONS (2026-11-02, owner response to research/redteam/rt_{DEV,PROC,CIRC,IND}.json)
+# Each entry: input, old -> new, objection id, reason. Applied on top of INPUTS above; the original
+# values stay visible here so the change is auditable. New inputs are listed after the overrides.
+# --------------------------------------------------------------------------------------------
+RED_TEAM_REVISIONS = [
+    ("array_eff_carrier", 0.50, 0.45, "RT-CIRC-hot-side-memory-01",
+     "64x256 subarrays need 0.13 um2 per SA; redesign = 8,192-cell rows, 64-cell local RBL + 4,096-cell global RBL, "
+     "Si 16:1 tier mux in the carrier; in-tier segment selects and via farms cost ~10% of tier area"),
+    ("cells_per_row", 256, 8192, "RT-CIRC-hot-side-memory-01",
+     "WL drivers: 1.1e5/mm2 at 16 tiers = 9.1 um2 each, fits a 2-5 um2 level shifter (256-cell rows gave 0.26 um2)"),
+    ("sigma_read_mV", 8.0, 10.0, "RT-CIRC-hot-side-memory-01",
+     "global RBL coupling, segment-select Ron spread and tier-mux mismatch added to the 2-b read path"),
+    ("tail_leak_mult", 3.0, 25.0, "RT-DEV-hot-side-memory-01",
+     "derived: write-FET sigma_Vt 50 mV, SS 95 mV/dec at 105 C -> 91x for one device at the 1e-4 quantile; adopted "
+     "series/double-length write gate (I-12627) with partial correlation rho~0.5 -> ~25-36x; unmitigated 91x in s11"),
+    ("ecc_overhead", 36.0 / 32.0, 1.149, "RT-CIRC-hot-side-memory-04",
+     "RS(36,32) alone fails 3.6e-6/codeword at raw BER 1e-4; add inner BCH t=23 over each 2 KB row (2.1%): 1.125 x 1.021"),
+    ("L_deliver_near_mm", 1.0, 3.0, "RT-CIRC-hot-side-memory-05",
+     "SM-local placement for >=80% of reads at ~1.5 mm, remaining 20% at ~9 mm -> mean ~3 mm"),
+    ("tier_usd", 300.0, 550.0, "RT-PROC-hot-side-memory-03",
+     ">=5-6 patterned levels per sequential 2T0C tier at ~$100 all-in each (not ~3 passes)"),
+    ("carrier_cmos_usd", 1800.0, 2800.0, "RT-CIRC-hot-side-memory-01",
+     "16-tier periphery fits only in 28 nm-class CMOS (50% of carrier area); 65 nm-class (~4x area) fits only ~4-5 tiers"),
+    ("E_oxide_refresh_fJ", 60.0, 200.0, "RT-CIRC-hot-side-memory-01",
+     "refresh now drives the ~126 fF global RBL/WBL for read and 3-iteration write-verify"),
+    ("tier_thick_um", 0.20, 0.24, "RT-DEV-hot-side-memory-01",
+     "taller vertical channel to hold the series/double-length write gate (I-12627)"),
+    ("traffic_frac", 0.50, 0.50, "RT-IND-hot-side-memory-01 / RT-CIRC-hot-side-memory-03",
+     "now only the CAP on share; planning share is capacity-indexed (see traffic_share())"),
+]
+for _k, _old, _new, _id, _why in RED_TEAM_REVISIONS:
+    INPUTS[_k] = (_new, f"RED-TEAM REVISION ({_id}): {_old:g} -> {_new:g}; {_why}. Was: {INPUTS[_k][1]}")
+
+INPUTS.update({
+    "c_gbl_fF": (126.0, "RED-TEAM NEW (RT-CIRC-hot-side-memory-01): 4,096-cell global RBL at 0.126 um pitch x 0.2 fF/um "
+                 "(103 fF) + 64 segment-select junctions (6 fF) + 16-tier via (8 fF) + Si tier mux (5 fF) + SA (3 fF)"),
+    "sigma_xT_mV": (10.0, "RED-TEAM NEW (RT-CIRC-hot-side-memory-02): cross-temperature residual after in-row per-level "
+                    "references and a rewrite when |T - T_write| > 10 K: 5% tempco spread x 17 mV/K x 10 K = 8.5 mV"),
+    "rtn_ber_share": (0.5, "RED-TEAM NEW (RT-DEV-hot-side-memory-02): half the raw-BER budget reserved for read-FET RTN, "
+                      "which neither references nor write-verify cancel"),
+    "plan_tiers": (16, "RED-TEAM NEW: planning configuration tiers (16 x 1 b; 2 b is upside pending Gate A)"),
+    "plan_bits": (1, "RED-TEAM NEW (RT-DEV-01/02, RT-CIRC-02, RT-IND-05): planning bits/cell = 1"),
+    "good_logic_dies": (38, "RED-TEAM NEW (RT-PROC-hot-side-memory-02): W2W has no KGD screen; carrier cost spread over "
+                        "good logic dies only (same ~38 used to price logic_die_usd)"),
+    "carrier_last_usd": (400.0, "RED-TEAM NEW (RT-PROC-hot-side-memory-01/05): carrier-last flow = 2 temporary bond/IR-release "
+                         "cycles (EVG IR LayerRelease class) so the memory wafer joins after backside litho [ESTIMATE]"),
+    "p_kill_temp_bond": (0.01, "RED-TEAM NEW (RT-PROC-hot-side-memory-01): logic loss from the two extra temporary "
+                         "bond/debond cycles of the carrier-last flow [ESTIMATE]"),
+    "void_D_cm2": (0.001, "RED-TEAM NEW (RT-PROC-hot-side-memory-04): incremental >=0.5 um particle density added by a "
+                   "processed (vs prime) carrier surface after inspect/re-clean; production BSPDN already bonds one "
+                   "processed (logic BEOL) surface [ESTIMATE]"),
+    "void_R_mm": (2.5, "RT-PROC-hot-side-memory-04 / models/cell-wafer-foundry.py Tong-Gosele: 2-3 mm unbonded radius"),
+    "via_fill_hot": (0.10, "RED-TEAM NEW (RT-IND-hot-side-memory-05): power-map-sized Cu via fill over hotspot regions "
+                     "(~15% of die area); 3% elsewhere"),
+    "t_write_ns": (60.0, "RED-TEAM NEW (RT-DEV-hot-side-memory-04): 3 program/verify loops x (5 ns write + 10-15 ns sense)"),
+    "dTdV_IGZO_mV_K": (17.0, "rt-CIRC source: Chen et al., IEEE TED 2009 (long-channel a-IGZO TFT); 40 nm ALD devices unmeasured"),
+    "sigma_vt_write_mV": (50.0, "RT-DEV-hot-side-memory-01: BEOL oxide sigma_Vt 30-100 mV (dossier s4 row 9); 50 mid"),
+    "ss_105C_mV_dec": (95.0, "RT-DEV-hot-side-memory-01: ~95 mV/dec at 105 C (ideal 75)"),
+})
+
 
 def V(k):
     return INPUTS[k][0]
@@ -231,7 +293,8 @@ def section_density():
     table(["Configuration", "Gb/mm2 (footprint)", "vs 1-beta", "GB per 800 mm2 die", "GB per 2-die GPU",
            "vs 288 GB HBM/GPU"], rows)
     out("Reading: the carrier tier is a capacity-class near memory (tens of GB per die), not an HBM replacement; "
-        "at 16 x 2 b it reaches ~2x 1-beta footprint density because it stacks under a die that exists anyway.")
+        f"at 16 x 2 b it reaches ~{res['carrier 16 tiers x 2 b']*8/V('die_mm2')/V('d_1beta_Gb_mm2'):.2f}x 1-beta footprint "
+        "density because it stacks under a die that exists anyway (2x before the red-team efficiency and ECC revisions).")
     return res
 
 
@@ -271,20 +334,25 @@ def raw_ber(bits, sigma_drift, offset_mV=0.0, window=None):
     window = V("window_mV") if window is None else window
     n = 2 ** bits
     half = window / (n - 1) / 2.0 - offset_mV
-    sig = math.sqrt(V("sigma_place_mV") ** 2 + V("sigma_read_mV") ** 2 + sigma_drift ** 2)
+    sig = math.sqrt(V("sigma_place_mV") ** 2 + V("sigma_read_mV") ** 2 + V("sigma_xT_mV") ** 2 + sigma_drift ** 2)
     if half <= 0:
         return 0.5
     ser = 2.0 * (n - 1) / n * qfunc(half / sig)
     return ser / bits
 
 
+def gauss_ber_target():
+    """Raw-BER budget left for the Gaussian terms after reserving the RTN share (RT-DEV-hot-side-memory-02)."""
+    return V("raw_ber_target") * (1.0 - V("rtn_ber_share"))
+
+
 def allowed_sigma_drift(bits, window=None, offset_mV=0.0):
     window = V("window_mV") if window is None else window
     n = 2 ** bits
-    k = qinv(V("raw_ber_target") * bits * n / (2.0 * (n - 1)))
+    k = qinv(gauss_ber_target() * bits * n / (2.0 * (n - 1)))
     half = window / (n - 1) / 2.0 - offset_mV
     s_tot = half / k
-    rest = s_tot ** 2 - V("sigma_place_mV") ** 2 - V("sigma_read_mV") ** 2
+    rest = s_tot ** 2 - V("sigma_place_mV") ** 2 - V("sigma_read_mV") ** 2 - V("sigma_xT_mV") ** 2
     return math.sqrt(rest) if rest > 0 else 0.0, k
 
 
@@ -296,12 +364,12 @@ def droop_rate_tail_mV_s(tc):
 def refresh_interval(bits, sigma_1s, tc):
     """Longest hold time t (s) at which raw BER <= target, with sigma growing ~t^n and tail droop offset."""
     lo, hi = 1e-3, 1e6
-    if raw_ber(bits, sigma_1s * (lo ** V("drift_time_exp")), droop_rate_tail_mV_s(tc) * lo) > V("raw_ber_target"):
+    if raw_ber(bits, sigma_1s * (lo ** V("drift_time_exp")), droop_rate_tail_mV_s(tc) * lo) > gauss_ber_target():
         return 0.0
     for _ in range(200):
         mid = math.sqrt(lo * hi)
         b = raw_ber(bits, sigma_1s * (mid ** V("drift_time_exp")), droop_rate_tail_mV_s(tc) * mid)
-        if b <= V("raw_ber_target"):
+        if b <= gauss_ber_target():
             lo = mid
         else:
             hi = mid
@@ -311,7 +379,9 @@ def refresh_interval(bits, sigma_1s, tc):
 def section_margin():
     hr("3. Multi-level margin budget: what drift the cell may have (raw BER 1e-4, ECC downstream)")
     out(f"Window {V('window_mV'):.0f} mV; write-verify placement sigma {V('sigma_place_mV'):.0f} mV; "
-        f"sense residual sigma {V('sigma_read_mV'):.0f} mV; raw BER target {V('raw_ber_target'):.0e}.")
+        f"sense residual sigma {V('sigma_read_mV'):.0f} mV; cross-temperature residual {V('sigma_xT_mV'):.0f} mV; "
+        f"raw BER target {V('raw_ber_target'):.0e}, of which {100*V('rtn_ber_share'):.0f}% is reserved for RTN "
+        f"(Gaussian budget {gauss_ber_target():.0e}). [revised after red team]")
     out("")
     rows = []
     allowed = {}
@@ -324,7 +394,7 @@ def section_margin():
     table(["bits/cell", "window (mV)", "level spacing (mV)", "Q needed", "allowed drift sigma (mV)"], rows)
     out(f"At the base window the cell may drift (cell-to-cell sigma, after reference tracking of common-mode) "
         f"<= {allowed[1]:.0f} mV for 1 b, <= {allowed[2]:.0f} mV for 2 b, <= {allowed[3]:.0f} mV for 3 b. "
-        "This reproduces the concept card's <=20-30 mV (2 b) spec and shows 1 b is far more forgiving.")
+        "Before the red team (no cross-T term, no RTN reserve, 8 mV sense) these were 80 / 24 / 0 mV.")
     out("")
     rows = []
     for tc in (105, 125):
@@ -332,8 +402,9 @@ def section_margin():
             t = refresh_interval(b, s1, tc)
             rows.append((tc, b, f"{s1:.0f}", f"{droop_rate_tail_mV_s(tc):.2f}", f"{t:,.1f} s" if t > 0 else "fails at 1 ms"))
     table(["T (C)", "bits", "drift sigma at 1 s (mV)", "tail droop (mV/s)", "refresh interval (BER<=1e-4)"], rows)
-    out(f"Drift grows as t^{V('drift_time_exp')}; the tail cell leaks {V('tail_leak_mult'):.0f}x the reported cell. "
-        "Refresh every few seconds to minutes is still >1,000x rarer than Si at the same temperature.")
+    out(f"Drift grows as t^{V('drift_time_exp')}; the tail cell leaks {V('tail_leak_mult'):.0f}x the reported cell "
+        "(was 3x before the red team). Revised: 1 b refreshes every ~1.4-3.6 s at 105-125 C (~225x rarer than Si at 105 C) "
+        "and 2 b every ~0.25-0.6 s (~40x rarer): refresh-light, not refresh-free.")
     lk = {}
     for b in (1, 2):
         s_all, _ = allowed_sigma_drift(b)
@@ -356,7 +427,7 @@ def section_sensitivity(allowed):
         b1, b2, b3 = raw_ber(1, s), raw_ber(2, s), raw_ber(3, s)
         bmax = 0
         for b in (1, 2, 3):
-            if raw_ber(b, s) <= V("raw_ber_target"):
+            if raw_ber(b, s) <= gauss_ber_target():
                 bmax = b
         if bmax:
             gc, _ = die_GB(16, bmax)
@@ -377,7 +448,8 @@ def section_sensitivity(allowed):
         s1, _ = allowed_sigma_drift(1, window=w)
         rows.append((f"{w:.0f}", f"{s1:.0f}", f"{s2:.0f}"))
     table(["window (mV)", "allowed sigma 1 b (mV)", "allowed sigma 2 b (mV)"], rows)
-    out("Second unknown: the usable window after kickback and PBTI. Below ~400 mV, 2 b needs drift under ~15 mV.")
+    out("Second unknown: the usable window after kickback and PBTI. With the red-team terms, 2 b needs a >=600 mV "
+        "window (at 400 mV only ~2 mV of drift is left, so 2 b is effectively out).")
 
 
 # --------------------------------------------------------------------------------------------
@@ -386,7 +458,7 @@ def section_sensitivity(allowed):
 def near_energy():
     c_rbl = V("cells_per_rbl") * V("c_bl_per_cell_fF") + V("c_bl_fixed_fF")  # fF
     bits = 2
-    e_rbl_cell = c_rbl * V("V_array") * V("dV_rbl_V")  # fJ per cell read
+    e_rbl_cell = (c_rbl + V("c_gbl_fF")) * V("V_array") * V("dV_rbl_V")  # fJ per cell read, local + global RBL (RT-CIRC-01)
     e_sa_cell = (2 ** bits - 1) * V("E_sa_cmp_fJ")
     c_wl = V("cells_per_row") * V("c_wl_per_cell_fF")
     e_rwl_cell = c_wl * V("V_rwl_swing") ** 2 / V("cells_per_row")
@@ -395,7 +467,7 @@ def near_energy():
     e_bond = V("activity") * V("C_bond_via_fF") * V("V_logic") ** 2
     e_read_port = (e_cell_read_bit + V("E_decode_fJ_bit") + e_local + e_bond) * V("overhead_factor") + V("E_ctrl_fJ_bit")
     # write: WBL full swing + WWL pumped, repeated per verify iteration with a verify read
-    e_wbl = c_rbl * V("V_array") ** 2
+    e_wbl = (c_rbl + V("c_gbl_fF")) * V("V_array") ** 2  # global WBL (RT-CIRC-01)
     e_wwl = c_wl * V("V_wwl_swing") ** 2 / V("pump_eff") / V("cells_per_row")
     e_write_cell = V("write_verify_iters") * (e_wbl + e_wwl + e_rbl_cell + e_sa_cell)
     e_write_port = (e_write_cell / bits + V("E_decode_fJ_bit") + e_local + e_bond) * V("overhead_factor") + V("E_ctrl_fJ_bit")
@@ -405,10 +477,19 @@ def near_energy():
                 e_read_port=e_read_port, e_write_port=e_write_port, e_mix_port=e_mix_port, e_wire_mm=e_wire_mm)
 
 
+def traffic_share(gpu_GB, mode="mid"):
+    """Decode traffic share tracks resident-byte share (RT-IND-01, RT-CIRC-03). 'add': near tier added beside full
+    HBM; 'shrink': HBM stacks removed for the same total capacity; 'mid': mean of the two. Capped at traffic_frac."""
+    add = gpu_GB / (gpu_GB + V("hbm_GB_per_gpu"))
+    shrink = gpu_GB / V("hbm_GB_per_gpu")
+    val = {"add": add, "shrink": shrink, "mid": 0.5 * (add + shrink)}[mode]
+    return min(V("traffic_frac"), val)
+
+
 def section_energy(si_refresh_fJ, si_src, cap_GB):
     hr("5. Energy per bit and watts saved")
     e = near_energy()
-    out(f"Read bitline {e['c_rbl']:.1f} fF; cell+SA+RWL per bit {e['e_cell_read_bit']:.1f} fJ; local data line "
+    out(f"Read bitline {e['c_rbl']:.1f} fF local + {V('c_gbl_fF'):.0f} fF global (revised after red team); cell+SA+RWL per bit {e['e_cell_read_bit']:.1f} fJ; local data line "
         f"{e['e_local']:.1f} fJ; bond+via stack {e['e_bond']:.1f} fJ; x{V('overhead_factor'):.0f} unmodeled periphery; "
         f"+{V('E_ctrl_fJ_bit'):.0f} fJ logic-side controller/SRAM.")
     out("")
@@ -441,6 +522,22 @@ def section_energy(si_refresh_fJ, si_src, cap_GB):
                          f"${w*V('usd_per_W_dc'):,.0f}"))
     table(["HBM TB/s", "traffic share on near tier", "W saved/GPU", f"kWh over {V('years'):.0f} yr (PUE)",
            "electricity $", "DC capex freed ($/W)"], rows)
+    out("RED-TEAM: traffic share indexed to capacity (decode reads every resident byte each step):")
+    out("")
+    rows = []
+    for tc_, bc_ in ((8, 1), (8, 2), (16, 1), (16, 2)):
+        g_, _ = die_GB(tc_, bc_)
+        gpu_ = g_ * V("dies_per_gpu")
+        r_ = [f"{tc_} x {bc_} b", f"{gpu_:.0f}"]
+        for mode in ("add", "mid", "shrink"):
+            f_ = traffic_share(gpu_, mode)
+            w_ = V("hbm_TBps_per_gpu") * 1e12 * 8 * V("hbm_util") * f_ * (hbm_deliv - use) * 1e-12
+            r_.append(f"{100*f_:.0f}% / {w_:.0f} W")
+        rows.append(tuple(r_))
+    table(["carrier config", "GB/GPU", "additive share / W", "planning (mid) / W", "HBM-shrink share / W"], rows)
+    out(f"Planning case {V('plan_tiers')} x {V('plan_bits')} b uses the mid column. 2-die GPU at "
+        f"{V('hbm_TBps_per_gpu'):.0f} TB/s stands in for a 2028-30 backside-power accelerator (RT-IND-02).")
+    out("")
     full = V("hbm_TBps_per_gpu") * 1e12 * 8 * (V("E_hbm_pJ") - 0.3) * 1e-12
     out(f"Card framing (100% of traffic at full 22 TB/s, port to port 3.5 -> 0.3 pJ/b): {full:.0f} W per GPU. "
         f"The utilization- and share-weighted figure above is the honest one; delivered-energy accounting "
@@ -453,9 +550,11 @@ def section_energy(si_refresh_fJ, si_src, cap_GB):
         p_si = bits * si_refresh_fJ * 1e-15 / t_ret_si(tc)
         t_ox = refresh_interval(2, 15.0, tc)
         p_ox = bits * V("E_oxide_refresh_fJ") * 1e-15 / t_ox if t_ox > 0 else float("inf")
-        rows.append((tc, f"{t_ret_si(tc)*1e3:.0f} ms", f"{p_si:.2f} W", f"{t_ox:.1f} s", f"{p_ox*1e3:.2f} mW"))
+        t_o1 = refresh_interval(1, 40.0, tc)
+        rows.append((tc, f"{t_ret_si(tc)*1e3:.0f} ms", f"{p_si:.2f} W", f"{t_ox:.2f} s", f"{p_ox*1e3:.0f} mW",
+                     f"{t_o1:.1f} s"))
     table([f"T (C), {cap_GB:.0f} GB", "Si refresh period", "Si refresh power", "oxide 2-b interval (15 mV)",
-           "oxide refresh power"], rows)
+           "oxide 2-b refresh power", "oxide 1-b interval (40 mV)"], rows)
     out(f"Si refresh energy per bit {si_refresh_fJ:.0f} fJ ({si_src}). Refresh watts are small either way; "
         "what Si loses at 105-125 C is availability (tRFC/tREFI) and the retention tail, not power.")
     return near_port, near_deliv, hbm_deliv
@@ -478,7 +577,7 @@ def section_bandwidth(near_port, cap_GB):
     p_density = bw_near * near_port * 1e-12 / V("die_mm2")
     rows = [
         ("peak near-tier bandwidth per die", f"{bw_near/8/1e12:.1f} TB/s"),
-        ("subarray (64 x 256 cells, 2 b) rate", f"{sub_rate/1e9:.1f} Gb/s"),
+        (f"subarray (64 x {V('cells_per_row')} cells, 2 b) rate", f"{sub_rate/1e9:.1f} Gb/s"),
         ("concurrently active subarrays", f"{n_active:,.0f}"),
         ("subarrays per tier per die", f"{n_sub_tier:,.0f}"),
         ("active fraction of ONE tier", f"{100*n_active/n_sub_tier:.2f}%"),
@@ -499,7 +598,9 @@ def section_bandwidth(near_port, cap_GB):
         "throttling or hot-buffer placement in SRAM is required; transistor-written cells have no known "
         "insulator wear-out, but BTI from write pulses accumulates.")
     out(f"Latency: no PHY or SerDes; a ~{V('t_cycle_ns'):.0f} ns array cycle plus ~5-10 ns of bond/controller "
-        "puts near-tier access at ~30-40 ns vs ~100+ ns for HBM [ESTIMATE].")
+        "puts near-tier access at ~30-40 ns vs ~100+ ns for HBM [ESTIMATE]. RED-TEAM: add ~20-40 ns for the inner "
+        f"row BCH decode (RT-CIRC-04) -> ~50-80 ns reads; 2-b write-verify takes ~{V('t_write_ns'):.0f} ns "
+        "(RT-DEV-04), posted through logic-side SRAM so it does not add read latency; 1 b needs no verify loop.")
 
 
 # --------------------------------------------------------------------------------------------
@@ -510,6 +611,7 @@ def section_thermal():
     t_c = 16 * V("tier_thick_um") * 1e-6
     t_b = V("n_beol_tiers") * V("tier_thick_um") * 1e-6
     k_eff = (1 - V("via_fill")) * V("k_tier_W_mK") + V("via_fill") * V("k_cu_W_mK")
+    k_hot = (1 - V("via_fill_hot")) * V("k_tier_W_mK") + V("via_fill_hot") * V("k_cu_W_mK")
     rows = []
     for name, t in (("16 carrier tiers", t_c), ("4 BEOL tiers", t_b)):
         for q in (V("q_avg_W_mm2"), V("q_hot_W_mm2")):
@@ -524,7 +626,11 @@ def section_thermal():
         f"at k {V('k_beol_W_mK')} W/mK): ~{V('Tj_design_C')-dt_beol:.0f} C at a {V('Tj_design_C'):.0f} C design Tj, and "
         f"up to ~{V('Tj_design_C')+V('bspdn_hotspot_penalty_C')-dt_beol:.0f} C over BSPDN hotspots "
         f"(+{V('bspdn_hotspot_penalty_C'):.0f} C). Test at 105 and 125 C.")
-    out("NEW RED FLAG: an unvia'd 16-tier oxide stack adds ~20 K over 10 W/mm2 hotspots. Fix: ~3% Cu/W thermal-via "
+    out(f"RED-TEAM (RT-IND-05): {100*V('via_fill_hot'):.0f}% Cu fill over hotspots (k_eff {k_hot:.1f} W/mK) gives "
+        f"{V('q_hot_W_mm2')*1e6*t_c/k_hot:.2f} K at {V('q_hot_W_mm2'):.0f} W/mm2; {100*V('via_fill'):.0f}% elsewhere gives "
+        f"{V('q_avg_W_mm2')*1e6*t_c/k_eff:.2f} K at {V('q_avg_W_mm2'):.0f} W/mm2. Capacity cost ~{100*V('via_fill_hot')*0.15:.1f}% "
+        "(10% of a ~15% hotspot area).")
+    out(f"NEW RED FLAG: an unvia'd 16-tier oxide stack adds ~{V('q_hot_W_mm2')*1e6*t_c/V('k_tier_W_mK'):.0f} K over 10 W/mm2 hotspots. Fix: ~3% Cu/W thermal-via "
         "fill (or high-k dielectrics such as AlN between tiers), or keep tiers off hotspot regions and bin that area out.")
 
 
@@ -540,6 +646,19 @@ def section_yield():
             loss = 1 - y
             rows.append((f"{100*p:.2f}%", nb, f"{100*loss:.2f}%", f"${loss*V('logic_die_usd'):.0f}"))
     table(["kill prob per tier/bond", "BEOL tiers", "logic scrapped", "$ per logic die"], rows)
+    a_eff_cm2 = (math.sqrt(V("die_mm2")) + 2 * V("void_R_mm")) ** 2 / 100
+    rows = []
+    for d in (0.05, 0.0013, V("void_D_cm2"), 0.0005):
+        lv = 1 - math.exp(-d * a_eff_cm2)
+        rows.append((f"{d:g}", f"{a_eff_cm2:.1f}", f"{100*lv:.2f}%", f"${lv*V('logic_die_usd'):.0f}"))
+    table(["RED-TEAM (RT-PROC-04): >=0.5 um particles/cm2 added by carrier", "kill area per particle (cm2)",
+           "logic scrapped by voids", "$ per logic die"], rows)
+    y_tot = (1 - V("p_kill_tier")) ** V("n_beol_tiers") * (1 - V("p_kill_bond")) * (1 - V("p_kill_tier")) \
+        * math.exp(-V("void_D_cm2") * a_eff_cm2) * (1 - V("p_kill_temp_bond"))
+    out(f"Revised total logic scrap (4 BEOL tiers, bond, carrier shorts at 0.1%; voids at {V('void_D_cm2'):g}/cm2; "
+        f"carrier-last temporary bonds {100*V('p_kill_temp_bond'):.0f}%): {100*(1-y_tot):.1f}% "
+        f"(${(1-y_tot)*V('logic_die_usd'):.0f} per die); carrier-only (no BEOL tiers): "
+        f"{100*(1-y_tot/(1-V('p_kill_tier'))**V('n_beol_tiers')):.1f}%.")
     y16 = 0.99 ** 16
     out(f"Reference: 16 monolithic tiers at 99% unrepairable yield scrap {100*(1-y16):.0f}% of logic; with fail-soft "
         "binning only logic-killing shorts count, and the carrier/BEOL split caps the BEOL count at 4.")
@@ -560,41 +679,152 @@ def section_cost():
     for tiers in (8, 16):
         for bits in (1, 2):
             gc, _ = die_GB(tiers, bits)
-            cost = V("carrier_cmos_usd") + tiers * V("tier_usd") + V("hybrid_bond_test_usd") - V("blank_carrier_usd")
-            gbw = dpw * gc * V("capacity_yield")
+            cost = V("carrier_cmos_usd") + tiers * V("tier_usd") + V("hybrid_bond_test_usd") \
+                + V("carrier_last_usd") - V("blank_carrier_usd")
+            gbw = V("good_logic_dies") * gc * V("capacity_yield")  # RT-PROC-02: only sites under good logic ship
             rows.append((f"carrier {tiers} x {bits} b", f"${cost:,.0f}", f"{gc*V('capacity_yield'):.0f}",
                          f"{gbw:,.0f}", f"${cost/gbw:.2f}", f"{cost/gbw/V('ddr5_usd_GB'):.1f}x",
                          f"{V('hbm4_usd_GB')/(cost/gbw):.0f}x cheaper"))
     for bits in (1, 2):
         _, gb = die_GB(0, 0, 4, bits)
         cost = 4 * V("beol_tier_usd")
-        gbw = dpw * gb * V("capacity_yield")
+        gbw = V("good_logic_dies") * gb * V("capacity_yield")
         rows.append((f"BEOL 4 x {bits} b", f"${cost:,.0f}", f"{gb*V('capacity_yield'):.0f}", f"{gbw:,.0f}",
                      f"${cost/gbw:.2f}", f"{cost/gbw/V('ddr5_usd_GB'):.1f}x", f"{V('hbm4_usd_GB')/(cost/gbw):.0f}x cheaper"))
     table(["Option", "added $/wafer", "GB/die shipped", "GB/wafer", "$/GB", "vs DDR5 cost $1.48", "vs HBM4 ~$16/GB"], rows)
-    out(f"{dpw} gross 800 mm2 sites per 300 mm wafer. Costs are fab-cost estimates, HBM figures are prices; the point "
-        "is order of magnitude: near-tier bits cost DDR5-like dollars and sit an order below HBM price.")
+    out(f"{dpw} gross 800 mm2 sites per 300 mm wafer, but only {V('good_logic_dies')} good logic dies carry shipping "
+        "memory (W2W, no KGD; RT-PROC-02). Costs are fab-cost estimates, HBM figures are prices. RED-TEAM: with "
+        "5-6 levels per tier (RT-PROC-03), a 28 nm-class carrier (RT-CIRC-01) and the carrier-last flow (RT-PROC-01), "
+        "near-tier bits cost ~3-8x DDR5 cost and sit at or below HBM price: a premium near tier, not cheap bits. "
+        "Before the red team this table read $1.36-3.55/GB.")
 
 
 # --------------------------------------------------------------------------------------------
 # 10. GO / NO-GO
 # --------------------------------------------------------------------------------------------
 def section_go(allowed):
-    hr("10. GO / NO-GO for the decisive experiment")
+    hr("10. GO / NO-GO for the decisive experiment (revised after red team)")
     out("Measured on >=64 kb oxide 2T0C arrays after the FULL sequence (<=400 C tiers, 350-400 C bond anneal, thinning, "
         "400 C backside-metal + forming-gas emulation), at 105 C and 125 C:")
     out("")
     s2_400, _ = allowed_sigma_drift(2, window=400.0)
     s1_400, _ = allowed_sigma_drift(1, window=400.0)
     out(f"- **GO (2 b/cell):** cell-to-cell level drift sigma over a 1 s hold at 105 C <= {allowed[2]:.0f} mV "
-        f"(raw BER <= 1e-4 in a measured >= {V('window_mV'):.0f} mV window; <= {s2_400:.0f} mV if the window is only "
-        f"400 mV), which is the same as a >= 1 s 2-b refresh interval with tail droop included, AND 1e-4-tail retention >= 1 s at 125 C, AND logic "
-        "ring-oscillator shift <= 1% with Vt shift <= 10 mV, AND logic-killing shorts <= 0.1% per tier and per bond.")
-    out(f"- **GO at 1 b (capacity halves, energy win intact):** drift sigma {allowed[2]:.0f}-{allowed[1]:.0f} mV "
-        f"({s2_400:.0f}-{s1_400:.0f} mV at a 400 mV window).")
+        f"(Gaussian raw BER <= {gauss_ber_target():.0e} in a measured >= {V('window_mV'):.0f} mV window; <= {s2_400:.0f} mV if the window is only "
+        f"400 mV), AND a 2-b refresh interval >= 0.2 s at 125 C with tail droop included (model at 15 mV: "
+        f"{refresh_interval(2, 15.0, 125):.2f} s), AND logic "
+        "ring-oscillator shift <= 1% with Vt shift <= 10 mV, AND logic-killing shorts <= 0.1% per tier and per bond. [revised after red team]")
+    out(f"- **GO at 1 b (capacity halves, energy win intact; the PLANNING case after the red team):** drift sigma "
+        f"{allowed[2]:.0f}-{allowed[1]:.0f} mV ({s2_400:.0f}-{s1_400:.0f} mV at a 400 mV window) AND 1e-4-tail retention "
+        ">= 1 s at 125 C (tail leakage <= 22.5 aA).")
     out(f"- **NO-GO:** drift sigma > {allowed[1]:.0f} mV ({s1_400:.0f} mV at a 400 mV window) at 1 b, OR 1e-4-tail retention < 1 s at 105 C, OR ring-oscillator "
         "shift > 1% that H-lean/In-poor process changes cannot recover. Revival: an H-blocking liner plus In-poor/IGO "
         "channel that restores <=25 mV, or a Ga-free ZTO/In2O3 channel that passes.")
+    out("- **RED-TEAM additions to every GO line:** (a) RTN: >=100 repeated reads ~1 s apart plus fast reads at "
+        "1 us-1 ms spacing on >=1e5 cells at 105 C, 1e-4 RTN quantile <= 30 mV for 2 b (<= 100 mV for 1 b); "
+        f"(b) cross-temperature: write at T1, read at T2 (dT +/-30 K) with in-row references, residual sigma <= {V('sigma_xT_mV'):.0f} mV "
+        "after the 10 K rewrite rule (2 b), else 1 b; (c) write-FET Vt and SS on >=1e5 cells and a directly measured "
+        "1e-4 retention quantile: tail leakage <= 7.5 aA at 105 C (2 b, 1 s) and <= 22.5 aA at 125 C (1 b, 1 s), single "
+        "vs series write gate, hold -0.5 vs -0.7 V; (d) a real 350-400 C fusion bond (D2O-labelled) on a tier coupon: "
+        "top-tier dVt <= 10 mV and SIMS H/D profile, inside Gate A.")
+
+
+def section_redteam():
+    hr("11. RED-TEAM VARIANTS (owner response, 2026-11-02)")
+    # (a) periphery floorplan
+    out("(a) RT-CIRC-01 carrier periphery count, 16 tiers, 800 mm2 die (28 nm-class: WL driver 3 um2, SA + 16:1 tier mux 25 um2):")
+    out("")
+    rows = []
+    for eff, row, blc in ((0.50, 256, 64), (0.45, 4096, 2048), (0.45, 8192, 2048), (0.45, 8192, 4096)):
+        cpm = 1e6 / cell_um2() * eff
+        drv = 2 * cpm / row * 16
+        sa = cpm * 16 / (blc * 16)
+        frac = (drv * 3.0 + sa * 25.0) / 1e6
+        rows.append((f"{eff:.2f}", row, blc, f"{1e6/drv:.2f}", f"{1e6/sa:.1f}", f"{frac:.2f}",
+                     "fits" if frac <= 0.6 else "does NOT fit"))
+    table(["tier eff", "cells/row", "cells per SA per tier", "um2 per WL driver", "um2 per SA", "carrier area fraction",
+           "verdict"], rows)
+    out("Adopted: 8,192-cell rows, 64-cell local RBL behind an oxide segment switch, 4,096-cell global RBL, vias to a "
+        "Si 16:1 tier mux and a shared 2-b SA in the carrier. A 65 nm-class carrier (~4x area) fits only ~4-5 tiers.")
+    out("")
+    # (b) tail leakage
+    out("(b) RT-DEV-01 1e-4 tail-leakage multiplier vs write-FET sigma_Vt (SS 95 mV/dec):")
+    out("")
+    rows = []
+    for sig in (30.0, 50.0, 100.0):
+        single = 10 ** (3.719 * sig / V("ss_105C_mV_dec"))
+        pair0 = 10 ** (2.326 * sig / V("ss_105C_mV_dec"))
+        pair5 = 10 ** (2.96 * sig / V("ss_105C_mV_dec"))
+        rows.append((f"{sig:.0f}", f"{single:,.0f}x", f"{pair0:,.0f}x", f"{pair5:,.0f}x",
+                     f"{single/10**(200/V('ss_105C_mV_dec')):.2g}x"))
+    table(["sigma_Vt (mV)", "single write FET", "series pair, independent", "series pair, rho 0.5",
+           "single FET, hold -0.7 V (subthreshold-limited)"], rows)
+    rows = []
+    i95 = V("C_SN_fF") * 1e-15 * V("dV_ret_criterion_mV") * 1e-3 / V("t_ret_95C_s")
+    for tc in (105, 115, 125):
+        ityp = i95 * V("t_ret_95C_s") / t_ret_oxide(tc)
+        rows.append((tc, f"{ityp*1e21:.0f} zA", f"{3*ityp*1e18:.1f}", f"{25*ityp*1e18:.1f}", f"{91*ityp*1e18:.1f}"))
+    table(["T (C)", "typical cell", "tail aA at 3x (old)", "tail aA at 25x (plan)", "tail aA at 91x (unmitigated)"], rows)
+    old = V("tail_leak_mult")
+    for mult in (91.0,):
+        INPUTS["tail_leak_mult"] = (mult, INPUTS["tail_leak_mult"][1])
+        out(f"Unmitigated 91x: 2-b refresh at 105 C (15 mV) {refresh_interval(2, 15.0, 105):.2f} s; 1-b at 105 C (40 mV) "
+            f"{refresh_interval(1, 40.0, 105):.2f} s; 1-b at 125 C {refresh_interval(1, 40.0, 125):.2f} s.")
+    INPUTS["tail_leak_mult"] = (old, INPUTS["tail_leak_mult"][1])
+    out(f"Plan {old:.0f}x: 2-b at 105 C {refresh_interval(2, 15.0, 105):.2f} s; 1-b at 105 C {refresh_interval(1, 40.0, 105):.2f} s; "
+        f"1-b at 125 C {refresh_interval(1, 40.0, 125):.2f} s. Ceilings: 7.5 aA (2 b, 1 s), 22.5 aA (1 b, 1 s).")
+    out("")
+    # (c) RTN
+    out("(c) RT-DEV-02 read-FET RTN: single-trap dVt = q/(Cox A), EOT 4 nm; P(error) ~ 0.5 x exp(-60 mV / eta):")
+    out("")
+    cox = 3.9 * 8.854e-12 / 4e-9
+    rows = []
+    for a in (0.0016, 0.01, 0.015):
+        eta = 1.602e-19 / (cox * a * 1e-12) * 1e3
+        rows.append((a, f"{eta:.1f}", f"{0.5*math.exp(-60/eta):.1e}", f"{3*eta:.1f}", f"{0.5*math.exp(-60/(3*eta)):.1e}"))
+    table(["read-FET gate area (um2)", "eta (mV)", "P(err)", "eta x3 percolation (mV)", "P(err) x3"], rows)
+    out("Planar 40 nm read FETs fail 2 b on RTN; vertical channel-all-around (0.01-0.015 um2) passes unless percolation "
+        "is worse than 3x. Spec: 1e-4 RTN quantile <= 30 mV (eta <= 3.3 mV -> P(>60 mV) = 1e-8). Cells flagged by "
+        "repeated verify reads are remapped (budget 1% capacity).")
+    out("")
+    # (d) ECC
+    ps = 1 - (1 - V("raw_ber_target")) ** 8
+    pf = sum(math.comb(36, k) * ps ** k * (1 - ps) ** (36 - k) for k in range(3, 37))
+    lam = 16384 * V("raw_ber_target")
+    term, tail = math.exp(-lam), 0.0
+    for k in range(0, 80):
+        if k > 23:
+            tail += term
+        term *= lam / (k + 1)
+    out(f"(d) RT-CIRC-04 ECC: RS(36,32) alone at raw BER 1e-4 fails {pf:.1e} per codeword; inner BCH t=23 over a "
+        f"16,384-bit row (m=15, 345 parity bits, 2.1%) fails {tail:.1e}; combined overhead 1.125 x 1.021 = 1.149.")
+    out("")
+    # (e) delivered energy
+    e = near_energy()
+    port = e["e_mix_port"] / 1e3
+    rows = []
+    for L in (1.0, 3.0, 9.0):
+        d = port + e["e_wire_mm"] * L / 1e3
+        hb = V("E_hbm_pJ") + e["e_wire_mm"] * V("L_deliver_hbm_mm") / 1e3
+        rows.append((f"{L:.0f}", f"{d:.2f}", f"{hb/d:.1f}x", f"{hb/max(d,0.3):.1f}x"))
+    table(["mean SM distance (mm)", "near delivered pJ/b", "ratio vs HBM delivered", "ratio with 0.3 pJ floor"], rows)
+    out("RT-CIRC-05: 1 mm assumed every byte above its consumer; 3 mm is the planning value with SM-local placement "
+        "(GEMV weight tiles and FlashDecoding KV splits are each read by one SM); 9 mm is random placement.")
+    out("")
+    # (f) cost before/after
+    dpw = dies_per_wafer(V("die_mm2"))
+    rows = []
+    for tiers, bits in ((8, 1), (16, 1), (16, 2)):
+        gc, _ = die_GB(tiers, bits)
+        old_cost = 1800 + tiers * 300 + 500 - 150
+        old_g = dpw * (0.0278 * tiers * bits * V("die_mm2") / 8) * V("capacity_yield")
+        new_cost = V("carrier_cmos_usd") + tiers * V("tier_usd") + V("hybrid_bond_test_usd") + V("carrier_last_usd") - V("blank_carrier_usd")
+        new_g = V("good_logic_dies") * gc * V("capacity_yield")
+        rows.append((f"{tiers} x {bits} b", f"${old_cost/old_g:.2f}", f"${new_cost/new_g:.2f}",
+                     f"{new_cost/new_g/V('ddr5_usd_GB'):.1f}x", f"${new_cost/new_g*gc*V('capacity_yield')*V('dies_per_gpu'):,.0f}"))
+    table(["config", "$/GB before red team", "$/GB revised", "vs DDR5 cost", "near-tier $ per GPU"], rows)
+    out("Value per GPU at ~$16.4 per W saved over 5 years ($12/W capex + $4.4/W power at PUE 1.25) covers the planning "
+        "near tier ~2x; the HBM-shrink placement also removes ~2 HBM4 stacks (~$1,150 at $16/GB).")
 
 
 def main():
@@ -603,31 +833,39 @@ def main():
     out("# HOT-SIDE MEMORY: model output")
     out("")
     out("Generated by `models/hot-side-memory.py` (pure stdlib). Every input is listed in the INPUTS block of the "
-        "script with a source URL or an ESTIMATE basis. Agent key: dos-hot-side-memory. 2026-11-02.")
+        "script with a source URL or an ESTIMATE basis. Agent key: dos-hot-side-memory. 2026-11-02. "
+        "Revised the same day after the four-persona red team: see the RED-TEAM REVISIONS block and section 11.")
     res = section_density()
     section_retention()
     allowed = section_margin()
     section_sensitivity(allowed)
-    cap = res["carrier 16 tiers x 2 b"]
+    cap = res["carrier 16 tiers x 2 b"]  # refresh table still sized on the largest (16 x 2 b) build
     near_port, near_deliv, hbm_deliv = section_energy(si_e, si_src, cap)
     section_bandwidth(near_port, cap)
     section_thermal()
     section_yield()
     section_cost()
     section_go(allowed)
-    hr("Headline")
+    section_redteam()
+    hr("Headline (revised after red team)")
     g8_1, _ = die_GB(8, 1)
     g16_2, _ = die_GB(16, 2)
-    w = V("hbm_TBps_per_gpu") * 1e12 * 8 * V("hbm_util") * V("traffic_frac") * (hbm_deliv - max(near_deliv, 0.3)) * 1e-12
+    gp, _ = die_GB(V("plan_tiers"), V("plan_bits"))
+    share = traffic_share(gp * V("dies_per_gpu"))
+    w = V("hbm_TBps_per_gpu") * 1e12 * 8 * V("hbm_util") * share * (hbm_deliv - max(near_deliv, 0.3)) * 1e-12
+    w_hi = V("hbm_TBps_per_gpu") * 1e12 * 8 * V("hbm_util") * traffic_share(g16_2 * V("dies_per_gpu")) * (hbm_deliv - max(near_deliv, 0.3)) * 1e-12
+    w_lo = V("hbm_TBps_per_gpu") * 1e12 * 8 * V("hbm_util") * traffic_share(g8_1 * V("dies_per_gpu")) * (hbm_deliv - max(near_deliv, 0.3)) * 1e-12
     out(f"- Capacity: {g8_1:.0f}-{g16_2:.0f} GB per 800 mm2 die (8 x 1 b to 16 x 2 b carrier tiers), "
         f"{2*g8_1:.0f}-{2*g16_2:.0f} GB per 2-die GPU vs 288 GB HBM4.")
-    out(f"- Energy: {near_port:.2f} pJ/b at the port ({near_deliv:.2f} delivered) vs {V('E_hbm_pJ')} pJ/b HBM: "
-        f"~{V('E_hbm_pJ')/max(near_port,0.3):.0f}x at the card's conservative 0.3 pJ/b; ~{w:.0f} W per GPU at "
-        f"{100*V('hbm_util'):.0f}% utilization and {100*V('traffic_frac'):.0f}% of traffic on the near tier.")
+    out(f"- Energy: {near_port:.2f} pJ/b at the port ({near_deliv:.2f} delivered at {V('L_deliver_near_mm'):.0f} mm) vs "
+        f"{hbm_deliv:.2f} pJ/b HBM delivered: ~{hbm_deliv/max(near_deliv,0.3):.0f}x per bit delivered.")
+    out(f"- Watts (capacity-indexed share): planning {V('plan_tiers')} x {V('plan_bits')} b = {gp*V('dies_per_gpu'):.0f} GB/GPU, "
+        f"{100*share:.0f}% share, ~{w:.0f} W per GPU; range {w_lo:.0f} W (8 x 1 b) to {w_hi:.0f} W (16 x 2 b).")
     out(f"- Refresh at 105 C: oxide ~{t_ret_oxide(105):.0f} s (1 b) vs Si {t_ret_si(105)*1e3:.0f} ms = "
         f"{t_ret_oxide(105)/t_ret_si(105):,.0f}x fewer refreshes.")
     out(f"- Key threshold: drift sigma <= {allowed[2]:.0f} mV (2 b) / <= {allowed[1]:.0f} mV (1 b) over 1 s at 105 C, "
-        "after the post-bond thermal/hydrogen sequence.")
+        "after the post-bond thermal/hydrogen sequence, with RTN, cross-temperature and tail-leakage lines (s10).")
+    out("- Model note: the 1 b retention row in s2 uses the reported (typical) cell; tail cells use tail_leak_mult.")
     hr("Appendix: INPUTS (value, source or ESTIMATE basis)")
     rows = []
     for k, (v, src) in INPUTS.items():

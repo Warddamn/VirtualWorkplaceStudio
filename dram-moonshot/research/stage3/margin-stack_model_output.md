@@ -326,3 +326,271 @@ Experiments alone: $675,000. Within the $1M seed: YES (headroom $45,000).
 Headline: central post-CDS residual 5.0 mV -> sensing-limited Cs 0.14 fF (range 0.09-0.32); planning Cs 0.5 fF (set by the IGZO leakage tail, not by sensing): a 10.8x cut, 120 nm stub, AR 5.7, 1,561 stored electrons vs 17,762.
 
 **GO/NO-GO:** GO if the 22FDX MPW, at 85 C under worst-case neighbour data on 32-cell segments, shows a post-CDS input-referred residual <= 20 mV (coupling folded in), i.e. raw BER <= 1e-4 at Cs = 0.5 fF for iid errors (<= 1.4e-04 if >= 80% are flaggable; <= 11 mV unlocks 0.25 fF); AND the DRAM Bender/MPW error maps show < 1% of errors as same-codeword pairs (at 1% pairs the allowed BER already falls to 6e-05); AND the IGZO coupons extrapolate a 1-in-1e10 85 C leakage tail <= 586 aA at 0.5 fF (DDR5 64 ms parity; <= 59 aA for a 10x refresh cut). NO-GO if the residual exceeds 34 mV (Cs stays >= 1 fF, a ~5x cut that a 4-pillar gain FET without CDS already gives), or if pairs exceed ~10% of errors (allowed BER 2e-05, margin lost).
+
+# RED-TEAM REVISIONS (owner response, 2026-11-02)
+
+Sections 0-12 above are the pre-red-team model, unchanged. Below, INPUTS are revised (old -> new, objection id) and the
+planning case is recomputed. Ids: DEV-01 = RT-DEV-margin-stack-01 etc. (research/redteam/rt_*.json).
+
+## R1. Input revisions
+
+| key | old | new | objection(s) | basis |
+|---|---|---|---|---|
+| n_seg | 32 | 64 | CIRC-01, PROC-01 | 16 x 64-cell segments per 1,024-cell global line, so one column gets 0.885 um2 under the array; halves the gain rows |
+| n_gain_pillars | 1 | 2 | DEV-02, CIRC-06, DEV-03, CIRC-04 | two parallel same-step pillars: 2x gm, RTN step per trap halved |
+| c_seg_fixed_fF | 0.2 | 0.25 | DEV-02 | second gain-pillar gate ~0.05 fF |
+| sites_extra_per_seg | 3 | 4 | DEV-02, CIRC-01 | gain FET (2 pillars) + reset + write-back; strap still +1 |
+| vov_gain_V | 0.4 | 0.6 | DEV-02, CIRC-06 | deeper pulsed read source (~-1.1 V for a ~1 V Vt); Vds <= ~2 V is within IGZO's wide-gap tolerance [ESTIMATE] |
+| i_gain_uA | 5 | 2.7 (computed) | DEV-02, CIRC-06 | COMPUTED: square law through OCTRAM >15 uA at an assumed 2.0 V overdrive |
+| gain_local | 3 | 0.9 (computed) | DEV-02, CIRC-06, CIRC-01 | COMPUTED: G = gm x t_sample / C_GBL |
+| c_gbl_fF | 6 | 12 | CIRC-01 | 1,024-cell GBL: 30 um x 0.25 fF/um + 16 two-pillar drains |
+| c_sample_fF | 10 | 5 | CIRC-01 | caps shared by 4 columns, sized for area (2 x 5 fF MOS caps ~0.4 um2) |
+| sigma_1f_rtn_mV | 4 | 2 | DEV-03, CIRC-04 | Gaussian term is now 1/f only; RTN moves to an explicit exponential heavy tail (rtn_* inputs) |
+| added_mask_frac | 0.012 | 0.13 (computed) | PROC-01 | COMPUTED: added critical layers x EUV $/layer / wafer cost |
+
+New inputs:
+
+| key | value | unit | source / basis |
+|---|---|---|---|
+| k_gain_uA_V2 | 3.75 | uA/V2 per pillar | ESTIMATE: square law through OCTRAM Ion >15 uA at an assumed 2.0 V overdrive (DEV-02: undisclosed, typically 1.5-2.5 V) https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology |
+| t_sample_ns | 1.2 | ns | ESTIMATE: integration time per double-sampling sample (DEV-02/CIRC-06: G=3 in 0.72 ns was unsupported) |
+| t_reset_ns | 0.3 | ns | ESTIMATE: segment reset between the signal and reset samples |
+| t_comp_ns | 0.5 | ns | ESTIMATE: comparator decision (unchanged) |
+| comp_mux | 4 | columns per comparator | CIRC-01: one auto-zeroed comparator + caps does not fit a 29.4 nm column |
+| sigma_reset_inj_mV | 1 | mV | ESTIMATE: random reset-switch charge injection, uncancelled in signal-first double sampling |
+| rtn_perc_mult | 2.5 | x q/(Cox W L) | DEV-03 2-3x, CIRC-04 2-5x (percolation); heavy tail in percolative channels https://www.iue.tuwien.ac.at/pdf/ib_2016/CP_2016_Rzepa_3.pdf |
+| rtn_f_active | 0.1 | per pillar | DEV-03: 1-30% of gain FETs carry a trap with tau within 10x of the sample gap |
+| rtn_p_toggle | 0.25 |  | ESTIMATE: chance such a trap switches between the two samples |
+| ss_igzo_85C_mVdec | 90 | mV/dec | DEV-01: 85-100 mV/dec at 85 C (ideal 71); a planar 2T0C reports 161 at 300 K (rt-CIRC log) = pessimistic bound |
+| p_ret_budget | 1e-05 | of raw BER | ESTIMATE: share of the 1e-4 budget given to retention-weak cells, persistent between patrol scrubs (Hi-ECC precedent https://courses.grainger.illinois.edu/CS534/fa2021/reading_list/9a.pdf) |
+| ret_data_factor | 0.5 |  | a leaky cell errs only while it holds the vulnerable value |
+| vt_drift_mV | 75 | mV | DEV-05: 50-100 mV negative Vt drift over 10 years at 85-105 C for unbarriered IGZO |
+| v_nwl_hold_V | 0.1 | V | ESTIMATE: extra negative WL hold reserved for drift (DEV-01/05); wide-gap IGZO has no GIDL/BTBT penalty |
+| euv_usd_per_layer | 165 | $/layer | models/dram_cell_physics.py s8 base; PROC-01 uses the same $165 |
+| added_crit_layers | 2/3/4 | layers lo/central/hi | PROC-01: WL-island cut, gate-to-BL strap, buried-BL cut + read-source wiring, 2F-pitch GBL metal; lo assumes two merge into existing SAQP cut masks |
+| ecc_ratio_baseline | 1.0625 |  | dram-moonshot research/phaseA/A1_scaling_limits.md + models/dram_cell_physics.py (16Gb + 6.25% on-die ECC baseline, CIRC-02) |
+| ecc_logic_die_frac | 0.005 | of die | ESTIMATE: per-bank BCH t=8 decoders (CIRC-05) |
+| f_4f2_nm | 14.7 | nm | dram-moonshot research/phaseA/A1_scaling_limits.md + models/dram_cell_physics.py |
+| col_devices_um2 | 0.35 | um2/column | ESTIMATE: GBL precharge, mux switch, 4T restore latch, write driver (~7 devices x 0.05 um2) |
+| comp_block_um2 | 0.8 | um2/comparator | ESTIMATE: auto-zeroed comparator ~0.3 + 2 x 5 fF MOS caps ~0.4 + flag latch ~0.1 |
+| t_rcd_ns | 14 | ns | DDR5 tRCD class |
+| t_wl_rise_ns | 2 | ns | ESTIMATE |
+| bch_slow_ns | 15 | ns | CIRC-05: 10-20 ns Berlekamp-Massey + Chien at DRAM-periphery speed [ESTIMATE] |
+| c_plate_strip_fF | 2 | fF | I-12302 top-up: ~2 fF plate strip (stage2_results.jsonl) |
+
+Architecture change carried by these inputs (CIRC-01): the per-column CDS comparator is replaced by one comparator per
+4 columns, read in SIGNAL-FIRST double sampling (DS): with the WL open, sample the gain-FET output (signal), reset the
+segment through the reset FET, sample again (reset level), compare, latch, then restore from a 4T per-column latch.
+The gain-FET Vt still cancels (same FET, both samples); the segment reset kTC and reset injection no longer cancel and
+are budgeted. The comparator holds the signal sample, so the destroyed segment is rewritten from the decision.
+
+## R2. Gain-FET drive and local gain (DEV-02, CIRC-06)
+
+OCTRAM reports Ion >15 uA at an undisclosed overdrive. Square law through 15 uA at 1.5 / 2.0 / 2.5 V gives k = 6.67 / 3.75 / 2.40 uA/V2 per pillar.
+
+| design | k uA/V2 | Vov V | pillars | I uA | gm uS | t_sample ns | C_GBL fF | G |
+|---|---|---|---|---|---|---|---|---|
+| pre-red-team claim | - | 0.4 | 1 | 5.0 | 25 | 0.72 | 6 | 3.0 |
+| pre-red-team design, k from 2.0 V | 3.75 | 0.4 | 1 | 0.60 | 3.0 | 0.72 | 6 | 0.36 |
+| pre-red-team design, k from 1.5 V | 6.67 | 0.4 | 1 | 1.07 | 5.3 | 0.72 | 6 | 0.64 |
+| revised, pessimistic | 2.40 | 0.5 | 2 | 1.20 | 4.8 | 1.2 | 12 | 0.48 |
+| revised, central | 3.75 | 0.6 | 2 | 2.70 | 9.0 | 1.2 | 12 | 0.90 |
+| revised, optimistic | 6.67 | 0.7 | 2 | 6.54 | 18.7 | 1.2 | 12 | 1.87 |
+
+The reviewers are right: the pre-red-team design gives G ~0.4-0.6, not 3. The revision buys back gm with a second pillar
+and a deeper read-source pulse, then accepts G ~1 on a longer (1,024-cell) global line that the comparator pitch forces
+(R7). The input-referred comparator term rises from 1.9 mV to ~4 mV (R3); the 0.5 fF planning cell does not depend on G = 3.
+
+## R3. Revised residual: Gaussian terms plus an explicit RTN heavy tail (DEV-03, CIRC-04)
+
+64-cell segment: Cseg = 64 x 0.04 + 0.25 = **2.81 fF**. Evaluated at Cs = 0.5 fF; sense-error target 9e-05 per bit (1e-4 minus 1e-05 given to retention, R5).
+One trap in one 15 x 60 nm pillar at EOT 2.0 nm: q/(Cox W L) = 3.28 mV (two pillars: 1.64 mV).
+
+| scenario | G | comparator | sample kTC | segment reset kTC | reset inj. | 1/f | kick rnd | Gaussian sigma | RTN eta | RTN w | RTN 1e-4 quantile | P(err) at 0.5 fF |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| optimistic | 1.87 | 0.99 | 0.75 | 1.22 | 1.0 | 1.0 | 1.25 | 2.57 | 3.28 | 0.0025 | 10.6 | 4.5e-10 |
+| central | 0.90 | 4.28 | 1.56 | 1.22 | 1.0 | 2.0 | 1.25 | 5.37 | 4.10 | 0.0250 | 22.6 | 8.2e-07 |
+| pessimistic | 0.48 | 12.77 | 2.93 | 1.22 | 1.0 | 3.0 | 1.25 | 13.59 | 4.92 | 0.1500 | 36.0 | 2.9e-03 |
+
+- Pre-red-team 1-pillar gain FET, central RTN: eta 8.2 mV, w 0.0125 -> 1e-4 quantile of between-sample jumps 40 mV, against the 3.72 x 4 = 15 mV a Gaussian 4 mV implied. The reviewers' 13-70 mV is confirmed.
+- Pre-red-team 1-pillar gain FET, pessimistic RTN: eta 9.8 mV, w 0.0750 -> 1e-4 quantile of between-sample jumps 65 mV, against the 3.72 x 4 = 15 mV a Gaussian 4 mV implied. The reviewers' 13-70 mV is confirmed.
+- Central at 0.5 fF: signal 64.2 mV, after 2 x alpha coupling and 4.2 mV kick residual, margin 47.1 mV against Gaussian sigma 6.3 mV (incl. 5% Cs spread) and an RTN tail of eta 4.1 mV: P(err) = 8.2e-07, far below 9e-05.
+- A sigma-based GO line is the wrong statistic for RTN. The GO line becomes a projected BER from the measured Gaussian residual
+  (22FDX) plus the measured per-device RTN jump distribution of IGZO gain FETs (BEOL carrier, R12).
+
+## R4. Required Cs after the red team
+
+| case | Cs needed fF | cut vs 5.42 fF | stub h nm | AR |
+|---|---|---|---|---|
+| 64-cell, 2-pillar, optimistic | 0.13 | 41.1x | 32 | 1.5 |
+| 64-cell, 2-pillar, central | 0.29 | 18.8x | 69 | 3.3 |
+| 64-cell, 2-pillar, pessimistic | 0.74 | 7.3x | 178 | 8.4 |
+| 64-cell, 1-pillar gain FET, central | 0.51 | 10.7x | 122 | 5.8 |
+| 64-cell, 4-pillar gain FET, central | 0.19 | 28.0x | 46 | 2.2 |
+| 32-cell, 2-pillar, central (GBL 1,024 cells: 32 drains, 16.5 fF) | 0.20 | 27.0x | 48 | 2.3 |
+| 32-cell, 1-pillar, central (pre-red-team geometry, revised noise, GBL 6 fF) | 0.26 | 20.5x | 64 | 3.0 |
+
+Coupling sensitivity (central noise, 64-cell, 2-pillar): required Cs vs alpha (PROC-02, CIRC-03).
+
+| alpha | 0.05 | 0.10 | 0.15 | 0.20 | 0.25 | 0.30 |
+|---|---|---|---|---|---|---|
+| Cs fF | 0.25 | 0.29 | 0.34 | 0.40 | 0.50 | 0.68 |
+
+- Largest tolerable alpha per side (central noise): 0.25 at Cs 0.5 fF, 0.34 at 1.0 fF.
+- Largest tolerable alpha per side (pessimistic noise): 0.02 at Cs 0.5 fF, 0.22 at 1.0 fF.
+
+RTN sensitivity (central otherwise): required Cs (fF) vs percolation multiplier and active-trap fraction.
+
+| rtn mult \ f_active | 0.01 | 0.10 | 0.30 | 1.00 |
+|---|---|---|---|---|
+| 2.0 | 0.23 | 0.26 | 0.29 | 0.31 |
+| 2.5 | 0.24 | 0.29 | 0.33 | 0.36 |
+| 3.0 | 0.24 | 0.33 | 0.39 | 0.41 |
+| 5.0 | 0.31 | 0.52 | 0.63 | 0.68 |
+
+I-12302 plate-strip variant (clamped BL, sense a 2 fF plate strip): 0.5 fF gives 85 mV vs 64 mV on the 64-cell buried segment. Same signal class; its value is integration (no buried-BL cut, gain FET as a
+separate BEOL oxide FET with its own Vt), so it is carried as a process-emulation alternative for PROC-01, not as a margin lever.
+
+Reading: the sensing-limited cell is 0.13 / 0.29 / 0.74 fF (optimistic / central / pessimistic). The pre-red-team 0.09-0.32 fF
+stretch (17-40x) is withdrawn: RTN tails and the weaker gain FET put the floor near 0.13-0.74 fF. The 0.5 fF planning cell
+closes in the central case with margin (P(err) ~1e-6 vs 9e-5) but FAILS the pessimistic case, which needs ~0.74 fF;
+1.0 fF (5.4x) is the fallback that closes in all three. A 1-pillar gain FET misses 0.5 fF even with DS (0.51 fF): the second pillar is required.
+
+## R5. IGZO leakage tail derived from the model's own inputs, and an ECC-budgeted retention quantile (DEV-01, PROC-03, DEV-05)
+
+Tail(q) = Ioff_median x 10^((Q^-1(q) x sigma_Vt,access + drift - V_NWL) / SS), with the OCTRAM '<1 aA' bound read, pessimistically,
+as the 85 C median at the hold bias; sigma_Vt,access 50 mV (model input).
+
+| quantile | SS mV/dec | fresh, V_NWL 0 | aged (75 mV drift), V_NWL 0 | aged, V_NWL -0.1 V | aged, V_NWL -0.3 V |
+|---|---|---|---|---|---|
+| 1e-10 (6.36 sigma) | 85 | 5,520 aA | 42,103 aA | 2,804 aA | 12.4 aA |
+| 1e-10 (6.36 sigma) | 90 | 3,420 aA | 23,303 aA | 1,804 aA | 10.8 aA |
+| 1e-10 (6.36 sigma) | 100 | 1,516 aA | 8,525 aA | 852 aA | 8.5 aA |
+| 2e-05 (4.11 sigma) | 85 | 261 aA | 1,988 aA | 132 aA | 0.6 aA |
+| 2e-05 (4.11 sigma) | 90 | 191 aA | 1,304 aA | 101 aA | 0.6 aA |
+| 2e-05 (4.11 sigma) | 100 | 113 aA | 636 aA | 64 aA | 0.6 aA |
+
+- DEV-01 confirmed: at 1e-10 the fresh tail is 3,420 aA (SS 90), 5.8x over the 586 aA line for 0.5 fF at 64 ms (75 mV droop). The pre-red-team 917 ms refresh and 28x refresh-power claims do not survive a 1e-10 requirement.
+- Redesign: give retention-weak cells 1e-05 of the 1e-4 raw-BER budget. A leaky cell errs only while holding the
+  vulnerable value, so the allowed leaky-cell fraction is 2e-05 (4.11 sigma, not 6.36). Averaged over codewords the
+  failure rate is unchanged, because Poisson counts add: P(>8 errors) at 592 x (9e-5 + 1e-5) = 2.33e-17 = the pre-red-team target.
+  Persistent errors concentrate: 1.7e-05 of codewords (501 per 16Gb die) hold >=2 weak cells and fail 2.3e-13 per read;
+  sort-time retention test + repair removes the static ones and patrol scrub bounds VRT accumulation (RAW-BER CONTRACT rule).
+- At 2e-05, aged, V_NWL -0.1 V, SS 90: tail 101 aA vs 586 aA (0.5 fF, 64 ms, 75 mV) -> PASS; at SS 100: 64 aA. And it is directly observable: 1e6 cells show ~20 tail cells.
+- I-12627 (two series access gates): if their tails are independent, each gate needs only q = 4.5e-03 (2.61 sigma), i.e. 75 mV less Vt excursion = 0.8 decades, plus a ~10x stack effect. In a same-step VCT the
+  second gate also lengthens the gain FET (gm/2), and film-level variation along one pillar is shared, so it is a coupon
+  split (measure tail correlation), not the central design.
+- DEV-05 drift: 75 mV of negative drift multiplies the tail by 6.8x; the -0.1 V hold reserve cancels it. The coupons add a 1,000 h 105 C hold-bias stress.
+
+## R6. Droop, refresh interval and refresh power with the revised noise and the aged ECC-budgeted tail
+
+Leakage used: 101 aA (aged, SS 90, NWL reserve) and 636 aA (aged, SS 100, no reserve).
+
+| Cs fF | max droop mV (central) | Imax 64 ms aA | retention @ central tail | refresh interval (guard 2x) | retention @ high tail | refresh (guard 2x) |
+|---|---|---|---|---|---|---|
+| 0.3 | 90 | 421 | 266 ms | 133 ms | 42 ms | 21 ms |
+| 0.5 | 241 | 1,881 | 1.2 s | 591 ms | 189 ms | 94 ms |
+| 1.0 | 354 | 5,529 | 3.5 s | 1.7 s | 555 ms | 277 ms |
+
+- 0.5 fF, central tail: refresh every 591 ms -> 1.04 mW vs 12.2 mW at 1-beta 64 ms (11.8x).
+- 0.5 fF, high tail: refresh every 94 ms -> 6.49 mW vs 12.2 mW at 1-beta 64 ms (1.9x).
+- Most of that gain comes from oxide access, and a plain oxide 4F2 cell (4.6 fF) gets more of it than a 0.5 fF cell. The
+  refresh-power step is no longer claimed for MARGIN STACK: it is 'not worse than DDR5' at 64 ms and a conditional bonus.
+
+## R7. Comparator pitch and sense timing (CIRC-01, DEV-02, CIRC-06)
+
+- 512-cell column: 0.443 um2 under the array. 1 comparator per column needs ~1.15 um2 (260%); 1 per 4 columns needs ~0.55 um2 (124%: does NOT fit).
+- 1024-cell column: 0.885 um2 under the array. 1 comparator per column needs ~1.15 um2 (130%); 1 per 4 columns needs ~0.55 um2 (62%: fits, leaving the rest for sub-WL and line drivers).
+- CIRC-01 is right for the pre-red-team 512-cell, per-column CDS layout. The revision uses 1,024-cell columns and 4:1 muxing.
+- Charge sharing 5 tau = 71 ps; per column slot 2 x 1.2 + 0.3 ns = 2.7 ns; 4 slots + compare -> last decision at **11.4 ns**; + WL rise 2.0 ns = 13.4 ns vs tRCD 14 ns.
+- Restore of all columns in parallel from per-column latches through the write FET: 3.1 ns (inside tRAS). Total ~14 ns.
+- The pre-red-team 3.6 ns read chain is withdrawn: MARGIN STACK is DDR5-timing-compatible, with no latency advantage.
+  RTN window = one slot (~2.7 ns) between signal and reset samples, inside the 1-10 ns band the BEOL carrier measures.
+
+## R8. ECC parity, latency and access granularity (CIRC-02, CIRC-05)
+
+- Parity: BCH t=8 is 80 check bits per 512 (15.6%) against the baseline's 6.25% on-die ECC: x1.0882 array bits.
+  Array is 70% of the 4F2 PUC die, so die x1.062 (CIRC-02 applied x1.088 to the whole die; the
+  array-only scaling is used here, plus 0.5% of die for per-bank decoders).
+- Raw BER 1e-04: 5.75% of codeword reads take the BCH slow path (+~15 ns); mean +0.86 ns.
+- Raw BER 1e-05: 0.59% of codeword reads take the BCH slow path (+~15 ns); mean +0.09 ns.
+- Raw BER 1e-06: 0.06% of codeword reads take the BCH slow path (+~15 ns); mean +0.01 ns.
+- 1e-4 is the 85 C worst-pattern design corner; the slow path is a p95 tail only near that corner. A 592-bit on-die
+  codeword fits wide-IO parts (HBM pseudo-channel, LPDDR x16 BL32 = 512 bits per access). For DDR5 x4 RDIMMs the code
+  moves to the module side band (512 + 128 bits, BCH-12, RAW-BER CONTRACT): no extra array bits and no on-die decode,
+  but chipkill is given up. Narrow writes on on-die codewords are read-modify-write, as in DDR5 on-die ECC.
+
+## R9. Area, density and cost per bit after the red team (PROC-01, CIRC-02, PROC-04, IND-01)
+
+- Die growth: segments 5/64 sites x 0.7 = +5.5%; parity +6.2%; decoders +0.5% -> x1.125. Density 0.762 -> **0.677 Gb/mm2** (-11% vs plain 4F2, 1.51x 1-beta).
+- Added critical layers 2/3/4 x $165 = 8.7%/13.0%/17.4% of a $3,800 wafer (pre-red-team: 1 DUV, 1.2%).
+- Capacitor height x0.092 at 0.5 fF; module share of wafer cost is UNSOURCED (a red-team search found no teardown split).
+
+| cap-module share | layers | module saving | net wafer | die | $/bit vs plain 4F2 |
+|---|---|---|---|---|---|
+| 10% | 2 | -5.9% | 1.028 | x1.125 | +15.7% |
+| 10% | 3 | -5.9% | 1.071 | x1.125 | +20.6% |
+| 10% | 4 | -5.9% | 1.115 | x1.125 | +25.5% |
+| 15% | 2 | -8.8% | 0.998 | x1.125 | +12.4% |
+| 15% | 3 | -8.8% | 1.042 | x1.125 | +17.2% |
+| 15% | 4 | -8.8% | 1.085 | x1.125 | +22.1% |
+| 20% | 2 | -11.8% | 0.969 | x1.125 | +9.0% |
+| 20% | 3 | -11.8% | 1.012 | x1.125 | +13.9% |
+| 20% | 4 | -11.8% | 1.056 | x1.125 | +18.8% |
+| 30% | 2 | -17.7% | 0.910 | x1.125 | +2.4% |
+| 30% | 3 | -17.7% | 0.953 | x1.125 | +7.3% |
+| 30% | 4 | -17.7% | 0.997 | x1.125 | +12.2% |
+
+Verdict: $/bit is a PENALTY of +9% to +25% (central +17%) against plain oxide 4F2 for a 10-20% module share; even a 30% share with 2 layers gives +2%.
+MARGIN STACK is not scored on $/bit or fab $ per bit. Its claim narrows to the capacitor module's resource intensity
+(AR-62 fluorocarbon etch, He-cooled etch hours, ~100x less ZrO2/TiN ALD exposure, no Ru/k>50 push) and to 3D readiness (R10).
+
+## R10. 3D readiness with the revised noise
+
+16-tier vertical BL segment 3.0 fF: sensing-limited Cs 0.30 fF (central), 0.79 fF (pessimistic).
+
+| Cs fF | lateral cap nm | cell nm2 | Gb/mm2 per tier | x A1 base | tiers to match 1-beta |
+|---|---|---|---|---|---|
+| 0.30 | 39 | 9,431 | 0.0549 | 3.18x | 8.7 |
+| 0.50 | 63 | 10,669 | 0.0485 | 2.81x | 9.8 |
+| 0.79 | 100 | 12,481 | 0.0415 | 2.40x | 11.5 |
+| 1.00 | 127 | 13,838 | 0.0374 | 2.17x | 12.7 |
+
+The 3D lever survives at 0.5-1.0 fF: lateral capacitor ~63-126 nm instead of ~450 nm, per-tier density 2.2-2.8x, break-even
+~10-13 tiers instead of ~26. It needs a 3D host (PIXEL-STACK-type sense tiers), so it is a conditional, shared upside.
+
+## R11. Energy per access after the red team
+
+- 1,024-cell GBL (12 fF), 64-cell segment, Cs 0.5 fF: 15.2 fJ per sensed bit vs 20.1 fJ at 1-beta (1.3x lower; pre-red-team 2.3x). GBL restore and two samples on 12 fF dominate.
+
+## R12. Revised decisive experiment, budget and GO / NO-GO
+
+| item | $ | when |
+|---|---|---|
+| DRAM Bender error-tail study (shared with RAW-BER CONTRACT) | 80,000 | M0-6 |
+| SPICE Monte Carlo + 3D field-solver alpha extraction on published VCT geometry + process emulation (PROC-01/02) | 55,000 | M0-5 |
+| 22FDX MPW, 5 mm2 at $17,997/mm2 + 20% U.S. route (neutraliser/charge-transfer add-on block dropped) | 108,000 | M7 |
+| EDA/PDK access | 25,000 | M2-7 |
+| Layout/verification contractor (22FDX emulator + SKY130 carrier) | 55,000 | M2-7 |
+| Packages, PCBs, probe cards | 30,000 | M9-12 |
+| Bench: SMUs (used), thermal forcer, FPGA, low-noise ns sampler | 50,000 | M6-11 |
+| IGZO coupons: planar + etched-sidewall + dual-series-gate splits; 1/f spectra | 60,000 | M3-12 |
+| BEOL-IGZO-on-CMOS carrier: 2 SKY130 runs ($30k) + die-level IGZO post-processing (~250 cleanroom h + staff) | 90,000 | M4-13 |
+| 1,000 h 105 C hold-bias stress on coupons/carriers (DEV-05) | 10,000 | M12-15 |
+| **Decisive experiment total** | **563,000** | M0-17 |
+
+- Spin 2 (after GO only), 4 mm2 minimum: $86,000
+- IP: 2 provisionals, PCT, patentability/FTO opinion on SEL DOSRAM + OCSA families (IND-02): $55,000
+- Capacitor-module cost split: teardown cost report or cost-model licence (IND-01, PROC-04): $15,000
+- Two founders, $5k/month each x 24 months: $240,000
+- Overhead: $40,000
+- **Plan total $999,000** (reserve $1,000; portfolio sharing of Bender + coupons frees ~$140-200k [ESTIMATE] as the real reserve).
+
+GO thresholds (central otherwise, alpha at the extracted VCT value): Gaussian post-DS residual <= 12 mV at 0.5 fF (22 mV at 1.0 fF); IGZO gain-FET 1e-4 between-sample jump quantile <= 44 mV at 0.5 fF (82 mV at 1.0 fF); alpha <= 0.25 at 0.5 fF. Leakage at the 2e-05 quantile, 85 C, after stress: GO <= 586 aA (0.5 fF, 75 mV droop, noise-independent); conditional GO <= 1,881 aA if the measured residual supports the 241 mV droop; the 1.0 fF fallback holds to 1,172 aA (75 mV) or 5,529 aA (354 mV); NO-GO for any cut beyond 5.4x above that.
+
+**GO/NO-GO (revised):** GO if the PROJECTED raw BER at Cs 0.5 fF, 85 C, worst-case data, is <= 9e-5, built from (a) the 22FDX
+emulator's measured BER and Gaussian residual with ratio-matched coupling set to the field-solver VCT alpha (sensitivity at 1.5x),
+(b) the measured per-device RTN jump distribution of >=1e4 IGZO gain FETs on the BEOL carrier at a 1-3 ns gap, and
+(c) <1% same-codeword pairs; AND the leaky-cell fraction above the 0.5 fF limit is <= 2e-5, observed directly on >=1e6
+BEOL-carrier and coupon cells (planar and etched-sidewall) after the 1,000 h stress. NO-GO if the projected BER exceeds 1e-4
+at 1.0 fF, pairs exceed 10%, or the 2e-5 leakage quantile exceeds the 1.0 fF limit.
