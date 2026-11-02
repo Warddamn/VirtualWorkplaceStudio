@@ -293,7 +293,6 @@ def section_jot():
 # ==========================================================================================
 def section_crested():
     hr("B5-05  CRESTED-BARRIER 1S1C CROSSPOINT: the charge-fluence rule")
-    cs = A1.cap_pillar_fF(14.0, 300.0, 0.55 * 40 / 40) if False else None
     # stub capacitor: k=40 physical 5 nm on a 14 nm pillar, 300 nm tall (single-sided)
     k, t, d, h = 40.0, 5e-9, 14e-9, 300e-9
     cs = EPS0 * k * math.pi * d * h / t
@@ -549,6 +548,9 @@ def section_qdram():
     Ec = Q ** 2 / (2 * C)
     print(f"Dot r=15 nm: C_sigma ~{C*1e18:.0f} aF, E_c = {Ec/Q*1e3:.1f} meV = {Ec/(KB*4.2):.0f} kT at 4.2 K "
           f"({Ec/(KB*77):.1f} kT at 77 K -> 4 K only)")
+    print("  Coulomb blockade is NOT required: a bit = ~20 electrons vs 0, held by a pinched barrier; "
+          f"a 50 meV barrier is {0.050*Q/(KB*4.2):.0f} kT at 4.2 K (thermal escape impossible) but "
+          f"{0.050*Q/(KB*77):.1f} kT at 77 K")
     for cell_nm, eff in [(100, 0.5), (70, 0.5)]:
         d = 1e12 / cell_nm ** 2 * eff / 1e9
         print(f"  cell {cell_nm} x {cell_nm} nm, eff {eff}: {d:.3f} Gb/mm2 = {d/DENS_1B:.2f}x DDR5 1b, "
