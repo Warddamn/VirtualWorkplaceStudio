@@ -583,5 +583,125 @@
   "batch": "S117",
   "facet": "System architecture: need less DRAM",
   "n": 94
+ },
+ {
+  "batch": "S118",
+  "facet": "Access device, leakage and refresh",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S119",
+  "facet": "Access device, leakage and refresh",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S120",
+  "facet": "Array architecture and 3D integration",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S121",
+  "facet": "Array architecture and 3D integration",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S122",
+  "facet": "Bit storage element",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S123",
+  "facet": "Bit storage element",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S124",
+  "facet": "Interface, packaging and data movement",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S125",
+  "facet": "Interface, packaging and data movement",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S126",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S127",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S128",
+  "facet": "Materials and resource intensity",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S129",
+  "facet": "Materials and resource intensity",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S130",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S131",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S132",
+  "facet": "Sensing and periphery",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S133",
+  "facet": "Sensing and periphery",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S134",
+  "facet": "Supply, industry and strategy",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S135",
+  "facet": "Supply, industry and strategy",
+  "n": 21,
+  "topup": true
+ },
+ {
+  "batch": "S136",
+  "facet": "System architecture: need less DRAM",
+  "n": 105,
+  "topup": true
+ },
+ {
+  "batch": "S137",
+  "facet": "System architecture: need less DRAM",
+  "n": 21,
+  "topup": true
  }
 ]

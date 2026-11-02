@@ -1,0 +1,22 @@
+# Assumptions: dos-margin-stack (MARGIN STACK dossier, 2026-11-02)
+
+- [dos-margin-stack] Local bitline capacitance 0.04 fF/cell for a buried 4F2 VCT bitline - basis: between A1's 0.06 fF/cell (6F2, coupling-dominated) and ~0.01 fF/cell for wire alone at 29 nm/cell; no published VCT Cbl found (ISSCC 2026 search gave no circuit detail).
+- [dos-margin-stack] Segment fixed capacitance 0.2 fF (gain-FET gate, reset/write junctions, strap) - basis: GAA gate cap ~0.05 fF computed from EOT 2 nm, d 15 nm, Lg 60 nm.
+- [dos-margin-stack] Oxide FET Pelgrom AVT 2.5 mV*um - basis: no IGZO AVT found in search; Si HKMG ~1-2 mV*um; oxide assumed worse. Gives 47 mV sigma_Vt for a 1-pillar gain FET (concept used 40 mV).
+- [dos-margin-stack] Gain FET biased at Vov 0.4 V via a pulsed negative read-source line or back gate - basis: same-step FET inherits the access FET's high Vt; at a 0.5 V precharge it would otherwise be off.
+- [dos-margin-stack] Post-auto-zero comparator offset 3 mV, local gain 3 V/V - basis: Stage 3 system inventor (FINAL_CONCEPTS.md ruling 3); gm 25 uS x 0.72 ns / 6 fF.
+- [dos-margin-stack] Oxide-FET 1/f+RTN residual between CDS samples 4 mV rms [SPECULATIVE] - basis: single-trap dVt = q/(Cox W L) ~ 6 mV for the gain-FET geometry; few traps switch within ~5-10 ns.
+- [dos-margin-stack] WL kick-back: access-FET gate cap 49 aF, half the channel charge to the node at 2 V overdrive, 10 aF overlap x 3 V; 90% cancelled by a dummy/complementary WL edge; 5% geometry spread - basis: first-principles charge-injection estimate; no VCT data.
+- [dos-margin-stack] Data-dependent BL-BL coupling alpha 0.10 per side (worst-case neighbour data), modelled as a fractional signal loss (1-2 alpha) - basis: Stage 2 critics assume BL-BL 20-30% of Cbl total; shielding/interleave halves it.
+- [dos-margin-stack] Stub capacitance spread 5% (1 sigma) - basis: CD/height variation of a ~120 nm, AR~6 etch.
+- [dos-margin-stack] Usable half swing 0.425 V (VARY 1.0 V, 15% droop) - basis: concept convention; retention computed at the matching 75 mV droop (concept's retention figures used 150 mV, a 2x inconsistency flagged in notes).
+- [dos-margin-stack] Capacitor-dielectric leakage 1e-8 A/cm2 at half-VDD bias - basis: A1 target <=1e-7 at 0.8 V; leakage falls steeply with field. Gives a size-independent ~47 s retention limit.
+- [dos-margin-stack] Codeword-failure target = BCH t=8 at raw BER 1e-4 (2.3e-17 per 592-bit read) - basis: concept RAW-BER CONTRACT level.
+- [dos-margin-stack] Same-codeword error pairs modelled as confident 2-bit clusters (weight 4 in the errors-and-erasures budget) - basis: shared-cause row defects/hammer/VRT pairs.
+- [dos-margin-stack] Capacitor module = 15% of wafer cost (10-20% swept), 65% of it scaling with height - basis: concept's unsourced 10-20%; mold dep, HAR etch, support lattice and ALD dose scale with height/AR.
+- [dos-margin-stack] One added critical mask (BL-to-gain-gate strap) = 1.2% of wafer cost - basis: Stage 2 I-00257 critic; one DUV litho+etch layer on a $3.8k wafer.
+- [dos-margin-stack] Segment amp = 3 sites + 1 strap site per 32 cells (12.5% array area) - basis: IBM 3T micro-SA ratio plus a contact site.
+- [dos-margin-stack] Global bitline 6 fF (15 um at ~0.25 fF/um + 16 drains) - basis: upper-metal line, far less coupled than a buried DRAM bitline.
+- [dos-margin-stack] 22FDX MPW at $17,997/mm2 plus a 20% premium for a U.S. route (MOSIS 2.0/GF direct) - basis: CMC 2026 listing (Canadian broker); U.S. pricing unverified.
+- [dos-margin-stack] Founders at $5k/month each - basis: lean Thiel-style frame; leaves ~$45k headroom in a $955k plan.
+- [dos-margin-stack] Refresh guard 2x on worst-cell retention - basis: VRT/temperature margin.

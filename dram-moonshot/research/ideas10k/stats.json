@@ -1,9 +1,9 @@
 {
- "raw": 11601,
+ "raw": 12861,
  "malformed": 0,
  "exact_dups": 4,
  "near_dups": 0,
- "unique": 11597,
+ "unique": 12857,
  "target": 10000,
  "short_of_target": 0,
  "by_technique": {
@@ -32,39 +32,45 @@
   "Manufacturing analogies": 459,
   "Wishful thinking / ideal final result": 459,
   "Scarcity and constraint as engine": 460,
-  "Phase B lens": 101
+  "Phase B lens": 101,
+  "Constraint stacking": 210,
+  "Distant-field transplant": 210,
+  "Extremophiles, minerals and Earth systems": 210,
+  "Time travel": 210,
+  "Paradox as feature": 210,
+  "Measurement-first invention": 210
  },
  "by_facet": {
-  "Bit storage element": 1150,
-  "Access device, leakage and refresh": 1149,
-  "Sensing and periphery": 1150,
-  "Array architecture and 3D integration": 1150,
-  "Materials and resource intensity": 1149,
-  "Manufacturing, lithography and capital intensity": 1149,
-  "System architecture: need less DRAM": 1150,
-  "Interface, packaging and data movement": 1150,
-  "Reliability, ECC and error tolerance": 1149,
-  "Supply, industry and strategy": 1150,
+  "Bit storage element": 1276,
+  "Access device, leakage and refresh": 1275,
+  "Sensing and periphery": 1276,
+  "Array architecture and 3D integration": 1276,
+  "Materials and resource intensity": 1275,
+  "Manufacturing, lithography and capital intensity": 1275,
+  "System architecture: need less DRAM": 1276,
+  "Interface, packaging and data movement": 1276,
+  "Reliability, ECC and error tolerance": 1275,
+  "Supply, industry and strategy": 1276,
   "": 101
  },
  "by_kind": {
-  "material": 1061,
-  "technology": 3275,
-  "architecture": 2437,
-  "process": 2268,
-  "system": 1009,
-  "strategy": 633,
-  "business": 558,
-  "policy": 356
+  "material": 1166,
+  "technology": 3657,
+  "architecture": 2666,
+  "process": 2580,
+  "system": 1103,
+  "strategy": 696,
+  "business": 594,
+  "policy": 395
  },
  "by_risk": {
-  "medium": 4978,
-  "high": 2484,
-  "speculative": 619,
-  "low": 3516
+  "medium": 5497,
+  "high": 2717,
+  "speculative": 712,
+  "low": 3931
  },
- "novelty_mean": 3.52,
- "cells_present": 255,
+ "novelty_mean": 3.53,
+ "cells_present": 285,
  "underfilled_cells": {},
  "malformed_lines": []
 }
