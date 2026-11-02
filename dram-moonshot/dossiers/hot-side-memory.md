@@ -352,7 +352,7 @@ The plan assumes M0 = January 2027.
 | Quarter | Milestones | Gate |
 |---|---|---|
 | Q1 2027 | Team; Purdue/GT agreements; bench; chip design; 2 provisionals; FTO search; trace study | Bench reproduces published retention |
-| Q2 2027 | 22FDX + sky130 tape-out; coupon lot 1 with emulation; first 85/105 C maps; file provisionals 3-4 | Window measured |
+| Q2 2027 | 22FDX tape-out (the sky130 chip was dropped in section 5; the judges later moved Gate B onto a sky130 carrier, see `research/stage3/decision.json`); coupon lot 1 with emulation; first 85/105 C maps; file provisionals 3-4 | Window measured |
 | Q3 2027 | Coupon lot 2; >=1e5-cell distributions at 85/105/125 C; dies return | - |
 | Q4 2027 | **Gate A+ (2027-11-30; revised after red team: adds real-bond split, RTN, cross-T, tail)**; logic baselines; BEOL post-processing starts | **A** |
 | Q1 2028 | Tiers on logic; 1,000 h bake; carrier bonds; PCT filing | - |

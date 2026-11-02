@@ -1,5 +1,7 @@
 # NEW DRAM: final 10 concepts for full technical dossiers
 
+> **Read this first.** This file is the pre-red-team snapshot that launched the dossiers. Its ranks, EVs and seed plans were later revised: all 10 concepts were DOWNGRADED by the physics red team (none killed). Some legs were killed, and the judge panel re-ranked the concepts. For current claims use each `dossiers/<slug>.md` section 11, `REDTEAM.md` and `research/stage3/decision.json`.
+
 *Chief scientist reconciliation of `concepts_device.json` (device lens, 10 concepts) and `concepts_system.json` (system lens, 11 concepts), checked against `MISSION.md`, `ideas10k/stage2/advance.jsonl` (30 ADVANCE ideas) and the C0 triage. Written 2026-11-02. Machine-readable: `FINAL_CONCEPTS.json`. Physics only: nothing here was ranked down for business, market or founder-fit reasons.*
 
 **Mix:** 8 concepts are new ways to MAKE DRAM-class memory: cell/array x4, sensing/periphery x1, integration/manufacturing x2, materials/resources x1. 2 are system/architecture. The 21 inventor concepts became 10 through 6 pairwise merges and 1 absorption. 4 inventor concepts were cut: the two panel concepts (merged, then cut), Second-Life Bits and Memory Bits Compact.

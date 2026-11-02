@@ -582,7 +582,7 @@ Four reviewers attacked this dossier on 2026-11-02: DEV (device physics), PROC (
 2. **Latent leg** (RT-CIRC-02, RT-IND-04).
    - The single all-layer latent is killed.
    - Per-layer latents are prior art (MHA2MLA, TransMLA). They are compute-bound at 1.62x active sessions, and moot on MLA-native models.
-   - The latent becomes a 5k adopt-or-drop check. It is no longer research or IP.
+   - The latent becomes a $15k adopt-or-drop check. It is no longer research or IP.
 3. **Flash provisioning** (RT-DEV-01, -02, -04, RT-CIRC-03, -04).
    - FDP drives with placement by expiry class: WAF ~1.1, NAND-side accounting.
    - Large-indirection-unit or ZNS drives, which cut SSD controller DRAM 16x.
@@ -645,7 +645,7 @@ See section 5R.
   - LPDDR5X W/GB on a GB200/GB300 tray;
   - a host-size sweep (240/750/1,500 GB) to test whether bigger host tiers sit idle in serving;
   - decode tokens/s at batch for any latent.
-- **Cost and schedule:** ~05k external; G0 M3, G2 M10, G2b and G3' M12. This stays inside the 82k, 24-month plan; the IP line now funds the FTO search first.
+- **Cost and schedule:** ~$205k external; G0 M3, G2 M10, G2b and G3' M12. This stays inside the $882k, 24-month plan; the IP line now funds the FTO search first.
 
 ### 11.6 Revised verdicts
 
@@ -653,8 +653,8 @@ See section 5R.
 - **STEP CHANGE IF IT WORKS?** No.
   - DRAM bits per served chat user fall 1.40x (1.17x wafer-eq) on human-chat pools.
   - The fleet figure is ~1.17x at 50% agent capacity. S = 1.
-- **PROVABLE WITH M?** Partly.
-  - Yes for the technical claim: ~05k, by M12, no fab.
+- **PROVABLE WITH $1M?** Partly.
+  - Yes for the technical claim: ~$205k, by M12, no fab.
   - No for "bits not bought", which needs NVIDIA or a hyperscaler to ship host-lite pool SKUs.
 
 ### 11.7 FINAL STATUS: DOWNGRADED

@@ -1,5 +1,7 @@
 # Screening rubric: 11,597 ideas → shortlist
 
+*(Written for the first-round pool of 11,597. The 1,260 novelty top-up ideas were later screened with the same rubric, so all 12,857 ideas in `scored_ideas.jsonl` carry these scores.)*
+
 You are a screener. Score every idea in your batch on four 1–5 scales, using these anchors. Judge each idea as an **invention or strategy**, not as a business for a particular founder.
 
 The founder's framing: anything is possible if executed correctly, and persistence breaks through. So don't punish boldness. But be honest about physics, and about whether a $1M team could prove the idea.

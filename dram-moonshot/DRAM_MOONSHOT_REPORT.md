@@ -105,7 +105,7 @@ The sister study `../ram-venture/` judged memory ideas as small businesses. This
   - copper ~44 t, <0.001%;
   - zirconium ~19 t, <0.01%;
   - electricity ~29 TWh, ~0.1% of world use.
-- **Cost.** All listed metals together cost under $25 per $3,800 wafer, even at 2026 record prices.
+- **Cost.** All listed metals together cost under $25 per $3,800 wafer, even at 2026 record prices [ESTIMATE].
 - **History.** A2 found no DRAM output lost to a raw-material shortage in 2022-2026. That covers the neon spike, the tungsten and hafnium spikes and the 2026 Qatar helium shock.
 
 **Chokepoints: true, and live** [REPORTED]:
@@ -250,7 +250,7 @@ The rank and EV (S × P × D) are pre-red-team values from [FINAL_CONCEPTS.md](r
 | 7 (40) | [CHARGE-RIVER](dossiers/charge-river.md) | Charge packets march through vertical oxide CCD strings, scheduled for LLM streaming | ~2.5x density; ~158x lower standby power; cost ~parity ($1.74/GB) | **Killed:** the cost-per-bit leg | Gate 1, month 10 |
 | 8 (40) | [LEAN ARRAY MODULE](dossiers/lean-array-module.md) | Hydrogen instead of helium for wafer backside cooling | Backside helium 7.5 L/wafer → 0: ~3% (1-11%) of DRAM's helium at ~1.0x $/bit; EV 30 | **Killed:** AAO capacitor mold at the 35 nm pitch | $145k rig, month 8 |
 | 9 (36) | [CELL-WAFER FOUNDRY](dossiers/cell-wafer-foundry.md) | Litho-light oxide cell wafers bonded to U.S. foundry periphery | 3.6x less new-fab capex per GB/month, 0.62x DDR5 $/GB, 0 EUV; the split itself adds ~1.5x | Merchant leg demoted to optional | $795k; months 14 and 22 |
-| 10 (30) | [AI MEMORY DIET](dossiers/ai-memory-diet.md) | Stream chat KV caches (an AI model's per-conversation working memory) between HBM and flash; delete host-DRAM jobs | 1.40x fewer DRAM GB per human-chat conversation (1.17x wafer terms); EV 15 | **Killed:** one shared KV latent for all layers | ~$205k; month 12 |
+| 10 (30) | [AI MEMORY DIET](dossiers/ai-memory-diet.md) | Stream chat KV caches (an AI model's per-conversation working memory) between HBM and flash; drop the host-DRAM tier for human chat (agent traffic keeps one) | 1.40x fewer DRAM GB per human-chat conversation (1.17x wafer terms); EV 15 | **Killed:** one shared KV latent for all layers | ~$205k; month 12 |
 
 **After the red team the order changed.** The operator re-scored S × P × D:
 
@@ -337,7 +337,7 @@ The pre-red-team rank 1, MARGIN STACK, fell furthest.
 | M11 | The RTN 1e-4 quantile is >100 mV in every split (kills capacity) | Larger read gate or lower-trap gate stack |
 | M11 | Window <600 mV, cross-T >10 mV, RTN >30 mV or tail >7.5 aA (drop 2 b) | Continue at 1 b, the planning case |
 | M18 | RO shift >1% or Vt >10 mV, unrecoverable | Carrier-only from then on |
-| M22 | Drift worsens >50% after carrier emulation (kills the carrier host) | Stress-neutral tiers at a partner |
+| M22 | Drift worsens >50% after carrier emulation (kills the carrier host); >2 nm predicted distortion or In/Ga/Zn >1e10 at/cm² (kills bond-first) | None stated for the carrier host; bond-first revives with stress-neutral tiers at a partner |
 
 **Red team.** 19 objections: 13 mitigated, 6 downgraded, 0 kills ([responses](research/redteam/responses_hot-side-memory.json)).
 - **PROC-01 (FATAL): carrier bow wrecks backside lithography overlay.** Mitigated with "carrier-last": the memory wafer bonds after backside processing.
@@ -449,7 +449,7 @@ The pre-red-team rank 1, MARGIN STACK, fell furthest.
 
 ## 8. The $1M portfolio and gates
 
-**Thesis** (decision.json): "One shared Oxide Tail Statistics lot answers the question seven concepts share, so the $1M funds evidence for most of the portfolio at once; the DRAM-error study sets the ECC budget every cell model uses; conditional spends (AND-STACK closure coupon, Hot-Side Gate B) release only after gates pass."
+**Thesis** (decision.json): "One shared Oxide Tail Statistics lot answers the question seven concepts share, so the $1M funds evidence for most of the portfolio at once; the DRAM-error study sets the ECC budget every cell model uses; conditional spends (AND-stack closure coupon, Hot-Side Gate B) release only after gates pass."
 
 **Facilities.**
 - **First:** Purdue Birck Nanotechnology Center, as an external user: ≤400 °C oxide deposition and the Peide Ye group's oxide-transistor know-how.
@@ -531,12 +531,12 @@ After that, per the dossier: coupon lots in months 2-11 and Gate A+ on 2027-11-3
 
 ## 10. What the creativity techniques taught us
 
-From [TECHNIQUE_PERFORMANCE.md](research/stage3/TECHNIQUE_PERFORMANCE.md). Grid techniques had ~460 ideas each, top-up techniques 210, and Phase B 101.
+From [TECHNIQUE_PERFORMANCE.md](research/stage3/TECHNIQUE_PERFORMANCE.md), cross-checked against [IDEAS_INDEX.md](IDEAS_INDEX.md). Grid techniques had ~460 ideas each, top-up techniques 210, and Phase B 101. TECHNIQUE_PERFORMANCE counts only ideas a concept cites by direct id. IDEAS_INDEX also maps Phase B triage ids (N-xx) back to their seed cards, which changes only the Phase B count (8 direct, 22 mapped).
 
 | Technique | S≥4 | N≥4 | Reached Stage 2 | ADVANCE | Ideas in final concepts |
 |---|---|---|---|---|---|
 | Wishful thinking / ideal final result | 8.5% | 9.4% | 22 | 6 | 7 |
-| Phase B lens (expert seeds) | 9.9% | 21.8% | 22 | 5 | 8 |
+| Phase B lens (expert seeds) | 9.9% | 21.8% | 22 | 5 | 8 direct; 22 mapped |
 | Failure mining | 8.7% | 19.1% | 30 | 3 | 3 |
 | Assumption inversion | 6.3% | 9.6% | 25 | 2 | 5 |
 | Scarcity and constraint as engine | 3.0% | 10.0% | 13 | 1 | 4 |
@@ -547,7 +547,7 @@ From [TECHNIQUE_PERFORMANCE.md](research/stage3/TECHNIQUE_PERFORMANCE.md). Grid 
 
 **Lessons.**
 1. **"Imagine the ideal result" and "mine past failures" won.** Wishful thinking had the most ADVANCEs (6). Failure mining had the best S≥4 rate of any grid technique (8.7%) and the most Stage 2 entries (30).
-2. **Expert seeds punched far above their weight.** The Phase B seeds were under 1% of the pool but produced 5 ADVANCEs and 8 cited ideas.
+2. **Expert seeds punched far above their weight.** The Phase B seeds were under 1% of the pool but produced 5 ADVANCEs and 22 of the 68 ideas the final concepts cite (8 by direct id, 14 more through Phase B triage ids).
 3. **Novelty alone did not survive.** The four highest-novelty grid and top-up techniques (21-25% N≥4) gave one ADVANCE between them. 15 of 32 techniques gave none, including all six top-up techniques.
 4. **The top-up still mattered later.**
    - I-12627 (Paradox as feature: two series write transistors) became HOT-SIDE's fix for the leakage tail.
@@ -564,7 +564,7 @@ From [TECHNIQUE_PERFORMANCE.md](research/stage3/TECHNIQUE_PERFORMANCE.md). Grid 
    The "12 vs 18" gap depends on counting the expert Phase B seeds as "free". Without them it is 12 vs 13, a near tie. The robust finding is the rate: constraints push screeners toward bold step claims that critics then cut.
 
 6. **What fed the final 10.**
-   - Phase B lens 8; Wishful thinking 7; Assumption inversion 5; Scarcity 4.
+   - Phase B lens 22 (8 by direct id); Wishful thinking 7; Assumption inversion 5; Scarcity 4.
    - 3 each: Failure mining, SCAMPER-Combine, Perspective shift, Forgotten-technology revival.
    - 2 each: SCAMPER-Magnify/Minify, -Adapt, -Substitute, First principles, Random stimulus.
    - 1 each: Provocation, Scale and time shifting, Reverse brainstorming, TRIZ, Biomimicry, SCAMPER-Reverse, Manufacturing analogies, Extreme users.
@@ -580,7 +580,7 @@ No concept died on physics. Five named sub-claims died (six kill dispositions; t
 |---|---|---|---|
 | AND-STACK | Single-film write/read closure | Topologically impossible: in one round hole the ring can touch the film only beside its own read channel, so a read shorts it | The two-film notched pocket ([SPECULATIVE], P ~20%); for single-etch, self-aligned write-film confinement on a 2-tier coupon |
 | RAW-BER | Per-read "unsure" sense-amp flag | 14-35 ps of latch time vs 50-150 ps of strobe skew; even ideal flags net −2.2% to −0.2% of die | Flag-window σ ≤1.5 mV over ≥1k sense amps at 85 °C without trim, plus a positive measured ledger |
-| CHARGE-RIVER | Cost per bit | ~$25 per plate pair gives $1.74/GB, 0.85x DDR5 | ≤$12 per plate pair and staircase-free contacts (≥1.6x) |
+| CHARGE-RIVER | Cost per bit | ~$25 per plate pair gives $1.74/GB (DDR5 $1.48/GB), i.e. 0.85x DDR5's bits per dollar | ≤$12 per plate pair and staircase-free contacts (≥1.6x) |
 | LEAN ARRAY | AAO capacitor mold at 35 nm pitch | A 5.6 nm core at aspect ratio ~450 after the dielectric and electrode; no plausible fill | TEM-verified fill of ≥2 µm pores at ≤36 nm pitch, ≥5 fF per pore |
 | AI MEMORY DIET | One KV latent shared by all layers | Every layer re-reads the whole latent: 26.7x more reads per decode step, ~3 active sessions per GPU instead of 89 | None in that form; per-layer latents avoid it but are prior art |
 
@@ -614,7 +614,7 @@ So: measure the oxide tails first, then build the cell they allow.
 
 1. **Snippet-grade evidence.**
    - Phase A agents had 25-30 web searches each and no page fetches.
-   - A3 found IEEE Xplore, arXiv and TrendForce unreachable. The sister study's log (`../ram-venture/ASSUMPTIONS.md`) records 403s for trendforce.com, sec.gov and investors.micron.com.
+   - A3 found IEEE Xplore, arXiv and TrendForce unreachable. The sister study's log (`../ram-venture/ASSUMPTIONS.md`) records 403s for trendforce.com, sec.gov and investors.micron.com, and proxy 403 or DNS failures for en.wikipedia.org (entries A-A3-1 and A-p1-ip-1).
    - Most papers were seen only via snippets or press releases, and patent claims were not read.
    - This report made no web searches.
 2. **First-order models.** The models are stdlib arithmetic. HOT-SIDE's thermal figure is a 1-D upper bound. Its hot retention extrapolates imec's 95 °C data, because no 125 °C oxide 2T0C data was found. Costs are [ESTIMATE].
