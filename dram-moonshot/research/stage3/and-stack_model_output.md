@@ -41,15 +41,15 @@ CR / C_SN (fF) vs IPD EOT (read-gate EOT 3 nm, ring height 18 nm):
 - Highest stored level 1.0 V + 0.15 V guard -> the unselected select plates must pull every ring down by **1.30 V** = CR_min x dV_unsel. This shift is independent of CR; CR sets the plate swing.
 - Base CR 0.59 (min 0.46 at -3 sigma): dV_unsel = 2.83 V, IPD sees 1.53 V (2.55 MV/cm physical) during reads.
 
-Sensitivity on the key unknown (CR mean; sigma 0.03):
+Sensitivity on the key unknown (CR mean; sigma 0.045; plate swing limit 3.0 V):
 
 | CR mean | CR min | dV_unsel (V) | V across IPD (V) | IPD MV/cm | MLC plate step / ring step | verdict |
 |---|---|---|---|---|---|---|
-| 0.30 | 0.16 | 7.89 | 6.59 | 11.0 | 26.3 | swing>2.5 V |
-| 0.40 | 0.27 | 4.91 | 3.61 | 6.0 | 12.3 | swing>2.5 V |
-| 0.45 | 0.32 | 4.13 | 2.83 | 4.7 | 9.2 | swing>2.5 V |
-| 0.50 | 0.36 | 3.57 | 2.27 | 3.8 | 7.1 | swing>2.5 V |
-| 0.55 | 0.42 | 3.14 | 1.84 | 3.1 | 5.7 | swing>2.5 V |
+| 0.30 | 0.16 | 7.89 | 6.59 | 11.0 | 26.3 | swing>3.0 V |
+| 0.40 | 0.27 | 4.91 | 3.61 | 6.0 | 12.3 | swing>3.0 V |
+| 0.45 | 0.32 | 4.13 | 2.83 | 4.7 | 9.2 | swing>3.0 V |
+| 0.50 | 0.36 | 3.57 | 2.27 | 3.8 | 7.1 | swing>3.0 V |
+| 0.55 | 0.42 | 3.14 | 1.84 | 3.1 | 5.7 | swing>3.0 V |
 | 0.60 | 0.46 | 2.80 | 1.50 | 2.5 | 4.7 | OK |
 | 0.70 | 0.56 | 2.31 | 1.00 | 1.7 | 3.3 | OK |
 | 0.80 | 0.67 | 1.96 | 0.66 | 1.1 | 2.4 | OK |
@@ -147,6 +147,13 @@ Sensitivity of 64 x 2 b component $/GB to $/tier and per-tier defect rate:
 | 1 b | 44 | 2.02x density |
 | 2 b | 18 | 1.65x density |
 
+## 10. GO / NO-GO for the decisive experiment (revised after red team)
+
+- **GO #1B (vertical closure coupon, month 14; the decisive gate):** on a 2-tier vertical coupon built with the two-film notched write pocket, write-then-read works on >=2 tiers with no ring-to-read-channel short, the ring holds <= 100 aA at 85 C with the write plate at -3.0 V and select plates idle low, per-tier CR >= 0.57, and FIB/TEM shows the notch contact.
+- **GO #1A (planar physics, month 9):** CR >= 0.57 with within-tier sigma <= 0.045 over >=50 cells (dV_unsel <= 3.0 V); each unselected cell <= 111 fA at 85 C with the top level stored; write-FET hold leakage 1e-4 tail <= 17 aA at the idle-low bias on >=1e4 devices; read-FET SS and Vt(T) from 25 to 110 C; 4 levels in <= 1 V for >= 1 s at 85 C with the 1e-4 cell drifting <= 78 mV; cross-temperature 2-b raw BER <= 1e-4 with in-page references at dT +/-10 K (characterised to +/-50 K); <= 30 mV shift after 1e8 own-tier select excursions inside one refresh interval and after 1e9 neighbour writes; retention re-measured >= 100 times on >= 1e4 cells (VRT) and read-FET RTN over 10 ns-1 s windows.
+- **NO-GO:** no write-then-read closure on the coupon by month 18 (single-etch leg dies; coaxial fallback only), CR < 0.40, write-FET tail > 100 aA at -3.0 V hold, ring tail > 100 aA, or disturb > 1 LSB.
+- **Prize if GO (revised):** 64 tiers x 2 b = 2.62 Gb/mm2 (5.9x 1-beta), ~$0.65/GB component (2.3x bits/$ vs 2026 1-beta) at 1% per-tier defects.
+
 ## 11. RED-TEAM checks (owner response, 2026-11-02)
 
 ### 11a. Write-FET hold leakage with idle-low select plates (RT-CIRC-and-stack-01, RT-DEV-and-stack-04)
@@ -222,6 +229,7 @@ Sensitivity of 64 x 2 b component $/GB to $/tier and per-tier defect rate:
 ### 11h. Neighbour-read excursions on the IPD (RT-DEV-and-stack-03)
 
 - Displacement charge per excursion ~1664 e-; trapping 0.1-1% of it is 1.2-12 mV per excursion on C_SN 0.214 fF.
+- Idle-low parks the IPD at a DC bias. Offsetting the selected-plate level to V_ref = +1.27 V (a free offset: rings are written at V_ref) centres it: the -3 sigma CR cell sees at most 1.27 V (2.1 MV/cm) in either state; the typical cell ~1.07 V. IPD leakage at that bias is inside the ring-tail GO test.
 - Original bias (select plates idle at read level): every read of any tier swings the 63 other rings, i.e. ~1e7 excursions per ring per second in a hole read at 10 MHz. Adopted idle-low bias: a ring moves only when its own tier is read (1/64 of the hole's reads on average); a single-cell read hammer still gives up to 1e7/s, so the GO list tests own-tier excursions (1e8 within one refresh interval, 1e12 cumulative).
 
 ### 11i. Cost re-basing (RT-PROC-and-stack-04, RT-IND-and-stack-03)
@@ -240,13 +248,6 @@ Sensitivity of 64 x 2 b component $/GB to $/tier and per-tier defect rate:
 ### 11j. Gate-first metal bow check (RT-PROC-and-stack-02)
 
 - Stoney, 2.8 um of W at 1 GPa on 775 um Si (M = 180 GPa): bow 1.75 mm over 300 mm. The objection's 1.7 mm is right, so gate-first metal is dropped: the etched stack is SiO2 / poly-SiGe / SiN (stress-tunable, NAND practice) and the write-plate metal arrives later from the slits, as NAND's replacement W does.
-
-## 10. GO / NO-GO for the decisive experiment (revised after red team)
-
-- **GO #1B (vertical closure coupon, month 14; the decisive gate):** on a 2-tier vertical coupon built with the two-film notched write pocket, write-then-read works on >=2 tiers with no ring-to-read-channel short, the ring holds <= 100 aA at 85 C with the write plate at -3.0 V and select plates idle low, per-tier CR >= 0.57, and FIB/TEM shows the notch contact.
-- **GO #1A (planar physics, month 9):** CR >= 0.57 with within-tier sigma <= 0.045 over >=50 cells (dV_unsel <= 3.0 V); each unselected cell <= 111 fA at 85 C with the top level stored; write-FET hold leakage 1e-4 tail <= 17 aA at the idle-low bias on >=1e4 devices; read-FET SS and Vt(T) from 25 to 110 C; 4 levels in <= 1 V for >= 1 s at 85 C with the 1e-4 cell drifting <= 78 mV; cross-temperature 2-b raw BER <= 1e-4 with in-page references at dT +/-10 K (characterised to +/-50 K); <= 30 mV shift after 1e8 own-tier select excursions inside one refresh interval and after 1e9 neighbour writes; retention re-measured >= 100 times on >= 1e4 cells (VRT) and read-FET RTN over 10 ns-1 s windows.
-- **NO-GO:** no write-then-read closure on the coupon by month 18 (single-etch leg dies; coaxial fallback only), CR < 0.40, write-FET tail > 100 aA at -3.0 V hold, ring tail > 100 aA, or disturb > 1 LSB.
-- **Prize if GO (revised):** 64 tiers x 2 b = 2.62 Gb/mm2 (5.9x 1-beta), ~$0.65/GB component (2.3x bits/$ vs 2026 1-beta) at 1% per-tier defects.
 
 ## INPUTS (value | basis)
 

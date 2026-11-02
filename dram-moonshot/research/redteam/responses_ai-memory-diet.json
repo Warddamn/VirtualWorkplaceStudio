@@ -1,0 +1,111 @@
+{
+ "dd": "ai-memory-diet",
+ "slug": "ai-memory-diet",
+ "title": "AI MEMORY DIET",
+ "final_status": "DOWNGRADED",
+ "status_reason": "No physics kill. Host-lite survives: for human-chat traffic it holds p99 <=0.30 s at 3.5 Gen5 drive-eq/GPU (5.0 at end of life with throttling) and stays at 1.50x on MLA/hybrid re-runs. But the gains shrink. Full-KV-path accounting gives 1.40x DRAM GB per human-chat conversation (1.17x wafer-eq). Agent/API traffic genuinely needs host DRAM, so the fleet gain is ~1.17x at 50% agent capacity. The single all-layer latent is killed (26.7x decode reads), the per-layer latent is prior art and compute-bound, the client signal saves flash not DRAM, and the diet is ~neutral on total wafer starts. S 2 -> 1, EV 30 -> 15.",
+ "revised_verdicts": {
+  "possible": "Yes for host-lite (gap-aware tiering): no device physics; flash bandwidth, NAND endurance (WAF ~1.1 with FDP) and p99 restore fit 3.5 Gen5 drive-eq/GPU fresh and 5.0 at end of life for 70B GQA human chat, <=2 local drives for MLA models. No for the single all-layer latent (26.7x more decode KV reads than GQA).",
+  "profitable": "STEP CHANGE IF IT WORKS: No. Axis: DRAM bits per served AI chat user. Factor 1.40x fewer DRAM GB per human-chat conversation (1.17x wafer-eq) with full KV-path DRAM, 1.24x at a 120 GB host floor, ~1.17x fleet-wide at 50% agent/API capacity; S = 1 (was 4.5x headline with the latent).",
+  "doable": "PROVABLE WITH $1M: partly. Yes for the technical claim: ~$205k external, an 8-GPU replay of measured human + agent traces with FDP and pre-cycled drives, a 35 °C soak and one MLA-class model settle host-lite by M12. No for 'bits not bought', which needs NVIDIA or a hyperscaler to ship host-lite pool SKUs."
+ },
+ "revised_experiment": "Replay measured human-chat + agent/API traces (production partner under NDA plus public traces and generated agent trajectories with real tool latencies) on one 8-GPU node at equal tokens/s against a 240 GB/GPU LRU host-tier baseline. Gap-aware tiering: human-chat KV goes HBM-to-flash over GDS; host = 64 GB/GPU plus the measured agent working set. GO: p99 added TTFT <=0.30 s for human AND agent turns at <=3.5 Gen5 drive-eq/GPU fresh and <=5 on drives pre-cycled to >=80% wear during a 24 h 35 °C soak; NAND-side WAF <=1.25 and <=3 NAND DWPD on FDP drives (vendor log page); full-KV-path DRAM (host RSS + SSD controller DRAM + shelf heads) >=1.4x lower per human-chat conversation; repeat on an MLA-class model with <=2 local drives (G2b). Add a host-size sweep (240/750/1,500 GB), an LPDDR5X W/GB measurement on a GB200/GB300 tray, an optional 100-150-user lead-time study and a decode-tokens/s check of prior-art per-layer latents. ~$205k external, G0 M3, G2 M10, G2b/G3' M12, inside the $882k / 24-month plan.",
+ "responses": [
+  {
+   "id": "RT-CIRC-ai-memory-diet-01",
+   "response": "Valid, and the biggest correction. The model now includes an agent/API class (model 11.6, all ESTIMATE): tool-wait gaps log-normal with a 3 s median (sigma 1.2), 4 s steps, a 24k median context (5.3 GB at 70B GQA FP8) and no client signal. Today's 240 GB host tier catches 84-90% of agent returns but only ~5% of human-chat returns. Two fixes were tested. (a) Host-lite with agents restored from flash on arrival keeps the 1.50x figure, but agent p99 is 0.66-1.02 s at 3-5 drive-eq. Holding agent p99 <=0.30 s needs 5.8-7.3 drive-eq/GPU, beyond 2 local bays plus a shelf drive (today's mixed node: 0.22 s). (b) Gap-aware tiering: human-chat KV bypasses the host, and a host tier is kept just large enough that agents keep today's hold time. It needs 103/143/187/240 GB/GPU at 25/50/75/100% agent share, and holds agent p99 0.13-0.26 s and human p99 0.18-0.32 s. The DRAM gain falls with agent share: 1.35x/1.22x/1.11x/1.00x on HBM + host, and fleet-wide 1.28x/1.17x/1.08x at 25/50/75% agent capacity with full-path DRAM. OpenRouter agentic tokens grew ~14x in Feb-Aug 2026 against 2.8x for human use (secondary source), so the agent share is large and rising.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Adopt gap-aware tiering. The concept becomes a human-chat-pool design. G2 replays measured human + agent mixes and gates agent p99 as well as human p99. The step-change claim is restated as a function of human-chat share. Server-side tool-latency deadlines are added as an untested workaround."
+  },
+  {
+   "id": "RT-CIRC-ai-memory-diet-02",
+   "response": "Correct physics. With a latent shared by g layers at 3x capacity compression, each layer reads its group's whole latent, so per-step reads are GQA x g/3. Model 11.1 gives: g=80 reads 140 GB per step for one 32k session versus 5.2 GB for GQA FP8; HBM bandwidth allows ~3 active sessions/GPU versus 89; DRAM per conversation is 0.06x of today. MLA-style weight absorption does not help, because every layer still reads the full shared latent. So the single all-layer latent leg (I-04878 as written) is killed. Only g <= 3 avoids raising reads, and g = 1 (per-layer) is MHA2MLA/TransMLA prior art. The owner also found a second correction: with a compute bound added (5 PF FP8 x 0.4 MFU, decode plus prompt prefill), a 70B dense model caps at ~143 active sessions/GPU. Even a per-layer 3x latent therefore buys 1.62x active sessions, not 3x. D0 falls from 4.50x/3.57x to 2.43x/1.93x, and the latent is not the diet's own lever.",
+   "disposition": "ACCEPTED-KILL",
+   "action": "Kill the single all-layer latent and the I-04878 IP claim. latent_group_layers 80 -> 1 and a compute bound go into the model. G3 is replaced by G3': a decode-tokens/s-at-batch plus RULER check of prior-art per-layer retrofits, $15k, adopt or drop."
+  },
+  {
+   "id": "RT-CIRC-ai-memory-diet-03",
+   "response": "Valid accounting gap; the conclusion survives. Model 11.2 bills DRAM across the whole KV path: 2 local E1.S per GPU (8 per 4-GPU tray), the third and later drive-eq on a pod shelf at ~10 GB of head/DPU DRAM per drive [UNVERIFIED-PK], and SSD FTL DRAM at 1 GB/TB. B0 vs A moves from 1.50x to 1.44x with FTL, 1.43x with the shelf, and 1.40x with flash sized for p99 (A 3.3, B0 3.5 drive-eq). In wafer terms it is 1.17x. KV chunks are ~40 MB sequential appends that expire in bulk, so large-indirection-unit (64 KiB) or ZNS drives cut FTL DRAM 16x and give 1.47x. MLA-class models need <=1 drive-eq (model 11.7), which fits the local bays with no shelf: 1.50x. At the critic's 120 GB host floor the ratio is 1.24x.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Report full-KV-path DRAM as the headline metric and specify large-IU or ZNS FDP drives. G0/G2 measure host RSS + SSD controller DRAM + shelf heads. Kill 7R fires if the full-path ratio is <1.25x."
+  },
+  {
+   "id": "RT-CIRC-ai-memory-diet-04",
+   "response": "Valid. The flash queue now adds NAND program/erase die-time: host writes x WAF / (10 GB/s sustained write per drive), with no program-suspend credit (write_interf 1.0, conservative). At 3 drive-eq this adds ~0.05 to flash utilisation. B0 p99 goes from 0.33 to 0.38 s and B from 0.11 to 0.13 s; drive-eq for p99 <=0.30 s goes from 3.2 to 3.5 (B0) and 2.2 to 2.3 (B). At WAF 2.0 the figures are 3.6 and 2.4 (model 11.4). Write amplification is handled by FDP placement (RT-DEV-01).",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Interference is in the model. Specify drives with program/erase suspend and FDP. G2 records p99 and NAND-side WAF under the full replayed read-plus-write mix."
+  },
+  {
+   "id": "RT-DEV-ai-memory-diet-01",
+   "response": "Valid. The model now applies WAF to NAND-side writes and DWPD (model 11.3). B0 on 3 x 15.36 TB is 2.71 NAND DWPD at WAF 1.0, 2.98 at 1.1, 3.52 at 1.3, 4.06 at 1.5 and 5.41 at 2.0, so without placement control endurance sets the drive count at 3.5-5.4 drive-eq. KV is close to the ideal FDP workload: chunks are appended, never overwritten, and expire on known TTL buckets. Placing chunks into reclaim units by expiry class lets whole units die together. Samsung/Meta's CacheLib+FDP work reached device WAF ~1 on production Meta and Twitter traces (arXiv 2503.11665, logged). The base case is WAF 1.1, giving 2.98 DWPD on 3 drives, or 2.55 at the p99-sized 3.5 drives. The 12% of chunks that never return can be gated out of spill.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "waf 1.0 -> 1.1 in the model. The BOM specifies FDP-capable drives. GO 2 now reads NAND-side writes (vendor/OCP log page) and requires WAF <=1.25 under replayed expiry patterns."
+  },
+  {
+   "id": "RT-DEV-ai-memory-diet-02",
+   "response": "Valid. KV data lives <=1 h, so retention errors are negligible, but wear-driven raw BER and read-retry do rise. With a 0.85 end-of-life read derate [ESTIMATE], B0 p99 at 3 drive-eq goes from 0.39 to 0.53 s and needs 4.2 drive-eq (B: 2.7). Combined with one throttled drive it needs 5.0 (B: 3.3) (model 11.4). That is ~1.5 extra drive-eq of flash, not DRAM. Pre-cycling a new 15.36 TB drive to 80% of 3 DWPD x 5 years takes ~67 PB of writes, or months. Used enterprise drives at a known SMART 'percentage used' of 70-90% are cheap and immediate.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Add a pre-cycled arm (4 used drives at >=80% rated wear, ~$3k) to the wear rig. The G2 PASS line includes p99 on pre-cycled drives at <=5 drive-eq."
+  },
+  {
+   "id": "RT-DEV-ai-memory-diet-03",
+   "response": "Valid. GB300 host memory is LPDDR5X; at ~0.04 W/GB (0.03-0.05, UNVERIFIED-PK) the freed 12.7 TB per rack saves 0.38-0.63 kW, not 1.9 kW. 216 drives at 15-25 W draw 3.2-5.4 kW. Against a flash-tier baseline with the same drives, the net saving is ~0.4-0.6 kW per rack, well under 1% of a ~130 kW rack. Against a DGX-class rack with one drive per GPU, the diet adds ~1.5-3.2 kW, though that rack serves ~4.8x fewer conversations per GPU (model 11.5, 11.8). Energy was never the step-change axis, but the dossier overstated it ~4x.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "dram_w_per_gb 0.15 -> 0.04 in the model; the section 8 energy claim is restated. Measure LPDDR5X W/GB under serving load during the GB200/GB300 tray week, with TACC Vista GH200 as a cross-check."
+  },
+  {
+   "id": "RT-DEV-ai-memory-diet-04",
+   "response": "Valid. With one of three drives throttled to 50% (bandwidth x 5/6), B0 p99 at 3 drive-eq is 0.56 s and needs 4.2 drive-eq; with signal it is 0.19 s at 2.7. With end of life added it needs 5.0, or 3.3 with signal (model 11.4). The deadline queue gives the most tolerance. Throttling is a flash-provisioning and airflow problem, not a DRAM one. The scheduler can also steer urgent restores away from hot drives. MLA-class models use <=1 drive-eq and leave large thermal margin.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Add a 24 h soak on the replay node at 35 °C inlet with drive temperatures logged. G2 PASS requires p99 held at <=5 drive-eq on pre-cycled drives. Steering by drive temperature goes into the restore queue."
+  },
+  {
+   "id": "RT-IND-ai-memory-diet-01",
+   "response": "Valid on defensibility. The mission does not kill for business reasons, but it does lower what the leg is worth. The model already showed the client signal saves flash, not DRAM: 1.2 drive-eq/GPU at the base mix (2.3 vs 3.5) and up to 4.7 at 128k FP8. Model 11.7 adds that for MLA-class models restores take tens of ms (B0 p99 0.05 s on 2 local drives), so the signal is moot there. Operators who own client and server can build it, and LiveMind, CachedAttention and speculation rules narrow any claim. The 'strongest IP' becomes an optional efficiency feature, best offered as an open API field.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Demote the client-deadline restore to optional (G1 optional; the lead-time study is cut from $45k to $15k). Run the FTO search ($20k) at M0-M1, before any filing. File only if the deadline-queue claim survives LiveMind and CachedAttention; otherwise publish defensively and propose a 'prefetch hint' field to the OpenAI-compatible API. Pursue a production pilot through an inference provider."
+  },
+  {
+   "id": "RT-IND-ai-memory-diet-02",
+   "response": "Accepted, and the re-runs lower it further. The diet's own lever is 1.40x DRAM GB per human-chat conversation with full-path DRAM and p99-sized flash, or 1.17x in wafer terms (model 11.2/11.9). It is 1.24x/1.11x at a 120 GB host floor and ~1.17x fleet-wide at 50% agent capacity. The latent no longer lifts this: the all-layer version is killed, and a per-layer latent is prior art and compute-bound at 1.62x active sessions, so D0 is 2.43x, not 4.5x. Freed DRAM at cost is still ~$19k per rack, and 10,000 racks avoid 0.13-0.19% of world DDR5-equivalent output. On the mission axis this is S = 1, not a step change.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Revised step-change claim: ~1.4x DRAM GB (1.17x wafer-eq) per human-chat conversation, scaling with chat share; S 2 -> 1, EV 30 -> 15. The latent is no longer counted. G2 measures the full-path ratio directly."
+  },
+  {
+   "id": "RT-IND-ai-memory-diet-03",
+   "response": "Valid on adoption, and the owner's own agent run partly supports NVIDIA's direction. Agent-heavy pools do use host DRAM (84-90% of agent returns hit it), and an agent-only node keeps ~240 GB/GPU under gap-aware tiering. Extra host memory on Vera is a poor use of bits only for human-chat traffic. There the model gives a 750 GB/GPU tier serving 25% of returns and 2 TB serving 55% at 4.4x the DRAM per conversation; MLA-class models serve 23% from a 240 GB host tier. Vera's LPDDR5X is reported to sit on SOCAMM modules [UNVERIFIED-PK], which would make depopulation a module-population choice rather than a board respin. But the reference design is NVIDIA's call. The $1M can produce the measurement IND asks for: host-tier utilisation versus size on mixed traces, at 240/750/1,500 GB. It cannot produce adoption.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Add a host-size sweep on mixed traces to G2 as the 'is Vera's memory idle in serving?' measurement. Target hyperscaler custom-ASIC teams (TPU, Trainium, MTIA), who own their host configs, and inference providers who can segregate chat pools. The 'bits not bought' claim stays unprovable with $1M."
+  },
+  {
+   "id": "RT-IND-ai-memory-diet-04",
+   "response": "Partly valid; the core claim survives the re-run. Model 11.7 re-runs the model on a DeepSeek-V3-class MLA model (34.3 KiB/token, 37B active, 84 GB/GPU weights) and a Qwen3-Next-class hybrid (12 KiB/token plus ~40 MB recurrent state per session). Host-lite's DRAM ratio is set by how long a host tier can hold a session against human gaps, not by bytes per token, so B0 vs A stays 1.50x on HBM + host for both. MLA is compute-bound at ~84 active sessions/GPU and leaves ~136 GB of HBM idle to hold idle KV. Host-lite then needs ~0.6 drive-eq/GPU, fitting 2 local bays with no shelf, with B0 p99 0.05 s, so the client signal and the latent are moot. The hybrid is HBM-bound, with flash reads of 16 GB/s per GPU and B0 p99 0.14 s on 2 drives. Rewriting its state every turn drives 402 TB/day, ~9.6 drive-eq at 3 DWPD, for today's flash tier as much as for host-lite. So IND is right that G3 and the signal are likely moot by 2028; host-lite is not.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Re-baseline the plan on an MLA-class model plus GQA and add G2b: MLA host-lite with <=2 local drives. Drop the retrofit-latent research. Flag hybrid-state endurance as kill 9: test FP8 state, selective spill and high-endurance flash."
+  },
+  {
+   "id": "RT-IND-ai-memory-diet-05",
+   "response": "Valid. A 300-500-user forked UI cannot reproduce production gap, context or agent distributions, and one H200/B200 node is not the GB300/Vera platform. The trace problem matters most because agent share is the decisive unknown (RT-CIRC-01), so the revised plan leads with traces. Sources: a production partner under NDA (LMArena or an inference provider), public chat traces (Mooncake, BurstGPT, Qwen-Bailian), and agent trajectories with real tool latencies generated on rented GPUs. A GB200/GB300 tray week ($10k) checks the Grace LPDDR5X path, LPDDR5X W/GB and E1.S thermals. The result is framed as evidence for a pool-level node-spec change, not proof of fleet adoption.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Traces line $20k, reduced user study $15k (optional), and a GB200/GB300 tray week $10k go into the revised core. G2 runs at measured agent shares."
+  },
+  {
+   "id": "RT-PROC-ai-memory-diet-01",
+   "response": "Valid per rack; wrong per served conversation; and the diet's own resource benefit turns out to be ~neutral. Model 11.8 adds the DGX-class baseline: 240 GB host, 3.84 TB/GPU NVMe not used for KV, misses recomputed. Recompute FLOPs cap it at ~18 active and ~378 conversations per GPU, against 1,820 with a flash tier, and a miss costs ~1.0 s mean and ~10 s p99 TTFT. Per rack, 3 drive-eq/GPU add ~25 NAND wafers against ~4.1 DRAM wafer-eq freed, as PROC says. Per 1,000 conversations, total wafer starts are 1.037 (DGX-class) vs 0.427 (A, p99-sized) vs 0.411 (B0), and fab kWh 1,337 vs 552 vs 533. That 2.5x credit belongs to the flash tier (ICMS/LMCache, prior art), not to the diet. The diet's own increment over A is ~1.04x in total DRAM + NAND wafer starts. No fleet data was found showing 2026 racks already carry >=3 drive-eq/GPU of KV flash; NVIDIA's ICMS has no per-GPU figure in the snippets.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Withdraw the resource-intensity claim; the diet is ~neutral on DRAM+NAND wafer starts versus A. Report three baselines (DGX no-flash, A flash tier, B0) with total wafer starts per 1,000 conversations. Claim only DRAM bits, and state that the 2026 baseline's flash is assumed, not shown."
+  },
+  {
+   "id": "RT-PROC-ai-memory-diet-02",
+   "response": "Accepted. On FINAL_CONCEPTS' scale, the diet's own lever in wafer terms is 1.17x after full-path accounting (1.19x before), 1.11x at a 120 GB floor, and ~1.1x fleet-wide at 50% agent capacity. The client-signal variant B is 1.02x. The latent is no longer counted (all-layer killed; per-layer prior art and compute-bound). So S = 1 and EV = 15. The would-change-my-mind test (host-lite alone >=1.3x wafer-eq on measured traces) cannot be met. Deleting host DRAM entirely caps the wafer-eq gain at (288x3+240)/(288x3) = 1.28x, so S = 1 is structural. S = 2 would need a lever on HBM per conversation, such as chat-pool SKUs with less HBM on compute-bound MLA nodes, where ~136 GB/GPU of HBM sits idle (model 11.7) [SPECULATIVE].",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Rescore S 2 -> 1, EV 30 -> 15 in sections 0 and 11; FINAL STATUS DOWNGRADED. G2 still measures the wafer-eq ratio."
+  },
+  {
+   "id": "RT-PROC-ai-memory-diet-03",
+   "response": "Valid. The freed bits are LPDDR5X front-end bits. HBM output in 2026-28 is gated mainly by TSV, stacking, MR-MUF/TC bonding and stack test, so 'bits not bought' does not translate into HBM relief. The 2026 shortage also hit conventional server DRAM and LPDDR, which is where the freed bits land. The bit count per conversation is unchanged; only the shortage narrative moves. No supply analysis was searched (quota).",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Section 7's 'freed host bits move to HBM' is withdrawn and restated as relief for conventional DRAM/LPDDR demand. HBM-per-conversation effects are attributed only to compute-bound or latent effects outside the diet's claim."
+  }
+ ]
+}

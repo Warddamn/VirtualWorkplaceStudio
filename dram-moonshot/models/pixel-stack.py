@@ -154,48 +154,48 @@ INPUTS = {
 # ORIGINAL_INPUTS keeps the pre-red-team set so the report can print original vs revised side by side.
 # ------------------------------------------------------------------------------------------------
 RED_TEAM_REVISIONS = {
-    "cs_design_fF": (0.45, 0.60, "RT-CIRC-02, RT-DEV-01",
+    "cs_design_fF": (0.45, 0.60, "RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01",
                      "planning Cs covers the reviewers' worst RTN corner (step 3x q/CoxWL, 30% of SFs with a fast trap, no screen, "
                      "no DFB: 36.7 mV vs 39.6 allowed); 0.45 fF only if the M9 time-domain RTN gate passes"),
-    "rtn_model_joint": (0, 1, "RT-CIRC-02, RT-DEV-01",
+    "rtn_model_joint": (0, 1, "RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01",
                         "RTN as exponential steps (mean rtn_kperc x q/CoxWL) on a fraction of SFs, convolved with the Gaussian terms; "
                         "replaces the 3x deterministic add (whose basis implied ~9x at 1e-4)"),
-    "p_sense_target": (1.0e-4, 2.0e-7, "owner-found, with RT-DEV-01 / RT-CIRC-04",
+    "p_sense_target": (1.0e-4, 2.0e-7, "owner-found, with RT-DEV-pixel-stack-01 / RT-CIRC-pixel-stack-04",
                        "a CDS decision is written back raw, so random per-sense errors accumulate between ECC corrections; a "
                        "sense-count-triggered row scrub every <=128 senses keeps 128 x 2e-7 = 2.6e-5 within the 1e-4 raw-BER budget"),
     "scrub_every_senses": (0, 128, "owner-found", "PRAC-style per-row sense counter triggers an on-die BCH scrub of the row"),
-    "rtn_escape": (1.0, 0.10, "RT-CIRC-02, RT-DEV-01",
+    "rtn_escape": (1.0, 0.10, "RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01",
                    "BIST screen at test and at self-refresh entry remaps SFs with fast-trap steps >8 mV (~0.03% of SFs at "
                    "planning inputs, 0.65% at the worst corner); 10% escape for erratic/new traps"),
-    "sf_W_nm": (100.0, 200.0, "RT-CIRC-02, RT-DEV-01",
+    "sf_W_nm": (100.0, 200.0, "RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01",
                 "2x SF gate area halves the RTN step; still fits the existing two amp sub-layers at share 2 "
                 "(0.0432 um2 per BL needed vs >=0.044 available)"),
-    "sf_vov_V": (0.4, 0.25, "RT-CIRC-03, RT-IND-04",
+    "sf_vov_V": (0.4, 0.25, "RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04",
                  "SF settling energy ~ settle_tau x C_col x Vov x V_amp; gm/Id 8/V is moderate inversion for an oxide TFT (ln10/SS ~29/V max)"),
-    "sf_id_A": (2.0e-6, 1.5e-6, "RT-CIRC-03, RT-IND-04", "gm 12 uS at W/L 2 (mu ~20 cm2/Vs, EOT 3 nm)"),
-    "v_amp": (1.2, 0.8, "RT-CIRC-03, RT-IND-04", "depletion SF output ~0.45 V leaves Vds 0.35 V > Vov 0.25 V"),
-    "sf_headroom_mV": (150.0, 100.0, "RT-CIRC-03", "SF Vt drift range left at a 0.8 V amp supply"),
-    "settle_tau": (math.log(100), 4.0, "RT-CIRC-03, RT-IND-04",
+    "sf_id_A": (2.0e-6, 1.5e-6, "RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04", "gm 12 uS at W/L 2 (mu ~20 cm2/Vs, EOT 3 nm)"),
+    "v_amp": (1.2, 0.8, "RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04", "depletion SF output ~0.45 V leaves Vds 0.35 V > Vov 0.25 V"),
+    "sf_headroom_mV": (150.0, 100.0, "RT-CIRC-pixel-stack-03", "SF Vt drift range left at a 0.8 V amp supply"),
+    "settle_tau": (math.log(100), 4.0, "RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04",
                    "1.8% unsettled step; uniform part calibrates as gain, gm-spread part adds <~1% gain sigma"),
-    "c_col_fF": (15.0, 19.0, "RT-CIRC-01, RT-PROC-03",
+    "c_col_fF": (15.0, 19.0, "RT-CIRC-pixel-stack-01, RT-PROC-pixel-stack-03",
                  "32-SEL local column (15 fF) + 2:1 base-wafer mux (+~2.5 fF) + group-select switch and vertical via (+~1.5 fF): "
                  "one comparator per ~13.8 um2 of base wafer"),
-    "c_fd_base_fF": (0.25, 0.30, "RT-CIRC-02", "larger SF gate on the floating node"),
-    "t_dfb_ns": (0.0, 5.0, "RT-CIRC-04", "second compare with a neighbour-decided threshold shift per sensed bitline"),
-    "e_cmp_fJ": (0.0, 1.0, "RT-CIRC-04", "ESTIMATE: latch + 2-level charge-injection DAC"),
-    "eot_nm": (0.50, 0.60, "RT-PROC-04", "lateral-cavity ZrO2 stack after 4x cumulative 400 C; 0.7 nm is the pessimistic case"),
-    "array_eff": (0.55, 0.50, "RT-PROC-03, RT-CIRC-01",
+    "c_fd_base_fF": (0.25, 0.30, "RT-CIRC-pixel-stack-02", "larger SF gate on the floating node"),
+    "t_dfb_ns": (0.0, 5.0, "RT-CIRC-pixel-stack-04", "second compare with a neighbour-decided threshold shift per sensed bitline"),
+    "e_cmp_fJ": (0.0, 1.0, "RT-CIRC-pixel-stack-04", "ESTIMATE: latch + 2-level charge-injection DAC"),
+    "eot_nm": (0.50, 0.60, "RT-PROC-pixel-stack-04", "lateral-cavity ZrO2 stack after 4x cumulative 400 C; 0.7 nm is the pessimistic case"),
+    "array_eff": (0.55, 0.50, "RT-PROC-pixel-stack-03, RT-CIRC-pixel-stack-01",
                   "edge via farm + per-group control staircase (~5%) and spare SF columns for the RTN screen (~3%)"),
-    "usd_per_deck": (250.0, 1000.0, "RT-PROC-01",
+    "usd_per_deck": (250.0, 1000.0, "RT-PROC-pixel-stack-01",
                      "bottom-up per group: BL-hole + slit litho/HAR etch ~$160, recess ~$30, cap ALD ~$100, channel ~$80, WL "
                      "replacement ~$60, 16-tier staircase ~$400, CMP/clean/metrology ~$170"),
-    "usd_per_amp_sublayer": (300.0, 600.0, "RT-PROC-01", "4 DUV levels x ~$100 (litho+etch/dep+clean) + oxide channel/gate/anneal ~$100 + vias ~$100"),
-    "yield_model_repaired": (0, 1, "RT-IND-01", "replace the 0.998 'requirement' input with a raw-defect model plus mat-level spare tiers"),
-    "tier_defect_p": (0.002, 0.03, "RT-IND-01",
+    "usd_per_amp_sublayer": (300.0, 600.0, "RT-PROC-pixel-stack-01", "4 DUV levels x ~$100 (litho+etch/dep+clean) + oxide channel/gate/anneal ~$100 + vias ~$100"),
+    "yield_model_repaired": (0, 1, "RT-IND-pixel-stack-01", "replace the 0.998 'requirement' input with a raw-defect model plus mat-level spare tiers"),
+    "tier_defect_p": (0.002, 0.03, "RT-IND-pixel-stack-01",
                       "planning raw per-tier killer-defect probability per die: 3.7x better than SK hynix's early 0.11, 15x worse than A1's 0.002"),
-    "spare_tiers_per_group": (0, 1, "RT-IND-01", "one spare tier per 16, remapped per mat (+6.25% tiers built)"),
-    "h_vt_shift_mV": (0.0, 20.0, "RT-CIRC-05, RT-DEV-02", "plan at the GO-gate hydrogen shift, not the best case"),
-    "vt_sigma_mV": (30.0, 35.0, "RT-DEV-02", "access-TFT sigma_Vt after a multi-tier <=400 C stack; 30 mV was the optimistic end"),
+    "spare_tiers_per_group": (0, 1, "RT-IND-pixel-stack-01", "one spare tier per 16, remapped per mat (+6.25% tiers built)"),
+    "h_vt_shift_mV": (0.0, 20.0, "RT-CIRC-pixel-stack-05, RT-DEV-pixel-stack-02", "plan at the GO-gate hydrogen shift, not the best case"),
+    "vt_sigma_mV": (30.0, 35.0, "RT-DEV-pixel-stack-02", "access-TFT sigma_Vt after a multi-tier <=400 C stack; 30 mV was the optimistic end"),
 }
 
 ORIGINAL_INPUTS = dict(INPUTS)
@@ -497,7 +497,7 @@ def rel_cost_per_bit(wafer_usd, dens, yld):
 def stack_yield(n_tiers, groups, d=None):
     if not P("yield_model_repaired"):
         return P("tier_yield") ** n_tiers * P("amp_tier_yield") ** groups
-    # red-team revision (RT-IND-01): Poisson killer defects, raw probability d per tier per die. Cross-tier defects are
+    # red-team revision (RT-IND-pixel-stack-01): Poisson killer defects, raw probability d per tier per die. Cross-tier defects are
     # fixed by column/mat redundancy with probability cross_repair; tier-local ones by spare tiers within each mat-group.
     d = P("tier_defect_p") if d is None else d
     lam = n_tiers * d
@@ -616,13 +616,13 @@ def red_team_section():
 
 
 def variant_section():
-    """Red-team variant tables (RT-CIRC-02/DEV-01 RTN, RT-IND-01 yield, RT-IND-02 equal-tier comparison,
-    RT-DEV-02/CIRC-05 retention incl. I-12627, RT-CIRC-03/IND-04 corners)."""
+    """Red-team variant tables (RT-CIRC-pixel-stack-02/DEV-01 RTN, RT-IND-pixel-stack-01 yield, RT-IND-pixel-stack-02 equal-tier comparison,
+    RT-DEV-pixel-stack-02/CIRC-05 retention incl. I-12627, RT-CIRC-pixel-stack-03/IND-04 corners)."""
     cs0 = P("cs_design_fF")
     cbl = c_bl_fF()
     emit("## 10. Red-team variant tables")
     emit()
-    emit("### RTN sensitivity (RT-CIRC-02, RT-DEV-01): readout residual (mV) at the revised SF "
+    emit("### RTN sensitivity (RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01): readout residual (mV) at the revised SF "
          f"({P('sf_W_nm'):.0f}x{P('sf_L_nm'):.0f} nm), per-sense {P('p_sense_target'):.0e}")
     emit()
     rows = []
@@ -658,7 +658,7 @@ def variant_section():
     emit()
     table(["Step x q/CoxWL", "eta mV", "f_dev", "joint at 1e-4", "joint at 2e-7"], rows)
 
-    emit("### Stack yield with repair (RT-IND-01): 64 tiers, 4 groups, 1 spare tier per group per mat, 64 mats")
+    emit("### Stack yield with repair (RT-IND-pixel-stack-01): 64 tiers, 4 groups, 1 spare tier per group per mat, 64 mats")
     emit()
     rows = []
     lc = l_cap_for(cs0)
@@ -676,7 +676,7 @@ def variant_section():
          "repair assumes random, Poisson defects (clustering would lower the repaired column).")
     emit()
 
-    emit("### Equal-tier-count comparison with incumbent-style 3D (RT-IND-02), EOT and array efficiency as revised")
+    emit("### Equal-tier-count comparison with incumbent-style 3D (RT-IND-pixel-stack-02), EOT and array efficiency as revised")
     emit()
     rows = []
     for lab, cb, off in (("long vertical BL, 16 tiers, ideal bonded OCSA per BL", c_bl_fF(16) + 1.0, 3.0),
@@ -706,7 +706,7 @@ def variant_section():
          "not fit at pitch; the switched hierarchical BL is the realistic no-gain incumbent case.")
     emit()
 
-    emit("### Retention variants (RT-DEV-02, RT-CIRC-05, RT-DEV-03) incl. I-12627 series access pair")
+    emit("### Retention variants (RT-DEV-pixel-stack-02, RT-CIRC-pixel-stack-05, RT-DEV-pixel-stack-03) incl. I-12627 series access pair")
     emit()
     rows = []
     for cs in (0.45, 0.60):
@@ -731,7 +731,7 @@ def variant_section():
          "density per tier) and slows restore; kept as a planar-lot split and a retention-first variant, not the baseline.")
     emit()
 
-    emit("### Speed/energy corners (RT-CIRC-01, RT-CIRC-03, RT-IND-04)")
+    emit("### Speed/energy corners (RT-CIRC-pixel-stack-01, RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04)")
     emit()
     rows = []
     saved = dict(INPUTS)
@@ -749,7 +749,7 @@ def variant_section():
         _swap(saved)
     table(["Corner", "C_col fF", "Settle/sample ns", "tRC ns", "fJ/bit", "Amp sub-layers/group"], rows)
     bl_fp = P("y_pitch_nm") * 2 * x_cell_nm(l_cap_for(cs0)) * 1e-6
-    emit(f"Base-wafer floorplan budget (RT-CIRC-01): BL footprint {bl_fp:.4f} um2; one SF per 2 BLs; 32 SFs per local column; "
+    emit(f"Base-wafer floorplan budget (RT-CIRC-pixel-stack-01): BL footprint {bl_fp:.4f} um2; one SF per 2 BLs; 32 SFs per local column; "
          f"2:1 mux; 4 groups share one comparator -> {512*bl_fp:.1f} um2 per comparator ({1e6/(512*bl_fp)/1e3:.0f}k per mm2 of "
          "array). Needs: auto-zero inverter comparator + latch ~1.5-2.5 um2 FEOL, 10 fF MOM CDS cap in upper metal over it, restore "
          "driver ~0.3, DFB DAC ~0.5, mux/group select ~0.2 um2 [ESTIMATE]; WL drivers stay under the staircase.")

@@ -12,9 +12,10 @@
 |---|---|
 | **Name** | CHARGE-RIVER: buried-channel oxide CCD strings, scheduled like a drum for LLM weight and KV streaming |
 | **Thesis** | Store bits as electron packets that march through a deposited oxide channel in a 3D-NAND-like hole, with no transistor, capacitor or contact per bit, and let an LLM-aware scheduler hide the serial latency. |
-| **Rank / EV** | 7 of 10. EV 40 = S4 × P2 × D5 |
+| **Rank / EV** | 7 of 10. EV 40 = S4 × P2 × D5. *(revised after red team)* S falls, since the cost leg is gone, and P is conditional on imec's CTE definition (~10-20% per transfer, ~40-50% end-to-end). Do not break the tie with LEAN ARRAY MODULE on this dossier's P until the paper is read |
 | **Category** | cell/array |
 | **Merged from** | device-lens CHARGE-RIVER + system-lens Circulating Tensor Memory |
+| **Red-team status** *(revised after red team)* | **DOWNGRADED.** 19 objections: 12 ACCEPTED-MITIGATED, 6 ACCEPTED-DOWNGRADE, 1 ACCEPTED-KILL (the cost-per-bit leg). See section 11 |
 
 **Constituent ideas and technique lineage**
 
@@ -32,11 +33,27 @@
 | I-11148 | Scarcity and constraint as engine | Sense-amp decision quality (DFE + ECC) |
 | I-11581 | Phase B lens (B5 first principles) | Racetrack alternate device |
 
-**Verdicts**
+**Verdicts** *(revised after red team; the originals are kept below them)*
 
-- **PHYSICALLY POSSIBLE? YES.** No law is violated. CCDs work, imec has built oxide CCD memories, and IGZO thermal generation is ~1e-13 e-/s per well. What nobody has measured is oxide trap emission at a 6.7 ns gate dwell.
-- **STEP CHANGE IF IT WORKS? YES, on density and bits per dollar for a streaming tier.** Density is ~3.6x 1-beta (1.62 Gb/mm²) and cost is ~2.1x lower per GB (range 1.0-3.5x). Scrub power is ~190x below DDR5 refresh. It does not win on general random access.
-- **PROVABLE WITH $1M IN 24 MONTHS? YES, for the go/no-go.** For $990k the program measures planar CTE against clock, regenerated-loop BER and LLM-trace schedulability. A vertical 200-plate string is a partner or raise milestone.
+- **PHYSICALLY POSSIBLE? YES** *(revised after red team)*. No law is violated and the red team found no physics kill, but three specs tightened:
+  - the buried heterochannel needs a band offset ΔEc ≥ 0.5 eV at 4.5e12 cm⁻²; 0.3 eV leaves only ~1.4 kT;
+  - the oxide source-follower RTN tail must be screened at the 2-5 ns CDS timescale;
+  - every segment must be injected at one end and sensed at the other, because the original two-ended scheme had no return path.
+  - *Original:* "YES. No law is violated... What nobody has measured is oxide trap emission at a 6.7 ns gate dwell." That still holds.
+- **STEP CHANGE IF IT WORKS? YES, on density and standby energy; NO LONGER on cost** *(revised after red team)*.
+  - Density is ~2.5x 1-beta (1.14 Gb/mm²): 2.2-2.7x over 100-200 µm clock strips, and ~3.5x only with [SPECULATIVE] staircase-free contacts.
+  - Refresh/standby power is ~158x lower. Energy per useful bit is ~2.4-3x lower than HBM3, I/O included.
+  - Cost is ~parity: $1.74/GB, 0.85x DDR5, range 0.7-1.5x.
+  - *Original:* "~3.6x 1-beta, ~2.1x lower per GB, ~190x scrub."
+- **PROVABLE WITH $1M IN 24 MONTHS? PARTLY** *(revised after red team)*.
+  - For $994k the seed can prove or kill the device physics:
+    - CTE at 150 MT/s on an overlapping-gate reference;
+    - buried channel vs surface channel;
+    - RTN tails on ≥ 1e4 nodes;
+    - a regenerated loop;
+    - a 12-plate vertical coupon.
+  - It cannot prove AR-40 heterostack decks, the deck-joint regenerator tier, the staircase or the cost.
+  - *Original:* "YES, for the go/no-go... $990k."
 
 ---
 
@@ -71,6 +88,13 @@ The catch: reading bit 20 means shifting 20 places, which is why 1970s CCD memor
 
 Packets sit **still** between reads and get a scrub lap every ~20 s. They do not circulate continuously (see section 2.6).
 
+*(revised after red team)* Readout at a segment end is destructive, and a straight hole has no return path (RT-CIRC-02), so the diagram's "sense / regenerate at each end" is replaced. Each 32-stage segment is now injected at its **bottom** and sensed at its **top**:
+- **Injection.** Fill-and-spill from a per-column line, with no per-hole transistor.
+- **Sensing.** Each floating diffusion is shared by 2 holes.
+- **Return path.** Decided bits return to the segment's input through the CMOS.
+- **Middle of the hole.** Two 100-plate decks meet at a [SPECULATIVE] oxide-TFT regenerator tier. It senses the lower deck and injects into the upper deck.
+- **Fallback.** Without that tier, one 64-stage string runs bottom to top. See section 11.
+
 ---
 
 ## 2. The physics and the numbers
@@ -101,10 +125,25 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 | Latency | ~45 ns tRC-class, random [UNVERIFIED] | 0.32 µs unscheduled mean wait; 17-26 ns scheduled average |
 | EUV layers | Micron 0; Samsung/SK hynix 1c: 5-7 | 0 (one ArF hole lattice, 3-6 clock contacts) |
 
+**Revised after red team** (RT-PROC-01/-02/-04, RT-CIRC-01/-02, RT-DEV-05; `models/charge-river.py` RED-TEAM REVISIONS):
+
+| Metric (16 Gb die) | Pre-red-team | Revised base (joint tier) | Fallback (one-way 64-stage) |
+|---|---|---|---|
+| Density | 1.62 Gb/mm² (3.6x) | **1.14 Gb/mm² (2.5x)**; 14.1 mm² die | 1.18 Gb/mm² (2.6x), but needs CTE ≥ 0.9987 |
+| Efficiencies | slit 0.70 × periphery 0.75 | slit 0.74 (2-row strips, 100 nm replacement-metal slits) × periphery 0.75 × **staircase 0.71** × spares 0.97 × joint TAVs 0.96 | no joint TAVs |
+| Wafer cost | $5,280 ($10/plate) | **$9,050** ($25/plate + $1,500 array base incl. TFT tier + $500 joint tier) | $8,550 |
+| $/GB (vs DDR5 $1.48) | $0.71 (2.1x cheaper) | **$1.74 (0.85x; yield 0.95: $1.46)** | $1.58 (0.93x) |
+| Energy per useful bit | 0.072 pJ core (no I/O) | 1.09 pJ streaming; **1.17-1.40 pJ** with a 0.5-2% random floor, I/O included (2.4-2.9x below HBM3) | same |
+| Refresh / scrub | ~191x below DDR5 | ~158x below DDR5 | same |
+
+- The cost-per-bit step is gone. It returns to ≥ 1.5x only with ≤ ~$15/plate **and** [SPECULATIVE] staircase-free phase contacts ($12/plate gives $0.91/GB, 1.63x).
+- The density step survives at ~2.5x: 2.2-2.7x across 100-200 µm strips, and 3.5x with staircase-free contacts.
+
 **Corrections carried.**
-- **Cost.** Early idea cards claimed ~$0.05/GB ("100x"). The critic's 2-3x is right: **a CCD hole stores 64 bits; a TLC NAND hole stores ~600**.
+- **Cost.** Early idea cards claimed ~$0.05/GB ("100x"). The critic's 2-3x is right: **a CCD hole stores 64 bits; a TLC NAND hole stores ~600**. *(revised after red team)* With realistic per-plate cost and staircases, the advantage falls to ~parity.
 - **Density.** "4-8x for streaming" needs > 200 plates or no slits; at 200 plates it is plate-limited at 3.6x.
 - **EUV.** No-EUV is parity with Micron's 1-beta and an advantage only against EUV 1c nodes ([TrendForce](https://www.trendforce.com/news/2026/09/09/news-the-race-to-2028-samsung-sk-hynix-set-high-na-euv-timelines-for-dram-as-micron-stays-tight-lipped/)).
+- **Staircase** *(revised after red team, RT-PROC-02)*. "3-6 clock contacts" was wrong. Every buried plate needs a step at each driven strip end. At 0.3 µm per step and RC-limited 150 µm strips, that costs 29% of array area.
 
 ### 2.3 Reliability target and minimum CTE
 
@@ -127,6 +166,14 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 
 **Sensitivity.** Across read noise 4-15 e-, k_ws 1.0-3.0 and κ 0.05-0.3, the floor spans **0.9945-0.9993**. The worst-string factor dominates: k_ws = 3 alone means ~0.9985.
 
+**Revised after red team** (RT-CIRC-01/-02/-04, RT-DEV-02/-05, RT-PROC-03):
+- **Gaussian floor.** The 2-hole shared floating diffusion (0.40 fF, 401 µV/e-, 125 mV signal) raises read noise to 10 e-. The floor moves **0.9970 → 0.9973** at 98 transfers.
+- **Fallback.** The one-way 64-stage fallback (194 transfers) has a floor of **0.9987**.
+- **RTN tail.** RTN steps are exponential with mean η, on 20% of nodes, switching with probability 0.25.
+  - Unscreened, η = 2.8 mV moves the floor to 0.9993, and 4.2 mV fails at any CTE.
+  - Mapping out nodes whose measured step exceeds 25 e- spares 0.56% of nodes at 2.8 mV (1.8% at 4.2 mV). That restores **0.9975**.
+- **Worst-string factor.** k_ws is now a **screen threshold**. Strings above 1.5x median are mapped out, at 0-2% spare cost for a bulk σ_ln of 0.1-0.2. If σ_ln = 0.3, run k_ws = 2 instead: 1% spared, floor 0.9980.
+
 ### 2.4 Trap kinetics: from imec's 6.25 MHz to a 50 MHz stage clock
 
 **Transport is not the limit.** Drift across 25 nm takes ~0.6 ps and diffusion ~24 ps, against a 6.7 ns dwell.
@@ -146,6 +193,15 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 
 **The buried-channel factor is a guess.** The model assumes buried channel + fat zero cut deferral to 0.18x [ESTIMATE]: (1 − 0.6 interface share × 0.9 removed) × 0.4 for fat zero. **No oxide buried-channel CCD has ever been measured.**
 
+**Revised after red team** (RT-DEV-01):
+- **The packet is barely buried at 4.5e12 cm⁻².** E_F sits 36 meV above the subband, and ~170 mV drops across a 2.5 nm cap. With E0 ~50 meV, a 0.3 eV offset leaves only **44 meV (1.4 kT at 85 °C)**. The top of each '1' packet therefore reaches the cap interface.
+- **The factor is cut to 0.28x.** The model now carries 50% interface-loss removal: (1 − 0.6 × 0.5) × 0.4 = **0.28x**.
+- **The spec rises.** The new spec is **ΔEc ≥ 0.5 eV with a cap ≤ 2.5 nm**, which gives ~7.9 kT.
+  - Reported offsets: IGZO/β-Ga2O3 0.71 ± 0.1 eV (XPS) and high-In IGZO/IGZO ~0.4 eV. In2O3/Ga2O3 is reported at only 0.09 eV. All are [REPORTED], `resp-charge-river.jsonl`.
+  - A Ga-rich cap conflicts with the Ga-free goal.
+- **imec's paper is still unread.** A search this session found the IEDM 2024 record (paper 37-6, Kishore et al.) still saying only "CTE >98%", plus "multilevel capability".
+- **The two readings are unchanged.** Per transfer is still NO-GO: buried, 25 °C, 0.88-0.99. End-to-end is still GO, with ~75x margin.
+
 **Step 0 is a $35 paper.** Our judgment: P(pass) ≈ 15-25% if the 98% is per transfer, ≥ 50% if end-to-end.
 
 ### 2.5 What each CTE buys
@@ -160,6 +216,17 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 
 **NO-GO boundary:** CTE 0.9934 gives < 1.5x 1-beta density (~$1.29/GB).
 
+**Revised after red team.** This applies to the joint topology with all red-team efficiencies at $25/plate:
+
+| Median CTE | Bits/hole | Gb/mm² (x 1-beta) | $/GB (x vs DDR5) | One-way fallback |
+|---|---|---|---|---|
+| 0.995 | 32 | 0.66 (1.5x) | $2.19 (0.67x) | 16 b, 0.8x |
+| 0.997 | 56 | 1.03 (2.3x) | $1.78 (0.83x) | 28 b, 1.4x |
+| ≥ 0.998 | 64 | 1.14 (2.5x) | $1.73 (0.86x) | 32 b, 1.5x |
+
+- **NO-GO boundary.** It moves to CTE **0.9951**, where density falls below 1.5x and cost is $2.13/GB.
+- **Verdict basis.** Verdicts now key on density, since no CTE gives a cost win.
+
 ### 2.6 Latency, bandwidth, endurance, retention and RC
 
 - **Latency.** L = t_hit + (1 − s)·T_lap/2.
@@ -172,6 +239,14 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
   - **Park-and-shift** costs 32 × 30/s × 5 yr = **1.5e11 cycles**, 15x beyond imec's >1e10; a 1e12 test (1.4 h at 200 MHz) settles it.
 - **Retention.** A 20 s scrub at 10% loss allows ≤ 0.25 aA per well. That is the IGZO 2T0C class ([imec 400 s cell](https://www.eejournal.com/industry_news/imec-demonstrates-capacitor-less-igzo-based-dram-cell-with-400s-retention-time/)). Thermal generation (~1e-13 e-/s) is negligible.
 - **Plate RC.** One-hole-wide rows (41 nm of W: 145 Ω/µm, 0.73 fF/µm) need a strap every ~100 µm at 50 MHz. **The critic's 5 mm word-plane RC (~160 ns) does not apply.**
+- **Revised after red team.**
+  - **Staircases** (RT-PROC-02). A buried plate cannot be strapped, so each ~100-200 µm strip end carries a 200-step staircase (29% of area). RC per µm² is independent of strip width.
+  - **Clock strips** (RT-PROC-01). These are now 2 rows wide with half-pitch column lines, so both rows are read together and plate cycles are not multiplied.
+  - **Joint topology** (RT-CIRC-02). The lap stays at 0.64 µs, s ≥ 92.2%, and 1.5e11 cycles.
+  - **One-way fallback.** The lap is 1.28 µs, s ≥ 96.1%, MoE averages 58 ns, and cycles reach 3e11.
+  - **Energy** (RT-CIRC-03). Clock recovery is 33%, not 50%: stepwise charging, since an on-chip inductor is not feasible.
+    - Streaming costs 1.09 pJ/bit with I/O.
+    - A random 64 B access laps a whole 2,121-hole strip, costing 15.9 pJ per useful bit plus I/O.
 
 ### 2.7 GO / NO-GO
 
@@ -181,6 +256,14 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
   - **and** traces show **≥ 92%** of bytes known ≥ 0.64 µs ahead.
 - **STRONG GO:** CTE ≥ 0.999.
 - **NO-GO:** every variant is below **0.9934** at ≥ 50 MT/s.
+- ***Revised after red team:***
+  - **GO, CTE.** Median CTE ≥ **0.9973** with DFE: 0.9975 with the RTN screen, or 0.9987 for the one-way fallback. It is scored on **overlapping two-level-gate** reference CCDs at both 25 and 85 °C.
+  - **GO, buried channel.** Deferral is ≥ 3x below surface at matched 4.5e12 cm⁻², with a measured ΔEc ≥ 0.5 eV.
+  - **GO, RTN.** The 1e-9 per-read step quantile is ≤ 30 e- after sparing ≤ 2% of ≥ 1e4 oxide source-follower nodes, measured at the real 2-5 ns CDS interval.
+  - **GO, loop.** The inject-bottom/sense-top regenerated loop logs raw BER ≤ 5e-10.
+  - **GO, schedulability.** ≥ 92% of bytes are schedulable.
+  - **NO-GO.** The overlapping-gate reference stays below **0.9951** at ≥ 50 MT/s.
+  - **Density GO.** ≥ 2.5x 1-beta. The cost GO is withdrawn.
 
 ---
 

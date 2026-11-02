@@ -534,3 +534,142 @@ All URLs are logged in `research/sources/*.jsonl`; most were seen as search snip
 - https://itldc.com/es/blog/server-ram-ssd-market-update-2026
 - https://nyruralwater.org/node/3506
 - https://www.wskg.org/news/2023-08-06/micron-estimates-needing-up-to-48-million-gallons-of-water-a-day-aiming-to-achieve-100-water-conservation
+
+**Red-team response sources** (`research/sources/resp-ai-memory-diet.jsonl`)
+- https://arxiv.org/abs/2503.11665
+- https://developer.nvidia.com/blog/introducing-nvidia-bluefield-4-powered-inference-context-memory-storage-platform-for-the-next-frontier-of-ai/
+- https://the-decoder.com/ai-is-becoming-ais-biggest-customer-as-agentic-token-usage-jumps-14x-on-openrouter/
+- https://www.cudocompute.com/products/nvidia-gb300/ (logged by rt-CIRC)
+
+---
+
+## 11. Red-team outcome
+
+Four reviewers attacked this dossier on 2026-11-02: DEV (device physics), PROC (process), CIRC (circuits) and IND (industry). Their 16 objections are in `research/redteam/rt_*.json`; the owner's responses are in `research/redteam/responses_ai-memory-diet.json`.
+- The model was re-run with a RED-TEAM REVISIONS block (`models/ai-memory-diet.py`; exit 0). New results are in section 11 of `research/stage3/ai-memory-diet_model_output.md`, cited below as "model 11.x".
+- Three WebSearches were used.
+- Neither top-up idea flagged by the critics applies. I-12302 (plate-strip sensing) and I-12627 (series write transistors) are DRAM-cell fixes, and this concept has no cell.
+
+**Dispositions:** 0 REFUTED, 8 ACCEPTED-MITIGATED, 7 ACCEPTED-DOWNGRADE, 1 ACCEPTED-KILL (the single all-layer latent leg).
+
+### 11.1 Objections
+
+| Id | Severity | Disposition | One-line action |
+|---|---|---|---|
+| RT-CIRC-ai-memory-diet-01 | MAJOR | ACCEPTED-DOWNGRADE | Gap-aware tiering: host tier kept for agents, deleted for chat; gain scales with chat share |
+| RT-CIRC-ai-memory-diet-02 | MAJOR | ACCEPTED-KILL | All-layer latent killed (26.7x decode reads); per-layer = prior art |
+| RT-CIRC-ai-memory-diet-03 | MAJOR | ACCEPTED-MITIGATED | Full-path DRAM bill: 1.40x (1.47x large-IU); meets >=1.4x |
+| RT-CIRC-ai-memory-diet-04 | MINOR | ACCEPTED-MITIGATED | P/E die-time in queue: B0 needs 3.5 drive-eq; measured in G2 |
+| RT-DEV-ai-memory-diet-01 | MAJOR | ACCEPTED-MITIGATED | FDP placement by expiry class, WAF 1.1; GO reads NAND-side writes |
+| RT-DEV-ai-memory-diet-02 | MINOR | ACCEPTED-MITIGATED | Pre-cycled-drive arm; EOL needs 4.2 drive-eq (5.0 with throttling) |
+| RT-DEV-ai-memory-diet-03 | MINOR | ACCEPTED-DOWNGRADE | Energy claim cut from 1.9 kW to ~0.5 kW per rack |
+| RT-DEV-ai-memory-diet-04 | MINOR | ACCEPTED-MITIGATED | 24 h 35 °C soak; throttle margin priced at 4.2-5.0 drive-eq |
+| RT-IND-ai-memory-diet-01 | MAJOR | ACCEPTED-DOWNGRADE | Signal demoted to optional; FTO first; defensive publication |
+| RT-IND-ai-memory-diet-02 | MAJOR | ACCEPTED-DOWNGRADE | S 2 -> 1: 1.40x DRAM / 1.17x wafer-eq; latent no longer counted |
+| RT-IND-ai-memory-diet-03 | MAJOR | ACCEPTED-DOWNGRADE | Adoption not provable; add host-size sweep on mixed traces |
+| RT-IND-ai-memory-diet-04 | MAJOR | ACCEPTED-MITIGATED | Host-lite holds at 1.50x on MLA/hybrid; latent and signal moot; plan re-baselined |
+| RT-IND-ai-memory-diet-05 | MINOR | ACCEPTED-MITIGATED | Production + agent traces lead; GB200/GB300 tray week added |
+| RT-PROC-ai-memory-diet-01 | MAJOR | ACCEPTED-DOWNGRADE | Resource claim withdrawn: ~1.04x total wafer starts vs A |
+| RT-PROC-ai-memory-diet-02 | MAJOR | ACCEPTED-DOWNGRADE | S 2 -> 1, EV 30 -> 15 |
+| RT-PROC-ai-memory-diet-03 | MINOR | ACCEPTED-MITIGATED | HBM-relief claim withdrawn; restated as conventional-DRAM relief |
+
+### 11.2 Redesigns adopted
+
+1. **Gap-aware tiering replaces "delete the host rung"** (RT-CIRC-01, RT-IND-03).
+   - Human-chat KV goes HBM to flash and bypasses the host.
+   - Agent/API sessions, whose tool waits are seconds long and are known on the server, keep a host tier sized to their working set: 103/143/187/240 GB/GPU at 25/50/75/100% agent share.
+   - Where pools can be segregated, chat pools ship host-lite and agent pools keep today's host memory.
+2. **Latent leg** (RT-CIRC-02, RT-IND-04).
+   - The single all-layer latent is killed.
+   - Per-layer latents are prior art (MHA2MLA, TransMLA). They are compute-bound at 1.62x active sessions, and moot on MLA-native models.
+   - The latent becomes a 5k adopt-or-drop check. It is no longer research or IP.
+3. **Flash provisioning** (RT-DEV-01, -02, -04, RT-CIRC-03, -04).
+   - FDP drives with placement by expiry class: WAF ~1.1, NAND-side accounting.
+   - Large-indirection-unit or ZNS drives, which cut SSD controller DRAM 16x.
+   - The flash queue now counts program/erase die-time.
+   - Flash is sized for p99: 3.5 drive-eq/GPU fresh, 5.0 at end of life with one drive throttled. That is 2 local drives plus shelf for GQA, and ≤2 local for MLA-class models.
+   - The rig adds pre-cycled drives and a 35 °C soak.
+4. **Client signal demoted to optional** (RT-IND-01).
+   - It saves flash (1.2 drive-eq at the base mix), not DRAM, and is moot for MLA models.
+   - FTO comes first; the fallback is defensive publication and an open API hint field.
+5. **Metrics and baselines** (RT-PROC-01, RT-CIRC-03).
+   - Three baselines: DGX-class no-flash, A (2026 flash tier) and B0.
+   - DRAM is counted across the full KV path: host, SSD controllers and shelf heads.
+   - Total DRAM + NAND wafer starts are reported per 1,000 conversations.
+6. **Claims withdrawn** (RT-DEV-03, RT-PROC-01, RT-PROC-03).
+   - Energy: 1.9 kW becomes ~0.5 kW per rack.
+   - "Saves fab resources": the diet is ~1.04x, close to neutral.
+   - "Freed host bits relieve HBM": it relieves conventional DRAM/LPDDR only.
+   - The headline 4.5x / 3.6x is withdrawn.
+
+### 11.3 Revised numbers [ESTIMATE, model section 11]
+
+| Quantity | Dossier v1 | Revised |
+|---|---|---|
+| B0 p99 added TTFT at 3 drive-eq/GPU | 0.33 s | 0.38 s (program/erase die-time, WAF 1.1) |
+| B0 drive-eq/GPU for p99 ≤0.30 s: fresh / EOL + throttled | 3.2 / n.a. | 3.5 / 5.0 (with signal: 2.3 / 3.3) |
+| NAND DWPD, B0 on 3 x 15.36 TB | 2.72 (host writes, WAF 1) | 2.98 at WAF 1.1; 5.41 at WAF 2.0 |
+| B0 vs A, DRAM GB/conv (wafer-eq) | 1.50x (1.19x) | 1.40x (1.17x) full path, p99-sized; 1.47x large-IU; 1.24x at 120 GB floor |
+| D0 vs A (latent + host-lite) | 4.50x (3.57x) | 2.43x (1.93x), compute-bound; latent not credited to the diet |
+| All-layer latent, active sessions/GPU | assumed 266 | ~3 (26.7x decode reads): killed |
+| Agent share 25/50/75/100%: host GB/GPU, gain | not modeled | 103/143/187/240 GB; 1.35x/1.22x/1.11x/1.00x |
+| Fleet gain at 50% agent capacity (full path) | n.a. | 1.17x |
+| MLA-class model: B0 gain, drive-eq, p99 at 2 drives | n.a. | 1.50x, ~0.6 drive-eq, 0.05 s |
+| Hybrid model: host writes | n.a. | 402 TB/day per GPU (state rewrite), ~9.6 drive-eq at 3 DWPD, same for A |
+| Energy saved per rack vs flash baseline | 1.9 kW | 0.4-0.6 kW |
+| Total wafer starts per 1,000 conv.: DGX no-flash / A / B0 | n.a. | 1.037 / 0.427 / 0.411 |
+
+### 11.4 Revised step-change claim
+
+On the axis of DRAM bits per served AI chat user, the diet's own lever is **~1.4x fewer DRAM GB per human-chat conversation, or 1.17x in DDR5-wafer terms**. That counts host, SSD controller DRAM and shelf heads, with flash sized for p99.
+- It is 1.47x with large-IU drives, 1.50x on MLA-class models with local drives only, and 1.24x if the host floor is 120 GB.
+- It scales with the human-chat share of serving capacity: ~1.17x fleet-wide at 50% agent/API capacity.
+- It is not a step change: **S = 1** on FINAL_CONCEPTS' scale (EV 30 → 15).
+- The latent and client signal no longer count toward it.
+
+### 11.5 Revised decisive experiment
+
+See section 5R.
+- **Traces.** Measured human-chat plus agent/API traces (a production partner, public traces and generated agent trajectories) replayed on one 8-GPU node with gap-aware tiering.
+- **GO conditions:**
+  - p99 ≤0.30 s for **both** turn types at ≤3.5 drive-eq/GPU fresh, and ≤5 on pre-cycled drives during a 24 h 35 °C soak;
+  - NAND-side WAF ≤1.25 and ≤3 NAND DWPD on FDP drives;
+  - full-KV-path DRAM ≥1.4x lower per human-chat conversation;
+  - G2b: the same on one MLA-class model with ≤2 local drives.
+- **Measurements the reviewers showed were missing:**
+  - agent/API mix and tool-latency distribution;
+  - NAND-side writes;
+  - read-plus-write interference;
+  - end-of-life and thermal p99;
+  - SSD and shelf DRAM;
+  - LPDDR5X W/GB on a GB200/GB300 tray;
+  - a host-size sweep (240/750/1,500 GB) to test whether bigger host tiers sit idle in serving;
+  - decode tokens/s at batch for any latent.
+- **Cost and schedule:** ~05k external; G0 M3, G2 M10, G2b and G3' M12. This stays inside the 82k, 24-month plan; the IP line now funds the FTO search first.
+
+### 11.6 Revised verdicts
+
+- **PHYSICALLY POSSIBLE?** Yes for host-lite with gap-aware tiering. It involves no device physics and fits 3.5-5.0 Gen5 drive-eq/GPU (≤2 local for MLA models). No for the single all-layer latent.
+- **STEP CHANGE IF IT WORKS?** No.
+  - DRAM bits per served chat user fall 1.40x (1.17x wafer-eq) on human-chat pools.
+  - The fleet figure is ~1.17x at 50% agent capacity. S = 1.
+- **PROVABLE WITH M?** Partly.
+  - Yes for the technical claim: ~05k, by M12, no fab.
+  - No for "bits not bought", which needs NVIDIA or a hyperscaler to ship host-lite pool SKUs.
+
+### 11.7 FINAL STATUS: DOWNGRADED
+
+The concept is not killed: nothing in physics blocks host-lite for human chat. It survives full-path DRAM accounting, write amplification, interference, end-of-life and throttling margins, and re-runs on MLA and hybrid models. But the reviewers were right on the size of the prize, for four reasons:
+- Agent/API traffic, a large and fast-growing share, genuinely uses host DRAM.
+- The all-layer latent that carried the 4.5x is physically ruled out, and the per-layer version is prior art.
+- The client signal saves flash, not DRAM.
+- On total wafer starts the diet is close to neutral.
+
+What remains is a measured ~1.2-1.45x DRAM-per-user lever for human-chat pools, plus a cheap, publishable host-tier study. It stays in the portfolio as a low-cost demand hedge, not as a step-change bet.
+
+**Revival condition for STANDS:** deleting host DRAM alone can never reach S = 2. Even at zero host DRAM the wafer-eq gain caps at (288 x 3 + 240)/(288 x 3) = 1.28x. A step change needs a lever on HBM per conversation, and the red-team runs point to one [SPECULATIVE]:
+- On compute-bound MLA-class nodes, ~136 GB/GPU of HBM holds no active KV (model 11.7).
+- Chat-pool GPUs with ~2/3 of today's HBM, plus host-lite, would give ~1.7x in wafer terms: (192 x 3 + 64) vs (288 x 3 + 240).
+- That would need such a GPU SKU, and a measured p99 with idle KV on flash.
+
+This is the persistence path. It should be scored as a new concept, not credited to this one.

@@ -8,30 +8,30 @@ Objections: `research/redteam/rt_*.json` (18 on pixel-stack). Responses: `resear
 
 | Input | Old | New | Objection(s) |
 |---|---|---|---|
-| cs_design_fF | 0.45 | 0.6 | RT-CIRC-02, RT-DEV-01 |
-| rtn_model_joint | 0 | 1 | RT-CIRC-02, RT-DEV-01 |
-| p_sense_target | 0.0001 | 2e-07 | owner-found, with RT-DEV-01 / RT-CIRC-04 |
+| cs_design_fF | 0.45 | 0.6 | RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01 |
+| rtn_model_joint | 0 | 1 | RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01 |
+| p_sense_target | 0.0001 | 2e-07 | owner-found, with RT-DEV-pixel-stack-01 / RT-CIRC-pixel-stack-04 |
 | scrub_every_senses | 0 | 128 | owner-found |
-| rtn_escape | 1 | 0.1 | RT-CIRC-02, RT-DEV-01 |
-| sf_W_nm | 100 | 200 | RT-CIRC-02, RT-DEV-01 |
-| sf_vov_V | 0.4 | 0.25 | RT-CIRC-03, RT-IND-04 |
-| sf_id_A | 2e-06 | 1.5e-06 | RT-CIRC-03, RT-IND-04 |
-| v_amp | 1.2 | 0.8 | RT-CIRC-03, RT-IND-04 |
-| sf_headroom_mV | 150 | 100 | RT-CIRC-03 |
-| settle_tau | 4.60517 | 4 | RT-CIRC-03, RT-IND-04 |
-| c_col_fF | 15 | 19 | RT-CIRC-01, RT-PROC-03 |
-| c_fd_base_fF | 0.25 | 0.3 | RT-CIRC-02 |
-| t_dfb_ns | 0 | 5 | RT-CIRC-04 |
-| e_cmp_fJ | 0 | 1 | RT-CIRC-04 |
-| eot_nm | 0.5 | 0.6 | RT-PROC-04 |
-| array_eff | 0.55 | 0.5 | RT-PROC-03, RT-CIRC-01 |
-| usd_per_deck | 250 | 1000 | RT-PROC-01 |
-| usd_per_amp_sublayer | 300 | 600 | RT-PROC-01 |
-| yield_model_repaired | 0 | 1 | RT-IND-01 |
-| tier_defect_p | 0.002 | 0.03 | RT-IND-01 |
-| spare_tiers_per_group | 0 | 1 | RT-IND-01 |
-| h_vt_shift_mV | 0 | 20 | RT-CIRC-05, RT-DEV-02 |
-| vt_sigma_mV | 30 | 35 | RT-DEV-02 |
+| rtn_escape | 1 | 0.1 | RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01 |
+| sf_W_nm | 100 | 200 | RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01 |
+| sf_vov_V | 0.4 | 0.25 | RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04 |
+| sf_id_A | 2e-06 | 1.5e-06 | RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04 |
+| v_amp | 1.2 | 0.8 | RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04 |
+| sf_headroom_mV | 150 | 100 | RT-CIRC-pixel-stack-03 |
+| settle_tau | 4.60517 | 4 | RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04 |
+| c_col_fF | 15 | 19 | RT-CIRC-pixel-stack-01, RT-PROC-pixel-stack-03 |
+| c_fd_base_fF | 0.25 | 0.3 | RT-CIRC-pixel-stack-02 |
+| t_dfb_ns | 0 | 5 | RT-CIRC-pixel-stack-04 |
+| e_cmp_fJ | 0 | 1 | RT-CIRC-pixel-stack-04 |
+| eot_nm | 0.5 | 0.6 | RT-PROC-pixel-stack-04 |
+| array_eff | 0.55 | 0.5 | RT-PROC-pixel-stack-03, RT-CIRC-pixel-stack-01 |
+| usd_per_deck | 250 | 1000 | RT-PROC-pixel-stack-01 |
+| usd_per_amp_sublayer | 300 | 600 | RT-PROC-pixel-stack-01 |
+| yield_model_repaired | 0 | 1 | RT-IND-pixel-stack-01 |
+| tier_defect_p | 0.002 | 0.03 | RT-IND-pixel-stack-01 |
+| spare_tiers_per_group | 0 | 1 | RT-IND-pixel-stack-01 |
+| h_vt_shift_mV | 0 | 20 | RT-CIRC-pixel-stack-05, RT-DEV-pixel-stack-02 |
+| vt_sigma_mV | 30 | 35 | RT-DEV-pixel-stack-02 |
 
 ### Original vs revised headline (64 cell tiers, 85 C)
 
@@ -252,7 +252,7 @@ Headline: Cs 0.60 fF fits a 88 nm lateral capacitor (EOT 0.60 nm); per-tier foot
 
 ## 10. Red-team variant tables
 
-### RTN sensitivity (RT-CIRC-02, RT-DEV-01): readout residual (mV) at the revised SF (200x100 nm), per-sense 2e-07
+### RTN sensitivity (RT-CIRC-pixel-stack-02, RT-DEV-pixel-stack-01): readout residual (mV) at the revised SF (200x100 nm), per-sense 2e-07
 
 | Cs fF | Step x q/CoxWL | eta mV | f_dev | 1e-4, no screen | p_sense, no screen | p_sense, screened (10% escape) | p_sense, no screen, no DFB | SFs remapped |
 |---|---|---|---|---|---|---|---|---|
@@ -289,7 +289,7 @@ Original SF (100x100 nm, Vov 0.4 V) for comparison, Cs 0.45 fF (allowed 29.5 mV)
 | 3 | 4.18 | 0.1 | 22.1 | 48.1 |
 | 3 | 4.18 | 0.3 | 26.7 | 52.7 |
 
-### Stack yield with repair (RT-IND-01): 64 tiers, 4 groups, 1 spare tier per group per mat, 64 mats
+### Stack yield with repair (RT-IND-pixel-stack-01): 64 tiers, 4 groups, 1 spare tier per group per mat, 64 mats
 
 | Raw per-tier killer-defect p (die) | Unrepaired yield | $/bit vs 1b | Repaired yield | $/bit vs 1b |
 |---|---|---|---|---|
@@ -303,7 +303,7 @@ Original SF (100x100 nm, Vov 0.4 V) for comparison, Cs 0.45 fF (allowed 29.5 mV)
 
 Wafer $13,500 at $1,000/deck, $600/amp sub-layer, 68 tiers built. d = 0.11 is SK hynix's 5-tier R&D figure (0.89/tier); repair assumes random, Poisson defects (clustering would lower the repaired column).
 
-### Equal-tier-count comparison with incumbent-style 3D (RT-IND-02), EOT and array efficiency as revised
+### Equal-tier-count comparison with incumbent-style 3D (RT-IND-pixel-stack-02), EOT and array efficiency as revised
 
 | Incumbent-style cell (same 70 nm pitch, TFT, EOT) | C_BL fF | Cs min fF | Cap nm | Cell um2 | PIXEL-STACK density edge at 0.60 fF |
 |---|---|---|---|---|---|
@@ -318,7 +318,7 @@ Wafer $13,500 at $1,000/deck, $600/amp sub-layer, 68 tiers built. d = 0.11 is SK
 
 An ideal bonded OCSA per vertical BL needs ~0.3-1 um2 of base wafer per 0.027 um2 BL footprint [ESTIMATE], so it does not fit at pitch; the switched hierarchical BL is the realistic no-gain incumbent case.
 
-### Retention variants (RT-DEV-02, RT-CIRC-05, RT-DEV-03) incl. I-12627 series access pair
+### Retention variants (RT-DEV-pixel-stack-02, RT-CIRC-pixel-stack-05, RT-DEV-pixel-stack-03) incl. I-12627 series access pair
 
 | Cs fF | sigma_Vt mV | H dVt mV | Tail leak aA | Retention s | Case |
 |---|---|---|---|---|---|
@@ -340,7 +340,7 @@ An ideal bonded OCSA per vertical BL needs ~0.3-1 um2 of base wafer per 0.027 um
 
 I-12627 cost: a second series gate adds ~45 nm of cell length (0.0135 -> 0.0167 um2, 19% density per tier) and slows restore; kept as a planar-lot split and a retention-first variant, not the baseline.
 
-### Speed/energy corners (RT-CIRC-01, RT-CIRC-03, RT-IND-04)
+### Speed/energy corners (RT-CIRC-pixel-stack-01, RT-CIRC-pixel-stack-03, RT-IND-pixel-stack-04)
 
 | Corner | C_col fF | Settle/sample ns | tRC ns | fJ/bit | Amp sub-layers/group |
 |---|---|---|---|---|---|
@@ -350,5 +350,5 @@ I-12627 cost: a second series gate adds ~45 nm of cell length (0.0135 -> 0.0167 
 | CIRC: 64 SELs direct (40 fF), original SF bias | 40 | 18.4 | 111 | 208 | 2 |
 | CIRC: 128 SELs direct (70 fF), original SF bias | 70 | 32.2 | 166 | 347 | 2 |
 
-Base-wafer floorplan budget (RT-CIRC-01): BL footprint 0.0270 um2; one SF per 2 BLs; 32 SFs per local column; 2:1 mux; 4 groups share one comparator -> 13.8 um2 per comparator (72k per mm2 of array). Needs: auto-zero inverter comparator + latch ~1.5-2.5 um2 FEOL, 10 fF MOM CDS cap in upper metal over it, restore driver ~0.3, DFB DAC ~0.5, mux/group select ~0.2 um2 [ESTIMATE]; WL drivers stay under the staircase.
+Base-wafer floorplan budget (RT-CIRC-pixel-stack-01): BL footprint 0.0270 um2; one SF per 2 BLs; 32 SFs per local column; 2:1 mux; 4 groups share one comparator -> 13.8 um2 per comparator (72k per mm2 of array). Needs: auto-zero inverter comparator + latch ~1.5-2.5 um2 FEOL, 10 fF MOM CDS cap in upper metal over it, restore driver ~0.3, DFB DAC ~0.5, mux/group select ~0.2 um2 [ESTIMATE]; WL drivers stay under the staircase.
 

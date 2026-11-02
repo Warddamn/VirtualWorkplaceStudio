@@ -1,0 +1,123 @@
+{
+ "dd": "pixel-stack",
+ "slug": "pixel-stack",
+ "title": "PIXEL-STACK: image-sensor-style group-sensed 3D 1T1C DRAM with an all-oxide source-follower + CDS amp tier every 16 cell tiers",
+ "final_status": "DOWNGRADED",
+ "status_reason": "No objection is fatal and the physics still closes, but the step change shrinks. Planning density falls from 6.2x to 4.6x 1-beta at 64 tiers (2.05 Gb/mm2). Three changes drive this: the design Cs moves 0.45->0.60 fF to absorb realistic RTN at a per-sense error budget; the capacitor EOT moves 0.50->0.60 nm; array efficiency moves 0.55->0.50. Bits/$ falls from 2.5x to ~parity at realistic deck prices and repaired tier yield. The planning refresh gain is ~15x (was 17x), and access energy is ~parity at ~50 fJ (was 2x worse). The edge over incumbent-style 3D at equal tiers is ~1.5x (1.1-2.1x), not 2.5x. The decisive experiment still fits $1M/24 months, with fixes for the RTN timescale, cumulative hydrogen dose and fab-grade calibration.",
+ "revised_verdicts": {
+  "possible": "YES (revised after red team). At the 0.60 fF planning Cs (88 nm capacitor at EOT 0.6 nm) the read closes: modelled residual 15.8 mV vs 39.6 mV allowed. Random terms are held to 2e-7 per sense with a sense-count-triggered scrub, so the worst reviewer RTN corner (36.7 mV without screening or DFB) still passes. Retention plans at 0.52 s (sigma_Vt 35 mV, dVt 20 mV), range 0.05-2.4 s. No physics violated; the RTN tail, cumulative-H sigma broadening and lateral-cavity capacitor remain unmeasured.",
+  "profitable": "STEP CHANGE IF IT WORKS: density. ~4.6x 1-beta at 64 tiers (2.05 Gb/mm2), 5.2x if the 0.45 fF RTN gate passes. ~1.5x (1.1-2.1x) vs incumbent-style 3D at equal tiers, only above ~32-48 tiers. Secondary: refresh power ~15x lower (planning, low confidence). Bits/$ ~parity (0.6-1.25x); access energy ~parity (50 vs 46 fJ); tRC ~62 ns; zero EUV, <=400 C.",
+  "doable": "PROVABLE WITH $1M: partly. A ~$390k planar lot settles the decisive read and retention physics by M9: on-coupon 15 ns sample-and-hold for per-device time-domain RTN on 65k SFs, 1x/2x/4x cumulative H/thermal dose, a fab-grade reference split, and lateral-cavity capacitors. A 2-lot 4-tier stack with one amp tier by M21 needs partner labs. Tier yield, bits/$ and the 64-tier hydrogen accumulation cannot be proven at this budget."
+ },
+ "revised_experiment": "Planar 'imager without photodiodes' at Purdue Birck / GT IEN, M2-10, ~$390k by M9. Read: 65k IGZO pixel-amp nodes (3-3.5 fF) read by oxide SFs of 0.01-0.02 um2 through an on-coupon oxide dual sample-and-hold with a 15 ns gap, >=1e4 reads per node at 85 C. Measure per-device time-domain RTN (steps, tau) plus PSD, and the joint per-sense 2e-7 residual including worst-pattern coupling, raw and after two-pass DFB. Read gates: GO (0.45 fF) <=20 mV; PLAN (0.60 fF) <=40 mV; fallback <=55 mV; NO-GO >55 mV. RTN sub-gate: <=1% of SFs with fast-trap steps >8 mV. Retention by write-wait-CDS-read after 1x/2x/4x cumulative group thermal/H dose: tail <=45 aA is GO, <=90 aA is PLAN, >225 aA kills the refresh claim; uniform dVt must be <=50 mV and trimmable, sigma_Vt <=35 mV. Calibration: large-area alpha_H reference SFs plus a $50k fab-grade IGZO split. Extra splits: low-H SF gate stacks and I-12627 series-gate access. M12: lateral-cavity capacitors >=57.6 fF/um2 with J <=1e-7 A/cm2 after 4x 400 C. Q1: drawn base-wafer comparator + restore + DFB + mux in <=13.8 um2 at <=20 fF. Then a 2-lot 4-tier oxide 1T1C stack with one amp tier by M21: signal >=55 mV at Cs <=0.65 fF, residual <=40 mV, retention >=0.5 s at the 1e-4 tail on >=1e4 cells, plus hammer and per-tier defect counts. Total $1.0M over 24 months.",
+ "responses": [
+  {
+   "id": "RT-DEV-pixel-stack-01",
+   "response": "Accepted; same redesign as RT-CIRC-pixel-stack-02. The percolation-enhanced step (2-3x q/CoxWL) and a 1-30% fraction of SFs with a trap near the 15 ns gap are now explicit model inputs (planning 2x, 10%, toggle probability 0.25). Convolving the RTN steps with the Gaussian terms is gentler than adding eta*ln(f/1e-4) linearly: on the original 100x100 nm SF, DEV's 21-41 mV becomes 11-27 mV at 1e-4. But an owner-found constraint makes it harsher. Each CDS decision is written back raw, so random per-sense errors accumulate between ECC corrections, and the random terms must be budgeted at ~2e-7 per sense. At 2e-7 the original SF gives 26.7-52.7 mV at 2-3x steps: NO-GO at the pessimistic corner. Revised design: the SF goes to 200x100 nm, which still fits the two amp sub-layers; Vov 0.25 V; a BIST screen remaps SFs with fast-trap steps above 8 mV. The modelled residual is then 15.8 mV, and 23.2/28.0 mV at the 3x/30% corner (screened with 10% escape / unscreened), inside the 39.6 mV allowed at the 0.60 fF planning Cs. The double-counting point is conceded but not taken as credit: both 1/f and RTN stay in the model (conservative), and the measurement will separate them. DEV's test (per-device time-domain RTN, >=1e4 SFs, 15 ns gap) is adopted verbatim. An on-coupon sample-and-hold lets slow external readout see the 15 ns gap.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: explicit RTN step model at 2e-7 per sense, SF 200x100 nm, design Cs 0.45->0.60 fF. DEV threshold becomes an M9 sub-gate: 1e-4 per-read quantile of 15 ns-gap jumps <=10 mV at <=0.02 um2. Joint-residual gates: GO <=20 mV, PLAN <=40 mV, NO-GO >55 mV."
+  },
+  {
+   "id": "RT-DEV-pixel-stack-02",
+   "response": "Valid. The 1 aA median comes from a vertical OCTRAM device whose test temperature is not stated, and sigma_Vt 30 mV is the optimistic end. Planning inputs are now sigma_Vt 35 mV and dVt 20 mV, giving 0.52 s at the 0.60 fF planning Cs (0.41 s at 0.45 fF). Across sigma_Vt 20-50 mV and dVt 0-50 mV the range is 0.05-2.4 s (model sec.10). SS stays at 80 mV/dec: in this model SS acts only through the median, which the planar lot measures directly. The refresh claim is therefore unproven rather than unsupported: ~15x lower refresh power at planning inputs, only ~1.4x at sigma 50/dVt 50 mV. Levers if the tail is worse: (1) per-group WL hold trim, worth 0.52->0.85 s; (2) a larger Cs; (3) the I-12627 series access pair. If the two devices are independent, a 1e-4 pair tail needs each at 1e-2: 29 aA and 1.55 s (2.7 s with a ~3x stack effect, 0.93 s if fully correlated), at -19% density per tier.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "vt_sigma_mV 30->35 and h_vt_shift 0->20 in the model. Planar lot measures sigma_Vt, SS at 85 C and 1e-4-quantile node leakage on >=1e4 nodes after the cumulative dose (DEV's thresholds, rescaled to 45 aA at 0.60 fF). Adds an I-12627 series-gate split to test tail correlation."
+  },
+  {
+   "id": "RT-DEV-pixel-stack-03",
+   "response": "Valid: one 400 C/H2 step does not bound group 1's dose. Plan changes: (1) Planar coupons get 1x, 2x and 4x cumulative group sequences, each being cell-module ALD and anneals plus two amp sub-layers' depositions and 400 C anneals. The 64-tier dVt is then read from a measured dose-response, not one point. (2) ALD Al2O3 barriers go above and below every amp tier, plus liners on the BL vias. The amp tier itself tolerates hydrogen: CDS cancels SF Vt shifts up to 100 mV, and RST/SEL/TG only switch. So the issue is containment, not materials. (3) Each group has its own WL drivers, so the bottom group's hold voltage can be trimmed to cancel the uniform shift: 0.52->0.85 s at 0.60 fF. Only the sigma broadening cannot be corrected. (4) A Purdue-style In2O3 channel split (survives 600 C). Planning retention already assumes dVt 20 mV and sigma_Vt 35 mV.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Add 1x/2x/4x cumulative-dose splits with SIMS (H line $25k->$40k). GO at 4x: uniform dVt <=50 mV and trimmable, sigma_Vt <=35 mV, Ioff tail unchanged. Kill #6 revised."
+  },
+  {
+   "id": "RT-DEV-pixel-stack-04",
+   "response": "Valid for the zeptoamp claim, which is withdrawn. The GO metric never needed it. The retention gate is a 1e-4-tail leakage of 45-90 aA, which droops a 0.6 fF node by 75 mV in 0.5-1 s. Leakage is now mapped by write-wait-read: each point is a fresh CDS read after a wait of 10 ms-100 s, so SF 1/f, PBTI and tempco cancel in every sample. A 1 aA cell droops 0.17 V in 100 s, ~25 mV at the node. Median sub-aA leakage, if wanted, uses a differential meter against a matched dummy node (no cell) with power-gated, chopped sampling. DEV's <0.3 mV per 1,000 s baseline criterion applies.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Rewrite sec.5 step 5 as write-wait-CDS-read retention maps. Remove the 3e-21 A claim; the dummy-node differential meter is secondary only."
+  },
+  {
+   "id": "RT-PROC-pixel-stack-01",
+   "response": "Valid; PROC's numbers are adopted. Rough bottom-up per 16-tier group: BL-hole and slit litho/HAR etch ~$160, recess ~$30, capacitor ALD ~$100, channel ~$80, WL replacement ~$60, 16-tier staircase ~$400, CMP/clean/metrology ~$170, total ~$1,000. Per amp sub-layer: 4 DUV levels x ~$100 + channel/gate/anneal ~$100 + vias ~$100 = ~$600 [ESTIMATE, not an integrator's step list]. The wafer goes from $8,000 to $13,400 (PROC's 0.66x), and to $13,500 with spare tiers. With the revised 0.60 fF cell and the repaired-yield planning case, $/bit is 0.96x 1-beta. Re-priced at the same deck cost, Smart-Cut is $16,700 and 1.19x, so the oxide amp tier keeps a 1.24x edge, not 1.7x. If the measured residual comes in near the modelled 16 mV, 32-tier groups halve the amp-tier count and reach 0.56x $/bit.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "usd_per_deck 250->1000 and usd_per_amp_sublayer 300->600 in the model. Bits/$ dropped from the step-change claim. Get an integrator step list (Kioxia/TEL/Lam contact) before the raise."
+  },
+  {
+   "id": "RT-PROC-pixel-stack-02",
+   "response": "Valid as a test gap, and partly answerable by design. (1) Low 1/f does not need PECVD SiNx. Fung's alpha 1.5e-3 device used a SiO2 gate. Cho's SiNx gain came from an interlayer that suppresses Al2O3 remote-phonon scattering. So the split is a low-H PEALD SiO2 or ALD SiN interlayer under HfO2/Al2O3; KAIST shows gate-insulator H content itself changes IGZO LFN. (2) The H-bearing film sits in the amp tier, whose devices tolerate Vt shift (CDS cancels SF offset within 100 mV; RST/SEL/TG only switch). The conflict is therefore H containment: ALD Al2O3 barriers above and below each amp tier, plus BL-via liners. (3) Coupons now put the low-noise SF gate stack and access cells on one die, run 1x/2x/4x cumulative group sequences, and measure alpha_H, tail leakage and dVt together.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Planar splits: PEALD SiO2/HfO2 vs ALD SiN/HfO2 vs PECVD SiNx/Al2O3 SF gates, each beside access cells, each at 1x/2x/4x dose. Gate: alpha_H <=1e-2 at <=0.02 um2, with tail <=45 aA and dVt <20 mV after 4x."
+  },
+  {
+   "id": "RT-PROC-pixel-stack-03",
+   "response": "Valid. Each group's column output, RST supply and SEL/RST/TG controls reach the base through an edge via farm plus a per-group control staircase (~5% die area). Vias through the lower cell tiers would instead cost 6-10% cell area. Spare SF columns for the RTN screen add ~3%. array_eff therefore goes 0.55->0.50 (-9% density). The vertical via and group-select switch add ~1.5 fF to the column (now 19 fF, including the 2:1 mux). That is already in the 62 ns tRC and the 15.8 mV residual.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "array_eff 0.50 in the model. A 4-group mat floorplan with column/control routing joins the Q1 layout gate G0b (array eff >=0.50, column <=20 fF)."
+  },
+  {
+   "id": "RT-PROC-pixel-stack-04",
+   "response": "Valid. Planning EOT goes 0.50->0.60 nm (57.6 fF/um2). At the 0.60 fF planning Cs the capacitor is 88 nm (72 nm at 0.50 nm), costing ~8% density. At EOT 0.7 nm it is 104 nm, or ~4.2x 1-beta. The tier stack (26 nm SN + 2 x (6 nm dielectric + 5 nm plate) + ~12 nm isolation = 60 nm) agrees with PROC's >=27-32 nm shell but leaves no slack. The open question is a conformal ALD fill of an 88 nm slot from a 24:1 hole. The GO line now carries the capacitor: M12 coupons at 60 nm tier pitch must reach >=57.6 fF/um2 with J <=1e-7 A/cm2 after 4x cumulative 400 C. The density claim is quoted at the measured EOT.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "eot_nm 0.50->0.60 in the model. M12 gate and kill #4 revised to 4x cumulative exposure. Capacitor coupon line $20k->$25k."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-01",
+   "response": "Valid for the original column plan. One auto-zeroed comparator per 32-SEL column per group cannot fit 0.7-1.4 um2 (2.8-5.6 um2 if 4 groups share). CIRC's alternative is worse when run in the model: 64 SELs directly on a 40 fF column give tRC 111 ns and 208 fJ/bit; 128 SELs on 70 fF give 166 ns and 347 fJ. Redesign: (1) Only one group is active per activation, so the 4 groups share one base comparator through an oxide group-select switch and a vertical column via. (2) A 2:1 base-wafer mux joins two 32-SEL local columns from different WL segments, which are never active together. Inactive SEL junctions stay isolated, so the column grows only 15->19 fF (+~2.5 fF mux wire, +~1.5 fF via/switch). At the revised cell (0.027 um2 per BL) that leaves 13.8 um2 of base wafer per comparator (72k/mm2 of array). Needed: ~3-4 um2 of FEOL [ESTIMATE]: inverter auto-zero comparator + latch 1.5-2.5, restore driver 0.3, DFB DAC 0.5, mux 0.2; the 10 fF CDS cap is MOM in upper metal above. At the 19 fF column: tRC 62 ns, 50 fJ/bit, residual 15.8 mV. This is a budget, not yet a drawn floorplan.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "c_col 15->19 fF in the model. New Q1 gate G0b: a drawn sky130/22FDX layout of comparator + restore + DFB DAC + mux in <=13.8 um2 at <=20 fF. If it fails, use a 4:1 mux (~24 fF, tRC ~70 ns) or the 32-tier-group variant."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-02",
+   "response": "Valid: the 3x input contradicts its own exponential basis. There are two corrections, one in each direction. (a) Adding a 1e-4 RTN quantile linearly to a 3.72 sigma Gaussian spends the 1e-4 budget twice. The joint quantile on the original 100x100 nm SF is 10.5-26.7 mV at 1e-4, across steps of 1-3x q/CoxWL and 1-30% of SFs with a fast trap; CIRC's linear add gives 23-36 mV. (b) Owner-found, and worse: CDS decisions are restored raw, so random per-sense errors accumulate between ECC corrections. Random terms must therefore be held to ~2e-7 per sense, with a sense-count-triggered row scrub every <=128 senses. At 2e-7 the original SF gives 15.6-52.7 mV. Redesign: SF 200x100 nm halves the step and still fits the two amp sub-layers (0.0432 um2 needed vs >=0.044 available); Vov 0.25 V; a BIST screen remaps SFs with fast-trap steps >8 mV (0.03-0.65% of SFs). Revised residual: 15.8 mV modelled. Worst corner (3x, 30%, no screen): 28.0 mV with DFB and 36.7 mV without, vs 39.6 allowed at 0.60 fF and 29.0 at 0.45 fF. Planning Cs moves 0.45->0.60 fF (88 nm capacitor at EOT 0.6), taking density from 5.2x to 4.6x 1-beta at the revised geometry (-12%). 0.45 fF returns only if the measured time-domain RTN passes.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Model: RTN as exponential steps convolved with the Gaussian terms at p_sense 2e-7; SF 200x100; scrub every 128 senses; cs_design 0.60 fF. Experiment: on-coupon oxide dual S/H with a 15 ns gap, 65k SFs x >=1e4 reads at 85 C. CIRC threshold adopted as a sub-gate: 1e-4 step quantile <=6 mV at 0.01 um2 (<=4 mV at 0.02 um2); <=1% of SFs above 8 mV."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-03",
+   "response": "Valid; one corner is now stated. Share 2, two amp sub-layers per group: this concedes ~8 DUV masks per group, 32 per 64-tier stack, still with zero EUV, priced at $600 each. tRC 62 ns, including a 5 ns DFB pass (52 ns without). Energy 50 fJ/bit instead of 89. Energy fell because SF settling energy scales as settle_tau x C_col x Vov x V_amp. The changes: V_amp 1.2->0.8 V; Vov 0.4->0.25 V; settling 4.6->4 tau; Id 1.5 uA (gm 12 uS at W/L 2). Share 1 gives tRC 33 ns at 3 sub-layers (+$2,400/wafer). Share 4 or 8 is outside DRAM class (122-240 ns). Conceded: the mask count, and a tRC ~1.35x DDR5. Energy reaches ~1.1x DDR5, not <=46 fJ.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Revise v_amp, sf_vov, sf_id, settle_tau and t_dfb in the model. Restate the claim as density-only, with tRC ~62 ns, ~50 fJ/bit and +32 DUV masks. SF drift headroom 150->100 mV (kill #7 revised)."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-04",
+   "response": "Valid. A two-pass compare is now in the model. Pass 1 decides every bit on the row. Pass 2 re-fires each latch with its threshold shifted by its two neighbours' pass-1 decisions, through a 2-level charge-injection DAC (~0.5 um2 per comparator, ~1 fJ/bit) [ESTIMATE]. This adds 5 ns per sensed bitline, so tRC goes 52->62 ns. A pass-1 error (<=~1e-3) mis-corrects only one neighbour's ~1.5 mV share. The planning Cs of 0.60 fF passes without DFB even at the worst RTN corner (36.7 vs 39.6 mV), so DFB is margin, not a load-bearing assumption. Without DFB the modelled residual is 24.5 mV.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Add t_dfb_ns 5 and e_cmp 1 fJ to the model. Include the DAC in the G0b layout. Planar coupons measure coupling raw and after software two-pass DFB. Kill #3 unchanged (>15 mV after DFB)."
+  },
+  {
+   "id": "RT-CIRC-pixel-stack-05",
+   "response": "Valid. Planning retention now uses the gate value, dVt 20 mV, together with sigma_Vt 35 mV from RT-DEV-pixel-stack-02. That gives 0.52 s at 0.60 fF (0.82 s at sigma 30 mV), not 1.08 s. The refresh-power claim falls only from 17x to 15x, because access energy also fell (89->50 fJ). Refresh busy time is 2.96% including scrub, vs DDR5's 7.6%. A per-group WL hold trim, set from the in-stack SF leakage meter, could cancel the uniform part of the shift (0.85 s); this is not credited in planning.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "h_vt_shift 0->20 mV in the model. Restate the refresh claim as ~15x lower at planning inputs, range ~1.4-70x over sigma_Vt 20-50 mV and dVt 0-50 mV."
+  },
+  {
+   "id": "RT-IND-pixel-stack-01",
+   "response": "Valid: 0.998 is A1's requirement, not a measurement. The model now uses a raw per-tier killer-defect probability d with mat-level spare-tier repair: 1 spare per 16 tiers per mat, 64 mats, 50% of defects crossing tiers, 80% of those column-repairable. Unrepaired, IND's arithmetic holds: d 0.01 gives yield 0.52 and 0.66x $/bit at the original prices. Repaired, at the revised $13,500 wafer, d 0.002/0.01/0.03/0.11 gives yields 0.97/0.92/0.81/0.47 and $/bit 0.80/0.84/0.96/1.64x. Planning d is 0.03 (3.7x better than SK hynix's 5-tier R&D 0.11), giving 0.807 and 0.96x. Bits/$ is therefore ~parity: 1.04x at planning, ~1.2x at d <=0.01, 0.6x at SK hynix-level defectivity. It also rests on defects being random and tier-local, which nobody has measured on a multi-tier oxide stack. The $1M plan cannot measure it.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Repaired-yield model and spare-tier cost in the model. Bits/$ dropped from the step-change claim ('parity, low confidence'). The 4-tier lots report per-tier defect counts, and the raise milestone asks a partner (Kioxia OCTRAM) for short-loop per-tier defect densities."
+  },
+  {
+   "id": "RT-IND-pixel-stack-02",
+   "response": "Valid. Removing a Smart-Cut layer beats a design no incumbent plans, and at PROC's deck prices the cost edge over Smart-Cut is 1.24x, not 1.7x. The right comparison is incumbent-style 3D at equal tier count. Incumbent per-tier cell areas are not public: searches found none, and one academic horizontal cell is 0.122 um2. Modelled with the same pitch, TFT and EOT: (1) A 64-tier long vertical BL read by an ideal bonded OCSA needs 0.71-0.98 fF (0.0147-0.0177 um2), so PIXEL-STACK's edge at 0.60 fF is 1.09-1.31x. (2) A switched hierarchical BL without gain (+10-20 fF global) needs 1.3-1.9 fF, an edge of 1.56-2.08x. (3) Against A1 optimistic (40 nm pitch, 300 nm capacitor) it is 0.89x; against A1 base, 2.22x. An ideal OCSA per vertical BL needs ~0.3-1 um2 of base wafer per 0.027 um2 BL footprint, so the realistic no-gain incumbent is the switched case. At 16 tiers (VS-DRAM) the ideal-OCSA cell beats PIXEL-STACK (0.72x), so the concept pays only above ~32-48 tiers. Licensable delta: ~1.5x density (1.1-2.1x) at >=64 tiers, with an 88 nm capacitor vs ~200-300 nm.",
+   "disposition": "ACCEPTED-DOWNGRADE",
+   "action": "Drop 'removes Smart-Cut' as the headline. Restate the claim against incumbent-style 3D at equal tiers (~1.5x, 1.1-2.1x, >=64 tiers). Equal-tier table added to model sec.10."
+  },
+  {
+   "id": "RT-IND-pixel-stack-03",
+   "response": "Valid as an IP/business risk. It does not touch the physics, and the mission does not kill for business reasons. The broad system claim is likely obvious over hierarchical 3D bitlines plus oxide-APS CDS, so the plan files narrower implementation claims, several of them new in this response: (1) a per-sense error budget with sense-count-triggered row scrub for CDS-read DRAM; (2) a BIST RTN screen and remap for in-stack followers; (3) a two-pass neighbour-decision CDS compare; (4) a group-shared base comparator via group-select plus a 2:1 segment mux; (5) a per-group WL hold trim set by the in-stack SF leakage meter; (6) a per-group Al2O3 H barrier with an H-tolerant amp tier; (7) the pillar-gated SF [SPECULATIVE]; (8) as dependents, the series-gate access option (I-12627) and an SF on a plate strip (I-12302). An FTO opinion on claim 1 against the hierarchical-3D-bitline and oxide-APS families comes before the raise. The scale path assumes a cross-licence with Micron or Kioxia.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "IP line $45k->$55k, including an FTO opinion by M18. Replace the sec.6 claims list. Describe the licensing value as narrow implementation claims plus know-how."
+  },
+  {
+   "id": "RT-IND-pixel-stack-04",
+   "response": "Mitigated to near parity with a pulsed, low-voltage SF: V_amp 0.8 V, Vov 0.25 V (gm/Id 8/V), Id 1.5 uA, 4 tau settling on a 19 fF column. SF bias energy falls 38->17.6 fJ core, and the total 89->50 fJ/bit (DDR5 46 fJ). The residual holds at 15.8 mV, because the 1/f term falls with Vov (1.34->0.74 mV). Wider SF sharing does not save energy, since settling energy is per sample, and it costs tRC (share 4: 122 ns). Energy is not claimed as an advantage: AI buyers get density and ~15x lower refresh power at ~1.1x access energy. If 46 fJ is a hard requirement, settling to 3 tau gives ~42 fJ for ~+1% gain spread [ESTIMATE].",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "Revised inputs in the model. Planar lot measures oxide SF gm/Id at Vov 0.25 V and 85 C (>=8/V needed)."
+  },
+  {
+   "id": "RT-IND-pixel-stack-05",
+   "response": "Valid. Three mitigations. (1) Every coupon carries large-area (1-10 um2) SFs, whose alpha_H is compared with published fab-grade values: 1.5e-3 SiO2-gated, 6e-3 Al2O3/SiNx. If the university alpha exceeds 6e-3, a scaled-device failure is logged as 'process-limited', not NO-GO. (2) A $50k fab-grade split runs the SF/RTN ladder on a partner IGZO line (Kioxia/Nanya, a display-maker R&D line or Albany), negotiated in Q1. GO counts only if the fab-grade split agrees within 2x on residual. (3) An In-ratio split, because scaled ALD IGZO noise rises with In content (Purdue TED 2025); this is a caution for the In-rich depletion SF.",
+   "disposition": "ACCEPTED-MITIGATED",
+   "action": "New budget line 'fab-grade reference coupons' $50k, funded by cutting the 4-tier stack from 3 lots to 2. Calibration rule written into the M9 gate."
+  }
+ ]
+}

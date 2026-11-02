@@ -330,6 +330,8 @@ The claims of US 12096638 and US 2007/0183191 are read at M0-1, before filing.
 
 ## 5. The decisive experiment
 
+*(Revised after red team: the original plan is kept below for traceability. §5R at the end of this section supersedes it.)*
+
 **Question:** does any oxide anode on a thin IGZO, Ga-rich or Ga₂O₃ shell pass G1 + G3 + G4 after ≤400 °C?
 
 **Facilities.**
@@ -377,6 +379,92 @@ The claims of US 12096638 and US 2007/0183191 are read at M0-1, before filing.
 | Months | 0-1 | 1-4 | 3-7 | 7 | 7-14 | 12-18 | 14-20 | 18-24 |
 |---|---|---|---|---|---|---|---|---|
 | Work | Design, file | Coupon fab | Coupon test | **GO/NO-GO** | Stack 1 | Stack 2, 8-tier | Disturb, retention | Data, raise |
+
+### 5R. The decisive experiment (revised after red team)
+
+**Question.** Does any process-integrable anode pass G1 + G3 + G4 on vertical-recess, ring-sized coupons built exactly as the tier will be? The anode options are RuO₂ (from a Ru node ring), MoOx, WOx, or an area-selective IrO₂ liner, on a 15-20 nm IGZO, Ga-rich IGZO or a-Ga₂O₃ shell. "Exactly as the tier" means bottom-anode, with the real etch-back chemistry, an in-situ O₃ re-oxidation, O₃-first oxide nucleation and the cumulative ≤400 °C budget. The question also asks whether the oxide gain FET's RTN tail fits the readout budget.
+
+**What changed, and why.**
+
+1. **Anode matrix (RT-DEV-01, RT-PROC-01).**
+   - Integrable anodes only: RuO₂, MoOx, WOx, IrO₂ liner.
+   - AgOx, PtOx and Pt run only as planar, top-anode diagnostics.
+   - Every G1-passing split gets ToF-SIMS for Ag, Pt, Pd and Ru in the ZrO₂ and IGZO.
+   - The anneal schedule replicates the cumulative flow: IGZO ALD ≤300 °C, then 2 × 350 °C, then 400 °C for 1 h. One anneal is not enough.
+2. **Interface pairs (RT-DEV-03).** Each anode is run bottom-anode as integrated and top-anode as a control on the same wafer, which measures the penalty directly. A 1-2 nm O₃-ALD GaOx interlayer split is added. The flipped core-anode design was analysed and rejected: it costs +0.29-0.32 eV of lowering (model §12h).
+3. **New structure (e): vertical recess coupons (RT-PROC-02), +$30k.**
+   - 2-tier SiO₂/Mo/poly/Mo molds with 100-150 nm e-beam holes.
+   - Poly recess, ZrO₂, Ru node, the real O₂-plasma etch-back, re-oxidation, IGZO, core.
+   - Gate A is judged on (e) plus the ring arrays (b) and floating nodes (c). Planar structure (a) is diagnostic only.
+4. **Leakage, not barrier (RT-DEV-02).**
+   - The Q2 down-select uses ring-array leakage at 85 °C and 0.8 V, and its activation energy over 25-125 °C.
+   - The critic's test is reported: Ea equal to the barrier, within 10× of thermionic.
+   - Floating nodes in (c) are re-tested over 1,000 h for time-varying (VRT-like) leakage. That data also decides whether profiled tier repair (0.061 eV credit) can be used.
+5. **Drift (RT-DEV-04).** Structure (d) uses ~1,100 A/cm² forward pulses with a 0.8 V reverse hold, re-measuring leakage every decade to 1e12.
+6. **Readout RTN (RT-CIRC-01).**
+   - The 1e-4 RTN amplitude distribution is measured on ≥65k oxide FETs of ≤0.01 µm² at 85 °C with a ~15 ns CDS gap.
+   - L = 50 and 100 nm splits are included.
+   - This runs on the shared PIXEL-STACK planar lot / MARGIN STACK chip, at no marginal cost here.
+7. **Temperature (RT-CIRC-02).** Floating nodes in (c) are written and read at temperatures up to ±60 K apart, which confirms the 1.3 mV/K clamp tempco.
+8. **TCAD (RT-CIRC-04).** The M0-1 design work includes a 3D extraction of plate-to-neighbour coupling for both cells.
+
+**Pass/fail (frozen before data), Gate A, M7.**
+- **PASS:**
+  - the vertical-coupon 99.99th-percentile ring leakage is ≤ **928 aA** at 85 °C and 0.8 V;
+  - forward current is ≥ **1.8 nA** at ≤ 1.2 V and 0 °C, with n ≤ 1.3;
+  - Δφ ≤ 30 meV at 1e12 bipolar pulses;
+  - the RTN 1e-4 tail at 0.01 µm² is ≤ 25 mV, so the residual is ≤ 40 mV at 64-tier load.
+  - Stretch: ≤ 59 aA.
+- **FAIL:** any one of:
+  - every integrable split is above 928 aA, including the escape split;
+  - Δφ > 60 meV within 1e10 pulses;
+  - σ > 0.07 eV on every vertical coupon;
+  - an RTN tail > 50 mV at both L = 50 and L = 100 nm, which caps the tower below 32 tiers (~2×).
+
+| Stage A line (revised) | $k | Basis |
+|---|---|---|
+| Design, TCAD (incl. 3D coupling extraction) | 10 | open TCAD |
+| Coupon fab | 100 | as before |
+| Vertical recess coupons (e) | 30 | ~120 tool-h + 40 e-beam h [ESTIMATE] |
+| Outside IPE/TEM/ToF-SIMS | 30 | Argonne free if non-proprietary; SIMS paid |
+| Test bench (reused to M24) | 90 | as before |
+| **Total** | **260** | **$170k without the bench.** RTN statistics ride the shared PIXEL-STACK/MARGIN STACK lot |
+
+**Stage B (raise milestone, M7-20, $280k; RT-PROC-03/04).**
+
+| Line | $k |
+|---|---|
+| Stack 1: a 4-tier **wrapped** stack in 100-150 nm holes, built **replacement-first** (detail below) | 150 |
+| Mold and replacement coupons (detail below) | 50 |
+| Readout silicon and boards | 30 |
+| FIB/TEM | 25 |
+| Reliability | 25 |
+
+*Stack 1 flow:*
+1. Build a SiO₂/SiN/poly/SiN mold and etch the holes.
+2. Fill the holes with sacrificial carbon.
+3. Etch slits, remove the SiN with H₃PO₄ and fill with Mo, before any ZrO₂ or IGZO is in the hole.
+4. Do an H out-gas bake, then strip the carbon.
+5. Recess the poly; deposit ZrO₂ and the Ru node; etch back and re-oxidise; deposit IGZO and the core.
+6. Build the in-line access + gain 2T top on one merged bitline.
+
+*Mold and replacement coupons:*
+- a 32-pair mold bow measurement (target ≤150 µm with stress tuning or a backside film);
+- coupon diodes with and without the replacement thermal and hydrogen budget (shift ≤30 meV).
+
+*Pass:*
+- margin ≥ the allowed residual at emulated 64-tier load;
+- tail retention ≥ 64 ms at 85 °C;
+- zero flips in 1e9 accesses, including an adjacent-plate hammer;
+- 1e12 cycles;
+- a HAR etch-back of the chosen anode demonstrated.
+
+*Not provable inside $1M (partner or raise milestones):*
+- a hole etch at AR ≥ 30 and 60-80 nm in the mold;
+- ≥0.995 multi-tier yield;
+- the full-pitch stacked 2T top.
+
+**Plan total: $960k over 24 months.** The gate dates are unchanged: Gate A on 2027-07-30, the raise gate on 2028-08-31.
 
 ---
 
@@ -491,7 +579,25 @@ On a NO-GO, ≤$60k goes to a Ga₂O₃/heterojunction retry and the rest to AND
 
 ## 9. Kill criteria (M0 = 2027-01-04)
 
-Physics only; each has a revival condition.
+**(Revised after red team.)** The revised list comes first, and the original list follows for traceability. Physics only; each has a revival condition.
+
+1. **2027-07-30 (M7):** no process-integrable split has a 99.99th-percentile ring leakage ≤ **928 aA** at 85 °C and 0.8 V. This is measured on vertical-recess, bottom-anode coupons after the cumulative ≤400 °C budget. → Kill the 60 nm, 3.9× configuration. *Revival:* a contact at the 80 nm escape bar (0.97-0.98 eV low-field, σ ≤ 0.05; 2.9×), or profiled tier repair (+0.061 eV) if the 1,000 h re-test shows time-stable leakage.
+2. **2027-07-30:** the escape split also fails G1. → Kill the linear tower. There is no FE fallback (RT-IND-04). *Revival:* a Ga₂O₃ shell or p/n oxide heterojunction ≤ 928 aA per ring.
+3. **2027-07-30:** Δφ > **60 meV** within 1e10 bipolar pulses at ~1,100 A/cm² and 85 °C, on every G1-passing split. → Kill. *Revival:* passivation or a Ga-rich shell holding ≤ 30 meV to 1e12.
+4. **2027-07-30:** the best G1-passing contact gives < **1.8 nA** at 1.2 V and 0 °C. → Kill the 10 ns write. *Revival:* a 20 ns write (0.9 nA) or n ≤ 1.3.
+5. **2027-07-30:** σ > **0.07 eV** on every vertical coupon (RT-PROC-02). → Kill. *Revival:* σ ≤ 0.05 eV after interface treatment.
+6. **2027-09-30 (M9, new; RT-CIRC-01):** the 1e-4 RTN tail on ≥65k in-hole-sized oxide FETs is > **50 mV** at 85 °C with a ~15 ns gap, at both L = 50 nm and L = 100 nm. That puts the wrapped tower's ceiling below 32 tiers (model: 52 mV gives 32 tiers at L = 50, 47 mV at L = 100). → Kill the in-hole oxide gain FET. *Revival:* a sequential (Smart-Cut) c-Si sense layer.
+7. **2028-03-03 (M14):** 4-tier read charge < **50%** of Cs·Vdata, or ring shorts > **1%**. → Kill the recess process as built. *Revival:* ±2 nm recess and an alternative etch-back.
+8. **2028-03-03 (M14, new; RT-PROC-04):** either failure below kills the replacement-first flow.
+   - The replacement thermal and hydrogen budget shifts the coupon barrier by > **30 meV**.
+   - The 32-pair mold bows > **150 µm** even with a backside film.
+
+   *Revival:* a partner's hole-last metal/oxide HAR etch, or low-stress ALD Mo.
+9. **2028-06-30 (M18):** **any** flip in 1e9 accesses under the plate-swing rule, including the adjacent-plate hammer. → Kill the biasing scheme. *Revival:* inhibit biasing with zero flips at ≤ 2× pillar energy.
+10. **2028-08-31 (M20):** in-stack tail retention < **64 ms** at 85 °C, or margin below the allowed residual at emulated 64-tier load. → Kill the raise case. *Revival:* the 80 nm escape geometry meeting both.
+11. **2028-12-29 (M24):** the oxide gain-FET residual is > **58 mV** in PIXEL-STACK units (3.72σ + RTN + coupling), below the 32-tier claim. → Kill the in-hole read. Between 40 and 58 mV, cap the claim at 32-48 tiers (2.0-2.9×).
+
+*Original kill criteria (pre-red-team, superseded):*
 
 1. **2027-07-30 (M7):** no split after ≤400 °C has a 99.99th-percentile ring leakage ≤ **422 aA** at 85 °C and 0.7 V. → Kill the 60 nm, 3.9× configuration. *Revival:* a contact at the 80 nm escape bar (0.96-0.97 eV low-field, σ ≤ 0.05; 3.0×).
 2. **2027-07-30:** the escape split (≥25-30 nm shell, wrapped Cs) also fails G1. → Kill the linear tower and keep the FE variant. *Revival:* a Ga₂O₃ shell or p/n oxide heterojunction ≤ 422 aA per ring.
@@ -548,3 +654,109 @@ All URLs are logged in `research/sources/*.jsonl` (mainly `dos-diode-tower.jsonl
 - NSTC Albany: https://www.ny.gov/roadmap-national-semiconductor-technology-center-new-york
 
 Internal: `research/phaseA/A1_scaling_limits.md`, `research/phaseA/A2_materials_resources.md`, `research/ideas10k/stage2/stage2_results.jsonl`, `research/stage3/FINAL_CONCEPTS.md`.
+
+Red-team response sources (2026-11-02): `research/sources/resp-diode-tower.jsonl`. Three WebSearch queries were run, and all results were read through snippets only:
+- RuO₂/IrO₂ on GaN, 1.43-1.48 eV (POSTECH);
+- Pd on a-HIZO, 1.40 eV mean with σ 0.14 eV (JBNU);
+- oxidised anodes on β-Ga₂O₃ (NSF PAR);
+- a-RuOx on InAlN, 0.75 eV falling to 0.55 eV after anneal (ECS 227);
+- IMECAS vertical CAA IGZO 2T0C, IEDM 2021 (J. Semicond. 2024 review); the Huawei 50×50 nm² CAA FET;
+- Poole-Frenkel-dominated reverse leakage in ZnO and GaN Schottky diodes (SeoulTech review; UT Austin JAP 2006).
+
+---
+
+## 11. Red-team outcome
+
+*Owner response, 2026-11-02. Four reviewers (DEV, PROC, CIRC, IND) raised 16 objections, all answered in `research/redteam/responses_diode-tower.json`. Model: `models/diode-tower.py` RED-TEAM REVISIONS block and §12 of `research/stage3/diode-tower_model_output.md` (exit 0). Top-up ideas considered: I-12302 and I-12627.*
+
+**Counts:** 1 REFUTED, 10 ACCEPTED-MITIGATED, 5 ACCEPTED-DOWNGRADE, 0 ACCEPTED-KILL.
+
+| Id | Severity | Disposition | One-line action |
+|---|---|---|---|
+| RT-CIRC-01 | MAJOR | ACCEPTED-MITIGATED | Base moves to the wrapped Cs (0.59 fF). The budget is restated in PIXEL-STACK units with a 20 mV RTN tail, giving 110 max tiers (52 for back-wall). G5 is ≤40 mV at 64 tiers. RTN on ≥65k FETs added |
+| RT-CIRC-02 | MAJOR | REFUTED | Refresh re-writes each level at the current temperature, so ΔT ≤ slew × interval. The offset is 0.28 mV at 64 ms and 4.4 mV in 1 s mode. A ±60 K coupon test confirms the tempco |
+| RT-CIRC-03 | MAJOR | ACCEPTED-MITIGATED | Mo replacement plates (21 Ω/sq mesh), 8-row 300 µm centre-driven segments: RC 7.2 ns, 0.1M drivers/mm² (9.6 µm² each), staircase priced (3.7% / 7.5%) |
+| RT-CIRC-04 | MINOR | ACCEPTED-MITIGATED | Guard 0.2 → 0.3 V. The wrapped plate shields neighbours (~2 mV vs 29-92 mV back-wall). 3D extraction at M0-1 and an adjacent-plate hammer test |
+| RT-DEV-01 | MAJOR | ACCEPTED-DOWNGRADE | AgOx becomes diagnostic only. Integrable anodes (RuO₂, MoOx, WOx) are tested after the cumulative flow budget, with ToF-SIMS. P 3 → 2 |
+| RT-DEV-02 | MAJOR | ACCEPTED-DOWNGRADE | Gates use measured ring leakage and activation energy, not the thick-film barrier. A Poole-Frenkel case raises the bar to 1.18-1.33 eV |
+| RT-DEV-03 | MAJOR | ACCEPTED-DOWNGRADE | Paired bottom- vs top-anode coupons, in-situ O₃ re-oxidation and a GaOx interlayer. The core-anode flip was rejected (+0.29-0.32 eV) |
+| RT-DEV-04 | MINOR | ACCEPTED-MITIGATED | G4 on the G1-passing anode with a bipolar waveform, reverse-hold leakage every decade, at 1,125 A/cm². A 20 ns write option |
+| RT-IND-01 | MAJOR | ACCEPTED-MITIGATED | Delta #1 downgraded to "probably obvious". Claim the method, geometry, wrapped tier and in-hole process. Read the claims of US 12096638 and US 2007/0183191 at M0-1 |
+| RT-IND-02 | MAJOR | ACCEPTED-MITIGATED | Recipes kept as trade secrets until process claims (TEM/SIMS-detectable) are filed with the PASS. No composition papers before the PCT |
+| RT-IND-03 | MAJOR | ACCEPTED-DOWNGRADE | $/bit 0.55× at 64 tiers (was 0.35×), ~parity with the 2032 curve. $38/tier is not ≤50% of AND-STACK or PIXEL-STACK. S 3 → 2; the role becomes the two-terminal-device hedge |
+| RT-IND-04 | MINOR | ACCEPTED-MITIGATED | FE variant dropped as the fallback and as the cross-licence premise. NO-GO money goes to a Ga₂O₃ retry and portfolio coupons |
+| RT-PROC-01 | MAJOR | ACCEPTED-DOWNGRADE | Pt, Ag and Pd excluded. Only dry- or wet-etchable anodes (Ru, Mo, W oxides). A HAR anode etch-back added to Stage B. No IGZO datum, so P falls |
+| RT-PROC-02 | MAJOR | ACCEPTED-MITIGATED | Vertical recess coupons with the real etch-back chemistry (+$30k) decide Gate A. Planar coupons become diagnostics |
+| RT-PROC-03 | MAJOR | ACCEPTED-MITIGATED | 2T top: read-select removed, one merged bitline at 121 nm (single ArFi exposure), access and gain FETs stacked as vertical CAA (IMECAS IEDM 2021). +$450 per wafer |
+| RT-PROC-04 | MAJOR | ACCEPTED-MITIGATED | Replacement-first Mo flow behind a sacrificial hole fill, so ZrO₂ and IGZO never see H₃PO₄ or WF₆. Bow-compensated stack (1.28 µm Mo: 0.24 mm at 0.3 GPa). AR ≥ 30 etch is a raise milestone |
+
+**Redesigns adopted.**
+1. **Wrapped tier on Mo replacement plates.**
+   - The tier is SiO₂ 20 / Mo 10 / n⁺ poly 25 / Mo 10 nm (65 nm pitch).
+   - The node sits in a poly recess. The Mo is pulled back 5 nm from the hole.
+   - Cs is 0.594 fF and the edge coupling is 0.011 fF per tier.
+   - It answers CIRC-01, CIRC-03 and CIRC-04.
+2. **Replacement-first process (PROC-04).**
+   1. Etch holes in an oxide/SiN/poly mold and fill them with sacrificial carbon.
+   2. Replace the SiN with Mo through slits.
+   3. Bake out hydrogen, strip the carbon, then build the in-hole stack.
+   - Two 32-tier decks at 64 tiers; stress-tuned films plus a backside compensation film.
+3. **Stacked 2T top (PROC-03).** Access FET plus gain FET (source = read word line), one merged bitline at the 121 nm pillar pitch, and +~7 masks ($3,450 base wafer).
+4. **Plate segmentation (CIRC-03).** 8 rows × 300 µm segments driven from the centre, with pass gates fed by global drivers and one staircase per segment. Binary-chop contacts are the area reducer.
+5. **Guard 0.3 V (CIRC-04)** and an RTN-inclusive readout budget (CIRC-01). The gain-FET length is a lever: 206 tiers at L = 100 nm.
+6. **Integrable anode list (DEV-01, PROC-01).** RuO₂ from a Ru node ring with in-situ O₃ re-oxidation, MoOx, WOx, and an area-selective IrO₂ liner, each on IGZO, Ga-rich or a-Ga₂O₃ shells. AgOx, PtOx and Pt are planar diagnostics only.
+7. **Profiled tier repair (from I-12627's logic).** Two spares per 32 map out the worst 2% of tiers for +0.061 eV, if the 1,000 h re-test shows time-stable leakage. Series diodes give 0.053 eV but cost ×1.48 footprint and double V_f, so they are not adopted.
+8. **Top-up ideas.**
+   - **I-12302** (plate-strip sensing) is already embodied: the 1.21 fF pillar gives 164 mV. Sensing on page-wide plates would raise the sense capacitance, so it is not adopted.
+   - **I-12627** survives as item 7.
+9. **The FE persistent variant is no longer a fallback (IND-04).** IP moves to method, geometry and process claims, and recipes stay secret until filed (IND-01/02).
+
+**Revised step-change claim.**
+- **Density:** 2.0× 1-beta at 32 tiers and **3.9× at 64** (parity at 17, 3× at 50).
+- **Cost:** $/bit 0.73× at 32 tiers and **0.55× at 64** at tier yield 0.995, that is **~1.8× bits/$** at 64 tiers. It is 2.2× at 0.998 and 1.3× at 0.99. Before the red team the claim was 0.35× at 64 tiers.
+- **Transistors:** 2 per 30-61 bits, 15-30× fewer per bit.
+- **Energy:** 31 vs 46 fJ per access, and no refresh step unless G2 holds.
+- **Against the 2032 incumbent** (−8 to −12% a year): the 64-tier tower is at 0.91-1.18×, so a durable cost step needs ≥96 tiers at ≥0.998 yield.
+- **The downgrade:** density is unchanged, the cost step shrinks from ~2.9× to ~1.8× bits/$, and the tower is the smallest density step in the portfolio (AND-STACK 8.1×, PIXEL-STACK 6.2×).
+
+**Revised decisive experiment (§5R).** It costs **$960k over 24 months**: Stage A $260k ($170k without the bench), Stage B $280k, Gate A at M7 (2027-07-30).
+
+*Stage A, the coupon run:*
+- **Matrix:** process-integrable anodes only, on 15-20 nm IGZO, Ga-rich and a-Ga₂O₃ shells.
+- **Pairs:** bottom-anode as integrated vs top-anode controls on the same wafer.
+- **Budget:** the cumulative ≤400 °C flow budget, with ToF-SIMS on passing splits.
+- **New structure (e):** 2-tier vertical recess coupons with the real etch-back chemistry.
+- **Gate inputs:** ring-sized leakage and activation energy, not the thick-film barrier.
+- **Time stability:** a 1,000 h re-test of the floating nodes.
+- **Drift:** bipolar endurance at ~1,100 A/cm² to 1e12 pulses.
+- **Readout:** the **RTN amplitude distribution on ≥65k oxide FETs of ≤0.01 µm² at 85 °C with a ~15 ns CDS gap**, on the shared PIXEL-STACK/MARGIN STACK lot.
+- **Temperature:** write and read at up to ±60 K apart.
+
+*Gate A pass:*
+- ≤928 aA at the 99.99th percentile, 85 °C and 0.8 V;
+- ≥1.8 nA at ≤1.2 V and 0 °C;
+- Δφ ≤ 30 meV at 1e12 pulses;
+- an RTN tail ≤ 25 mV.
+
+*Stage B:*
+- a 4-tier wrapped stack in the replacement-first flow with the 2T top;
+- a 32-pair mold bow measurement and a replacement barrier-shift test (≤30 meV);
+- the in-stack pass criteria listed in §5R.
+
+**Revised verdicts.**
+- **PHYSICALLY POSSIBLE?** Yes, conditionally, with lower confidence.
+  - It needs a process-integrable, bottom-anode contact at ≥1.06-1.11 eV thick-film-equivalent, or 1.18-1.33 eV if Poole-Frenkel-limited, with σ ≤ 0.05 eV in a 15 nm shell.
+  - No integrable anode has an IGZO datum. GaN and Ga₂O₃ analogues reach 1.4-1.5 eV.
+- **STEP CHANGE IF IT WORKS?** Density, ~3.9× at 64 tiers; bits/$, ~1.8× (0.55× $/bit) at tier yield 0.995. It is modest against the 2032 cost curve.
+- **PROVABLE WITH $1M?** Partly, and less than before.
+  - The diode, RTN and drift are settled by M7 for ~$260k, and a 4-tier stack fits the $960k plan.
+  - Not provable: ≥32-tier yield, the AR ≥ 30 replacement etch, and the full-pitch 2T top. P(pass) is ~5-10%.
+
+**FINAL STATUS: DOWNGRADED.** No objection is fatal, and every engineering objection (plate RC, the top of the pillar, the stack process, readout noise, coupling) has a priced redesign.
+
+What drives the downgrade:
+- **The anode.** The only contact class that met the barrier bar, AgOx, cannot survive the process. No process-integrable anode has an IGZO datum.
+- **The barrier penalties.** The bottom-anode interface (0.1-0.3 eV) and Poole-Frenkel/TAT leakage (+0.12-0.22 eV) could widen the gap from 0.15-0.2 eV to 0.24-0.71 eV.
+- **The cost step.** It shrinks from 0.35× to 0.55× $/bit at 64 tiers once yield, per-tier and top-of-pillar costs are priced.
+
+EV falls from 45 to ~16 (S 2 × P 2 × D 4). The concept stays alive as the portfolio's two-terminal per-tier-device hedge, funded through the shared oxide coupon run until Gate A.

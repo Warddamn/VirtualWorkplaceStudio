@@ -372,14 +372,14 @@ def section_select(c):
     out(f"- Base CR {c['cr']:.2f} (min {s['cr_min']:.2f} at -3 sigma): dV_unsel = {s['dv_unsel']:.2f} V, IPD sees {s['v_ipd']:.2f} V "
         f"({s['e_ipd']/1e6:.2f} MV/cm physical) during reads.")
     out("")
-    out("Sensitivity on the key unknown (CR mean; sigma 0.03):")
+    out(f"Sensitivity on the key unknown (CR mean; sigma {V('cr_sigma')}; plate swing limit {V('v_plate_max')} V):")
     out("")
     rows = []
     for cr in (0.30, 0.40, 0.45, 0.50, 0.55, 0.60, 0.70, 0.80):
         r = select_requirements(cr)
         ok_swing = r["dv_unsel"] <= V("v_plate_max")
         ok_field = r["e_ipd"] <= 3.0e6
-        verdict = "OK" if (ok_swing and ok_field) else ("swing>2.5 V" if not ok_swing else "IPD field")
+        verdict = "OK" if (ok_swing and ok_field) else (f"swing>{V('v_plate_max')} V" if not ok_swing else "IPD field")
         if ok_swing and not ok_field:
             verdict = "IPD field"
         rows.append([f"{cr:.2f}", f"{r['cr_min']:.2f}", f"{r['dv_unsel']:.2f}", f"{r['v_ipd']:.2f}",
@@ -825,6 +825,13 @@ def section_redteam(c, s, dmax2):
     q_e = (c["c_ipd"] * v_ipd_exc + c["c_gox"] * c["cr"] * s["dv_unsel"]) / QE
     out(f"- Displacement charge per excursion ~{q_e:.0f} e-; trapping 0.1-1% of it is {q_e*0.001*QE/csn*1e3:.1f}-"
         f"{q_e*0.01*QE/csn*1e3:.0f} mV per excursion on C_SN {csn*1e15:.3f} fF.")
+    a_cr = c["cr"] - 3 * V("cr_sigma")
+    v_idle = (1 - a_cr) * s["dv_unsel"]
+    v_ref = 0.5 * V("v_data_max") + v_idle / 2
+    out(f"- Idle-low parks the IPD at a DC bias. Offsetting the selected-plate level to V_ref = +{v_ref:.2f} V (a free offset: "
+        f"rings are written at V_ref) centres it: the -3 sigma CR cell sees at most {max(v_ref, v_idle + V('v_data_max') - v_ref):.2f} V "
+        f"({max(v_ref, v_idle + V('v_data_max') - v_ref)/(V('ipd_phys_nm')*1e-7)/1e6:.1f} MV/cm) in either state; the typical cell "
+        f"~{(1-c['cr'])*s['dv_unsel']/2 + 0.5:.2f} V. IPD leakage at that bias is inside the ring-tail GO test.")
     out("- Original bias (select plates idle at read level): every read of any tier swings the 63 other rings, i.e. ~1e7 "
         "excursions per ring per second in a hole read at 10 MHz. Adopted idle-low bias: a ring moves only when its own tier "
         "is read (1/64 of the hole's reads on average); a single-cell read hammer still gives up to 1e7/s, so the GO list "
@@ -912,8 +919,8 @@ def main():
     section_endurance()
     section_yield()
     section_cost()
-    section_redteam(c, s, dmax2)
     section_go(c, s, dmax2)
+    section_redteam(c, s, dmax2)
     inputs_block()
     os.makedirs(os.path.dirname(OUT_MD), exist_ok=True)
     with open(OUT_MD, "w") as f:

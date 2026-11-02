@@ -1,7 +1,8 @@
 # PIXEL-STACK: technical dossier
 
 *Agent `dosw-pixel-stack`, 2026-11-02.*
-- Model: `models/pixel-stack.py`, re-run 2026-11-02 (exit 0); output in `research/stage3/pixel-stack_model_output.md`.
+- Model: `models/pixel-stack.py`, re-run 2026-11-02 after the red team (exit 0; RED-TEAM REVISIONS block); output in `research/stage3/pixel-stack_model_output.md`.
+- Red team: `research/redteam/responses_pixel-stack.json`; outcome in §11.
 - Notes: `research/stage3/pixel-stack_notes.md`. Assumptions: `research/assumptions/dos-pixel-stack.md`.
 - Sources: `research/sources/dos-pixel-stack.jsonl`, plus cross-references in the other logs.
 
@@ -14,6 +15,8 @@ Numbers are model outputs unless sourced. [ESTIMATE] = modelled judgement; [SPEC
 **Name.** PIXEL-STACK: image-sensor-style group-sensed 3D 1T1C DRAM, with an all-oxide source-follower and CDS "amp tier" every 16 cell tiers.
 
 **Thesis.** Read each 16-cell vertical bitline the way a camera reads a pixel. An oxide source follower plus correlated double sampling (CDS) cancels the transistor offsets that used to require a bonded silicon layer. That lets the 3D capacitor shrink from ~600 nm to ~52 nm, with the whole stack oxide and ≤400 °C.
+
+**Thesis (revised after red team).** Same mechanism, but the planning capacitor is **~88 nm (0.60 fF at EOT 0.6 nm)**. It returns to 52-64 nm only if a time-domain RTN test admits 0.45 fF. The edge over incumbent-style 3D at equal tier count is ~1.5×, not the "removes a Smart-Cut layer" story.
 
 **Rank / category.** Rank 5 of 10 (EV 4 × 3 × 4 = 48); cell/array.
 
@@ -33,7 +36,22 @@ Numbers are model outputs unless sourced. [ESTIMATE] = modelled judgement; [SPEC
 
 Merge: device-lens PIXEL-STACK plus system-lens Margin Stack segmentation; the chief staged a planar test before the 3D build.
 
-**Verdicts.**
+**Verdicts (revised after red team, 2026-11-02; detail in §11). FINAL STATUS: DOWNGRADED.**
+- **PHYSICALLY POSSIBLE? Yes.** The read closes at the 0.60 fF planning Cs (88 nm capacitor, EOT 0.6 nm).
+  - Modelled residual 15.8 mV against 39.6 mV allowed, with random terms budgeted at 2e-7 per sense, because raw write-back makes them accumulate.
+  - The reviewers' worst RTN corner (36.7 mV, with neither screening nor DFB) still passes.
+  - Retention plans at 0.52 s (σVt 35 mV, ΔVt 20 mV); range 0.05-2.4 s.
+- **STEP CHANGE IF IT WORKS? Yes, on density only.**
+  - ~4.6× 1-beta at 64 tiers (2.05 Gb/mm²); 5.2× if the RTN gate admits 0.45 fF.
+  - ~1.5× (1.1-2.1×) against incumbent-style 3D at equal tier count, and only above ~32-48 tiers.
+  - Refresh power ~15× lower (planning, low confidence).
+  - Parity, not gains: bits/$ (0.96× $/bit planning), access energy (50 fJ) and tRC (~62 ns).
+- **PROVABLE WITH $1M IN 24 MONTHS? Partly.**
+  - ~$390k of planar work settles the read and retention physics by M9: on-coupon 15 ns sample-and-hold RTN, cumulative-dose hydrogen, fab-grade calibration.
+  - A 2-lot 4-tier stack needs partner labs.
+  - Tier yield and bits/$ cannot be shown.
+
+*Original verdicts (pre-red-team), kept for the record:*
 - **PHYSICALLY POSSIBLE? Yes.** No physics is violated.
   - The modelled read closes with ~2× margin: 14.7 mV residual against 29.5 mV allowed at Cs 0.45 fF.
   - Retention closes only narrowly: 31 aA tail against a 34 aA spec. At oxide σVt 30 mV that leaves almost no room for hydrogen shift (≤~3 mV; 10 mV gives 0.85 s); σVt 20-25 mV tolerates ~20-40 mV.
@@ -89,6 +107,8 @@ A read runs in five steps:
 ---
 
 ## 2. The physics and the numbers
+
+*(revised after red team)* Tables 2.1-2.6 show the **original** 0.45 fF design point. The planning design point after the red team is in **§2.7**. Superseded headline numbers: 6.2× → 4.6×, 14.7/29.5 mV → 15.8/39.6 mV, 1.08 s → 0.52 s, 89 fJ → 50 fJ, 0.40× → 0.96× $/bit.
 
 ### 2.1 Design point (85 °C, Cs 0.45 fF, 16-tier groups)
 
@@ -196,7 +216,50 @@ The measured quantity is the post-CDS residual on a planar IGZO pixel-amp array 
 | **>30 mV** | **NO-GO as pitched.** At 30-65 mV a fallback remains: Cs ≤1 fF, ~4-6× 1-beta |
 | >65 mV | Oxide amp tier dead. Revival is I-11545's Smart-Cut layer, at ~1.7× the $/bit |
 
-Retention gate on the same run: tail leakage ≤34 aA after a 400 °C/H₂ sequence, with ΔVt <20 mV. NO-GO above 101 aA (≈0.33 s).
+Retention gate on the same run: tail leakage ≤34 aA after a 400 °C/H₂ sequence, with ΔVt <20 mV. NO-GO above 101 aA (≈0.33 s). *(Superseded by the revised gates in §2.7 and §5.)*
+
+### 2.7 Revised design point (revised after red team)
+
+From the RED-TEAM REVISIONS block in `models/pixel-stack.py` (output §0 and §10). Objection ids are in §11.
+
+| Quantity | Original | Revised (planning) | Driver |
+|---|---|---|---|
+| Design Cs / capacitor | 0.45 fF / 52 nm | **0.60 fF / 88 nm** | RTN at realistic steps (CIRC-02, DEV-01); EOT |
+| Capacitor EOT | 0.50 nm (69.1 fF/µm²) | 0.60 nm (57.6 fF/µm²) | PROC-04 |
+| Array efficiency | 0.55 | 0.50 | PROC-03, CIRC-01 |
+| Cell footprint per tier | 0.0110 µm² | 0.0135 µm² (70 × 193 nm) | |
+| 64-tier density | 2.76 Gb/mm² (6.2×) | **2.05 Gb/mm² (4.6×)**; break-even 14.0 tiers | |
+| Source follower | 100 × 100 nm, Vov 0.4 V, 2 µA, 1.2 V | 200 × 100 nm, Vov 0.25 V, 1.5 µA (gm 12 µS), 0.8 V | CIRC-02, CIRC-03, IND-04 |
+| Column / comparator | 15 fF; one comparator per column | 19 fF; 2:1 segment mux, 4 groups share → 13.8 µm² of base wafer per comparator | CIRC-01 |
+| Random-term budget | 1e-4 per sense; RTN 3 × q/CoxWL added | **2e-7 per sense**; RTN exponential steps (2 × q/CoxWL, 10% of SFs) convolved; BIST screen >8 mV | owner-found; CIRC-02, DEV-01 |
+| Readout residual / allowed | 14.7 / 29.5 mV | **15.8 / 39.6 mV**; 24.5 without DFB; worst RTN corner 28.0 (36.7 without DFB) | |
+| Tail retention | 1.08 s (σVt 30, ΔVt 0) | **0.52 s** (σVt 35, ΔVt 20) | DEV-02, CIRC-05 |
+| tRC / energy per bit | 55 ns / 89 fJ | 62 ns (incl. 5 ns DFB pass) / **50 fJ** | CIRC-03, CIRC-04, IND-04 |
+| Refresh power vs DDR5 / busy | 17× lower / 1.24% | 15× lower / 2.96% incl. scrub | |
+| Wafer / stack yield / $/bit | $8,000 / 0.862 / 0.40× | **$13,500 / 0.807 / 0.96×** | PROC-01, IND-01 |
+| Smart-Cut variant $/bit | 0.67× | 1.19× (oxide edge 1.24×, not 1.7×) | PROC-01, IND-02 |
+
+**Per-sense error budget (new; owner-found during the red team).**
+- A CDS decision is restored raw, so random per-sense errors accumulate between ECC corrections. At 1e-4 per sense with 1 s refresh, each bit would collect 0.36 expected flips per hour.
+- The design therefore budgets the random terms at 2e-7 per sense (Gaussian k = 5.07).
+- A PRAC-style per-row sense counter triggers an on-die BCH scrub of a row every ≤128 senses: 128 × 2e-7 = 2.6e-5, a quarter of the 1e-4 raw-BER budget.
+- Static variation (Cs, gain, leakage tail) keeps the 1e-4 budget, because a static weak cell is a fixed position that ECC corrects.
+
+**RTN.**
+- On the original SF the joint per-sense residual is 15.6-52.7 mV at 2e-7 (steps 1-3 × q/CoxWL, 1-30% of SFs with a fast trap).
+- The 200 × 100 nm SF still fits the two amp sub-layers (0.0432 µm² needed vs ≥0.044 available). It halves the step, giving 12.3-28.0 mV unscreened (model §10).
+
+**Measured residual → planning (revised geometry).**
+
+| Residual (mV, joint 2e-7) | Cs min (fF) | Cap (nm) | 64-tier density | $/bit vs 1b |
+|---|---|---|---|---|
+| ≤20 → GO | 0.33 | 45 | 2.63 Gb/mm² (5.9×) | 0.75× |
+| 30 | 0.46 | 66 | 2.31 (5.2×) | 0.85× |
+| 40 → PLAN limit | 0.61 | 89 | 2.04 (4.6×) | 0.96× |
+| 50 → fallback | 0.76 | 113 | 1.81 (4.1×) | 1.08× |
+| >55 → NO-GO | ≥0.84 | ≥126 | ≤1.7 (≤3.8×) | ≥1.15× |
+
+Above ~0.84 fF the cell (≥0.016 µm²) has no edge over an incumbent long vertical bitline read by an ideal bonded OCSA (0.0147-0.0177 µm²).
 
 ---
 
@@ -260,24 +323,46 @@ The new claim is that CDS makes oxide-TFT offset irrelevant, so the bitline-boun
 
 ---
 
-## 5. The decisive experiment
+## 5. The decisive experiment (revised after red team)
+
+**Changes after the red team.**
+- **On-coupon oxide dual sample-and-hold.** Two oxide switches plus two ~50 fF MIM caps per column sample reset and signal 15 ns apart, so slow external readout sees the true CDS gap (DEV-01, CIRC-02).
+- **Per-sense statistics.** ≥1e4 reads per node give 6.5e8 sense events, enough to see the 2e-7 per-sense tail directly (~130 events). Per-device time-domain RTN gives step and τ distributions.
+- **Cumulative dose.** 1×, 2× and 4× group thermal/H sequences on coupons that put the low-noise SF gate stack beside access cells (DEV-03, PROC-02).
+- **Leakage method.** Write-wait-CDS-read replaces the continuous-SF leakage meter (DEV-04).
+- **Calibration.** Large-area α_H reference SFs, plus a $50k fab-grade IGZO split (IND-05).
+- **New splits.** Low-H SF gate (PEALD SiO₂ or ALD SiN interlayer), I-12627 series-gate access, In-ratio.
+- **Capacitor.** M12 capacitor coupons at 60 nm tier pitch after 4× cumulative 400 °C (PROC-04).
+- **Layout gate.** Q1 base-wafer comparator layout gate G0b (CIRC-01, PROC-03).
+- **Lots.** The 4-tier stack is cut from 3 lots to 2 to fund the above.
 
 **Principle.** A planar "imager without photodiodes": 64 × 64 nodes per die on ≥16 dies (65,536 nodes) observes the 1e-4 tail directly (~6 events per corner).
 
 **Steps.**
 1. **M0-3: design.** Calibrate the noise model and build ngspice/Xyce decks. Coupon contents:
-   - SF area ladder from 50 × 50 to 1000 × 1000 nm;
+   - SF area ladder from 50 × 50 to 1000 × 1000 nm, including the 200 × 100 nm design SF and 1-10 µm² calibration SFs *(revised)*;
+   - on-coupon oxide dual sample-and-hold per column (15 ns gap) *(revised)*;
+   - single vs series-gate (I-12627) access TFTs, ≥1e4 of each *(revised)*;
+   - SF gate splits: PEALD SiO₂/HfO₂, ALD SiN/HfO₂, PECVD SiNx/Al₂O₃ *(revised)*;
    - 2/3/4 fF ZrO₂ MIM bitline emulators, with Cs emulated from 0.2 to 1.0 fF;
    - aggressor lines at Cc/C_BL 0-0.2, plus dummy wordlines;
    - an In-rich depletion SF split, and In-poor or Ga-free In₂O₃/ITZO access splits.
 2. **M2-10: 2-3 planar lots** at Purdue Birck or Georgia Tech IEN: TiN/W gate, ALD HfO₂/Al₂O₃ + SiNx, 8-10 nm ALD IGZO/In₂O₃, ZrO₂/TiN MIM, two metal levels.
-3. **Noise.** Measure PSD (1 Hz-10 MHz) and RTN at 25/55/85 °C with an FPGA, a 16-bit ADC and a low-noise front end. Compute the 15 ns CDS residual from the measured PSD (F depends only logarithmically on the gap). Then read through the MARGIN STACK MPW column.
-4. **Residual.** Run 65k nodes under checkerboard, all-0, all-1 and walking-1 aggressors, with decision feedback in software.
-5. **Retention.** Use the pixel amp as the meter: 1 mV in 1,000 s on 3 fF ≈ 3e-21 A, so no electrometer is needed.
-6. **H/400 °C splits.** As-built, N₂, forming gas and H-rich PECVD SiN, each ± an ALD Al₂O₃ barrier. Re-measure ΔVt, Ioff tail, noise and residual, with SIMS H profiles.
-7. **M6-12: lateral-capacitor coupons.** 2-4-tier stacks with 30-60 nm recesses filled with TiN/ZrO₂/TiN by ALD at Argonne CNM. Measure C and J at 25-85 °C, before and after 400 °C.
+3. **Noise.** Measure PSD (1 Hz-10 MHz) and RTN at 25/55/85 °C with an FPGA, a 16-bit ADC and a low-noise front end. Compute the 15 ns CDS residual from the measured PSD (F depends only logarithmically on the gap). Then read through the MARGIN STACK MPW column. *(revised)* The decisive number comes from time-domain data, not the PSD:
+   - 15 ns-gap S/H pairs, ≥1e4 per node, analysed per device;
+   - fast-trap step and τ statistics, with the fraction of SFs above 8 mV;
+   - the joint per-sense 2e-7 quantile;
+   - oxide SF gm/Id at Vov 0.25 V and 85 °C (≥8/V needed).
+4. **Residual.** Run 65k nodes under checkerboard, all-0, all-1 and walking-1 aggressors, with decision feedback in software. *(revised)* Use two-pass DFB, and report the residual raw as well as after DFB.
+5. **Retention** *(revised)*.
+   - Use write-wait-CDS-read maps with waits of 10 ms-100 s. Each point is a fresh CDS read, so SF drift, PBTI and tempco cancel. A 1 aA cell gives ~25 mV at the node after 100 s; the 45-90 aA gate band droops 75 mV in 0.5-1 s.
+   - The earlier continuous-SF "3e-21 A" meter is withdrawn. A dummy-node differential meter is used only for sub-aA medians.
+6. **H/400 °C splits.** As-built, N₂, forming gas and H-rich PECVD SiN, each ± an ALD Al₂O₃ barrier. Re-measure ΔVt, Ioff tail, noise and residual, with SIMS H profiles. *(revised)* Run 1×, 2× and 4× cumulative group sequences (cell-module ALD/anneals + two amp sub-layers), giving a dose-response for the 64-tier extrapolation. Split ΔVt into a uniform part, which per-group WL hold trim can cancel, and σ broadening.
+7. **M6-12: lateral-capacitor coupons.** 2-4-tier stacks with 30-60 nm recesses filled with TiN/ZrO₂/TiN by ALD at Argonne CNM. Measure C and J at 25-85 °C, before and after 400 °C. *(revised)* Use 60-110 nm recesses at 60 nm tier pitch, measured after 4× cumulative 400 °C.
 8. **M9: seed GO/NO-GO** per §2.6.
-9. **M9-21: raise milestone.** A 4-tier oxide 1T1C (Kioxia-style replacement or deposited channel) with a vertical bitline, 30-60 nm capacitors and one amp tier, plus hammer and WL-WL disturb tests.
+9. **M9-21: raise milestone.** A 4-tier oxide 1T1C (Kioxia-style replacement or deposited channel) with a vertical bitline, 30-60 nm capacitors and one amp tier, plus hammer and WL-WL disturb tests. *(revised)* Run 2 lots, with 60-90 nm capacitors, reporting per-tier defect counts (IND-01).
+10. **Q1 (new): base-wafer layout gate G0b.** A drawn sky130/22FDX layout of comparator, restore driver, DFB DAC and mux must fit ≤13.8 µm² at ≤20 fF, inside a 4-group mat floorplan with array efficiency ≥0.50.
+11. **Q1-Q3 (new): fab-grade split.** The SF/RTN ladder on a partner IGZO line, negotiated in Q1. A university NO-GO counts only if large-area α_H ≤6e-3; a GO counts only if the fab-grade split agrees within 2×.
 
 **Facilities.**
 - Purdue Birck: P. Ye group, ALD In₂O₃ and vertical all-oxide TFTs ([VLSI 2024](https://engineering.purdue.edu/~yep/Papers/VLSI2024%20T4-1_Zehao%20Lin.pdf)).
@@ -287,22 +372,23 @@ The new claim is that CDS makes oxide-TFT offset irrelevant, so the bitline-boun
 - Rates for Birck, IEN and SNF were not found. The plan uses $110-150/h (cf. [TAMU $150/h](https://aggiefab.tamu.edu/fees), [KU](https://nanofab.ku.edu/rates-fees), [UW e-beam $495/h](https://www.wnf.washington.edu/docs/WNF-Rates.pdf)).
 - CDS column chip: the shared 22FDX MPW. Backups are ChipFoundry sky130 at SkyWater ([note](https://tinytapeout.com/news/chipfoundry-sponsor/)), wafer.space GF180 ([~$7k per 1,000 ICs](https://www.crowdsupply.com/wafer-space/gf180mcu-run-3)) or MOSIS 2.0 ([ISI](https://www.isi.edu/news/80945/mosis-2-0-revives-a-legacy-rehan-kapadia-outlines-a-bold-future-for-rapid-microelectronics-prototyping/)).
 
-**Budget (standalone, ≤$1M).**
+**Budget (standalone, ≤$1M; revised after red team).**
 
-| Line | $k |
+| Line | $k (original) |
 |---|---|
-| Modelling, SPICE/TCAD | 15 |
-| Planar coupons: 3 lots × ~400 h × ~$120/h, e-beam, precursors | 150 |
-| Readout boards, CDS column die, packaging | 30 |
-| Test set (used SMU, low-noise preamp, analyser, hot chuck, probe cards) | 80 |
-| H/400 °C splits, SIMS, anneals | 25 |
-| Lateral-capacitor coupons (CNM; no-fee status [UNVERIFIED]) | 20 |
-| 4-tier stack + amp tier: 3 lots, ~1,800 h | 330 |
-| Sponsored student/postdoc, ~12 months | 120 |
-| IP: 2 provisionals → PCT + US, FTO search | 45 |
-| Lean founder stipends | 150 |
-| Contingency (~4%) | 35 |
-| **Total** (≈$300k spent by M9) | **1,000** |
+| Modelling, SPICE/TCAD, base-wafer comparator + mat floorplan | 25 (15) |
+| Planar coupons: 3 lots × ~400 h × ~$120/h, e-beam, precursors; adds on-coupon S/H, calibration SFs, series-gate and low-H gate splits | 160 (150) |
+| Readout boards, CDS column die, 15 ns pulse timing, packaging | 35 (30) |
+| Test set (used SMU, low-noise preamp, analyser, hot chuck, probe cards) | 80 (80) |
+| Cumulative 1×/2×/4× H/thermal splits, SIMS, anneals | 40 (25) |
+| Fab-grade reference split on a partner IGZO line | 50 (0) |
+| Lateral-capacitor coupons at 60 nm pitch, 4× 400 °C (CNM; no-fee status [UNVERIFIED]) | 25 (20) |
+| 4-tier stack + amp tier: 2 lots, ~1,200 h | 240 (330) |
+| Sponsored student/postdoc, ~12 months | 120 (120) |
+| IP: 2 provisionals → PCT + US, FTO opinion | 55 (45) |
+| Lean founder stipends | 150 (150) |
+| Contingency (~2%) | 20 (35) |
+| **Total** (≈$390k spent by M9; was ≈$300k) | **1,000** |
 
 Lines are ESTIMATEs at cited rates. $150k cannot pay two founders for two years; standalone assumes subsidised founders. Inside the portfolio seed, where the shared ~$275k MPW reads every coupon, PIXEL-STACK's incremental cost is ~$150k (planar) + ~$500k (4-tier).
 
@@ -310,20 +396,39 @@ Lines are ESTIMATEs at cited rates. $150k cannot pay two founders for two years;
 
 | Months | 0-3 | 2-6 | 5-9 | **9** | 6-12 | 9-18 | 18-21 | 21-24 |
 |---|---|---|---|---|---|---|---|---|
-| Work | Design, provisionals | Lot 1 noise | Lot 2: residual, retention, H | **GO/NO-GO** | Capacitor coupons | 4-tier lots | Integrated test | Data room, raise |
+| Work | Design, provisionals, G0b layout, fab-grade split agreed | Lot 1 noise + time-domain RTN | Lot 2: residual, retention, 1×/2×/4× H | **GO/NO-GO** | Capacitor coupons (4× 400 °C) | 4-tier lots (2) | Integrated test | Data room, FTO opinion, raise |
 
-**Pass/fail numbers, set in advance.**
-- **M9.** Residual ≤15 mV is GO; 15-30 mV is conditional; >30 mV is NO-GO. Leakage must be ≤34 aA after 400 °C/H₂ with ΔVt <20 mV; >101 aA is NO-GO.
-- **M12.** The capacitor must reach ≥60 fF/µm² with J ≤1e-7 A/cm² at 0.5 V after 400 °C; it fails at ≥1e-6.
+**Pass/fail numbers, set in advance (revised after red team).**
+- **Q1 (G0b).** The drawn base-wafer comparator, restore driver, DFB DAC and mux fit ≤13.8 µm² at ≤20 fF. If not, use a 4:1 mux (~24 fF, tRC ~70 ns).
+- **M9, read.** The joint per-sense 2e-7 residual (Gaussian + time-domain RTN after screen + worst-pattern coupling after two-pass DFB), on SFs of ≤0.02 µm²:
+  - ≤20 mV is **GO** (0.45 fF, 5.2-5.9×);
+  - 20-40 mV is **PLAN** (0.60 fF, 4.6×);
+  - 40-55 mV is the fallback (≤0.84 fF, ~3.8-4.6×);
+  - >55 mV is **NO-GO** for the oxide amp tier.
+- **M9, RTN sub-gate.** ≤1% of SFs carry fast-trap steps >8 mV; >3% kills the 0.60 fF plan.
+  - The reviewers' quantiles are reported too: 1e-4 step quantile ≤6 mV at 0.01 µm² (CIRC); ≤10 mV within a 15 ns gap (DEV).
+- **M9, retention.** After the 4× cumulative dose, by write-wait-read:
+  - 1e-4-tail node leakage ≤45 aA (1 s at 0.60 fF) is GO; ≤90 aA (0.5 s) is PLAN; >225 aA (<0.2 s) kills the refresh claim.
+  - The uniform ΔVt must be ≤50 mV and trimmable, with σVt ≤35 mV.
+- **M9, calibration.** Large-area α_H ≤6e-3, or the result is "process-limited" and the fab-grade split decides.
+- **M12.** In 60 nm-pitch lateral cavities after 4× cumulative 400 °C, the capacitor reaches ≥57.6 fF/µm² (EOT ≤0.6 nm) with J ≤1e-7 A/cm² at 0.5 V. It fails at <40 fF/µm² or J ≥1e-6.
 - **M21.**
-  - Signal ≥50 mV at Cs ≤0.5 fF (the concept said 55; corrected in §2.1).
-  - Residual ≤15 mV.
-  - Retention ≥1 s at 85 °C at the 1e-4 tail over ≥1e4 cells.
-  - Bottom-tier ΔVt <20 mV after the amp tier is built.
+  - Signal ≥55 mV at Cs ≤0.65 fF (model: 63.8 mV at 0.60 fF).
+  - Residual ≤40 mV.
+  - Retention ≥0.5 s at 85 °C at the 1e-4 tail over ≥1e4 cells.
+  - Bottom-tier non-trimmable ΔVt <20 mV after the amp tier is built.
+  - Per-tier defect counts reported.
 
 ---
 
 ## 6. The $1M, 24-month plan
+
+*(revised after red team)* The quarterly table below is unchanged except for three points:
+- Q1 adds gate G0b (base-wafer comparator layout ≤13.8 µm² at ≤20 fF).
+- G2 uses the revised §5 gates.
+- Q5-Q6 are the two remaining 4-tier lots.
+
+The allocation follows the revised §5 budget: experiments $775k incl. the $120k researcher; founders $150k; IP $55k; contingency $20k. The IP list is superseded by the narrower claim set in §11.
 
 **Quarterly gates** (M0 = funding close, assumed 2027-01-04).
 
@@ -399,15 +504,17 @@ A professional FTO search precedes the raise.
 
 ---
 
-## 9. Kill criteria (M0 = 2027-01-04; physics only, each with a revival condition)
+## 9. Kill criteria (M0 = 2027-01-04; physics only, each with a revival condition) (revised after red team)
 
-1. **2027-09-30.** Best-split residual >**30 mV** at 85 °C (≤0.01 µm² SFs, 65k nodes): kill the 0.45 fF/52 nm claim and fall back to ≤1 fF. Above **65 mV**: kill the oxide amp tier. *Revival:* α_H ≤1e-2 at ≤0.01 µm², or a working pillar-gated SF.
-2. **2027-09-30.** Tail leakage >**101 aA** after 400 °C/H₂, or H ΔVt ≥**50 mV** with the best barrier: kill ≥0.3 s retention at 0.45 fF. *Revival:* a Ga-free or In-poor channel with σVt ≤30 mV and ΔVt ≤20 mV.
-3. **2027-09-30.** Coupling after decision feedback >**15 mV**: kill 16-tier groups at 0.45 fF. *Revival:* a shield or air gap giving Cc/C_BL ≤0.1.
-4. **2027-12-31.** No 30-60 nm capacitor reaches ≥**40 fF/µm²** with J ≤1e-6 after 400 °C: kill the short capacitor. *Revival:* a ≤400 °C high-k at EOT ≤0.7 nm with J ≤1e-7.
-5. **2028-06-30.** 4-tier signal <**35 mV** at Cs ≤0.5 fF: move to 8-tier groups (3.74 Gb/mm², 0.51× $/bit). *Revival:* C_BL ≤0.15 fF per tier.
-6. **2028-09-30.** Bottom-tier ΔVt >**50 mV** after an amp tier is built, or tail retention <**0.06 s**: kill multi-group stacking as built. *Revival:* barriers holding ≤20 mV through two group budgets.
-7. **2028-12-31.** SF Vt drift >**150 mV** (the CDS headroom) after 1e12 reads at 85 °C: kill the oxide amp tier for DRAM endurance. *Revival:* a drift-tracking auto-zero, or a lower-PBTI composition.
+1. **2027-09-30. Read.** Joint per-sense 2e-7 residual >**40 mV** at 85 °C (SFs ≤0.02 µm², 65k nodes × ≥1e4 reads): kill the 0.60 fF/88 nm plan and fall back to ≤0.84 fF (~3.8-4.1×). Above **55 mV**: kill the oxide amp tier, which then has no edge over a bonded-OCSA long bitline. *Revival:* α_H ≤1e-2 with ≤1% of SFs above 8 mV at ≤0.02 µm², or a working pillar-gated SF. (Was >30/>65 mV at 1e-4.)
+2. **2027-09-30. RTN population.** >**3%** of SFs carry fast-trap steps >8 mV, which exceeds the spare-column budget: kill the 0.60 fF plan. *Revival:* a 0.03 µm² SF in three amp sub-layers, or a lower-trap gate stack. (New.)
+3. **2027-09-30. Retention.** Tail leakage >**225 aA** (<0.2 s at 0.60 fF) after the 4× cumulative dose with the best barrier, or non-trimmable σVt >**50 mV**: kill the refresh claim; density survives while retention ≥0.06 s. *Revival:* a Ga-free or In-poor channel, or I-12627 series-gate access with measured tail independence. (Was >101 aA after one 400 °C/H₂ step.)
+4. **2027-09-30. Coupling.** Coupling after two-pass DFB >**15 mV**: kill 16-tier groups at 0.60 fF. *Revival:* a shield or air gap giving Cc/C_BL ≤0.1.
+5. **2027-12-31. Capacitor.** No lateral-cavity capacitor at 60 nm pitch reaches ≥**40 fF/µm²** with J ≤1e-6 after 4× cumulative 400 °C: kill the short capacitor. *Revival:* a ≤400 °C high-k at EOT ≤0.7 nm with J ≤1e-7.
+6. **2028-06-30. Signal.** 4-tier signal <**45 mV** at Cs ≤0.65 fF: move to 8-tier groups. *Revival:* C_BL ≤0.15 fF per tier.
+7. **2028-09-30. Stacking.** Bottom-tier non-trimmable ΔVt >**50 mV** after an amp tier is built, or tail retention <**0.06 s**: kill multi-group stacking as built. *Revival:* barriers holding ≤20 mV through two group budgets.
+8. **2028-12-31. Endurance.** SF Vt drift >**100 mV** (the CDS headroom at a 0.8 V amp supply; was 150 mV at 1.2 V) after 1e12 reads at 85 °C: kill the oxide amp tier for DRAM endurance, or return to 1.2 V at ~70 fJ/bit. *Revival:* a drift-tracking auto-zero, or a lower-PBTI composition.
+9. **Downgrade trigger, not physics. 2027-03-31.** The drawn base-wafer comparator, restore, DFB and mux exceed 13.8 µm² at ≤20 fF: move to a 4:1 mux (~24 fF, tRC ~70 ns) or 32-tier groups.
 
 ---
 
