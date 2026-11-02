@@ -1,0 +1,96 @@
+{"id": "I-01359", "P": 5, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "helium-sited fab", "note": "Co-locating a fab with domestic helium processing is executable but helium is a small cost share; strategic resilience, not a step change."}
+{"id": "I-01808", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "wafer-scale memory slab", "note": ""}
+{"id": "I-05977", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "polymer optical backplane", "note": ""}
+{"id": "I-07315", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "CXL memory pooling market", "note": ""}
+{"id": "I-07775", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-07315", "theme": "CXL memory pooling market", "note": ""}
+{"id": "I-09174", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "I-07315", "theme": "CXL memory pooling", "note": ""}
+{"id": "I-03640", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "I-01359", "theme": "helium-sited fab", "note": ""}
+{"id": "I-02748", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "onshore memory back-end", "note": ""}
+{"id": "I-03669", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "oscillator phase memory", "note": "Parametron-style bits burn continuous oscillator power and area per bit; far worse density and standby energy than DRAM."}
+{"id": "I-03671", "P": 3, "S": 4, "N": 2, "D": 2, "dup_of": "", "theme": "monolithic 3D oxide tiers", "note": "Capacitorless IGZO tiers would break the 3D DRAM blocker, but retention, tier variability and the approach are widely pursued."}
+{"id": "I-04585", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "mask-ROM model weights", "note": "Via-ROM at 28-40 nm is far less dense than DRAM and model churn needs a new mask per model."}
+{"id": "I-08259", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "legacy memory emulation", "note": ""}
+{"id": "I-09176", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "I-01808", "theme": "wafer-scale memory slab", "note": ""}
+{"id": "I-09187", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "module companion-chip supply", "note": ""}
+{"id": "I-02739", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "e-waste DRAM harvesting", "note": ""}
+{"id": "I-02747", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "fab heat reuse", "note": ""}
+{"id": "I-03638", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "strategic DRAM reserve", "note": ""}
+{"id": "I-07806", "P": 2, "S": 5, "N": 4, "D": 2, "dup_of": "", "theme": "R2R laminated foil memory", "note": "If 800 laminated R2R TFT sheets yield, cost/GB falls >10x; sheet yield, alignment and through-stack interconnect are near-miraculous."}
+{"id": "I-06418", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM rework repair", "note": ""}
+{"id": "I-09172", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "defensive patent pool", "note": ""}
+{"id": "I-07329", "P": 3, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "modular fab franchise", "note": "10k wpm DRAM modules lose scale economics; franchising tacit yield know-how is the real doubt."}
+{"id": "I-00441", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "BEOL memory-tier foundry", "note": ""}
+{"id": "I-00915", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "capacitor mold process", "note": ""}
+{"id": "I-00918", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "AAO capacitor mold", "note": "Self-ordered pores do not register to storage-node contacts; alignment is the key doubt."}
+{"id": "I-00427", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fab tool leasing", "note": ""}
+{"id": "I-02744", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "vacuum-integrated processing", "note": ""}
+{"id": "I-05968", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "kerfless silicon foils", "note": ""}
+{"id": "I-04555", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-09176", "theme": "wafer-scale memory slab", "note": ""}
+{"id": "I-04105", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "late product differentiation", "note": ""}
+{"id": "I-02741", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "used DRAM certification", "note": ""}
+{"id": "I-03202", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "maskless e-beam personalization", "note": ""}
+{"id": "I-03210", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reworkable HBM stack", "note": ""}
+{"id": "I-04592", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "near-memory processing", "note": ""}
+{"id": "I-00422", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-bonded periphery", "note": "Xtacking-style cell-on-periphery bonding is already pursued for 3D DRAM."}
+{"id": "I-04571", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "flash weight streaming", "note": "Flash bandwidth limits decode-heavy inference; similar to LLM-in-a-flash and ZeRO-Infinity work."}
+{"id": "I-07813", "P": 2, "S": 5, "N": 3, "D": 2, "dup_of": "", "theme": "racetrack in head fabs", "note": "Head-fab reuse is clever, but vertical racetrack has stalled for 15+ years on pinning and shift errors."}
+{"id": "I-09195", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "retention-aware refresh", "note": "Variable retention time makes boot-time profiling unreliable; RAIDR-class idea."}
+{"id": "I-10082", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "high-k capacitor dielectric", "note": ""}
+{"id": "I-06430", "P": 4, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "DRAM PUF provenance", "note": ""}
+{"id": "I-05978", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "additive tool spares", "note": ""}
+{"id": "I-10537", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-07329", "theme": "modular fab cells", "note": ""}
+{"id": "I-02755", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "subtractive Mo metallization", "note": ""}
+{"id": "I-05487", "P": 3, "S": 2, "N": 3, "D": 1, "dup_of": "I-07329", "theme": "modular fab franchise", "note": ""}
+{"id": "I-01829", "P": 2, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "multi-level analog gain cell", "note": "256 levels against kT/C noise and leakage drift is near-miraculous; 2-3 bits/cell more realistic; latency leaves DRAM class."}
+{"id": "I-08253", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "open DRAM PDK", "note": ""}
+{"id": "I-10565", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "multilayer interdigitated capacitor", "note": "MLCC-style stack contacted by selective recess scales C with layers, not AR; per-cell isolation of the stack is the doubt."}
+{"id": "I-10540", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "shared array masks", "note": ""}
+{"id": "I-04576", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-03638", "theme": "strategic DRAM reserve", "note": ""}
+{"id": "I-10552", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "dice-anywhere tile array", "note": ""}
+{"id": "I-05508", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "perovskite capacitor stack", "note": ""}
+{"id": "I-11028", "P": 4, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "retired GPU memory reuse", "note": "Network links cut HBM bandwidth to ~50 GB/s and idle GPU power per GB is poor."}
+{"id": "I-08738", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "noble-gas-free fab", "note": ""}
+{"id": "I-10564", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "open-hardware fab tools", "note": ""}
+{"id": "I-06437", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "depreciated-node bits", "note": ""}
+{"id": "I-06872", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "synthetic quartz crucibles", "note": ""}
+{"id": "I-11482", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "remote epitaxy layer transfer", "note": ""}
+{"id": "I-03673", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "OTS selector-only memory", "note": ""}
+{"id": "I-05040", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "relaxed tool maintenance", "note": ""}
+{"id": "I-01362", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "BCP DSA capacitor array", "note": ""}
+{"id": "I-08733", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-01362", "theme": "BCP DSA capacitor array", "note": ""}
+{"id": "I-07317", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "legacy demand on old lines", "note": ""}
+{"id": "I-03188", "P": 2, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "spherical silicon fab", "note": ""}
+{"id": "I-07321", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "DRAM futures market", "note": ""}
+{"id": "I-10090", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "3D DRAM epi service", "note": ""}
+{"id": "I-01378", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "legacy DRAM incentives", "note": ""}
+{"id": "I-04128", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "independent reliability scorecard", "note": ""}
+{"id": "I-09184", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "DRIE trench DRAM", "note": ""}
+{"id": "I-00449", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "Cu replaces W", "note": ""}
+{"id": "I-09619", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "single-electron sense amp", "note": ""}
+{"id": "I-08719", "P": 3, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "argon-free crystal growth", "note": ""}
+{"id": "I-10571", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "deuterium retention anneal", "note": ""}
+{"id": "I-00882", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-08253", "theme": "open DRAM PDK", "note": ""}
+{"id": "I-05023", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "helium substitution", "note": ""}
+{"id": "I-03658", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "logic gain-cell eDRAM", "note": ""}
+{"id": "I-05038", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "error-tolerant DRAM grade", "note": ""}
+{"id": "I-01357", "P": 4, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-edge recovery", "note": ""}
+{"id": "I-06894", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "DNA-templated lithography", "note": ""}
+{"id": "I-08262", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "KV-cache compression", "note": ""}
+{"id": "I-11029", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "socketed memory mandate", "note": ""}
+{"id": "I-00905", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-01362", "theme": "BCP DSA capacitor array", "note": ""}
+{"id": "I-03657", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "cold-page tiering", "note": ""}
+{"id": "I-10574", "P": 5, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "shared university pilot process", "note": ""}
+{"id": "I-05958", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "organic HBM interposer", "note": ""}
+{"id": "I-02279", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "bad-row retirement persistence", "note": ""}
+{"id": "I-10113", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "ferroelectric domain-wall memory", "note": ""}
+{"id": "I-08727", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "helium-free leak detection", "note": ""}
+{"id": "I-09170", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "complementary e-beam lithography", "note": ""}
+{"id": "I-01828", "P": 3, "S": 4, "N": 3, "D": 3, "dup_of": "", "theme": "cryogenic stacked 1T0C", "note": "77 K collapses leakage enabling capacitorless stacked poly-Si; cooling overhead and system adoption are the doubts."}
+{"id": "I-05043", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-05038", "theme": "error-tolerant DRAM grade", "note": ""}
+{"id": "I-00453", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-10537", "theme": "modular fab cells", "note": ""}
+{"id": "I-02733", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "expired-patent DRAM flow", "note": ""}
+{"id": "I-11452", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-05038", "theme": "error-tolerant DRAM grade", "note": ""}
+{"id": "I-09625", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "glass interposer TGV", "note": ""}
+{"id": "I-07319", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "known-good-die reconstitution", "note": ""}
+{"id": "I-08722", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "thermal atomic-layer etch", "note": ""}
+{"id": "I-05485", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-08253", "theme": "open DRAM PDK", "note": ""}
