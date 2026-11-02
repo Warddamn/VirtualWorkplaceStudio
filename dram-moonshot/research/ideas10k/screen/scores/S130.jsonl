@@ -1,0 +1,105 @@
+{"id": "I-11766", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "standby plate-voltage shift", "note": "Plate step relieves one polarity's junction field; benefit limited to self-refresh and other polarity's margin must be checked."}
+{"id": "I-11767", "P": 2, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "strained liner GIDL", "note": "Strain shifts bandgap only slightly; claimed 2-3x GIDL cut doubtful."}
+{"id": "I-11768", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "thin-film TEC HBM", "note": "On-chip TECs studied; poor COP adds net heat to stack."}
+{"id": "I-11769", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "content-prior DUE decoding", "note": "Close to software-defined ECC (SWD-ECC) art; 10x raw-BER claim overstated."}
+{"id": "I-11770", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "dedup twin-copy repair", "note": "Mirror only highly shared pages; small, cheap protection gain."}
+{"id": "I-11771", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "KV-cache recompute repair", "note": "CRC-only KV blocks repaired by recompute instead of refetch; saves ECC overhead in one segment."}
+{"id": "I-11772", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "restore-verify sense amp", "note": "Per-column comparator in tight SA stripe is costly; tWR tail rescue plausible."}
+{"id": "I-11773", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "MAC-as-ECC trial flip", "note": "Similar to Synergy (MAC-ECC co-design) in secure memory literature."}
+{"id": "I-11774", "P": 4, "S": 1, "N": 1, "D": 2, "dup_of": "", "theme": "cell-cap decap reuse", "note": "DRAMs already use array-type capacitors as decoupling."}
+{"id": "I-11775", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "weak-row boosted restore", "note": "Per-row overdrive extends weak-row retention; modest refresh savings."}
+{"id": "I-11776", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "tAggON cap RowPress", "note": "Limiting row-open time already suggested by RowPress authors; controller demo easy."}
+{"id": "I-11777", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "strike-detector targeted scrub", "note": "SRAM particle detectors exist; DRAM soft errors are minor contributor."}
+{"id": "I-11778", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "contact forming-pulse repair", "note": "ReRAM-style breakdown of contact interfacial oxide; risk of damaging access device or capacitor."}
+{"id": "I-11779", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "NC-FET access transistor", "note": "Negative-capacitance FET widely pursued; hysteresis-free steep slope unproven."}
+{"id": "I-11780", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "junctionless access transistor", "note": "Junctionless DRAM transistors already studied."}
+{"id": "I-11781", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "memory fault-injection hardening", "note": "Fault injection for SDC hardening already practiced by hyperscalers."}
+{"id": "I-11782", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "EXISTING:periodic polarity flipping", "theme": "SA true/complement swap", "note": "Periodic data-polarity swap to balance SA BTI aging."}
+{"id": "I-11783", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "asymmetric-leakage dielectric", "note": "Asymmetric MIM leakage known; helps one polarity at expense of other."}
+{"id": "I-11784", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hammer-spec labeling policy", "note": "Independent lab can publish HCfirst scorecards as pilot."}
+{"id": "I-11785", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "per-cell HCI Vt trim", "note": "Hot-carrier stress also creates interface traps that can raise GIDL/TAT leakage."}
+{"id": "I-11786", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "split buried wordline", "note": "Two series gates in a 6F2 cell; drive and area cost unclear."}
+{"id": "I-11787", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "vapor-HF mold release", "note": "MEMS-style stiction-free release; unsupported 75:1 pillars still face later-process stress."}
+{"id": "I-11788", "P": 4, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "dry metal-oxide resist", "note": "Dry resist already commercial (Lam)."}
+{"id": "I-11789", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "etchback planarization", "note": "Old pre-CMP technique; scratch benefit minor."}
+{"id": "I-11790", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "antenna diodes plasma cleans", "note": "Antenna diodes standard practice."}
+{"id": "I-11791", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "raised junction water reclaim", "note": "Lifts junction from contaminated surface to tolerate reclaimed water."}
+{"id": "I-11792", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "thick-oxide hot-rated DRAM", "note": "115 C at 64 ms needs ~8x leakage cut; thicker oxide costs drive."}
+{"id": "I-11793", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "H-radical pre-contact clean", "note": "Dry pre-clean modules already exist."}
+{"id": "I-11794", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "cryo aerosol cleaning", "note": "Cryogenic aerosol cleaning known since 1990s."}
+{"id": "I-11795", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "GCIB hole-bottom clean", "note": "Cluster beam reach into 70:1 holes uncertain."}
+{"id": "I-11796", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "stealth plasma dicing", "note": "Already used for thin HBM dies."}
+{"id": "I-11797", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "subtractive Ru bitlines", "note": "Subtractive Ru widely pursued; DRAM bitlines not Cu damascene."}
+{"id": "I-11798", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "thermal dummy TSVs", "note": "Thermal TSVs known in 3D stacking."}
+{"id": "I-11799", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "silicon-on-nothing junction", "note": "SON known; local void under storage node is a twist."}
+{"id": "I-11800", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "sealed nitrogen DIMMs", "note": "Hermetic module enclosures; niche corrosion fix."}
+{"id": "I-11801", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "fluxless hybrid bonding", "note": "Already mainstream direction for HBM."}
+{"id": "I-11802", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "passing-gate isolation implant", "note": "Passing-gate mitigation via isolation doping studied in literature."}
+{"id": "I-11803", "P": 5, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "bevel-edge plasma clean", "note": "Commercially available."}
+{"id": "I-11804", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "metrology-gated cleans", "note": "Skipping 90% of cleans carries yield risk; data-driven strategy."}
+{"id": "I-11805", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "cold-climate memory pods", "note": "Cold siting known for datacenters; CXL pooling twist."}
+{"id": "I-11806", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "stencil-mask halo implant", "note": "Stencil masks cannot resolve storage-node pitch."}
+{"id": "I-11807", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ASD self-aligned landing pads", "note": "Area-selective deposition widely pursued."}
+{"id": "I-12186", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "oxygen-reservoir self-healing dielectric", "note": "Oxygen migration in high-k usually forms filaments rather than resealing."}
+{"id": "I-12187", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "cellular-automaton refresh decoder", "note": "Toom-rule local correction in refresh path; needs 2D parity layout and per-column write-back logic."}
+{"id": "I-12188", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "rank-modulation DRAM cells", "note": "Rank modulation known in flash; tail cells leak 100x faster so order not preserved."}
+{"id": "I-12189", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hammer pattern-signature CAM", "note": "Shape-based detection; adaptive attackers may evade signatures."}
+{"id": "I-12190", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "EXISTING:fleet fault prediction", "theme": "spatial weak-cell halo", "note": "Spatial-cluster prediction and preemptive remap of weak cells."}
+{"id": "I-12191", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "trap-layer shadow imprint", "note": "Trap layer under junction may itself add leakage; weak passive imprint."}
+{"id": "I-12192", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "liquid-metal-core microbumps", "note": "Gallium alloys attack most metals; sealing at microbump scale hard."}
+{"id": "I-12193", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "thermal-aware page placement", "note": "Thermal-aware allocation known; in-die gradients small."}
+{"id": "I-12194", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "rotating mat stress recovery", "note": "BTI recovery real but array lifetime drift is minor."}
+{"id": "I-12195", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "backside crack-arrest grid", "note": "Designed trench grid confines cracks in thinned dies."}
+{"id": "I-12196", "P": 4, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "address-epoch folded ECC", "note": "Address-in-ECC known; epoch counters need controller storage."}
+{"id": "I-12197", "P": 4, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "space-weather adaptive scrubbing", "note": "Ties scrub rate to neutron-monitor feeds; small savings."}
+{"id": "I-12198", "P": 3, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "droop early-warning sense stall", "note": "Small guard-band gain."}
+{"id": "I-12199", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrolyte self-healing contacts", "note": "Cu/Ag dopants threaten DRAM retention via contamination."}
+{"id": "I-12200", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "underground memory halls", "note": "Soft errors a small fraction of DRAM failures."}
+{"id": "I-12201", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "reliability cat bonds", "note": "Parametric insurance prices tail risk of relaxed-spec DRAM."}
+{"id": "I-12202", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "EXISTING:aggressor quarantine", "theme": "hot-page spacing allocator", "note": "Guard-spacing of hot rows; OS lacks physical row adjacency."}
+{"id": "I-12203", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "EXISTING:sense-margin erasure flags", "theme": "coupling-aware reliability flags", "note": "Neighbor-pattern coupling kernel flags low-reliability bits for ECC."}
+{"id": "I-12204", "P": 3, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "MTJ thermal-history recorder", "note": "Exchange-bias MTJs record unpowered heat; needs MTJ in DRAM BEOL."}
+{"id": "I-12205", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wordline delay thermometry", "note": "Needs ps-resolution TDCs per line."}
+{"id": "I-12206", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "delay tomography TSV test", "note": "Sparse inversion locates degrading joints."}
+{"id": "I-12207", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "dithered low-swing sensing", "note": "Dithering cannot beat averaging limits; few-mV signals at 0.25 V array doubtful."}
+{"id": "I-12208", "P": 3, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "predicted-value check-bit confirm", "note": "Confirm prediction by stored check bits only; hash collision false-confirm risk."}
+{"id": "I-12209", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "deferred full restore", "note": "Restore truncation known (HPCA'16); adiabatic payback twist."}
+{"id": "I-12210", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "end-to-end link-storage code", "note": "Link errors eat storage ECC budget; low-swing known."}
+{"id": "I-12211", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "Razor near-threshold periphery", "note": "Razor known; near-threshold decoders add latency."}
+{"id": "I-12212", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "single-segment codeword activation", "note": "Fine-grained activation known (SSA, FGDRAM); symbol alignment is twist."}
+{"id": "I-12213", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "wide-slow CAC links", "note": "Wide-slow buses and crosstalk-avoidance codes known."}
+{"id": "I-12214", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cascaded bitline charge recycling", "note": "Charge sharing cascades yield ~2x, not 10x."}
+{"id": "I-12215", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "restoreless consume-once reads", "note": "Skip restore for dead data with poison tagging; whole-row granularity limits."}
+{"id": "I-12216", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "back-gate low-swing wordline", "note": "Small back-gate swing needs strong coupling, negating CV2 gain."}
+{"id": "I-12217", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "pulse-position I/O", "note": "PPM/time-based signaling known."}
+{"id": "I-12218", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "avalanche-gain bitline preamp", "note": "Impact ionization needs high fields and is noisy at low voltage."}
+{"id": "I-12219", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "per-SA offset trim", "note": "Offset-cancelling SAs known; 0.3 V latching speed doubtful."}
+{"id": "I-12220", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "erasure-coded hybrid-bond lanes", "note": "Gain mostly from hybrid bonding itself; coding tolerates dead bonds."}
+{"id": "I-12221", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "LC resonant bitline restore", "note": "On-die inductors low Q; timing mismatch with restore."}
+{"id": "I-12222", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "constant-line bypass bitmap", "note": "Zero-line bitmaps known."}
+{"id": "I-12223", "P": 1, "S": 3, "N": 5, "D": 2, "dup_of": "", "theme": "electro-optic storage-node readout", "note": "Pockels index change from fC nodes is ~1e-6; row-wide optical detection implausible, though concept unseen."}
+{"id": "I-12224", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "precharge-free delta sensing", "note": "Floating bitline drift and leakage make delta references unreliable."}
+{"id": "I-12225", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "shared proofreading sense amps", "note": "Tiny latches plus pooled re-sense; latch decision may disturb bitline charge."}
+{"id": "I-12226", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "noise-null-timed sensing", "note": "Offset, not periodic noise, limits signal."}
+{"id": "I-12227", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "backside global datalines", "note": "Backside routing under array; process heavy."}
+{"id": "I-12606", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-11769", "theme": "content-prior DUE decoding", "note": "Same as I-11769."}
+{"id": "I-12607", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "I-11770", "theme": "dedup twin-copy repair", "note": "Same as I-11770."}
+{"id": "I-12608", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "Wyner-Ziv side-info ECC", "note": "Stale checkpoint as decoder side info; lines may differ heavily from checkpoint."}
+{"id": "I-12609", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reverse-current EM healing", "note": "EM reversibility known."}
+{"id": "I-12610", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "I-11771", "theme": "lineage recompute repair", "note": "Same as I-11771."}
+{"id": "I-12611", "P": 4, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "weak-bit symbol herding", "note": "Permutation network concentrates known weak bits into one RS symbol."}
+{"id": "I-12612", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-11775", "theme": "weak-row boosted restore", "note": "Same as I-11775."}
+{"id": "I-12613", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-11766", "theme": "standby plate-voltage shift", "note": "Same as I-11766."}
+{"id": "I-12614", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "piezo-strained access transistor", "note": "Piezo films unlikely to produce strain for 60 mV Vt shift."}
+{"id": "I-12615", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "I-11779", "theme": "NC-FET access transistor", "note": "Same as I-11779."}
+{"id": "I-12616", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "Si-28 enriched wafers", "note": "Isotopic Si for thermal tried before; ~10% conductivity gain."}
+{"id": "I-12617", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11768", "theme": "thin-film TEC HBM", "note": "Same as I-11768."}
+{"id": "I-12618", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "inductive spare links for TSVs", "note": "ThruChip links as TSV spares."}
+{"id": "I-12619", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-11773", "theme": "MAC-as-ECC trial flip", "note": "Same trial-flip MAC mechanism as I-11773, applied to pointers."}
+{"id": "I-12620", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "replica cross-check repair", "note": "Cross-replica SDC checking already practiced."}
+{"id": "I-12621", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "pinned-well memory cell", "note": "CIS pinned wells give long retention in non-EUV fabs; 4-8x larger cell hurts cost/bit."}
+{"id": "I-12622", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "isothermal stack dithering", "note": "Spends power to cut thermal cycling fatigue."}
+{"id": "I-12623", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "robust-PCA weight scrubbing", "note": "Weights not strongly low-rank; outlier detection simpler."}
+{"id": "I-12624", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "periphery photon shielding", "note": "Hot-carrier photon flux likely negligible for retention."}
+{"id": "I-12625", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "PMOS hole-storage arrays", "note": "Hole-based disturb weaker is unproven; drive penalty."}
+{"id": "I-12626", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "EXISTING:sub-spec die salvage", "theme": "complementary die pairing", "note": "Pairs sub-spec dies with disjoint fault symbols."}

@@ -1,0 +1,105 @@
+{"id": "I-11724", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "exclusive multi-layer caching", "note": "Exclusive/DEMOTE caching known; virtio ownership ring is a practical cross-layer twist."}
+{"id": "I-11725", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "range translation tlb", "note": "Range TLBs/direct segments are known research; needs new MMU hardware."}
+{"id": "I-11726", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "receiver-driven transport buffers", "note": "Homa-style grants reframed as host buffer-memory reduction."}
+{"id": "I-11727", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "nvme-to-hbm direct load", "note": "GPUDirect Storage exists; cuts host DRAM on GPU servers."}
+{"id": "I-11728", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "retrieval-offloaded knowledge", "note": "RETRO-fitting known; moves knowledge from weights to NAND."}
+{"id": "I-11729", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "price-driven eviction horizon", "note": "Gray five-minute rule fed live prices; simple, deployable."}
+{"id": "I-11730", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "header-free object spans", "note": "BiBoP-style header elimination is old art."}
+{"id": "I-11731", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "memory-aware op scheduling", "note": "Peak-memory scheduling and arena coloring common in ML compilers."}
+{"id": "I-11732", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "single-copy dram replication", "note": "RAMCloud-like; hot-set manifest for failover warmup is minor twist."}
+{"id": "I-11733", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "zero-deserialization access", "note": "Cap'n Proto/FlatBuffers widely used."}
+{"id": "I-11734", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "microservice process fusion", "note": "Similar to Service Weaver-style colocated deployment."}
+{"id": "I-11735", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "vocabulary pruning", "note": "Vocab trimming known; modest total weight savings."}
+{"id": "I-11736", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "stranded reservation reclaim", "note": "Config/kernel hygiene; known practice."}
+{"id": "I-11737", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "checkpoint-migrate on oom", "note": "CRIU escape hatch lets requests be median-sized; migration latency is the doubt."}
+{"id": "I-11738", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "kahan-compensated bf16 weights", "note": "Compensated bf16 training known; ~19% gain."}
+{"id": "I-11739", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "database cracking", "note": "Idreos cracking is established research."}
+{"id": "I-11740", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "pageable rdma registration", "note": "NIC on-demand paging already shipped."}
+{"id": "I-11741", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "provable stream state expiry", "note": "Interval joins with watermarks exist in Flink."}
+{"id": "I-11742", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "adaptive collection selection", "note": "Chameleon/CoCo-style collection switching known."}
+{"id": "I-11743", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "speculation-for-capacity", "note": "Little's-law reframing; gains shrink at large batch."}
+{"id": "I-11744", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "sliding-window kv retrofit", "note": "Interleaved local/global attention known; retrofit quality risk."}
+{"id": "I-11745", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "unikernel microvms", "note": "Unikraft-class unikernels known."}
+{"id": "I-11746", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "state-in-connection-id lb", "note": "QUIC-LB draft already encodes routing in CIDs."}
+{"id": "I-11747", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "cipher-permutation shuffle", "note": "Keyed Feistel permutation removes shuffle buffers; host-RAM claim inflated."}
+{"id": "I-11748", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "line-buffer sensor streaming", "note": "Row-streaming CNN dataflow known in accelerators; niche edge DRAM."}
+{"id": "I-11749", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "pacing replaces deep buffers", "note": "Buffer-sizing debate well studied; testbed cost tight."}
+{"id": "I-11750", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "reversible fine-tuning", "note": "MEFT-style reversible conversion known; healing quality risk."}
+{"id": "I-11751", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "sidecarless service mesh", "note": "Cilium/Istio ambient already do this."}
+{"id": "I-11752", "P": 3, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "shared webview runtime", "note": "Tauri-like; API compatibility for unmodified Electron apps is hard."}
+{"id": "I-11753", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "incremental view maintenance", "note": "Materialize/Feldera-style IVM known."}
+{"id": "I-11754", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hbm-only liquid nodes", "note": "Xeon Max HBM-only mode exists; water angle is new framing."}
+{"id": "I-11755", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "gpu memory bin packing", "note": "MIG/MPS packing known; big win for long-tail fleets."}
+{"id": "I-11756", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "dram-less bmc", "note": "Oxide Hubris already does this; tiny share of server DRAM."}
+{"id": "I-11757", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "footprint reduction bounties", "note": "10x-threshold bounty is a cheap policy lever."}
+{"id": "I-11758", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "automatic stackless transform", "note": "CPS transformation of arbitrary blocking C/C++ is hard."}
+{"id": "I-11759", "P": 5, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "out-of-core single-node analytics", "note": "DuckDB-class out-of-core engines exist."}
+{"id": "I-11760", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "llm-to-automata distillation", "note": "WFST induction from LLM labels; coverage and quality doubtful."}
+{"id": "I-11761", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "precomputed answer cache", "note": "Semantic/response caching known; head share optimistic."}
+{"id": "I-11762", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "cohort-based ad targeting", "note": "Topics API already exists."}
+{"id": "I-11763", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "water rebates for dram", "note": "Novel policy: utilities fund DRAM avoidance as water conservation."}
+{"id": "I-11764", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multi-tenant game instance", "note": "Shared-asset multi-session engine; engine rework heavy."}
+{"id": "I-11765", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "aot native images", "note": "GraalVM native-image is mainstream."}
+{"id": "I-12144", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-11730", "theme": "header-free object spans", "note": "Same block-level class pointer header removal as I-11730."}
+{"id": "I-12145", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "log-thinned replay buffers", "note": "Age-layer stratified thinning with reweighting; niche RL memory."}
+{"id": "I-12146", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "per-binary size classes", "note": "Few-percent fragmentation gain."}
+{"id": "I-12147", "P": 4, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "padding-hole allocation", "note": "Placing owned small allocations in host padding is unusual; tiny gain."}
+{"id": "I-12148", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pressure-adaptive representations", "note": "PSI-triggered fat/lean structure conversion."}
+{"id": "I-12149", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "copy-free growable containers", "note": "Brodnik resizable arrays known."}
+{"id": "I-12150", "P": 5, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "dead stack reclaim", "note": "Low-water-mark stack trimming; small gains."}
+{"id": "I-12151", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "cold index densification", "note": "Similar to hybrid index compaction research."}
+{"id": "I-12152", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "default-field elision", "note": "Hidden-class shapes keyed by non-default fields."}
+{"id": "I-12153", "P": 5, "S": 3, "N": 2, "D": 5, "dup_of": "I-11727", "theme": "nvme-to-hbm direct load", "note": "Same as I-11727."}
+{"id": "I-12154", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-11759", "theme": "out-of-core slow lane", "note": "Same budgeted external-memory execution core as I-11759."}
+{"id": "I-12155", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "shared page-table subtrees", "note": "hugetlb PMD sharing/mshare known."}
+{"id": "I-12156", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "extent frame descriptors", "note": "Linux folio/memdesc work in progress."}
+{"id": "I-12157", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "virtual memory defragmentation", "note": "PyTorch expandable segments/GMLake exist."}
+{"id": "I-12158", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "I-11747", "theme": "cipher-permutation shuffle", "note": "Same Feistel index-permutation shuffle as I-11747."}
+{"id": "I-12159", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "per-feature history horizons", "note": "MI-decay-based window truncation per feature."}
+{"id": "I-12160", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "I-11733", "theme": "zero-deserialization access", "note": "Same as I-11733."}
+{"id": "I-12161", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "decode-to-target resolution", "note": "DCT-scaled decode known."}
+{"id": "I-12162", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "process state rebirth", "note": "Process recycling/socket takeover known."}
+{"id": "I-12163", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "ttl-segmented cache", "note": "This is Segcache (NSDI'21)."}
+{"id": "I-12164", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "lazy module loading", "note": "PEP 690/Cinder lazy imports."}
+{"id": "I-12165", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "bandwidth-sized dimms", "note": "Low-capacity RDIMMs exist; supply-chain framing."}
+{"id": "I-12166", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "transposable memory layout", "note": "GS-DRAM/RC-NVM-style dual-orientation access known."}
+{"id": "I-12167", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "sram-resident small services", "note": "GB-scale stacked SRAM costly; needs leading-edge silicon."}
+{"id": "I-12168", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-11749", "theme": "pacing replaces deep buffers", "note": "Same source-side queuing to delete switch deep buffers as I-11749."}
+{"id": "I-12169", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "event-gated frame buffers", "note": "STA/LTA tile gating; event-camera-like."}
+{"id": "I-12170", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "mram execute-in-place", "note": "XIP known; MRAM substitution for NOR."}
+{"id": "I-12171", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "fine-grained dimm interleave", "note": "Non-binary DIMMs and flex interleave exist."}
+{"id": "I-12172", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "space-bounded parallel scheduling", "note": "Blelloch PDF scheduling is classic."}
+{"id": "I-12173", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "interval mvcc gc", "note": "HANA/Steam interval GC known."}
+{"id": "I-12174", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "auto-capped leaking collections", "note": "Auto-capping changes program semantics."}
+{"id": "I-12175", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "per-cpu state slots", "note": "rseq per-CPU caches already in tcmalloc."}
+{"id": "I-12176", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "zero-copy message ownership", "note": "Singularity/Pony ownership transfer known."}
+{"id": "I-12177", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-11724", "theme": "exclusive multi-layer caching", "note": "Same exclusive cross-layer caching as I-11724."}
+{"id": "I-12178", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "static index pruning", "note": "Carmel-style static pruning is old."}
+{"id": "I-12179", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "sparse-link ann graph", "note": "Tree-plus-few-links ANN; recall risk."}
+{"id": "I-12180", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "node-level message aggregation", "note": "Hierarchical MPI aggregation known."}
+{"id": "I-12181", "P": 4, "S": 3, "N": 1, "D": 5, "dup_of": "", "theme": "model cascade serving", "note": "FrugalGPT-style cascades known."}
+{"id": "I-12182", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "zonal dram pooling", "note": "Industry already moving to zonal compute."}
+{"id": "I-12183", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "streaming ensemble moments", "note": "In-situ Welford stats (e.g. Melissa) known."}
+{"id": "I-12184", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "reduced spherical grids", "note": "Reduced grids used in NWP/AIFS."}
+{"id": "I-12185", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "working-set limit sizing", "note": "SHARDS/Senpai-style sizing known."}
+{"id": "I-12564", "P": 2, "S": 2, "N": 5, "D": 3, "dup_of": "", "theme": "catalytic scratch memory", "note": "Catalytic-space computing for real memory: borrow full pages, restore bit-exactly. Doubt: reversible-only kernels, reader stalls, crash safety."}
+{"id": "I-12565", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "distributed source-coded pages", "note": "Slepian-Wolf syndromes for near-dup pages; BP decode latency and side-info choice unclear."}
+{"id": "I-12566", "P": 2, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "certified quantized inference", "note": "Freivalds projections to gate flash fallback; single projection does not bound logit error through nonlinear layers."}
+{"id": "I-12567", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "factorized query processing", "note": "FDB-style factorized joins known."}
+{"id": "I-12568", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "coded caching multicast", "note": "Maddah-Ali-Niesen coded caching for expert/prefix blocks; needs concurrent misses."}
+{"id": "I-12569", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "in-frame free page metadata", "note": "Like HVO; ~1% gain."}
+{"id": "I-12570", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "permutation-aligned model dedup", "note": "Re-basin for storage dedup; residuals of independent models unlikely sparse."}
+{"id": "I-12571", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "implicit integrity memory encryption", "note": "Implicit integrity known; epoch keys weaken replay protection."}
+{"id": "I-12572", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "I-12150", "theme": "dead stack reclaim", "note": "Same low-water-mark stack reclaim as I-12150, plus writeback drop."}
+{"id": "I-12573", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "pde inpainting compression", "note": "PDE-based compression known for images; read-time reconstruction cost."}
+{"id": "I-12574", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "heap functional-dependency normalization", "note": "Discovering FDs among heap fields to intern dimension tuples; write splits add complexity."}
+{"id": "I-12575", "P": 3, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "implicit-edge ann ordering", "note": "Space-filling-curve neighbors known; recall cost."}
+{"id": "I-12576", "P": 4, "S": 3, "N": 2, "D": 5, "dup_of": "", "theme": "randomized activation stashing", "note": "Randomized autodiff (Oktay 2020) known."}
+{"id": "I-12577", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "compute-for-parameters tradeoff", "note": "Test-time compute scaling known."}
+{"id": "I-12578", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "diffusion lm decoding", "note": "Masked diffusion LMs exist; memory framing."}
+{"id": "I-12579", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "capability compartment tenancy", "note": "CHERI compartments known; hardware availability limited."}
+{"id": "I-12580", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "timestamp-lease coherence", "note": "Tardis applied to CXL; small capacity gain."}
+{"id": "I-12581", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "moment-resampled particles", "note": "Moment resampling loses kinetic detail; noise control is the doubt."}
+{"id": "I-12582", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "self-speculative decoding", "note": "LayerSkip/self-speculative known."}
+{"id": "I-12583", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "depth-first search kv", "note": "DFS with KV truncation is straightforward."}
+{"id": "I-12584", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "mixture-of-depths kv", "note": "Mixture-of-depths published."}
