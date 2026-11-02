@@ -131,7 +131,7 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 |---|---|---|---|
 | Density | 1.62 Gb/mm² (3.6x) | **1.14 Gb/mm² (2.5x)**; 14.1 mm² die | 1.18 Gb/mm² (2.6x), but needs CTE ≥ 0.9987 |
 | Efficiencies | slit 0.70 × periphery 0.75 | slit 0.74 (2-row strips, 100 nm replacement-metal slits) × periphery 0.75 × **staircase 0.71** × spares 0.97 × joint TAVs 0.96 | no joint TAVs |
-| Wafer cost | $5,280 ($10/plate) | **$9,050** ($25/plate + $1,500 array base incl. TFT tier + $500 joint tier) | $8,550 |
+| Wafer cost | $5,280 ($10/plate) | **$9,050** ($25/plate + $1,500 array base incl. TFT tier + $500 joint tier) | $8,600 |
 | $/GB (vs DDR5 $1.48) | $0.71 (2.1x cheaper) | **$1.74 (0.85x; yield 0.95: $1.46)** | $1.58 (0.93x) |
 | Energy per useful bit | 0.072 pJ core (no I/O) | 1.09 pJ streaming; **1.17-1.40 pJ** with a 0.5-2% random floor, I/O included (2.4-2.9x below HBM3) | same |
 | Refresh / scrub | ~191x below DDR5 | ~158x below DDR5 | same |

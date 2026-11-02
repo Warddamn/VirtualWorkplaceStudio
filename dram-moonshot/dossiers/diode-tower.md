@@ -669,26 +669,28 @@ Red-team response sources (2026-11-02): `research/sources/resp-diode-tower.jsonl
 
 *Owner response, 2026-11-02. Four reviewers (DEV, PROC, CIRC, IND) raised 16 objections, all answered in `research/redteam/responses_diode-tower.json`. Model: `models/diode-tower.py` RED-TEAM REVISIONS block and §12 of `research/stage3/diode-tower_model_output.md` (exit 0). Top-up ideas considered: I-12302 and I-12627.*
 
+Short ids elsewhere in this dossier and in the model (for example RT-CIRC-01) stand for the full ids (RT-CIRC-diode-tower-01).
+
 **Counts:** 1 REFUTED, 10 ACCEPTED-MITIGATED, 5 ACCEPTED-DOWNGRADE, 0 ACCEPTED-KILL.
 
 | Id | Severity | Disposition | One-line action |
 |---|---|---|---|
-| RT-CIRC-01 | MAJOR | ACCEPTED-MITIGATED | Base moves to the wrapped Cs (0.59 fF). The budget is restated in PIXEL-STACK units with a 20 mV RTN tail, giving 110 max tiers (52 for back-wall). G5 is ≤40 mV at 64 tiers. RTN on ≥65k FETs added |
-| RT-CIRC-02 | MAJOR | REFUTED | Refresh re-writes each level at the current temperature, so ΔT ≤ slew × interval. The offset is 0.28 mV at 64 ms and 4.4 mV in 1 s mode. A ±60 K coupon test confirms the tempco |
-| RT-CIRC-03 | MAJOR | ACCEPTED-MITIGATED | Mo replacement plates (21 Ω/sq mesh), 8-row 300 µm centre-driven segments: RC 7.2 ns, 0.1M drivers/mm² (9.6 µm² each), staircase priced (3.7% / 7.5%) |
-| RT-CIRC-04 | MINOR | ACCEPTED-MITIGATED | Guard 0.2 → 0.3 V. The wrapped plate shields neighbours (~2 mV vs 29-92 mV back-wall). 3D extraction at M0-1 and an adjacent-plate hammer test |
-| RT-DEV-01 | MAJOR | ACCEPTED-DOWNGRADE | AgOx becomes diagnostic only. Integrable anodes (RuO₂, MoOx, WOx) are tested after the cumulative flow budget, with ToF-SIMS. P 3 → 2 |
-| RT-DEV-02 | MAJOR | ACCEPTED-DOWNGRADE | Gates use measured ring leakage and activation energy, not the thick-film barrier. A Poole-Frenkel case raises the bar to 1.18-1.33 eV |
-| RT-DEV-03 | MAJOR | ACCEPTED-DOWNGRADE | Paired bottom- vs top-anode coupons, in-situ O₃ re-oxidation and a GaOx interlayer. The core-anode flip was rejected (+0.29-0.32 eV) |
-| RT-DEV-04 | MINOR | ACCEPTED-MITIGATED | G4 on the G1-passing anode with a bipolar waveform, reverse-hold leakage every decade, at 1,125 A/cm². A 20 ns write option |
-| RT-IND-01 | MAJOR | ACCEPTED-MITIGATED | Delta #1 downgraded to "probably obvious". Claim the method, geometry, wrapped tier and in-hole process. Read the claims of US 12096638 and US 2007/0183191 at M0-1 |
-| RT-IND-02 | MAJOR | ACCEPTED-MITIGATED | Recipes kept as trade secrets until process claims (TEM/SIMS-detectable) are filed with the PASS. No composition papers before the PCT |
-| RT-IND-03 | MAJOR | ACCEPTED-DOWNGRADE | $/bit 0.55× at 64 tiers (was 0.35×), ~parity with the 2032 curve. $38/tier is not ≤50% of AND-STACK or PIXEL-STACK. S 3 → 2; the role becomes the two-terminal-device hedge |
-| RT-IND-04 | MINOR | ACCEPTED-MITIGATED | FE variant dropped as the fallback and as the cross-licence premise. NO-GO money goes to a Ga₂O₃ retry and portfolio coupons |
-| RT-PROC-01 | MAJOR | ACCEPTED-DOWNGRADE | Pt, Ag and Pd excluded. Only dry- or wet-etchable anodes (Ru, Mo, W oxides). A HAR anode etch-back added to Stage B. No IGZO datum, so P falls |
-| RT-PROC-02 | MAJOR | ACCEPTED-MITIGATED | Vertical recess coupons with the real etch-back chemistry (+$30k) decide Gate A. Planar coupons become diagnostics |
-| RT-PROC-03 | MAJOR | ACCEPTED-MITIGATED | 2T top: read-select removed, one merged bitline at 121 nm (single ArFi exposure), access and gain FETs stacked as vertical CAA (IMECAS IEDM 2021). +$450 per wafer |
-| RT-PROC-04 | MAJOR | ACCEPTED-MITIGATED | Replacement-first Mo flow behind a sacrificial hole fill, so ZrO₂ and IGZO never see H₃PO₄ or WF₆. Bow-compensated stack (1.28 µm Mo: 0.24 mm at 0.3 GPa). AR ≥ 30 etch is a raise milestone |
+| RT-CIRC-diode-tower-01 | MAJOR | ACCEPTED-MITIGATED | Base moves to the wrapped Cs (0.59 fF). The budget is restated in PIXEL-STACK units with a 20 mV RTN tail, giving 110 max tiers (52 for back-wall). G5 is ≤40 mV at 64 tiers. RTN on ≥65k FETs added |
+| RT-CIRC-diode-tower-02 | MAJOR | REFUTED | Refresh re-writes each level at the current temperature, so ΔT ≤ slew × interval. The offset is 0.28 mV at 64 ms and 4.4 mV in 1 s mode. A ±60 K coupon test confirms the tempco |
+| RT-CIRC-diode-tower-03 | MAJOR | ACCEPTED-MITIGATED | Mo replacement plates (21 Ω/sq mesh), 8-row 300 µm centre-driven segments: RC 7.2 ns, 0.1M drivers/mm² (9.6 µm² each), staircase priced (3.7% / 7.5%) |
+| RT-CIRC-diode-tower-04 | MINOR | ACCEPTED-MITIGATED | Guard 0.2 → 0.3 V. The wrapped plate shields neighbours (~2 mV vs 29-92 mV back-wall). 3D extraction at M0-1 and an adjacent-plate hammer test |
+| RT-DEV-diode-tower-01 | MAJOR | ACCEPTED-DOWNGRADE | AgOx becomes diagnostic only. Integrable anodes (RuO₂, MoOx, WOx) are tested after the cumulative flow budget, with ToF-SIMS. P 3 → 2 |
+| RT-DEV-diode-tower-02 | MAJOR | ACCEPTED-DOWNGRADE | Gates use measured ring leakage and activation energy, not the thick-film barrier. A Poole-Frenkel case raises the bar to 1.18-1.33 eV |
+| RT-DEV-diode-tower-03 | MAJOR | ACCEPTED-DOWNGRADE | Paired bottom- vs top-anode coupons, in-situ O₃ re-oxidation and a GaOx interlayer. The core-anode flip was rejected (+0.29-0.32 eV) |
+| RT-DEV-diode-tower-04 | MINOR | ACCEPTED-MITIGATED | G4 on the G1-passing anode with a bipolar waveform, reverse-hold leakage every decade, at 1,125 A/cm². A 20 ns write option |
+| RT-IND-diode-tower-01 | MAJOR | ACCEPTED-MITIGATED | Delta #1 downgraded to "probably obvious". Claim the method, geometry, wrapped tier and in-hole process. Read the claims of US 12096638 and US 2007/0183191 at M0-1 |
+| RT-IND-diode-tower-02 | MAJOR | ACCEPTED-MITIGATED | Recipes kept as trade secrets until process claims (TEM/SIMS-detectable) are filed with the PASS. No composition papers before the PCT |
+| RT-IND-diode-tower-03 | MAJOR | ACCEPTED-DOWNGRADE | $/bit 0.55× at 64 tiers (was 0.35×), ~parity with the 2032 curve. $38/tier is not ≤50% of AND-STACK or PIXEL-STACK. S 3 → 2; the role becomes the two-terminal-device hedge |
+| RT-IND-diode-tower-04 | MINOR | ACCEPTED-MITIGATED | FE variant dropped as the fallback and as the cross-licence premise. NO-GO money goes to a Ga₂O₃ retry and portfolio coupons |
+| RT-PROC-diode-tower-01 | MAJOR | ACCEPTED-DOWNGRADE | Pt, Ag and Pd excluded. Only dry- or wet-etchable anodes (Ru, Mo, W oxides). A HAR anode etch-back added to Stage B. No IGZO datum, so P falls |
+| RT-PROC-diode-tower-02 | MAJOR | ACCEPTED-MITIGATED | Vertical recess coupons with the real etch-back chemistry (+$30k) decide Gate A. Planar coupons become diagnostics |
+| RT-PROC-diode-tower-03 | MAJOR | ACCEPTED-MITIGATED | 2T top: read-select removed, one merged bitline at 121 nm (single ArFi exposure), access and gain FETs stacked as vertical CAA (IMECAS IEDM 2021). +$450 per wafer |
+| RT-PROC-diode-tower-04 | MAJOR | ACCEPTED-MITIGATED | Replacement-first Mo flow behind a sacrificial hole fill, so ZrO₂ and IGZO never see H₃PO₄ or WF₆. Bow-compensated stack (1.28 µm Mo: 0.24 mm at 0.3 GPa). AR ≥ 30 etch is a raise milestone |
 
 **Redesigns adopted.**
 1. **Wrapped tier on Mo replacement plates.**
