@@ -1,0 +1,21 @@
+{"id": "I-12501", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "standard-cell memory compiler", "note": "Synthesizable standard-cell eDRAM/SRAM macros already exist in academia (OpenRAM, synthesizable gain cells)."}
+{"id": "I-12502", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "polarity-aware data inversion", "note": "Inverting rows so dominant value is discharged; cheap FPGA demo, gain limited to data-sparse workloads."}
+{"id": "I-12503", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "array-to-array wordline drive", "note": "Row buffer directly as wordline select enables indirection/multi-row activation; level-shift and pitch matching are doubts."}
+{"id": "I-12504", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "leakage-reset dynamic decoder", "note": "Leakage varies orders of magnitude over PVT; reset timing unreliable."}
+{"id": "I-12505", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "stacked-device wordline driver", "note": "Stacked thin-oxide cascode drivers are standard high-voltage-tolerant design."}
+{"id": "I-12506", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "via-programmed periphery", "note": "Structured-ASIC personalization applied to memory periphery; mask cost is minor for volume DRAM."}
+{"id": "I-12507", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "gridded periphery layout", "note": "1D gridded design rules widely used in logic and likely already in DRAM periphery."}
+{"id": "I-12508", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "rdl global wiring", "note": "Fan-out RDL replacing top metals; DRAM has few metals already, modest saving."}
+{"id": "I-12509", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "back-gate feedback latch", "note": "Back-gate cross-coupling for regeneration known in FD-SOI latches; distinct from back-gate trim."}
+{"id": "I-12510", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "hybrid sram/gain-cell column", "note": "Shared-column SRAM cache rows over gain cells; resembles hybrid eDRAM/SRAM caches."}
+{"id": "I-12511", "P": 3, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "dynamic back-bias retention", "note": "Per-mat reverse bias cuts idle leakage; ns well switching and limited FD-SOI bias range are doubts."}
+{"id": "I-12512", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "wave-pipelined decoder", "note": "Bank rate limited by tRC not decoder; wave pipelining is old art."}
+{"id": "I-12513", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "staggered sa firing", "note": "Staggered SA enable is known; random jitter adds latency for modest decap savings."}
+{"id": "I-12514", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "floating-bitline row cache", "note": "Floating bitlines as passive open row; coupling and leakage over 1 us limit, similar to SALP benefits."}
+{"id": "I-12515", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "dimm refurbishment market", "note": "Retired DIMM reuse already pursued (CXL reuse, secondary market); margin grading is incremental."}
+{"id": "I-12516", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "power-rail signaling", "note": "On-chip power-line signaling fights supply noise for tiny wire savings."}
+{"id": "I-12517", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "failed-die salvage", "note": "Sourcing DLL-fail dies from makers is the key obstacle; small supply fraction."}
+{"id": "I-12518", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "read-triggered row migration", "note": "Combines tiered-latency DRAM with row-swap hammer defense; remap table overhead."}
+{"id": "I-12519", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "sa-chain lfsr bist", "note": "Row-wide LFSR in sense latches; test-cost niche."}
+{"id": "I-12520", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "tsv keep-out reuse", "note": "KOZ-aware placement with stress orientation studied in 3D-IC literature."}
+{"id": "I-12521", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "metal-fill decap", "note": "Decap metal fill is established EDA practice."}

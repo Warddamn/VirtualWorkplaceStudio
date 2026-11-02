@@ -1,0 +1,105 @@
+{"id": "I-11976", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "shared reticle consortium", "note": "Mask cost is minor per bit at DRAM volumes; copy-exact flows across independent firms is the real hurdle."}
+{"id": "I-11977", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "minimal JEDEC profile", "note": "Periphery savings overstated; optional DDR5 features are small area. Host-side training/refresh fallback is plausible."}
+{"id": "I-11978", "P": 4, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "fab output streaming", "note": "Metals streaming transplanted to fabs; streamer absorbs price risk. Novel capital source, but streamers will price DRAM cyclicality steeply."}
+{"id": "I-11979", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "tiered supplier qualification", "note": "Field-data promotion ladder lets entrants sell low-tier immediately; buyer adoption of a shared table is the hurdle."}
+{"id": "I-11980", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "patent-challenge exclusivity", "note": "Hatch-Waxman 180-day bounty applied to DRAM patents; needs statute, and thickets mean one invalidation rarely clears a path."}
+{"id": "I-11981", "P": 5, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "inventory swap clearing", "note": "Kidney-exchange cycle clearing for mismatched DRAM; easy software pilot, gains bounded by actual mismatched inventory."}
+{"id": "I-11982", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "phantom order dedup", "note": "Hashed-PO registry to dedupe double-booking; antitrust and participation are hurdles, mechanism straightforward."}
+{"id": "I-11983", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "tool-agnostic recipe translation", "note": "Hidden chamber variables make days-long requalification doubtful; chamber matching and ML recipe transfer are known."}
+{"id": "I-11984", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "remote fab command center", "note": "Remote operations centers already exist at OEMs and fabs; tacit DRAM know-how still needs on-site depth."}
+{"id": "I-11985", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "pooled swing tools", "note": "Multi-recipe tools and pooled redundancy already common; few-percent capex gain."}
+{"id": "I-11986", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "product-mix tool balancing", "note": "Mixed-product fab loading is standard foundry practice; contamination and flow interference limit DRAM co-running."}
+{"id": "I-11987", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "used-tool export preemption", "note": "Art export-bar transplant to used tools; needs law and may provoke retaliation, but cheap if enacted."}
+{"id": "I-11988", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "node freeze depreciation", "note": "Depreciated old-node economics well known; competitors outside the compact would keep shrinking."}
+{"id": "I-11989", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "joint-liability fab lending", "note": "Group lending among competing micro-fabs is awkward; few micro-fabs exist to form groups."}
+{"id": "I-11990", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "fab completion bond", "note": "Completion guarantees and EPC wraps already exist in project finance."}
+{"id": "I-11991", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "import offset obligations", "note": "Defense offsets applied to DRAM imports; WTO and retaliation risk."}
+{"id": "I-11992", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "wafer aggregator brand", "note": "Module makers already buy wafers and blend die; presumes micro-fabs exist to supply."}
+{"id": "I-11993", "P": 4, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "yield-ramp insurance", "note": "Reinsured ramp-curve insurance is a fresh transfer; moral hazard and tiny actuarial pool are doubts."}
+{"id": "I-11994", "P": 5, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fab-shell REIT", "note": "Speculative powered shells shift ~25% capex to cheap equity; some governments already pre-build shells."}
+{"id": "I-11995", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "split-fab DRAM BEOL", "note": "Cross-fab handoff raises contamination, logistics and yield-accountability issues; logic BEOL metals differ."}
+{"id": "I-11996", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "pre-permitted fab sites", "note": "State certified-site and megasite programs already do much of this."}
+{"id": "I-11997", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "reworkable die stacks", "note": "Reversible 130C bonds conflict with 260C reflow and thermal paths; reworking 30 um die stacks is very hard."}
+{"id": "I-11998", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "quartzware reprocessing", "note": "Quartz part cleaning and refurbishment is already an industry; sacrificial skin is incremental."}
+{"id": "I-11999", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "CMP slurry recycling", "note": "Ceria slurry reuse long researched; defectivity risk limits reuse on critical layers."}
+{"id": "I-12000", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "photoresist recovery", "note": "Resist reclaim explored before; gel and contamination risk, and dispense-efficient coating already cuts waste."}
+{"id": "I-12001", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "multi-pull CZ recharge", "note": "Recharge CZ is standard in solar; prime 300 mm quality across pulls is the open question."}
+{"id": "I-12002", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "reusable crucible shell", "note": "Silica crucibles devitrify and crack on cool-down; a reusable shell must survive thermal cycling."}
+{"id": "I-12003", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "anneal-based rejuvenation", "note": "Designed-in hydrogen reservoir with depot bake; DRAM retention tail is mostly defect/GIDL, recovery uncertain."}
+{"id": "I-12004", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "module material passport", "note": "EU digital product passports cover this; small supply effect."}
+{"id": "I-12005", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "EXISTING:dimm reuse market", "theme": "residual-value guarantee", "note": "Insured resale floor is a financing variant of take-back/reuse schemes already covered."}
+{"id": "I-12006", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "EUV blank substrate reuse", "note": "Mask substrate reclaim exists for DUV; mask cost is a negligible share of bit cost."}
+{"id": "I-12007", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fab tool right-to-repair", "note": "Right-to-repair mandate for fab tools; OEM IP and export-control pushback likely."}
+{"id": "I-12008", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "shared rotable spares", "note": "OEM module exchange programs already operate; cross-fab interface standardization is the hard part."}
+{"id": "I-12009", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "electrolytic SPM regeneration", "note": "Electrolyzed sulfuric acid strip systems are commercial; chemical cost is minor per bit."}
+{"id": "I-12010", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "additive legacy spares", "note": "Third-party and 3D-printed semi spares already exist."}
+{"id": "I-12011", "P": 2, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "self-healing solder", "note": "Liquid-metal capsule self-healing circuits are known research; module life rarely limits replacement."}
+{"id": "I-12012", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "replaceable probe contactor", "note": "Repairable and membrane probe heads already exist."}
+{"id": "I-12013", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "peel-layer CMP pad", "note": "Stacked peelable pads are patented-class ideas; layer uniformity and adhesive residue are risks."}
+{"id": "I-12014", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fab decommissioning trust", "note": "Pre-funded redeployment of retiring tools; few DRAM lines retire in the U.S. to seed entrants."}
+{"id": "I-12015", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "DUV lens element reuse", "note": "Projection lens elements are custom, CaF2 degrades; scanner refurbishment already reuses whole tools."}
+{"id": "I-12016", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "yttria coating recovery", "note": "Part strip-and-respray is standard; yttrium closed loop is incremental."}
+{"id": "I-12017", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "crucible cullet recycling", "note": "Residual silicon and metal pickup in cullet are doubts; outer layer tolerates lower purity."}
+{"id": "I-12396", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "compulsory know-how transfer", "note": "Bell consent decree analog; incumbents are mostly foreign, limiting leverage over binders and engineers."}
+{"id": "I-12397", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "levy-funded process lab", "note": "SEMATECH-style consortium with checkoff funding; incumbents gain equally from results."}
+{"id": "I-12398", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "retail fab bonds", "note": "Payroll savings bonds for fabs; subsidy equivalent to cheap public lending."}
+{"id": "I-12399", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "standby surge capacity", "note": "Logic fabs lack DRAM capacitor modules; 90-day surge of a dormant DRAM flow is optimistic."}
+{"id": "I-12400", "P": 2, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "allied memory treaty", "note": "ECSC-style bloc pooling; politically very hard."}
+{"id": "I-12401", "P": 5, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "accelerated depreciation", "note": "100% bonus depreciation already exists in U.S. tax law."}
+{"id": "I-12402", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "non-recourse inventory loans", "note": "CCC-style price floor makes entrants bankable through busts; fiscal exposure in deep crashes."}
+{"id": "I-12403", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "price-indexed fab bonds", "note": "Commodity-linked bonds are known; hedging demand from buyers is plausible but untested."}
+{"id": "I-12404", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "parallel-path program", "note": "Program-management strategy; no mechanism of its own."}
+{"id": "I-12405", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "fluidic dielet assembly", "note": "Tiny dielets need their own periphery, overhead huge; DRAM redundancy already masks defects."}
+{"id": "I-12406", "P": 2, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "wafer-edge dielets", "note": "Advanced logic nodes lack eDRAM, edge fields are nonuniform; small recovered area."}
+{"id": "I-12407", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "hot-swap chamber pods", "note": "Chamber swap needs vacuum integrity and seasoning; availability gain plausible but modest."}
+{"id": "I-12408", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "CCD shift-register memory", "note": "CCD memory revived for sequential AI streaming on image-sensor lines; transfer speed and density are doubts."}
+{"id": "I-12409", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "KGD bare-die sales", "note": "Known-good-die sales already common for SiP and stacks."}
+{"id": "I-12410", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "domestic hafnium precursors", "note": "U.S. already produces Hf as Zr byproduct; tiny per-bit effect."}
+{"id": "I-12411", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "coal-plant fab siting", "note": "Coal-to-datacenter reuse widely discussed; vibration and water quality matter more for fabs."}
+{"id": "I-12412", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "x-ray proximity litho", "note": "1:1 masks at sub-20 nm pitch were why X-ray litho was abandoned."}
+{"id": "I-12413", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "licensed tool second-sourcing", "note": "Incumbent toolmakers unlikely to license; tacit build know-how limits drawings-only transfer."}
+{"id": "I-12414", "P": 5, "S": 1, "N": 1, "D": 2, "dup_of": "", "theme": "fab engineering mutual", "note": "FM Global already insures fabs with its own engineering standards."}
+{"id": "I-12415", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory-type-agile accelerator", "note": "HBM needs interposer and wide bus; one package for HBM/GDDR/LPDDR is impractical beyond LPDDR/GDDR combos."}
+{"id": "I-12416", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-11979", "theme": "neutral shared qualification", "note": "Same core as I-11979: one shared credential replaces per-buyer qualification."}
+{"id": "I-12417", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fiber delay-line memory", "note": "40 Tb/s of WDM transceivers costs more than the HBM it offloads; ~100 us latency."}
+{"id": "I-12418", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "head-per-track weight drum", "note": "Fixed-head magnetic drum streams all weights once per token; head-array cost and per-drum capacity are doubts."}
+{"id": "I-12419", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "silicon-on-sapphire gain cell", "note": "SOS and gain cells known; LED sapphire is small-diameter and Si-on-sapphire defect density hurts leakage."}
+{"id": "I-12420", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "LiNbO3 domain-wall memory", "note": "LNOI domain-wall memory is active research; density and scaling of wall conduction are unknowns."}
+{"id": "I-12421", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "multibeam storage tube", "note": "Bistable secondary-emission spots with multibeam columns; stability at 20 nm and access time are big doubts."}
+{"id": "I-12422", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "vacuum-channel access device", "note": "Field-emission off-current is low but on-current, tip reliability and density are unproven at DRAM scale."}
+{"id": "I-12423", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "2D-channel gain cell", "note": "MoS2 gain cells already researched; reuse of LED MOCVD is a supply twist."}
+{"id": "I-12424", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "skyrmion racetrack", "note": "Skyrmion racetracks widely pursued; substrate choice is incidental."}
+{"id": "I-12425", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "holographic weight store", "note": "Holographic storage pursued for decades without volume success."}
+{"id": "I-12426", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "wound-tape 3D memory", "note": "Winding roll-to-roll TFT memory gives layers without tiers; addressing wordlines across turns and TFT density are key doubts."}
+{"id": "I-12427", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "optically addressed access", "note": "Wide-gap photoconductors show persistent photoconductivity; integrating microLED wordlines per row is hard."}
+{"id": "I-12428", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "straintronic MRAM", "note": "Strain-switched nanomagnets on PMN-PT are well studied."}
+{"id": "I-12429", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "VO2 hysteresis memory", "note": "Narrow hysteresis and thermal crosstalk; global heater energy is large."}
+{"id": "I-12430", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS relay access", "note": "NEM relay memory known; contact endurance far below DRAM access counts."}
+{"id": "I-12431", "P": 4, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "domestic HPA chain", "note": "Kaolin-to-HPA projects exist; serves only speculative sapphire routes."}
+{"id": "I-12432", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "inducement prize", "note": "Standard inducement-prize design applied to non-silicon memory."}
+{"id": "I-12433", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "reusable monitor wafers", "note": "Monitor wafers are already reclaimed; non-Si monitors behave differently in Si-tuned tools."}
+{"id": "I-12434", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "edge-wired die stacking", "note": "Edge-riser stacking is old art; edge length limits I/O count vs HBM."}
+{"id": "I-12435", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "antiferromagnetic memory", "note": "CuMnAs on GaP is the standard research platform; tiny AMR readout."}
+{"id": "I-12436", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "III-V heterojunction DRAM", "note": "GaAs/AlGaAs charge-storage DRAM demonstrated in the 1990s; cost per bit poor."}
+{"id": "I-12437", "P": 5, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "domestic gallium recovery", "note": "Bayer-liquor gallium recovery projects already announced."}
+{"id": "I-12816", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "satellite supply nowcast", "note": "Fab heat and power loads are near-constant, so they may poorly track wafer starts."}
+{"id": "I-12817", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-11982", "theme": "phantom order dedup", "note": "Same core as I-11982: hashed cross-vendor order matching; PSI is an implementation detail."}
+{"id": "I-12818", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "miss-ratio-curve provisioning", "note": "SHARDS and MRC-driven provisioning known; hardware sampler is incremental."}
+{"id": "I-12819", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "verified yield-linked loans", "note": "Sustainability-linked loan structure applied to signed yield telemetry."}
+{"id": "I-12820", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "parametric supply insurance", "note": "Parametric cover for supply shocks; basis risk versus actual allocation cuts."}
+{"id": "I-12821", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "low-capacity bandwidth DIMM", "note": "Low-capacity RDIMMs already exist; x16 ECC limits RAS."}
+{"id": "I-12822", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "closed-loop EUV dose", "note": "Dose is set by stochastic defect limits, not measurable contrast; reporter dye alters resist."}
+{"id": "I-12823", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "condition-based chamber cleans", "note": "Wall-condition monitoring and endpointed cleans are known practice."}
+{"id": "I-12824", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "ESC health refurbishment", "note": "ESC refurbishment shops and health monitoring exist."}
+{"id": "I-12825", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "HAR etch endpoint", "note": "Charging-current endpoint for 75:1 holes; signal is averaged over wafer and weak."}
+{"id": "I-12826", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "capacitor metrology rework", "note": "Corona-Kelvin tools exist; stripping and redepositing 3D capacitor stacks is impractical."}
+{"id": "I-12827", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "defect-aware die placement", "note": "Per-wafer grid shifts complicate test and reticle layout for ~1% yield."}
+{"id": "I-12828", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11983", "theme": "plasma fingerprint matching", "note": "Same core as I-11983: physics-level tool characterization to substitute alternate vendors."}
+{"id": "I-12829", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "AE thin-wafer monitoring", "note": "Acoustic-emission grinding monitoring is known."}
+{"id": "I-12830", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "crucible inspection grading", "note": "Bubble mapping does not certify bulk chemical purity, which diffuses into melt."}
+{"id": "I-12831", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "site-qualification kit", "note": "Site readiness programs already measure and certify sites."}
+{"id": "I-12832", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "used-tool health certification", "note": "Used-tool refurbishers already warrant tools; standardized RUL scan is incremental."}
+{"id": "I-12833", "P": 3, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "edge exclusion reduction", "note": "Edge-yield improvement is a long-standing industry program."}
+{"id": "I-12834", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "narrow scribe lanes", "note": "In-die PCMs and stealth dicing are known; ~1-2% die gain."}
+{"id": "I-12835", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "fab idle-energy management", "note": "Tool idle modes and sub-metering are established (SEMI S23)."}
+{"id": "I-12836", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "I-11995", "theme": "split-fab DRAM BEOL", "note": "Same core as I-11995: DRAM BEOL offloaded to idle logic fabs; passport is the handoff spec."}

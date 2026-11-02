@@ -197,16 +197,20 @@ Energy value: 0.456 W × 43,830 h × 1.3 PUE = 26 kWh = **$2.60 per 64 GB over 5
 - **CXL reuse.** X-PPR (IEEE CAL 2025) repairs recycled DDR4 in a CXL device; Meta Vistara and Marvell Structera X/XA (2025-26) put retired DDR4 behind CXL. None is known to relax refresh.
 - **Neighbouring patents.** US 12,488,827 (2025, CXL hammer refresher); US 8,898,544 (weak-cell maps as erasures); Micron analog accumulators US 10,943,636 (2021), US 11,568,918 (2023), US 10,964,378.
 - **Flash soft bits.** SanDisk/WD US 11,907,545 (2024): a longer-discharge second sense yields a soft bit. The nearest analogue of the DRAM flag.
-- **Typed pages.** SHIELD (arXiv 2026): KV mantissa tolerates 1e-4 [REPORTED]; LLNL zfp fixed-rate arrays.
-- **[UNVERIFIED-PK]:** XED (ISCA 2016) on-die ECC flags; Morphable ECC and AVATAR (DSN 2015); BEER/HARP (MICRO 2020-21); Microsoft GreenSKU; HBM3 ECC severity reporting.
+- **Typed pages.** SHIELD (arXiv 2026): KV mantissa tolerates 1e-4 [REPORTED]; LLNL zfp fixed-rate arrays. Kelle (arXiv 2025) pairs relaxed eDRAM refresh with KV eviction and recomputation [REPORTED]. Flikker (ASPLOS 2011) relaxes refresh for non-critical data and EDEN (MICRO 2019) runs DNNs on approximate DRAM [UNVERIFIED-PK]. Reliability-typed data is therefore not new.
+- **Compression-funded ECC and lossy memory.** Frugal ECC (SC15) [REPORTED]; COP (ISCA 2015) and CREAM (HPCA 2017) [UNVERIFIED-PK]; AVR/MemSZ lossy memory compression (Chalmers) [REPORTED].
+- **More ECC-for-refresh.** SECRET leaky-cell ECC, -87% refresh power [REPORTED, snippet]; ECC(552,512) on gain-cell eDRAM, ~21x longer refresh (arXiv 2607.16042, preprint) [REPORTED].
+- **Flag-adjacent precedents (named by Stage 2 critics of I-11148).** Razor (MICRO 2003) flags late-settling logic with a delayed shadow latch: the circuit ancestor of the delayed-sample flag. XED (ISCA 2016) exports on-die ECC detections to the controller as chip-level erasure hints. FLY-DRAM; IBM chipkill chip marking [all UNVERIFIED-PK].
+- **Tier-orthogonal codes.** NAND RAIN across planes/dies and chipkill symbol codes; the Stage 2 innovation critic dropped I-00729 on this basis [UNVERIFIED-PK].
+- **[UNVERIFIED-PK]:** Morphable ECC and AVATAR (DSN 2015); BEER/HARP (MICRO 2020-21); Microsoft GreenSKU; HBM3 ECC severity reporting.
 
 **The genuine delta** (not found in this session's limited searches; an FTO search is still required):
-1. **A per-read sense-amp reliability flag exported across the interface**, decoded by a bounded Chase/GMD decoder. No DRAM analogue was found. NAND soft-bit sensing is the design-around risk.
+1. **A per-read sense-amp reliability flag exported across the interface**, decoded by a bounded Chase/GMD decoder. Nearest DRAM precedents: XED (chip-level detections after on-die decode, not per-bit analog confidence), static weak-cell erasure maps (US 8,898,544) and offline reduced-tRCD profiling (Solar-DRAM). A per-read, per-bit DRAM sense flag was not found, but Razor's delayed-sample latch and NAND soft-bit sensing make obviousness and design-around the main risks.
 2. **An open raw-BER device grade** defined by BER, cluster-size spectrum per codeword and VRT growth rate at a stated interval and temperature. The controller picks binary or symbol codes from the grade.
 3. **Latching-aware relaxed refresh.** Scrub sized to VRT growth, temperature-tracked intervals, RFM substitution for REF-hosted TRR, and graceful degradation when a chip dies. The novelty is the combination; each piece has precedent.
-4. **Typed pages as device code classes:** exact (BCH/RS), regenerable (CRC plus recompute), lossy-bounded (fixed-rate).
+4. **Typed pages as device code classes:** exact (BCH/RS), regenerable (CRC plus recompute), lossy-bounded (fixed-rate). Reliability-typed data has precedent (Flikker, EDEN, Kelle); the delta is only the code-class interface inside a CXL expander.
 
-**Not new:** "ECC lets refresh slow down", retention profiling, and CXL boxes for weak or old DRAM. Do not claim them.
+**Not new:** "ECC lets refresh slow down", retention profiling, reliability-typed data, compression-funded ECC, and CXL boxes for weak or old DRAM. Do not claim them.
 
 ---
 
@@ -298,7 +302,7 @@ Assume M0 = 2027-01-01.
 | Q4 (M9-12) | Bring-up on Agilex; error-injection tests reproduce the model's decoder curves | Gate 2: decoder failure curves within 2x of the model |
 | Q5 (M12-15) | 1,000 h soak at 1 s (staggered boards), commodity and reject RDIMMs | Mid-soak: 0 UE |
 | Q6 (M15-18) | Soak complete; DDR5 cross-check; contract spec v0.9; PCT filed | **Gate 3 (M16):** soak pass |
-| Q7 (M18-21) | sky130 flag latch and counters measured (δ vs offset σ; trip spread 25-110 C); OCP/CXL submission; JEDEC grade proposal draft | Flag latch passes kill #8 |
+| Q7 (M18-21) | sky130 flag latch and counters measured (δ vs offset σ; trip spread 25-110 C); OCP/CXL submission; JEDEC grade proposal draft | Flag latch passes kill #7 |
 | Q8 (M21-24) | Raise package: error atlas, soak, spec, IP, partner letters | Raise |
 
 **Budget allocation.** Experiments and hardware $408k (43%), people incl. subawards $360k (38%), IP $45k (5%), rent/insurance/travel $60k (6%), contingency $70k (7%).
@@ -315,7 +319,7 @@ Assume M0 = 2027-01-01.
 - **By M6:**
   - (2) the raw-BER grade and test method: BER plus cluster spectrum plus VRT growth, with code type and interval selected from the grade;
   - (3) latching-aware relaxed refresh: VRT-sized scrub, RFM substitution, graceful degradation.
-- **By M18:** PCT, plus (4) typed pages in a CXL device. File (5) tier-orthogonal mapping later as a continuation.
+- **By M18:** PCT, plus (4) typed pages in a CXL device. File (5) tier-orthogonal mapping later as a continuation (weak: NAND RAIN and chipkill precede it).
 - **FTO risks:**
   - SanDisk/WD soft-bit family (US 11,907,545; 11,971,829): NAND-specific per snippets; check claims.
   - US 8,898,544 (map-based erasures): design around with per-read timing flags.
@@ -369,7 +373,7 @@ M0 = 2027-01-01. Each criterion is physics or measurement; standards adoption is
 1. **By 2027-06-30 (M6): kill the commodity relaxed-refresh product** if the safe interval is <256 ms at 65 C even with RS-8, including VRT over a 1 h scrub. *Revival:* re-run the identical test on oxide (IGZO) cells, whose retention tail sits 1e3-1e4x to the right.
 2. **By M6: kill binary BCH** if >0.4% of error bits arrive in ≥3-bit clusters per codeword; **kill both line codes** if >10% of error events span more than one byte. *Revival:* chip-symbol codes in a wider side band (DDR6/LPDDR6 organisations [UNVERIFIED-PK]).
 3. **By M6: kill the SA flag latch** (provisional #1 becomes defensive) if <25% of half-charge errors are flaggable at ≤0.5σ with ≤6 false flags per error. *Revival:* CDS-derived flags on MARGIN STACK silicon.
-4. **By 2027-09-30 (M9): kill the 85 C claim** (keep 45-65 C temperature-tracking) if VRT growth is >100x static BER per day, so a 10-minute scrub cannot hold ≥0.5 s.
+4. **By 2027-09-30 (M9): kill the 85 C claim** (keep 45-65 C temperature-tracking) if measured VRT growth is so fast that a 10-minute scrub cannot hold ≥0.5 s at 85 C. In the model (lognormal tail) that needs growth above ~700x static BER per day with RS-8 or ~5,000x with BCH-12; at 100x/day a 10-minute scrub still holds 0.72 s (RS-8) to 1.3 s (BCH-12) [ESTIMATE].
 5. **By 2027-12-31 (M12): kill relaxed refresh on non-PRAC parts** if weakened victims at 1 s show HCfirst <50% of the 64 ms value *and* controller RFM at ≤8% bank time cannot hold zero flips under many-sided patterns.
 6. **By 2028-04-30 (M16): stop and diagnose before any raise** if the 1,000 h soak shows any UE or corrected errors >2x the Phase 1 model.
 7. **By 2028-07-31 (M19): kill the flag latch** if the sky130 latch needs a window >1σ of its own offset to catch ≥50% of near-threshold bits (>30 false flags per error).
@@ -379,7 +383,7 @@ M0 = 2027-01-01. Each criterion is physics or measurement; standards adoption is
 
 ## 10. Sources
 
-All URLs below are logged in `research/sources/*.jsonl` (mostly `dos-raw-ber-contract.jsonl`; others in A1, A2 and dossier logs).
+All URLs below are logged in `research/sources/*.jsonl` (mostly `dos-raw-ber-contract.jsonl`; others in A1, A2, Stage 2 critic and dossier logs).
 
 **Characterization tools and retention**
 - https://arxiv.org/pdf/2211.05838
@@ -401,6 +405,10 @@ All URLs below are logged in `research/sources/*.jsonl` (mostly `dos-raw-ber-con
 - https://users.cs.utah.edu/~rajeev/pubs/isca12.pdf
 - https://arxiv.org/pdf/2604.07396
 - https://sc22.supercomputing.org/presentation/index-870.htm
+- https://arxiv.org/pdf/2510.16040
+- https://arxiv.org/pdf/2607.16042
+- https://www.sc15.supercomputing.org/schedule/event_detail-evid=pap528.html
+- https://research.chalmers.se/en/publication/512096
 
 **Row hammer**
 - https://www.arxiv.org/pdf/2502.11745
@@ -442,4 +450,4 @@ All URLs below are logged in `research/sources/*.jsonl` (mostly `dos-raw-ber-con
 - https://allaboutcircuits.com/news/mosis-partners-with-globalfoundries-extending-40-year-prototyping-legacy
 - https://www.cmc.ca/globalfoundries-22fdx-fdsoi-22-nm-process/
 
-No-URL items: field DIMM UE rates (Schroeder 2009 and Sridharan field studies); XED, Morphable ECC, AVATAR, BEER/HARP, GreenSKU and HBM3 ECC reporting; US 8,458,568 and US 10,964,378 (cited in Stage 2 and notes without a logged URL); A2's use-phase energy estimate (internal); named researchers' affiliations marked [UNVERIFIED].
+No-URL items: field DIMM UE rates (Schroeder 2009 and Sridharan field studies); Razor, FLY-DRAM, Flikker, EDEN, COP, CREAM, NAND RAIN and chipkill chip marking (named by Stage 2 critics); XED, Morphable ECC, AVATAR, BEER/HARP, GreenSKU and HBM3 ECC reporting; US 8,458,568 and US 10,964,378 (cited in Stage 2 and notes without a logged URL); A2's use-phase energy estimate (internal); named researchers' affiliations marked [UNVERIFIED].

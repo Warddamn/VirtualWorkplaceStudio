@@ -1,0 +1,105 @@
+{"id": "I-11808", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "strain-detuned traps", "note": "Stress shifts both bands; net level offset vs Ei uncertain, cosh gain likely 2-3x not 7x."}
+{"id": "I-11809", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "isovalent vacancy trapping", "note": "Sn-V trapping proven in rad-hard detectors; new for DRAM junctions."}
+{"id": "I-11810", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "grafted spare capacitor", "note": "In-array antifuse at cell pitch is process-heavy."}
+{"id": "I-11811", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "passing-gate-free layout", "note": ""}
+{"id": "I-11812", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "wordline rail grounding", "note": ""}
+{"id": "I-11813", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "etch charging bleed", "note": ""}
+{"id": "I-11814", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "floating-body hole drain", "note": "Body ties for vertical-channel DRAM are known; gated refresh-time drain is the twist."}
+{"id": "I-11815", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "injection-free charge pumps", "note": ""}
+{"id": "I-11816", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "end-of-range defect placement", "note": ""}
+{"id": "I-11817", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "phononic trap starvation", "note": "Multiphonon emission uses local modes and many phonons; minigaps unlikely to block it."}
+{"id": "I-11818", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "SiGe residue strip", "note": ""}
+{"id": "I-11819", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "pyroelectric charge loss", "note": "Unrecognized loss term in polar HZO caps; measurable on test arrays."}
+{"id": "I-11820", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "refresh charge reservoir", "note": ""}
+{"id": "I-11821", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "gallium p-well doping", "note": "Solar B-O fix transplanted; B-O relevance at low DRAM injection levels unproven."}
+{"id": "I-11822", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "boron reactivation bake", "note": ""}
+{"id": "I-11823", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "supporter lattice insulation", "note": ""}
+{"id": "I-11824", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "isotopic spin-blocked generation", "note": "Spin-dependent share of thermal generation likely small at 85 C."}
+{"id": "I-11825", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "kickback cancellation", "note": "Plate-dip compensation is clever; per-row-group plate segmentation costly."}
+{"id": "I-11826", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Fe-B pair stabilization", "note": "Solar Fe-B knowledge applied to DRAM tail; pairs already form spontaneously."}
+{"id": "I-11827", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "refresh pausing", "note": "Refresh Pausing (Nair HPCA 2013) already proposed."}
+{"id": "I-11828", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline dwell avoidance", "note": ""}
+{"id": "I-11829", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "leakage attribution study", "note": ""}
+{"id": "I-11830", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "statistical retention sign-off", "note": ""}
+{"id": "I-11831", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "loaded retention standard", "note": ""}
+{"id": "I-11832", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "selenium surface passivation", "note": "Se-passivated Si known; survival through DRAM thermal budget doubtful."}
+{"id": "I-11833", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "dwell-triggered early refresh", "note": ""}
+{"id": "I-11834", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "STI fill residue purge", "note": ""}
+{"id": "I-11835", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "stripe-spread refresh order", "note": ""}
+{"id": "I-11836", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "covering-array retention tests", "note": ""}
+{"id": "I-11837", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "die-temperature test correction", "note": ""}
+{"id": "I-11838", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fab incident reporting", "note": ""}
+{"id": "I-11839", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "sorption evaporative cooling", "note": ""}
+{"id": "I-11840", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "extreme-value tail SPC", "note": ""}
+{"id": "I-11841", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "galvanic-safe wet clean", "note": ""}
+{"id": "I-11842", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "implanter metal contamination", "note": "Graphite/Si beamline liners already standard."}
+{"id": "I-11843", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "gentle burn-in", "note": ""}
+{"id": "I-11844", "P": 3, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "subarray refresh parallelism", "note": "Refresh-access parallelization (SARP, HPCA 2014) known."}
+{"id": "I-11845", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "wafer case-control analytics", "note": ""}
+{"id": "I-11846", "P": 5, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "sham process splits", "note": ""}
+{"id": "I-11847", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "metrology dose limit", "note": ""}
+{"id": "I-11848", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "enclosed-layout gain cell", "note": ""}
+{"id": "I-11849", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline undershoot clamp", "note": ""}
+{"id": "I-12228", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-clearing capacitor", "note": "Film-capacitor self-healing ported to high-k; clearing energy at nm scale uncertain."}
+{"id": "I-12229", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "driven-guard access", "note": "Vds-nulled hold via follower; extra devices per cell cost density."}
+{"id": "I-12230", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "bipolar access device", "note": ""}
+{"id": "I-12231", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "nonlinear-dielectric read boost", "note": "State-dependent eps turns plate pulse into read gain."}
+{"id": "I-12232", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "avalanche sense gain", "note": "Near-breakdown gain uniformity and noise across millions of sense nodes doubtful."}
+{"id": "I-12233", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-11814", "theme": "floating-body hole drain", "note": ""}
+{"id": "I-12234", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "helical-gate access", "note": "Helical trench in 12 nm pillar beyond patterning capability."}
+{"id": "I-12235", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "workload-aligned refresh", "note": ""}
+{"id": "I-12236", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "refresh-time content hashing", "note": "Uses mandatory refresh sensing as free dedup scan."}
+{"id": "I-12237", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "write-verify restore", "note": ""}
+{"id": "I-12238", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "passing-gate shield", "note": ""}
+{"id": "I-12239", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "molecular interference access", "note": "QI antiresonance off-state real; gating 0.5 eV and array integration far off."}
+{"id": "I-12240", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-11817", "theme": "phononic trap starvation", "note": ""}
+{"id": "I-12241", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "redox molecular storage", "note": "ZettaCore-style porphyrin memory already pursued; speed/endurance risk."}
+{"id": "I-12242", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electro-ionic dielectric healing", "note": "Room-temp O-ion refill of vacancy chains; reversibility unproven."}
+{"id": "I-12243", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "VRT defect state pinning", "note": "Assumes benign configuration is selectable by carrier flood; unverified."}
+{"id": "I-12244", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "barristor access", "note": "Needed 0.7 eV tuning range exceeds graphene barristors."}
+{"id": "I-12245", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11808", "theme": "strain-detuned traps", "note": ""}
+{"id": "I-12246", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "domain-wall conduction access", "note": "Erasable conducting wall as channel-free access; speed and endurance unknown."}
+{"id": "I-12247", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "thermally gated barrier", "note": "900 K per access: energy and thermal crosstalk prohibitive."}
+{"id": "I-12248", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "thyristor latch cell", "note": "T-RAM already tried; holding current and variability killed it."}
+{"id": "I-12249", "P": 2, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "crucible-free substrates", "note": ""}
+{"id": "I-12250", "P": 3, "S": 1, "N": 3, "D": 2, "dup_of": "", "theme": "isotopic thermal spreading", "note": ""}
+{"id": "I-12251", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "monolayer channel doping", "note": ""}
+{"id": "I-12252", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-11832", "theme": "selenium surface passivation", "note": ""}
+{"id": "I-12253", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "damage-free junction etch", "note": ""}
+{"id": "I-12254", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "epitaxial gate interface", "note": ""}
+{"id": "I-12255", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "microwave junction anneal", "note": ""}
+{"id": "I-12256", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "stress-decoupling layer", "note": ""}
+{"id": "I-12257", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "loadless 4T SRAM", "note": "Loadless 4T SRAM published by NEC in late 1990s."}
+{"id": "I-12258", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "oxide-free pinch-off access", "note": ""}
+{"id": "I-12259", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-11825", "theme": "kickback cancellation", "note": ""}
+{"id": "I-12260", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "shared-savings financing", "note": ""}
+{"id": "I-12261", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "acoustic charge transport access", "note": "Micron-scale SAW wells cannot address nm cells."}
+{"id": "I-12262", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "p-channel access cell", "note": ""}
+{"id": "I-12263", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "idle-energy fleet standard", "note": ""}
+{"id": "I-12264", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "leakage metrology standard", "note": ""}
+{"id": "I-12265", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "open module licensing", "note": ""}
+{"id": "I-12266", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "fluorine-free wordline metal", "note": ""}
+{"id": "I-12267", "P": 2, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "e-beam direct write", "note": ""}
+{"id": "I-12268", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "self-timed refresh sequencer", "note": ""}
+{"id": "I-12269", "P": 5, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "inline Dit SPC", "note": ""}
+{"id": "I-12648", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "repeated-sampling sense", "note": "Skipper averaging needs non-destructive charge shuttling and many cycles; latency hit."}
+{"id": "I-12649", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-12243", "theme": "VRT defect state pinning", "note": ""}
+{"id": "I-12650", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-12258", "theme": "oxide-free pinch-off access", "note": ""}
+{"id": "I-12651", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "photon-emission tail screening", "note": "fA leakage yields far too few photons to image."}
+{"id": "I-12652", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "voltage-contrast leakage decay", "note": ""}
+{"id": "I-12653", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "vacancy-quench implant", "note": "Positron-measured vacancy dose drives matched interstitial injection."}
+{"id": "I-12654", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "dielectric-absorption pre-soak", "note": "Separates slow-polarization loss from leakage; write-waveform fix."}
+{"id": "I-12655", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "rf reflectometry readout", "note": "Qubit RF readout as DC-free gain-cell read; per-line resonator cost."}
+{"id": "I-12656", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "tail-feature OPC", "note": ""}
+{"id": "I-12657", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "quantum-diamond current imaging", "note": ""}
+{"id": "I-12658", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-12264", "theme": "leakage metrology standard", "note": ""}
+{"id": "I-12659", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "high-throughput leakage test chip", "note": ""}
+{"id": "I-12660", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "wordline fall shaping", "note": ""}
+{"id": "I-12661", "P": 4, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "buried carrier collector", "note": "Deep n-well under array p-well already standard triple-well."}
+{"id": "I-12662", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-12253", "theme": "damage-free junction etch", "note": ""}
+{"id": "I-12663", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "THz junction-field mapping", "note": "LTEM as inline implant feed-forward is new."}
+{"id": "I-12664", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "low-oxygen epi array", "note": ""}
+{"id": "I-12665", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "metrology-for-IP trade", "note": ""}
+{"id": "I-12666", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-11808", "theme": "strain-detuned traps", "note": ""}
+{"id": "I-12667", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bitline leakage auto-zero", "note": "Long bitlines are limited by Cs/Cbl transfer ratio, not leakage."}
+{"id": "I-12668", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-12262", "theme": "p-channel access cell", "note": ""}

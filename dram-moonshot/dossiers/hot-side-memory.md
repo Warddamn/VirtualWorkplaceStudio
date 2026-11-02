@@ -123,7 +123,7 @@ Cell, sense and read wordline on an 8.1 fF bitline (64 x 0.08 + 3 fF): 5.7 fJ/bi
 **Watts saved per GPU.** 22 TB/s x 8 x 0.60 utilization x 0.50 traffic share x (3.95 - 0.30) pJ = **193 W**. For savings the model conservatively uses the card's 0.30 pJ/bit, not its own 0.153.
 - **Over 5 years:** 10,559 kWh at PUE 1.25, about $845 of power or $2,313 of datacenter capacity at $12/W.
 - **Range:** 77 / 193 / 347 W at 20 / 50 / 90% traffic share. At Blackwell's 8 TB/s and 50% share, only 70 W.
-- *Correction carried:* the card's ~205 W assumed 100% of traffic at full bandwidth. The 22 TB/s full-traffic bound is 563 W. **The planning figure is ~190 W.**
+- *Correction carried:* the card's ~205 W assumed 100% of traffic at Blackwell's full 8 TB/s (224 - 19 W). The 22 TB/s full-traffic bound is 563 W. **The planning figure is ~190 W.**
 
 **Other quantities.**
 - **Refresh power (89 GB, 105 C):** 2.04 W Si vs 9.7 mW oxide; hot silicon really loses availability and its retention tail.
@@ -161,19 +161,21 @@ Cell, sense and read wordline on an 8.1 fF bitline (64 x 0.08 + 3 fF): 5.7 fJ/bi
 | imec 2T0C: >400 s (IEDM 2020); >200 s at 95 C, >1e12 cycles (EDL 2025); H+O anneal (IEDM 2025) | 2020-25 | The cell |
 | IMECAS 4-tier 3 b/cell (VLSI 2026); SJTU IGO >30,000 s (AFM 2026); Kioxia/Nanya OCTRAM; SEL DOSRAM | 2019-26 | Multi-tier MLC; oxide-DRAM incumbents |
 | U. Michigan Ga-free ZTO 2T0C (>1,500 s); Purdue 3 stacked In2O3 layers on 200 mm | -, 2026-09 | Ga-free and U.S. stacking |
-| Stanford/MIT N3XT, DARPA 3DSoC; Graphcore Bow carrier [training knowledge] | 2016-23 | Monolithic memory-on-logic; a carrier with a function |
+| Stanford/MIT N3XT, DARPA 3DSoC; Graphcore Bow carrier; AP Memory VHM WoW DRAM [training knowledge] | 2016-23 | Monolithic memory-on-logic; a carrier with a function; WoW DRAM |
+| imec BEOL IGZO 2T0C eDRAM; NUS all-BEOL IGZO/MoS2 2T0C 3D cells (NUS) | 2020-25 | BEOL-compatible oxide gain cells (named by the Stage 2 critic of I-11532) |
+| Micron RAIN parity across NAND planes/dies; Chipkill symbol codes; 3D NAND bad-block management [training knowledge] | - | Erasure coding and capacity binning are established (named by the Stage 2 critic of I-00729) |
 | RAAAM Si gain-cell RAM (TSMC N2, GF FDX) | 2026 | Cache only: Si gain cells hold for microseconds to milliseconds when hot |
 | Taalas hard-wired weights (AMD acquiring) | 2026 | Competes for static weights only |
 | US 12,666,958; US 2025/0167193; US 11,676,954; US 11,430,766; US 11,114,453; US 10,340,261 | - | FTO watch list (claims not read) |
 
 **The genuine delta.** These are combinations, not new physics.
-1. **An oxide gain-cell carrier on trailing-node CMOS** in the BSPDN slot. Earlier carrier-memory ideas assumed Si DRAM, which the stage-2 critics killed on refresh at 95-105 C.
+1. **An oxide gain-cell carrier on trailing-node CMOS** in the BSPDN slot. Earlier carrier-memory ideas assumed Si DRAM, which the stage-2 critics flagged as the killer doubt (refresh at 95-105 C).
 2. **A carrier/BEOL tier split** (at most 4 BEOL tiers) that caps yield coupling. This is how the chief settled inventor disagreement #7.
-3. **Fail-soft capacity binning**: logic-side remap plus tier-orthogonal erasure codes.
-4. **Thermal-map-aware bits per cell** (new in this dossier): 2 b over cool regions and 1 b over hotspots, set by the power map and on-die sensors, with per-level reference cells.
+3. **Fail-soft capacity binning**: logic-side remap plus tier-orthogonal erasure codes. The codes and binning themselves are established (RAIN, Chipkill, NAND bad-block management); the delta is applying them so a memory defect in a logic-bonded tier costs capacity, not a logic die.
+4. **Thermal-map-aware bits per cell** (new in this dossier): 2 b over cool regions and 1 b over hotspots, set by the power map and on-die sensors, with per-level reference cells. Closest analogues: NAND SLC/MLC mode switching and DRAM temperature-compensated refresh [training knowledge].
 5. **Thermal-via fill in the tier stack sized to the logic power map**, plus a hydrogen barrier that survives backside processing.
 
-**Search gap:** no published 125 C oxide 2T0C retention or MLC drift, and no BEOL-on-logic oxide gain cell with logic-shift data.
+**Search gap:** this search (mostly snippets) found no published 125 C oxide 2T0C retention or MLC drift, and no BEOL-on-logic oxide gain cell with logic-shift data; BEOL-compatible 2T0C cells (imec, NUS) exist.
 
 ## 4. Show-stoppers and how persistence could get around them
 
@@ -346,6 +348,7 @@ All logged in `research/sources/*.jsonl`; mostly via search snippet; patent clai
 - https://sigroup.sjtu.edu.cn/files/AdvFunctMater_UltrathinOxide_DRAM_2026.pdf
 - https://www.ithome.com/0/966/543.htm
 - https://deepblue.lib.umich.edu/items/e6ac2d99-46aa-444a-bc41-2851e63c965c
+- https://shine.nus.edu.sg/2025/02/18/1t1r-and-2toc1r-igzo-mos%e2%82%82-all-beol-3d-memory-cells/
 - https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing
 - https://www.jos.ac.cn/article/doi/10.1088/1674-4926/25050019
 - https://in4.iue.tuwien.ac.at/pdfs/sispad2023/SISPAD2023_1-2.pdf

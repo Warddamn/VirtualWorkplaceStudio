@@ -20,17 +20,17 @@
 
 | Idea | Technique | Contribution |
 |---|---|---|
-| I-08763 | Failure mining | Why 1970s CCD memory died; the fix is wide-gap IGZO plus a buried channel |
-| I-10793 | Wishful thinking / ideal final result | No transistor, capacitor or contact per bit; regeneration every ~32 tiers |
+| I-08763 | Failure mining | 1970s CCD memory reborn in buried-channel IGZO |
+| I-10793 | Wishful thinking / ideal final result | No per-bit device; regeneration every ~32 tiers |
 | I-06518 | Provocation ("Po: the bit is a rumour passed down a line") | One regenerating sense amp per string |
-| I-01064 | SCAMPER-Adapt (CCD imagers) | Vertical register into a floating diffusion; its critic forced per-row slits |
-| I-04670 | Assumption inversion | 200-layer stack, one hole etch; its critic: ~2-3x cheaper than DRAM, not 100x |
-| I-04284, I-04245 | Forgotten-technology revival (CCD memory, delay lines) | NAND geometry clocked as a CCD; recirculation past a regenerator |
+| I-01064 | SCAMPER-Adapt (CCD imagers) | Vertical register; critic forced per-row slits |
+| I-04670 | Assumption inversion | 200-layer stack, one etch; critic: ~2-3x cheaper, not 100x |
+| I-04284, I-04245 | Forgotten-technology revival (CCD memory, delay lines) | NAND geometry clocked as a CCD; recirculation |
 | I-04285 | Forgotten-technology revival (IBM 650 SOAP) | Just-in-time placement compiler |
-| I-11504 | Phase B lens (B1 cell physics) | W/SiO2 plate stack, ALD oxide channel, density arithmetic |
-| I-01381 | SCAMPER-Magnify/Minify | Few-hundred-electron bits, where readout noise sets the floor |
-| I-11148 | Scarcity and constraint as engine | Decision quality at the sense amp, which becomes DFE + ECC here |
-| I-11581 | Phase B lens (B5 first principles) | Capacitor-hole racetrack, the magnetic alternate device |
+| I-11504 | Phase B lens (B1 cell physics) | Plate stack, ALD channel, density arithmetic |
+| I-01381 | SCAMPER-Magnify/Minify | Few-hundred-electron bits; readout-noise floor |
+| I-11148 | Scarcity and constraint as engine | Sense-amp decision quality (DFE + ECC) |
+| I-11581 | Phase B lens (B5 first principles) | Racetrack alternate device |
 
 **Verdicts**
 
@@ -98,14 +98,13 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 | Per-bit devices | 1 transistor + 1 HAR capacitor | none |
 | Refresh / scrub power | 11.5 mW (46 fJ/bit per 64 ms) | **0.06 mW** (20 s scrub; ~191x lower) |
 | Core read energy | (HBM3 3.44 pJ/bit incl. I/O, [RPU](https://arxiv.org/pdf/2602.18568)) | 0.072 pJ/bit (45 fJ recycled shift + 28 fJ sense) |
-| Latency | ~45 ns tRC-class, random | 0.32 µs unscheduled mean wait; 17-26 ns scheduled average |
-| Write wear | none | gate stress: >1e10 shown, 1.5e11 needed |
+| Latency | ~45 ns tRC-class, random [UNVERIFIED] | 0.32 µs unscheduled mean wait; 17-26 ns scheduled average |
 | EUV layers | Micron 0; Samsung/SK hynix 1c: 5-7 | 0 (one ArF hole lattice, 3-6 clock contacts) |
 
 **Corrections carried.**
 - **Cost.** Early idea cards claimed ~$0.05/GB ("100x"). The critic's 2-3x is right: **a CCD hole stores 64 bits; a TLC NAND hole stores ~600**.
-- **Density.** The concept's "4-8x for streaming" needs more than 200 plates or no slits. At 200 plates density is plate-limited at 3.6x.
-- **EUV.** No-EUV is parity against Micron's EUV-free 1-beta and an advantage only against EUV 1c nodes ([TrendForce](https://www.trendforce.com/news/2026/09/09/news-the-race-to-2028-samsung-sk-hynix-set-high-na-euv-timelines-for-dram-as-micron-stays-tight-lipped/)).
+- **Density.** "4-8x for streaming" needs > 200 plates or no slits; at 200 plates it is plate-limited at 3.6x.
+- **EUV.** No-EUV is parity with Micron's 1-beta and an advantage only against EUV 1c nodes ([TrendForce](https://www.trendforce.com/news/2026/09/09/news-the-race-to-2028-samsung-sk-hynix-set-high-na-euv-timelines-for-dram-as-micron-stays-tight-lipped/)).
 
 ### 2.3 Reliability target and minimum CTE
 
@@ -122,8 +121,8 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 | 98 | 3,000 e- | 0.9962 | 0.9926 |
 
 **Corrections carried.**
-1. **The physics floor is CTE ≈ 0.997, not 0.999.** The chief framed the requirement as packet survival (0.98^96 = 14%, 0.999^96 = 91%). A regenerated binary packet needs only a 6.1σ eye, which the base case reaches at **~65% worst-string survival** ((1 − 1.5 × 0.003)^98 = e^−0.44). **0.999 stays the STRONG-GO line**, since it buys 64-stage segments or 3x the worst-string spread.
-2. **DFE helps far less than claimed.** Regeneration does most of the work. DFE lowers the CTE floor only from 0.9979 to 0.9970, i.e. ~1.4x more allowed loss per transfer, because partition noise grows with deferral. The concept claimed "0.9999 → 0.999".
+1. **The physics floor is CTE ≈ 0.997, not 0.999.** The chief's packet-survival framing (0.98^96 = 14%, 0.999^96 = 91%) overstates the need: a regenerated binary packet needs only a 6.1σ eye, reached at **~65% worst-string survival** ((1 − 1.5 × 0.003)^98 = e^−0.44). **0.999 stays the STRONG-GO line** (it buys 64-stage segments or 3x worst-string spread).
+2. **DFE helps far less than claimed** ("0.9999 → 0.999"). Regeneration does the work; DFE moves the floor only 0.9979 → 0.9970 (~1.4x more loss allowed), because partition noise grows with deferral.
 3. **Readout noise is a co-equal spec.** At 15 e- the floor rises to ~0.998, and at 30 e- a 313 e- packet fails at any CTE.
 
 **Sensitivity.** Across read noise 4-15 e-, k_ws 1.0-3.0 and κ 0.05-0.3, the floor spans **0.9945-0.9993**. The worst-string factor dominates: k_ws = 3 alone means ~0.9985.
@@ -136,7 +135,7 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 - imec at 6.25 MHz, 4-phase, 25 °C: 25.7 meV × ln(4,400) = **0.216 eV**.
 - CHARGE-RIVER at a 50 MHz stage clock (6.67 ns dwell): **0.203 eV at 85 °C**, but **0.170 eV at 25 °C**.
 
-**The hard corner is fast and cool.** At 25 °C the clock probes ~46 meV deeper into the dense band tail, so the test must cover 25 °C as well as 85 °C.
+**The hard corner is fast and cool.** At 25 °C the clock probes traps ~46 meV shallower than imec's point, where the band tail is denser, so the test must cover 25 °C as well as 85 °C.
 
 **Everything hinges on one ambiguous number.** imec's IEDM 2024 abstract says "CTE >98%" ([imec](https://imec-publications.be/handle/20.500.12860/59420)) [REPORTED], without saying per transfer or end-to-end.
 
@@ -153,7 +152,7 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 
 | Median CTE | Bits/hole | Gb/mm² (× 1-beta) | $/GB | Verdict |
 |---|---|---|---|---|
-| 0.980 | 8 | 0.20 (0.5x) | $3.86 | dead |
+| 0.980 | 8 | 0.20 (0.5x) | $3.86 | NO-GO |
 | 0.990 | 16 | 0.41 (0.9x) | $2.06 | NO-GO |
 | 0.995 | 36 | 0.91 (2.0x) | $1.06 | weak |
 | **0.997** | 62 | **1.57 (3.5x)** | **$0.72** | GO |
@@ -164,15 +163,13 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 ### 2.6 Latency, bandwidth, endurance, retention and RC
 
 - **Latency.** L = t_hit + (1 − s)·T_lap/2.
-  - A 32-stage lap at 50 MHz takes 0.64 µs, so 40 ns = 15 + (1 − s) × 320 ns gives **s ≥ 92.2%**. The "phase-clock" definition (a 3.84 µs lap) would need 98-99%.
-  - Each address must be known **one lap (0.64 µs) ahead**; a decode layer takes tens of µs.
+  - A 50 MHz, 32-stage lap takes 0.64 µs: 40 ns = 15 + (1 − s) × 320 ns gives **s ≥ 92.2%** (98-99% at the 3.84 µs "phase-clock" lap). Addresses need only **one lap of lead**; a decode layer takes tens of µs.
   - **Dense 70B decode** (0.5% random floor [ESTIMATE]) averages 17 ns, and meets 40 ns even at imec's 4-6 MHz.
   - **MoE + sparse attention** (2% floor) averages 26 ns at 50 MHz, but 0.7-1.5 µs at 4-6 MHz. That is the real case for 50 MHz.
 - **Bandwidth is not the constraint.** 1.0e6 sense nodes × 50 Mb/s = **6.3 TB/s peak per die** (3.7 W core). A 70B FP8 model (batch 32, 8k context) moves 113 GB per step, i.e. 3.4 TB/s over 56 dies, or 0.9% of each die's peak.
 - **Endurance.** Never circulate continuously.
-  - Continuous lapping at 50 MHz means ~1.6e6 decisions per bit per second. That tightens the BER target ~37x and costs ~8e15 plate cycles in 5 years.
-  - **Park-and-shift** costs 32 × 30/s × 5 yr = **1.5e11 cycles**, 15x beyond imec's >1e10, and a 1e12 test (1.4 h at 200 MHz) settles it.
-  - This corrects the "refresh by circulation" claim of I-04670 and I-04245.
+  - Continuous lapping at 50 MHz (~1.6e6 decisions/bit/s) tightens the BER target ~37x and costs ~8e15 plate cycles in 5 years, which corrects the "refresh by circulation" claim of I-04670/I-04245.
+  - **Park-and-shift** costs 32 × 30/s × 5 yr = **1.5e11 cycles**, 15x beyond imec's >1e10; a 1e12 test (1.4 h at 200 MHz) settles it.
 - **Retention.** A 20 s scrub at 10% loss allows ≤ 0.25 aA per well. That is the IGZO 2T0C class ([imec 400 s cell](https://www.eejournal.com/industry_news/imec-demonstrates-capacitor-less-igzo-based-dram-cell-with-400s-retention-time/)). Thermal generation (~1e-13 e-/s) is negligible.
 - **Plate RC.** One-hole-wide rows (41 nm of W: 145 Ω/µm, 0.73 fF/µm) need a strap every ~100 µm at 50 MHz. **The critic's 5 mm word-plane RC (~160 ns) does not apply.**
 
@@ -205,15 +202,16 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 | **2026 IMW** | **imec: first vertical IGZO CCD** (3 word lines) | >4 MHz; "a few thousand" e-; CXL buffer; "~5x 2D DRAM by 2030" (claim) | [EE Journal](https://www.eejournal.com/industry_news/imec-demonstrates-the-first-3d-implementation-of-a-charge-coupled-device-for-ai-memory-applications/), [eeNews](https://www.eenewseurope.com/en/imec-taps-ccd-for-3d-cxl-memory-in-data-centres) |
 | 2026 | SanDisk + SK hynix HBF | 512 GB/stack, 1.6 TB/s read weights tier | [SanDisk](https://www.sandisk.com/company/newsroom/press-releases/2026/2026-02-25-sandisk-and-sk-hynix-begin-global-standardization-of-next-generation-memory-solution-high-bandwidth-flash-hbf), [Sovereign](https://sovereignmagazine.com/article/hbf-open-standard-ai-inference-512gb) |
 | 2026-02 | Taalas hard-wired weights + SRAM KV | Market values a static-weights tier | [Next Platform](https://www.nextplatform.com/2026/02/19/taalas-etches-ai-models-onto-transistors-to-rocket-boost-inference/) |
+| various | Art named by Stage 2 critics, not tabled above | Intel 2416/Fairchild recirculating CCD loops with a refresh amplifier per loop; CCD/bubble major-minor loops (I-04245, I-04285). Skipper CCD (Tiffenberg, PRL 2017), Hitachi PLEDM, Fossum/Gigajot QIS jots (I-01381). NAND soft-decision LDPC, Razor (MICRO 2003), XED (ISCA 2016), IBM chipkill, weak-cell erasure maps (US 8,898,544), Solar-DRAM (I-11148). Parkin racetrack (Science 2008), Schöbitz 2019 Bloch-point walls (I-11581) | [UNVERIFIED] (critic training knowledge / snippets, `stage2_results.jsonl`) |
 
 **Honest position.**
 - imec owns vertical oxide CCD memory (planar 2024, vertical 2026). The device direction is not ours to claim.
 - Patent searches found only unrelated 3D NAND hits ([US 9,935,121](https://patents.google.com/patent/US9935121), [US 8,921,182](https://patents.google.com/patent/US8921182), [US 11,737,274](https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11737274)). That is a negative result, not clearance.
 
-**The genuine delta** (none of these was found in prior art):
+**The genuine delta** (none was found as stated, but the art above narrows each one):
 1. **A buried oxide heterochannel CCD.** The core/barrier offset is ≥ 0.3 eV, with Ga-free variants.
-2. **A partition-noise-aware DFE sense node for memory decisions**, with per-string kernels.
-3. **Two-ended ≤ 32-stage strings with park-and-shift and temperature-compensated clocking.** Clocking slower when cold holds E_w constant.
+2. **A partition-noise-aware DFE sense node for memory decisions**, with per-string kernels. CTI correction (LSST, RE43,639) and decision-quality sensing (soft-decision LDPC, XED, erasure maps) are prior art; the claim is the CCD-packet DFE with a partition-noise threshold.
+3. **Two-ended ≤ 32-stage strings with park-and-shift and temperature-compensated clocking.** Clocking slower when cold holds E_w constant. Per-loop regeneration itself is 1970s CCD-memory art (Intel 2416 refresh amplifiers).
 4. **A lead-time LLM placement controller** that guarantees ≥ one lap of lead and sizes the front buffer from the measured random floor. Broad placement claims are dead (SOAP, ShiftsReduce).
 
 ---
@@ -222,10 +220,10 @@ All values come from `models/charge-river.py`. Every input is listed in its outp
 
 | # | Show-stopper | Number | Workaround path |
 |---|---|---|---|
-| 1 | **Oxide traps cap CTE at speed** | Need ≥ 0.9970 at 150 MT/s, 25 and 85 °C. The per-transfer reading gives only 0.92-0.995 even buried | Buried heterochannel (≥ 0.3 eV); 15-30% fat zero; H-lean ≤ 400 °C anneal; temperature-compensated clocks; burst clocking. [SPECULATIVE] a mid-stack oxide-TFT regenerator tier every 10-16 stages, so a CTE ~0.99 device keeps its plate count |
+| 1 | **Oxide traps cap CTE at speed** | Need ≥ 0.9970 at 150 MT/s, 25 and 85 °C. The per-transfer reading gives only 0.92-0.995 even buried | Buried heterochannel (≥ 0.3 eV); 15-30% fat zero; H-lean ≤ 400 °C anneal; temperature-compensated clocks; burst clocking. [SPECULATIVE] a mid-stack oxide-TFT regenerator tier every ~8 stages at CTE 0.990 (~13 at 0.993; model segment limit), so a CTE ~0.99 device keeps its plate count |
 | 2 | **Few-hundred-electron packets** | 313 e- vs imec's thousands. ~10-90 traps per gate (critic, I-04670). k_ws > 3 → floor ~0.9985 | Fat zero; per-string DFE kernels; spare holes to map out bad strings (as NAND bad blocks). Bigger packets (thicker plates, wider holes) at a density cost: 600 e- → 0.9956, 3,000 e- → 0.9926 |
 | 3 | **Readout noise, 0.3 fF oxide SF** | ≤ 8 e- needed; 15 e- → 0.998; 30 e- fails | CDS. Si CMOS sense at the bonded end. Skipper-style repeated sampling (I-01381) at a latency cost. One-ended strings (half the bits) as a fallback |
-| 4 | **Unpredictable traffic** | ≥ 92.2% with 0.64 µs lead; MoE at a 2% floor → 26 ns at 50 MHz, 0.7-1.5 µs at 6 MHz | Front buffer sized to the measured floor; pin hot experts; bidirectional shifting (−20%); 16-stage KV segments. Fallback: dense decode only at 4-6 MHz |
+| 4 | **Unpredictable traffic** | ≥ 92.2% with 0.64 µs lead; MoE at a 2% floor → 26 ns at 50 MHz, 0.7-1.5 µs at 4-6 MHz | Front buffer sized to the measured floor; pin hot experts; bidirectional shifting (−20%); 16-stage KV segments. Fallback: dense decode only at 4-6 MHz |
 | 5 | **Gate-stress endurance** | 1.5e11 needed vs >1e10 shown | Park-and-shift; 2-2.5 V swing with recycling drivers. A 1e12 test takes 1.4 h |
 | 6 | **Vertical integration** | AR-80 hole (8 µm, 100 nm), conformal ALD heterochannel, top-end floating diffusion | Two 100-plate decks (NAND practice [UNVERIFIED]), which matches two segments; PEALD In2O3/ZTO; partner coupons (imec, MIT LL, NAND pilot). A raise milestone |
 | 7 | **Cost ceiling ~2x** | 64 b/hole vs ~600 for NAND | [SPECULATIVE] 2-bit packets (needs ~3x tighter deferral); 300-400 plates with mid-stack regenerators |
@@ -245,7 +243,7 @@ None violates physics. Only number 1 could end the program, and it is what the s
 
 0. **M0 (~$35).** Buy imec's IEDM 2024 and IMW 2026 papers. Record the CTE definition, packet size, temperature and fat zero, then reset the priors.
 1. **M0-2.** File provisional #1. Fit the trap model in DEVSIM or Sentaurus. Design masks.
-2. **M1-4: companion TFT trap spectroscopy** on the same stacks. Transient drain current from 1 ns to 1 ms at 0/25/85/125 °C extracts the trap DOS at 0.1-0.3 eV below Ec, which predicts CTE before any CCD exists.
+2. **M1-4: TFT trap spectroscopy** on the same stacks: 1 ns-1 ms transients at 0-125 °C give the trap DOS at 0.1-0.3 eV below Ec, predicting CTE before any CCD exists.
 3. **M3-9: planar CCD run 1** (single-level 3-phase W/Mo gates).
    - **Gates:** Lg 25/40/100/250 nm with 12-20 nm e-beam gaps; ALD SiO2/Al2O3 at EOT 5 nm.
    - **Channels:** (a) surface IGZO, 8 nm (imec baseline); (b) buried IGO/IGZO-or-In2O3/cap; (c) Ga-free ITZO or ZTO; (d) buried In2O3/ZTO; all at ≤ 400 °C.
@@ -253,14 +251,12 @@ None violates physics. Only number 1 could end the program, and it is what the s
    - **Widths:** wide (20 µm, discrete charge amp) and narrow (≤ 150 nm, on-chip IGZO follower).
    - **Lengths:** 16, 64 and 256 stages, plus a 32-stage loop through an FPGA regenerator.
 4. **M6-11: measure.**
-   - First-pixel and extended-pixel-edge response against a 4-200 MHz stage clock, fat zero and temperature.
-   - Extract the deferred-charge kernel, replay it through the DFE, and compute BER with the partition-noise term.
-   - Run 1e12 cycles and retention, both at 85 °C.
+   - First-pixel and edge response against a 4-200 MHz stage clock, fat zero and temperature.
+   - DFE replay of the extracted kernel; BER with partition noise.
+   - 1e12 cycles and retention at 85 °C.
 5. **M10: GATE 1.**
 6. **M10-16: run 2.** Best stack, Lg 25-40 nm, narrow channels, plus a sky130 readout/DFE chip.
-7. **M6-15: trace simulator** (founder-written).
-   - Capture vLLM/SGLang traces (dense 70B-class, MoE, sparse attention) with each access's lead time.
-   - Simulate laps, the front buffer, conflicts and scrub.
+7. **M6-15: trace simulator** (founder-written): vLLM/SGLang traces (dense, MoE, sparse attention) tagged with lead time; simulate laps, front buffer, conflicts and scrub.
 8. **M16-21: DEMO.** The regenerated 98-transfer loop runs ≥ 1e12 decisions at a 50 MHz stage clock, at 25 and 85 °C, with BER measured directly.
 
 ### Facilities
@@ -356,7 +352,7 @@ None violates physics. Only number 1 could end the program, and it is what the s
   - Semiconductor Energy Laboratory oxide portfolios [UNVERIFIED].
   - 3D NAND process patents (Samsung, Kioxia, Micron, YMTC, Macronix).
   - HBF system claims (SanDisk, SK hynix).
-- **Prior art that narrows claims:** LSST and RE43,639 (CTI correction); SOAP and ShiftsReduce (placement).
+- **Prior art that narrows claims:** LSST and RE43,639 (CTI correction); soft-decision LDPC, XED and erasure maps (decision-quality sensing); 1970s recirculating CCD loops (per-loop regeneration); SOAP and ShiftsReduce (placement).
 - **Free to use:** the expired buried-channel CCD (US 4,285,000) and 1970s CCD memories.
 
 ---
@@ -374,13 +370,10 @@ None violates physics. Only number 1 could end the program, and it is what the s
 | **Tool makers** (Applied Materials, Lam, TEL, ASM); **accelerator vendors** | ALD in a hole; the serving stack | Process and controller co-development |
 
 **What $10-50M buys.**
-- **$10-15M over 18 months:** 16-32-plate vertical coupons that test CTE in an ALD-in-hole channel; a 28-40 nm readout/DFE chip; an FPGA CXL Type-3 prototype serving real vLLM traffic.
-- **$30-50M over 36 months:** a 64-128-plate bonded Gb-class demonstrator with a partner; a controller ASIC; 85 °C/1e12-cycle/FIT qualification; a spec co-signed by a memory maker and an accelerator vendor.
+- **$10-15M, 18 months:** 16-32-plate vertical coupons (CTE in an ALD-in-hole channel); a 28-40 nm readout/DFE chip; an FPGA CXL Type-3 prototype serving vLLM traffic.
+- **$30-50M, 36 months:** a 64-128-plate bonded Gb-class demonstrator with a partner; a controller ASIC; 85 °C/1e12-cycle/FIT qualification; a spec co-signed by a memory maker and an accelerator vendor.
 
-**Standards.**
-- CXL Type-3 first.
-- An OCP "streaming DRAM-class tier" spec with lead-time hints, following the HBF precedent.
-- Later, a JEDEC raw-BER-graded device shared with RAW-BER CONTRACT.
+**Standards.** CXL Type-3 first; an OCP "streaming DRAM-class tier" spec with lead-time hints (the HBF precedent); later a JEDEC raw-BER-graded device shared with RAW-BER CONTRACT.
 
 ---
 
@@ -389,8 +382,8 @@ None violates physics. Only number 1 could end the program, and it is what the s
 **Scarce inputs.**
 - **Gallium.** ~98% Chinese. The U.S. ban suspension ends 2026-11-27 ([Engineering News](https://www.engineeringnews.co.za/article/china-halts-ban-on-gallium-germanium-antimony-exports-to-us-but-controls-remain-2025-11-10)). Quantity is trivial (< 0.4% of world Ga, A2); licensing is the risk. **ZTO is In- and Ga-free; ITZO is Ga-free.**
 - **Indium** refining is concentrated [UNVERIFIED].
-- **Tungsten.** China mines ~80%, but plates cost ~$3 per wafer even at record prices (A2). Mo is a drop-in.
-- **Rare earths.** China's suspended 2025-10 package names "≥256-layer memory" for review ([TrendForce](https://www.trendforce.com/news/2025/10/09/news-china-expands-rare-earth-curbs-subjects-14nm-logic-and-256-layer-memory-chips-to-case-by-case-review/)). A 200-plate stack sits just under that line, but tool magnets are exposed either way.
+- **Tungsten.** China mines ~80% (A2). 200 × 25 nm plates deposit ~7 g of W per wafer, about A2's ~6.7 g (~$2.7 at record prices) for a whole DRAM wafer, so ~$3-8 per wafer with deposition waste [ESTIMATE]. Mo is a drop-in.
+- **Rare earths.** China's suspended 2025-10 package names "≥256-layer memory" ([TrendForce](https://www.trendforce.com/news/2025/10/09/news-china-expands-rare-earth-curbs-subjects-14nm-logic-and-256-layer-memory-chips-to-case-by-case-review/)); 200 plates sit just under it, but tool magnets are exposed regardless.
 
 **EUV.** None. One ArF hole lattice at 141 nm pitch, no staircase, 3-6 clock contacts. That is parity with EUV-free Micron 1-beta, and saves $825-1,155 per wafer against EUV 1c nodes (A1).
 
@@ -402,7 +395,7 @@ None violates physics. Only number 1 could end the program, and it is what the s
 **U.S. manufacturability.**
 - **The demo is all-U.S.:** university nanofabs, Argonne, LBNL, MIT LL, SkyWater.
 - **Volume has a gap:** the U.S. has no high-volume 3D NAND fab [UNVERIFIED].
-- **The realistic route:** a deposition-heavy array line beside Micron's new U.S. DRAM fabs, U.S.-foundry CMOS (GlobalFoundries NY, SkyWater MN), and U.S. deposition and etch tools.
+- **Realistic route:** an array line beside Micron's new U.S. DRAM fabs, with U.S.-foundry CMOS (GlobalFoundries, SkyWater) and U.S. tools.
 - **Why it fits:** with no EUV and no display fab, it is a more natural U.S. build than leading-edge DRAM.
 
 ---
@@ -411,11 +404,11 @@ None violates physics. Only number 1 could end the program, and it is what the s
 
 Dated from an assumed funding close on 2027-01-01. Each kill names its revival condition, as MISSION.md requires.
 
-1. **2027-03-31 (reprioritise).** If imec's 98% is per transfer **and** imec already got < 2x from a buried channel or fat zero, cut run 1 to two channels and shift money to trap spectroscopy. *Revival:* any stack with tail-trap DOS ≥ 5x below surface IGZO.
+1. **2027-03-31 (reprioritise).** If imec's 98% is per transfer **and** imec already got < 2x from a buried channel or fat zero, cut run 1 to two channels. *Revival:* a stack with tail DOS ≥ 5x below surface IGZO.
 2. **2027-06-30.** Kill if trap spectroscopy predicts **CTE < 0.990 at a 50 MHz stage clock and 25 °C for all four stacks** before run 1 starts. *Revival:* a channel (e.g. crystalline In2O3) with a tail ≥ 3x shallower.
 3. **2027-10-31 (GATE 1).** Kill the device if **every variant has median CTE < 0.9934 at ≥ 50 MT/s** at 25 or 85 °C. *Revival:* ≥ 0.997 from any deposited channel; a working mid-stack regenerator [SPECULATIVE]; or dense-decode-only use at 4-6 MHz (≤ 0.5% random floor).
-4. **2027-10-31.** Drop IP claim #1 if **buried deferral is < 2x below surface** at matched sheet charge. The program continues only if the surface channel itself passes item 3. *Revival:* an XPS-confirmed ≥ 0.3 eV offset together with ≥ 3x lower deferral.
-5. **2027-12-31.** Kill the DRAM-class latency claim if **< 90% of bytes have ≥ 0.64 µs lead on both dense and MoE traces** with a ≤ 64 MB front buffer per 16 GB [ESTIMATE sizing]. Retreat to a capacity tier. *Revival:* stage clocks ≥ 200 MHz (where s ≥ 69% suffices).
+4. **2027-10-31.** Drop IP claim #1 if **buried deferral is < 2x below surface**; continue only if surface passes item 3. *Revival:* an XPS-confirmed ≥ 0.3 eV offset with ≥ 3x lower deferral.
+5. **2027-12-31.** Kill the DRAM-class latency claim (retreat to a capacity tier) if **< 90% of bytes have ≥ 0.64 µs lead on both dense and MoE traces** with a ≤ 64 MB front buffer per 16 GB [ESTIMATE sizing]. *Revival:* stage clocks ≥ 200 MHz (where s ≥ 69% suffices).
 6. **2028-06-30 (GATE 2).** Kill if **k_ws > 3 and median CTE < 0.9985**, or if **read noise > 30 e-**. *Revival:* ≥ 1,000 e- packets with density still ≥ 2x 1-beta, or Si readout at both ends.
 7. **2028-06-30.** Kill if **85 °C retention < 2 s** (park-and-shift then fails on endurance) or if **ΔCTE > 1e-3 after 1e12 cycles at 85 °C**. *Revival:* a stack with ≤ 0.25 aA per well and stable Vt to 1e12 cycles.
 8. **2028-09-30 (DEMO).** Do not raise on a DRAM-class claim if **loop raw BER > 1e-8** over ≥ 1e12 decisions at a 50 MHz stage clock. Between 5e-10 and 1e-8, raise only with t=4 ECC (≤ 3.7e-7 allowed). *Revival:* BER ≤ 5e-10 at ≥ 25 MHz together with s ≥ 96%.

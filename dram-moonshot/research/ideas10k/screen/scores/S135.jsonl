@@ -1,0 +1,21 @@
+{"id": "I-12837", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "leakage-tail metrology", "note": "Floating-gate integration for sub-fA leakage is known; value is a cheap parallel open instrument."}
+{"id": "I-12838", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "multiplexed endurance testing", "note": "Doubt: resonator AC drive may not fully switch many cell types at 5 GHz; parallel FDM cycling is novel."}
+{"id": "I-12839", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "trap-spectroscopy qualification", "note": "RTN/charge pumping known; industry acceptance of trap-match in lieu of stress qual is doubtful."}
+{"id": "I-12840", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "stack thermal metrology", "note": "3-omega per-interface measurement is established; modest HBM height gain."}
+{"id": "I-12841", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "isotope-barcoded chamber parts", "note": "Doubt: ppm tags unreadable in 10-30 nm particles by EDX/SIMS (about one tag atom per particle)."}
+{"id": "I-12842", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "programmed-defect standards", "note": "Programmed-defect reference wafers already exist; national standard is incremental."}
+{"id": "I-12843", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "precursor fingerprint qualification", "note": "In-situ QCM/SE/RGA standard; fingerprint acceptance is a procedural twist."}
+{"id": "I-12844", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "HHG actinic inspection", "note": "Tabletop HHG ptychographic EUV mask inspection widely pursued already."}
+{"id": "I-12845", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "combinatorial dielectric screening", "note": "Combinatorial high-k libraries (e.g., Intermolecular) known; open map is the twist."}
+{"id": "I-12846", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "instrumented sensor wafers", "note": "Commercial sensor wafers exist; cannot replace film-thickness monitor wafers."}
+{"id": "I-12847", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-sensing MEMS probes", "note": "MEMS probe cards exist; integrated per-probe strain sensing is the twist."}
+{"id": "I-12848", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "inductive wireless wafer sort", "note": "Inductive die links researched; delivering test power to 1000 dies wirelessly is the doubt."}
+{"id": "I-12849", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "electrical stochastic defect test", "note": "Electrical stochastic test structures known; needs EUV scanner access beyond nanofab."}
+{"id": "I-12850", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-fab acid reclaim sensing", "note": "ASV at ppt in concentrated acids is hard; acid reclaim itself exists."}
+{"id": "I-12851", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "moire overlay feedforward", "note": "Moire overlay targets known; older scanners lack actuators for high-order corrections."}
+{"id": "I-12852", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "parallel AFM inspection", "note": "Parallel cantilever arrays (Millipede-like) known; throughput and high-AR access doubtful."}
+{"id": "I-12853", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "microplasma etch screening", "note": "Doubt: microplasma sheath/transport differs from production reactors; results may not transfer."}
+{"id": "I-12854", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "nanopore UPW particle counting", "note": "Doubt: nanopore sampled volume far too small for UPW particle concentrations without preconcentration."}
+{"id": "I-12855", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "in-FOUP contamination dosimetry", "note": "In-FOUP environment sensors exist; dose-based dispatch is incremental."}
+{"id": "I-12856", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "embedded floor vibration sensing", "note": "Embedded concrete sensors known; floor certification rarely gates tool move-in."}
+{"id": "I-12857", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "measured PFC emission permits", "note": "PFC emission measurement (FTIR) already allowed in reporting; photoacoustic is incremental."}

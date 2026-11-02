@@ -1,0 +1,105 @@
+{"id": "I-11682", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ceria-free cmp abrasive", "note": "Mn oxide oxide:nitride selectivity unproven; on-site redox regeneration is the twist."}
+{"id": "I-11683", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "yttria-free chamber coating", "note": "Spinel plasma coatings studied; in-chamber ALD repair is the add."}
+{"id": "I-11684", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "t-glass substitute cloth", "note": "Aramid low-CTE laminates (Thermount) existed; moisture uptake was their failure mode."}
+{"id": "I-11685", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "biogenic silica filler", "note": "Alkali/P removal from husk ash and true U/Th levels decide it."}
+{"id": "I-11686", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cryopump-free pumping", "note": "Turbo+NEG is standard UHV practice; cryopump helium is mostly closed-loop already."}
+{"id": "I-11687", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "spin-crossover memory", "note": "Room-temp hysteresis needs temperature in loop; slow switching and tiny Vt shift."}
+{"id": "I-11688", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "domestic neon recovery", "note": "Neon side-draw retrofits already underway at several gas majors post-2022."}
+{"id": "I-11689", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tiered water reuse", "note": "Segregated reclaim by quality is common fab practice; sensor-switched routing is incremental."}
+{"id": "I-11690", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "wafer-level burn-in heaters", "note": ""}
+{"id": "I-11691", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "heat-recovery heat pump", "note": "Heat-recovery chillers for hot UPW already deployed in fabs."}
+{"id": "I-11692", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "monitor wafer elimination", "note": "Virtual metrology is mainstream; resident seasoning disc is the small add."}
+{"id": "I-11693", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "mask blank reclaim", "note": ""}
+{"id": "I-11694", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "crucible cullet recycling", "note": "Ba/Si residues and cristobalite in outer wall may raise bubble and impurity risk."}
+{"id": "I-11695", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "aquifer thermal storage", "note": ""}
+{"id": "I-11696", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "barrier-layer capacitor", "note": "IBLC giant permittivity relaxes below MHz and needs um grains; 20 nm film unlikely."}
+{"id": "I-11697", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "silicon capacitor mold", "note": "Cuts PFC etch gas; 60:1 Si etch is mature from trench eDRAM."}
+{"id": "I-11698", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "edge die recovery", "note": ""}
+{"id": "I-11699", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "fbr granular polysilicon", "note": "FBR is commercial for PV; semiconductor-grade purity is the barrier."}
+{"id": "I-11700", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "pfas-free wetted parts", "note": ""}
+{"id": "I-11701", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "edge ring refurbishment", "note": ""}
+{"id": "I-11702", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "wurtzite ferroelectric capacitor", "note": "AlBN coercive field ~5 MV/cm needs high write voltage; sub-coercive read margin small."}
+{"id": "I-11703", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "float-zone wafers", "note": "Loses oxygen intrinsic gettering; FZ is costlier per wafer."}
+{"id": "I-11704", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "seg storage node", "note": ""}
+{"id": "I-11705", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "EXISTING:double-layer storage node", "theme": "double-layer capacitor", "note": "Ion double layers cannot charge in 10-100 ns."}
+{"id": "I-11706", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "electrochemical macropore trench", "note": "Lehmann macropore capacitors are known; 1 um pitch far too coarse for DRAM."}
+{"id": "I-11707", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "nanosphere lithography", "note": "Hexagonal match is neat; defectivity and registration of sphere monolayers are the doubt."}
+{"id": "I-11708", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "multilayer laminate capacitor", "note": "Recalls 1990s fin stacked capacitors; lateral-recess plate ties add complexity."}
+{"id": "I-11709", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tunnel diode sram", "note": "TSRAM (TI, 1990s) and Si interband tunnel diode memories are known."}
+{"id": "I-11710", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "oxidation pitch division", "note": "Oxidation narrows gaps but does not create new lines; pitch division claim doubtful."}
+{"id": "I-11711", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "surface-roughened storage node", "note": "Akin to 1990s HSG silicon; tip leakage risk."}
+{"id": "I-11712", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "micro-transfer printed chiplets", "note": ""}
+{"id": "I-11713", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "stencil mask patterning", "note": ""}
+{"id": "I-11714", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "electrolyzed water cleaning", "note": "Ohmi-era electrolyzed ionized water; revisited, not new."}
+{"id": "I-11715", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "back-to-back furnace loading", "note": ""}
+{"id": "I-11716", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "solid-source diffusion", "note": ""}
+{"id": "I-11717", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "narrow-scribe stealth dicing", "note": ""}
+{"id": "I-11718", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bipolar sense amplifier", "note": "BiCMOS DRAM sensing known; small cells still suffer leakage and retention."}
+{"id": "I-11719", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "multi-layer reticles", "note": ""}
+{"id": "I-11720", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "plated-wire magnetic memory", "note": "1960s plated-wire revival; um-scale cells cap density."}
+{"id": "I-11721", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "wafer-level csp", "note": ""}
+{"id": "I-11722", "P": 5, "S": 1, "N": 1, "D": 4, "dup_of": "", "theme": "staircase wire-bond stacking", "note": ""}
+{"id": "I-11723", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "pinned-diode storage node", "note": "Very low dark current gives long retention; ~0.5 um2 cell limits to niche tiers."}
+{"id": "I-12102", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "hydrothermal dielectric growth", "note": "Uniform 4-6 nm inside 60:1 holes and TiN oxidation in hot water are doubts."}
+{"id": "I-12103", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ice abrasive pad", "note": "Ice-bonded abrasive polishing has academic precedent."}
+{"id": "I-12104", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "radiative sky cooling", "note": ""}
+{"id": "I-12105", "P": 2, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "exhaust moisture recovery", "note": "Acid/solvent-laden exhaust vapor cannot be returned to cleanroom make-up air safely."}
+{"id": "I-12106", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "ion-beam ripple patterning", "note": "Ripple long-range order and defectivity far from DRAM spec."}
+{"id": "I-12107", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-11707", "theme": "nanosphere lithography", "note": ""}
+{"id": "I-12108", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "water-soluble sacrificial air gap", "note": ""}
+{"id": "I-12109", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-11700", "theme": "pfas-free wetted parts", "note": ""}
+{"id": "I-12110", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "liquid-phase epitaxy skin", "note": ""}
+{"id": "I-12111", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ald-ale crystallization", "note": ""}
+{"id": "I-12112", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "capillary condensation fill", "note": ""}
+{"id": "I-12113", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "in-film marker metrology", "note": "Marker layers inside device films may alter electrical properties."}
+{"id": "I-12114", "P": 5, "S": 1, "N": 2, "D": 2, "dup_of": "", "theme": "aquifer water banking", "note": ""}
+{"id": "I-12115", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "deep-lake cooling", "note": ""}
+{"id": "I-12116", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "geothermal fab siting", "note": ""}
+{"id": "I-12117", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "enzymatic resist strip", "note": "Enzymes on crosslinked/implanted resist are slow; metal residues must be proven."}
+{"id": "I-12118", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "diamond-free grinding abrasive", "note": ""}
+{"id": "I-12119", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "plasma sand reduction", "note": "H2 reduction of SiO2 back-reacts on quench; output is MG-grade, still needs purification."}
+{"id": "I-12120", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "water-based chiller coolant", "note": "Ice-recrystallization inhibitors barely depress freezing point; -40 C claim doubtful."}
+{"id": "I-12121", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "single-precursor zr capacitor", "note": ""}
+{"id": "I-12122", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "sublimation drying", "note": "Sublimation drying for pattern collapse already commercialized by tool vendors."}
+{"id": "I-12123", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "phosphoric acid regeneration", "note": ""}
+{"id": "I-12124", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "in-field dielectric healing", "note": ""}
+{"id": "I-12125", "P": 3, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "designed delamination layer", "note": ""}
+{"id": "I-12126", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "magnetic-sortable mold compound", "note": ""}
+{"id": "I-12127", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "electrodeposited yttria repair", "note": ""}
+{"id": "I-12128", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "ceria slurry recovery", "note": ""}
+{"id": "I-12129", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "volatile-chemistry cleans", "note": ""}
+{"id": "I-12130", "P": 2, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "redissolvable mold compound", "note": "Alkali silicate binders bring mobile K+ near die; moisture reliability doubtful."}
+{"id": "I-12131", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "probe tip regrowth", "note": ""}
+{"id": "I-12132", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "remeltable cmp pads", "note": ""}
+{"id": "I-12133", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "ice temporary bond", "note": ""}
+{"id": "I-12134", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "built-in bioleach fuel", "note": "Sulfide in packages risks corrosion in service."}
+{"id": "I-12135", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "flash joule recycling", "note": "Flash Joule heating of e-waste already published (Tour lab)."}
+{"id": "I-12136", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "cold-sintered chamber parts", "note": ""}
+{"id": "I-12137", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "sputter target refill", "note": ""}
+{"id": "I-12138", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-situ thermal healing", "note": "Flash self-heating recovery known; 250-300 C in DRAM arrays stresses neighbors."}
+{"id": "I-12139", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "freeze crystallization reclaim", "note": ""}
+{"id": "I-12140", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "regenerable ceramic filters", "note": ""}
+{"id": "I-12141", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "unzipping recyclable resist", "note": ""}
+{"id": "I-12142", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "self-repairing ion source", "note": ""}
+{"id": "I-12143", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "vitrimer substrates", "note": ""}
+{"id": "I-12522", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "umg silicon substrate", "note": "UMG B/P compensation and metal out-diffusion into skin threaten retention."}
+{"id": "I-12523", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "cu self-forming barrier contact", "note": "CuMn self-forming barrier is BEOL-known; front-end Cu poisoning risk."}
+{"id": "I-12524", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "thin wafer carriers", "note": "Debondable layers rarely survive ~1000 C front-end steps."}
+{"id": "I-12525", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ccd loop memory", "note": "1970s CCD memories; clock power and latency killed them."}
+{"id": "I-12526", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "dopant-free junctions", "note": ""}
+{"id": "I-12527", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "co2 two-phase chuck cooling", "note": ""}
+{"id": "I-12528", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fab demand response", "note": "Idling capital-heavy tools costs more than energy saved."}
+{"id": "I-12529", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "zone-melt recrystallized soi", "note": "1980s ZMR SOI; defect density too high for DRAM then."}
+{"id": "I-12530", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "horizontal ribbon growth", "note": "Floating-silicon method pursued for PV; DRAM-grade defects unproven."}
+{"id": "I-12531", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "short-retention dram tier", "note": "Software placement plus planar caps; 64x refresh rate on live pages erodes energy gains."}
+{"id": "I-12532", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "electrolytic sulfuric recycling", "note": "Electrolyzed sulfuric acid strip already commercial in Japan."}
+{"id": "I-12533", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "condensation rinse", "note": ""}
+{"id": "I-12534", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hydrothermal oxide etch", "note": "TiN and SiN corrode in near-critical water; selectivity doubtful."}
+{"id": "I-12535", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "double-sided wafer arrays", "note": ""}
+{"id": "I-12536", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "atmospheric microplasma processing", "note": ""}
+{"id": "I-12537", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "aluminum wordline replacement", "note": "Al reacts with oxide and diffuses at later anneals; work-function control is hard."}
+{"id": "I-12538", "P": 2, "S": 3, "N": 4, "D": 4, "dup_of": "", "theme": "percolation composite dielectric", "note": "Near-percolation k comes with leakage and dispersion at ns speeds."}
+{"id": "I-12539", "P": 1, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "high-entropy oxide dielectric", "note": "HEO colossal permittivity is Maxwell-Wagner, low-frequency; unlikely at 5 nm and ns."}
+{"id": "I-12540", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "eutectic nanorod wafers", "note": "100 nm rod pitch needs extreme growth rates; quasi-periodic rods hard to align cells to."}
+{"id": "I-12541", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "purity spec right-sizing", "note": ""}
+{"id": "I-12542", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "industrial symbiosis campus", "note": ""}

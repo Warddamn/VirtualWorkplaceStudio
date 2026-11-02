@@ -1,0 +1,105 @@
+{"id": "I-11934", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "phantom-power TSV pairs", "note": "Common-mode supply on data TSV pairs; HBM data TSVs are single-ended, so going differential may cost more TSVs than it saves."}
+{"id": "I-11935", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "bipolar EM-healing power", "note": "AC EM lifetime gain is real, but per-die rectifier area/efficiency and Joule heating likely cap power-TSV savings."}
+{"id": "I-11936", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "group-testing TSV test", "note": "Pooled combinatorial interconnect test is known in test literature; mid-stack known-good-stack testing already practiced."}
+{"id": "I-11937", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "analog die-ID select", "note": "Resistor-ladder level select removes per-die CS TSVs; comparator window margins limit stack height."}
+{"id": "I-11938", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "significance-tiered lane swing", "note": "Approximate-link idea from approximate computing; AI tolerance of 1e-6 BER on mantissa LSBs plausible."}
+{"id": "I-11939", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "feed-forward PDN droop", "note": ""}
+{"id": "I-11940", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "phase-predicted fast wake", "note": ""}
+{"id": "I-11941", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "multi-personality DRAM die", "note": "Multi-mode PHYs and bond options exist; HBM and DDR core dies differ too much for one universal die."}
+{"id": "I-11942", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "graded-die stack matching", "note": "Die matching for 3D stack yield is published; incremental binning gain."}
+{"id": "I-11943", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "self-healing underfill capsules", "note": ""}
+{"id": "I-11944", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "transposed TSV columns", "note": ""}
+{"id": "I-11945", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "edge-slope modulation", "note": "Slope detection collapses under ISI and jitter at high rates; extra bit fragile."}
+{"id": "I-11946", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "shared reserve lane pool", "note": ""}
+{"id": "I-11947", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "random-dot correlation alignment", "note": ""}
+{"id": "I-11948", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "expandable island interposer", "note": "Serpentine bridges cannot carry the fine-pitch inter-chiplet buses that justify an interposer."}
+{"id": "I-11949", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "single pilot strobe", "note": ""}
+{"id": "I-11950", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "antifuse-programmable TSV roles", "note": ""}
+{"id": "I-11951", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "keep-out zone reuse", "note": ""}
+{"id": "I-11952", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "packaging capacity futures", "note": ""}
+{"id": "I-11953", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "thermal diode lid contact", "note": ""}
+{"id": "I-11954", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "droop-triggered issue stall", "note": "Adaptive droop response already standard in CPUs/GPUs."}
+{"id": "I-11955", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "edge-gated termination", "note": ""}
+{"id": "I-11956", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "rational-ratio clocking", "note": ""}
+{"id": "I-11957", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "constant-weight CA coding", "note": "Essentially chord/vector signaling applied to command-address."}
+{"id": "I-11958", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "rolling spare-lane recalibration", "note": ""}
+{"id": "I-11959", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "per-burst adaptive modulation", "note": ""}
+{"id": "I-11960", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "active SSN cancellation", "note": ""}
+{"id": "I-11961", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "staggered launch phases", "note": ""}
+{"id": "I-11962", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "counter-directional trace interleave", "note": "Moves FEXT, but aggressor NEXT then lands at victim receivers; contrary to TX/RX separation practice."}
+{"id": "I-11963", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "coupled-oscillator clocking", "note": ""}
+{"id": "I-11964", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "absorber-filled mold compound", "note": ""}
+{"id": "I-11965", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "phase-change thermal ballast", "note": ""}
+{"id": "I-11966", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "electroless gap bridging", "note": ""}
+{"id": "I-11967", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "laser-trimmed skew lines", "note": ""}
+{"id": "I-11968", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "switched stub tuning", "note": ""}
+{"id": "I-11969", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ratiometric pair signaling", "note": ""}
+{"id": "I-11970", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "eye-monitor adaptive swing", "note": ""}
+{"id": "I-11971", "P": 4, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "cube-law PDN tapering", "note": ""}
+{"id": "I-11972", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "off-spec die rescue", "note": ""}
+{"id": "I-11973", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "warm-reserve support-chip fabs", "note": ""}
+{"id": "I-11974", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "CDMA shared bus", "note": ""}
+{"id": "I-11975", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "out-of-band level framing", "note": ""}
+{"id": "I-12354", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "Heaviside magnetic loading", "note": "Soft-magnetic films lose permeability near FMR at GHz; on-chip R/L is far from distortionless."}
+{"id": "I-12355", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "parametric phase receivers", "note": ""}
+{"id": "I-12356", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "field-driven domain-wall conveyor", "note": "Domain-wall speeds imply microsecond transit across dies; unfit for DRAM-latency I/O."}
+{"id": "I-12357", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "series current-loop TSV bus", "note": "Constant loop current is static power; segment sensing noise grows with stack height."}
+{"id": "I-12358", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "analog multilevel tensor lanes", "note": ""}
+{"id": "I-12359", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "AC transformer stack power", "note": "On-die air-core transformers at 100 MHz have tiny inductance and poor efficiency."}
+{"id": "I-12360", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "magnonic interposer bus", "note": ""}
+{"id": "I-12361", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "ENZ clock plane", "note": ""}
+{"id": "I-12362", "P": 1, "S": 2, "N": 4, "D": 1, "dup_of": "", "theme": "hydrodynamic graphene vias", "note": ""}
+{"id": "I-12363", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "stress-absorbing TSV annulus", "note": ""}
+{"id": "I-12364", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "negative-capacitance wire cancellation", "note": ""}
+{"id": "I-12365", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "TEG waste-heat I/O power", "note": ""}
+{"id": "I-12366", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "single-crystal copper RDL", "note": ""}
+{"id": "I-12367", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "electrocaloric stack heat pump", "note": ""}
+{"id": "I-12368", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "excitonic interconnect", "note": ""}
+{"id": "I-12369", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "thermomigration silicon vias", "note": "TGZM p+ columns need ~1000C pre-front-end processing; high resistance and junction capacitance limit them to signals."}
+{"id": "I-12370", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Mott threshold receivers", "note": ""}
+{"id": "I-12371", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "vacuum field-emission links", "note": ""}
+{"id": "I-12372", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "stack micro-supercapacitor buffer", "note": "Micro-supercaps have ms time constants and high ESR; cannot supply ns burst current."}
+{"id": "I-12373", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "lid-side stack power", "note": ""}
+{"id": "I-12374", "P": 1, "S": 3, "N": 4, "D": 1, "dup_of": "", "theme": "topological edge-state wiring", "note": ""}
+{"id": "I-12375", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "TAB flex interposer", "note": ""}
+{"id": "I-12376", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "coaxialized bond wires", "note": ""}
+{"id": "I-12377", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "selective-anodization interposer", "note": ""}
+{"id": "I-12378", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "laser-programmable interposer", "note": ""}
+{"id": "I-12379", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "row-binning deep scheduler", "note": ""}
+{"id": "I-12380", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "shrink-fit compression ring", "note": ""}
+{"id": "I-12381", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "nanoporous gold bonding", "note": ""}
+{"id": "I-12382", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "NLTL edge sharpening", "note": ""}
+{"id": "I-12383", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "kinematic ball-pit alignment", "note": ""}
+{"id": "I-12384", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "vacuum-pressure batch underfill", "note": ""}
+{"id": "I-12385", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "cleaved mica interposer", "note": "Atomically flat by cleavage; CTE mismatch to silicon and limited sheet size are the doubts."}
+{"id": "I-12386", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "diamond fly-cut planarization", "note": "Commercial surface planers already do diamond-bit planarization of bumps and resin."}
+{"id": "I-12387", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "swaged copper eyelet vias", "note": ""}
+{"id": "I-12388", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "per-channel rate training", "note": ""}
+{"id": "I-12389", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bare-die memory on package", "note": ""}
+{"id": "I-12390", "P": 4, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "thermostatic memory module", "note": ""}
+{"id": "I-12391", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "stubless tap multi-drop bus", "note": ""}
+{"id": "I-12392", "P": 4, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "memory-in-cable tier", "note": ""}
+{"id": "I-12393", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "metered data-movement billing", "note": ""}
+{"id": "I-12394", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "ferrite absorber termination", "note": "Lossy film attenuates incident and reflected waves alike; cannot selectively replace termination."}
+{"id": "I-12395", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "ultrasonic fluxless bumping", "note": ""}
+{"id": "I-12774", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "vectored crosstalk precoding", "note": ""}
+{"id": "I-12775", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NV current imaging design", "note": ""}
+{"id": "I-12776", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "EM-drift monitored power TSVs", "note": ""}
+{"id": "I-12777", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "activity-aware lane mapping", "note": ""}
+{"id": "I-12778", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "vernier pad-phase selection", "note": "Three interleaved pad phases leave two-thirds of pads unused, offsetting the claimed density gain."}
+{"id": "I-12779", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wave-pipelined long links", "note": ""}
+{"id": "I-12780", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "acoustic-emission stop-loss stacking", "note": ""}
+{"id": "I-12781", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "active warpage servo lid", "note": ""}
+{"id": "I-12782", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "antifuse-configured interposer lanes", "note": ""}
+{"id": "I-12783", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "depletion-biased TSV liners", "note": ""}
+{"id": "I-12784", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "endpointed bond anneal", "note": ""}
+{"id": "I-12785", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "gang-bond pressure mapping", "note": ""}
+{"id": "I-12786", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "base-die shared VPP", "note": ""}
+{"id": "I-12787", "P": 3, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "power-line command signaling", "note": ""}
+{"id": "I-12788", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "duobinary interposer links", "note": ""}
+{"id": "I-12789", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "I-12393", "theme": "metered data-movement billing", "note": "Same tenant-metered data-movement billing as I-12393."}
+{"id": "I-12790", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "trimmed wire-bond equalization", "note": ""}
+{"id": "I-12791", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "measured ESD target reduction", "note": "Industry already lowering CDM targets for die-to-die pads."}
+{"id": "I-12792", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "resonance-avoiding traffic shaping", "note": ""}
+{"id": "I-12793", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "pJ-per-useful-bit standard", "note": ""}
+{"id": "I-12794", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "measured-alpha material relaxation", "note": ""}

@@ -103,7 +103,7 @@ All figures come from `models/cell-wafer-foundry.py`, base case **1T1C, 64 tiers
 - **Dead segments:** "~220 on 50 mm² at 1e-5" becomes ~45 per 15.9 mm² die. The 1e-5 open bar has >100× headroom and survives only as a proxy for bridge and reliability tails.
 - **Bond parasitics** (0.43 fF) are ~2% of Cbl, so the I-04714 critic's ~$900k bonded sense tape-out becomes a ~$50k on-chip emulator.
 - **Kill pitch** is ~2.5 µm (1T1C) to ~3 µm (gain), not A3's 2 µm.
-- **Word-line bonds** outnumber signal bonds without 1:8 TFT predecode on the cell wafer; with it they are ~19%.
+- **Word-line bonds** outnumber signal bonds without 1:8 TFT predecode on the cell wafer; with it they are ~19% of all bonds (0.85e6 of 4.49e6).
 - **Destructive-read 1T1C** must group bitlines across rows (+7 fF), so the spec favours non-destructive cells or WL segmentation.
 - **Periphery** is 36–64% of pair cost; a reduced-metal $1.9k flow is worth ~30 tiers. The **N-36 glass carrier** saves ≤$115/pair (2%): a resource win, not a cost win.
 - **"Production-proven" is too strong.** Production bonds at 6 µm (SoIC) and ≤10 µm (Xtacking); 1.5 µm is ~4× finer and research-proven only (imec 1.08 µm).
@@ -120,7 +120,7 @@ All figures come from `models/cell-wafer-foundry.py`, base case **1T1C, 64 tiers
 | Sense threshold | 50 mV | Cs 2.11 fF; 1.53 Gb/mm² (3.4×) |
 | Bond pitch | 2.0 / 2.5 / 3.0 µm | 1.86 / 1.57 / 1.31 Gb/mm²; Cs 1.40 / 2.01 / 2.78 fF |
 | Opens, no spec rule | 1e-6 / 1e-5 / 1e-4 | Yield 0.89 / 0.33 / ~0; $0.60 / $1.65 / >$100 |
-| Opens, with switched supplies | up to ~6e-3 | Yield 1.00; $0.54 |
+| Opens, with switched supplies | up to 3e-3 (>0.9 to ~6e-3) | Yield 1.00; $0.54 (spares exhausted at 1e-2) |
 | Particles ≥0.5 µm | 0.05 / 0.5 / 2 per cm² | W2W yield 0.97 / 0.70 / 0.24; D2W 0.99 / 0.92 / 0.73 |
 | Residual run-out after compensation | 10% / 25% | Tolerable bow 726 / 290 µm (budget 0.375 µm) |
 
@@ -153,7 +153,7 @@ All figures come from `models/cell-wafer-foundry.py`, base case **1T1C, 64 tiers
 
 **The genuine delta**
 
-1. An **open, cross-line, bitline-group electrical and mechanical spec**. None was found in A3, Stage 2 or this run.
+1. An **open, cross-line, bitline-group electrical and mechanical spec**. No open *bitline-level* spec was found in A3, Stage 2 or this run. The nearest open interface is die-level (UCIe, named by the I-04714 Stage 2 critic), and the in-house splits above (VCT/PUC, VG, Xtacking, CBA, SeDRAM) already implement proprietary versions of the same cut.
 2. **Spec content the model derived**, patentable as implementation: a pad grid matched to sense-amp area; a non-destructive-cell preference (or WL segmentation for 1T1C); an oxide-TFT WL predecode layer; a **domain-switched supply adjacency rule** that turns a die-fatal bridge into a repairable domain loss; a bow and anneal budget; bond-link BIST and remap.
 3. **Hybrid bonding of warped multi-tier oxide memory stacks.** Two searches found no published yield data. The nearest literature is 3D NAND bow (+300 to −550 µm; [SPIE 11326](https://photonicsforenergy.spiedigitallibrary.org/conference-proceedings-of-spie/11326/113260M/How-to-improve-overlay-of-highly-deformed-3D-NAND-wafers/10.1117/12.2552042.full)).
 
@@ -292,7 +292,7 @@ Portfolio caveat: inside the portfolio seed (FINAL_CONCEPTS, ~$735k of experimen
 - **Capital and cleanroom.** This is the binding constraint. New cleanroom output is not meaningful until late 2028 ([CIO/Micron](https://cio.com/article/4229625/memory-squeeze-set-to-tighten-through-2028-micron-says.html); [JoongAng](https://www.koreajoongangdaily.com/business/samsung-and-sk-are-expanding-fast-but-why-is-memory-still-in-short-supply/12526698)). The concept puts periphery on *existing* logic capacity: ~93 wafers/month per 1M GB/month, or $5.6–9.3 per GB/month if it had to be built new.
 - **Gallium and indium.** IGZO uses <0.4% In and Ga, but gallium is ~98% Chinese. China's Ga/Ge export ban on the U.S. is suspended only until **2026-11-27** ([Fastmarkets](https://fastmarkets.com/insights/china-suspends-export-prohibition-on-superhard-materials-us)). The spec should qualify Ga-free In₂O₃ or ZTO channels.
 - **Helium.** Qatar has been offline since March 2026 ([AP/WTOP](https://wtop.com/news/2026/03/iran-war-halts-qatar-helium-output-threatening-global-tech-supply-chains/); [IUMI](https://iumi.com/newsletter-june-2026/qatari-helium-shortages/)). Deep tier etch on the cell line uses backside helium unless the LEAN ARRAY MODULE H₂ recipe is adopted.
-- **Energy and water.** A2 puts DRAM at ~1,300 kWh and ~8 m³ per wafer (0.42 kWh, 2.6 L per GB). [SPECULATIVE] If the cell-plus-periphery pair draws ~2× one DRAM wafer while delivering 4.2× the GB, that is ~0.24 kWh/GB (~1.7× lower); break-even is ~4.2× per-wafer energy. Siting is the real limit (Micron Clay: up to 48 MGD, [WSKG](https://www.wskg.org/news/2023-08-06/micron-estimates-needing-up-to-48-million-gallons-of-water-a-day-aiming-to-achieve-100-water-conservation)); a small cell line plus distributed logic capacity eases it.
+- **Energy and water.** A2 puts DRAM at ~1,300 kWh and ~8 m³ per wafer (0.42 kWh, 2.6 L per GB). [SPECULATIVE] If the cell-plus-periphery pair draws ~2× one DRAM wafer while delivering 4.2× the GB (model: 10,804 vs 2,568 GB), that is ~0.24 kWh/GB, ~2.1× below the ~0.51 kWh/GB that 1,300 kWh gives on the model's 2,568 GB 1β wafer (A2's 0.42 implies ~3,100 GB/wafer; ~1.75× on that basis); break-even is ~4.2× per-wafer energy. Siting is the real limit (Micron Clay: up to 48 MGD, [WSKG](https://www.wskg.org/news/2023-08-06/micron-estimates-needing-up-to-48-million-gallons-of-water-a-day-aiming-to-achieve-100-water-conservation)); a small cell line plus distributed logic capacity eases it.
 - **U.S. manufacturability.** Bonding: SkyWater Center for NeoVation (sourced), NY CREATES [UNVERIFIED]. Coupons: Purdue (sourced). Periphery: U.S. 12/14 nm or Intel 16 [UNVERIFIED-training]; GF's 22/28 nm is in Dresden. Volume cell line: the gap, since no U.S. NAND-class volume line exists.
 
 ---
