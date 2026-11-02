@@ -1,0 +1,680 @@
+{
+ "lens": "NEW MATERIALS & LOW-RESOURCE FABRICATION",
+ "agent": "B2-materials",
+ "as_of": "2026-11-01",
+ "model": "dram-moonshot/research/models/B2_materials_estimates.py",
+ "notes": "dram-moonshot/research/phaseB/B2-materials_notes.md",
+ "evidence_convention": "All web evidence was seen only as search snippets (15 searches, no fetches). Entries tagged [CROSS-REF] were taken from the Phase A source logs and not re-opened by B2.",
+ "ideas": [
+  {
+   "id": "B2-01",
+   "name": "AAO-Cap: self-ordered anodic-alumina capacitor mold",
+   "one_liner": "Grow the DRAM capacitor holes by anodizing an aluminum film whose pores self-organize, imprint-registered to the transistors, instead of plasma-etching 60:1 holes in SiO2 with fluorocarbons.",
+   "mechanism": "Sputter a 2.5-3 um Al film over the access-transistor array and its TiN/W landing pads. Nanoimprint shallow pits registered to the pads (Masuda pretexturing), then anodize at ~15-20 V in sulfuric/oxalic acid: pores nucleate at the pits and grow straight down at aspect ratio >=100, stopping at the pad metal; the alumina barrier at each pore bottom is thinned by a voltage ramp-down and removed by a short wet or atomic-layer etch. An ALD Al2O3 liner seals the anion-contaminated pore walls, then TiN / ZrO2-Al2O3-ZrO2 (or the B2-02/B2-03 dielectric) / TiN cup capacitors are ALD-coated inside the pores. The rigid alumina honeycomb stays in place as the mechanical support lattice, so there is no pillar leaning and no SiN support-lattice masks. The bit is stored and sensed exactly as in a 1T1C cell (Si BCAT or IGZO 4F2 VCT access device).",
+   "which_bottleneck": "A1 #1 storage-capacitor charge wall (HAR etch, leaning/collapse) and A1 #4 capital/masks of the capacitor module; A2 PFAS/fluorocarbon chokepoint (the C4F6/C4F8 HAR SiO2 etch).",
+   "step_change_claim": "Capacitor 2.5-3 um tall (pore AR ~100-115) with no plasma HAR etch: Cs 7.4-8.9 fF at a 4F2 40 nm-pitch cell (+37-64% vs 1-beta's 5.4 fF) at ~1-beta-parity density with periphery under cell; capacitor-hole module goes from ~3 masks + fluorocarbon HAR etch + SiN lattice to 1 imprint + wet anodization (~8 Wh/wafer).",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-01: 4F2 at F=20 nm -> 40 nm square pitch (the bottom of AAO's demonstrated 40-500 nm interval). Pore widened to 26 nm (porosity 0.33); after a 3 nm TiN liner and a ~5 nm dielectric the mid-plane diameter is ~15 nm. C = 3.9*eps0*pi*d*h/EOT with EOT 0.55 nm: h=2.5 um -> 7.40 fF; 3.0 um -> 8.88 fF (1-beta pillar 21 nm x 1.3 um -> 5.38 fF, matches A1). Density 4F2 F=20 nm: 0.319 Gb/mm2 at array eff 0.51 (0.71x 1-beta), 0.438 Gb/mm2 with periphery-under-cell eff 0.70 (0.98x). Anodization: 0.19 g Al/wafer, 2,011 C, 8.4 Wh at 15 V vs ~1,300 kWh/wafer fab total (A2). Scaling check: UMD AAO capacitance rises ~linearly with pore depth (11 -> 26 uF/cm2 from 1 to 2 um).",
+   "evidence": [
+    {
+     "title": "Banerjee et al., Nanotubular metal-insulator-metal capacitor arrays for energy storage (Nature Nanotechnology 2009)",
+     "url": "https://dx.doi.org/10.1038/nnano.2009.37",
+     "shows": "ALD MIM stacks inside anodic-alumina (AAO) nanopores give ~10 uF/cm2 planar-equivalent for 1 um AAO and ~100 uF/cm2 for 10 um AAO (via search snippet)"
+    },
+    {
+     "title": "UMD MRSEC highlight: electrostatic nanocapacitors (Lee/Rubloff 2009)",
+     "url": "https://mrsec.it-prod-webhosting.aws.umd.edu/Research/Highlights/Seed/LeeRubloff/2009ElectrostaticNanocapacitors.pdf",
+     "shows": "TiN 6 nm / Al2O3 6 nm / TiN 12 nm ALD stack conformally coated inside 50 nm AAO pores 10 um deep (AR ~200), ~1e6 devices in parallel (via search snippet)"
+    },
+    {
+     "title": "AVS 58th Symposium abstract EN+NS-ThA4 (2011), AAO nanocapacitor depth dependence",
+     "url": "https://www2.avs.org/symposium2011/Papers/Paper_EN+NS-ThA4.html",
+     "shows": "planar, 1, 1.5 and 2 um pore depth give ~1, 11, 19, 26 uF/cm2: capacitance scales with AAO depth (via search snippet)"
+    },
+    {
+     "title": "Masuda group summary on ideally ordered anodic porous alumina by nanoimprint pretexturing (Trans. MRS-J vol. 29 no. 3)",
+     "url": "https://www.mrs-j.org/pub/tmrsj/vol29_no3/vol29_no3_0855.pdf",
+     "shows": "imprinting Al with an ordered convex mold before anodization gives ideally ordered pore arrays; hole interval typically controllable 40-500 nm via pattern interval and voltage; mold reusable (via search snippet; attribution between this and the Masuda ECS MA-201 summary is uncertain)"
+    },
+    {
+     "title": "Kondo et al., ideally ordered anodic porous alumina with reduced hole interval (RSC Advances 2017)",
+     "url": "https://pubs.rsc.org/en/content/articlehtml/2017/ra/c7ra08346g",
+     "shows": "the imprint-mold interval can be reduced by repeated pore-widening/replication steps, shrinking the AAO hole interval; final minimum not seen in snippet (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known: ALD MIM nanocapacitors in AAO (UMD/Rubloff 2009) and imprint-ordered AAO (Masuda) are known for energy storage and templates; using registered AAO as the DRAM cell-capacitor mold with the alumina walls as the permanent support lattice is a NEW combination (no DRAM use found).",
+   "show_stoppers": "(1) Pitch: ideally ordered AAO is reported at 40-500 nm intervals; today's 1-beta/1c honeycomb is 32-35 nm, at or beyond the edge. (2) Removing the alumina barrier at the bottom of 20-26 nm pores without attacking the landing pad, with imprint-to-pad overlay of ~3-4 nm. (3) Electrolyte anions and charge in AAO walls (and pore branching at Al grain boundaries) add leakage, traps and defects.",
+   "revival_or_workaround": "(1) Target 4F2 at F=20 nm (40 nm pitch), where AAO is demonstrated, and get density from 4F2 plus periphery-under-cell rather than pitch; Kondo-style mold-interval reduction for later shrinks; Cs scales with height, so 3-4 um pores buy margin. (2) Anodize onto a thin valve-metal stop layer (Ti/Nb) that converts to a removable oxide; voltage ramp-down barrier thinning; self-aligned landing pads (B2-14) relax overlay. (3) ALD Al2O3 passivation liner (UMD needed it for leakage) plus <=450 C anneal; large-grain or Al-Cu films; residual defects absorbed by repair/ECC (B2-15).",
+   "million_dollar_demo": "18 months, ~$350k of the $1M: sputter Al on 100-150 mm wafers with TiN pad arrays at 40-60 nm pitch (e-beam-written pads), imprint-pretexture and anodize; SEM-map ordering and pore-bottom opening defects over mm2 areas (~$120k of nanofab time). ALD TiN/ZrO2/TiN in the pores; measure C, J at 0.5 V (target <=1e-7 A/cm2), breakdown and per-capacitor C spread with small addressable test arrays (~$130k). Integrate 64x64 1T1C cells using a university IGZO TFT layer under the AAO (~$100k).",
+   "resource_angle": "Removes the fluorocarbon (PFAS-class, high-GWP) HAR etch and the SiN lattice from the capacitor module; Al is abundant (0.19 g/wafer); room-temperature wet electrochemistry at ~8 Wh/wafer; fewer plasma-etch hours (less helium-cooled chuck time); no EUV.",
+   "us_buildable": "UMD FabLab, College Park MD (Rubloff AAO lineage); Cornell CNF (Ithaca NY); Georgia Tech IEN (Atlanta); NIST CNST (Gaithersburg MD); a MEMS-style 200 mm line such as SkyWater (Bloomington MN) for a later pilot."
+  },
+  {
+   "id": "B2-02",
+   "name": "Ru-free rutile: SnO2-templated TiO2 short-stub capacitor",
+   "one_liner": "Get k 60-100 rutile TiO2 at 250-340 C by growing it on abundant, conductive, rutile-structured doped SnO2 instead of scarce Ru/RuO2, and spend the gain on a much shorter capacitor.",
+   "mechanism": "Cap the TiN bottom electrode with 3-5 nm of ALD Ta-, Nb- or F-doped SnO2 (conductive, rutile/cassiterite structure, a=4.74 A vs rutile TiO2 a=4.59 A). ALD TiO2 (optionally lightly Al-doped to suppress leakage) nucleates epitaxially in the rutile phase on the SnO2 grains at 250-340 C, giving k ~60-100 without the >800 C anneal or the Ru/RuO2 template used in earlier rutile work. A doped-SnO2 top electrode makes the stack symmetric and keeps the high-work-function contact. At 7 nm physical thickness the EOT is 0.34-0.40 nm. The capacitor is used either to shorten the 1-beta pillar from 1.3 um to 0.8-0.95 um, or as a 0.30-0.35 um stub holding ~2 fF for short-bitline, 4F2 or 3D-tier cells.",
+   "which_bottleneck": "A1 #1 capacitor wall (k>60 needed) and A1 #2 (a capacitor that fits a 3D tier); A2 warning that Ru electrodes fleet-wide need 26-176% of world Ru and HZO needs 14-41% of separated Hf.",
+   "step_change_claim": "1.4-1.6x more capacitance per area than ZrO2-based stacks (EOT 0.40/0.34 vs 0.55 nm): equal Cs from a capacitor 27-38% shorter (AR ~39-45 instead of 62), or 2 fF from a 0.30-0.35 um stub; zero Ru and zero Hf.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-02: k=68 (Gordon 2010) at 7 nm -> EOT 0.401 nm -> h(5.4 fF, d=21 nm)=0.95 um, h(2.0 fF)=0.35 um; k=80 -> 0.81/0.30 um; k=100 -> 0.65/0.24 um. Leakage budget: sidewall area of the 0.95 um stub = 6.3e-10 cm2, so J=1e-7 A/cm2 -> 0.063 fA/cell vs 13 fA (64 ms), 0.84 fA (1 s), 0.084 fA (10 s); J=1e-5 -> 6.3 fA still meets 64 ms. So a Si-BCAT DRAM tolerates J up to ~1e-5 at the storage bias, while a 10 s oxide-channel cell needs <=~1e-7 at ~0.5 V. Sn use: 0.44 g/wafer at 15% ALD utilization -> ~10 t/yr fleet = ~0.003% of world tin [world tin UNVERIFIED-PK].",
+   "evidence": [
+    {
+     "title": "Wang, Xu, Gordon: high-permittivity rutile TiO2 by ALD on SnO2 (Harvard DASH record, 2010)",
+     "url": "https://dash.harvard.edu/entities/publication/73120378-ac47-6bd4-e053-0100007fdf3b",
+     "shows": "rutile TiO2 grown by ALD at 250 C on SnO2 with k ~68 and epitaxial registry to SnO2 grains; SnO2 proposed as bottom electrode (via search snippet)"
+    },
+    {
+     "title": "KIST record: Ta-doped SnO2 as template/electrode for rutile TiO2",
+     "url": "https://pubs.kist.re.kr/handle/201004/119194",
+     "shows": "Ta-doped SnO2 templates rutile TiO2 (high-k phase) and is stable after 400 C anneal (via search snippet)"
+    },
+    {
+     "title": "US 2023/0102906 Capacitor, memory device including the capacitor, and method of manufacturing the capacitor",
+     "url": "https://patents.justia.com/patent/20230102906",
+     "shows": "impurity-doped SnO2 seed layer on the lower electrode; ALD TiO2 at ~300-340 C forms rutile with permittivity ~60-100 (via search snippet; snippet attribution between this filing and US 12,356,643 uncertain; assignee not confirmed)"
+    },
+    {
+     "title": "KIST record: Metastable rutile TiO2 growth on non-lattice-matched substrates via a sacrificial layer strategy (Small 2025)",
+     "url": "https://pubs.kist.re.kr/handle/201004/152470",
+     "shows": "ultrathin sacrificial Ru seeds give low-temperature rutile TiO2 on amorphous Al2O3/HfO2/ZrO2 (alternative route that still uses some Ru) (via search snippet)"
+    },
+    {
+     "title": "TechInsights (Choe): DRAM capacitor below 10 fF, k>50 needed [CROSS-REF, A1 log]",
+     "url": "https://www.techinsights.com/ja/node/37840",
+     "shows": "Cs <10 fF at D1z/D1a, 5-6 fF projected at 1c, k>50 needed to stay above 7 fF (per A1)"
+    },
+    {
+     "title": "ECS 224 abstract: SrTiO3/TiO2 DRAM capacitor dielectrics [CROSS-REF, A1 log]",
+     "url": "https://ecs.confex.com/ecs/224/webprogram/Abstract/Paper24478/E2-1876.pdf",
+     "shows": "SrTiO3 on Ru reached EOT 0.42 nm but Jg ~1e-6 A/cm2; rutile TiO2 needs Ru/RuO2 templates or >800 C (per A1)"
+    }
+   ],
+   "novelty": "KNOWN (Harvard/Gordon 2010 rutile TiO2 on SnO2; KIST Ta:SnO2 template; patent filings on doped-SnO2 seeds) | TWIST: aimed at the Ru-free short-stub regime for short-bitline, 4F2 and 3D-tier cells, and at oxide-channel cells where dielectric leakage, not the transistor, sets retention.",
+   "show_stoppers": "(1) Leakage: rutile TiO2's ~3.0-3.2 eV gap and the small conduction-band offset to SnO2 may push J above 1e-7 A/cm2 at 0.5-0.8 V. (2) Template continuity: a crystalline, continuous 3-5 nm SnO2 film on HAR sidewalls; grain boundaries nucleate anatase (k<40) and leak. (3) Hydrogen/forming-gas anneals reduce SnO2 and TiO2 (oxygen vacancies -> conduction).",
+   "revival_or_workaround": "(1) Al-doped TiO2 or a 0.3-0.5 nm Al2O3 interlayer (trading some k), high-work-function top electrode, and operation at half-VDD plate bias; per the arithmetic, a 64 ms-1 s product already tolerates 1e-6-1e-5 A/cm2. (2) Ta:SnO2 is reported to template rutile and survive 400 C; O3-based conversion steps from the patent literature; thicker SnO2 only at the bottom electrode. (3) Use the oxide-channel BEOL flow, which already avoids forming gas (imec H+O anneal).",
+   "million_dollar_demo": "12-18 months, ~$250k: planar and 1-2 um deep-trench MIM test structures on Si; ALD doped SnO2 + rutile TiO2 at 250-340 C; XRD/TEM phase, C-V, J-V at 25-125 C, TDDB. Pass bar: EOT <=0.40 nm at J <=1e-7 A/cm2 at 0.5 V and 85 C. Then pair with a university IGZO access TFT for a 1T1C retention test (~$80k extra).",
+   "resource_angle": "Avoids Ru (fleet-scale demand 26-176% of world supply) and Hf (14-41%); Sn and Ti are abundant (~10 t/yr Sn fleet-wide). Dopant choice matters: Ta is a conflict mineral and Nb is ~90% Brazilian [UNVERIFIED-PK], so F- or W-doped SnO2 is preferred. Shorter capacitors also cut HAR etch time.",
+   "us_buildable": "Harvard CNS (Cambridge MA, Gordon ALD lineage); Purdue Birck (IN); NC State (Raleigh); Penn State MRI (State College PA)."
+  },
+  {
+   "id": "B2-03",
+   "name": "Hf-free MPB zirconia with work-function-biased operating point",
+   "one_liner": "Reach k ~55-60 without hafnium by tuning Zr-only ZrO2 stacks to the tetragonal/polar-orthorhombic boundary and using asymmetric electrodes to park the DRAM operating window on the steep part of the permittivity curve.",
+   "mechanism": "Today's DRAM uses Al-doped ZrO2 (k ~40, EOT ~0.6-0.7 nm). The highest reported hafnia-zirconia k values (56-64) sit at the morphotropic phase boundary (MPB) between ferroelectric-orthorhombic and tetragonal phases, using HZO superlattices that contain Hf. Here the stack is Zr-only ZrO2 (5.5-6 nm) whose phase balance is set by dopant (Al, Si, Y), thickness and electrode strain. An antiferroelectric-like ZrO2 has its highest small-signal permittivity near its field-induced transition; a built-in bias from work-function-asymmetric electrodes (TiN bottom, doped-SnO2 or MoO2 top) shifts that peak into the 0-0.5 V storage window. The capacitor is otherwise a standard pillar or stub.",
+   "which_bottleneck": "A1 #1 capacitor wall; A2 Hf warning (HZO fleet-wide = 14-41% of separated world Hf; Hf price ~$5k -> ~$13k/kg in 2025-26).",
+   "step_change_claim": "EOT 0.55 -> ~0.41 nm (k 40 -> 56): the same 5.4 fF from a 0.97 um pillar instead of 1.29 um (AR 62 -> 46), or +34% Cs at the same height, Hf-free. A modest step on its own; it compounds with B2-01 (taller AAO cups) or B2-08 (shorter bitlines).",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-03: k=40 at 5.6 nm -> EOT 0.546 nm -> h=1.29 um (AR 62); k=56 at 5.9 nm -> 0.411 nm -> 0.97 um (AR 46); k=62 -> 0.371 nm -> 0.88 um (AR 42), all at d=21 nm and 5.4 fF. Zr demand is unchanged from today (~19 t/yr fleet, <0.01% of Zr, A2).",
+   "evidence": [
+    {
+     "title": "Nano Convergence 2022 review (s40580-022-00333-7): high-k hafnia/zirconia for DRAM capacitors",
+     "url": "https://link.springer.com/article/10.1186/s40580-022-00333-7",
+     "shows": "Al-doped ZrO2 is the commercial DRAM dielectric, EOT limited to ~6-7 A; MPB between ferroelectric-orthorhombic and tetragonal phases is the high-k route (via search snippet)"
+    },
+    {
+     "title": "KAIST record 10203/303175: ZrO2/HZO bilayer MPB capacitor",
+     "url": "https://dspace.kaist.ac.kr/handle/10203/303175?mode=full",
+     "shows": "k 56 at EOT 4.1 A (via search snippet)"
+    },
+    {
+     "title": "POSTECH: Accurate evaluation of high-k HZO/ZrO2 films by morphotropic phase boundary",
+     "url": "https://remotecenter.postech.ac.kr/handle/2014.oak/120810",
+     "shows": "ZrO2/HZO superlattice k 62 at 1 V (via search snippet)"
+    },
+    {
+     "title": "J. Mater. Chem. C 2026 (D5TC02886H): MPB capacitance evaluation",
+     "url": "https://pubs.rsc.org/en/Content/ArticleLanding/2026/TC/D5TC02886H",
+     "shows": "capacitance at MPB compositions is overestimated by standard measurements; k-optimal composition differs between low- and high-voltage regimes (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known: MPB HZO superlattices (KAIST, POSTECH, SNU) and antiferroelectric ZrO2 capacitors are known; Hf-free MPB plus electrode-asymmetry biasing of the operating point is the twist (not found in the snippets).",
+   "show_stoppers": "(1) A 2026 J. Mater. Chem. C paper reports MPB capacitance is overestimated by standard measurement; the small-signal k at 0-0.5 V may stay ~40. (2) Operating near a field-induced phase transition brings hysteresis loss, fatigue and slow charge relaxation (looks like leakage or charge loss). (3) Below ~6 nm the tetragonal phase dominates and leakage rises at EOT ~0.4 nm.",
+   "revival_or_workaround": "(1) Measure only with ns-pulsed small-signal C at DRAM bias; if the gain vanishes, fold the work into B2-02 TiO2/ZrO2 laminates. (2) Bias the window into the reversible paraelectric shoulder, not across the transition; 1e15-cycle pulsed endurance testing decides. (3) Laminate with thin Al2O3 for leakage and use oxidation-tolerant oxide top electrodes.",
+   "million_dollar_demo": "12 months, ~$150k: planar MIM matrix (3 dopants x 3 thicknesses x 3 electrode pairs) by university ALD; ns-pulsed C-V at 0.3-0.6 V, J-V at 85 C, 1e12-1e15 cycle endurance at 50 ns pulses. Pass bar: small-signal k >=52 at 0.5 V, J <=1e-7 A/cm2, no fatigue to 1e13.",
+   "resource_angle": "Hf-free (Hf is separation-limited and under Chinese export control); Zr is plentiful. It shortens HAR etch only modestly.",
+   "us_buildable": "UT Dallas (Richardson TX, ALD/high-k groups); NC State; Penn State MRI; Georgia Tech IEN."
+  },
+  {
+   "id": "B2-04",
+   "name": "Capacitor-first inverted flow with perovskite super-k",
+   "one_liner": "Build and crystallize a perovskite (Ba,Sr)TiO3 capacitor array at 650-750 C before any transistor exists, then grow low-temperature oxide access transistors on top and bond the periphery last, so the thermal-budget conflict that killed perovskite DRAM disappears.",
+   "mechanism": "On a bare carrier or Si wafer, deposit a conductive-oxide bottom electrode (LaNiO3, Nb:SrTiO3 or doped SnO2), sputter/ALD 10-12 nm (Ba,Sr)TiO3 or SrTiO3 into short pillars or cups, and RTA at 650-750 C to crystallize (k 100-250); add the top electrode and planarize. Then build vertical IGZO/ZTO access transistors directly on the capacitor top contacts at <=400 C (the OCTRAM-style transistor-over-capacitor arrangement), and finally hybrid-bond the logic periphery wafer on top. Because the capacitor comes first, no transistor, metal or gate stack ever sees the perovskite anneal. The bit is a normal 1T1C charge sensed through a short bitline.",
+   "which_bottleneck": "A1 #1 (k>=100 needed for a <=300-500 nm capacitor), A1 #2 (a stub that fits a tier), A1 #4 (HAR etch).",
+   "step_change_claim": "3-4x shorter capacitor at equal charge: k 150 (EOT 0.26 nm) gives 4.6 fF from a 0.5 um stub (vs 5.4 fF from 1.3 um today), AR ~23 instead of 60-75; a 0.3 um stub gives 1.8-3.8 fF, enough for 64-128-cell bitlines.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-04 (d=22 nm pillar at a 40 nm-pitch 4F2 lattice): k=100/10 nm (EOT 0.39) -> 1.84 fF at 0.3 um, 3.06 fF at 0.5 um; k=150/10 nm (EOT 0.26) -> 2.75/4.59 fF; k=250/12 nm (EOT 0.19) -> 3.82/6.37 fF. Leakage: SrTiO3 at EOT 0.42 nm showed ~1e-6 A/cm2 (A1 cross-ref); over a 0.5 um stub's 3.5e-10 cm2 that is ~0.35 fA, acceptable for 64 ms-1 s retention but not for 10 s.",
+   "evidence": [
+    {
+     "title": "Kioxia: OCTRAM oxide-semiconductor channel transistor DRAM (BusinessWire 2024-12-09) [CROSS-REF, A1/A3 log]",
+     "url": "https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology",
+     "shows": "vertical IGZO transistor DRAM with Ioff <1 aA on a HAR capacitor, 275 Mb array (per A3; not re-opened by B2)"
+    },
+    {
+     "title": "ECS 224 abstract: SrTiO3/TiO2 DRAM capacitor dielectrics [CROSS-REF, A1 log]",
+     "url": "https://ecs.confex.com/ecs/224/webprogram/Abstract/Paper24478/E2-1876.pdf",
+     "shows": "SrTiO3 on Ru reached EOT 0.42 nm but Jg ~1e-6 A/cm2; rutile TiO2 needs Ru/RuO2 templates or >800 C (per A1)"
+    },
+    {
+     "title": "TechInsights (Choe): DRAM capacitor below 10 fF, k>50 needed [CROSS-REF, A1 log]",
+     "url": "https://www.techinsights.com/ja/node/37840",
+     "shows": "Cs <10 fF at D1z/D1a, 5-6 fF projected at 1c, k>50 needed to stay above 7 fF (per A1)"
+    }
+   ],
+   "novelty": "NEW combination: process-order inversion (capacitor-first, high-temperature perovskite) enabled only by oxide-channel transistors plus bonded periphery. Perovskite (BST) DRAM capacitors were pursued in the 1990s-2000s and abandoned over integration and electrodes [UNVERIFIED-PK]. That OCTRAM places the IGZO transistor above the capacitor is from prior knowledge [UNVERIFIED-PK].",
+   "show_stoppers": "(1) Thin-film perovskite k collapses (dead layers, grain size vs a 22 nm pillar) and leaks (~3.2 eV gap). (2) Electrodes: oxidation-resistant contacts are traditionally Pt/Ru/SrRuO3 (scarce); LaNiO3 needs La (China-processed rare earth). (3) Conformal perovskite deposition in 3D (Ba/Sr ALD precursors are poor) and interdiffusion during the anneal.",
+   "revival_or_workaround": "(1) Target the short-stub regime (AR <=25), where sputter or ALD/sputter hybrids suffice, and accept 64 ms-1 s retention products; Al2O3 interlayers for leakage. (2) LaNiO3 from Mountain Pass (U.S.) lanthanum or doped-SnO2 electrodes; no Ru. (3) Crystallize planar or shallow-cup capacitors first; the transistor-on-top flow needs no conformal 60:1 coating.",
+   "million_dollar_demo": "18 months, ~$300k: planar and 300-500 nm cup BST/STO capacitors on LaNiO3 at 650-750 C; then a <=350 C IGZO TFT on top; measure C, J, k vs thickness and 1T1C retention at 85 C. Pass bar: >=2 fF from a <=0.5 um cup at J <=1e-6 A/cm2 and 0.5 V.",
+   "resource_angle": "Ba, Sr and Ti are abundant; Ru-free if LaNiO3 or SnO2 electrodes work; far less HAR etch. Negative: La or Nb electrodes add rare-earth or Brazil-concentrated inputs.",
+   "us_buildable": "Penn State MRI (perovskite thin films); Cornell PARADIM (Ithaca NY); Purdue Birck for the IGZO top layer."
+  },
+  {
+   "id": "B2-05",
+   "name": "Solid-state proton double-layer nano-capacitor [SPECULATIVE]",
+   "one_liner": "Store the DRAM charge in an electric double layer across a few-nm solid proton electrolyte (phosphosilicate glass), which holds 2-16x more charge per area than ZrO2, so a 0.1-0.4 um stub replaces a 1.3 um pillar.",
+   "mechanism": "Replace the high-k film with a 3-5 nm PECVD phosphosilicate-glass (PSG) proton conductor between ion-blocking TiN or W electrodes, optionally with a 1-2 nm pseudocapacitive WO3 or MnO2 skin. Applying the bit voltage (<=~1 V) moves protons a fraction of a nm to form double layers at both interfaces: an all-solid-state nano-supercapacitor with ~10-20 uF/cm2 (EDL) or ~100 uF/cm2 (pseudocapacitive) vs 6.3 uF/cm2 for EOT 0.55 nm. The access transistor and sensing are unchanged. MIT showed nanosecond proton shuttling through PSG at room temperature under ~1 V/nm fields.",
+   "which_bottleneck": "A1 #1 capacitor wall (charge per footprint), A1 #2 (capacitor in a tier).",
+   "step_change_claim": "5.4 fF from a 0.41 um stub (EDL, 20 uF/cm2) or 0.08 um (pseudocapacitive, 100 uF/cm2) at 21 nm diameter, vs 1.3 um today: 3-16x shorter, with all-abundant P/Si/O/H/W.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-05: ZrO2-class EOT 0.55 nm = 6.28 uF/cm2. Height for 5.4 fF at d=21 nm: 10 uF/cm2 -> 0.82 um, 20 -> 0.41 um, 100 -> 0.08 um. Speed: R_ion = t/(sigma*A) for a 5 nm film over 2.7e-10 cm2: sigma 1e-3 S/cm -> RC 10 ns, 1e-4 -> 100 ns, 1e-5 -> 1 us. DRAM-class write needs effective sigma >=1e-3 S/cm, plausible only in the high-field regime MIT reported. Retention: electronic leakage at 1e-6 A/cm2 over 2.7e-10 cm2 = 0.27 fA (meets 64 ms and 1 s).",
+   "evidence": [
+    {
+     "title": "Onen et al., Nanosecond protonic programmable resistors for analog deep learning (Science 377, 539, 2022)",
+     "url": "https://mitibmwatsonailab.mit.edu/wp-content/uploads/2023/06/science.abp8064.pdf",
+     "shows": "controlled proton shuttling/intercalation in nanoseconds at room temperature through phosphosilicate glass (PSG) electrolyte under ~1 V/nm; WO3/PSG/Pd stack (via search snippet)"
+    },
+    {
+     "title": "IBM/MIT: CMOS-compatible protonic programmable resistor based on PSG electrolyte",
+     "url": "https://research.ibm.com/publications/cmos-compatible-protonic-programmable-resistor-based-on-phosphosilicate-glass-electrolyte-for-analog-deep-learning",
+     "shows": "back-end-CMOS-compatible PSG proton electrolyte (Nano Letters 2021) (via search snippet)"
+    }
+   ],
+   "novelty": "[SPECULATIVE] NEW combination: protonic PSG electrolytes are known as analog synapses (MIT/IBM); using a solid electrolyte double layer as the DRAM storage capacitor was not found.",
+   "show_stoppers": "(1) At storage-level fields (~0.1 V/nm) proton mobility may be orders of magnitude below the 1 V/nm regime, giving RC far above 100 ns. (2) Self-discharge: Faradaic side reactions, redox shuttles and electronic leakage over hours, strongly temperature-activated. (3) Mobile hydrogen next to an IGZO channel causes H-doping and PBTI drift.",
+   "revival_or_workaround": "(1) Write with a short high-field overdrive pulse, store at low field; screen nanoconfined conductors (PSG, hydrated ZrO2) for room-temperature sigma >=1e-3 S/cm. (2) Ion-blocking electrodes, a narrow voltage window (<=0.8 V) and retention-aware refresh; a 1 s target (16x DRAM) is enough to be useful. (3) Al2O3/SiN hydrogen barriers between capacitor and channel, or pair with a Si or 2D access device that tolerates H.",
+   "million_dollar_demo": "12 months, ~$200k: planar and 1 um trench TiN/PSG/TiN MIM structures; impedance from 1 kHz to 100 MHz, 10-100 ns pulsed charge/discharge, leakage and self-discharge at 25-85 C, 1e12-cycle endurance. Kill test: if the 100 ns charging fraction is <50% at 0.8 V, stop.",
+   "resource_angle": "P, Si, O, H, W and Mn are abundant; PECVD at BEOL temperatures; no Hf, Ru or Zr; shorter HAR etch.",
+   "us_buildable": "MIT.nano (Cambridge MA; del Alamo/Yildiz/Li lineage); Sandia CINT (Albuquerque NM) user facility."
+  },
+  {
+   "id": "B2-06",
+   "name": "Flat AlBN ferroelectric capacitor with non-destructive capacitive read",
+   "one_liner": "Use Sc-free, Hf-free boron-aluminum nitride, whose remanent polarization (~125-136 uC/cm2) is ~5x hafnia's, to store a full DRAM bit's charge in a flat 20-40 nm capacitor with no height at all, and read it without switching.",
+   "mechanism": "Sputter 5-10 nm wurtzite Al1-xBxN (x 0.02-0.15) at <=400 C on a planar landing pad: 2Pr*A for a 40x40 nm pad is ~4 fC (~26,000 e-), more than today's 1.3 um pillar delivers. Reads must not switch the film, so the state is read capacitively: the imprinted polarization gives different small-signal C (or a piezo/flexo-induced charge) for up and down states, sensed through a 2T gain cell on an oxide channel, so only writes wear the ferroelectric. Data are non-volatile: no refresh. A gain-cell or SRAM write buffer in front absorbs write traffic.",
+   "which_bottleneck": "A1 #1 (removes the HAR capacitor), A1 #3 (no refresh), A2 (AlScN on 3D area would need ~13% of world Sc; HZO 14-41% of Hf).",
+   "step_change_claim": "Zero capacitor height and zero refresh energy; 1-4 fC per bit from a planar 20-40 nm pad; Sc- and Hf-free. Gated by an endurance gap of ~1e5-1e9x.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-06: 2Pr*A: Pr=130 uC/cm2, 20x20 nm -> 1.04 fC (6,492 e-); 40x40 nm -> 4.16 fC (25,968 e-); HZO-class Pr=25 at 20x20 nm -> 0.20 fC. Coercive voltage = Ec*t: 5.4 MV/cm x 5 nm = 2.7 V; with B+Sc co-alloys at 3 MV/cm, 5 nm -> 1.5 V. Endurance: >1e6 demonstrated vs ~3.4e15 needed for DRAM-class (3.4e9x) or 1.6e11 for a write-buffered tier (1.6e5x).",
+   "evidence": [
+    {
+     "title": "Hayden et al., Ferroelectricity in boron-substituted aluminum nitride thin films (Phys. Rev. Materials 5, 044412, 2021)",
+     "url": "https://link.aps.org/accepted/10.1103/PhysRevMaterials.5.044412",
+     "shows": "sputtered Al1-xBxN: Pr ~136 uC/cm2, Ec 5.4 MV/cm at x=0.07; films with only 2 mol% BN still switch with Pr >125 uC/cm2 (via search snippet)"
+    },
+    {
+     "title": "Penn State: Ferroelectric Al1-xBxN/GaN heterostructures (APL 2024)",
+     "url": "https://www.mri.psu.edu/sites/default/files/542/Ferroelectric%20Al1-xBxN-GaN%20Heterostructures-APL%204.1.24.pdf",
+     "shows": "Al0.93B0.07N Pr ~125 uC/cm2, endurance >1e6 field cycles (via search snippet)"
+    },
+    {
+     "title": "Boron co-alloying in AlScN wurtzite ferroelectrics: an 850-sample combinatorial study (arXiv 2606.11954, 2026, preprint)",
+     "url": "https://arxiv.org/pdf/2606.11954",
+     "shows": "B+Sc co-alloying cuts Ec from ~7 to ~3 MV/cm with Pr 130-150 uC/cm2 and notably improves endurance (preprint, via search snippet)"
+    }
+   ],
+   "novelty": "TWIST: AlBN ferroelectricity is known (Penn State 2021; Cornell MBE); using it as a flat, high-charge DRAM capacitor with non-destructive capacitive read behind a write buffer is a NEW combination.",
+   "show_stoppers": "(1) Endurance: wurtzite ferroelectrics switch near breakdown; >1e6 shown vs 1e11-1e15 needed. (2) Coercive voltage of 1.5-2.7 V at 5 nm, and sub-5 nm switching is unproven [UNVERIFIED-PK]. (3) Leakage and wake-up in thin films (MBE AlBN reached only 15 uC/cm2 because of leakage).",
+   "revival_or_workaround": "(1) Never switch on read (capacitive read); write buffer + wear-levelling so a cell sees <=1 write/ms; B co-alloying is reported to improve endurance, so map the trend toward 1e10+. (2) B+Sc co-alloys at ~3 MV/cm, or minor-loop/partial switching at lower voltage. (3) N-rich, H-free sputtering and textured templates.",
+   "million_dollar_demo": "12-15 months, ~$250k: sputtered AlBN MFM capacitors scaled from 20 to 5 nm; Pr, Ec, 10-100 ns pulse endurance, 125 C retention, and the capacitive read margin (C asymmetry up vs down) on 40-200 nm pads. Kill test: no path to >=1e10 cycles at <=2 V.",
+   "resource_angle": "Al, B and N are among the most abundant inputs; replaces Sc (13% of world supply at 3D scale) and Hf. Non-volatility removes refresh energy in use, the largest lifetime energy term (A2: ~16x fab energy).",
+   "us_buildable": "Penn State MRI (State College PA); Penn Singh Center (Philadelphia, AlScN groups); Cornell (MBE AlBN); Sandia CINT."
+  },
+  {
+   "id": "B2-07",
+   "name": "Gallium-free, indium-lean oxide channels (ZTO / SnO2 / ITZO) for gain cells and VCT",
+   "one_liner": "Make the oxide-channel DRAM wave independent of China-controlled gallium (and mostly of indium) by switching IGZO/IGO channels to zinc-tin oxide or In-lean tin oxides; Ga-free ZTO 2T0C already holds data >1500 s.",
+   "mechanism": "Deposit amorphous Zn-Sn-O (ZTO), SnO2, or In-lean In-Sn-Zn-O / In-W-O channels by ALD (or PVD for planar) at <=350 C, with the gate insulator and channel grown in one ALD chamber without a vacuum break (UMich) and Al2O3/SiO2 passivation (Hf-free, unlike the HfO2 used for the SJTU record). Cells are the same 2T0C/3T0C gain cells or 4F2 VCT access transistors now built with IGZO. Zn and Sn suppress oxygen-vacancy carriers less strongly than Ga, so thin (3-5 nm) channels, Al or Si doping, and O3 anneals set the threshold voltage. The bit is stored on the read transistor's gate (gain cell) or on a capacitor (VCT).",
+   "which_bottleneck": "A2 chokepoint: Ga is ~98% Chinese and the U.S. export-ban suspension ends 2026-11-27; In refining is concentrated. Keeps A1 #3 (oxide leakage -> long retention).",
+   "step_change_claim": "100% Ga-free (and In-free for ZTO) oxide DRAM supply chain at >=1500 s demonstrated retention (~23,000x a 64 ms refresh interval), with 2-6 ns single-bit read on a 64-cell read bitline.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-07: read bitline C = 0.1 fF/cell + 5 fF (A3); 64 cells = 11.4 fF. 100 mV develops in t = C*dV/I: 0.2 uA (ZTO at ~1/3 of IGZO drive) -> 5.7 ns; 0.6 uA -> 1.9 ns; 3-bit (8x) -> 15-46 ns. Retention 1500 s / 64 ms = 23,400x, so refresh energy falls in proportion. Material per wafer is mg-scale (A2: IGZO uses 26 mg In and 16 mg Ga per wafer; ZTO replaces both with Zn and Sn).",
+   "evidence": [
+    {
+     "title": "U. Michigan thesis: Advances in amorphous oxide TFTs for 2T0C DRAM",
+     "url": "https://deepblue.lib.umich.edu/items/e6ac2d99-46aa-444a-bc41-2851e63c965c",
+     "shows": "first 2T0C memory with Ga-free zinc-tin oxide (ZTO) TFTs, retention >1500 s; insulator+channel ALD in one chamber without vacuum break (via search snippet)"
+    },
+    {
+     "title": "Nano-Micro Letters 2026 review: Oxide semiconductor for advanced memory architectures (ALD)",
+     "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12765776/",
+     "shows": "IMECAS 2021 first vertical channel-all-around IGZO FET in a 2T0C cell, PEALD at ~250 C (via search snippet)"
+    },
+    {
+     "title": "SJTU, Adv. Funct. Mater. 2026, ultrathin-oxide 2T0C DRAM",
+     "url": "https://sigroup.sjtu.edu.cn/files/AdvFunctMater_UltrathinOxide_DRAM_2026.pdf",
+     "shows": "IGO 2T0C with ALD HfO2 passivation >30,000 s retention (100x over unpassivated); IGZO, IWO, ITO 2T0C widely studied (via search snippet)"
+    },
+    {
+     "title": "imec IEEE EDL 2025 IGZO 2T0C record",
+     "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+     "shows": "40 nm Lg IGZO 2T0C retention >200 s at 95 C (via search snippet)"
+    }
+   ],
+   "novelty": "KNOWN (ZTO TFTs from the display field [UNVERIFIED-PK]; ZTO 2T0C at UMich; IWO/ITO 2T0C studied) | TWIST: treating Ga-freedom as a design requirement and carrying ZTO into vertical channel-all-around and 3D gain cells, which were not found.",
+   "show_stoppers": "(1) Harder threshold control: ZTO/SnO2 carry more donors, so Ioff <=1 aA at Lg <30 nm is not shown. (2) Zn volatility and diffusion and Sn reduction under H-containing steps; composition control by ALD in HAR holes. (3) PBTI/NBIS drift and contact resistance at sub-20 nm.",
+   "revival_or_workaround": "(1) Al- or Si-doped ZTO, 3-5 nm channels, double-gate geometry, negative hold voltage (imec trick). (2) Supercycle ALD with in-situ composition monitoring; H-free process. (3) In-lean ITZO as a fallback keeps Ga out even if In stays.",
+   "million_dollar_demo": "12 months, ~$200k: head-to-head ALD ZTO vs IGZO 2T0C runs (Lg 40-100 nm) on 100-150 mm; retention at 25/85/125 C, 1e12-cycle endurance, read current, PBTI. Pass bar: ZTO within 2x of IGZO retention at 85 C.",
+   "resource_angle": "Eliminates gallium (export-licensed, ~98% Chinese) and, for ZTO, indium; Zn and Sn are abundant. Tin is concentrated (Indonesia, China, Myanmar) [UNVERIFIED-PK] but traded widely; the U.S. mines zinc.",
+   "us_buildable": "U. Michigan LNF (Ann Arbor MI); Oregon State (Corvallis OR, ZTO TFT heritage); Georgia Tech IEN; Purdue Birck."
+  },
+  {
+   "id": "B2-08",
+   "name": "In-tier complementary-oxide sense amplifiers (no-bond short bitlines)",
+   "one_liner": "Use the new p-type oxides (TeSeOx, SnO) with n-IGZO/ZTO to build local sense amps as a BEOL tier right next to each memory tier group, so every 64-cell bitline segment gets its own amplifier without wafer bonding.",
+   "mechanism": "Build complementary oxide TFT latch sense amplifiers (n-IGZO/ZTO + p-TeSeOx, mobility ~15 cm2/Vs, on/off 1e6-1e7) in a dedicated BEOL tier above or below the memory tier(s), connected by short vias to 64-cell local bitline segments. Short bitlines (Cbl ~8 fF instead of ~35 fF) cut the needed storage capacitance to ~1.2 fF and allow VARY ~0.4 V; the local SA restores the cell and drives a global bitline to the Si periphery. In 3D stacks one SA tier serves N memory tiers, so bitline capacitance no longer grows with tier count. Offset-cancelled (auto-zero) SA topology absorbs oxide Vt mismatch.",
+   "which_bottleneck": "A1 #10 voltage floor, A1 #1 (Cs requirement), A1 #7 periphery area (~49% of the die), A1 #2 (bitline routing in 3D).",
+   "step_change_claim": "~27x lower bitline CV2/2 energy per sense (17.5 -> 0.64 fJ) and ~4.5x lower Cs requirement (5.4 -> ~1.2 fF), monolithically, without a second bonded wafer.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-08: 512-cell BL 35 fF at 1.0 V -> 17.5 fJ; 64-cell 8 fF at 0.4 V -> 0.64 fJ (27x). Area: a 64-cell segment at 4F2 F=20 nm covers 0.102 um2, so an open-BL SA serving two segments gets 0.205 um2 per tier; stacked over 4/8/16 tiers it gets 0.82/1.64/3.28 um2. Offset: oxide sigma(Vt) ~40 mV [ASSUMPTION] -> 6-sigma pair offset ~339 mV, above the 215 mV fresh 64-cell signal (A1), so offset cancellation is mandatory.",
+   "evidence": [
+    {
+     "title": "TechXplore 2024-04: high-performance amorphous p-type oxide semiconductor (Liu et al., Nature 2024)",
+     "url": "https://techxplore.com/news/2024-04-high-amorphous-p-oxide-semiconductor.html",
+     "shows": "Se-alloyed tellurium oxide p-channel amorphous TFTs with hole mobility ~15 cm2/Vs and on/off 1e6-1e7 (via search snippet)"
+    },
+    {
+     "title": "ACS: p-type oxide TFT with unprecedented hole mobility for an all-oxide CMOS CFET-like inverter (figshare record)",
+     "url": "https://acs.figshare.com/articles/journal_contribution/p_Type_Oxide_Thin-Film_Transistor_with_Unprecedented_Hole_Field-Effect_Mobility_for_an_All-Oxide_CMOS_CFET-like_Inverter_Suitable_for_Monolithic_3D_Integration/27859576",
+     "shows": "sputtered SnOx p-TFT hole mobility 38.7 cm2/Vs but on/off only 2.5e3; CFET-like inverter with IGZO, gain 57 (via search snippet)"
+    },
+    {
+     "title": "IDW 2025 abstract AMD2-04 (Te-based p-type oxide TFTs with IGZO)",
+     "url": "https://pub-files.atlas.jp/fs/public/idw2025/ver_15/abstract/en/AMD2-04.pdf",
+     "shows": "Te-based p-type oxide TFTs paired with n-IGZO in CMOS logic (NOR gate) at display/BEOL temperatures (via search snippet; which of two IDW 2025 abstracts carries the NOR result is uncertain)"
+    }
+   ],
+   "novelty": "NEW combination: practical p-type amorphous oxides appeared in 2024-25; using complementary-oxide circuits as per-segment DRAM sense amps in the memory tier was not found.",
+   "show_stoppers": "(1) Oxide TFT Vt mismatch (20-50 mV) makes SA offset exceed the signal. (2) p-oxide stability and thermal budget (Te volatility, TeOx crystallization; SnOx on/off only 2.5e3). (3) SA area: ~0.2 um2 per tier unless stacked; speed with ~15 cm2/Vs holes.",
+   "revival_or_workaround": "(1) Auto-zero/offset-cancelling SA, or time-domain sensing; use 128-cell segments for 2x more signal. (2) Se-alloyed TeOx reports improved stability; SnO as an abundant alternative; n-only dynamic precharge-evaluate SAs avoid p-FETs. (3) One SA tier per 8 memory tiers gives 1.6 um2 per SA.",
+   "million_dollar_demo": "18 months, ~$300k: complementary IGZO/TeSeOx latch SAs at F~100-200 nm on a university line alongside short-bitline IGZO 1T1C or 2T0C arrays; offset distribution over 1,000 SAs and sense margin vs Cbl (8-35 fF). Pass bar: 6-sigma offset after cancellation <100 mV.",
+   "resource_angle": "No second wafer and no hybrid bonder: half the wafer starts of bonded periphery-under-cell. Te is a Cu-refining by-product used at mg/wafer; SnO is the abundant fallback.",
+   "us_buildable": "Purdue Birck; Georgia Tech IEN; Stanford SNF; Penn Singh Center."
+  },
+  {
+   "id": "B2-09",
+   "name": "Ge-free, NAND-line 3D oxide gain cell (oxide/nitride mold + channel replacement)",
+   "one_liner": "Build 3D DRAM the way 3D NAND is built (deposited SiO2/SiN mold, one hole etch, replacement), with capacitorless oxide gain cells, instead of epitaxial Si/SiGe superlattices that need germanium and single-crystal tiers.",
+   "mechanism": "Deposit 16-64 SiO2/SiN pairs by PECVD (standard NAND tools). One HAR hole/slit etch exposes all tiers; SiN is removed with hot phosphoric acid and replaced in every tier by ALD IGZO/ZTO horizontal channels (Kioxia's 3D OCTRAM SiN->InGaZnO replacement) plus recessed W/Mo gate and storage-node fills. Vertical wordline pillars gate the write transistors through all tiers (IMECAS dual-gate vertical-WL 2T0C); each storage node is a metal island that gates the tier's read transistor, so no lateral capacitor is needed. 2-3 bits/cell with write-verify multiplies the tier count.",
+   "which_bottleneck": "A1 #2 (no manufacturable 3D DRAM cell), A1 #4 (bits by deposition, not lithography); A2: Si/SiGe superlattices fleet-wide need 6-38% of refined world Ge; reuses NAND capital and cleanroom.",
+   "step_change_claim": "1.1-3.4x 1-beta density at F=40 nm with 16 tiers (1-3 bits), 6.8x at 32 tiers x 3 bits, with no EUV, no Ge and no epitaxy; runs on 3D-NAND tool sets.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-09 (vertical 2T0C 10F2, eff 0.508, A3 convention): F=40, 1 b x 16 tiers -> 0.51 Gb/mm2 (1.1x); 3 b x 16 -> 1.52 (3.4x); 3 b x 32 -> 3.05 (6.8x); F=30, 2 b x 32 -> 3.61 (8.1x). Ge avoided: 9-53 t/yr fleet-wide (A2). Tier break-even per A1 is ~26 for a capacitor-bearing 1T1C; deleting the capacitor drops it to the 10F2 footprint.",
+   "evidence": [
+    {
+     "title": "Kioxia 2025-12-12 news: 3D OCTRAM, IEDM 2025 [CROSS-REF, A3 log]",
+     "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+     "shows": "SiO2/SiN stack with SiN replaced by InGaZnO: horizontal transistors formed in all 8 tiers at once, Ion >30 uA, Ioff <1 aA (per A3)"
+    },
+    {
+     "title": "IT Home: IMECAS dual-gate IGZO 2T0C 3D DRAM, 3 bits/cell, 400 s (VLSI 2026) [CROSS-REF, A3 log]",
+     "url": "https://www.ithome.com/0/966/543.htm",
+     "shows": "four tiers formed in one stacking step, vertical wordline, 3 bits/cell, 400 s (per A3)"
+    },
+    {
+     "title": "Nano-Micro Letters 2026 review: Oxide semiconductor for advanced memory architectures (ALD)",
+     "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12765776/",
+     "shows": "IMECAS 2021 first vertical channel-all-around IGZO FET in a 2T0C cell, PEALD at ~250 C (via search snippet)"
+    },
+    {
+     "title": "Guru3D: SK hynix five-layer 3D DRAM at 56.1% yield [CROSS-REF, A1 log]",
+     "url": "https://www.guru3d.com/story/sk-hynix-achieves-yield-in-fivelayer-3d-dram-development",
+     "shows": "5-tier 3D DRAM test yield 56.1%; 32-192 layers needed (per A1) -> per-tier yield/repair is a gating problem"
+    }
+   ],
+   "novelty": "TWIST on known: Kioxia (8-tier replacement IGZO transistors, no cells), IMECAS (4-tier 2T0C) and NEO are near it; the specific combination of capacitorless 2T0C + SiN replacement + NAND line + Ge-free at >=16 tiers was not found.",
+   "show_stoppers": "(1) Uniform ALD channel thickness and composition in lateral recesses across 16-64 tiers (Lam reports recess variation along the stack). (2) Storage-node isolation and read/write disturb through shared vertical wordlines. (3) Compound tier yield (~0.998/tier after repair needed, A1).",
+   "revival_or_workaround": "(1) Long-exposure ALD plus atomic-layer etch trims; composition grading to offset depth-dependent Vt. (2) Dual-gate cells with negative hold bias; 1-bit first. (3) NAND-style block redundancy and B2-15 ECC; start at 8 tiers to learn yield.",
+   "million_dollar_demo": "24 months, ~$400k: 4-8-pair SiO2/SiN mold on 150-200 mm, one hole etch, SiN removal and ALD IGZO/ZTO replacement; electrical test of single-tier and stacked 2T0C cells (retention, disturb, tier-to-tier Vt spread). Pass bar: tier-to-tier Vt sigma <50 mV and retention >100 s at 85 C on 4 tiers.",
+   "resource_angle": "Germanium-free and epitaxy-free (no SiGe superlattice); PECVD SiO2/SiN and ALD oxides only; reuses 3D NAND capacity during NAND downturns instead of new DRAM fabs.",
+   "us_buildable": "NY CREATES / Albany NanoTech (300 mm, NY); Georgia Tech IEN; Micron Boise (NAND tool partner); Sandia CINT."
+  },
+  {
+   "id": "B2-10",
+   "name": "Fluorine-free carbon mold for capacitor holes and sacrificial 3D tiers",
+   "one_liner": "Make the HAR molds out of amorphous carbon, etched with O2/COS or H2/N2 plasma and removed by oxygen, so the largest-volume HAR etches in DRAM need no fluorocarbon (PFAS-class) gas at all.",
+   "mechanism": "Replace the SiO2 capacitor mold with a 1.3-2.5 um PECVD amorphous-carbon film (the 3D-NAND hardmask material) capped by a thin SiN or Al2O3 support lattice. Holes are etched anisotropically in O2/COS or H2/N2 plasma (sulfur or nitrogen sidewall passivation, no fluorine). ALD electrode and dielectric (or oxide channel) fill the holes; the carbon is then burned out by O2 or removed by H2 plasma, leaving free-standing, lattice-supported structures. In 3D stacks, carbon replaces SiN as the sacrificial tier: a low-pressure thermal O2 burn is reaction-limited, so the lateral recess is uniform from top to bottom of the stack, and the product is CO2.",
+   "which_bottleneck": "A2 PFAS/fluorochemical chokepoint (EU restriction ~2028+, 3M exit); A1 #1/#2 HAR etch and 3D lateral-recess uniformity.",
+   "step_change_claim": "Eliminates fluorocarbon gas from the capacitor/channel-hole modules (~5.6e13 HAR holes per wafer at 1-beta) and makes 3D lateral recess a thermal, reaction-limited step; the mold leaves ~0.6 g CO2/wafer instead of PFAS-class by-products.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-10: one capacitor hole per 1,070 nm2 cell -> 9.35e8 holes/mm2 -> 5.6e13 per wafer. A 1.3 um a-C mold (1.8 g/cm3) is 0.17 g C per wafer -> 0.61 g CO2 on burn-out. The low-GWP replacements under study (C2F4O: -24-29% GWP; HFO-1234ze) are still fluorinated, so this is a 100% rather than a 25% cut for these steps.",
+   "evidence": [
+    {
+     "title": "Cornell Atkinson: optimizing semiconductor processes to eliminate PFAS and high-GWP gas emissions (2026)",
+     "url": "https://atkinson.cornell.edu/research/dashboard/optimizing-semiconductor-manufacturing-processes-to-eliminate-emissions-of-pfass-and-high-global-warming-potential-gases/",
+     "shows": "2026 project at Cornell NanoScale Facility studying PFAS formation in plasma etch and substitutes, with chipmaker advisory board (via search snippet)"
+    },
+    {
+     "title": "SKKU: SiON etch characteristics using low-GWP C2F4O (ACS Sust. Chem. Eng. 2026)",
+     "url": "https://pure.skku.edu/en/publications/sion-etch-characteristics-using-low-gwp-csub2subfsub4subo-as-a-re/",
+     "shows": "C2F4O cuts GWP emissions 24-29% vs CF4 for SiON hole etch; CF4 hardest to replace; replacements remain fluorinated (via search snippet)"
+    },
+    {
+     "title": "IBM: viability of HFO-1234ze(E) as a low-GWP SiO2 etch gas",
+     "url": "https://research.ibm.com/publications/the-viability-of-hfo-1234zee-trans-1333-tetrafluoropropene-as-a-low-global-warming-potential-silicon-dioxide-etch-gas",
+     "shows": "hydrofluoroolefin etch gas with higher SiO2 etch rate/selectivity than CHF3/CH2F2; still a fluorinated chemistry (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known: a-C hardmasks with O2/COS-type etches are standard in 3D NAND [UNVERIFIED-PK]; using carbon as the sacrificial DRAM capacitor mold and as sacrificial 3D tiers removed by thermal oxidation is a NEW combination.",
+   "show_stoppers": "(1) Mechanics: carbon molds at AR 50-100 with 20 nm holes bow, twist and wiggle. (2) Removing carbon with O2 also oxidizes TiN/W electrodes; ALD on carbon may nucleate poorly. (3) Fluorine remains elsewhere (NF3 chamber cleans, other etches); sulfur residues.",
+   "revival_or_workaround": "(1) Boron-doped (stiffer) carbon, intermediate SiN/Al2O3 support decks, shorter capacitors from B2-02/03. (2) Oxidation-tolerant conductive-oxide electrodes (doped SnO2, B2-02) or H2-plasma carbon removal; nucleation layers. (3) Count it as removing the largest fluorocarbon consumers first; remote-plasma O2/H2 chamber cleans where possible.",
+   "million_dollar_demo": "12 months, ~$150k: 1-2 um PECVD a-C films; O2/COS hole etch at 30-60 nm on a university ICP etcher; ALD TiN/ZrO2/TiN fill; carbon burn-out; compare capacitor C, leakage and profile against a SiO2-mold control; thermal O2 lateral-recess test on a 4-pair a-C/SiO2 stack.",
+   "resource_angle": "PFAS-free and far lower GWP for these steps; carbon comes from hydrocarbons; exits the exposure to fluorochemical supply and regulation.",
+   "us_buildable": "Cornell CNF (Ithaca NY, which also hosts a 2026 PFAS-etch project); Penn Singh Center; UT Austin Texas Materials Institute."
+  },
+  {
+   "id": "B2-11",
+   "name": "DSA honeycomb: block-copolymer self-assembly for the capacitor/channel hole lattice",
+   "one_liner": "The hexagonal lattice that cylinder-forming block copolymers assemble into is the DRAM capacitor honeycomb; register it with a relaxed ArF guide and let thermodynamics do the EUV's job.",
+   "mechanism": "Coat PS-b-PMMA (or a high-chi BCP for <30 nm) whose cylinder lattice period L0 (~28-40 nm) matches the 1-beta (35 nm) or 1c (32 nm) capacitor honeycomb. A single-exposure ArF immersion guide pattern (or chemical pre-pattern) at 2-3x the pitch registers the lattice and DSA multiplies density 3-4x, rectifying CD and placement noise. Sequential infiltration synthesis (TMA/H2O into PMMA) hardens the pattern into an AlOx mask for transfer into the mold (SiO2 or the carbon mold of B2-10). For 4F2 square lattices, chemo-epitaxy with a square guide is used.",
+   "which_bottleneck": "A1 #4 litho-bound scaling and EUV dependence; A2 EUV single-supplier chokepoint.",
+   "step_change_claim": "Replaces 1-2 EUV or SAQP layers in the array: $165-330 per wafer (3.8-7.7% of a $4.3k 1c wafer) before netting DSA cost; the hole lattice comes from polymer physics rather than wavelength.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-11..14: removing 1/2/3 EUV layers saves $165/330/495 per wafer = 3.8/7.7/11.5% of a 1c wafer. Lattice match: imec used a 37 nm-pitch BCP for contact-hole multiplication (BACUS 2014); 1-beta honeycomb 35 nm, 1c 32 nm (A1). A guide at ~70-105 nm pitch is single-exposure ArF immersion territory (no multipatterning).",
+   "evidence": [
+    {
+     "title": "imec 2025: Improvement of EUV contact hole pattern rectification using novel DSA materials",
+     "url": "https://imec-publications.be/handle/20.500.12860/45976",
+     "shows": "DSA is still being developed in 2025 to rectify contact-hole arrays (title-level only, via search snippet)"
+    },
+    {
+     "title": "SPIE BACUS Newsletter Aug 2014 (imec DSA contact-hole multiplication)",
+     "url": "https://spie.org/documents/Membership/BacusNewsletters/BACUS-Newsletter-August-2014.pdf",
+     "shows": "grapho-epitaxy contact-hole multiplication with a 37 nm-pitch block copolymer (via search snippet)"
+    },
+    {
+     "title": "LBNL perspective on EUV + DSA rectification (eScholarship)",
+     "url": "https://escholarship.org/content/qt0942k4dm/qt0942k4dm.pdf",
+     "shows": "imec EUV+DSA rectification demonstrations at 28 nm full pitch for lines; extension to holes proposed (via search snippet)"
+    }
+   ],
+   "novelty": "KNOWN (imec, EMD/Merck, LBNL, Argonne; DSA for contact holes studied since ~2012) | TWIST: exploiting the native hexagonal match to the DRAM honeycomb on a periphery-free (bonded) cell wafer, plus defect tolerance from B2-15. Hard-disk bit-patterned-media programs used DSA-made imprint masters for dot lattices [UNVERIFIED-PK].",
+   "show_stoppers": "(1) Defectivity: memory with repair needs well below ~0.1 defects/cm2 on this layer; historical DSA defect levels were higher [UNVERIFIED-PK]. (2) Placement error of DSA holes relative to landing pads below. (3) Pattern transfer from thin BCP films into AR >=20 molds.",
+   "revival_or_workaround": "(1) B2-15 lifts random-defect tolerance ~100x; anneal and solvent-vapor protocols. (2) Self-aligned landing pads (B2-14) and larger-landing-pad 4F2 layouts. (3) SIS hardening plus carbon-mold transfer (B2-10).",
+   "million_dollar_demo": "12-18 months, ~$200k: DSA honeycomb at 32-40 nm pitch on 150 mm with e-beam-written guides; SEM defect inspection over cm2; SIS harden and transfer into SiO2 or carbon at AR 20; overlay of the DSA lattice to an underlying pad array.",
+   "resource_angle": "EUV-free for the array's densest layer; commodity polymers; SIS uses TMA/H2O. Solvent (PGMEA) use rather than dry processing; PS/PMMA are not PFAS.",
+   "us_buildable": "Argonne CNM (Lemont IL, SIS); Brookhaven CFN (Upton NY); UChicago PME; MIT."
+  },
+  {
+   "id": "B2-12",
+   "name": "NIL-only periodic cell wafer (bonded periphery makes every layer imprintable)",
+   "one_liner": "Once the periphery lives on a separate bonded logic wafer, the cell wafer contains only perfectly periodic arrays, which is exactly what nanoimprint does best, so pattern every critical cell layer by imprint and drop EUV and SAQP from it.",
+   "mechanism": "A master template (e-beam- or DSA-written) is replicated into working templates; jet-and-flash imprint defines each field's hole or line lattice with no projection optics. Because the cell wafer of a bonded 4F2 VCT or vertical gain-cell array needs only 2-3 overlay-critical layers (channel holes, wordline, contact) and later layers self-align, NIL's overlay and pattern-variety weaknesses matter less. 3D templates can define line + contact in a single imprint (dual-damascene style). Defects are absorbed by redundancy and ECC (B2-15).",
+   "which_bottleneck": "A1 #4 (EUV, capex, depreciation ~55% of wafer cost), A2 EUV single supplier (~65 tools/yr, ~10 GWh/yr each).",
+   "step_change_claim": "No EUV and no SAQP spacer loops on array layers: 2-3 imprint layers replace ~4-6 EUV/SAQP-patterned layers [ESTIMATE], worth ~$330-500/wafer at EUV rates; litho tool capex per wafer start plausibly several-fold lower [UNVERIFIED-PK on tool price].",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-11..14: 2-3 EUV layers at $165 = $330-495/wafer (7.7-11.5% of a 1c wafer). Overlay budget for DRAM critical layers = 15-20% of half pitch (NIL review): at F=20 nm that is 3-4 nm, about 1.4x looser than at 14 nm (2.1-2.8 nm).",
+   "evidence": [
+    {
+     "title": "Bits&Chips magazine Dec 2023 (p.7): nanoimprint status at SK hynix and Kioxia",
+     "url": "https://bits-chips.com/magazine/bc202308/?pagenr=7",
+     "shows": "SK hynix and Kioxia tested Canon NIL tools for years; SK hynix (May 2023) said there was no discussion of commercializing NIL (via search snippet)"
+    },
+    {
+     "title": "Advanced Optical Technologies 2017 review of nanoimprint lithography for semiconductors",
+     "url": "https://www.frontiersin.org/articles/10.1515/aot-2017-0020/pdf",
+     "shows": "3D NAND is the likeliest NIL entry point (defect/overlay tolerant); DRAM critical-layer overlay budget is 15-20% of half pitch; NIL's simple single-level process suits memory (via search snippet)"
+    },
+    {
+     "title": "SPIE 9777: NIL defect performance toward high-volume mass production (2016, with SK hynix)",
+     "url": "https://biomedicaloptics.spiedigitallibrary.org/conference-proceedings-of-spie/9777/97770B/NIL-defect-performance-toward-high-volume-mass-production/10.1117/12.2218972.full",
+     "shows": "non-fill defect reduction identified as the key requirement for NIL mass production (via search snippet)"
+    },
+    {
+     "title": "Canon: Nanoimprint opens (business page, 2018)",
+     "url": "https://global.canon/en/business/group/industry/2018.html",
+     "shows": "Canon NIL trials at Kioxia Yokkaichi (NAND) aimed at lower manufacturing cost (via search snippet)"
+    }
+   ],
+   "novelty": "KNOWN (Canon/Kioxia NIL for NAND; SK hynix tested Canon NIL) | TWIST: the bonded-periphery cell wafer turns DRAM into an all-periodic, NAND-like patterning problem; combined with B2-15 defect tolerance. Canon's NIL R&D arm is in Austin TX [UNVERIFIED-PK].",
+   "show_stoppers": "(1) Defectivity (non-fill, particles) and template wear. (2) Overlay of 3-4 nm at F=20 nm across imprint fields. (3) Throughput per tool.",
+   "revival_or_workaround": "(1) B2-15 ECC and sparing; template inspection and repair; NAND-first learning. (2) Design at F=20-25 nm 4F2 with self-aligned subsequent layers so only one inter-layer overlay is critical. (3) Multi-head cluster imprint; the array is a small number of layers.",
+   "million_dollar_demo": "15 months, ~$250k: imprint 40-50 nm-pitch hole and line lattices on 100 mm wafers with a university NIL tool; two-layer overlay test, defect count per cm2, then transfer into a 2T0C array mold; report a defect budget against B2-15.",
+   "resource_angle": "Removes EUV (single supplier, high power, tin/hydrogen source) from the cell wafer. Caveat: template release layers are often fluorinated silanes, so a PFAS-free release coat is needed [UNVERIFIED-PK].",
+   "us_buildable": "UT Austin (Sreenivasan lab, NIL heritage) and the Austin TX NIL ecosystem; Cornell CNF; Penn Singh Center."
+  },
+  {
+   "id": "B2-13",
+   "name": "Maskless interference lithography for an all-periodic cell wafer",
+   "one_liner": "Pattern the periphery-free cell wafer with two-beam 193 nm immersion interference fringes (no mask, no projection lens): ~35 nm half-pitch lines, crossed for hole lattices, one spacer step to F~17 nm 4F2.",
+   "mechanism": "Two (or four) coherent 193 nm beams interfere in water immersion to write a fringe pattern at half-pitch ~34.5-36 nm; two crossed exposures give post or hole lattices at ~70 nm pitch, and one SADP halves that to ~35 nm. Scanning-beam interference lithography (Doppler writing) phase-locks the fringe to wafer marks for overlay and covers 300 mm continuously. Array edges and the few non-periodic features are cut by a coarse KrF/i-line trim exposure whose overlay is not critical. Possible only because bonded periphery has removed all random logic from the cell wafer.",
+   "which_bottleneck": "A1 #4 (litho capex, EUV), A2 EUV single-supplier chokepoint and capital per bit.",
+   "step_change_claim": "No masks and no EUV for array layers; 4F2 at F~17-18 nm with one SADP; litho tool capex estimated ~10x below an ArF immersion scanner and ~50-100x below EUV [ESTIMATE: no projection optics].",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-13: hp = lambda/(4 n sin(theta)) = 193/(4 x 1.44 x 0.93-0.97) = 34.5-36.0 nm (Brueck patent gives ~33.5 nm limit); crossed exposures -> 69-72 nm-pitch posts; +SADP -> ~35 nm pitch -> 4F2 1T1C at F=17.3-18 nm = 1,197-1,296 nm2/cell -> 0.54-0.58 Gb/mm2 at array eff 0.70 (1.2-1.3x 1-beta) with no EUV and no masks on the array. RIT reached 38 nm hp at NA 1.25; Lincoln Lab 22 nm hp at 157 nm.",
+   "evidence": [
+    {
+     "title": "US 8,685,628 Large area patterning using interferometric lithography",
+     "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/8685628",
+     "shows": "193 nm water-immersion interference lithography limiting half-pitch ~33.5 nm (via search snippet)"
+    },
+    {
+     "title": "RIT: immersion microlithography at 193 nm with a Talbot prism interferometer (SPIE 5377)",
+     "url": "https://rit.edu/~w-lithography/research/immersion/5377_162paper.pdf",
+     "shows": "45 nm then 38 nm half-pitch lines at effective NA 1.25 (via search snippet)"
+    },
+    {
+     "title": "Solid State Technology / Semiconductor Digest: interference lithography results (Lincoln Laboratory et al.)",
+     "url": "https://sst.semiconductor-digest.com/issue/?id=16488",
+     "shows": "27 and 22 nm half-pitch gratings at 157 nm; maskless hybrid interference exposure + e-beam trim made a 39 nm pillar array (via search snippet)"
+    },
+    {
+     "title": "US 9,195,146 Interference exposure device and method (cites SBIL / Doppler writing, US 7,561,252)",
+     "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9195146",
+     "shows": "scanning-beam interference lithography exists for large-area periodic patterning; earlier interference methods fall short at large area (via search snippet)"
+    }
+   ],
+   "novelty": "NEW combination: interference lithography is decades old for gratings and was a 1990s-2000s research litho; using it as the production patterning for a periphery-free DRAM cell wafer was not found.",
+   "show_stoppers": "(1) Layer-to-layer overlay: fringe-phase placement to the previous layer at <=3 nm over 300 mm with wafer distortion. (2) Dose and fringe-contrast uniformity, defect-free fields, and stitching (SBIL was built for continuous gratings). (3) Only infinite periodic patterns: array termination, wordline/bitline ends and periphery contacts need another litho.",
+   "revival_or_workaround": "(1) Only the first critical layer needs IL if later layers are self-aligned (spacers, ASD B2-14); SBIL-style interferometric phase locking. (2) Scan-and-stitch with phase metrology; B2-15 defect tolerance. (3) Coarse trim exposures on cheap KrF/i-line tools; bond pads at relaxed pitch.",
+   "million_dollar_demo": "18 months, ~$300k: build a tabletop 193 nm (or 213/266 nm dry) two-beam interference exposure with a phase-locked stage; expose 100 mm wafers; measure CD uniformity, LER, defects/cm2 and two-layer overlay; transfer one lattice into a 2T0C channel-hole mold.",
+   "resource_angle": "No EUV, no photomasks (mask sets cost $M), far lower litho capex and power; DUV lasers instead of EUV sources.",
+   "us_buildable": "MIT (Space Nanotechnology Lab, SBIL heritage); UNM Center for High Technology Materials (Albuquerque, interferometric lithography heritage); RIT (Rochester NY)."
+  },
+  {
+   "id": "B2-14",
+   "name": "ASD self-aligned landing pads and top contacts",
+   "one_liner": "Grow the storage-node landing pads and vertical-channel top contacts bottom-up by area-selective deposition so they self-align to the plugs below and a dedicated critical lithography layer disappears.",
+   "mechanism": "After the contact plugs are exposed in dielectric, Mo (or W) is deposited by area-selective ALD/CVD that nucleates only on metal or semiconductor surfaces, with small-molecule or SAM inhibitors on the dielectric and periodic atomic-layer-etch 'defect clean' cycles to remove stray nuclei. The pad grows a controlled height and mushroom width, self-aligned to its plug, so the landing-pad litho/etch step (patterned with EUV or multipatterning at leading nodes [UNVERIFIED-PK]) is not needed. The same approach caps vertical oxide channels in 4F2 VCT and gain-cell arrays.",
+   "which_bottleneck": "A1 #4 masks/EUV; A1 #2 (self-aligned contacts in 3D); A2 tungsten chokepoint (China ~80%).",
+   "step_change_claim": "-1 to -2 critical litho layers (~$165-330/wafer if EUV-patterned; 3.8-7.7% of a 1c wafer) and fewer fluorocarbon etches; Mo replaces WF6-based W.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-11..14 for the layer cost. Selectivity requirement: with ~1.7e10 pads per 16 Gb die and repair able to handle ~1e4-1e5 random fails (more with B2-15), the stray-nucleus bridging probability must be <=1e-6-1e-5 per pad gap. Mushroom growth = pad thickness, so a 15 nm gap allows <=7 nm of over-growth per side.",
+   "evidence": [
+    {
+     "title": "NC State dissertation on area-selective deposition (2022)",
+     "url": "https://repository.lib.ncsu.edu/server/api/core/bitstreams/a07d0abb-7ce4-4842-9277-79f8ea8d8f8e/content",
+     "shows": "ASD by CVD/ALD/MLD studied to beat edge-placement error and LER of top-down litho at ~5 nm (via search snippet)"
+    },
+    {
+     "title": "US 6,479,355 Method for forming landing pad",
+     "url": "https://patents.google.com/patent/US6479355",
+     "shows": "DRAM self-aligned-contact landing pads still need lithography steps; prior art aims to reduce them (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known: ASD for fully self-aligned vias in logic is pursued by tool makers and universities; applying it to DRAM landing pads and oxide vertical-channel top contacts was not found in 2025 sources.",
+   "show_stoppers": "(1) Selectivity loss: stray nuclei bridge 10-15 nm gaps (killer defects). (2) Lateral overgrowth equal to film thickness. (3) Variable nucleation delay on tiny plugs leads to non-uniform pads.",
+   "revival_or_workaround": "(1) Deposition/etch supercycles and inhibitor chemistries; B2-15 tolerance. (2) Thin pads plus a self-aligned dielectric cap; 4F2 layouts with larger gaps. (3) Pre-clean and seed treatments; Mo chemistries with short nucleation delay.",
+   "million_dollar_demo": "12 months, ~$150k: Mo ASD on W/TiN plugs in SiO2 at 40-80 nm pitch; electrical comb/serpentine tests over ~1e8 gaps to measure bridging rate; TEM of pad shape. Pass bar: bridging <=1e-6 per gap.",
+   "resource_angle": "Fewer masks and EUV exposures; Mo (U.S. mines) instead of W (China ~80%, APT +350% in 2026); fewer fluorocarbon etch steps.",
+   "us_buildable": "NC State (Raleigh, ASD groups); CU Boulder (ALE); Stanford (ASD inhibitors)."
+  },
+  {
+   "id": "B2-15",
+   "name": "Defect-budget co-design: 100x pattern-defect tolerance to unlock cheap patterning",
+   "one_liner": "Specify the array to survive a 1e-4 random cell-defect fraction (vs ~1e-6 assumed today) with t=2 BCH ECC in the logic periphery and a tiny remap table, so NIL, DSA, interference litho, AAO and panel processes become usable.",
+   "mechanism": "Every 128-bit word carries 16 BCH (t=2) check bits instead of 8 SECDED bits, decoded in fast logic-process periphery (bonded or under-array). A small CAM remaps the few residual failing words found at test; mat-level sparing (NAND bad-block style) handles clustered pattern defects (line opens, shorts). Retention-weak cells are remapped too. This turns patterning defectivity from a yield killer into a few percent of area overhead.",
+   "which_bottleneck": "Enabling layer for A1 #4 (cheap patterning) and A1 #2 (3D tier yield ~0.998/tier needed); A2 capital per bit.",
+   "step_change_claim": "Random-defect tolerance x100 (p 1e-6 -> 1e-4) for +6.25% extra check bits and ~65 remap words per 16 Gb die.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-15 (16 Gb die, 1.34e8 words of 128 bits): p=1e-4 -> 1.72M defective cells; SECDED (136,128) failing words = C(136,2) p^2 x words ~12,336; BCH t=2 (144,128) failing words = C(144,3) p^3 x words ~65. At p=1e-5: 123 vs 0.1. The ECC must also cover soft errors and retention tails, so the defect budget is set at ~1e-4, not higher.",
+   "evidence": [
+    {
+     "title": "Guru3D: SK hynix five-layer 3D DRAM at 56.1% yield [CROSS-REF, A1 log]",
+     "url": "https://www.guru3d.com/story/sk-hynix-achieves-yield-in-fivelayer-3d-dram-development",
+     "shows": "5-tier 3D DRAM test yield 56.1%; 32-192 layers needed (per A1) -> per-tier yield/repair is a gating problem"
+    }
+   ],
+   "novelty": "KNOWN principle (heavy ECC in NAND; on-die ECC in DDR5/HBM) | TWIST: making pattern-defectivity tolerance an explicit design input so DRAM-class arrays can use NAND-like cheap patterning.",
+   "show_stoppers": "(1) ECC decode latency and energy at DRAM speed, and read-modify-write for partial writes. (2) Soft errors, retention tails and row hammer share the same ECC budget. (3) Real pattern defects cluster (lines, blocks), which random-error ECC does not fix.",
+   "revival_or_workaround": "(1) Logic-process periphery decodes t=2 BCH in ~1-3 ns [ESTIMATE]; 64 B access granularity. (2) Scrubbing; oxide gain cells have long retention and may be hammer-resistant (untested). (3) Mat and column sparing plus remap for clusters.",
+   "million_dollar_demo": "9 months, ~$100k: FPGA emulation with fault injection driven by measured defect maps from the B2-11/12/13 demos; a t=2 BCH decoder on a 28 nm MPW shuttle (~$60k) to measure latency and energy.",
+   "resource_angle": "Lets cheaper, lower-energy, EUV-free patterning be used; lowers scrap.",
+   "us_buildable": "Anywhere with FPGA tools; MPW via a U.S.-accessible TSMC/GF shuttle broker."
+  },
+  {
+   "id": "B2-16",
+   "name": "Main memory inside the logic die's own metal stack (monolithic BEOL oxide gain cells)",
+   "one_liner": "Build 8-16 tiers of 3-bit oxide gain cells directly in the upper BEOL of the GPU/CPU die at <=400 C, putting tens of GB of DRAM-class memory microns from the compute with no DRAM wafer, no TSVs and no HBM stack.",
+   "mechanism": "After the logic metal stack is complete (TSMC has already embedded an oxide-semiconductor-selector memory fully in BEOL above advanced logic), deposit 8-16 tiers of vertical IGZO/ZTO 2T0C cells with 3 bits/cell write-verify, local complementary-oxide sensing (B2-08) and short vias down to SRAM-buffered memory controllers. Oxide cells retain >200 s at 95 C, so they tolerate sitting on hot logic. On backside-power logic, the frontside BEOL is less congested. Capacity is the target, not cache: an 800 mm2 die area carries 76-152 GB.",
+   "which_bottleneck": "A1 #5 interface energy (HBM ~3-4 pJ/bit), A1 #6 HBM TSV tax (~3x wafer per bit), A1 #3 (hot retention); A2 prime wafers and HPQ crucibles.",
+   "step_change_claim": "76-152 GB over an 800 mm2 die (3 b x 8-16 tiers at F=40 nm, no EUV); interface energy 3.5 -> ~0.2 pJ/bit, saving 211-422 W per accelerator at 8-16 TB/s; zero extra wafers; added cost ~$0.87/GB at $500 per tier per wafer and 80% yield.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-16: vertical 2T0C 10F2, F=40 nm, eff 0.508: 3 b x 8 tiers -> 0.76 Gb/mm2 -> 76 GB per 800 mm2; x16 tiers -> 1.52 Gb/mm2 -> 152 GB. Added $/GB = tiers x $500 / (Gb/mm2 x 60,334 mm2 / 8 x 0.8) = $0.87/GB regardless of tier count (vs DDR5 $1.48 cost, HBM3E $6.08). Power: (3.5-0.2) pJ/bit x 8 TB/s x 8 = 211 W; 16 TB/s -> 422 W.",
+   "evidence": [
+    {
+     "title": "VLSI Symposium 2025 Technical Tip Sheet",
+     "url": "https://vlsisymposium.org/wp-content/uploads/EN09_Technical-Tip-Sheet-VLSI-2025_EN_fin.pdf",
+     "shows": "TSMC monolithically integrated a BEOL memory with advanced logic: array fully in BEOL, oxide-semiconductor channel selector + low-temperature capacitor, density higher than SRAM; Stanford/TSMC gate-dielectric interface Vt tuning for 2T gain cells (via search snippet)"
+    },
+    {
+     "title": "imec demonstrates capacitor-less IGZO-based DRAM cell with >400 s retention (EE Journal, 2020-12-15)",
+     "url": "https://www.eejournal.com/industry_news/imec-demonstrates-capacitor-less-igzo-based-dram-cell-with-400s-retention-time/",
+     "shows": "2T0C IGZO cells >400 s, 45 nm Lg on 300 mm (via search snippet)"
+    },
+    {
+     "title": "imec IEEE EDL 2025 IGZO 2T0C record",
+     "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+     "shows": "40 nm Lg IGZO 2T0C retention >200 s at 95 C (via search snippet)"
+    },
+    {
+     "title": "NUS SHINE 2025-02-18: 1T1R and 2T0C1R IGZO/MoS2 all-BEOL 3D memory cells",
+     "url": "https://shine.nus.edu.sg/2025/02/18/1t1r-and-2toc1r-igzo-mos%e2%82%82-all-beol-3d-memory-cells/",
+     "shows": "vertically stacked all-BEOL IGZO 2T0C-based hybrid arrays (IEDM 2024) (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known: TSMC's BEOL memory (cache-class) and M3D research exist | NEW: scaling BEOL oxide gain cells to a capacity tier (tens of GB, MLC, many tiers) that replaces HBM rather than SRAM.",
+   "show_stoppers": "(1) Compound yield: memory-tier defects scrap a ~$20k logic wafer's dies. (2) Thermal: memory at 95-110 C junction, MLC Vt drift; heat must cross the memory tiers. (3) Logic BEOL constraints: hydrogen from logic passivation degrades oxide channels; <=400 C budget; top-metal routing congestion.",
+   "revival_or_workaround": "(1) B2-15 ECC/sparing plus per-mat fuse-off, so a bad mat costs capacity, not the die. (2) 1-2 bits/cell over hot spots, refresh at ~10 s; thin oxide tiers add only ~3-4 K across 5 um at 1 W/mm2 [ESTIMATE]. (3) Al2O3/SiN hydrogen barriers, H-free oxide processes, backside-power logic.",
+   "million_dollar_demo": "18-24 months, ~$400k: buy a 65 or 28 nm MPW logic die with an on-die heater and SRAM controller (~$60-100k); post-process 2-4 tiers of IGZO/ZTO 2T0C at <=350 C at a university fab; measure retention vs logic-driven temperature, logic Vt/delay shift after the memory process, and read/write through the logic.",
+   "resource_angle": "No DRAM wafer, no CZ crucible/HPQ, no TSV/HBM packaging; large use-phase energy savings (data movement is the dominant DRAM energy in AI servers).",
+   "us_buildable": "Post-processing at Purdue Birck, Georgia Tech IEN or Stanford SNF; logic MPW from U.S.-accessible foundry shuttles (GF Malta NY 22FDX or TSMC via brokers)."
+  },
+  {
+   "id": "B2-17",
+   "name": "BEOL-only cell mini-line on reusable glass carriers, bonded to trailing-node periphery",
+   "one_liner": "Build the memory cell stack in a fab that has only low-temperature BEOL tools, on a reusable glass carrier, then bond it to a periphery wafer from any U.S. 28-65 nm foundry: DRAM capacity without a DRAM fab.",
+   "mechanism": "Oxide gain-cell or oxide 1T1C stacks (8-32 tiers) are deposited and patterned on a 300 mm CTE-matched glass carrier with a laser-release layer, using only PVD/ALD/PECVD, dry etch, ArF/NIL, CMP, cleans and a hybrid bonder: no >450 C furnaces, implanters, epitaxy or EUV. The finished stack is hybrid-bonded face-down to a periphery wafer (sense amps, decoders, I/O) from a trailing-node foundry at 1-2 um pitch, which A3's model says is enough for litho-light oxide pitches. The glass is laser-debonded through its transparent back and reused.",
+   "which_bottleneck": "A2 #1 binding constraint (capital x cleanroom time per bit); A2 HPQ/prime-wafer chokepoint; A1 #7 periphery area.",
+   "step_change_claim": "Cell-side capex ~$44-68k per wafer-start-per-month vs $145-170k for a DRAM greenfield (2.5-3.3x lower) [ASSUMPTION: BEOL-only tool set = 30-40%]; prime-Si demand of dual-wafer (periphery-under-cell) DRAM -45-49% by reusing the cell carrier 10-50x.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-17: PUC DRAM uses 2 prime Si wafers per product wafer; a reusable carrier gives 1 + 1/N: N=10 -> 1.10 (-45%), N=50 -> 1.02 (-49%). Capex: $145-170k/wpm (A1) x 0.30-0.40 = $44-68k/wpm. Bond count: one bond per 128-256-cell segment at oxide pitches -> 1-1.6 um bond pitch (A3 model section 7).",
+   "evidence": [
+    {
+     "title": "imec ECTC 2025 wafer-to-wafer hybrid bonding at 300 nm pitch [CROSS-REF, A3 log]",
+     "url": "https://www.imec-publications.be/entities/publication/6228fcc8-685e-4e72-83ba-3cb478415500/full",
+     "shows": "W2W hybrid bonding at 300 nm pitch; A3 model says litho-light oxide cells need only ~1-2 um bond pitch (per A3)"
+    },
+    {
+     "title": "TrendForce 2026-04-24: Samsung 10a 4F2 VCT working die, IGZO channel, periphery wafer-bonded [CROSS-REF, A1/A3 log]",
+     "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+     "shows": "incumbents already split cell and periphery onto separate bonded wafers (per A1/A3)"
+    }
+   ],
+   "novelty": "NEW combination: incumbents bond in-house periphery and cell wafers (Samsung VCT, SK hynix VG); a BEOL-only cell line on reusable glass bonded to a different company's trailing-node periphery was not found. 300 mm CTE-matched glass carriers exist commercially [UNVERIFIED-PK].",
+   "show_stoppers": "(1) Overlay and distortion: glass carrier plus multi-tier film stress vs 1-2 um bond pitch at >=99.99% per-connection yield. (2) Laser debonding and handling of a few-um-thick bonded stack without cracking or residue. (3) Bond-anneal (250-400 C) shifts oxide Vt.",
+   "revival_or_workaround": "(1) Die-to-wafer bonding first; larger segments with local sensing (B2-08) to loosen pitch; stress-compensated stacks. (2) Proven temporary-bonding chemistries from advanced packaging; thick final passivation. (3) Make the bond anneal the last oxide anneal and calibrate Vt after it.",
+   "million_dollar_demo": "18 months, ~$350k: 2-tier IGZO array on a 150-200 mm glass wafer; die-to-wafer bond to a 65 nm MPW periphery die with SAs at a packaging user facility; laser debond; retention and read margin before vs after bonding; reuse the glass carrier 5x and re-measure.",
+   "resource_angle": "Half the prime CZ wafers (less Spruce Pine quartz exposure); U.S.-made glass; small, low-capex BEOL lines that can sit in existing U.S. buildings; no EUV.",
+   "us_buildable": "NY CREATES Albany (NY); Georgia Tech packaging research; trailing-node periphery from SkyWater (MN/TX) or GlobalFoundries (NY/VT); glass from U.S. specialty-glass makers [UNVERIFIED-PK]."
+  },
+  {
+   "id": "B2-18",
+   "name": "Trailing-node fab reuse: CMOS-under-array deep-tier MLC oxide memory at F=65 nm",
+   "one_liner": "Turn a depreciated 65-90 nm logic fab into a DRAM-class memory fab: periphery CMOS in the existing flow, then 16-24 tiers of 3-4-bit oxide gain cells stacked over it, patterned with the fab's existing dry-ArF/KrF tools.",
+   "mechanism": "Run the fab's 65 nm CMOS flow to build sense amps, decoders and write-verify DACs, then stack 16-24 tiers of vertical IGZO/ZTO 2T0C cells over them (CMOS-under-array, as in 3D NAND CuA), with one hole etch per tier group at F=65 nm, ALD channels and recessed gates. Each cell stores 3-4 bits by write-verify; long oxide retention gives the level stability that MLC needs. No bonding, no immersion, no EUV.",
+   "which_bottleneck": "A2 capital and cleanroom time (reuse existing U.S. fabs), A1 #4 (litho-bound scaling), A3 white space 1 (MLC x tiers).",
+   "step_change_claim": "1.8-2.7x 1-beta density and 1.7-3.5x 1-beta bits per wafer-dollar (before yield) at F=65 nm, in existing depreciated fabs with no new litho tools.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-18: vertical 10F2 at F=65 nm needs bits x tiers = 37 (eff 0.508) or 27 (CuA eff 0.70) to match 1-beta. 3 b x 16 tiers, eff 0.70 -> 0.80 Gb/mm2 (1.78x). Wafer = $1,300 (depreciated line, ram-venture) + tiers x $80-162: 3 b x 16 -> 2.62x (at $80/tier) or 1.73x (at $162/tier, A2 convention) bits/$; 4 b x 16 -> 3.49x/2.31x; 3 b x 24 -> 3.15x/1.95x. Read: 64-cell RBL, 3-bit sense 15-46 ns (B2-07).",
+   "evidence": [
+    {
+     "title": "SJTU, Adv. Funct. Mater. 2026, ultrathin-oxide 2T0C DRAM",
+     "url": "https://sigroup.sjtu.edu.cn/files/AdvFunctMater_UltrathinOxide_DRAM_2026.pdf",
+     "shows": "IGO 2T0C with ALD HfO2 passivation >30,000 s retention (100x over unpassivated); IGZO, IWO, ITO 2T0C widely studied (via search snippet)"
+    },
+    {
+     "title": "U. Michigan thesis: Advances in amorphous oxide TFTs for 2T0C DRAM",
+     "url": "https://deepblue.lib.umich.edu/items/e6ac2d99-46aa-444a-bc41-2851e63c965c",
+     "shows": "first 2T0C memory with Ga-free zinc-tin oxide (ZTO) TFTs, retention >1500 s; insulator+channel ALD in one chamber without vacuum break (via search snippet)"
+    },
+    {
+     "title": "IT Home: IMECAS dual-gate IGZO 2T0C 3D DRAM, 3 bits/cell, 400 s (VLSI 2026) [CROSS-REF, A3 log]",
+     "url": "https://www.ithome.com/0/966/543.htm",
+     "shows": "four tiers formed in one stacking step, vertical wordline, 3 bits/cell, 400 s (per A3)"
+    },
+    {
+     "title": "Nano-Micro Letters 2026 review: Oxide semiconductor for advanced memory architectures (ALD)",
+     "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12765776/",
+     "shows": "IMECAS 2021 first vertical channel-all-around IGZO FET in a 2T0C cell, PEALD at ~250 C (via search snippet)"
+    }
+   ],
+   "novelty": "NEW combination of known parts (CuA from 3D NAND; MLC oxide gain cells; depreciated trailing-node fabs).",
+   "show_stoppers": "(1) MLC: 3-4 bits need Vt drift <=~20 mV over the refresh interval at 85 C and tight Vt sigma after write-verify. (2) Tier yield across 16-24 tiers at a fab with no 3D experience. (3) Write-verify energy and latency at DRAM-class speed.",
+   "revival_or_workaround": "(1) Fall back to 2 b x 24-32 tiers; refresh every ~10 s, still >100x DRAM. (2) Start at 4-8 tiers; NAND-style redundancy and B2-15 ECC. (3) Program-verify in 2-3 pulses with SAR-style sensing; write buffering.",
+   "million_dollar_demo": "24 months, ~$500k: at a U.S. 200 mm trailing-node line or a university 150 mm line, build a 4-tier vertical ZTO/IGZO 2T0C stack over a simple CMOS SA test chip; MLC retention maps at 85 C, endurance, and a calibrated bits/$ model.",
+   "resource_angle": "Zero new-fab capex; no EUV or immersion; turns underused U.S. capacity into memory supply.",
+   "us_buildable": "SkyWater (Bloomington MN, 200 mm; Fab 25 Austin TX); other U.S. 200/300 mm trailing-node lines such as Polar Semiconductor (MN) [UNVERIFIED-PK on suitability]."
+  },
+  {
+   "id": "B2-19",
+   "name": "Panel-level 3D oxide memory [SPECULATIVE]",
+   "one_liner": "Move density into tiers and area into panels: 64-128 tiers of oxide gain cells on Gen 3.5 glass (6.6x a 300 mm wafer), patterned by step-and-repeat nanoimprint at F~100 nm, diced into tiles with in-tile sensing.",
+   "mechanism": "Deposit 64-128 tier stacks on 620x750 mm glass using display-industry PECVD and sputter tools; pattern channel holes by step-and-repeat nanoimprint at ~100 nm features (large-area imprint is proven at 100-200 nm pitch for wire-grid polarizers); one HAR etch per tier group; spatial-ALD oxide channels. Each tile (a few mm) is self-contained, with complementary-oxide local sensing (B2-08), so there is no cross-panel overlay requirement; tiles are diced and bonded to small Si I/O chiplets. This revives ram-venture A1-03 (display-glass memory, killed at 2 um rules) by getting density from tiers rather than pitch.",
+   "which_bottleneck": "A2 capital per bit and prime-wafer use; A1 #4 litho-bound scaling.",
+   "step_change_claim": "F=100 nm, 3 b x 64 tiers -> 0.96 Gb/mm2 (2.1x 1-beta) on 6.6x the substrate area -> ~45 TB per panel; capital from display-class tools.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-19: Gen 3.5 = 0.465 m2 = 6.6x a 300 mm wafer. Vertical 10F2, eff 0.5: F=100 nm, 3 b x 64 tiers -> 0.96 Gb/mm2 (2.1x), 45 TB/panel at 80% usable; 2 b x 128 -> 1.28 Gb/mm2, 60 TB; F=50 nm, 3 b x 64 -> 3.84 Gb/mm2, 179 TB. A 64-tier stack at 60 nm/tier is 3.8 um tall; a 100 nm hole is AR ~38.",
+   "evidence": [
+    {
+     "title": "EP 2983021 A1 wire grid polarizer (seam areas)",
+     "url": "https://data.epo.org/publication-server/rest/v1.2/patents/EP2983021NWA1/document.pdf",
+     "shows": "large-area imprinted Al wire-grid polarizers built from tiled imprint areas with seams kept below ~10 mm (via search snippet)"
+    },
+    {
+     "title": "High-performance wire-grid polarizers using jet and Flash imprint lithography (JM3 12(3) 031104, 2013)",
+     "url": "https://www.spiedigitallibrary.org/journals/Journal-of-MicroNanolithography-MEMS-and-MOEMS/volume-12/issue-03/031104/High-performance-wire-grid-polarizers-using-jet-and-Flash-imprint/10.1117/1.JMM.12.3.031104.full",
+     "shows": "roll-based J-FIL tool made large-area WGPs on rigid glass and flexible film (via search snippet)"
+    },
+    {
+     "title": "KoreaScience 2011: 17-inch nano-wire-grid film by roll-to-roll UV imprint",
+     "url": "https://koreascience.or.kr/article/JAKO201126239076181.pdf",
+     "shows": "730 x 450 mm wire-grid film at 200 nm pitch by roll-to-roll UV imprinting (via search snippet)"
+    }
+   ],
+   "novelty": "[SPECULATIVE] NEW combination; revives a ram-venture kill.",
+   "show_stoppers": "(1) No panel-scale tool exists for 64-tier HAR etch or uniform multi-tier deposition; glass compaction/distortion at 400 C. (2) Imprint seams (~10 mm in WGPs) and particle defectivity over m2 areas. (3) Fine-pitch bonding of tiles to Si.",
+   "revival_or_workaround": "(1) Start at Gen 2.5 or 300x300 mm; tile-local patterning means overlay only matters within a tile. (2) Seams become scribe lanes; B2-15 defect tolerance. (3) In-tile sensing and serialization so tiles need only ~10-40 um-pitch bumps.",
+   "million_dollar_demo": "18 months, ~$300k (simulation + coupons): 8-tier oxide stack on 100-150 mm glass, imprint at 100-200 nm pitch, one hole etch, ALD channel; tier uniformity and cell function; a panel-scale cost and defect model.",
+   "resource_angle": "No CZ silicon or HPQ crucibles; reuses display-class tools. Caveat: glass making is energy-intensive and the U.S. has no TFT panel fab (ram-venture).",
+   "us_buildable": "Coupons only: university fabs (Cornell CNF, GT IEN); U.S. specialty-glass suppliers; no U.S. panel line exists."
+  },
+  {
+   "id": "B2-20",
+   "name": "Self-assembled tier stack: parallel block-copolymer lamellae + sequential infiltration synthesis [SPECULATIVE]",
+   "one_liner": "Spin one micron-thick block-copolymer film that self-organizes into 25-80 substrate-parallel layers, convert alternate layers to AlOx by vapor infiltration, and use it as the 3D mold: tens of tiers from one coat instead of tens of PECVD depositions.",
+   "mechanism": "A lamella-forming BCP (L0 25-40 nm) with preferential wetting on both interfaces orders parallel to the substrate after annealing, giving 25-80 alternating layers in a 1-2 um film. Sequential infiltration synthesis (TMA/H2O) converts the PMMA layers into AlOx sheets; the PS layers remain as sacrificial carbon tiers (removed later by oxidation, as in B2-10). A single hole etch then opens all tiers; lateral recess and ALD oxide-channel/gate fills proceed as in B2-09. Tier thickness is set by polymer molecular weight rather than deposition time.",
+   "which_bottleneck": "A1 #2 (tier cost and count for 3D DRAM), A2 capital and cleanroom time (PECVD stack deposition is a long, tool-heavy step).",
+   "step_change_claim": "25-80 tiers per coat vs one PECVD pair per tier: tier-formation tool time ~10-50x lower [ESTIMATE]; no SiN/SiGe stack.",
+   "first_principles_estimate": "models/B2_materials_estimates.py B2-20: periods = film thickness / L0: L0 25 nm -> 40 (1 um) or 80 (2 um) tiers; L0 40 nm -> 25-50 tiers. Tier-thickness tolerance ~+/-1 nm (4% of 25 nm) is needed; L0 scales ~N^(2/3), so molecular-weight dispersity sets the floor [UNVERIFIED-PK].",
+   "evidence": [
+    {
+     "title": "SPIE BACUS Newsletter Aug 2014 (imec DSA contact-hole multiplication)",
+     "url": "https://spie.org/documents/Membership/BacusNewsletters/BACUS-Newsletter-August-2014.pdf",
+     "shows": "grapho-epitaxy contact-hole multiplication with a 37 nm-pitch block copolymer (via search snippet)"
+    },
+    {
+     "title": "LBNL perspective on EUV + DSA rectification (eScholarship)",
+     "url": "https://escholarship.org/content/qt0942k4dm/qt0942k4dm.pdf",
+     "shows": "imec EUV+DSA rectification demonstrations at 28 nm full pitch for lines; extension to holes proposed (via search snippet)"
+    }
+   ],
+   "novelty": "[SPECULATIVE] NEW combination: parallel lamellae and SIS are each known (SIS developed at Argonne [UNVERIFIED-PK]); using them as a self-assembled 3D-DRAM tier mold was not found. No search was spent on this card.",
+   "show_stoppers": "(1) Long-range parallel order with +/-1 nm layer uniformity through a micron-thick film; dislocations and undulations. (2) Mechanics and thermal stability: AlOx sheets need supports; polymers survive only ~250-300 C before conversion. (3) SIS penetration depth in thick films.",
+   "revival_or_workaround": "(1) Coat 8-16 periods at a time and repeat; high-chi, low-dispersity BCPs; crosslinkable blocks. (2) Convert fully to inorganic (AlOx/carbon) before any ALD; add support pillars in the first hole etch. (3) Long-exposure or pressure-pulsed SIS; thinner sub-stacks.",
+   "million_dollar_demo": "12 months, ~$150k: 10-20-period parallel lamellae on 100 mm wafers; SIS conversion; cross-section TEM layer-thickness statistics; one hole etch and ALD IGZO into the recesses; a single-tier transistor test.",
+   "resource_angle": "Replaces dozens of SiH4/TEOS/NH3 PECVD steps with one coat plus vapor infiltration; lower energy and tool time; commodity polymers (solvent use instead of dry deposition).",
+   "us_buildable": "Argonne CNM (Lemont IL); UChicago PME; Brookhaven CFN (Upton NY)."
+  }
+ ]
+}

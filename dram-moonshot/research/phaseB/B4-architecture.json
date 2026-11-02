@@ -1,0 +1,752 @@
+{
+ "lens": "ARCHITECTURE: DO DRAM'S JOB WITH LESS DRAM",
+ "ideas": [
+  {
+   "id": "B4-01",
+   "name": "ECC-paid capacitor: let the code, not the capacitor, carry the last 4 sigma",
+   "one_liner": "Design the array for a raw bit error rate of 1e-4 and protect it with a strong per-line code, so the storage capacitor can be half as tall.",
+   "mechanism": "Today's ~50 mV sense budget exists so that every one of ~1.7e10 cells reads correctly at ~7 sigma of sense-amp (SA) offset and coupling noise, with only on-die SEC as backup. Re-centre the array on a raw BER target of 1e-4 per read. A t=8 BCH code (80 check bits per 512 data bits) in the memory controller or HBM/CXL logic base die absorbs the errors; optionally the SA fires two extra comparator thresholds to hand one soft-information bit per cell to a NAND-style soft decoder. With dV_min of 26 mV instead of 50 mV, the ZrO2/TiN pillar storage node can hold ~2.7 fF instead of 5.4 fF on the same 512-cell bitline: ~640 nm tall instead of 1,300 nm. An SA's offset is static, so codewords run along the row (each bit through a different SA), and outlier SAs are fused out at test like today's column repair. The same rule gives a 0.6 fF cell on a 64-cell local bitline in a 3D tier.",
+   "which_bottleneck": "A1 #1 storage-capacitor charge wall (also #2 3D-tier capacitor and #4 HAR-etch capital); secondary #10 voltage floor",
+   "step_change_claim": "Capacitor height 2.0x lower (1,300 -> ~640 nm, aspect ratio 62 -> 30) at a 1e-4 raw BER, or 2.5x lower (-> ~525 nm, AR 25) at 1e-3, for +9 to +21 points of check bits (15.6-27.3% vs DDR5's 6.25%). 3D or local-bitline tiers need only 0.5-0.6 fF instead of 1.2 fF.",
+   "first_principles_estimate": "sigma_eff = 50 mV / 7.03 = 7.1 mV (A1's budget read as 1e-12 per bit). dV_min = sigma x z(BER): 33.8 mV at 1e-6, 26.4 mV at 1e-4, 22.0 mV at 1e-3. Cs_min = Cbl x dV / (V_sig - dV), with Cbl = 34.7 fF (512 cells) and V_sig = 0.37 V after 15% droop: 5.47 -> 3.52 -> 2.69 -> 2.21 fF. Pillar height scales with Cs: 1,300 -> 836 -> 640 -> 525 nm. Retention check: at Cs x0.49 the modelled 85 C tail BER at 64 ms is 3.1e-8, well inside the budget. BCH over 512 data bits, Poisson error count, <=1e-15 failure per codeword: t=8 (80 b, 15.6%) at 1e-4; t=14 (140 b, 27.3%) at 1e-3. A 1 KB page-level code needs only 2.7% at 1e-4, but it forces page-granular decode. Fast path: P(any error in 592 b at 1e-4) = 5.7%, so ~94% of reads need only a syndrome check. (models/B4_architecture_estimates.py card01)",
+   "evidence": [
+    {
+     "title": "ArchShield (Nair, Kim, Qureshi, ISCA 2013)",
+     "url": "https://memlab.ece.gatech.edu/papers/ISCA_2013_1.pdf",
+     "shows": "An architecture tolerates DRAM fault rates up to 1e-4 at 4% capacity and <2% performance; plain ECC DIMMs handle ~1e-6 (via search snippet)"
+    },
+    {
+     "title": "DRAM Scaling Trend and Beyond (J. Choe, TechInsights)",
+     "url": "https://www.techinsights.com/ja/node/37840",
+     "shows": "Cell capacitance has fallen below 10 fF and is heading to 5-6 fF at 1c; staying above 7 fF needs k>50. The capacitor is the wall this card side-steps (CROSS-REF A1)"
+    },
+    {
+     "title": "EDEN (MICRO 2019)",
+     "url": "https://arxiv.org/pdf/1910.05340",
+     "shows": "Commodity DRAM run outside its voltage/latency margins produces a measurable, tolerable BER: the margin is real and tradeable (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. NAND has run LDPC with soft sensing for a decade, and ArchShield (Georgia Tech, ISCA 2013) tolerates 1e-4 fault rates, but both treat errors as defects to survive. Deliberately spending the ECC margin to shrink the DRAM capacitor (designing the array to a raw-BER target) does not appear in the public DRAM literature I found [UNVERIFIED absence].",
+   "show_stoppers": "(1) Random-access latency: a t=8 BCH decode adds ~3-10 ns on errored reads, and partial writes become read-modify-write. (2) Errors are not iid: variable-retention-time (VRT) cells, pattern-dependent bitline coupling and temperature drift of SA offset cause bursts a 512-bit t=8 code can miss. (3) Half the charge (~8,800 signal electrons instead of ~17,700) means softer targets for alpha/neutron upsets and row hammer.",
+   "revival_or_workaround": "(1) Check the syndrome on every read (an XOR tree, under 1 ns) and run the full decode only when it is nonzero, so ~94% of reads take the fast path. Keep writes at full-line granularity, which matches 64 B GPU and CPU lines. (2) Interleave codewords across mats and bitline pairs, measure pattern sensitivity on a test chip, and add a page-level outer code (2.7%) as a second layer. (3) Pair the cell with oxide-channel access devices, which have no Si junction (lower SER cross-section), and with B4-10 Row-RAID for hammer tolerance.",
+   "million_dollar_demo": "Two parts, ~$0.6M total. (a) ~$60k: measure the real BER-vs-margin curve and its burst statistics on 50-100 commodity DDR4/DDR5 chips with an FPGA DRAM tester, using reduced tRCD and voltage as proxies for reduced signal (EDEN-style). (b) ~$350-500k: a 28/22 nm MPW test chip with a 256 kb 1T1C MIM (or gain-cell) array. Storage capacitance is selectable at 1x, 0.5x and 0.35x at a fixed Cs/Cbl ratio scale. On-chip are an 80-bit BCH decoder and soft-threshold sense amps. Measure post-ECC failure rate vs capacitor size at 25-105 C.",
+   "resource_angle": "Halves HAR etch depth and capacitor wall area per wafer, so fewer fluorocarbon HAR-etch minutes and ~half the ZrO2/TiN ALD precursor. It opens Ru-free, Hf-lean short stubs that obey A2's element rule, and lowers capital per bit (HAR etch and ALD are among the most tool-intensive DRAM steps). No change to EUV use.",
+   "us_buildable": "Test chip on a GlobalFoundries 22FDX (Malta, NY) or TSMC 28 nm MPW via university programmes; FPGA characterisation in any university lab; capacitor-split arrays at Albany NanoTech (NY CREATES) or Purdue Birck."
+  },
+  {
+   "id": "B4-02",
+   "name": "Scrub-as-refresh: 1-second refresh, page-level code, lazy scrub",
+   "one_liner": "Refresh every 1 s instead of every 64 ms, and let a 2% page-level code plus a 60 s scrub clean up the ~1e-5 cells that leak out in between.",
+   "mechanism": "Each 1 KB DRAM page gets ~2% spare columns holding a BCH code (t=12 over GF(2^14)). The refresh engine restores rows about every second with a plain activate-precharge; the array itself is unchanged. A background scrubber decodes and rewrites each row about once a minute, so errors from weak and VRT cells can accumulate for at most one scrub period. Decoding at every refresh would eat most of the savings, so the scrub is lazy. Three add-ons stretch the interval further. (a) Per-subarray canary rows with undersized caps set the interval from measured leakage at the actual temperature, not from the 85 C 6.4-sigma worst case. (b) Retention errors only go one way (charged -> discharged, polarity known per true/anti cell), so an asymmetric (Z-channel) code needs fewer parity bits. (c) A write encoder flips 64-bit words to minimise how many cells sit charged. Fast-path reads use the existing on-die SEC; the page code is consulted only when an error is detected.",
+   "which_bottleneck": "A1 #3 access-device leakage tail -> refresh energy, tRFC availability loss and multi-level infeasibility",
+   "step_change_claim": "~15x less refresh energy, scrub included. Refresh busy time drops from 7.6% to 0.5% at 16 Gb, or from 20.5% to 1.3% at 64 Gb. All on today's Si 1T1C cell, for ~2% parity.",
+   "first_principles_estimate": "Retention-tail model [ESTIMATE]: BER(t) = 3.6e-9 x (t / 64 ms)^3 at 85 C. It is calibrated to RAIDR-era '~1,000 cells per 32 GB below 256 ms' with a 4x temperature derate. At 1 s the BER is 1.4e-5; x3 for VRT accumulation gives 4.2e-5. A 1 KB page BCH at <=1e-15 per codeword needs t=12: 168 b = 2.05%. Energy: baseline 46 fJ per bit-refresh x 15.6/s = 719 fJ/s per bit. With refresh at 1 s plus a syndrome every 60 s (14x12/2 XORs per bit x 2 fJ = 168 fJ/bit), it is 49 fJ/s, x14.7 lower; decoding at every refresh would give only x3.4. A 64 GB RDIMM's refresh drops from 0.49 W to ~33 mW. tRFC/tREFI: 295/3,900 = 7.6% -> 0.48%; 1,600/7,800 = 20.5% -> 1.3%. Charge-minimising encoding (30% of cells charged instead of 50%) stretches the interval only x1.19, so it is a garnish. (card02)",
+   "evidence": [
+    {
+     "title": "RAIDR: Retention-Aware Intelligent DRAM Refresh (ISCA 2012)",
+     "url": "https://www.pdl.cmu.edu/ftp/NVM/raidr-isca12.pdf",
+     "shows": "Two retention bins remove 74.6% of refreshes with 1.25 KB of state; 16.1% DRAM power and 8.6% performance gained (via search snippet)"
+    },
+    {
+     "title": "ArchShield (Nair, Kim, Qureshi, ISCA 2013)",
+     "url": "https://memlab.ece.gatech.edu/papers/ISCA_2013_1.pdf",
+     "shows": "An architecture tolerates DRAM fault rates up to 1e-4 at 4% capacity and <2% performance; plain ECC DIMMs handle ~1e-6 (via search snippet)"
+    },
+    {
+     "title": "77 K DRAM retention: weak-row replacement (JSTS 2022)",
+     "url": "https://jsts.org/jsts/ArticleDetail/RD_R/414471",
+     "shows": "Excluding just six weak rows raised a DDR3 8Gb refresh time from 8 s to 4,096 s: retention is set by a sparse tail that remapping/ECC can remove (CROSS-REF A3)"
+    },
+    {
+     "title": "Improving DRAM Performance by Parallelizing Refreshes with Accesses",
+     "url": "https://arxiv.org/pdf/1712.07754",
+     "shows": "16.6% average performance loss from refresh at 32Gb even with per-bank refresh (CROSS-REF A1)"
+    }
+   ],
+   "novelty": "TWIST on known. RAIDR (CMU, ISCA 2012) bins rows by retention; Intel's Hi-ECC (ISCA 2010) used multi-bit ECC to stretch eDRAM refresh [UNVERIFIED, training knowledge]; ArchShield maps faults. New here are three things: an in-bank page-level code with lazy scrub (decode every ~60 refreshes, not every one), a canary-row closed loop, and asymmetric codes matched to one-directional retention errors.",
+   "show_stoppers": "(1) VRT cells hop between long and short retention, so the weak population is unstable and bursts can exceed t. (2) Data-pattern dependence (bitline and wordline coupling) shifts retention by several times and is hard to bound. (3) Fewer refreshes leave more time for disturb to build up between restores. CryoGuard saw hammer-like failures when refresh was cut.",
+   "revival_or_workaround": "(1) Size t for 3x the static weak count, and shorten the scrub period automatically when corrected-error counts rise (a closed loop, like NAND read-retry). (2) Write worst-case data patterns into the canary rows. (3) Decouple hammer protection from refresh cadence with targeted victim refresh or B4-10 Row-RAID.",
+   "million_dollar_demo": "~$150k: measure retention BER vs interval (64 ms-8 s) at 45-95 C on 50-100 commodity DDR4/DDR5/LPDDR5 chips with an FPGA tester, along with VRT rates and pattern dependence. Replay the measured error maps against software BCH/Z-channel decoders to show <=1e-15 post-ECC at 1 s. Then run real workloads on an FPGA memory controller with lazy-scrub refresh. Optional: a 22 nm MPW of the in-bank syndrome engine (~$200k).",
+   "resource_angle": "Use-phase energy, A2's #2 intensity: a server GB burns ~16x its fab energy over life, and refresh is the part that grows with density. It needs no new materials and has no EUV impact.",
+   "us_buildable": "Any university lab with FPGA testers and a thermal chamber; DRAM from Micron (Boise ID / Manassas VA)."
+  },
+  {
+   "id": "B4-03",
+   "name": "Lifetime-leased refresh: streamed and dead data are never refreshed",
+   "one_liner": "The host tells the memory how long each region lives and how often it is read; rows that are streamed every decode step, or already dead, never get a REF command.",
+   "mechanism": "A lease table in the memory controller (or HBM base die) puts each 2 MB region in one of three classes. (i) 'Dead': freed pages, retired KV. (ii) 'Streamed with period <= P': weights and live KV in LLM decode, read every token. (iii) 'Normal'. Class (ii) rows are restored as a side effect of every full activation. A per-region activation timestamp certifies that each row was opened within tREF, and the controller issues a targeted refresh only for rows that miss the deadline. Class (i) rows get no refresh at all. For most of an inference HBM, the all-bank REF command and its tRFC blackout disappear. A further step is an HBM bin specified for 'access-guaranteed' use, with a relaxed retention screen. Dies that fail today's 32 ms retention test become usable for weights.",
+   "which_bottleneck": "A1 #3 refresh (energy and tRFC bandwidth loss) and #5 (bandwidth); A2 #1 capital (more good dies per wafer from a relaxed retention screen)",
+   "step_change_claim": "Refresh energy -> ~0 for streamed and dead regions, and 5-15% more usable HBM bandwidth in bandwidth-bound decode (x1.05-1.18 tokens/s), with no cell change. General servers with 30-50% dead memory get refresh energy x0.5-0.7.",
+   "first_principles_estimate": "Full-HBM sweep time = capacity / bandwidth: 141 GB / 4.8 TB/s = 29 ms; 192 GB / 8 TB/s = 24 ms; 288 GB / 16 TB/s = 18 ms. All are under the 32 ms hot tREF, so decode-resident data is implicitly refreshed. Refresh power is small: 36 GB stack = 2.9e11 b x 46 fJ / 32 ms = 0.41 W (3.3 W per 8 stacks). The prize is time: recovering a 5/10/15% refresh blackout gives x1.053/1.111/1.176 throughput when decode is bandwidth-bound. (card03)",
+   "evidence": [
+    {
+     "title": "Tsinghua news: RANA (ISCA 2018)",
+     "url": "https://www.tsinghua.edu.cn/en/info/1245/5081.htm",
+     "shows": "Refresh-optimized eDRAM controller removes 99.7% of refreshes for NN accelerators (authors' claim) (via search snippet)"
+    },
+    {
+     "title": "Refresh Triggered Computation (arXiv 1910.06672)",
+     "url": "https://arxiv.org/pdf/1910.06672",
+     "shows": "RANA's mechanism: disable refresh when a bank's data lifetime is shorter than retention (via search snippet)"
+    },
+    {
+     "title": "BitROM (arXiv 2509.08542)",
+     "url": "https://arxiv.org/pdf/2509.08542",
+     "shows": "KV entries read every decoding step are implicitly refreshed if token time < ~64 ms (via search snippet)"
+    },
+    {
+     "title": "Kelle (arXiv 2510.16040)",
+     "url": "https://arxiv.org/pdf/2510.16040",
+     "shows": "KV-cache/eDRAM co-design with adaptive refresh and lifetime-shortening scheduler (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. Smart Refresh (MICRO 2007) skips recently accessed rows and ESKIMO (MICRO 2009) skips freed memory [both UNVERIFIED, training knowledge]. RANA (Tsinghua 2018) and Kelle (NYU 2025) do lifetime-aware refresh in on-chip eDRAM. New here: certified access-is-refresh on commodity HBM at TB/s through a host lease interface, and using that guarantee to relax the die's retention screen.",
+   "show_stoppers": "(1) An activation restores the cell fully only if tRAS is honoured; controllers that close rows early (restore truncation) void the guarantee. (2) Access patterns change (batch shrink, pre-emption, stalls), leaving rows unread past the deadline. (3) Streaming toggles every wordline every step; neighbours see two disturb events per sweep.",
+   "revival_or_workaround": "(1) Specify a 'full-restore' activation mode. (2) Use a deadline-driven fallback refresh from a timestamp table (~KB per GB); the controller reacts within one tREF. (3) Each neighbour is itself restored every sweep, so the disturb count per restore stays at ~2, orders of magnitude below any HCfirst.",
+   "million_dollar_demo": "~$100-150k. On an FPGA with HBM2e (e.g., AMD Alveo U280/U55C) or a DDR5 FPGA controller, run an LLM-decode-like streaming trace with refresh disabled in streamed regions. Measure bit errors (expect zero) and the bandwidth gained. Then measure ESKIMO-style dead-region skipping on a Linux server trace. Retention-reject die characterisation needs a DRAM-maker partner.",
+   "resource_angle": "More tokens per HBM stack means fewer stacks, wafers and packaging capacity per unit of AI serving; less use-phase energy; possible yield gain from retention-reject dies.",
+   "us_buildable": "FPGA and software work anywhere; partner validation with Micron (Boise ID)."
+  },
+  {
+   "id": "B4-04",
+   "name": "Significance-split memory: gold-grade sign/exponent, sand-grade mantissa",
+   "one_liner": "Split every BF16/FP8 tensor into protected, entropy-coded sign+exponent rows and unprotected, slowly refreshed, low-voltage mantissa rows: 1.58x more values per DRAM bit and 3.7x less refresh.",
+   "mechanism": "The memory controller (GPU or HBM base die) splits tagged tensors (weights, KV, activations) into bit-plane groups placed in different banks, so both are fetched in parallel. Sign and exponent are Huffman-coded to ~3 b (entropy ~2.6 b of 8) and stored in normal rows with ECC and standard refresh. The 7 mantissa planes go to 'approximate' banks with four relaxations: no ECC parity, refresh at ~1 s (raw BER ~1e-5), an optional separate lower VARY rail (~0.75 V), and lower-swing I/O lanes run at BER ~1e-6. Dies or subarrays that fail exact screening (weak cells, high-offset SAs) are binned for mantissa duty instead of scrapped. Ordinary data stays exact; a page-attribute bit selects the mode.",
+   "which_bottleneck": "A1 #3 refresh, #10 array voltage/energy, #5 interface energy; capacity per wafer (A2 #1)",
+   "step_change_claim": "For BF16 tensors: x1.58 capacity per DRAM bit (18 -> 11.4 cells per value incl. ECC), x3.7 less refresh energy per value, ~x2 less array energy and ~x2.8 less I/O driver energy on mantissa planes. FP8 x1.41; FP4 x1.18: the lever shrinks as formats narrow.",
+   "first_principles_estimate": "BF16 with 12.5% ECC = 16 x 1.125 = 18 cells. Split: (1 + 2.9 b Huffman exponent) x 1.125 = 4.4, plus 7 mantissa = 11.4 -> x1.58. Refresh per value: (4.4 + 7 x 64 ms/1 s)/18 = 0.27. Array CV^2 at 0.75 V: (0.75/1.05)^2 = 0.51. Link: Q falls from 7.94 (1e-15) to 4.75 (1e-6), so swing x0.60 and voltage-mode driver energy x0.36. FP8 E4M3: 9 -> 6.4 cells (x1.41). FP4 E2M1: 4.5 -> 3.8 (x1.18). Tolerances: mantissa BER 1e-5 (RangeGuard), KV mantissa 1e-4 (SHIELD); 1 s refresh gives 1.4e-5 at 85 C (B4-02 model). (card04)",
+   "evidence": [
+    {
+     "title": "RangeGuard (arXiv 2605.04563)",
+     "url": "https://arxiv.org/pdf/2605.04563",
+     "shows": "On BF16 Llama-3.x and ResNet-50, sign/mantissa flips are harmless until BER 1e-5 while exponent flips are catastrophic even at 1e-12 (via search snippet)"
+    },
+    {
+     "title": "SHIELD (arXiv 2604.07396)",
+     "url": "https://arxiv.org/pdf/2604.07396",
+     "shows": "Edge-NPU eDRAM design isolating sign/exponent from mantissa; KV mantissa tolerates BER up to 1e-4; relaxed 1216 us refresh; 35% refresh energy saved (via search snippet)"
+    },
+    {
+     "title": "DFloat11 (arXiv 2504.11651, NeurIPS 2025)",
+     "url": "https://arxiv.org/pdf/2504.11651",
+     "shows": "BF16 exponents carry ~2.6 b of entropy (~40 of 256 values used); Huffman coding gives ~11 b/weight losslessly (via search snippet)"
+    },
+    {
+     "title": "Bit-Flip Error Resilience in LLMs (EMNLP 2025)",
+     "url": "https://preview.aclanthology.org/setup/2025.emnlp-main.528",
+     "shows": "Defence framework FlipGuard specifically protects exponent bits (via search snippet)"
+    },
+    {
+     "title": "EDEN (MICRO 2019)",
+     "url": "https://arxiv.org/pdf/1910.05340",
+     "shows": "Whole-tensor approximate DRAM: 21% DRAM energy saved within 1% accuracy (via search snippet)"
+    }
+   ],
+   "novelty": "NEW combination. SHIELD (NUS 2026) separates sign/exponent from mantissa for eDRAM refresh on an edge NPU. DFloat11 entropy-codes exponents in software. EDEN lowers voltage for whole DNN tensors in DRAM. This card combines four things in commodity HBM/DDR that I found nowhere together: lossless exponent coding, per-plane ECC/refresh/voltage/I/O-swing policy, bank-parallel placement, and binning exact-test-reject dies for mantissa duty.",
+   "show_stoppers": "(1) Tolerance depends on model and task; long generations and reasoning chains may amplify mantissa noise (SHIELD saw degradation above 1e-4 at long context). (2) Bit-plane layout breaks the native word layout: one 64 B GPU sector now needs two activations in two banks (more activation energy, bank conflicts). (3) Separate VARY rails per bank cost die area and test complexity.",
+   "revival_or_workaround": "(1) Calibrate tolerance per tensor, with a 'promote' bit that moves sensitive layers to exact banks. (2) Bank-parallel placement hides the latency; activation is ~0.18 pJ/b when streaming, small next to the savings. (3) Ship the refresh/ECC/I/O policies first, which need no die change; add voltage domains in a later die.",
+   "million_dollar_demo": "~$0.2M. (a) ~$30k GPU time: inject plane-specific error maps (measured on real DRAM in B4-02's rig) into Llama-class 8B/70B weights and KV, and measure accuracy across tasks and context lengths. (b) ~$150k: an FPGA controller (Alveo with HBM2e or DDR5) that splits tensors across banks, with 1 s refresh on mantissa banks; measure end-to-end accuracy with real retention errors. (c) Then a DRAM-vendor test-mode collaboration for per-bank VARY.",
+   "resource_angle": "Fewer DRAM bits per model means fewer wafers, less EUV exposure, water and energy per deployed GB, plus less use-phase energy. Binning reject dies raises usable bits per wafer.",
+   "us_buildable": "Software and FPGA anywhere; later die work with Micron (Boise ID)."
+  },
+  {
+   "id": "B4-05",
+   "name": "Approximate 4-level DRAM for low-order planes and 2-bit KV",
+   "one_liner": "Two bits per ordinary 1T1C cell, without the 3x capacitor exact multi-level DRAM needed, by storing only data whose level errors are harmless.",
+   "mechanism": "A 2-bit DAC-driven write driver writes one of four levels (0, 0.35, 0.70, 1.05 V). Reads use charge sharing followed by a 3-threshold successive sense, with extra reference levels from split reference bitlines as in the 1997 4-level 4 Gb DRAM. Gray coding makes an adjacent-level error a +/-1 LSB error of the 2-bit field. MLC rows hold only data classes that tolerate ~1e-3 level error: KIVI-style 2-bit KV (one element per cell), the low mantissa planes of BF16 (with B4-04), and MX/FP4 element codes whose shared scales stay protected. Exact data stay single-level. On short bitlines (128 cells, e.g., with sense amps under the array) the same scheme becomes exact.",
+   "which_bottleneck": "A1 #1 (bits per capacitor) and #4 litho-bound density/capital",
+   "step_change_claim": "2x bits per cell for approximate data on the existing 1-beta array: KV capacity x2 vs single-level 2-bit storage, and BF16 with the B4-04 split x2.28 vs ECC'd BF16. At 128-cell bitlines the same circuit reaches exact-grade error rates (6.5e-15).",
+   "first_principles_estimate": "Cs 5.41 fF, Cbl 34.7 fF: charge-sharing attenuation 0.135. Single-level fresh signal = 0.525 V x 0.135 = 71 mV. Four levels: level gap at the cell 0.35 V; half-gap on the bitline 23.6 mV = 3.32 sigma (sigma 7.1 mV), so the level error is 9e-4 per read when fresh. At 128 cells (Cbl 11.7 fF) the half-gap is 55 mV = 7.8 sigma, a 6.5e-15 error. The 1997 4-level 4 Gb DRAM needed ~3x the capacitor for exactness (patent citation). Capacity: 2-bit KV goes from 2 cells to 1. BF16 split: 4.4 protected + 3.5 MLC cells = 7.9 vs 18 -> x2.28. Cost: the droop budget per level is a third of single-level, so ~3x more refresh per cell for equal error, or accept age-dependent error (B4-06). (card05)",
+   "evidence": [
+    {
+     "title": "Multi-level DRAM sensing scheme (US 5,917,748)",
+     "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/5917748",
+     "shows": "Cites Murotani et al., 'A 4-level storage 4 Gb DRAM', ISSCC 1997: 2 bits/cell DRAM was built, needing ~3x capacitance for exact sensing (via search snippet)"
+    },
+    {
+     "title": "US5909619A two-bit DRAM cell",
+     "url": "https://patents.google.com/patent/US5909619",
+     "shows": "Four charge levels per DRAM cell using stacked + trench capacitor (via search snippet)"
+    },
+    {
+     "title": "KIVI (ICML 2024)",
+     "url": "https://proceedings.mlr.press/v235/liu24bz.html",
+     "shows": "2-bit KV cache (per-channel K, per-token V) cuts peak memory 2.6x with little accuracy loss; up to 4x batch (via search snippet)"
+    },
+    {
+     "title": "SHIELD (arXiv 2604.07396)",
+     "url": "https://arxiv.org/pdf/2604.07396",
+     "shows": "Edge-NPU eDRAM design isolating sign/exponent from mantissa; KV mantissa tolerates BER up to 1e-4; relaxed 1216 us refresh; 35% refresh energy saved (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. Exact 4-level DRAM was built (ISSCC 1997) and abandoned because it needed 3x the capacitance and slow sensing, and B1-05 revisits exact 2-bit 1T1C on oxide cells. The twist is using multi-level storage only for error-tolerant AI data, so no capacitor growth is needed on today's Si array.",
+   "show_stoppers": "(1) Read latency: three-step sensing adds ~10-20 ns. (2) Droop pulls the top level down fastest, so multi-level rows need 2-3x more refresh or tolerate age-dependent error. (3) A destructive read must restore an analog level, not a rail. That needs a DAC-driven write-back per bitline in the SA stripe (area) and ~2x activation energy.",
+   "revival_or_workaround": "(1) Use multi-level rows for streamed data (KV and weights read in long bursts), where latency is hidden. (2) Combine with B4-02 scrubbing or B4-13 cool operation (droop 4-18x slower). (3) Restore from the column latch through a shared DAC every 8-16 bitlines; or move multi-level tiers to non-destructive oxide gain cells (A3 white space 1).",
+   "million_dollar_demo": "~$0.5M. A 28/22 nm MPW test chip with a 64-256 kb 1T1C MIM-capacitor array, sized to the same Cs/Cbl ratio as 1-beta, with 2-bit write DACs and 3-threshold sense. Measure the level-error map vs time and temperature (~$400k). Add a software study of KV/mantissa tolerance to measured error maps (~$20k) and an FPGA controller packing 2-bit KV.",
+   "resource_angle": "Same wafer, ~2x approximate bits, so fewer DRAM wafers for KV-heavy inference. No new materials.",
+   "us_buildable": "GlobalFoundries 22FDX/12LP+ (Malta NY) MPW via university programmes; test at any university lab."
+  },
+  {
+   "id": "B4-06",
+   "name": "Graceful-forgetting KV memory: leakage as the eviction policy [SPECULATIVE]",
+   "one_liner": "Store KV magnitudes as multi-level charge that sags with age, so old tokens fade toward zero with no refresh, while attention sinks and heavy hitters are leased for refresh.",
+   "mechanism": "KV elements are stored sign-separated: the sign sits in exact rows, the magnitude as a 4- or 8-level charge in true-cell polarity, so leakage only ever reduces magnitude. Rows holding the recent window, attention-sink tokens and controller-flagged heavy hitters are refreshed under a lease (B4-03). All other KV rows are never refreshed. Over seconds to minutes their magnitudes droop level by level. A fully discharged row reads as all zeros, and the allocator reclaims it on zero-detect. The model sees a continuous 'forgetting curve' resembling H2O/StreamingLLM-style eviction, at zero refresh energy. Training or fine-tuning with the decay model (as RANA did for CNNs) teaches the network to expect it.",
+   "which_bottleneck": "A1 #3 refresh; KV capacity pressure on HBM (#5/#6)",
+   "step_change_claim": "[SPECULATIVE] KV refresh energy -> 0 outside the leased window, with automatic capacity reclamation. Long-context KV footprint is bounded by the forgetting time constant rather than by context length.",
+   "first_principles_estimate": "KV per token for a 70B-class model (8 KV heads x 128 x 80 layers x K,V x 2 B) is 328 KB; 128k tokens is 43 GB. Refresh costs 2.6e6 b x 46 fJ / 64 ms = 1.9 uW per stored token, while recomputing that token's KV costs ~0.14 J (2 x 70e9 FLOP at ~1 pJ/FLOP). Refresh beats recompute for any lifetime under ~74,000 s, so forgetting must replace refresh outright rather than be repaired by recompute. Decay spread: cell-leakage sigma_ln = 0.6-1.0 gives a 4.7-13x spread between 10th- and 90th-percentile decay times, so forgetting is randomised element by element, not token by token. (card06)",
+   "evidence": [
+    {
+     "title": "SHIELD (arXiv 2604.07396)",
+     "url": "https://arxiv.org/pdf/2604.07396",
+     "shows": "Edge-NPU eDRAM design isolating sign/exponent from mantissa; KV mantissa tolerates BER up to 1e-4; relaxed 1216 us refresh; 35% refresh energy saved (via search snippet)"
+    },
+    {
+     "title": "Kelle (arXiv 2510.16040)",
+     "url": "https://arxiv.org/pdf/2510.16040",
+     "shows": "Attention-based eviction co-designed with eDRAM refresh for KV caches (via search snippet)"
+    },
+    {
+     "title": "Tsinghua news: RANA (ISCA 2018)",
+     "url": "https://www.tsinghua.edu.cn/en/info/1245/5081.htm",
+     "shows": "Retention-aware training lets NNs tolerate eDRAM retention errors (via search snippet)"
+    },
+    {
+     "title": "KIVI (ICML 2024)",
+     "url": "https://proceedings.mlr.press/v235/liu24bz.html",
+     "shows": "2-bit KV cache (per-channel K, per-token V) cuts peak memory 2.6x with little accuracy loss; up to 4x batch (via search snippet)"
+    }
+   ],
+   "novelty": "[SPECULATIVE] NEW combination. Kelle co-designs eviction with eDRAM refresh, and RANA trains with retention errors. I found no proposal that uses physical charge decay itself as a magnitude-shrinking eviction policy.",
+   "show_stoppers": "(1) Element-wise random decay rotates K vectors, not just scales them, so attention may jump to wrong tokens instead of fading gracefully. (2) Decay rate doubles every ~10 C, so the forgetting time drifts with load. (3) Reading a decayed row still costs activation, and the read restores (freezes) the decayed state.",
+   "revival_or_workaround": "(1) Keep each token's norm in exact bits and let only the normalised direction decay, or decay V but not K. Fine-tune with the decay model. (2) Temperature-tracking canary rows (B4-02) turn decay into a calibrated 'age'. (3) In non-destructive oxide gain cells (A3 white space 1), reads do not refresh.",
+   "million_dollar_demo": "~$0.1M software first: a PyTorch KV-cache simulator applies measured DRAM decay statistics to Llama-class models on RULER/LongBench, compared with H2O and StreamingLLM. If it holds, characterise multi-level decay on the B4-05 test chip.",
+   "resource_angle": "Less HBM capacity per long-context session; refresh energy saved.",
+   "us_buildable": "Software anywhere; silicon shared with B4-05 (GlobalFoundries MPW)."
+  },
+  {
+   "id": "B4-07",
+   "name": "Tensor-aware codec in the memory controller (hardware DFloat11 + optional lossy KV)",
+   "one_liner": "Entropy-code BF16 exponents at HBM line rate in the GPU memory path, so every stack holds and delivers ~1.47x more weights, losslessly.",
+   "mechanism": "A codec in each GPU memory partition, with a matching engine in the HBM4 logic base die for capacity management, Huffman-codes the 8-bit exponents of tagged BF16 tensors. About 40 symbols are used, ~2.6 b entropy. Sign and mantissa are packed raw, 32 values per 64 B sector -> ~44 B. Fixed-rate block coding (32 exponents in a 96-112 b budget with an escape code) keeps random access at sector granularity. An optional lossy mode, under software control, applies KIVI-style per-channel K / per-token V 2-bit quantisation with a full-precision residual window. Unlike LZ-class CXL compressors (Marvell Structera, ZeroPoint: 2-3x on general data), this codec targets floating-point tensors, which LZ compresses poorly.",
+   "which_bottleneck": "A1 #5 interface energy and #6 HBM capacity tax; A2 #1 capital per bit",
+   "step_change_claim": "Lossless x1.47 effective capacity and bandwidth for BF16 weights and activations, saving ~17.8 pJ of interface energy per value for ~0.2-0.5 pJ of decode. The lossy KV mode gives up to 2.6x peak memory.",
+   "first_principles_estimate": "BF16: 16 b -> 1 + 2.9 + 7 = 10.9 b, x1.47 (DFloat11 reports ~70% size, ~11 b). Energy saved: (16 - 10.9) b x 3.5 pJ/b = 17.8 pJ per value, vs ~0.2-0.5 pJ Huffman decode in 5 nm-class logic [ESTIMATE]. Throughput: 16 TB/s / 2 B = 8e12 values/s per GPU; at 4 symbols per cycle and 2 GHz that is ~1,000 decoders of ~0.005 mm^2, ~5-10 mm^2 [ESTIMATE]. Placement matters: decoding in the base die saves capacity and TSV/core energy only, while decoding in the GPU memory controller also saves the ~2.5 pJ/b interposer path (A1). (card07)",
+   "evidence": [
+    {
+     "title": "DFloat11 (arXiv 2504.11651, NeurIPS 2025)",
+     "url": "https://arxiv.org/pdf/2504.11651",
+     "shows": "BF16 exponents carry ~2.6 b of entropy (~40 of 256 values used); Huffman coding gives ~11 b/weight losslessly (via search snippet)"
+    },
+    {
+     "title": "Marvell Structera X 3406/3506 (StorageReview)",
+     "url": "https://www.storagereview.com/fr/news/marvell-structera-x-3406-3506-six-channel-cxl-3-2-memory-expander",
+     "shows": "Hardware LZ4 in CXL expanders gives 2-3x effective capacity depending on workload (via search snippet)"
+    },
+    {
+     "title": "OCP CXL expander compression study (IEEE CAL 2026)",
+     "url": "https://sing.stanford.edu/site/assets/publications/park26.pdf",
+     "shows": "A more complex compressor can lower access latency because DRAM traffic falls (via search snippet)"
+    },
+    {
+     "title": "KIVI (ICML 2024)",
+     "url": "https://proceedings.mlr.press/v235/liu24bz.html",
+     "shows": "2-bit KV cache (per-channel K, per-token V) cuts peak memory 2.6x with little accuracy loss; up to 4x batch (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. DFloat11 runs as a GPU software kernel; CXL expanders do generic LZ4; NVIDIA L2 'compute data compression' targets zero and sparse patterns [UNVERIFIED]. A float-exponent codec at HBM line rate in the memory controller is the twist.",
+   "show_stoppers": "(1) Variable-length codes clash with random 32-64 B access, and overflow sectors add metadata traffic. (2) ~8e12 symbols/s per GPU needs about a thousand parallel decoders, with area and power in the memory partition. (3) FP8/FP4 formats have less exponent redundancy, so the gain shrinks.",
+   "revival_or_workaround": "(1) The exponent entropy bound makes a fixed-rate block code with an escape safe; overflow is rare. (2) Table-driven decoders at 4 symbols/cycle need ~5-10 mm^2, under 1% of a reticle-size GPU. (3) For MX/FP8 formats, apply the same idea to shared scales and element histograms (~1.1-1.3x).",
+   "million_dollar_demo": "~$0.12-0.27M. Build an RTL codec on an FPGA with HBM2e (AMD Alveo U55C) and run real BF16 weight streams to measure ratio, throughput per LUT and latency. Synthesise to an academic 7 nm PDK (ASAP7) for area/power (~$120k). Optionally tape out a decoder slice on a 22 nm MPW (~$150k).",
+   "resource_angle": "Fewer HBM stacks per model means fewer DRAM wafers and less TSV/CoWoS packaging capacity, two live chokepoints.",
+   "us_buildable": "FPGA work anywhere; MPW via GlobalFoundries (Malta NY)."
+  },
+  {
+   "id": "B4-08",
+   "name": "Compression-funded ECC: compressible rows earn slow refresh for free",
+   "one_liner": "Every 64 B line that compresses by >=10 B carries a t=7 BCH code in the freed space, so rows of compressible data can be refreshed every 0.5-1 s at zero capacity cost.",
+   "mechanism": "On write, the controller compresses each line: exponent Huffman for float tensors, base-delta-immediate or zero-run for integers and pointers. If the result is <=54 B, it appends 70 parity bits (t=7 BCH over GF(2^10)) in the same 64 B slot and sets a mode bit in the existing ECC/metadata side-band. A per-row counter tracks whether every line in the row is in 'strong' mode; strong rows move to a slow refresh bin (RAIDR-style Bloom filter) and weak rows stay at 64 ms. A line that becomes incompressible demotes its row immediately, the safe direction. Reads run the full decode only when the cheap syndrome is nonzero.",
+   "which_bottleneck": "A1 #3 refresh",
+   "step_change_claim": "8-16x lower refresh energy (0.5-1 s interval) on fully compressible rows at zero capacity overhead. Float tensors compress to ~44 B per line, so this covers most of an AI accelerator's DRAM.",
+   "first_principles_estimate": "Line = 512 b. BCH t=7 needs 70 b (~9 B), so the payload must be <=54 B including a 1 B header. A BF16 line of 32 values x 10.9 b is ~44 B. Retention BER at 85 C (B4-02 model): 0.5 s -> 1.7e-6 and 1 s -> 1.4e-5, both inside the 1e-4 design point; 2 s -> 1.1e-4 is marginal. Refresh energy x0.128 (0.5 s) or x0.064 (1 s). (card08)",
+   "evidence": [
+    {
+     "title": "RAIDR: Retention-Aware Intelligent DRAM Refresh (ISCA 2012)",
+     "url": "https://www.pdl.cmu.edu/ftp/NVM/raidr-isca12.pdf",
+     "shows": "Two retention bins remove 74.6% of refreshes with 1.25 KB of state; 16.1% DRAM power and 8.6% performance gained (via search snippet)"
+    },
+    {
+     "title": "DFloat11 (arXiv 2504.11651, NeurIPS 2025)",
+     "url": "https://arxiv.org/pdf/2504.11651",
+     "shows": "BF16 exponents carry ~2.6 b of entropy (~40 of 256 values used); Huffman coding gives ~11 b/weight losslessly (via search snippet)"
+    },
+    {
+     "title": "Marvell Structera XA CXL compression blog",
+     "url": "https://www.marvell.com/blogs/structera-xa-cxl-compression-every-gigabyte-counts.html",
+     "shows": "Inline hardware compression engines already sit in shipping memory controllers (vendor claim) (via search snippet)"
+    },
+    {
+     "title": "ArchShield (Nair, Kim, Qureshi, ISCA 2013)",
+     "url": "https://memlab.ece.gatech.edu/papers/ISCA_2013_1.pdf",
+     "shows": "An architecture tolerates DRAM fault rates up to 1e-4 at 4% capacity and <2% performance; plain ECC DIMMs handle ~1e-6 (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. COP (Palframan, Kim and Lipasti, ISCA 2015) used compression to embed ECC in non-ECC DIMMs [UNVERIFIED, training knowledge]. Spending the freed bits on refresh interval, and binning rows by compressibility, is the twist.",
+   "show_stoppers": "(1) A row refreshes at the rate of its least compressible line, so mixed rows stay fast. (2) Writes that change compressibility churn row binning metadata. (3) Decode latency on detected errors.",
+   "revival_or_workaround": "(1) The allocator places tensors in dedicated rows; AI data is homogeneous within a tensor. (2) Demotion is immediate and safe; promotion is lazy. (3) The syndrome fast path, as in B4-01.",
+   "million_dollar_demo": "~$0.1M. Trace-driven simulation (Ramulator 2) on real GPU and server memory dumps measures the fraction of strong rows. Then an FPGA DDR5 controller prototype replays B4-02's measured retention-error maps, sharing that rig.",
+   "resource_angle": "Use-phase energy only.",
+   "us_buildable": "Anywhere."
+  },
+  {
+   "id": "B4-09",
+   "name": "Top-k KV from in-memory scoring of MSB-plane sketches",
+   "one_liner": "Store the KV cache bit-plane-major so its top 4 planes are a free sketch; score the sketch inside the memory and fetch full-precision K/V only for the ~2% of tokens that matter.",
+   "mechanism": "Keys are quantised per channel to INT8 (KIVI-style) and stored as bit planes. The 4 MSB planes live in a PIM-capable tier (HBM-PIM or LPDDR5X-PIM). The low planes and V live in a cheaper capacity tier (LPDDR or CXL DRAM). Each decode step broadcasts the query to bank-level units, which compute approximate q.k scores from the MSB planes with bit-serial adds at the sense-amp stripe or the existing PIM MAC units, and return only scores (2 B per token per KV head). The GPU picks the top-k tokens (k ~ 1-4k) and fetches their full K and V. Nothing is stored twice: the sketch is the high planes of the real data.",
+   "which_bottleneck": "A1 #5 data movement, #6 HBM capacity tax, #8 overfetch",
+   "step_change_claim": "At 128k-token contexts: ~7x less KV traffic per decode step and ~8x less HBM capacity for KV, with full KV in a ~3x cheaper-per-bit tier. In-memory scoring cuts the sketch pass's interface traffic ~2,500x.",
+   "first_principles_estimate": "70B-class GQA KV = 328 KB/token, so dense attention reads 42.9 GB per step per sequence at 128k. Sparse: the sketch (4 of 16 planes of K) is 12.5% of KV, plus full K and V for the top 2,048 tokens (1.6%), = 6.04 GB per step -> x7.1. HBM holds 12.5% of KV -> x8. Scores: 2 B x 8 heads x 131,072 = 2.1 MB vs 5.37 GB of sketch -> x2,560. (card09)",
+   "evidence": [
+    {
+     "title": "Hot Chips 2026: Samsung LPDDR5X-PIM (Tom's Hardware)",
+     "url": "https://www.tomshardware.com/pc-components/dram/hot-chips-2026-samsung-makes-lpddr5x-smart-with-logic-unit-in-memory-lpddr5x-pim-is-3-01x-faster-than-lpddr5x-in-ai-inference-with-8x-the-bandwidth",
+     "shows": "Shipping-class PIM: 614 vs 76.8 GB/s internal vs external bandwidth (8x), 3.01x Llama-3.1-8B throughput (CROSS-REF A3)"
+    },
+    {
+     "title": "Samsung HBM-PIM (eeNews Europe)",
+     "url": "https://www.eenewseurope.com/news/samsung-HBM-PIM-ai-chip",
+     "shows": "Per-bank FP16 compute units inside HBM (CROSS-REF A3)"
+    },
+    {
+     "title": "KIVI (ICML 2024)",
+     "url": "https://proceedings.mlr.press/v235/liu24bz.html",
+     "shows": "2-bit KV cache (per-channel K, per-token V) cuts peak memory 2.6x with little accuracy loss; up to 4x batch (via search snippet)"
+    },
+    {
+     "title": "Ambit (MICRO 2017)",
+     "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2017/09/MICRO-50_347.pdf",
+     "shows": "Triple-row activation computes bitwise majority/AND/OR in commodity-style DRAM at ~1% area; 35x energy on bulk bitwise ops (via search snippet)"
+    }
+   ],
+   "novelty": "NEW combination. Query-aware sparse attention (e.g., Quest, ICML 2024 [UNVERIFIED]) and PIM DRAM exist separately. Making the sketch from the stored MSB planes, scoring it in-bank and splitting KV across two tiers is new as far as I found.",
+   "show_stoppers": "(1) Selection quality from 4-bit sketches: heads with diffuse attention need large k, and the gain collapses. (2) Broadcasting the query to every sketch bank per layer: PIM throughput and latency may bound decode. (3) Dense kernels pay a transpose cost on bit-plane layout.",
+   "revival_or_workaround": "(1) Choose k per head adaptively, keeping dense attention for heads that need it. (2) Pipeline: score layer l+1 while computing layer l. (3) Limit the layout to KV, which the serving runtime owns.",
+   "million_dollar_demo": "~$0.25M. Implement sketch-scored top-k attention on GPUs with bit-plane KV, and measure accuracy on long-context suites and HBM bytes per token (~$40k). Map scoring to commercially available UPMEM PIM DIMMs or an FPGA memory controller emulating PIM, and measure end-to-end tokens/s and energy (~$150-200k).",
+   "resource_angle": "Replaces HBM, the scarcest and most wafer-intensive DRAM, with commodity DRAM.",
+   "us_buildable": "Anywhere; UPMEM PIM DIMMs are purchasable."
+  },
+  {
+   "id": "B4-10",
+   "name": "Row-RAID: in-bank XOR parity rows built by triple-row activation",
+   "one_liner": "Keep an XOR parity row for every 32 rows, computed inside the subarray, so any one row of read-mostly AI data can be rebuilt after hammer flips or weak-cell failures.",
+   "mechanism": "For read-mostly regions (weights, and KV after it is written), the controller issues in-DRAM bulk-bitwise sequences that accumulate one parity row per group of 32 rows in a subarray. These are Ambit-style triple-row activation for AND/OR plus a dual-contact-cell NOT, composed into XOR. Group membership is interleaved so physically adjacent rows (the +/-1 and +/-2 victims of any aggressor) fall in different groups. Per-line ECC (on-die SEC or B4-01's BCH) detects a damaged row. The controller then XORs the other 31 rows and the parity inside the subarray and writes the reconstruction back. A write to a protected row updates parity with two in-DRAM XORs (old ^ new).",
+   "which_bottleneck": "A1 #9 row hammer and #3 weak cells; unlocks tighter pitch and smaller Cs (B4-01)",
+   "step_change_claim": "Row-hammer and weak-row tolerance for read-mostly data at ~3% capacity, instead of PRAC's <13% performance overhead today and up to 94% for future chips. Any single row per group may lose all its bits.",
+   "first_principles_estimate": "Overhead is 1/32 = 3.1% (1/16 = 6.2%, 1/64 = 1.6%). Parity build: 31 XORs x ~6 row cycles x 50 ns = 9.3 us per group, once per weight load [ESTIMATE]. Ambit: ~1% die area, 32x performance and 35x energy on bulk bitwise ops. Hammer threshold trend: 4.8K at LPDDR4-1y, extrapolated ~0.5-1K by 2026 (A1). (card10)",
+   "evidence": [
+    {
+     "title": "Ambit (MICRO 2017)",
+     "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2017/09/MICRO-50_347.pdf",
+     "shows": "Triple-row activation computes bitwise majority/AND/OR in commodity-style DRAM at ~1% area; 35x energy on bulk bitwise ops (via search snippet)"
+    },
+    {
+     "title": "A Modern Primer on Processing in Memory (ETH)",
+     "url": "https://arxiv.org/pdf/2012.03112",
+     "shows": "ComputeDRAM mimicked triple-row activation on some off-the-shelf DRAM chips by violating activation timing (via search snippet)"
+    },
+    {
+     "title": "PRAC overheads (ETH, arXiv 2406.19094)",
+     "url": "https://arxiv.org/pdf/2406.19094v1",
+     "shows": "JEDEC PRAC costs <13% now, up to 94% for future chips (CROSS-REF A1)"
+    },
+    {
+     "title": "Revisiting RowHammer (ISCA 2020)",
+     "url": "https://arxiv.org/pdf/2005.13121",
+     "shows": "HCfirst fell to 4.8K in LPDDR4-1y (CROSS-REF A1)"
+    }
+   ],
+   "novelty": "NEW combination. Ambit (CMU/Microsoft/NVIDIA) and ComputeDRAM (Princeton) show in-DRAM bitwise ops, and RAID/chipkill protect across chips. I found no erasure coding across rows computed inside the subarray for hammer tolerance.",
+   "show_stoppers": "(1) Triple-row activation on commodity chips is unreliable (ComputeDRAM: only some chips and rows work), and commodity dies lack the dual-contact NOT row. (2) Correlated failures (SA stripe, local wordline driver) can take out a whole group. (3) Write amplification makes it unsuitable for write-heavy data.",
+   "revival_or_workaround": "(1) A vendor-supported 'bulk XOR' command, a small SA-stripe change (Ambit: ~1% area). (2) A second-level parity across subarrays or banks in the controller. (3) Restrict it to read-mostly classes via B4-03 leases.",
+   "million_dollar_demo": "~$0.15M. Characterise multi-row activation reliability on commodity DDR4 with an FPGA tester (ComputeDRAM-style), then inject hammer patterns and demonstrate reconstruction (~$80k). Add an RTL controller and a performance simulation against PRAC (~$70k).",
+   "resource_angle": "Lets cells and pitch shrink without hammer-counter area or bandwidth loss; no materials.",
+   "us_buildable": "Anywhere."
+  },
+  {
+   "id": "B4-11",
+   "name": "Erasure-coded memory stacks: 16+2 dies, any two may fail",
+   "one_liner": "Build 16-high stacks with 2 parity dies so two bad dies or bond layers are tolerated, turning hybrid-bonding yield collapse into a 12.5% die overhead.",
+   "mechanism": "Treat the dies of an HBM-class (or 3D wafer-bonded) stack like disks in RAID-6. Data channels are striped across dies with rotating parity computed in the logic base die. When a die fails (at stack test or in the field), the base die reconstructs its channels from the others in degraded mode, or remaps them to a spare die (simpler, preferred at test). Signal paths crossing a failed bond are protected by redundant TSV/bond pads with per-layer bypass, or by contactless inductive-coupling links, so one die's failure does not sever the chain. Power gets per-layer isolation switches. This lets stacks use non-known-good dies and imperfect bonds.",
+   "which_bottleneck": "A1 #6 HBM TSV/stacking tax (hybrid-bonding yield across 16-20 bonds); A2 #1 capital per good bit",
+   "step_change_claim": "At 95% per-die-in-stack yield, 16-high stack yield rises from 44% to 94% with 16+2: 1.9x fewer dies per good stack-bit. At 90% yield the gain is 3.5x; at 98%, 1.2x.",
+   "first_principles_estimate": "Binomial P(<=f failures of n): y=0.98: 16-high 0.724 -> 16+2 0.995 (x1.22 dies per good bit, counting the 12.5% extra dies). y=0.95: 0.440 -> 0.942 (x1.90). y=0.90: 0.185 -> 0.734 (x3.52). 12+1 at y=0.95: 0.540 -> 0.865 (x1.48). (card11)",
+   "evidence": [
+    {
+     "title": "TrendForce 2024-03-18 HBM vs DDR5",
+     "url": "https://www.trendforce.com/presscenter/news/20240318-12081.html",
+     "shows": "HBM die 35-45% larger than DDR5 at equal node/capacity; yield incl. TSV packaging 20-30% lower (CROSS-REF A1)"
+    },
+    {
+     "title": "Micron: silicon gap between HBM and DDR5 (Tom's Hardware, Hot Chips 2026)",
+     "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+     "shows": "HBM3E needs ~3x DDR5's wafer area per bit and the gap is not closing (CROSS-REF A1)"
+    },
+    {
+     "title": "TrendForce 2026-07-07: hybrid bonding timeline slips",
+     "url": "https://www.trendforce.com/news/2026/07/07/news-samsung-sk-hynix-reportedly-reconsider-hybrid-bonding-timeline-16-high-hbm4e-may-be-earliest-adoption/",
+     "shows": "HBM hybrid bonding pushed to 16-high HBM4E at the earliest because of multi-bond yield (CROSS-REF A1)"
+    }
+   ],
+   "novelty": "TWIST on known. Chipkill/SDDC across DIMM chips and RAID across disks are decades old, and HBM already has TSV redundancy and in-channel ECC. Die-level erasure coding across a stack, to accept non-known-good dies and imperfect bonds, has no public implementation that I found.",
+   "show_stoppers": "(1) The serial TSV/bond chain: a power-ground short or open at layer k can kill every die above it, which no erasure code can fix. (2) Bandwidth: HBM maps channels to dies, so parity updates cost write bandwidth and degraded mode costs read bandwidth. (3) Thermal and height limits for 18 dies in 775-1,000 um.",
+   "revival_or_workaround": "(1) Per-layer power isolation, redundant power TSVs, and contactless signal coupling (ThruChip-style inductive links, Keio [UNVERIFIED performance]). (2) Spare-die remap for test-time failures, and erasure only for field failures. Inference data is read-mostly, so parity-update cost is small. (3) Thinner dies (~30-40 um) are already planned for 16-20-high.",
+   "million_dollar_demo": "~$0.4-0.6M. Calibrate a yield/reliability model to public data, then build a 4-8-die stack test vehicle. Thinned daisy-chain test dies carry redundant TSVs and power switches, bonded at a university/national-lab hybrid-bonding facility. An FPGA base-die emulator does remap and parity; intentionally open one layer and show bypass and reconstruction.",
+   "resource_angle": "Fewer DRAM wafers and less scrap per good HBM bit. TSV/bonding packaging capacity is a live chokepoint.",
+   "us_buildable": "Hybrid bonding at NY CREATES (Albany NY), Texas Institute for Electronics (UT Austin) or Sandia MESA; packaging at Amkor Peoria AZ (2027+) or SK hynix West Lafayette IN (2028)."
+  },
+  {
+   "id": "B4-12",
+   "name": "Weight-streaming DRAM die: few banks, wide rows, no refresh",
+   "one_liner": "A DRAM die built only for LLM weights, which are read in the same order every token. It sheds most of HBM's 35-45% area tax by dropping random-access machinery and refresh.",
+   "mechanism": "HBM4 dies carry 256 banks and wide internal datapaths to serve random access from many pseudo-channels. A weight stream instead reads the same addresses in the same order every decode step. A streaming die uses ~16 large banks whose full rows are latched into a row-wide output FIFO and shifted onto TSVs, and a programmable sequencer replaces command decoding and per-bank state machines. It has no REF logic or refresh timers, because use refreshes every row (B4-03), with only a minimal self-refresh for idle. Mats and bitlines can be longer wherever the stream hides latency. It keeps the HBM base-die and TSV interface, so it stacks or sits beside HBM4 and HBF.",
+   "which_bottleneck": "A1 #6 HBM tax, #7 periphery overhead, #3 refresh",
+   "step_change_claim": "~1.3-1.5x less silicon per bit than HBM for the weight-holding share of accelerator memory (array efficiency ~0.36 -> 0.45-0.55), plus zero refresh. It lands between HBM (3x DDR5 wafer/bit) and HBF.",
+   "first_principles_estimate": "DDR5 array efficiency is 0.508 (A1). An HBM die is ~40% larger, so ~0.36. A streaming die at 0.45/0.50/0.55 needs x0.81/0.73/0.66 of HBM's area per bit. With ~10% better stack yield (fewer circuits), wafer per bit falls from ~3x DDR5 to ~1.8-2.2x DDR5 [ESTIMATE]. (card12)",
+   "evidence": [
+    {
+     "title": "TrendForce 2024-03-18 HBM vs DDR5",
+     "url": "https://www.trendforce.com/presscenter/news/20240318-12081.html",
+     "shows": "HBM die 35-45% larger than DDR5 at equal node/capacity; yield incl. TSV packaging 20-30% lower (CROSS-REF A1)"
+    },
+    {
+     "title": "Micron: silicon gap between HBM and DDR5 (Tom's Hardware, Hot Chips 2026)",
+     "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+     "shows": "HBM3E needs ~3x DDR5's wafer area per bit and the gap is not closing (CROSS-REF A1)"
+    },
+    {
+     "title": "RPU energy model (arXiv 2602.18568)",
+     "url": "https://arxiv.org/pdf/2602.18568",
+     "shows": "Row activation is ~0.18 pJ/bit when streaming: the DRAM core is cheap when access is sequential; the random-access machinery is the tax (CROSS-REF A1)"
+    },
+    {
+     "title": "Semiconductor Engineering on HBF",
+     "url": "https://semiengineering.com/flash-getting-stacked-high-bandwidth-version/",
+     "shows": "Inference weights are static and read-mostly, so a memory specialised for them is a real market category (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. HBF (SanDisk/SK hynix) and SRAM-heavy inference chips (Groq, Cerebras) specialise memory for inference. I found no public product or paper for a DRAM die stripped down for streaming access.",
+   "show_stoppers": "(1) The area gain may be smaller than estimated: TSV keep-out, I/O and the sense-amp/SWD stripes (most of the periphery) remain. (2) Retention must be guaranteed even when the model idles or is swapped out, so it needs a fallback self-refresh. (3) KV and activations still need random access, so only the weight share of HBM is replaced.",
+   "revival_or_workaround": "(1) Quantify with a floorplan study (CACTI-3DD-class models calibrated to die photos) before any silicon. (2) Keep a minimal self-refresh for idle. (3) Pair with B4-09 so KV also leaves HBM.",
+   "million_dollar_demo": "~$0.15M. An architectural floorplan and area study using open DRAM models calibrated to teardown data, plus an RTL sequencer and base-die interface on FPGA. Silicon requires a DRAM-maker partner.",
+   "resource_angle": "Fewer DRAM wafers per inference deployment; frees HBM capacity, the most wafer-intensive DRAM.",
+   "us_buildable": "Design anywhere; fabrication only at a DRAM maker (Micron Boise ID / Manassas VA)."
+  },
+  {
+   "id": "B4-13",
+   "name": "Thermal arbitrage: keep the bits away from the GPU's heat",
+   "one_liner": "DRAM's worst enemy is the accelerator's heat. A 35 C liquid-cooled memory sled buys 4-30x retention, which pays for refresh cuts, multi-level rows or shorter capacitors.",
+   "mechanism": "HBM sits millimetres from a ~1 kW GPU at 85-95 C (32 ms refresh above 85 C), and server DIMMs run 50-85 C. In a disaggregated design, capacity DRAM (KV pools, cold weights, CXL expanders) moves onto separately liquid-cooled sleds at 30-40 C, linked by optics (B4-14) or CXL. Refresh is set from on-die temperature and canary readings (B4-02), not the 85 C worst case. The cool margin can be spent three ways: (a) 4-30x longer refresh intervals; (b) multi-level rows (B4-05), whose droop budget is a third of single-level; (c) next-generation dies designed to a 'cool spec' with ~30% shorter capacitors.",
+   "which_bottleneck": "A1 #3 refresh and #1 capacitor (via retention margin); trades against #5 interface energy",
+   "step_change_claim": "Retention x3.7-18 from 85 C to 35 C (Arrhenius, Ea 0.25-0.55 eV; x32 by the 2x/10 C rule), so refresh energy and busy time fall 4-18x; or Cs 5.4 -> ~3.8 fF (the sense-limited floor), a ~30% shorter pillar.",
+   "first_principles_estimate": "85 -> 35 C: the rule of thumb gives 2^(50/10) = 32x. Arrhenius exp[(Ea/k)(1/308 - 1/358)] gives 3.7x for Ea 0.25 eV (GIDL/trap-assisted tail) and 18x for 0.55 eV (SRH junction generation); 95 -> 35 C gives 4.6-29x. Capacitor: with tail leakage /16, a 3.8-4.0 fF cell droops only ~13-14 mV in 64 ms, so Cs is bounded by the no-droop sense floor of 3.7 fF on a 512-cell bitline. Cost: link energy ~2-3 pJ/b (optical) vs ~3.5 pJ/b for HBM, plus ~100-300 ns latency, so this suits capacity tiers only. (card13)",
+   "evidence": [
+    {
+     "title": "77 K DRAM retention (JSTS 2022)",
+     "url": "https://jsts.org/jsts/ArticleDetail/RD_R/414471",
+     "shows": "Retention rises steeply as temperature falls (8 s -> 4,096 s at 77 K once 6 weak rows are excluded); the temperature lever is real (CROSS-REF A3)"
+    },
+    {
+     "title": "Celestial AI wants to break the memory wall (The Next Platform, 2024-04)",
+     "url": "https://www.nextplatform.com/compute/2024/04/04/celestial-ai-wants-to-break-the-memory-wall-fuse-hbm-with-ddr5/1646782",
+     "shows": "Optical memory fabric: ~6.2 pJ/bit memory transactions vs ~62.5 pJ/bit via NVLink/NVSwitch, 120 ns round trip (company claims) (via search snippet)"
+    },
+    {
+     "title": "HOTI25: Celestial AI's Photonic Fabric (Converge Digest)",
+     "url": "https://convergedigest.com/hoti25-celestial-ais-photonic-fabric/?amp=1",
+     "shows": "~2.4 pJ/bit fabric and ~300 ns server-to-memory latency; 32 TB DDR5 appliance with HBM as write-through cache (company claims) (via search snippet)"
+    }
+   ],
+   "novelty": "NEW combination. Pooled and disaggregated memory (Celestial AI, CXL) is pursued for capacity and stranding, and cryogenic DRAM uses temperature at 77 K (A3 killed it on fridge energy). I found no design that uses ordinary 30-40 C liquid cooling specifically to harvest retention, then redesigns refresh and cells around a cool spec.",
+   "show_stoppers": "(1) Tail leakage may be dominated by weakly activated mechanisms (GIDL, trap-assisted tunnelling, Ea ~0.2-0.3 eV), capping the gain at ~3-5x. (2) Distance costs latency (~100-300 ns) and link energy, so it cannot serve bandwidth-critical HBM duty. (3) Sled power density and coolant temperature limits.",
+   "revival_or_workaround": "(1) Measure retention-vs-temperature tails at 25-95 C on modern dies; it is cheap and decisive. If Ea is low, combine with B4-02 so the ECC, not the tail, sets the interval. (2) Restrict to capacity tiers (KV pools, B4-09's full-KV tier). (3) 25-30 C coolant is standard in direct liquid cooling.",
+   "million_dollar_demo": "~$0.18M. A thermal-chamber retention study (FPGA tester, 25-95 C, 100 chips) fits Arrhenius curves to the 1e-9-1e-5 tails (~$80k). Then a liquid-cooled CXL memory sled (commercial CXL expander plus cold plate) shows 4-16x longer refresh intervals with B4-02 scrubbing (~$100k).",
+   "resource_angle": "Use-phase energy; less refresh-driven bandwidth loss; a path to shorter capacitors (less HAR etch, less ALD precursor).",
+   "us_buildable": "Anywhere; CXL expanders and cold plates are commercial."
+  },
+  {
+   "id": "B4-14",
+   "name": "Photonic periphery wafer bonded under the DRAM cell array",
+   "one_liner": "Incumbents already bond the DRAM cell wafer onto a separate periphery wafer. Make that wafer a CMOS-photonics wafer, so every die speaks light at ~2-3 pJ/bit without an interposer.",
+   "mechanism": "4F^2 VCT and 3D DRAM programmes (Samsung 10a VCT, VS-DRAM, SK hynix VG) all wafer-bond the periphery to the cell array. Here that periphery wafer is a monolithic CMOS + silicon-photonics process: 45 nm-class SOI with microring modulators, Ge photodiodes and WDM filters. It carries the global periphery (command decode, SerDes, ECC and codecs from B4-01/07) plus 8-16-wavelength microring transceivers. Sense amps and local drivers stay on the cell wafer, bonded to the photonic wafer at 1-10 um pitch. Each die exits through 2-4 waveguides edge-coupled to fibre or a photonic interposer, with an external laser source. Memory can then sit 1-10 m away on cool sleds (B4-13) or in pools. For capacity tiers, HBM's silicon interposer and TSV I/O tax disappear.",
+   "which_bottleneck": "A1 #5 interface energy, #6 HBM tax, #7 periphery; enables B4-13",
+   "step_change_claim": "~2-3 pJ/bit at metre reach (vs HBM 3.4-3.5 pJ/bit at millimetre reach and DDR5 ~10-20 pJ/bit), using DDR-density dies at ~1x DDR5 wafer per bit instead of HBM's 3x.",
+   "first_principles_estimate": "16 wavelengths x 32 Gb/s (or 8 x 64) = 64 GB/s per waveguide, so a 128 GB/s die needs 2 waveguides. Energy: modulator + driver + receiver ~1 pJ/b, laser wall-plug ~1 pJ/b, ring thermal tuning 0.1-1 pJ/b, total 2-3 pJ/b [ESTIMATE]. For calibration, Celestial reports ~6.2 pJ/b (2024) and ~2.4 pJ/b (2025) per memory transaction, vs ~62.5 via NVLink/NVSwitch. (card14)",
+   "evidence": [
+    {
+     "title": "Celestial AI wants to break the memory wall (The Next Platform, 2024-04)",
+     "url": "https://www.nextplatform.com/compute/2024/04/04/celestial-ai-wants-to-break-the-memory-wall-fuse-hbm-with-ddr5/1646782",
+     "shows": "Optical memory fabric: ~6.2 pJ/bit memory transactions vs ~62.5 pJ/bit via NVLink/NVSwitch, 120 ns round trip (company claims) (via search snippet)"
+    },
+    {
+     "title": "HOTI25: Celestial AI's Photonic Fabric (Converge Digest)",
+     "url": "https://convergedigest.com/hoti25-celestial-ais-photonic-fabric/?amp=1",
+     "shows": "~2.4 pJ/bit fabric and ~300 ns server-to-memory latency; 32 TB DDR5 appliance with HBM as write-through cache (company claims) (via search snippet)"
+    },
+    {
+     "title": "Samsung 10a 4F2 VCT working die (TrendForce 2026-04-24)",
+     "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+     "shows": "Periphery is already wafer-bonded under the cell array in the next DRAM generation (CROSS-REF A1)"
+    },
+    {
+     "title": "Dally at GTC 2026 (36Kr)",
+     "url": "https://eu.36kr.com/en/p/4002393085071497",
+     "shows": "~2.5 pJ/bit of HBM's 3-4 pJ/bit is the interposer path (CROSS-REF A1)"
+    }
+   ],
+   "novelty": "NEW combination. Optical memory fabrics (Celestial AI, Ayar Labs) put optics in separate chiplets beside DRAM, and incumbents bond logic periphery under cells. I found no case of the bonded periphery wafer itself being photonic.",
+   "show_stoppers": "(1) Microring resonances drift ~0.1 nm/K; heaters next to the array add heat (hurting retention) and power. (2) Photonic-wafer cost per mm^2, and whether a 45 nm-class process meets DRAM periphery density. (3) Bonding a warped multi-tier cell wafer to an SOI photonic wafer; fibre attach and laser packaging at volume.",
+   "revival_or_workaround": "(1) Athermal ring designs, plus cool-sled operation (B4-13), narrow the tuning range. (2) Move only global periphery and SerDes; sense amps stay on the cell wafer. (3) Die-to-wafer bonding first; remote laser sources fed by fibre.",
+   "million_dollar_demo": "~$0.5-0.6M. A GlobalFoundries Fotonix (45SPCLO) MPW carrying a DRAM-protocol optical PHY and a periphery slice (~$250-400k including design). Flip-chip it to a commercial LPDDR die on a test substrate, as a stand-in for wafer bonding, and show reads and writes over fibre with measured pJ/bit (~$150k packaging and test).",
+   "resource_angle": "Removes silicon interposers, the CoWoS-capacity chokepoint, and the HBM wafer tax for capacity tiers. The photonics fab is in the U.S.",
+   "us_buildable": "GlobalFoundries Malta NY (Fotonix); AIM Photonics Rochester NY for packaging and test."
+  },
+  {
+   "id": "B4-15",
+   "name": "GRS-linked LPDDR 'HBM-lite' on an organic substrate",
+   "one_liner": "Near-HBM bandwidth and pJ/bit from commodity LPDDR dies on an ordinary organic substrate, using ground-referenced single-ended links, without HBM's ~3x wafer-per-bit tax.",
+   "mechanism": "Stacks of standard LPDDR5X/6 dies (wire-bonded or face-to-face pairs) sit on an organic package beside a small logic buffer die. The LPDDR dies talk to the buffer over ~1-2 mm unterminated traces. The buffer talks to the accelerator over ground-referenced signalling (GRS: single-ended, a charge-pump negative rail, forwarded clock) at 20-25 Gb/s per pin across 5-30 mm of organic substrate. There is no silicon interposer and no TSV in the DRAM. Ten to sixteen such packages around an accelerator give HBM-class aggregate bandwidth.",
+   "which_bottleneck": "A1 #6 HBM tax and #5 interface energy (held near HBM); A2 capital and CoWoS interposer capacity",
+   "step_change_claim": "~3x fewer DRAM wafers per bit than HBM at 2.7-3.4 pJ/bit (HBM3E: 3.44), with no silicon interposer.",
+   "first_principles_estimate": "Energy = LPDDR core ~1.5 + short LPDDR I/O ~0.5 + GRS 0.54-1.17 + buffer 0.2 = 2.7-3.4 pJ/b [ESTIMATE; GRS figures REPORTED]. Wafer: LPDDR is ~1x DDR5 per bit, HBM ~3x (Micron). Shoreline: ~50 lanes/mm x 25 Gb/s = 156 GB/s per mm per routing layer, so a 4 TB/s target needs ~26 mm of shoreline on 1 layer or 13 mm on 2 [ESTIMATE]. (card15)",
+   "evidence": [
+    {
+     "title": "NVIDIA: 0.54 pJ/b 20 Gb/s GRS link, 28 nm (2013)",
+     "url": "https://research.nvidia.com/publication/2013-12_054-pjb-20-gbs-ground-referenced-single-ended-short-reach-serial-link-28-nm",
+     "shows": "20 Gb/s at 0.54 pJ/bit over 4.5 mm of organic substrate (via search snippet)"
+    },
+    {
+     "title": "NVIDIA: 1.17 pJ/b 25 Gb/s/pin GRS (JSSC 2019)",
+     "url": "https://research.nvidia.com/sites/default/files/pubs/2019-01_A-1.17-pJ/b%2C-25-Gb/s/pin/JSSCC_2019_GRS_FINAL.pdf",
+     "shows": "25 Gb/s/pin package-to-package GRS at 1.17 pJ/bit (via search snippet)"
+    },
+    {
+     "title": "US12405629B2 GRS over substrate (NVIDIA)",
+     "url": "https://patents.google.com/patent/US12405629",
+     "shows": "GRS links between packaged devices with forwarded clock (via search snippet)"
+    },
+    {
+     "title": "Micron: silicon gap between HBM and DDR5 (Tom's Hardware, Hot Chips 2026)",
+     "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+     "shows": "HBM3E needs ~3x DDR5's wafer area per bit and the gap is not closing (CROSS-REF A1)"
+    }
+   ],
+   "novelty": "TWIST on known. NVIDIA's GRS links (2013-2019) and LPDDR on package (Grace, SOCAMM) exist. Combining a buffer-die LPDDR 'HBM-lite' with organic GRS, aimed specifically at the HBM wafer tax, is the twist.",
+   "show_stoppers": "(1) Single-ended crosstalk and simultaneous-switching noise across hundreds of 25 Gb/s lanes on organic substrate. (2) Per-package bandwidth is limited by LPDDR die I/O count, so many packages crowd the substrate. (3) The buffer die adds ~5-10 ns of latency and some power.",
+   "revival_or_workaround": "(1) GRS's ground-return design, forwarded clocks and data-bus inversion. (2) Wide LPDDR variants (x32/x64) and face-to-face pairs. (3) Bandwidth-bound decode tolerates the latency.",
+   "million_dollar_demo": "~$0.4-0.5M. A GRS-class transceiver on a 22 nm MPW (~$250k) links an FPGA to commercial LPDDR5X dies through a buffer on an organic test substrate. Measure pJ/bit, BER and crosstalk at 16-25 Gb/s per lane (~$150k substrate and assembly).",
+   "resource_angle": "No silicon interposer (the CoWoS chokepoint), and about a third of the DRAM wafers per HBM-class bit.",
+   "us_buildable": "MPW via GlobalFoundries (Malta NY); substrate assembly at Amkor Peoria AZ (2027+) or ASU MacroTechnology Works advanced-packaging programmes."
+  },
+  {
+   "id": "B4-16",
+   "name": "HBF weight tier with read-disturb-aware 'weight mode'",
+   "one_liner": "Put inference weights in High-Bandwidth Flash, but run it in pseudo-SLC with disturb-scheduled relocation, because reading every weight every token is exactly what NAND hates.",
+   "mechanism": "HBF stacks NAND dies on TSVs behind an HBM-like interface (OCP spec August 2026: 256 GB/die, 512 GB per 16-high stack, ~1.6 TB/s read). Weights are written once per deployment, while KV and activations stay in DRAM. Each decode step reads every weight page, so a page sees 1e5-3e6 reads per day. Read disturb (pass-voltage stress on the unselected wordlines of a block) then forces periodic reclaim, that is, a rewrite. The 'weight mode' has four parts: program weights in pSLC, or TLC with relaxed retention; interleave each tensor across many blocks so read counts stay even; track per-block read counters and relocate before the disturb limit; and keep a second replica on another die to alternate reads when the disturb budget is tight.",
+   "which_bottleneck": "A1 #6 HBM tax; A2 #1 capital (NAND layers are deposition-defined, with no EUV)",
+   "step_change_claim": "HBF claims 8-16x HBM capacity at similar cost. In endurance-safe pSLC weight mode it still gives ~3-5x HBM capacity per $, against HBM's ~3x DDR5 wafer cost per bit.",
+   "first_principles_estimate": "Reads per page per day = (stack bandwidth / model size) x 86,400: 400 GB on 1.6 TB/s -> 3.5e5; 100 GB -> 1.4e6; 50 GB -> 2.8e6. A disturb limit of 1e5-1e6 reads per block [UNVERIFIED] means 126-10,092 reclaim P/E cycles per year. TLC (~3k P/E [UNVERIFIED]) survives only the large-model, low-rate case; pSLC (~30-100k P/E) covers all. pSLC holds a third of TLC's capacity, so ~3-5x HBM per $ remains, given the 8-16x TLC claim. (card16)",
+   "evidence": [
+    {
+     "title": "Sandisk and SK hynix begin HBF standardization (2026-02-25)",
+     "url": "https://www.sandisk.com/company/newsroom/press-releases/2026/2026-02-25-sandisk-and-sk-hynix-begin-global-standardization-of-next-generation-memory-solution-high-bandwidth-flash-hbf",
+     "shows": "HBF targets HBM-comparable bandwidth at 8-16x HBM capacity for similar cost (company claim) (via search snippet)"
+    },
+    {
+     "title": "HBF open standard: 512 GB (Sovereign Magazine, 2026-08)",
+     "url": "https://sovereignmagazine.com/article/hbf-open-standard-ai-inference-512gb",
+     "shows": "HBF 256 GB/die, 512 GB per 16-high stack, 1.6 TB/s read (via search snippet)"
+    },
+    {
+     "title": "Semiconductor Engineering: Flash getting stacked high-bandwidth version",
+     "url": "https://semiengineering.com/flash-getting-stacked-high-bandwidth-version/",
+     "shows": "HBF has higher latency and larger pages than HBM and suits inference's static weights, not training (via search snippet)"
+    },
+    {
+     "title": "eeNews Europe: SK hynix sets first HBF standard",
+     "url": "https://www.eenewseurope.com/en/sk-hynix-sets-first-hbf-standard-for-ai-memory/",
+     "shows": "First OCP HBF technical specification released, Aug 2026 (via search snippet)"
+    }
+   ],
+   "novelty": "KNOWN (SanDisk, SK hynix; OCP spec 2026). The twist is the read-disturb and endurance arithmetic, plus a pSLC weight mode with disturb-scheduled relocation; the public HBF material I saw does not quantify either.",
+   "show_stoppers": "(1) Read disturb and reclaim P/E consumption at decode read rates (above). (2) Page size and ~us latency vs DRAM-class access, so only sequential weight streams fit. (3) Weight updates (fine-tunes, LoRA swaps, MoE expert churn) consume P/E.",
+   "revival_or_workaround": "(1) pSLC, lower-Vpass read schemes and replica alternation. (2) Keep KV and activations in DRAM; HBF is a weight tier only. (3) Hold LoRA adapters in DRAM and base weights in HBF.",
+   "million_dollar_demo": "~$0.1M. Characterise read disturb on commercial 3D TLC/QLC NAND in pSLC and TLC modes at decode-like read rates with an open-source NAND tester (~$60k). Build an endurance and relocation simulator driven by real LLM serving traces, and publish a proposed HBF weight-mode spec.",
+   "resource_angle": "Moves bits from DRAM (EUV, HAR capacitors) to NAND (deposition-defined layers, no EUV), so less DRAM wafer per model.",
+   "us_buildable": "NAND testers anywhere; Micron NAND R&D (Boise ID); SanDisk design (Milpitas CA)."
+  },
+  {
+   "id": "B4-17",
+   "name": "Procedural weights: seeds plus coefficients, regenerated in the memory path",
+   "one_liner": "Store weights as pseudo-random seeds plus a few coefficients and regenerate them at line rate in the memory controller: ~4 low-precision MACs replace 16 bits of DRAM per weight.",
+   "mechanism": "Each block of ~8 weights is approximated as a linear combination of 3-4 pseudo-random basis vectors. An LFSR generates them from a 16-bit seed, weighted by 4-bit coefficients (SeedLM-style). Only seeds and coefficients (~3-4 b/weight) are stored in DRAM. A generator array in the GPU memory partition (or the HBM base die) expands them to BF16/FP8 on the way to the tensor cores. The LFSR and MACs cost ~0.3 pJ per weight, against ~14-56 pJ to fetch 4-16 bits over HBM.",
+   "which_bottleneck": "A1 #5 data movement and #6 HBM capacity (fewer bits stored and moved)",
+   "step_change_claim": "4-5.3x fewer stored bits than BF16, but only 1.0-1.33x vs FP4. The step is real only if accuracy at ~3 b/weight beats plain FP4/INT3 quantisation.",
+   "first_principles_estimate": "3 b/weight: x5.3 vs BF16, x1.33 vs FP4. 4 b: x4.0 / x1.0. Regeneration: ~4 MAC x 0.08 pJ = 0.32 pJ, vs 16 b x 3.5 pJ/b = 56 pJ to fetch [ESTIMATE]. Compute is ~100x cheaper than memory per weight, so any reconstruction using fewer than ~50 ops per weight saves energy. (card17)",
+   "evidence": [
+    {
+     "title": "DFloat11 (arXiv 2504.11651, NeurIPS 2025)",
+     "url": "https://arxiv.org/pdf/2504.11651",
+     "shows": "BF16 exponents carry ~2.6 b of entropy (~40 of 256 values used); Huffman coding gives ~11 b/weight losslessly (via search snippet)"
+    },
+    {
+     "title": "OCP CXL expander compression study (IEEE CAL 2026)",
+     "url": "https://sing.stanford.edu/site/assets/publications/park26.pdf",
+     "shows": "More compute in the memory path can lower latency because DRAM traffic falls (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. SeedLM (Apple, 2024) proposed seed-based weight compression in software [UNVERIFIED, training knowledge; no URL found]. Putting the generator in the memory path, so DRAM capacity and bandwidth both shrink, is the twist.",
+   "show_stoppers": "(1) If accuracy is no better than well-tuned FP4/INT3 quantisation, the hardware is pointless; this is the decisive risk. (2) The offline seed search is expensive. (3) Generator throughput must reach ~8e12 weights/s per GPU.",
+   "revival_or_workaround": "(1) Add residual low-rank corrections and target 2-3 b/weight, where plain quantisation breaks down. (2) Offline cost is acceptable for long-lived models. (3) LFSRs are tiny, so thousands of lanes cost little area.",
+   "million_dollar_demo": "~$0.1M. Reproduce seed-based compression on open 8B-70B models against FP4/INT3 (GPU time ~$40k), and build an RTL generator at line rate on an FPGA (~$60k).",
+   "resource_angle": "Fewer DRAM bits per model.",
+   "us_buildable": "Anywhere."
+  },
+  {
+   "id": "B4-18",
+   "name": "Nested-precision bit-plane memory + self-speculative decoding",
+   "one_liner": "Lay weights out bit-plane-major so the memory can serve a 2-4-bit draft of the same model from its top planes: draft cheaply, verify with all planes, and get 1.1-1.8x more tokens per byte of bandwidth.",
+   "mechanism": "INT8/FP8 weights are quantised in a nested (Matryoshka-style) way, so the top 2 or 4 bit planes are themselves a usable low-precision model. The memory controller stores the planes in separate address ranges and streams 'planes 0-1', 'planes 0-3' or all of them, in 512 B-2 KB chunks that match DRAM bursts and pages. Decode is self-speculative: draft k tokens with the top planes only (25-50% of the weight bytes), then verify all k in one batched pass with every plane. No second model is stored.",
+   "which_bottleneck": "A1 #5 data movement (bandwidth per token) and #8 overfetch",
+   "step_change_claim": "1.1-1.8x effective decode bandwidth (weight reads per accepted token 0.89-0.55), with zero extra capacity.",
+   "first_principles_estimate": "Expected tokens per verify E = (1 - a^(k+1)) / (1 - a); reads per token = (k*f + 1) / E. f=0.5, k=4, a=0.8: E 3.36, reads 0.89 (x1.12). a=0.9: E 4.10, reads 0.73 (x1.37). f=0.25, k=6, a=0.85: E 4.53, reads 0.55 (x1.81). (card18)",
+   "evidence": [
+    {
+     "title": "Analyzing GPU Energy Consumption in Data Movement and Storage (Montpellier 2024)",
+     "url": "https://hal.umontpellier.fr/hal-04604802",
+     "shows": "Data movement is up to 84% of A100 dynamic energy, with DRAM the largest part, so bytes per token is the lever (CROSS-REF A1)"
+    },
+    {
+     "title": "RangeGuard (arXiv 2605.04563)",
+     "url": "https://arxiv.org/pdf/2605.04563",
+     "shows": "High-order bits dominate a value's effect; low mantissa bits matter little, supporting truncated-plane drafts (via search snippet)"
+    }
+   ],
+   "novelty": "NEW combination. Nested quantisation (Matryoshka Quantization, Google 2025) and self-speculative decoding (Draft&Verify, LayerSkip) exist in software [UNVERIFIED, training knowledge; no URLs this session]. A plane-addressable memory layout that serves both from one copy is the combination.",
+   "show_stoppers": "(1) Acceptance of 2-4-bit drafts may be low (<0.7) on hard tokens, pushing the gain to ~1.0x. (2) Large-batch serving already amortises weight reads, shrinking the gain. (3) Plane-major layout fragments bursts unless chunks are >= one DRAM burst.",
+   "revival_or_workaround": "(1) Train with a nested-quantisation objective and adapt k per request. (2) Target latency-critical small-batch decode (on-device, agent loops). (3) Plane chunks of 512 B-2 KB.",
+   "million_dollar_demo": "~$0.05-0.1M, software first. Nested-quantise a Llama-class model, run self-speculation and measure acceptance and bytes per token on GPUs (~$40k). An FPGA plane-addressable controller is optional (~$50k).",
+   "resource_angle": "More tokens per unit of bandwidth means fewer HBM stacks per token rate.",
+   "us_buildable": "Anywhere."
+  },
+  {
+   "id": "B4-19",
+   "name": "BitNet-native charge-sharing popcount PIM in commodity 1T1C",
+   "one_liner": "With ternary LLM weights, decode is signed popcounts, and a DRAM subarray can count by charge sharing: open 8 rows at once and read the bitline voltage as a 3-bit count.",
+   "mechanism": "Ternary weights {-1, 0, +1} are stored as two bit-masks (positive and negative) in 1T1C rows, and activations are bit-sliced (INT8 into 8 binary planes). For each activation plane, the controller first RowClones the selected weight rows, ANDed with the activation mask (Ambit-style), into dedicated compute rows. It then activates 8 compute rows at once on the same bitlines. Charge sharing gives a bitline voltage proportional to the number of charged cells (0-8), which a 3-bit flash ADC shared by 8-16 bitlines in the SA stripe digitises. A small near-bank adder shifts and accumulates the partial sums. Weights never leave the bank.",
+   "which_bottleneck": "A1 #5 data movement and #8 overfetch (every activated bit is used)",
+   "step_change_claim": "12-35x lower energy per decode GEMV than reading ternary weights over HBM (0.39 J vs 0.011-0.033 J per token for a 70B ternary model), plus ~8x internal bandwidth.",
+   "first_principles_estimate": "70e9 weights x 1.58 b = 1.1e11 b. Over HBM at 3.5 pJ/b that is 0.39 J/token. In-bank at 0.1-0.3 pJ/b (amortised activation plus ADC) it is 0.011-0.033 J, i.e., x12-35. Popcount accuracy: with Cs sigma 5%, sigma_sum = sqrt(n) x 5%. n=8 gives 0.14 LSB (count error 4e-4); n=16 gives 1.2e-2; n=32 gives 7.7e-2. So use 8-row groups. (card19)",
+   "evidence": [
+    {
+     "title": "Ambit (MICRO 2017)",
+     "url": "https://www.microsoft.com/en-us/research/wp-content/uploads/2017/09/MICRO-50_347.pdf",
+     "shows": "Triple-row activation computes bitwise majority/AND/OR in commodity-style DRAM at ~1% area; 35x energy on bulk bitwise ops (via search snippet)"
+    },
+    {
+     "title": "A Modern Primer on Processing in Memory (ETH)",
+     "url": "https://arxiv.org/pdf/2012.03112",
+     "shows": "ComputeDRAM mimicked triple-row activation on some off-the-shelf DRAM chips by violating activation timing (via search snippet)"
+    },
+    {
+     "title": "Hot Chips 2026: Samsung LPDDR5X-PIM (Tom's Hardware)",
+     "url": "https://www.tomshardware.com/pc-components/dram/hot-chips-2026-samsung-makes-lpddr5x-smart-with-logic-unit-in-memory-lpddr5x-pim-is-3-01x-faster-than-lpddr5x-in-ai-inference-with-8x-the-bandwidth",
+     "shows": "Shipping-class PIM: 614 vs 76.8 GB/s internal vs external bandwidth (8x), 3.01x Llama-3.1-8B throughput (CROSS-REF A3)"
+    },
+    {
+     "title": "BitROM (arXiv 2509.08542)",
+     "url": "https://arxiv.org/pdf/2509.08542",
+     "shows": "1.58-bit LLM inference is an active hardware target (CiROM for BitNet-class models) (via search snippet)"
+    }
+   ],
+   "novelty": "TWIST on known. Charge-sharing in-DRAM compute for binary and ternary nets has academic precedent (DRISA, DrAcc) [UNVERIFIED, training knowledge]. BitNet b1.58-class LLMs make it newly relevant, and 8-row charge-sharing popcount with a shared flash ADC is the specific twist.",
+   "show_stoppers": "(1) Opening 8 wordlines at once is outside DRAM specs and stresses the array (disturb, hammer-like toggling). (2) Analog accuracy degrades with Cs mismatch, temperature and bitline coupling. (3) Ternary LLM accuracy at scale is an ML question, not physics.",
+   "revival_or_workaround": "(1) Confine compute rows to a dedicated, hammer-hardened subarray region. (2) Add calibration rows with known counts per subarray to trim the ADC. (3) It also works for 2-bit weights via bit-slicing.",
+   "million_dollar_demo": "~$0.45M. Run multi-row activation experiments on commodity DDR4 via an FPGA tester (ComputeDRAM-style, ~$50k). Then a 28 nm test chip with a 1T1C MIM or gain-cell subarray, multi-row activation and a shared ADC (~$400k).",
+   "resource_angle": "Energy, and less HBM per model (ternary weights stay in commodity DRAM).",
+   "us_buildable": "GlobalFoundries MPW (Malta NY); FPGA work anywhere."
+  },
+  {
+   "id": "B4-20",
+   "name": "Compact-then-sleep: compress, pack, partial-array self-refresh",
+   "one_liner": "Before a DRAM rank enters self-refresh, compress and pack its live pages into a third of the array and switch refresh off for the rest. With ECC-stretched self-refresh, idle refresh power falls 30-50x.",
+   "mechanism": "The memory controller (phone SoC or server CXL controller) carries a hardware compaction engine. When it detects idle, it walks live pages, LZ4-compresses them (2-3x is typical for Marvell-class engines), packs them into the lowest segments and updates a remap table. It then issues partial-array self-refresh (PASR) masks that leave the vacated segments unrefreshed. Combined with B4-02's ECC-stretched self-refresh interval (1 s at 85 C, longer when cool). On wake, pages decompress on first touch (us-scale, like a minor fault) or eagerly in the background.",
+   "which_bottleneck": "A1 #3 refresh in idle (16-33% of RDIMM idle power; dominant in phone standby)",
+   "step_change_claim": "Idle refresh power /2-3 from compaction alone, and /32-48 with ECC-stretched self-refresh: a 64 GB RDIMM drops from 0.49 W to 10-15 mW.",
+   "first_principles_estimate": "Refresh scales with (refreshed fraction) x (refresh rate): 1/(2-3) x 1/16 = x0.021-0.031, i.e., 10-15 mW per 64 GB RDIMM instead of 490 mW. Break-even: compacting a full 64 GB at ~10 pJ/bit costs 5.1 J; at 0.33 W saved (x3 compaction) it pays back after ~16 s of idle. (card20)",
+   "evidence": [
+    {
+     "title": "Marvell Structera X (StorageReview)",
+     "url": "https://www.storagereview.com/fr/news/marvell-structera-x-3406-3506-six-channel-cxl-3-2-memory-expander",
+     "shows": "Shipping inline LZ4 engines give 2-3x effective capacity (via search snippet)"
+    },
+    {
+     "title": "Seagate / ZeroPoint CXL compression (Blocks and Files)",
+     "url": "https://blocksandfiles.com/2025/10/17/seagate-working-on-composable-memory-appliance-with-cxl-memory/",
+     "shows": "ZeroPoint claims 2-3x effective CXL capacity, demonstrated at OCP 2025 (via search snippet)"
+    },
+    {
+     "title": "RAIDR: Retention-Aware Intelligent DRAM Refresh (ISCA 2012)",
+     "url": "https://www.pdl.cmu.edu/ftp/NVM/raidr-isca12.pdf",
+     "shows": "Two retention bins remove 74.6% of refreshes with 1.25 KB of state; 16.1% DRAM power and 8.6% performance gained (via search snippet)"
+    },
+    {
+     "title": "UMD refresh energy study",
+     "url": "https://terpconnect.umd.edu/~blj/papers/ieeetc65-1.pdf",
+     "shows": "Refresh exceeds 20% of DRAM energy at 32Gb (CROSS-REF A1)"
+    }
+   ],
+   "novelty": "TWIST on known. PASR (JEDEC LPDDR), zram/zswap and CXL hardware compression each exist. I found no product combining a hardware compact-before-self-refresh engine with ECC-stretched refresh.",
+   "show_stoppers": "(1) Compaction energy and time at idle entry must be repaid by the idle duration. (2) Wake latency for compressed pages. (3) PASR segment granularity is coarse (1/8 of a die).",
+   "revival_or_workaround": "(1) Compact incrementally during light load; break-even is ~16 s for a full 64 GB, minutes-long idles are common. (2) Keep the hot working set uncompressed. (3) Finer segment masks would need a JEDEC change.",
+   "million_dollar_demo": "~$0.12M. A Linux plus FPGA CXL memory-controller prototype with the compaction engine on DDR5, measuring self-refresh power with a precision power monitor across idle traces from phones and servers.",
+   "resource_angle": "Use-phase energy (standby power, battery life).",
+   "us_buildable": "Anywhere."
+  },
+  {
+   "id": "B4-21",
+   "name": "Broadcast weight bus: one copy of the model feeds N lock-stepped replicas",
+   "one_liner": "Instead of every replica storing its own model copy in HBM, stream one copy of the weights over an optical broadcast bus to N lock-stepped accelerators. HBM is left for KV.",
+   "mechanism": "A weight server (HBF or DRAM, as in B4-12/16) streams each layer's weights on a fixed schedule onto WDM optical waveguides, split 1:N by passive splitters (with semiconductor optical amplifiers if needed) to N accelerators. The replicas run decode in lock-step by layer, on a global layer clock. Each accelerator feeds the weight stream straight into its tensor cores through an SRAM skew buffer of a few MB, while its own HBM holds only KV and activations. One 4-16 TB/s stream serves all N receivers, because optical fan-out needs one modulation for any N.",
+   "which_bottleneck": "A1 #6 HBM tax and capacity (removes N-1 weight copies) and #5",
+   "step_change_claim": "Weights leave replica HBM: 22% (70B on 8x80 GB) to 72% (405B on 8x141 GB) of HBM is freed for KV. Per broadcast domain, N copies of the model become 1.",
+   "first_principles_estimate": "Stream rate = model size x steps/s: 140 GB x 30 = 4.2 TB/s; 810 GB x 20 = 16.2 TB/s, regardless of N. The optical split costs 10 log10(N) + ~3 dB: 12 dB at N=8, 15 dB at 16, 18 dB at 32, paid as extra laser power or SOA gain. Freed HBM: 140/640 = 22%; 810/1,128 = 72%. (card21)",
+   "evidence": [
+    {
+     "title": "Celestial AI wants to break the memory wall (The Next Platform, 2024-04)",
+     "url": "https://www.nextplatform.com/compute/2024/04/04/celestial-ai-wants-to-break-the-memory-wall-fuse-hbm-with-ddr5/1646782",
+     "shows": "Optical memory fabric: ~6.2 pJ/bit memory transactions vs ~62.5 pJ/bit via NVLink/NVSwitch, 120 ns round trip (company claims) (via search snippet)"
+    },
+    {
+     "title": "HOTI25: Celestial AI's Photonic Fabric (Converge Digest)",
+     "url": "https://convergedigest.com/hoti25-celestial-ais-photonic-fabric/?amp=1",
+     "shows": "~2.4 pJ/bit fabric and ~300 ns server-to-memory latency; 32 TB DDR5 appliance with HBM as write-through cache (company claims) (via search snippet)"
+    },
+    {
+     "title": "HBF open standard: 512 GB (Sovereign Magazine, 2026-08)",
+     "url": "https://sovereignmagazine.com/article/hbf-open-standard-ai-inference-512gb",
+     "shows": "HBF 256 GB/die, 512 GB per 16-high stack, 1.6 TB/s read (via search snippet)"
+    },
+    {
+     "title": "Micron: silicon gap between HBM and DDR5 (Tom's Hardware, Hot Chips 2026)",
+     "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+     "shows": "HBM3E needs ~3x DDR5's wafer area per bit and the gap is not closing (CROSS-REF A1)"
+    }
+   ],
+   "novelty": "NEW combination [no precedent found]. Optical memory fabrics are point-to-point, and batching amortises weight reads inside one accelerator. Broadcasting weights optically to many lock-stepped replicas, so that the model lives once, appears new.",
+   "show_stoppers": "(1) Lock-step: replicas with different context lengths and stragglers must stay within the skew buffer, and attention time varies per request. (2) Optical power: laser power grows with N (split loss), so total laser wall-plug at 16 TB/s could rival the savings. (3) Latency floor: every token waits on the broadcast schedule.",
+   "revival_or_workaround": "(1) Broadcast only the uniform, weight-bound phases (QKV/MLP projections) and run per-request attention locally; size the skew buffer for the measured variance. (2) Keep N at 8-16 and use SOAs. (3) Aim at throughput serving, where 30-100 ms per-token budgets exist.",
+   "million_dollar_demo": "~$0.23M. A lock-step serving simulation on real request traces gives the skew distribution and buffer size (~$30k). A bench demo then splits a 4x50 Gb/s commercial transceiver stream 1:8 with passive splitters into 8 FPGAs running a toy transformer layer in lock-step (~$200k).",
+   "resource_angle": "Fewer HBM bits (wafers, CoWoS capacity) at the price of laser power.",
+   "us_buildable": "AIM Photonics (Rochester NY); university optics labs."
+  }
+ ]
+}

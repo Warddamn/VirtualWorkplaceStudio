@@ -1,0 +1,699 @@
+{
+  "lens": "NEW CELL PHYSICS",
+  "agent": "B1-cellphysics",
+  "written": "2026-11-01",
+  "model": "dram-moonshot/research/models/B1_cellphysics_estimates.py",
+  "notes": "dram-moonshot/research/phaseB/B1-cellphysics_notes.md",
+  "ideas": [
+    {
+      "id": "B1-01",
+      "name": "AFE-reservoir stub capacitor (Hf-free antiferroelectric ZrO2)",
+      "one_liner": "Use the field-induced AFE-to-FE transition of ZrO2 (already the DRAM capacitor dielectric) as signal charge, so each stored '1' banks 10-20 uC/cm2 instead of ~3.3 uC/cm2 and the 1.3 um capacitor becomes a 200-400 nm stub.",
+      "mechanism": "Tetragonal ZrO2 films 5-7 nm thick show a pinched double hysteresis loop: above ~1-1.5 MV/cm they turn polar, below a lower field they snap back. Write '1' to ~1.3 V (polar state, storing induced polarization plus linear charge); write '0' to 0 V (never crosses the forward field). Precharge the bitline low (~0.35 V, below the backward switching voltage) instead of VARY/2, so a '1' dumps its polarization onto the bitline as the film relaxes while a '0' gives only linear charge. The backward branch is a near-constant-voltage plateau: leakage drains polarization before the node voltage droops, a built-in charge reservoir. Electrode work-function asymmetry (TiN/W or TiN/Mo) or fixed charge shifts the loop to tune the plateau voltage. Same ALD ZrO2/TiN tool set as today, applied to a much shorter pillar or a short horizontal capacitor in a 3D tier.",
+      "which_bottleneck": "A1 #1 storage-capacitor charge wall (AR 60-75 pillars); A1 #2 3D cell (capacitor length per tier); A1 #4 capital via HAR etch and deep ALD; A2 Hf chokepoint (Hf-free).",
+      "step_change_claim": "3-6x signal charge per um2 of capacitor wall -> capacitor height 1,300 nm -> 210-420 nm (AR 62 -> 10-20) at equal signal; up to ~3x retention stretch from the plateau; horizontal 3D capacitor 3-6x shorter.",
+      "first_principles_estimate": "Today's wall: EOT 0.55 nm with VARY/2 = 0.525 V swing gives 3.3 uC/cm2 of signal; the 1b pillar (d 21.1 nm, h 1.3 um) holds 2.84 fC = 17,700 e- [A1]. AFE: signal = usable fraction x P_ind + half the linear swing (k 38, 6 nm, 1.3 -> 0.35 V). P_ind 15/20/25 uC/cm2 at 50/60/70% usable gives 10.2/14.7/20.2 uC/cm2 = 3.1/4.4/6.1x, so the pillar for 2.84 fC is 422/292/213 nm. Plateau: a 300 nm stub banks 1.5-2.0 fC vs a 0.84 fC linear droop budget, so retention stretches up to ~3x if the backward branch is sharp. Endurance need: 4.9e9 refresh cycles in 10 yr at 64 ms (3.2e8 at 1 s refresh), hot row ~1.6e14. (research/models/B1_cellphysics_estimates.py B1-01)",
+      "evidence": [
+        {
+          "title": "Application of antiferroelectric like materials in non-volatile memory devices (US 10,056,393)",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/10056393",
+          "shows": "Built-in bias (~1 eV work-function difference or stored charge) makes AFE-like ZrO2/HfO2 films bistable; ZrO2 has higher endurance than doped HfO2 (via search snippet)"
+        },
+        {
+          "title": "Hafnia-based antiferroelectric tunnel junction (KAIST record)",
+          "url": "https://koasas.kaist.ac.kr/handle/10203/280442?mode=full",
+          "shows": "AFE films give two nonvolatile states with asymmetric electrodes; >1e9 cycles, <30 ns switching (via search snippet)"
+        },
+        {
+          "title": "Hf0.3Zr0.7O2 built-in-bias AFE (SKKU record; attribution not pinned)",
+          "url": "https://scholarx.skku.edu/item/7db88aa9-cef2-4e7d-974b-df59b8363eed",
+          "shows": "Zr-rich AFE half-loop at 1.25 V with endurance to 1e10 cycles (via search snippet)"
+        },
+        {
+          "title": "TechInsights (Choe): DRAM cell capacitance trends",
+          "url": "https://www.techinsights.com/ja/node/37840",
+          "shows": "Cell capacitance <10 fF at D1z/D1a, 5-6 fF projected at 1c; k>50 needed (CROSS-REF A1)"
+        },
+        {
+          "title": "KU Leuven: ZrO2/Al2O3/ZrO2 DRAM capacitor",
+          "url": "https://lirias.kuleuven.be/retrieve/344003",
+          "shows": "Production DRAM capacitor is ZAZ; Al2O3 interlayer trades k for leakage (via search snippet)"
+        }
+      ],
+      "novelty": "TWIST on known: AFE ZrO2/HZO non-volatile memory (NaMLab-type patent, KAIST AFTJ, Korean Hf0.3Zr0.7O2 work) and MPB high-k HZO exist. Using the AFE transition as DRAM signal charge, with low-precharge sensing and the backward branch as a retention reservoir, was not found in public literature [UNVERIFIED].",
+      "show_stoppers": "(1) Endurance: AFE films are reported at ~1e9-1e10 cycles, while every write or read of a '1' cycles the transition and a DRAM cell needs ~1e12-1e15. (2) The switching-field spread across grains in a 6 nm film smears the plateau and the read threshold, and wake-up or fatigue shifts it. (3) Back-switching speed under 10 ns and leakage at the 1.3 V write level are unproven at DRAM pillar scale.",
+      "revival_or_workaround": "(1) Only '1' states cycle; with an IGZO access device (refresh >=1 s) refresh adds only 3e8 cycles in 10 yr. Add write-back caching for hot rows, and use Zr-rich or La/N-doped ZrO2, which the patent says outlasts HfO2. (2) Columnar, grain-engineered ALD; write-verify; self-referenced reads that compare a cell to itself after a reference write. (3) If back-switching is slow, run just below the forward field as a nonlinear k booster (a weaker 1.5-2x version).",
+      "million_dollar_demo": "Months 0-9: planar and trench TiN/ZrO2/TiN MIM capacitors (5-8 nm, asymmetric electrodes) in a university ALD line. Measure PUND switching charge at 5-100 ns, the plateau under constant-current discharge, and endurance to 1e12 at 85 C. Months 9-20: 300 nm pillar arrays plus BEOL IGZO access TFTs in 1T1C test arrays read by a low-precharge sense circuit on a pad-level test board. Budget ~$380k: ALD/etch fab time $90k, WGFMU-class pulse tester and probe station $150k, TCAD/Landau modelling $20k, one postdoc-year $120k.",
+      "resource_angle": "Hafnium-free (A2 flags HZO capacitors at 14-41% of world Hf); Zr is already used and abundant. A 3-6x shorter capacitor cuts HAR etch time, fluorocarbon (PFAS-adjacent) etch gas and deep-hole ALD cycles. No EUV change.",
+      "us_buildable": "NCSU Nanofabrication Facility, Purdue Birck, Penn Singh Center (ALD + PUND), NY CREATES Albany 300 mm ALD/etch for pillars, Sandia MESA (ferroelectric capacitor experience)."
+    },
+    {
+      "id": "B1-02",
+      "name": "Temperature-hardened negative-capacitance stub (FE/DE superlattice)",
+      "one_liner": "Put a ferroelectric HZO layer in series with the ZrO2/Al2O3 dielectric, designed so its negative capacitance stays stabilized from -10 to 125 C; the stack holds 2.5-4.7x more charge per area than the dielectric alone.",
+      "mechanism": "A ferroelectric biased in the unstable middle of its Landau double well has negative differential capacitance C_FE < 0. In series with a dielectric (C_DE) and with |C_FE| > C_DE, the total capacitance C_DE/(1 - r) exceeds C_DE, where r = C_DE/|C_FE|. The stack is an ALD superlattice of Hf0.5Zr0.5O2 (or Zr-rich HZO) with ZrO2/Al2O3 layers on TiN, deposited in the same pillar or short horizontal capacitor. The twist is designing r against temperature: |C_FE| follows Curie-Weiss behaviour, so r is set to ~0.85 at the cold corner and falls to ~0.6 at 125 C. The capacitor then never crosses into hysteresis and still gives >=2.5x at the hot corner.",
+      "which_bottleneck": "A1 #1 capacitor charge wall; A1 #2 3D (capacitor length per tier).",
+      "step_change_claim": "2.5x (125 C) to 4.7x (25 C) capacitance per area -> pillar 1,300 -> ~430-650 nm for equal Cs; or the same height with a ~2.5-4x bigger signal at 1c/1d cell sizes.",
+      "first_principles_estimate": "C_tot/C_DE = 1/(1-r): r = 0.5 -> 2.0x, 0.6 -> 2.5x, 0.7 -> 3.3x, 0.8 -> 5.0x. With Curie-Weiss T0 = 450 C [ESTIMATE] and r = 0.85 at -10 C: r = 0.79/0.67/0.60 at 25/85/125 C -> 4.7/3.1/2.5x. A 2x gain halves the pillar to 650 nm; 3x gives 433 nm. (research/models/B1_cellphysics_estimates.py B1-02)",
+      "evidence": [
+        {
+          "title": "MRS 2023: NC charge boosting in sub-10 nm TiN/HZO/TiN DRAM capacitor (Kang, Kang, Byun, Ahn)",
+          "url": "https://mrs.org/meetings-events/presentation/2023_mrs_spring_meeting/2023_mrs_spring_meeting-3837377",
+          "shows": "Ferroelectric NC proposed and analysed as a DRAM cell-capacitor charge booster (via search snippet)"
+        },
+        {
+          "title": "Materials Futures 2024: stabilized NC in epitaxial HZO/Al2O3 and ZrO2/Al2O3",
+          "url": "https://doaj.org/article/82f88e3fb7ab4a82b779b98d147766e2",
+          "shows": "Bilayer capacitance exceeds isolated Al2O3 capacitance (epitaxial films) (via search snippet)"
+        },
+        {
+          "title": "KU Leuven: ZrO2/Al2O3/ZrO2 DRAM capacitor",
+          "url": "https://lirias.kuleuven.be/retrieve/344003",
+          "shows": "Production DRAM capacitor is ZAZ; Al2O3 interlayer trades k for leakage (via search snippet)"
+        },
+        {
+          "title": "TechInsights (Choe): DRAM cell capacitance trends",
+          "url": "https://www.techinsights.com/ja/node/37840",
+          "shows": "Cell capacitance <10 fF at D1z/D1a, 5-6 fF projected at 1c; k>50 needed (CROSS-REF A1)"
+        }
+      ],
+      "novelty": "KNOWN physics and target (stabilized NC: Hoffmann/NaMLab lineage; Ahn group MRS 2023 for DRAM capacitors; epitaxial HZO/Al2O3 2024). TWIST: a temperature-compensated r design and pairing with stub/horizontal 3D capacitors rather than full-height pillars.",
+      "show_stoppers": "(1) Multi-domain formation in polycrystalline HZO turns single-domain NC into hysteresis and loss; whether static NC survives at ns read speeds is still debated. (2) Leakage and dispersion: the FE layer adds leakage paths and frequency-dependent capacitance. (3) Hf demand and wake-up/imprint drift move r over life.",
+      "revival_or_workaround": "(1) Use ultrathin (2-4 nm) FE layers in a superlattice, where depolarizing fields from the adjacent dielectric suppress domains; measure at 1-100 MHz and with 10 ns charge pulses before claiming gain. (2) Keep Al2O3 blocking layers at the electrodes; the target is leakage at today's 1e-7 A/cm2 class. (3) Zr-rich FE (Hf-lean) and periodic 'reset' anneal pulses; r margins sized for end-of-life drift.",
+      "million_dollar_demo": "Twelve ALD superlattice splits on TiN MIM test chips (r from 0.4 to 0.9). Measure C-V from -40 to 150 C, 10 ns pulsed charge versus Al2O3/ZrO2 references, leakage, and 1e12 cycling. Then 500 nm pillars at a 300 mm partner. Budget ~$300k with university ALD access plus a cryo/hot probe station.",
+      "resource_angle": "Halves HAR etch depth (capital, PFAS etch gas), but uses Hf (A2: concentrated supply). A Zr-rich FE variant reduces Hf exposure.",
+      "us_buildable": "Penn Singh Center, Georgia Tech IEN, Purdue Birck, NY CREATES Albany (300 mm pillars)."
+    },
+    {
+      "id": "B1-03",
+      "name": "IGZO gated-diode strip: a capacitor-module-free 3D DRAM tier ('two-gate NAND-like DRAM')",
+      "one_liner": "Store the bit as electrons accumulated in an IGZO channel strip under a second 'plate' gate, a gated diode or CCD well, and read by pushing the whole packet onto the bitline; a 3D tier then needs no TiN/high-k/TiN capacitor fill, only a second word plane.",
+      "mechanism": "Each tier holds a horizontal GAA IGZO (or IGO) strip with two gates: an access wordline and a plate gate. Write '1': with the wordline on and the bitline at 0 V, electrons accumulate under the positively biased plate. Write '0': with the bitline high, the well stays empty. Read: precharge the bitline, open the wordline, pull the plate low, and the stored electrons transfer completely to the bitline. A '0' moves almost nothing because a fully depleted 10 nm IGZO film has near-zero depletion capacitance. The plate is a row-shared line driven at 2.5 V, so the signal is set by the plate swing, not VARY, and the bitline can run at ~0.45 V. Built like Kioxia's SiN-replacement horizontal IGZO tiers: both gates are word-plane metal, and no lateral recess-and-fill capacitor module is needed.",
+      "which_bottleneck": "A1 #2 no manufacturable 3D DRAM cell (capacitor in a tier = blocker 1); A1 #1 capacitor wall; A1 #10 array voltage floor; A1 #3 leakage (IGZO).",
+      "step_change_claim": "Removes the 3D capacitor module entirely. Per-tier footprint 0.011-0.016 um2 vs A1 base 0.030 um2 -> 3D density break-even falls from ~26 tiers to ~9-14 tiers. Array energy per access ~5 fJ vs ~38 fJ bitline CV2 today.",
+      "first_principles_estimate": "A GAA strip 40 x 10 nm (100 nm perimeter) under a 150-200 nm plate at EOT 1.1 nm gives C_gd = 0.47-0.63 fF. The full well at a 2.0 V effective plate swing is 0.94-1.26 fC (5,900-7,800 e-), giving a 60-80 mV signal on a 64-cell local bitline (7.8 fF) with complete transfer. Signal gain vs a linear capacitor at equal C is 1.9x (IBM gated diode reported ~3-4), but EOT 1.1 vs 0.55 nm cancels it: per unit wall area it equals today's capacitor. The win is process and footprint, not charge density. Tier footprints: 50x600 nm -> 0.0173 Gb/mm2/tier (25.9 tiers to match 1b); 70x230 nm -> 13.9 tiers; 60x180 nm -> 9.3 tiers. Energy: 64-cell bitline at 0.45 V = 1.6 fJ, plate 3.8 fJ. (research/models/B1_cellphysics_estimates.py B1-03)",
+      "evidence": [
+        {
+          "title": "2T1D Memory Cell with Voltage Gain (Luk & Dennard, VLSI 2004)",
+          "url": "https://research.ibm.com/publications/2t1d-memory-cell-with-voltage-gain",
+          "shows": "Gated diode = nonlinear capacitor that amplifies stored voltage on read (via search snippet)"
+        },
+        {
+          "title": "Gated diode memory cells (US 8,675,403)",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/8675403",
+          "shows": "Charge stored only above threshold; cell gain ~4 vs ~1 for a linear capacitor (via search snippet)"
+        },
+        {
+          "title": "Kioxia IEDM 2025: 8-layer horizontal IGZO transistors via SiN replacement",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "NAND-style stack can host horizontal IGZO channels with Ion >30 uA, Ioff <1 aA (CROSS-REF A3)"
+        },
+        {
+          "title": "imec 40 nm IGZO 2T0C (EDL 2025)",
+          "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+          "shows": "IGZO storage node: >200 s at 95 C, >1e12 cycles, <10 ns write (CROSS-REF A3)"
+        },
+        {
+          "title": "imec capacitor-less IGZO DRAM cell, 400 s (EE Journal 2020)",
+          "url": "https://www.eejournal.com/industry_news/imec-demonstrates-capacitor-less-igzo-based-dram-cell-with-400s-retention-time/",
+          "shows": "IGZO storage node retention >400 s (CROSS-REF A1)"
+        }
+      ],
+      "novelty": "NEW combination: IBM's gated-diode gain cell (Luk & Dennard 2004) + CCD-style complete charge transfer + IGZO accumulation-mode strips in NAND-style horizontal tiers. No public 3D-DRAM proposal that replaces the horizontal capacitor with a plate gate on the channel was found [UNVERIFIED].",
+      "show_stoppers": "(1) Fresh signal is only 60-80 mV on a 64-cell local bitline, so droop budget is thin; it needs local sensing every 64 cells (bonded periphery) or B1-04 charge-transfer amplification. (2) Trap capture/emission in IGZO under the plate makes transfer incomplete and history-dependent. (3) The row-wide plate swing couples into neighbours (disturb) and costs energy if pages stay large.",
+      "revival_or_workaround": "(1) Lengthen the plate (200-300 nm), raise the plate swing to 3 V, or pair with charge-transfer pre-sense (B1-04) to get >=150 mV. (2) Run a 'fat zero' background charge (classic CCD trick) and passivated IGO/HfO2 interfaces (SJTU-style 100x leakage gains). (3) Segment plate lines per sub-array and pair with sub-page activation.",
+      "million_dollar_demo": "Planar first: two-gate IGZO TFT strips (WL + plate, 50-200 nm plates) on 150/200 mm at a university fab. Measure transfer completeness, signal vs plate swing, retention at 85/125 C, and disturb. Then a 2-4 tier horizontal stack using SiN-replacement IGZO, read by a discrete or MPW sense chip. Budget ~$450k: fab time $150k, MPW sense chip $80k, test $120k, people.",
+      "resource_angle": "Deletes the TiN/high-k/TiN lateral fill and its HAR recess etch (capital, process time, Hf/Zr). IGZO In/Ga quantities are trivial, but Ga is ~98% Chinese (A2), so prefer In-Sn-Zn or IGO/ITO-class channels. All-deposition tiers, no EUV.",
+      "us_buildable": "Purdue Birck (ALD oxide channels), Georgia Tech IEN, Penn Singh Center; 300 mm stack trials at NY CREATES Albany; MPW sense die on GlobalFoundries 22FDX/12LP via MOSIS-class brokers."
+    },
+    {
+      "id": "B1-04",
+      "name": "Charge-transfer pre-sense on a long bitline: sub-fF cells without shortening the bitline",
+      "one_liner": "Hold the bitline at a fixed voltage with a self-biased transfer transistor and move the cell's charge onto a ~1.5 fF sense node; a 0.5 fF cell then gives ~155 mV even on a 512-cell bitline, so the capacitor can be 10x smaller with array efficiency intact.",
+      "mechanism": "Conventional sensing divides the cell charge by Cs + Cbl (35 fF), so only ~7 mV survives from a 0.5 fF cell. In charge-transfer pre-sensing (Arimoto/Mitsubishi lineage) the bitline is precharged through its own transfer gate, which therefore self-biases at its own threshold and cancels Vt mismatch. When the cell dumps charge, the bitline moves a few mV, the transfer gate conducts in subthreshold, and the charge flows onto a small sense node. Gain = Cbl/C_sn. The twist is pairing this with an IGZO access device (1 aA), so a 0.3-0.5 fF cell still retains 45-75 s, and using offset-cancelled latches. The capacitor becomes a ~120 nm stub (AR ~6) or even the gate-plus-junction capacitance of a vertical channel.",
+      "which_bottleneck": "A1 #1 capacitor wall; A1 #4 HAR etch capital; A1 #2 3D (stub fits a tier); A1 #7 keeps array efficiency (no 4-8x more sense amps).",
+      "step_change_claim": "10x smaller storage capacitor (5.4 -> 0.5 fF; pillar 1,300 -> ~120 nm) at today's 512-cell bitline. Signal on the sense node 155 mV vs 7.5 mV conventional.",
+      "first_principles_estimate": "Transfer-gate gm at 100 nA bias = I/(n kT/q) = 2.5 uS, so tau = Cbl/gm = 13.9 ns; transfer efficiency is 0.76/0.88/0.96 after 20/30/45 ns. With C_sn = 1.5 fF and 30 ns: Cs 2.0/1.0/0.5/0.3 fF gives 619/309/155/93 mV, vs 28.6/14.7/7.5/4.5 mV conventional. Pillar heights 481/240/120/72 nm; signal electrons 6,550/3,280/1,640/980. Retention with IGZO 1 aA and 150 mV droop: 75 s (0.5 fF), 45 s (0.3 fF). kT/C on the sense node is 1.8 mV rms. (research/models/B1_cellphysics_estimates.py B1-04)",
+      "evidence": [
+        {
+          "title": "Sense amplifier circuit and semiconductor device (US 8,320,208)",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/8320208",
+          "shows": "Charge-transfer sense amps target small cell capacitance at low voltage; low sense-node capacitance is the key (via search snippet)"
+        },
+        {
+          "title": "High-speed charge transfer sense amplifier for 0.5 V DRAM arrays (2009)",
+          "url": "https://pure.lib.cgu.edu.tw/en/publications/high-speed-charge-transfer-sense-amplifier-for-05-v-dram-array-ap-3/",
+          "shows": "Charge-transfer SA at 0.5 V: +40.7% transfer speed, +59% signal (simulation) (via search snippet)"
+        },
+        {
+          "title": "Kioxia OCTRAM (IEDM 2024)",
+          "url": "https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology",
+          "shows": "Vertical IGZO access transistor on capacitor, Ioff <1 aA (CROSS-REF A1)"
+        },
+        {
+          "title": "TechInsights (Choe): DRAM cell capacitance trends",
+          "url": "https://www.techinsights.com/ja/node/37840",
+          "shows": "Cell capacitance <10 fF at D1z/D1a, 5-6 fF projected at 1c; k>50 needed (CROSS-REF A1)"
+        }
+      ],
+      "novelty": "TWIST on known: charge-transfer pre-sensing dates to 1990s DRAM (Arimoto et al., JSSC 1997, cited in the patent family) and was dropped when capacitors were large. The new part is the combination with oxide-channel retention so the capacitor can collapse 10x, while keeping long bitlines (unlike A1 white space 1).",
+      "show_stoppers": "(1) Speed: subthreshold transfer adds ~20-45 ns to row access (tRCD) unless bias current rises, and higher bias worsens mismatch error. (2) Residual offset: transfer-gate mismatch and bias-current mismatch (a 100 nA bias over 30 ns moves 3 fC, 12x the signal) must cancel to <5%. (3) Soft errors and noise margin at ~1,000-1,600 signal electrons.",
+      "revival_or_workaround": "(1) Two-stage transfer, boosted gate drive (the 0.5 V CT-SA paper shows +41% speed), or 256-cell bitlines (tau halves). (2) Self-biased precharge (each gate settles at its own Vt) plus a differential reference column; autozero latches. (3) BEOL IGZO cells have no Si collection volume, which cuts charge collection; add ECC; keep Cs >=0.5 fF (~1,600 e-).",
+      "million_dollar_demo": "One MPW test chip (22 nm FD-SOI or 28 nm bulk, ~4 mm2) containing sense-amp banks driving programmable MIM 'cells' of 0.2-5 fF and switchable 128/256/512-cell-equivalent bitline loads. Measure signal, offset distributions over 10k columns, speed vs bias, and temperature. Then hook up BEOL IGZO 1T1C coupons from B1-01/B1-05 partners. Budget ~$250k: MPW $80-120k, board and test $60k, design tools via university.",
+      "resource_angle": "Removes the HAR capacitor etch and most deep ALD (capital, fluorocarbon gas, Hf/Zr volume). Bits per wafer-hour rise, which is A2's binding constraint. Pure circuit plus oxide channel; no new scarce elements.",
+      "us_buildable": "Design anywhere; MPW on GlobalFoundries (Malta, NY) or SkyWater (MN) for a 130/90 nm proof; IGZO coupons from Purdue, Georgia Tech or Penn."
+    },
+    {
+      "id": "B1-05",
+      "name": "2-bit/cell 1T1C on an oxide access device",
+      "one_liner": "With an IGZO access transistor leaking <1 aA, a 1T1C cell can hold four voltage levels for ~80 s, doubling bits per cell on the existing capacitor if sensing resolves the ~55-70 mV level steps.",
+      "mechanism": "Write one of four levels (0, 1/3, 2/3, 1 x VARY) through a vertical IGZO access transistor (OCTRAM/Samsung VCT style). Read by successive approximation: charge-share onto a short bitline, decide the MSB against a mid reference, then the LSB against a reference chosen by the MSB (or a time-domain ramp), then restore all four levels. A silicon cell cannot do this, because its 13 fA tail leaks a full level in milliseconds. At 1 aA the droop is 0.18 mV/s, so a 15 mV level budget lasts ~80 s. Combine with 128-cell bitlines (bonded periphery) or charge-transfer pre-sense (B1-04) for margin.",
+      "which_bottleneck": "A1 #4 litho-bound density (density from levels, not wavelength); A1 #1 (more bits per capacitor); A1 #3 (needs low leakage, uses it).",
+      "step_change_claim": "2x bits per cell -> 1.8-2.8x die density at the same F, depending on array efficiency (0.89-1.23 Gb/mm2 vs 0.447), with no new lithography.",
+      "first_principles_estimate": "Level-edge signal = (VARY/6) x Cs/(Cs+Cbl). With Cs 5.4 fF it is 24 mV at 512 cells (too small), 55 mV at 128 cells and 71 mV at 64 cells. IGZO 1 aA leakage on 5.4 fF droops 0.18 mV/s -> 15 mV lasts 81 s. Density: 2 b/cell at the 1b cell with array efficiency 0.45/0.51/0.70 gives 0.79/0.89/1.23 Gb/mm2 = 1.77/2.0/2.76x. (research/models/B1_cellphysics_estimates.py B1-05)",
+      "evidence": [
+        {
+          "title": "Kioxia OCTRAM (IEDM 2024)",
+          "url": "https://www.businesswire.com/news/home/20241209099702/en/Kioxia-Develops-OCTRAM-Oxide-Semiconductor-Channel-Transistor-DRAM-Technology",
+          "shows": "Vertical IGZO access transistor on capacitor, Ioff <1 aA (CROSS-REF A1)"
+        },
+        {
+          "title": "SJTU IGO 2T0C with HfO2 passivation (Adv. Funct. Mater. 2026)",
+          "url": "https://sigroup.sjtu.edu.cn/files/AdvFunctMater_UltrathinOxide_DRAM_2026.pdf",
+          "shows": ">30,000 s retention, 4 bits/cell in an oxide storage node (CROSS-REF A3)"
+        },
+        {
+          "title": "imec 40 nm IGZO 2T0C (EDL 2025)",
+          "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+          "shows": "IGZO storage node: >200 s at 95 C, >1e12 cycles, <10 ns write (CROSS-REF A3)"
+        }
+      ],
+      "novelty": "TWIST on known: NEC showed a four-level 4 Gb DRAM in 1997 (Okuda et al., JSSC) [UNVERIFIED: training knowledge, no URL found this session]; it died on Si leakage and signal. Oxide gain cells show 3-4 b/cell (SJTU, IMECAS), but MLC on oxide 1T1C has no public array demo.",
+      "show_stoppers": "(1) Signal per level is a third of 1-bit, so it needs short bitlines (more sense amps) or charge-transfer gain. (2) Successive-approximation read plus restore adds latency (~1.5-2x tRCD/tRAS) and energy. (3) IGZO Vt drift (PBTI/H) and capacitor variation eat the 55 mV steps; row hammer on intermediate levels is unknown.",
+      "revival_or_workaround": "(1) Periphery-under-array bonding pays for sense amps (A1 #7); or 3-level cells (1.58 b) with 2x margin. (2) Hide latency with sub-page reads; use MLC for capacity tiers (CXL/HBM-capacity) where 20-30 ns more latency is acceptable. (3) Write-verify, per-row reference cells, ECC across levels.",
+      "million_dollar_demo": "BEOL IGZO-TFT + MIM 1T1C mini-arrays (1-4 kb) at a university fab, read by an MPW SAR/time-domain sense chip. Map level distributions vs time at 85 C, cycling and disturb. Budget ~$400k.",
+      "resource_angle": "2x bits per wafer pass is a direct cut in capital and cleanroom hours per bit (A2 binding constraint) without EUV. Ga exposure from IGZO (prefer IGO/ITZO).",
+      "us_buildable": "Purdue Birck, Georgia Tech IEN (oxide TFTs), MPW via GlobalFoundries or SkyWater."
+    },
+    {
+      "id": "B1-06",
+      "name": "Vertical oxide semi-floating-gate 1T1D gain cell (4F2, capacitor-less, stackable)",
+      "one_liner": "Shrink the 2T0C gain cell to one vertical oxide transistor whose floating gate is charged through a built-in high-barrier diode (the Fudan semi-floating-gate idea, rebuilt in BEOL oxides), giving a 4F2 stackable gain cell.",
+      "mechanism": "A vertical ALD In2O3/IGZO channel pillar is wrapped by a metal floating gate (FG), which is wrapped in turn by a control-gate wordline. A Schottky or MIS diode (Pt/IGZO, p-NiO/IGZO heterojunction, or a thin Al2O3 tunnel diode) links the FG to the drain/bitline at the pillar top. Write: the wordline couples the FG below the bitline, the diode forward-biases and the FG charges to the bitline level. Hold: raise the wordline so the diode is reverse-biased. Read: the FG charge sets the channel current, non-destructively. The reverse current of the diode sets retention, and the cell fits in the footprint of one vertical transistor. Fudan's Si SFG (Science 2013) showed ns writes at <2 V, but its embedded TFET/diode made it large; oxide BEOL lets the diode sit vertically on top.",
+      "which_bottleneck": "A1 #1 (no capacitor); A1 #2 3D (1T per tier footprint); A1 #3 (oxide leakage); A1 #8 non-destructive read.",
+      "step_change_claim": "2.5x per-tier density vs 10F2 2T0C: at F = 20 nm, b x N for 1b parity falls from 3.7 to 1.5; at F = 40 nm (single-exposure ArF, no EUV) from 14.9 to 6.0 (e.g., 2 bits x 3 tiers).",
+      "first_principles_estimate": "Retention = C_FG x dV / I_rev with C_FG 0.3 fF, dV 0.2 V, 20x20 nm diode, A* = 41 A/cm2K2. Barrier 0.8/0.9/1.0/1.1 eV at 85 C gives 0.5 s / 13 s / 340 s / 8,700 s; at 125 C 0.03 s / 0.6 s / 11 s / 200 s. So the diode needs >=1.0-1.1 eV effective barrier (or a tunnel-oxide MIS diode). Density: 4F2 at F = 20 nm = 0.30 Gb/mm2/tier; 10F2 = 0.12. At F = 40 nm: 0.075 vs 0.030. (research/models/B1_cellphysics_estimates.py B1-06)",
+      "evidence": [
+        {
+          "title": "Semi-floating-gate transistor (Wang et al., Science 341:640, 2013) via Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Suzhou_Oriental_Semiconductor",
+          "shows": "~ns write at <2 V; floating gate tied to drain through an embedded diode/TFET (via search snippet)"
+        },
+        {
+          "title": "Electronics 8(4):414 on SFG capacitor-less memory",
+          "url": "https://www.mdpi.com/2079-9292/8/4/414",
+          "shows": "SFG as capacitor-less DRAM; ~5 ns at <=2 V (simulation); embedded diode enlarges footprint (via search snippet)"
+        },
+        {
+          "title": "Purdue vertical all-oxide ALD In2O3 TFTs (VLSI 2024)",
+          "url": "https://engineering.purdue.edu/~yep/Papers/VLSI2024 T4-1_Zehao Lin.pdf",
+          "shows": "Vertical ALD oxide channels are fabricable in a university fab (CROSS-REF A3)"
+        },
+        {
+          "title": "SJTU IGO 2T0C with HfO2 passivation (Adv. Funct. Mater. 2026)",
+          "url": "https://sigroup.sjtu.edu.cn/files/AdvFunctMater_UltrathinOxide_DRAM_2026.pdf",
+          "shows": ">30,000 s retention, 4 bits/cell in an oxide storage node (CROSS-REF A3)"
+        },
+        {
+          "title": "imec 40 nm IGZO 2T0C (EDL 2025)",
+          "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+          "shows": "IGZO storage node: >200 s at 95 C, >1e12 cycles, <10 ns write (CROSS-REF A3)"
+        }
+      ],
+      "novelty": "TWIST on known: Fudan SFG transistor (2013) and its 2D version are known. A vertical BEOL-oxide SFG with a stacked high-barrier diode as a 4F2 3D DRAM tier was not found [UNVERIFIED].",
+      "show_stoppers": "(1) Half-select disturb: bitline swings on unselected cells can forward-bias their write diodes. (2) Getting a >=1.0-1.1 eV barrier on n-type oxides (typical metal/IGZO Schottky barriers are lower [UNVERIFIED]) without a leaky interface. (3) Read-current variability of a single vertical oxide device for multi-level storage.",
+      "revival_or_workaround": "(1) Hold FGs high via wordline coupling and keep bitline swings inside the reverse window; add a series selector (back to 1.5T) only where needed. (2) MIS diode (1-2 nm Al2O3 tunnel layer) or p-NiO/IGZO heterojunctions; measure the Arrhenius barrier directly. (3) Write-verify plus 1-2 b/cell first.",
+      "million_dollar_demo": "Planar SFG analogue first (IGZO TFT + Pt/NiO diode to a floating metal gate) in 6 months at a university fab, measuring barrier, retention at 85/125 C, write speed and disturb. Then vertical ALD In2O3 pillars (Purdue-style) with top diodes. Budget ~$400k.",
+      "resource_angle": "No capacitor module and BEOL temperatures (<=400 C): stackable over logic, no EUV at F = 40 nm. Pt/Ni small quantities; avoid Ga-heavy channels.",
+      "us_buildable": "Purdue Birck (vertical ALD In2O3), Georgia Tech IEN, Notre Dame NDnano, Cornell CNF."
+    },
+    {
+      "id": "B1-07",
+      "name": "1T + 2 tunnel-diode latch: a refresh-free static cell at near-DRAM density",
+      "one_liner": "Two stacked negative-differential-resistance diodes on the storage node latch it to '0' or '1' indefinitely (the TI 1998 tunneling-SRAM idea). This removes refresh entirely, if the diodes' valley current can be brought to ~1-6 pA per cell.",
+      "mechanism": "The storage node of a 1T cell sits between two series NDR diodes (resonant tunnelling or interband Esaki) tied to the supply and ground rails. Their I-V curves cross at two stable points near the rails, so the node self-restores against leakage, with no refresh, no tRFC and a non-destructive read. Van der Wagt's III-V RTD/HFET gain cell proved the latch at ~50 nW/cell. The new part is BEOL-stackable, ultra-low-current-density NDR diodes stacked on the capacitor/storage contact in ~8F2. Candidates: oxide double-barrier (Al2O3/ZnO/Al2O3 quantum well) or MIIM diodes, Si/SiGe resonant interband tunnel diodes, or vdW graphene/hBN resonant tunnelling.",
+      "which_bottleneck": "A1 #3 refresh (energy 46 fJ/bit-refresh, 16-33% of idle power; 7.6-20% availability lost to tRFC); A1 #8 destructive read.",
+      "step_change_claim": "Refresh energy and refresh time -> 0 (7.6% availability at 16 Gb, ~20% at 64 Gb recovered). Static standby set by valley current: break-even with today's refresh power at J_valley ~0.23 A/cm2 (25 nm diodes).",
+      "first_principles_estimate": "16 Gb die refresh power = 1.7e10 cells x 46 fJ / 64 ms = 12.2 mW. Matching it at 0.5 V needs I_valley <= 1.4 pA/cell = 0.23 A/cm2 for a 25 nm diode (J_peak 1.1 A/cm2 at PVCR 5). A 4x budget allows 5.7 pA, 0.92 A/cm2. Today: TI's ~50 nW/cell = 850 W per die (7e4x too high); InP RTD 'nA' operation ~0.5 nW = 8 W per die (700x too high). (research/models/B1_cellphysics_estimates.py B1-07)",
+      "evidence": [
+        {
+          "title": "Compact SRAM cell using tunnel diodes (US 6,342,718), citing van der Wagt RTD/HFET gain cell (IEEE EDL 19(1))",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/6342718",
+          "shows": "1 FET + 2 tunnel diodes latch; ~50 nW/cell standby; GaAs cost (via search snippet)"
+        },
+        {
+          "title": "ISDRS 2011 low-standby tunnel-diode SRAM abstract",
+          "url": "https://ece.umd.edu/isdrs2011/template/ISDRS%202011%20Sample%20Abstract%20Based%20on%20the%20Template.pdf",
+          "shows": "Lower peak/valley current density; nA operation with InP/InGaAs RTDs (via search snippet)"
+        },
+        {
+          "title": "Molecular resonant tunneling diodes for local refresh of DRAM cells (MRS Proc.)",
+          "url": "https://resolve.cambridge.org/core/journals/mrs-online-proceedings-library-archive/article/abs/analysis-of-the-use-of-molecular-resonant-tunneling-diodes-for-local-refresh-of-dynamic-random-access-memory-cells/3398CC0699F66309E9D0EF3E50630562",
+          "shows": "In-cell NDR self-refresh of DRAM was proposed before (title-level)"
+        }
+      ],
+      "novelty": "TWIST on known (TI/Raytheon tunneling SRAM 1998-99; molecular-RTD local-refresh proposal). [SPECULATIVE] at the required current density: no NDR diode with PVCR >=3-5 at J_peak ~1-5 A/cm2 is known to this agent.",
+      "show_stoppers": "(1) PVCR collapses at ultra-low current density because defect-assisted and phonon-assisted valley currents do not scale down with the resonant peak. (2) Peak-voltage uniformity across 1e10 diodes: bistability needs matched I-V curves (~10-20%). (3) Two extra stacked devices per cell, plus their temperature sensitivity (PVCR falls at 85-125 C).",
+      "revival_or_workaround": "(1) Wide-gap oxide or hBN barriers suppress thermionic valley current; the measurable target is a J_peak/J_valley map vs barrier thickness at 85 C. (2) Write-verify trims cannot fix diodes, but redundancy plus ECC can tolerate ~1e-4 bad latches, which fall back to ordinary refreshed DRAM cells (hybrid refresh map). (3) Use one NDR diode plus a linear load (a weaker latch); or an 'only-the-weak-rows' variant where latches sit only on cells that fail retention tests.",
+      "million_dollar_demo": "Phase 1 (12 months, ~$300k): ALD oxide double-barrier and MIIM diode splits plus Si/SiGe RITD samples. Measure I-V at 25-125 C down to pA, and PVCR vs J_peak, against the 0.2-1 A/cm2 target. Phase 2 (~$200k): latch demonstration on a MIM storage node with an IGZO access TFT, showing static hold at 85 C.",
+      "resource_angle": "Deletes refresh energy (A2: use-phase energy ~16x fab energy per GB). Oxide or Si/SiGe diodes avoid III-V and Ga if the oxide route works.",
+      "us_buildable": "Oregon State (ALD MIIM diodes), Ohio State (Si/SiGe RITDs), Penn State nanofab, Cornell CNF."
+    },
+    {
+      "id": "B1-08",
+      "name": "Vertical oxide CCD string: transistor-less 3D charge-shift memory",
+      "one_liner": "Build a 3D-NAND-like stack of word planes around a vertical IGZO channel, but clock the planes as a CCD so charge packets shift up the hole to one sense amp. There is no transistor or capacitor per bit, and IGZO's near-zero thermal generation lets packets sit for seconds.",
+      "mechanism": "Etch one high-aspect-ratio hole through 128-256 alternating W/Mo and SiO2 word planes (the same module as 3D NAND), and line it with a thin gate oxide and an ALD IGZO/IGO channel. Clock planes in 4 phases (2 gates per bit): each bit is a packet of ~1,000-5,000 electrons in an accumulation well. Si CCDs lose stored charge to thermal generation (dark current); wide-gap IGZO generates essentially no carriers, so packets hold, limited only by inter-well barriers and gate leakage. Reading shifts packets out of the top of the string into a charge-transfer sense amp (B1-04) on bonded periphery, and data recirculates to the bottom: a delay-line memory with 32-64-bit strings and thousands of parallel holes per line access. Planes are segmented into small blocks to keep plane RC at ~1 ns per phase.",
+      "which_bottleneck": "A1 #2 3D cell (no capacitor and no transistor per bit); A1 #4 litho capital (one HAR etch, no EUV); A2 white space 1 (bits added by deposition).",
+      "step_change_claim": "4.2-8.3x 1b density (1.85-3.7 Gb/mm2 at 128-256 planes) with zero per-bit devices; streaming read energy 17-67 fJ/bit; but access is serial (32-128 ns worst-case to a given bit).",
+      "first_principles_estimate": "Hex hole pitch 150 nm -> 0.0195 um2 per hole. 128 planes / 2 gates per bit = 64 bits per hole -> 1.85 Gb/mm2 at 0.60 efficiency (4.2x 1b); 256 planes -> 3.71 Gb/mm2 (8.3x); 3 gates/bit -> 5.5x. Gate-hole capacitance 33 aF -> 0.13 fJ per toggle at 2 V. A 64-gate string (32 bits) costs 16.7 fJ per shift step = 16.7 fJ/bit to stream out; worst latency 32 ns at 1 ns per step (128 gates: 33 fJ/bit, 64 ns). CTE must be >=0.9999: after 128 transfers 98.7% of a packet remains (0.999 leaves 88%). Interface traps under one gate: 6-57 per eV at Dit 1e11-1e12. (research/models/B1_cellphysics_estimates.py B1-08)",
+      "evidence": [
+        {
+          "title": "Kioxia IEDM 2025: 8-layer horizontal IGZO transistors via SiN replacement",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "NAND-style stack can host horizontal IGZO channels with Ion >30 uA, Ioff <1 aA (CROSS-REF A3)"
+        },
+        {
+          "title": "Purdue vertical all-oxide ALD In2O3 TFTs (VLSI 2024)",
+          "url": "https://engineering.purdue.edu/~yep/Papers/VLSI2024 T4-1_Zehao Lin.pdf",
+          "shows": "Vertical ALD oxide channels are fabricable in a university fab (CROSS-REF A3)"
+        },
+        {
+          "title": "imec 40 nm IGZO 2T0C (EDL 2025)",
+          "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+          "shows": "IGZO storage node: >200 s at 95 C, >1e12 cycles, <10 ns write (CROSS-REF A3)"
+        },
+        {
+          "title": "2T1D Memory Cell with Voltage Gain (Luk & Dennard, VLSI 2004)",
+          "url": "https://research.ibm.com/publications/2t1d-memory-cell-with-voltage-gain",
+          "shows": "Gated diode = nonlinear capacitor that amplifies stored voltage on read (via search snippet)"
+        }
+      ],
+      "novelty": "NEW combination [SPECULATIVE]: 1970s CCD main memories (Intel/Fairchild 16-64 kb CCD parts) [UNVERIFIED: training knowledge] + 3D NAND vertical-channel stacks + wide-gap oxide channels with negligible thermal generation. No vertical-oxide CCD memory proposal was found [UNVERIFIED].",
+      "show_stoppers": "(1) Charge-transfer efficiency: IGZO band-tail and interface traps capture and release electrons each transfer; CTE <0.9999 destroys packets within a few strings. (2) Serial access: DRAM-class random latency needs short strings and fast (~1 ns) plane clocks, against the large RC of NAND-style word planes. (3) Disturb and blooming between packets; recirculation means every read rewrites the string.",
+      "revival_or_workaround": "(1) Fat-zero background charge, buried-channel bilayers (IGO core + IGZO cladding) to keep packets off the interface, H-passivated interfaces; measure CTE vs clock and temperature first. (2) 32-bit strings with thousands of parallel holes per 64 B line make access a fixed ~32-40 ns burst; segment planes into small blocks with Mo/Ru-free low-R metal. (3) 4-phase clocking with barrier phases; a streaming tier (LLM weights, KV cache) where sequential bursts are natural.",
+      "million_dollar_demo": "Months 0-8: planar overlapping-gate IGZO CCD (8-16 gates) on glass or Si at a university fab, measuring CTE vs clock rate (1-100 MHz) and temperature, and hold time at 85 C. Months 8-22: 8-16-plane vertical test stacks (W/SiO2, punched hole, ALD IGZO) at a 200/300 mm partner, read by a discrete charge amplifier. Budget ~$500k.",
+      "resource_angle": "Bits by deposition, one HAR etch per stack: lowest litho intensity of any card (no EUV, ~1 critical mask per stack). Avoid Ru/Mo-scarce plane metals at volume; W is China-concentrated (A2), so watch that.",
+      "us_buildable": "Purdue Birck, Penn Singh Center (planar CCD), NY CREATES Albany or SUNY Poly 300 mm for vertical stacks; Micron Boise R&D as a later partner."
+    },
+    {
+      "id": "B1-09",
+      "name": "Nanogap (vacuum/air) tunnel-barrier floating node: flash-like retention without oxide wear",
+      "one_liner": "Isolate a gain cell's floating node with a 2.5-4 nm sealed vacuum/air gap instead of tunnel oxide; Fowler-Nordheim emission across the gap writes in ns at 6-8 V, while the trap-free gap holds charge for hours to years.",
+      "mechanism": "The floating metal node (TiN or W, anchored on dielectric on one side) faces a write electrode across a 2.5-4 nm gap. The gap is made by removing an ALD sacrificial layer (carbon or Al2O3) and then sealed, like BEOL air-gaps or NASA's nanoscale vacuum-channel transistors, which work in air because the gap is far below the ~70 nm mean free path. The node is the gate of an IGZO or Si read transistor (2T-like gain cell), so the read is non-destructive. Writing uses field emission at a few V/nm (field enhancement 2-3 at edges); holding relies on the exponential non-linearity of tunnelling. Charge never passes through a solid dielectric, so there are no trap generation, SILC or charge-to-breakdown limits, the mechanisms that cap flash endurance at ~1e5. Low-work-function coatings (LaB6-class, 2.7 eV) cut write voltage, but even plain TiN (4.5 eV) works at 8 V.",
+      "which_bottleneck": "A1 #3 retention/refresh (refresh-free); A1 #1 (no capacitor: ~0.2 fF node); A1 #8 non-destructive read; endurance wall of charge-storage NVMs (A3 FeFET/flash kills).",
+      "step_change_claim": "[SPECULATIVE] A non-volatile, refresh-free DRAM-class gain cell: retention 3.7e4 s (2.5 nm gap, 2.7 eV) to >1e8 s (3 nm), writes in 0.4-40 ns. Endurance is not set by oxide damage, with a target of >=1e12.",
+      "first_principles_estimate": "FN: J = (1.54e-6 F2/phi) exp(-6.83e9 phi^1.5/F), with a 10x10 nm emission area and a 0.2 fF node. phi 2.7 eV, 3 nm gap, 6 V, beta 2: I = 0.47 uA -> 1 V in 0.43 ns. phi 4.5 eV (TiN), 4 nm gap, 8 V, beta 3: 24 nA -> 8.5 ns. Hold (Simmons low-voltage, 1 V across gap): phi 2.7 eV gives 6.6 s (2.0 nm), 3.7e4 s (2.5 nm), 2e8 s (3.0 nm); phi 4.5 eV gives 9e4 s (2 nm) and essentially unlimited at >=2.5 nm. Electrostatic pressure at 2.5 V/nm is 28 MPa, so the node must be anchored, not a free beam. (research/models/B1_cellphysics_estimates.py B1-09)",
+      "evidence": [
+        {
+          "title": "NASA nanoscale complementary vacuum field-emission transistor (Physics World)",
+          "url": "https://physicsworld.com/a/nasa-scientists-design-a-nanoscale-complementary-vacuum-field-emission-transistor",
+          "shows": "Nanogaps below the mean free path work in air; no dielectric; built on 150-200 mm wafers (via search snippet)"
+        },
+        {
+          "title": "Nanoscale vacuum channel transistors on SiC wafers (Nature Electronics 2019)",
+          "url": "https://link.springer.com/10.1038/s41928-019-0289-z",
+          "shows": "Wafer-scale nanogap field-emission devices (via search snippet)"
+        },
+        {
+          "title": "Metal-air transistors (Arizona/RMIT)",
+          "url": "https://experts.arizona.edu/en/publications/metal-air-transistors-semiconductor-free-field-emission-air-chann/",
+          "shows": "Vacuum-like field emission in air at RT for <35 nm gaps (via search snippet)"
+        },
+        {
+          "title": "imec 40 nm IGZO 2T0C (EDL 2025)",
+          "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+          "shows": "IGZO storage node: >200 s at 95 C, >1e12 cycles, <10 ns write (CROSS-REF A3)"
+        }
+      ],
+      "novelty": "[SPECULATIVE] NEW combination: nanoscale vacuum-channel electronics (NASA Ames) + floating-gate gain cell. Nanogap memories based on atom migration exist, but a trap-free FN nanogap as the storage barrier of a DRAM-class gain cell was not found [UNVERIFIED].",
+      "show_stoppers": "(1) Gap control and sealing at 1e10 scale: current is exponential in gap and work function, so a ±0.2 nm spread is a large write-time spread. (2) Field-emission instability: adsorbate diffusion, surface migration and emitter blunting change emission over cycles. (3) 6-8 V write drivers at tight pitch, plus charging of dielectric surfaces next to the gap.",
+      "revival_or_workaround": "(1) Write-verify absorbs spread (as NAND does); use self-limiting ALD sacrificial layers for Å-level control. (2) Hermetic seal with getters, refractory emitters (W, TiN, HfC), and operation in emission regimes well below field-evaporation fields (6 vs ~50 V/nm for W). (3) Row-shared HV drivers like NAND; lateral geometry with no dielectric in the field path.",
+      "million_dollar_demo": "Lateral TiN nanogap floating-node test structures (3-4 nm ALD sacrificial release) coupled to an IGZO or Si sense FET, with at least two gap splits. Measure FN I-V, write time vs voltage, retention at 85-150 C, and cycling to 1e9-1e12 with emission-noise statistics. Budget ~$450k across a university nanofab plus a NASA Ames collaboration.",
+      "resource_angle": "Uses only Ti, N, W, Si, O: no Hf, Ru or Ga. Non-volatile, so use-phase refresh energy disappears. Fabricated with ALD and release etch, no EUV.",
+      "us_buildable": "Cornell CNF or Stanford SNF (nanogap release), NASA Ames (vacuum nanoelectronics), Sandia MESA (MEMS release and hermetic sealing)."
+    },
+    {
+      "id": "B1-10",
+      "name": "Direct-tunnel charge-trap '3D AND' DRAM built with 3D-NAND tools",
+      "one_liner": "Run the 3D-NAND tool set (one HAR etch through 64-256 tiers) but thin the tunnel layer to ~1.5-2 nm so cells program by low-field direct tunnelling in ns, hold for 1-100 s, and survive far more cycles; read cells in parallel (AND/NOR), not in series strings.",
+      "mechanism": "Vertical channel holes (poly-Si or ALD IGZO/IGO) with vertical source/drain lines pass through stacked word planes (3D AND/NOR topology, as in SunRise 3D NOR and Macronix-style 3D AND). Gate stack: ~1.5-2 nm bandgap-engineered SiO2/SiON tunnel layer, SiN trap layer and Al2O3 blocking layer. Low-field direct tunnelling (few V) avoids the hot-carrier and FN damage that limits NAND endurance; retention falls to seconds-minutes, which is the trade: quasi-volatile. Each cell is read individually with ns-class parallel sensing on short vertical bitlines; refresh is 16-1,500x less frequent than DRAM.",
+      "which_bottleneck": "A1 #2 3D DRAM (uses a proven 3D process); A1 #4 capital/EUV (no EUV; NAND tools); A1 #3 refresh; A2 white space 1 (bits per capex dollar).",
+      "step_change_claim": "2.7-7.2x 1b density at 64-256 tiers on a NAND-class (EUV-free) line; refresh energy and time 16x (1 s) to 1,562x (100 s) lower.",
+      "first_principles_estimate": "Per-tier cell 0.030-0.045 um2, array efficiency 0.60: 64 tiers -> 1.20 Gb/mm2 (2.7x); 128 tiers -> 1.61-2.41 (3.6-5.4x); 256 tiers -> 3.21 (7.2x). Retention 1/10/100 s -> refresh x16/x156/x1,562 lower than 64 ms. With 10 s refresh, refresh cycles total 3.2e7 over 10 yr, so writes dominate endurance; the target is 1e10-1e12 with write-back caching. (research/models/B1_cellphysics_estimates.py B1-10)",
+      "evidence": [
+        {
+          "title": "SunRise Memory 3D NOR quasi-volatile (eeNews Europe 2018)",
+          "url": "https://www.eenewseurope.com/en/sandisk-founder-has-his-next-memory-chip-startup",
+          "shows": "Thin-tunnel charge-trap 3D NOR pitched as a DRAM-alternative tier (CROSS-REF ram-venture)"
+        },
+        {
+          "title": "NEO 3D X-DRAM PoC (StorageNewsletter 2026-05)",
+          "url": "https://www.storagenewsletter.com/2026/05/13/neo-semiconductor-demonstrates-3d-x-dram-proof-of-concept-secures-strategic-investment-to-advance-ai-memory/",
+          "shows": "3D-NAND-process DRAM-like cell: >1 s at 85 C, >1e14 cycles, <10 ns (company-reported, CROSS-REF A3)"
+        },
+        {
+          "title": "Subnanosecond flash via 2D-enhanced hot-carrier injection (Nature 641:90, 2025)",
+          "url": "https://ideas.repec.org/a/nat/nature/v641y2025i8061d10.1038_s41586-025-08839-w.html",
+          "shows": "400 ps program, non-volatile, >5.5e6 cycles on hBN/HfO2/Al2O3 stack (via search snippet)"
+        },
+        {
+          "title": "Kioxia IEDM 2025: 8-layer horizontal IGZO transistors via SiN replacement",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "NAND-style stack can host horizontal IGZO channels with Ion >30 uA, Ioff <1 aA (CROSS-REF A3)"
+        }
+      ],
+      "novelty": "TWIST on known: SunRise 3D NOR quasi-volatile memory (Harari), NEO 3D X-DRAM on a 3D-NAND process, and earlier direct-tunnel memories (Fujitsu DTM, KAIST URAM) [UNVERIFIED: training knowledge]. The twist is an oxide-channel AND array tuned for 1e10-1e12 low-field cycles at seconds retention.",
+      "show_stoppers": "(1) Endurance of thin tunnel oxides at 1e10+ cycles is unproven; even low-field tunnelling generates traps over time. (2) Direct-tunnel write speed at low voltage may be µs, not 10-50 ns. (3) Vt distribution tails and retention tails at 85 C across 1e10 cells; vertical source/drain-line RC limits ns reads.",
+      "revival_or_workaround": "(1) Bandgap-engineered tunnel stacks (BE-SONOS-like) and IGZO channels with no Si/SiO2 interface-state generation; accept 1e9-1e10 behind an SRAM/DRAM write cache. (2) Trade a slightly thicker barrier for retention, or use the hot-carrier assist of B1-20. (3) Short vertical lines (16-32 tiers per sense group), with ECC and retention-aware refresh (RAIDR-style).",
+      "million_dollar_demo": "4-16-tier test stacks with three tunnel-oxide splits at a university/300 mm partner (or single-tier planar charge-trap capacitors and transistors first). Measure program speed vs voltage, retention at 85 C, and endurance to 1e10 at 100 ns pulses. Budget ~$450k.",
+      "resource_angle": "Re-uses NAND fabs (no EUV), including idle NAND capacity in a NAND downturn: a capital and supply-chain lever. SiN/SiO2 stacks avoid Ge (A2 flags the SiGe superlattice route at 6-38% of refined Ge).",
+      "us_buildable": "Micron (Boise R&D; NAND expertise), NY CREATES Albany, SUNY Poly; university single-tier work at Penn State or NCSU."
+    },
+    {
+      "id": "B1-11",
+      "name": "Capacitive-NDRO ferroelectric gain cell for a read-mostly DRAM tier",
+      "one_liner": "Read a ferroelectric capacitor's state from its small-signal capacitance (high vs low after imprint engineering) without switching it. Reads stop wearing the cell, refresh disappears, and DRAM-class read endurance is decoupled from the 1e7-class write endurance; a natural fit for inference-weight memory.",
+      "mechanism": "An HZO (or Zr-rich) capacitor with asymmetric electrodes has a zero-bias capacitance that differs between its two polarization states (imec reports a capacitive window ~8.7 at 0 V). The capacitor is the coupling element of a read transistor gate (1T-1C_FE or 2T-nC with n<=4). A small read pulse (below coercive) on its plate couples more or less charge onto the gate, and the read transistor converts that to current. Reads are non-destructive and never switch polarization; writes are full switching pulses. The memory is non-volatile, so there is no refresh and no restore, and pages need not be activated wholesale. Small n is essential: capacitive coupling dilutes as 1/n.",
+      "which_bottleneck": "A1 #3 refresh; A1 #8 destructive read and overfetch; A1 #5 data-movement energy for read-dominated AI workloads; A3 white space 2 (FE endurance).",
+      "step_change_claim": "Refresh -> 0 and restore -> 0 for read-mostly data. Read endurance >1e11 (shown) vs ~1e7 write; read energy ~CV2 of a ~1.5 fF node (~0.1-0.4 fJ) instead of a 10 KB page restore (~5.9 pJ per useful bit random).",
+      "first_principles_estimate": "Node signal = V_read x dC/C x C_cap/(n C_cap + C_gate), with C_cap 1 fF, C_gate 0.5 fF, V_read 0.3 V. dC/C 0.5: n = 1 -> 100 mV, 2 -> 60 mV, 4 -> 33 mV, 8 -> 18 mV, 64 -> 2.3 mV (so 2T-64C capacitive read is infeasible). dC/C 1.0: n = 4 -> 67 mV. Writes in 10 yr at one rewrite per minute = 5.3e6 (1.9x margin vs 1e7); per hour 8.8e4 (114x margin). (research/models/B1_cellphysics_estimates.py B1-11)",
+      "evidence": [
+        {
+          "title": "imec IEDM 2023 capacitive NDRO HZO memory",
+          "url": "https://www.imec-publications.be/entities/publication/69e337a2-bd94-4332-807e-fada5c7cf34d",
+          "shows": "Zero-bias capacitive window ~8.7 via electrode asymmetry; read endurance >1e11, write ~1e7 (via search snippet; record attribution not pinned)"
+        },
+        {
+          "title": "Cryogenic non-destructive capacitive readout of HZO (IEEE JEDS 2026)",
+          "url": "https://lup.lub.lu.se/record/dc23b109-bb0c-416e-9140-b019a4f9db7b",
+          "shows": "Capacitive NDRO works in standard HZO capacitors (via search snippet)"
+        },
+        {
+          "title": "La-doped HZO capacitive memory letter",
+          "url": "https://lirias.kuleuven.be/retrieve/722836",
+          "shows": "Read voltage must stay below partial switching (via search snippet)"
+        },
+        {
+          "title": "Microscopic mechanism of imprint in HfO2 ferroelectrics",
+          "url": "https://pure.ecnu.edu.cn/en/publications/microscopic-mechanism-of-imprint-in-hafnium-oxide-based-ferroelec/",
+          "shows": "Imprint from carrier-injection-charged oxygen vacancies (via search snippet)"
+        },
+        {
+          "title": "2T-nC FeRAM with hundreds of layers (IEDM 2025)",
+          "url": "https://research.ibm.com/publications/towards-scalable-3d-integration-of-2t-nc-feram-with-hundreds-of-layer-st",
+          "shows": "2T-64C cell fabricated; destructive read sequence issues (CROSS-REF A3)"
+        }
+      ],
+      "novelty": "TWIST on known: capacitive NDRO FeRAM (imec IEDM 2023; Lund 2026 cryo). The twist is positioning it as a refresh-free DRAM tier for read-dominated data, with an explicit n <= 4 cap on stacking.",
+      "show_stoppers": "(1) The asymmetry that creates the capacitive window is also what drives imprint, so the window may drift with time and temperature. (2) Write endurance ~1e7 forbids general-purpose DRAM use. (3) Cumulative read disturb from 1e11+ sub-coercive pulses; Hf supply.",
+      "revival_or_workaround": "(1) Periodic rewrite (once per day costs only 3.7e3 writes in 10 yr) to reset imprint; unipolar-drive recovery (literature). (2) Pair with a small DRAM/SRAM write buffer; target weights, embeddings and read-mostly KV pages. (3) Characterize disturb vs read amplitude; Zr-rich films reduce Hf.",
+      "million_dollar_demo": "Asymmetric-electrode HZO/ZrO2 capacitors (TiN/W, TiN/Mo) wired to the gates of discrete or MPW read transistors (1T-1C and 2T-4C). Measure window vs temperature and time, read disturb to 1e12, write endurance and retention at 85 C. Budget ~$350k.",
+      "resource_angle": "Removes refresh (use-phase energy) for the largest AI memory class (weights). Hf-based unless the Zr-rich variant works.",
+      "us_buildable": "Notre Dame (K. Ni group lineage), Georgia Tech IEN, Purdue Birck, Sandia MESA; MPW read transistors at SkyWater."
+    },
+    {
+      "id": "B1-12",
+      "name": "Sliding-ferroelectric 2D gain channel (fatigue-free polarization)",
+      "one_liner": "Use interlayer-sliding ferroelectricity (bilayer hBN or 3R-MoS2) as the storage mechanism of a 1T gain cell. Switching moves no ions, so the fatigue and wake-up that kill hafnia FE endurance may not exist: >1e11 ns cycles have been shown.",
+      "mechanism": "In AB/BA-stacked bilayers, an out-of-plane polarization flips when one layer slides by a fraction of a lattice constant. No ions move, so there is no oxygen-vacancy migration and no charged-defect build-up. A semiconducting 3R-MoS2 bilayer can serve as both channel and ferroelectric, or a bilayer-hBN gate ferroelectric can sit on a MoS2/IGZO channel. Polarization ~0.7 uC/cm2 (~4e12 e/cm2) shifts Vt by 0.16-0.30 V per state at EOT 0.8-1.5 nm, a 0.3-0.6 V window. The cell is non-volatile with a non-destructive gain read, written at <1 V in ns.",
+      "which_bottleneck": "A1 #3 refresh; A3 kill of FeFET for endurance (window collapse after 1e4-1e6 cycles); A1 #10 voltage floor.",
+      "step_change_claim": "[SPECULATIVE at array scale] A ferroelectric 1T DRAM-class cell with endurance on a path to >=1e12-1e15 (1e11 shown), zero refresh, and sub-1 V ns writes: closes the 1e8x endurance gap that kills hafnia FeFETs.",
+      "first_principles_estimate": "P_eff ~0.68 uC/cm2 (2.25 pC/m dipole / 0.33 nm) [ESTIMATE] = 4.2e12 e/cm2. Vt shift = P/C_gate: EOT 0.8/1.0/1.5 nm -> 0.16/0.20/0.30 V per state (window 0.32/0.39/0.59 V). Evidence: 3R-MoS2 no fatigue after 1e6 cycles (ms pulses); bilayer-BN FeFET >1e11 cycles, ns. A 4F2 1T cell at F = 20 nm = 0.30 Gb/mm2 per layer. (research/models/B1_cellphysics_estimates.py B1-12)",
+      "evidence": [
+        {
+          "title": "Fatigue-resistant ferroelectrics via interlayer sliding (Bian et al., Science 2024; CAS news)",
+          "url": "https://english.cas.cn/newsroom/research_news/tech/202406/t20240605_664778.shtml",
+          "shows": "3R-MoS2: no wake-up, no substantial fatigue after 1e6 cycles (ms pulses) (via search snippet)"
+        },
+        {
+          "title": "Sliding ferroelectrics offer fast, fatigue-free switching (Physics World)",
+          "url": "https://physicsworld.com/a/sliding-ferroelectrics-offer-fast-fatigue-free-switching/",
+          "shows": "Bilayer-BN sliding FeFET: >1e11 cycles, ns switching (via search snippet)"
+        },
+        {
+          "title": "Ultrafast high-endurance memory based on sliding ferroelectrics (NIMS dataset)",
+          "url": "https://mdr.nims.go.jp/datasets/dc0ec6ce-f788-46cd-b6db-856441cc5947.md",
+          "shows": "Title-level record of high-endurance sliding-FE memory"
+        }
+      ],
+      "novelty": "TWIST on known: sliding ferroelectrics (2021-2024 Science papers) are a physics discovery, and memory demonstrations are single devices. Positioning them as a DRAM-class gain cell with an endurance target of 1e15 is open.",
+      "show_stoppers": "(1) Wafer-scale growth with controlled rhombohedral/AB stacking at BEOL temperatures. (2) Domain size: sliding domain walls are wide solitons, and a 20 nm cell may sit below the minimum stable domain. (3) Retention at 85-125 C, since sliding barriers are small (meV per formula unit).",
+      "revival_or_workaround": "(1) The Penn State 2DCC MOCVD wafer program and transfer-free epitaxy on sapphire, then bonded transfer. (2) Measure the minimum switchable area; if it exceeds ~50 nm, use 2-bit cells at a larger pitch or a vertical channel. (3) Interlayer pinning and electrostatic built-in bias; screen hBN vs TMD vs In2Se3 variants.",
+      "million_dollar_demo": "Exfoliated and CVD bilayer devices (hBN/MoS2) scaled from 1 um down to 50 nm. Measure endurance at 10 ns pulses to 1e12, retention vs temperature, and the window vs size. Budget ~$300k, mostly people and cryo/hot probe time at shared facilities.",
+      "resource_angle": "Mo, S, B, N: no Hf, no Ga. Sub-1 V operation cuts energy.",
+      "us_buildable": "Penn State 2D Crystal Consortium (NSF MIP) for wafers, Cornell CNF, Columbia, MIT.nano."
+    },
+    {
+      "id": "B1-13",
+      "name": "Lithium-niobate-on-insulator conductive-domain-wall memory",
+      "one_liner": "Store a bit as the presence or absence of a conductive charged domain wall between two nano-electrodes in single-crystal LNOI (the photonics-industry wafer). Reads are non-destructive at low voltage; writes switch at ~0.4-1 V for 20-50 nm gaps.",
+      "mechanism": "Thin-film LiNbO3 bonded on SiO2/Si (LNOI) is single-crystal. Applying a field across two in-plane electrodes inverts a nano-domain, creating a head-to-head charged wall that conducts (giant DW conductivity); removing it erases. A small read voltage senses wall current without moving the wall (NDRO, ~1e3 on/off). Embedded selectors give >1e6 selectivity for crosspoint arrays. Being a single crystal, LN has no grain boundaries or oxygen-vacancy-rich interlayers, the source of hafnia's wake-up/fatigue; its endurance under ns pulses is the open question.",
+      "which_bottleneck": "A1 #3 refresh (non-volatile); A1 #8 destructive read; A3 FE endurance concerns.",
+      "step_change_claim": "Non-volatile NDRO 2-terminal cell at 0.4-1 V. Density is NOT the step: 0.2x 1b per layer at F = 40 nm, 0.79x with 4 bonded layers. The claim is endurance and energy (no refresh, no restore), still to be proven.",
+      "first_principles_estimate": "Switching voltage = E_c x gap with E_c ~21 V/um (congruent LN [ESTIMATE]): 20/50/100 nm gaps -> 0.42/1.05/2.1 V. Density: 4F2 crosspoint at F = 40 nm = 0.09 Gb/mm2 (0.20x 1b); 4 bonded layers 0.35 (0.79x); F = 20 nm single layer 0.35 (0.79x). (research/models/B1_cellphysics_estimates.py B1-13)",
+      "evidence": [
+        {
+          "title": "Nonvolatile ferroelectric domain wall memory (Sci. Adv. 2017)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5482552",
+          "shows": "LiNbO3 conductive-wall memory: NDRO <3 V, ~1e3 on/off (via search snippet)"
+        },
+        {
+          "title": "LiNbO3 domain-wall memory with embedded selector (Nanomaterials 2024)",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11206281/",
+          "shows": "Selectivity >1e6 for crosspoint DW-RAM (via search snippet)"
+        },
+        {
+          "title": "Giant and accessible conductivity of charged domain walls in LN",
+          "url": "https://arxiv.org/pdf/1703.02612",
+          "shows": "Charged walls in LN are highly conductive (title-level)"
+        }
+      ],
+      "novelty": "KNOWN (Fudan A.Q. Jiang group, Queen's Belfast, Dresden/Fraunhofer DW memories). TWIST: use photonics LNOI wafers and a DRAM-class endurance target.",
+      "show_stoppers": "(1) No public ns-pulse endurance data at 1e12+. (2) Single-crystal LN cannot be deposited monolithically; every layer is a bonded wafer, which caps 3D density. (3) DW current variability and wall pinning at <30 nm.",
+      "revival_or_workaround": "(1) Measure first; LN's lack of vacancy-mediated fatigue makes it a credible bet. (2) Accept as a non-volatile cache or near-logic tier where density matters less; one bonded LNOI layer on logic. (3) Mg-doped LN lowers E_c and pinning.",
+      "million_dollar_demo": "Commercial LNOI coupons; e-beam patterned 20-100 nm gap electrodes. Measure write voltage, read current, retention at 85 C, and 10 ns-pulse endurance to 1e12. Budget ~$250k.",
+      "resource_angle": "Li and Nb, not chokepoints; no Hf. LNOI wafer supply is concentrated in a few suppliers [UNVERIFIED].",
+      "us_buildable": "Harvard CNS and Cornell CNF (LNOI patterning), Penn Singh Center; U.S. LNOI photonics startups as wafer partners [UNVERIFIED]."
+    },
+    {
+      "id": "B1-14",
+      "name": "VCMA crosspoint MRAM with deliberately relaxed (refreshed) retention",
+      "one_liner": "Write MTJs with voltage (VCMA precessional switching, 6-20 fJ) in a selector crosspoint stacked 4 decks high, and size the magnetic barrier for ~1 s refresh instead of 10 years; that cuts the needed barrier ~31% and lets the free layer shrink.",
+      "mechanism": "Each crosspoint is an OTS selector plus a perpendicular CoFeB/MgO MTJ with a high VCMA coefficient. A ~0.5-1 ns voltage pulse lowers the anisotropy so the free layer precesses half a turn, with no write current through a transistor, so there is no access transistor and the cell is 4F2. Thermal stability Delta is chosen for refreshed operation (Delta ~44-48 for 1 s to 1 min, vs ~64 for 10-year non-volatility), allowing a smaller or thinner free layer and lower write voltage. A 'refresh' is a TMR read plus conditional rewrite, done rarely. Four BEOL decks stack over CMOS.",
+      "which_bottleneck": "A1 #3 refresh energy; A1 #4 density without litho shrink (decks); A1 #9 row hammer (magnetic bits have no charge-injection disturb); A3 MRAM density kill (STT 16x 1b area).",
+      "step_change_claim": "2.9x 1b density (4 decks, F = 20 nm) or 1.3x (F = 30 nm, no EUV); write energy 6-20 fJ vs a 46 fJ refresh plus pJ-class activation; refresh 15x+ less frequent than DRAM.",
+      "first_principles_estimate": "Delta >= ln(N t/tau0) with N = 1.7e10 and tau0 = 1 ns: 1 s -> 44.3; 1 min -> 48.4; 10 yr -> 63.8 kT, so relaxing to 1 s cuts Delta by 31%. Density: 4F2 x 1 deck at F = 20 nm = 0.32 Gb/mm2 (0.72x); 4 decks 1.29 (2.9x); 4 decks at F = 30 nm 0.58 (1.3x). (research/models/B1_cellphysics_estimates.py B1-14)",
+      "evidence": [
+        {
+          "title": "imec voltage-MRAM breakthroughs (eeNews Europe 2020)",
+          "url": "https://www.eenewseurope.com/en/imec-claims-two-voltage-mram-breakthroughs",
+          "shows": "VCMA: 20 fJ, 1.1 GHz, >1e10 cycles, field-free (CROSS-REF A3)"
+        },
+        {
+          "title": "Spintec bidirectional VCMA switching",
+          "url": "https://spintec.fr/?p=6408",
+          "shows": "6 fJ/bit at 0.5 ns (CROSS-REF A3)"
+        }
+      ],
+      "novelty": "TWIST: VCMA MRAM is known (imec, UCLA lineage, Spintec); relaxed-retention STT for caches is known. The combination of selector crosspoint VCMA, multi-deck stacking and DRAM-style refresh as a DRAM replacement is an underexplored corner (A3 white space 6).",
+      "show_stoppers": "(1) Precessional write-error rate and pulse-timing precision across 1e10 cells (needs ~1e-9 after ECC). (2) VCMA coefficient too low at 20 nm for <=1 V writes with Delta ~45. (3) MgO endurance (~1e10 shown) and selector half-select leakage.",
+      "revival_or_workaround": "(1) Write-verify-retry and a VCMA+STT assist; ECC with 2-error correction. (2) Heavy-metal and oxide interface engineering (Ir, Hf insertion, high-k caps); the target coefficient is >300 fJ/Vm. (3) Low-voltage VCMA writes stress MgO far less than STT.",
+      "million_dollar_demo": "MTJ stacks with VCMA-optimised interfaces at a U.S. magnetics lab, plus 1S1MTJ crosspoint 8x8 arrays. Measure WER vs pulse width, Delta vs size at 85 C, endurance. Budget ~$500k (sputter-tool time is the main cost).",
+      "resource_angle": "Co, Fe, B, Mg, Pt/Ir/W in nm films: small quantities, but Pt/Ir/Ru group exposure exists. No EUV at F = 30 nm with 4 decks.",
+      "us_buildable": "UMN Minnesota Nano Center, UCLA, NIST/CHiPS magnetics; SkyWater (MN) BEOL integration later."
+    },
+    {
+      "id": "B1-15",
+      "name": "Shared-rail SOT tier on hot logic (4 MTJs per write rail)",
+      "one_liner": "Put a non-volatile SOT-MRAM tier directly on logic, sharing each spin-Hall write rail among 4 MTJs: SRAM-class speed and >1e15 endurance at 2-2.6x SRAM macro density, with no refresh at 125 C.",
+      "mechanism": "A W/Ta (or field-free FM/Ta) spin-orbit rail carries the write current; four MTJs sit on it, selected by per-MTJ voltage biasing (VCMA-assisted) or by staggered critical currents along the track. One write transistor and per-MTJ read selects are shared. Thermal stability is designed for 125 C junction temperatures, so data persist where Si DRAM would need ~4 ms refresh. Reads use TMR; writes take <10 ns at <100 fJ. This is not a commodity-density play; it attacks the memory-on-logic bottleneck.",
+      "which_bottleneck": "A1 #5 interface/data-movement energy (bits within 100 um of compute) and its thermal blocker; A1 #6 HBM tax for on-package capacity.",
+      "step_change_claim": "2.2-2.6x SRAM macro density (0.086-0.10 Gb/mm2 vs ~0.04) with zero standby/refresh at 125 C and >1e15 cycles; 0.19-0.23x 1b density (honest: it does not beat DRAM density).",
+      "first_principles_estimate": "F = 20 nm: 1 MTJ per 30F2 group -> 12,000 nm2/bit -> 0.043 Gb/mm2; 4 MTJ per 60F2 -> 6,000 nm2/bit -> 0.086 Gb/mm2 (2.2x N2 SRAM ~0.04 [A1]); 8 MTJ per 100F2 -> 0.104 (2.6x). More than 4 MTJs per rail runs into IR-drop and WER limits per the literature. (research/models/B1_cellphysics_estimates.py B1-15)",
+      "evidence": [
+        {
+          "title": "imec IEDM 2023 SOT-MRAM (Design & Reuse)",
+          "url": "https://www.design-reuse.com/news/55400/imec-sot-mram.html",
+          "shows": ">1e15 cycles, <100 fJ/bit (CROSS-REF A3)"
+        },
+        {
+          "title": "IEEE JXCDC 2022: multiple MTJs on one SOT channel",
+          "url": "https://doaj.org/article/b8a6e6e341f54f8e961469d2a1673757",
+          "shows": ">4 MTJs per channel hits IR-drop and WER limits (via search snippet)"
+        },
+        {
+          "title": "Spin-Orbit-Torque-based Devices, Circuits and Architectures (review)",
+          "url": "https://arxiv.org/pdf/1912.01347",
+          "shows": "Selective writing of series MTJs on a shared SOT track (via search snippet)"
+        }
+      ],
+      "novelty": "KNOWN: shared-rail and NAND-like SOT architectures (academic 2019-2022, patents). TWIST: framing it as a 125 C memory-on-logic tier to replace part of HBM capacity, not as cache.",
+      "show_stoppers": "(1) IR drop and write disturb on shared rails beyond 4 MTJs. (2) Field-free switching at small CD. (3) Thermal stability at 125 C for small MTJs while keeping write current low.",
+      "revival_or_workaround": "(1) Stop at 4 per rail; use VCMA assist for selectivity. (2) imec's field-free FM/Ta approach. (3) Accept Delta ~60 at 125 C with slightly larger MTJs (density hit ~1.3x).",
+      "million_dollar_demo": "4-MTJ rail test structures through a university magnetics line or a foundry MRAM shuttle, tested at 125 C for WER, disturb and retention. Budget ~$400k.",
+      "resource_angle": "Cuts the HBM wafer tax (A1: ~3x wafer per bit) for capacity placed on logic. Uses W (China-concentrated), Pt/Ta in small amounts.",
+      "us_buildable": "UMN, NIST; GlobalFoundries (Malta) eMRAM know-how; SkyWater BEOL."
+    },
+    {
+      "id": "B1-16",
+      "name": "Protonic gain cell (H+ in WO3 behind a PSG electrolyte)",
+      "one_liner": "Store the bit as the proton content of a WO3 channel, written in ns through a phosphosilicate-glass proton electrolyte at ~1 V/nm (the MIT protonic resistor) and read non-destructively as channel conductance: an analog, non-volatile, multi-level gain cell made from CMOS-native materials.",
+      "mechanism": "Three terminals: a WO3 channel between source and drain; a nanoporous PSG electrolyte (2-5 nm) above it; a Pd (or PdHx) gate that serves as the proton reservoir. A gate pulse at ~1 V/nm drives H+ into or out of WO3 in ns; each inserted proton is charge-compensated by an electron, which raises channel conductance. At read voltages the field is too low to move protons, so the state is non-volatile and the read is non-destructive. Multi-level storage is natural (analog conductance). The 'protonic nano-supercapacitor stub' variant, which uses the same chemistry as a 2-terminal capacitor holding ~18x today's charge per area, is rejected: its charge cannot be extracted at low field in ns (see notes).",
+      "which_bottleneck": "A1 #3 refresh (non-volatile); A1 #1 (no capacitor); A1 #8 non-destructive read; A1 #4 density via multi-level.",
+      "step_change_claim": "Non-volatile 2-4 b/cell gain cell with 5 ns writes; refresh -> 0. Density per tier similar to a 2T0C (~10F2) but multiplied by bits per cell. Unproven endurance.",
+      "first_principles_estimate": "Write voltage = 1 V/nm x PSG thickness: 2/5/10 nm -> 2/5/10 V. Charge density of WO3 at dx = 0.1 H/W in 2 nm: 60 uC/cm2 = 18x today's 3.3 uC/cm2 wall signal (why the capacitor version is tempting); but extraction needs the same ~1 V/nm, so it fails as a fast capacitor. (research/models/B1_cellphysics_estimates.py B1-16)",
+      "evidence": [
+        {
+          "title": "Nanosecond protonic programmable resistors (Onen et al., Science 2022)",
+          "url": "https://mitibmwatsonailab.mit.edu/wp-content/uploads/2023/06/science.abp8064.pdf",
+          "shows": "WO3/PSG/Pd, ~1 V/nm, ns programming, CMOS-native materials (via search snippet)"
+        },
+        {
+          "title": "MIT protonic programmable resistor press release (ScienceDaily 2022-07-28)",
+          "url": "https://sciencedaily.com/releases/2022/07/220728142923.htm",
+          "shows": "PSG electrolyte ~1e6x faster than the team's previous device; room temperature (press claim, via search snippet)"
+        }
+      ],
+      "novelty": "TWIST on known (MIT del Alamo/Li/Yildiz protonic resistors for analog AI; IBM ECRAM lineage). Repurposing as a digital multi-level DRAM-class gain cell is new framing.",
+      "show_stoppers": "(1) Hydrogen is the enemy of oxide and Si transistors (H is a donor in IGZO and drives PBTI), so a proton reservoir next to the access device is an integration hazard. (2) Endurance at 1e12+ ns cycles is unknown (WO3 lattice strain, PSG degradation). (3) 2-5 V writes and the ion-motion energy per write.",
+      "revival_or_workaround": "(1) Hermetic H barriers (Al2O3, SiN) around each cell; physically separate tiers. (2) Measure; if <1e10, target a read-mostly tier (like B1-11). (3) Thinner PSG (2 nm) brings writes to ~2 V.",
+      "million_dollar_demo": "Collaborate with the MIT protonic team: single devices scaled to 50 nm, measuring 10 ns write endurance to 1e10-1e12, retention at 85 C, and H outdiffusion into a neighbouring IGZO TFT. Budget ~$300k.",
+      "resource_angle": "W, P, Si, O, Pd (small): Pd is a precious metal (Russia/South Africa concentrated). No Hf.",
+      "us_buildable": "MIT.nano, Harvard CNS, Sandia (ECRAM work)."
+    },
+    {
+      "id": "B1-17",
+      "name": "Redox-molecule pseudocapacitor with natural multi-level plateaus (ZettaCore revival)",
+      "one_liner": "Replace the dielectric in a short pillar with a monolayer of redox molecules (porphyrins) behind a solid nano-electrolyte. Each molecule stores one electron per discrete oxidation state, giving 2.4-4.9x today's charge per area and built-in voltage plateaus for 2 bits/cell.",
+      "mechanism": "ZettaCore's cell is a standard DRAM 1T cell whose capacitor is replaced by a porphyrin self-assembled monolayer between electrodes, an electrochemical cell. Charge is held in the molecules' discrete redox states, which appear at fixed potentials (e.g., +0.5 and +0.8 V), so voltage levels quantize naturally: multi-level storage without analog trimming. Retention of minutes was reported, vs tens of ms for DRAM. The twist: tether the SAM to a TiN pillar wall, fill the gap with an ALD-compatible solid ion conductor (or confined ionic liquid) for counter-charge, and read through an IGZO access device with 3-level sensing.",
+      "which_bottleneck": "A1 #1 capacitor charge wall; A1 #4 density via levels; A1 #3 retention (minutes).",
+      "step_change_claim": "2.4-4.9x signal charge per area -> pillar 1,300 -> 270-540 nm at equal charge per state; 1.6-2 bits/cell from discrete plateaus -> up to ~2x density at the same cell.",
+      "first_principles_estimate": "Molecule footprint 1-2 nm2 -> 5e13-1e14 /cm2 -> 8-16 uC/cm2 per redox state = 2.4-4.9x today's 3.3 uC/cm2. Pillar for 2.84 fC per state: 535-267 nm. 2-3 oxidation states (plus neutral) -> log2(3-4) = 1.6-2.0 bits/cell. (research/models/B1_cellphysics_estimates.py B1-17)",
+      "evidence": [
+        {
+          "title": "Molecular memory / ZettaRAM (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/Molecular_memory",
+          "shows": "DRAM cell with the capacitor replaced by a porphyrin SAM electrochemical cell; discrete redox states (via search snippet)"
+        },
+        {
+          "title": "UC Riverside molecular memories",
+          "url": "https://zaera.chem.ucr.edu/molecular-memories",
+          "shows": "Retention up to tens of minutes without applied potential (via search snippet)"
+        },
+        {
+          "title": "Molecular Memories, Once Doubted, Prove Durable and Practical",
+          "url": "https://innovations-report.com/?p=25567",
+          "shows": "Minutes retention vs tens of ms for DRAM (ZettaCore co-founder data) (via search snippet)"
+        }
+      ],
+      "novelty": "KNOWN (ZettaCore; NCSU Bocian/Lindsey/Misra; funded by DARPA Moletronics). TWIST: solid-state electrolyte in a stub pillar plus an oxide access device and MLC sensing.",
+      "show_stoppers": "(1) The counter-ion electrolyte must be solid, nm-thin, and survive 400 C BEOL. (2) Electron-transfer and ion-motion rates may not support 10-50 ns reads and writes. (3) Molecular stability over 1e12-1e15 redox cycles at 85 C.",
+      "revival_or_workaround": "(1) Li/Na-free solid proton or anion conductors (ALD LiPON analogues avoided); add molecules post-BEOL as a last-step module. (2) Short tethers, conjugated linkers, and use only at 50-100 ns latency tiers. (3) Accelerated cycling; choose porphyrin/ferrocene families with known robustness.",
+      "million_dollar_demo": "Molecules on TiN/ITO pillar arrays with solid electrolytes. Measure fast cyclic voltammetry, ns-to-us pulsed charge, plateau separation, retention and cycling at 85 C. Budget ~$350k.",
+      "resource_angle": "C, H, N plus a central metal (Zn/Co): abundant. Shorter pillars cut etch capital. Electrolyte chemistry may add PFAS-like risk if fluorinated salts are used (avoid them).",
+      "us_buildable": "NCSU (original team region) and the NCSU Nanofab, Duke SMIF, UC Riverside."
+    },
+    {
+      "id": "B1-18",
+      "name": "NEMS relay access switch: zero-GIDL DRAM cell",
+      "one_liner": "Replace the access transistor with a nano-electromechanical relay whose open state has an air gap, so off-current is essentially zero. Today's 5.4 fF capacitor then holds for 10-100 s (dielectric-limited), the wordline drops from 2.9 V to ~1 V, and there is no floating body to hammer.",
+      "mechanism": "A vertical TiN/W cantilever or clamped beam over each storage node is pulled in by the wordline electrode, closing a contact between bitline and capacitor; open, an air or vacuum gap isolates the node. Leakage then is only the capacitor dielectric's own (~1e-8-1e-7 A/cm2). Switching is abrupt (effectively 0 mV/dec), so the wordline needs only the pull-in voltage (~1 V) with no charge pump. A 100-200 nm beam resonates at 0.4-1.2 GHz, giving ~0.5-1.5 ns mechanical switching. Contacts switch only fC of charge at uA levels, far gentler than RF-MEMS hot switching.",
+      "which_bottleneck": "A1 #3 leakage tail/refresh; A1 #10 wordline voltage (pump energy); A1 #9 row hammer (no charge injection from neighbour wordlines).",
+      "step_change_claim": "Refresh 150-1,500x less frequent (10-100 s retention with today's capacitor); wordline energy ~0.06x (1 V unpumped vs 2.9 V pumped); hammer-immune by construction.",
+      "first_principles_estimate": "Dielectric leakage 1e-8/1e-7 A/cm2 on the 8.6e-10 cm2 pillar wall -> 8.6/86 aA -> retention 97/10 s (155 mV droop on 5.4 fF). Cantilever 200x10 nm (E 250 GPa, rho 3200) -> f0 0.36 GHz -> ~1.4 ns; 100x8 nm -> 1.15 GHz -> ~0.44 ns. Contact charge 2.7 fC per access. Wordline energy ratio (1/2.9)^2 x 0.45/0.95 = 0.06. (research/models/B1_cellphysics_estimates.py B1-18)",
+      "evidence": [
+        {
+          "title": "Nano-electro-mechanical DRAM cell (US 8,432,723)",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/8432723",
+          "shows": "NEM relay pass gate with effectively zero off-current (design claim) (via search snippet)"
+        },
+        {
+          "title": "Shadow NEM relays (IEEE TVLSI 2016)",
+          "url": "https://www.epfl.ch/labs/lap/wp-content/uploads/2018/05/YazdanshenasDec16_DesigningLowPowerandDurableDigitalBlocksUsingShadowNanoElectromechanicalRelays_IEEETVLSI.pdf",
+          "shows": "Endurance is the main NEM weakness (via search snippet)"
+        },
+        {
+          "title": "Almost-nonvolatile eDRAM using NEM relays (DATE 2020)",
+          "url": "https://past.date-conference.com/proceedings-archive/2020/html/0133.html",
+          "shows": "NEM-relay eDRAM retention/power design (via search snippet)"
+        }
+      ],
+      "novelty": "KNOWN (IBM NEM-DRAM patent; NEM eDRAM at DATE 2020). TWIST: a vertical relay in a 4-6F2 pillar, with an explicit cold-switching argument for contact endurance.",
+      "show_stoppers": "(1) Contact endurance at 1e12-1e15 cycles is unmeasured (RF-MEMS ~1e12 by analogy). (2) Stiction and adhesion at nm contacts, and contact resistance drift. (3) Fabricating a released mechanical structure per cell at 20-30 nm pitch, with yield at 1e10.",
+      "revival_or_workaround": "(1) Cycle relays at 100 MHz (1e12 cycles in ~3 h) with fF loads; refractory contacts (W, Ru-free carbides). (2) Anti-stiction monolayers, sealed vacuum cavities. (3) Start at a relaxed pitch for an eDRAM/near-logic tier, where retention and hammer immunity matter more than density.",
+      "million_dollar_demo": "Lateral TiN relays with fF loads at a university nanofab. Measure pull-in voltage, switching time, contact resistance, and 1e12-cycle endurance at 85 C. Then a 1R1C retention demo. Budget ~$350k.",
+      "resource_angle": "Ti, N, W: no Hf/Ga/Ru. Removes wordline charge pumps (energy). Release etch adds process but no EUV.",
+      "us_buildable": "UC Berkeley Marvell Nanolab (NEM relay lineage), Sandia MESA, Cornell CNF."
+    },
+    {
+      "id": "B1-19",
+      "name": "NbO2 Mott threshold switch as an in-stack local sense element",
+      "one_liner": "Use the abrupt, regenerative insulator-to-metal threshold switching of NbO2 as a one-device comparator per 64-cell local bitline, built in the BEOL cell stack. Short bitlines (Cs needed 1.2 fF, VARY ~0.4 V) then become possible without silicon sense amps under every bitline.",
+      "mechanism": "A ~10-20 nm NbO2 device biased just below its threshold voltage sits on each local bitline segment. A '1' signal (~200 mV on a 64-cell segment) tips it over threshold; Joule heating drives the Mott transition (~1080 K locally) and the device snaps to a low-resistance state, producing a large current spike that a shared global sense line or latch detects. A '0' leaves it insulating. The device is a regenerative, abrupt, non-linear element only ~20 nm across, stackable in the cell tiers. Mott insulators cannot isolate a storage node (their off-state conductivity is many orders too high), so this card uses the transition only for sensing.",
+      "which_bottleneck": "A1 #4/#7 (sense-amp area and array efficiency for short bitlines); A1 #1 via short bitlines; A1 #10 voltage floor; A1 #2 3D (local sensing every N tiers).",
+      "step_change_claim": "[SPECULATIVE] Enables 64-cell local bitlines inside a 3D/BEOL stack: Cs need drops 5.4 -> ~1.2 fF and VARY to ~0.4 V (array energy ~16x lower per A1), without 8x more silicon sense amps.",
+      "first_principles_estimate": "Thermal energy to heat a 10/20 nm NbO2 cube from 85 C to the IMT (C_v 3 J/cm3K): 2.2/17 fJ (x3-10 with losses). Threshold sigma 1/2/5% of 1.0 V = 10/20/50 mV vs a 214 mV 1-bit signal on a 64-cell bitline: OK at <=2-5% sigma, hopeless at 512 cells (71 mV). (research/models/B1_cellphysics_estimates.py B1-19)",
+      "evidence": [
+        {
+          "title": "Vollrath: DRAM signal margin (charge-sharing physics)",
+          "url": "https://personalpages.hs-kempten.de/~vollratj/Publications/2002_DELTA_SignalMargin.html",
+          "shows": "Signal = (Vcell - VBLEQ) Cs/(Cs+Cbl); shorter bitlines raise signal (CROSS-REF A1)"
+        },
+        {
+          "title": "Cbl = per-cell contribution x cell count + SA contribution (US 12,106,797)",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12106797",
+          "shows": "Bitline capacitance scales with cells per bitline (CROSS-REF A1)"
+        }
+      ],
+      "novelty": "[SPECULATIVE] NEW use: NbO2 threshold switches are known as selectors and oscillators (HP Labs lineage) [UNVERIFIED: no URL this session]; as a DRAM local sense element, no prior was found.",
+      "show_stoppers": "(1) Cycle-to-cycle and device-to-device threshold variation (often several %) and its strong ambient-temperature dependence. (2) Energy per sense (~10-100 fJ with losses) may exceed a CMOS sense amp's. (3) Endurance of threshold switching at 1e12-1e15 events and thermal crosstalk between neighbours.",
+      "revival_or_workaround": "(1) Self-referenced two-step sensing (sense, write reference, sense) with per-device calibration; temperature-tracking bias. (2) Use only for segment select and pre-amplification, with a shared CMOS latch. (3) If it fails, fall back to oxide-TFT sense amps in BEOL.",
+      "million_dollar_demo": "Sputtered NbOx devices (10-50 nm) at a university fab. Measure threshold distributions vs temperature and pulse width, energy per event and endurance; then connect them to IGZO 1T1C test segments. Budget ~$300k.",
+      "resource_angle": "Nb is concentrated (Brazil ~90%) but used in tiny amounts. Moves sensing out of costly front-end silicon area.",
+      "us_buildable": "Sandia MESA, Penn State, Purdue Birck."
+    },
+    {
+      "id": "B1-20",
+      "name": "2D-barrier quasi-volatile 1T cell (seconds-to-minutes retention traded for endurance)",
+      "one_liner": "Take Fudan's 2D-enhanced fast charge-injection memories (400 ps program, non-volatile) and deliberately thin the hBN barrier, trading 10-year retention for 10-100 s. Writes then run at lower field and should damage the stack far less, giving a 1T 4F2 cell with 156-1,560x less refresh.",
+      "mechanism": "A graphene or MoS2 channel sits over an hBN tunnel barrier (2-4 layers) and a floating gate or charge-storage layer (HfO2/Al2O3 or graphene). Fudan's PoX showed 2D-enhanced hot-carrier injection programming in 400 ps at 5 V, with 5.5e6 cycles. Fudan's 2D semi-floating gate showed 10 s retention with ~15 ns writes. The twist is to tune barrier thickness and injection mechanism (direct tunnelling vs hot-carrier) for a DRAM point: retention 10-100 s at 85 C, writes <=10 ns at ~2-3 V, and endurance as the optimisation target rather than retention. The read is non-destructive (gain cell). The cell is 1T, 4F2, BEOL-stackable if 2D films grow on wafers.",
+      "which_bottleneck": "A1 #3 refresh; A1 #1 no capacitor; A1 #8 non-destructive read.",
+      "step_change_claim": "Refresh 156x (10 s) to 1,562x (100 s) less frequent; 1T 4F2 at F = 20 nm = 0.30 Gb/mm2 per layer (0.67x 1b), multiplied by layers or bits per cell. Endurance must rise 1.8e5x to reach 1e12.",
+      "first_principles_estimate": "Retention 10/100 s vs 64 ms -> x156/x1,562 refresh reduction. Endurance gap: 1e12/5.5e6 = 1.8e5x; to 1e15, 1.8e8x. 4F2 at F = 20 nm = 0.30 Gb/mm2/tier. (research/models/B1_cellphysics_estimates.py B1-20)",
+      "evidence": [
+        {
+          "title": "Subnanosecond flash via 2D-enhanced hot-carrier injection (Nature 641:90, 2025)",
+          "url": "https://ideas.repec.org/a/nat/nature/v641y2025i8061d10.1038_s41586-025-08839-w.html",
+          "shows": "400 ps program, non-volatile, >5.5e6 cycles on hBN/HfO2/Al2O3 stack (via search snippet)"
+        },
+        {
+          "title": "Can 2D non-volatile memory take on SRAM? (eeNews Europe)",
+          "url": "https://www.eenewseurope.com/en/can-2d-non-volatile-memory-take-on-sram",
+          "shows": "5 V program; endurance far below SRAM-class (via search snippet)"
+        },
+        {
+          "title": "Fudan 2D semi-floating-gate quasi-nonvolatile memory (IEEE Spectrum)",
+          "url": "https://spectrum.ieee.org/quasinonvolatile-memory-looks-to-fill-gap-between-volatile-and-nonvolatile-memory",
+          "shows": "10 s retention (156x DRAM), ~15 ns write in a vdW stack (CROSS-REF A3)"
+        }
+      ],
+      "novelty": "TWIST on known (Fudan PoX 2025, 2D SFG 2018): retargeting from flash/SRAM replacement toward a DRAM endurance/retention point.",
+      "show_stoppers": "(1) The endurance gap (1.8e5-1.8e8x) may be intrinsic to charge injection through any barrier. (2) Wafer-scale 2D growth and transfer at BEOL temperature with low defectivity. (3) Vt variability of 2D devices for reliable sensing.",
+      "revival_or_workaround": "(1) Direct tunnelling only (no hot carriers) through atomically perfect hBN, which has no dangling-bond trap generation sites; measure endurance vs barrier thickness. (2) Penn State 2DCC MOCVD wafers; Fudan-style direct growth on CMOS (94% yield shown). (3) Write-verify, 1 b/cell.",
+      "million_dollar_demo": "hBN-barrier-thickness splits (2/3/4 layers) on MoS2 or graphene FETs with HfO2 storage. Measure retention at 85 C vs write energy, and endurance at 10 ns writes to 1e12. Budget ~$300k.",
+      "resource_angle": "Mo, S, B, N, C: no Hf (if graphene FG), no Ga. Lower write voltage cuts energy.",
+      "us_buildable": "Penn State 2DCC, Columbia, MIT.nano, Cornell CNF."
+    }
+  ]
+}

@@ -1,0 +1,869 @@
+{
+  "lens": "3D INTEGRATION & PROCESS INNOVATION",
+  "ideas": [
+    {
+      "id": "B3-01",
+      "name": "MSB-DRAM: hierarchical 64-cell bitlines with sense amps bonded under the array",
+      "one_liner": "Cut every bitline into 64-cell segments, gang 8 of them through in-array pass switches onto one hybrid bond, and put the sense amp on a logic wafer underneath: the storage capacitor shrinks from 1.3 um to ~0.34-0.44 um and bond pitch relaxes to ~0.74-1.05 um.",
+      "mechanism": "Keep a conventional 1T1C cell (Si BCAT, or an oxide 4F2 VCT) but break each bitline into 64-cell local segments. Eight local segments in a column each connect through one pass transistor (built in the cell process) to a short global bitline that drops through a single Cu-SiCN hybrid bond to a sense amplifier on a separately made logic periphery wafer bonded face-to-face (Samsung's periphery-under-cell scheme, but at sense-amp granularity). Only the segment holding the activated wordline is switched on, so the sense amp sees ~9 fF instead of ~35 fF. By the A1 sense criterion the capacitor needed falls from 5.4 fF to ~1.4-1.8 fF, a 335-445 nm stub instead of a 1.3 um pillar; alternatively keep the tall capacitor and drop the array voltage toward ~0.4 V. Sense amps, sub-array decoders and I/O leave the cell wafer, lifting array efficiency from ~0.51 to ~0.70.",
+      "which_bottleneck": "A1 #1 capacitor charge wall, #10 array voltage floor and #7 periphery overhead; and the bond-pitch gap inside A1 white space 1 (one bond per 64-128-cell bitline needs 0.26-0.37 um pitch, beyond production hybrid bonding).",
+      "step_change_claim": "Capacitor aspect ratio 62 -> 16-21 (3-4x shorter, no AR-60 capacitor etch); bitline energy per sensed bit 3.9x lower at today's VARY, or ~22x lower at VARY ~0.4 V with the tall capacitor; 1.37x density from array efficiency; bond pitch 0.74-1.05 um instead of 0.26-0.37 um. Cost per bit ~1.1-1.3x 1-beta in 2D (an energy and capacitor win, not a cost win, until stacked).",
+      "first_principles_estimate": "c_cell = (35-8)/(512-64) = 0.060 fF from A1's bitline table. Local BL = 64 x 0.060 + 0.1 = 3.96 fF; global = 8 segments x 1.72 um x 0.15 fF/um + 8 x 0.05 fF off-switch junctions + 1.0 fF bond pad + 1.5 fF SA input = 4.96 fF; Cbl_eff = 8.9 fF (pessimistic 11.8 fF). A1 criterion (VARY 1.06 V, 50 mV after 15% droop) gives Cs >= 0.156*Cbl = 1.39 fF (1.84 fF) -> pillar 335 nm (443 nm) at 21 nm diameter, EOT 0.55 nm (check: the same formula returns 5.45 fF at 35 fF, matching A1's 5.4). Energy Cbl*V^2/2: 35 fF -> 19.7 fJ; 8.9 fF -> 5.0 fJ; keeping 5.4 fF, VARY_min = 0.38 V -> 0.9 fJ at 0.45 V. Bond area 8 x 64 x 1,070 nm2 = 0.548 um2 -> 0.74 um pitch (16:1 -> 1.05 um); SA budget 1.1-2.2 um2, ample for a ~10-transistor offset-cancelled latch at 28-40 nm. Density 0.447 x 0.70/0.51 = 0.614 Gb/mm2. Cost $3,650 cell + $1,800-3,000 periphery + $200 bond = $5,650-6,850 for 1.37x bits -> 1.08-1.31x 1-beta $/bit. (models/B3_3dprocess_estimates.py section B3-01)",
+      "evidence": [
+        {
+          "title": "Samsung reportedly produces sub-10nm 10a DRAM working die using 4F2 and VCT",
+          "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+          "shows": "10a 4F2 VCT with IGZO channel; periphery on a separate wafer joined by W2W hybrid bonding (PUC); 2028 target [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "imec ECTC 2025 wafer-to-wafer hybrid bonding at 300 nm pitch",
+          "url": "https://www.imec-publications.be/entities/publication/6228fcc8-685e-4e72-83ba-3cb478415500/full",
+          "shows": "W2W hybrid bonding with interconnect pitch scaled to 300 nm [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "US 11,430,766 Bonded semiconductor devices having processor and DRAM",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11430766",
+          "shows": "DRAM cell array and peripheral/processor circuits on separate wafers joined by hybrid bonding [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "1-Mbit 3D DRAM with oxide-semiconductor transistors on Si CMOS (IEEE J-EDS 2024)",
+          "url": "https://doaj.org/article/936c403535f14b428f2a5a71bfb5a0ef",
+          "shows": "Oxide vertical-FET cell layers already read by Si CMOS sense amps placed underneath (monolithic precedent for sensing under the array)"
+        }
+      ],
+      "novelty": "NEW combination: hierarchical (local/global) bitlines are old DRAM/SRAM practice and periphery-under-cell bonding is Samsung's 2028 plan; coupling them so the bond count is set by global bitlines while the capacitor is set by 64-cell local bitlines was not found published (A1 white space 1 lacked the mux).",
+      "show_stoppers": "(1) Global-bitline and pass-switch parasitics erode the gain: above ~12 fF effective bitline the stub must grow past ~450 nm. (2) 0.74-1.05 um hybrid-bond pitch with >=99.999% per-bond yield across a 16Gb die (~30M bonds at 8:1). (3) Pass-switch leakage and Vt mismatch add sense-amp offset.",
+      "revival_or_workaround": "(1) Drop to 4:1 mux as bond pitch improves, or switch to B3-22 (lithographic vias, no bond pad, saves ~2 fF). (2) Duplicate bond pads per global bitline at 1.05 um pitch plus column repair. (3) Offset-cancelling (auto-zero) sense amps are cheap on a logic wafer and fit in 1.1-2.2 um2.",
+      "million_dollar_demo": "Months 0-9: 28/40 nm MPW periphery die with offset-cancelled sense amps at 1.05 um pad pitch (~$150k incl. design tools). Months 6-15: a 64-128 kb oxide 1T1C test array with 300-450 nm stub capacitors (ALD ZrO2/TiN in a SiO2 mold) at a university nanofab on 150-200 mm wafers (~$250k). Months 15-22: die-to-wafer hybrid bond at a consortium bonder; measure per-bond yield, signal vs segment length, retention tail and bitline energy (~$200k). ~$600k of hardware and services.",
+      "resource_angle": "Removes the AR-60+ capacitor etch (the heaviest fluorocarbon step and a Lam cryo-etch dependence), needs ~3x less capacitor ALD per wafer, and lets the periphery come from any trailing-node logic fab (not EUV).",
+      "us_buildable": "Periphery: GlobalFoundries Malta NY (22FDX/28 nm) or SkyWater Bloomington MN for a first pass. Cell coupons: Purdue Birck, Georgia Tech IEN, Cornell CNF. Bonding: NY CREATES Albany NanoTech 300 mm line or MIT Lincoln Laboratory 3D integration."
+    },
+    {
+      "id": "B3-02",
+      "name": "Carrier-is-memory: the mandatory carrier wafer of backside-power logic becomes a DRAM wafer",
+      "one_liner": "Every backside-power (PowerVia / A16-class) logic wafer is already bonded face-down to a blank silicon carrier; hybrid-bond a DRAM wafer there instead and each accelerator gets ~45-53 GB at ~0.3 pJ/bit with no TSVs, no interposer and no added footprint.",
+      "mechanism": "In backside power delivery the finished front-side BEOL is flipped and bonded to a carrier wafer, the original substrate is ground away and power is wired in from the back, so the front-side signal wiring ends up facing the carrier. Replace that blank carrier with a full DRAM wafer (1-beta-class 1T1C or an oxide-cell wafer) whose die map matches the logic reticle, and make the bond a Cu-SiCN hybrid bond at 1-2 um pitch instead of a plain dielectric fusion bond. The memory die keeps its sense amps and bank logic but drops pads, PHYs and TSVs; commands, data and memory power cross the bond. The memory wafer stays thick and becomes the heat-spreading side of the stack (pair with B3-03). For a wafer-scale engine, the same move puts a whole 300 mm DRAM wafer (~3.9 TB) under the compute wafer.",
+      "which_bottleneck": "A1 #5 interface energy (HBM 3-4 pJ/bit, 224-448 W per accelerator), A1 #6 HBM TSV/stacking tax, and A2 white space 1 (bits per cleanroom-hour: an ordinary DRAM wafer instead of HBM's ~3x wafer per bit).",
+      "step_change_claim": "Memory interface energy ~12x lower (3.5 -> ~0.28 pJ/bit), saving ~200-410 W per accelerator at 8-16 TB/s; 45-53 GB per 800 mm2 logic die with zero added footprint and no HBM stacking; ~$1.7-2.3/GB of added memory at DRAM-wafer cost.",
+      "first_principles_estimate": "Capacity: 800 mm2 x 0.447 Gb/mm2 = 44.7 GB; with pads/PHY removed (array eff 0.51 -> 0.60) 0.526 Gb/mm2 -> 52.6 GB. Interface: 12 fF (pad + 50 um wire) x (0.75 V)^2 x 0.5 activity = 0.003 pJ/bit + 0.5 mm on-die move 0.10 + streaming activation 0.18 (A1) = 0.28 pJ/bit; at 16 TB/s HBM 448 W -> 36 W (8 TB/s: 224 -> 18 W). Bond ceiling: 1 um pitch = 1e6 bonds/mm2; 2% used as 2 Gb/s lanes = ~4,000 TB/s, so the array and power bind first. Cost: ($3,800 - $120 carrier) / 60 dies / logic yield 0.5-0.7 = $88-123 per good accelerator = $1.7-2.3/GB. Refresh in the heat path: 421 Gb x 0.75 mW/Gb = 0.32 W at 64 ms, 1.26 W at 16 ms (105 C), negligible against ~1 kW. Wafer-scale: 70,686 mm2 x 0.85 x 0.526 Gb/mm2 = 3.9 TB. (models/B3_3dprocess_estimates.py section B3-02)",
+      "evidence": [
+        {
+          "title": "How to power chips from the backside",
+          "url": "https://www.imec-int.com/en/articles/how-power-chips-backside",
+          "shows": "Backside power: device wafer flipped and bonded to a carrier wafer, annealed, then original substrate removed by grinding and etch (via search snippet)"
+        },
+        {
+          "title": "Backside power delivery gears up for 2nm devices",
+          "url": "https://semiengineering.com/backside-power-delivery-gears-up-for-2nm-devices",
+          "shows": "BSPDN needs litho corrections for distortion from extreme thinning and bonding; Intel flow bonds to a Si carrier after front-side metallization (attribution across result set uncertain) (via search snippet)"
+        },
+        {
+          "title": "US 11,676,954 Bonded three-dimensional memory devices with backside source power supply mesh",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11676954",
+          "shows": "Bonded memory-on-CMOS device whose carrier substrate is removed and a backside source power mesh formed; closest found analogue to a memory-side carrier role (via search snippet)"
+        },
+        {
+          "title": "Coverage of Bill Dally at GTC 2026",
+          "url": "https://eu.36kr.com/en/p/4002393085071497",
+          "shows": "HBM4 ~3-4 pJ/bit; ~2.5 pJ/bit for the interposer path; ~0.35-0.4 without interposer (projection) [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "Micron says the silicon gap between HBM and DDR5 is widening",
+          "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+          "shows": "HBM3E needs ~3x the wafer area of DDR5 per bit at the same node [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "NEW combination: hybrid-bonded DRAM-on-logic is known (processor+DRAM bonded-wafer patents; SRAM-on-logic in production) and BSPDN carrier bonding is known; using the carrier slot that BSPDN makes mandatory as the memory wafer was not found (closest: a bonded 3D-memory patent with a backside source mesh).",
+      "show_stoppers": "(1) Wafer-to-wafer compound yield: a bad memory die scraps a >$10k logic die (no known-good-die sort in W2W). (2) The hybrid bond must survive BSPDN backside processing (grind to ~1 um, nano-TSVs, backside metal) and the wafer distortion that bonding/thinning already causes for backside lithography. (3) The memory sits in the heat path at 85-105 C.",
+      "revival_or_workaround": "(1) Design the memory die for >=99% die yield with 10-20% spare rows/banks and ECC, and ship capacity-binned parts (e.g., a 48 GB bin from a 53 GB design); DRAM wafers already yield ~90%. (2) The carrier bond already has to survive backside processing; Cu-SiCN bonds anneal at <=350-400 C, within DRAM BEOL limits. (3) Refresh at 105 C costs only ~1.3 W per layer; B3-03 cooling or oxide cells remove even that.",
+      "million_dollar_demo": "Real BSPDN wafers need a foundry partner after the seed. For ~$350k: die-to-wafer hybrid bond a DRAM test die (or a university oxide-cell array) face-to-face onto a 28 nm MPW logic die at 2-6 um pitch, thin the logic side below 5 um to emulate BSPDN, and measure bond yield, data-path pJ/bit and retention vs temperature; plus a ~$50k thermo-mechanical simulation of a 1 kW BSPDN stack with a memory carrier.",
+      "resource_angle": "Turns an inert carrier wafer into product; removes interposer silicon and HBM's ~3x wafer area per bit, i.e., more GB per cleanroom-hour (A2's binding constraint).",
+      "us_buildable": "Intel Hillsboro OR / Chandler AZ (18A PowerVia + Foveros Direct), TSMC Arizona (A16-class later), Micron Boise ID or Manassas VA for memory wafers, NY CREATES Albany for bonding R&D."
+    },
+    {
+      "id": "B3-03",
+      "name": "Coolant-backed memory wafer: microchannels in the memory layer of a memory-on-logic stack",
+      "one_liner": "Etch microfluidic channels into the back of the memory wafer that sits on top of the logic, so the DRAM rides ~10-30 K above coolant instead of at GPU junction temperature, and ordinary Si DRAM can refresh every ~0.5-1 s instead of every 16-64 ms.",
+      "mechanism": "In a face-to-face memory-on-logic stack (B3-02, or any bonded DRAM-over-logic), etch 100-200 um deep microchannels into the back of the thick memory wafer, away from its devices, and run warm water through them. The memory devices then sit only ~50 um of silicon plus their own BEOL from the coolant, while the logic's heat crosses the memory on its way out. With in-silicon microchannels of the kind Microsoft and Corintis demonstrated in 2025, the memory layer runs ~9-28 K above coolant instead of at the 70-105 C of a cold-plate GPU junction. DRAM retention roughly doubles for every 10 C drop, so a Si 1T1C array at ~45 C holds a 64 ms tail cell for ~1 s.",
+      "which_bottleneck": "A1 #3 leakage tail -> refresh energy and refresh busy-time; the thermal blocker in A1 #5 (retention collapses on hot logic); A2's use-phase energy (~16x fab energy per GB).",
+      "step_change_claim": "Refresh energy and refresh busy-time 8-16x lower for ordinary Si DRAM (64 ms -> 0.5-1 s; 7.6% -> 0.5-0.9% of time), and standard DRAM becomes viable directly on 1 kW logic without switching to oxide cells.",
+      "first_principles_estimate": "q = 1,000 W / 8 cm2 = 1.25 MW/m2. Memory rise = q/h + q*(50 um / 148 W/mK) + q*(5 um / 3 W/mK): h = 1e5 W/m2K -> 12.5 + 0.4 + 2.1 = 15 K (h 5e4 -> 27.5 K; 2e5 -> 8.8 K); logic ~4 K hotter. Coolant at 30 C -> memory ~39-58 C. Retention gain 2^((85-T)/10): 45 C -> 16x (1,024 ms refresh, busy 7.6% -> 0.47%); 55 C -> 8x; 65 C -> 4x. Hot spots at 3-5x mean flux push local memory 40-60 K above coolant: handle with per-bank temperature-compensated refresh. (models/B3_3dprocess_estimates.py section B3-03)",
+      "evidence": [
+        {
+          "title": "Microsoft microfluidics: liquid cooling inside AI chips",
+          "url": "https://news.microsoft.com/source/features/innovation/microfluidics-liquid-cooling-ai-chips/",
+          "shows": "Channels etched on the back of the silicon; up to 65% lower maximum silicon temperature rise in a GPU; up to 3x better heat removal than cold plates (lab, workload-dependent); with Corintis (via search snippet)"
+        },
+        {
+          "title": "Microsoft: in-chip microfluidics improves silicon cooling 3X",
+          "url": "https://insidehpc.com/2025/09/microsoft-in-chip-microfluidics-improves-silicon-cooling-3x/",
+          "shows": "Corroborates Microsoft in-chip microfluidic cooling, ~3x vs cold plates (via search snippet)"
+        },
+        {
+          "title": "Bumpless WOW thermal resistance (Tokyo Tech news)",
+          "url": "https://www.titech.ac.jp/english/news/2017/038282.html",
+          "shows": "Removing bumps between stacked DRAM layers cut total thermal resistance from 1.54 to 0.46 K cm2/W, showing stack thermal design changes how much DRAM can sit in a hot stack"
+        },
+        {
+          "title": "Refresh energy study (IEEE TC)",
+          "url": "https://terpconnect.umd.edu/~blj/papers/ieeetc65-1.pdf",
+          "shows": "Refresh >20% of DRAM energy at 32Gb [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST on known: embedded microfluidic cooling is published (Microsoft/Corintis 2025 and earlier academic work); placing the channels in the memory wafer of a memory-on-logic stack, so the memory runs near coolant temperature and refresh collapses, was not found.",
+      "show_stoppers": "(1) Channels weaken the wafer and can clog; manifold sealing at package level. (2) Memory over 3-5x hot spots still sees 60-90 C. (3) Leak, corrosion and condensation risk inside a package.",
+      "revival_or_workaround": "(1) Topology-optimized channels (Corintis-style), channel depth <=40% of wafer thickness. (2) Temperature-zoned refresh, or put SRAM/cache rather than DRAM banks over hot spots. (3) Warm-water loops (30-45 C) avoid condensation; dielectric coolants as a fallback.",
+      "million_dollar_demo": "~$200k: bond (or adhesively attach) a commercial DRAM die face-down on a resistive-heater 'logic' test die driven at 100-150 W/cm2; DRIE channels into the DRAM die's back at a university fab; map retention tails and refresh-failure rate vs heat flux and coolant temperature with an FPGA tester. Repeat with an oxide-cell array as comparison.",
+      "resource_angle": "Cuts refresh (use-phase) energy, which dominates lifetime energy per GB; warm-water cooling avoids chillers; no new materials.",
+      "us_buildable": "Georgia Tech IEN and Packaging Research Center, Stanford SNF, Purdue Birck (DRIE and bonding); assembly later at Amkor Arizona."
+    },
+    {
+      "id": "B3-04",
+      "name": "Coaxial 4F2 2T0C: the storage node is the core gate of a read-channel shell",
+      "one_liner": "Put a whole capacitor-less gain cell in one vertical pillar: a metal storage-node core wrapped by an oxide read channel, with the write transistor stacked on top, so a 2T0C fits 4F2 per tier and matches 1-beta density at 4 bit-tiers with single-exposure ArF litho.",
+      "mechanism": "Each cell is one pillar on a 2F x 2F grid. The core is a metal storage node (~20 nm diameter, ~150 nm tall) wrapped by a gate dielectric and an ALD IGZO/IGO shell; the shell is the read transistor's channel and the core is its gate (an inverted channel-all-around device), contacted by a source plane at the bottom and a read-bitline ring at the top. Above the core sits the write transistor: a short vertical oxide channel gated by a write-wordline ring, linking the write bitline at the pillar top to the core. Four line levels (source rows, read-bitline columns, write-wordline rows, write-bitline columns) each run at 2F pitch at different heights, so the 2T0C occupies 4F2 per tier. Tiers stack monolithically at <=400 C over CMOS-under-array.",
+      "which_bottleneck": "A1 #1 (no capacitor at all), #2 (3D per-tier footprint, the reason 2T0C needs b x N >= 15 at F = 40 nm in A3), #3 (oxide leakage gives long retention), #8 (non-destructive read).",
+      "step_change_claim": "Per-tier density 2.5-3.4x better than A3's 10F2 vertical 2T0C: 1-beta parity at bits x tiers = 4.1 at F = 40 nm (no EUV, no multipatterning) vs 14; 2 bits x 8 tiers at F = 40 nm = 3.9x 1-beta density and ~2.5x bits per wafer-dollar before yield.",
+      "first_principles_estimate": "Density = 1e12/(4F2) x 0.70 (CMOS-under-array): F = 40 nm -> 0.109 Gb/mm2 per tier-bit (A3 10F2 at eff 0.508: 0.032). Break-even b x N: 4.1 (F = 40), 2.3 (F = 30), 1.0 (F = 20); at equal efficiency 0.508: 5.6 vs 14.1. Cost (base wafer 0.55 x $3,800 at F = 40 plus $475/tier): 2b x 8 = 1.75 Gb/mm2 at $5,890/wafer -> 2.53x bits/$; F = 30, 2b x 4 -> 2.9x. Storage node C = 3.9 eps0 x pi x 20 nm x 150 nm / 2 nm EOT = 0.163 fF (~1,000 e/V). Retention at 200 mV droop: 3,250 s at 10 zA total leakage, 325 s at 100 zA, 33 s at 1 aA; 2-bit (50 mV) 4x shorter. Read: shell perimeter ~94 nm x 10 uA/um = 0.94 uA -> 100 mV on 9 fF in 0.95 ns. Write-wordline kickback 75-211 mV for 0.005-0.015 fF coupling. (models/B3_3dprocess_estimates.py section B3-04)",
+      "evidence": [
+        {
+          "title": "Chinese researchers hail breakthrough in DRAM-like cells (IME CAS 4F2 dual-gate 2T0C)",
+          "url": "https://www.tomshardware.com/pc-components/dram/chinese-researchers-hail-breakthrough-in-dram-like-cells-which-could-be-used-in-embedded-or-3d-stacked-memory-absence-of-manufacturing-detail-casts-doubt-on-mass-production",
+          "shows": "IME CAS 4F2 dual-gate 2T0C capacitor-less cell: channel height 120 nm, ~6 nm ALD IGZO channel, ~40 nm effective gate length; commercial viability unassessed (via search snippet)"
+        },
+        {
+          "title": "Vertically stacked dual-gate IGZO transistors for 2T0C (PMC-hosted paper)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12686015",
+          "shows": "Upper and bottom vertically stacked DG transistors fabricated in a single process flow; retention 350 s ('1') / >500 s ('0'); 4-bit multi-level operation; IMECAS authorship not confirmed (via search snippet)"
+        },
+        {
+          "title": "Nano-Micro Letters 2026 review: oxide semiconductors for memory",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12765776/",
+          "shows": "IMECAS 2021 first vertical channel-all-around IGZO FET in a 2T0C cell, PEALD ~250 C [CROSS-REF from B2-materials log; not re-opened by B3]"
+        },
+        {
+          "title": "imec IEEE EDL 2025 IGZO 2T0C",
+          "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+          "shows": "40 nm Lg 2T0C: >200 s at 95 C, >1e12 cycles, <10 ns write [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Ultrathin oxide 2T0C DRAM (Adv. Funct. Mater. 2026)",
+          "url": "https://sigroup.sjtu.edu.cn/files/AdvFunctMater_UltrathinOxide_DRAM_2026.pdf",
+          "shows": "IGO 2T0C with HfO2 passivation >30,000 s (100x vs unpassivated), 10 ns write, 4-bit [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST on IMECAS: IME CAS has shown a 4F2 dual-gate 2T0C with vertically stacked transistors. The twist is the coaxial inversion (the storage node as the core gate of a read shell, so the read transistor is the storage capacitor and its full channel area sets C_SN), four orthogonal line levels, and monolithic multi-tier stacking over CMOS. Not found in this form.",
+      "show_stoppers": "(1) Kickback and coupling on a 0.16 fF node: the falling write wordline couples 75-211 mV. (2) ~1,000 electrons per volt makes 2+ bits/cell sensitive to single trap events and PBTI drift. (3) Four line levels at 2F pitch need ~F/4 (10 nm at F = 40) vertical overlay between levels.",
+      "revival_or_workaround": "(1) Drop the write bitline before the write wordline falls, use a negative wordline hold, or subtract the kick with a dummy reference cell; a 300 nm core doubles C_SN to 0.33 fF. (2) Ship 1 bit/cell first (still 2x 1-beta at 8 tiers) and add write-verify 2-bit once drift data exist; use H-resilient In-poor IGZO. (3) Pillar-first, self-aligned flow where line levels are set by deposition thickness and only the hole lattice is lithographic.",
+      "million_dollar_demo": "~$350k at a university nanofab: single-tier coax cells at F = 60-100 nm (e-beam or i-line plus spacer), ALD IGZO; measure read current, C_SN, retention at 25-125 C, kickback, 2-bit write-verify. Then a 2-tier stack and a 64 x 64 array with an FPGA tester (~$150k). Decisive metric: >=100 s at 85 C with <=50 mV kick after compensation.",
+      "resource_angle": "No capacitor module, no EUV at F = 40 nm, no single-crystal Si; In/Ga in milligrams per wafer; Ga-free channels (ITZO/ZTO, B2-07) remove the Chinese gallium licence risk.",
+      "us_buildable": "Purdue Birck, Georgia Tech IEN, Notre Dame NDnano, Penn Singh Center; 300 mm path at NY CREATES Albany."
+    },
+    {
+      "id": "B3-05",
+      "name": "Mirror-VCT: 4F2 oxide cells above and below one shared bitline plane (2F2 effective)",
+      "one_liner": "Samsung's 4F2 VCT already flips the cell wafer to bond its periphery; build a second, mirror-image VCT layer on the exposed backside of the same bitline plane and every bitline serves two cells, doubling density with DUV-only patterning.",
+      "mechanism": "Build a 4F2 vertical-channel 1T1C array (deposited IGZO/IGO pillars, ring wordlines) over a buried bitline plane, with capacitors on top, as in Samsung's VCT. Bond that face to the periphery wafer (the periphery-under-cell flow already flips the cell wafer), remove the handle down to the back of the bitline plane, and build a mirror-image 4F2 VCT array plus capacitors from the backside at <=400 C. Each bitline now connects cells above and below it, so one bitline layer, one set of bitline contacts and one periphery wafer serve two cell layers: 2F2 effective per bit. The backside module is all-deposited (ALD oxide channel, ALD ZrO2 MIM), so it never exceeds BEOL temperatures.",
+      "which_bottleneck": "A1 #4 litho-bound scaling and capital (density from structure, not wavelength), A1 #2 (a two-layer 3D step without a new cell type).",
+      "step_change_claim": "2x density over single-sided 4F2: 0.88 Gb/mm2 (1.96x 1-beta) at F = 20 nm with DUV multipatterning only, or 1.62 Gb/mm2 (3.6x) at F = 14.7 nm; ~1.4-1.5x bits/$ vs single-sided VCT.",
+      "first_principles_estimate": "Per side 1e12/(4F2) x 0.70: F = 20 -> 0.44 Gb/mm2; F = 14.7 -> 0.81. Mirrored: 0.88 / 1.62 Gb/mm2. If the backside VCT + capacitor module adds 35-45% to the cell+periphery stack cost, bits/$ = 2/(1.35-1.45) = 1.38-1.48x vs single-sided. Backside overlay must be <= ~F/4 = 5 nm (F = 20) after bond-induced distortion. Bitline load per unit length doubles, so halve the segment length or combine with B3-01. (models/B3_3dprocess_estimates.py section B3-05)",
+      "evidence": [
+        {
+          "title": "Samsung reportedly produces sub-10nm 10a DRAM working die using 4F2 and VCT",
+          "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+          "shows": "10a 4F2 VCT with IGZO channel; periphery on a separate wafer joined by W2W hybrid bonding (PUC); 2028 target [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "2026 VLSI Technical Tipsheet",
+          "url": "https://www.vlsisymposium.org/wp-content/uploads/2026/04/2026-VLSI-Technical-Tipsheet-REVISED-FINAL-NO-IMAGES-4.24.26.docx",
+          "shows": "SK hynix 4F2 VG with die thinning for wafer-bonded structure; Samsung 16-tier VS-DRAM [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Backside power delivery gears up for 2nm devices",
+          "url": "https://semiengineering.com/backside-power-delivery-gears-up-for-2nm-devices",
+          "shows": "BSPDN needs litho corrections for distortion from extreme thinning and bonding; Intel flow bonds to a Si carrier after front-side metallization (attribution across result set uncertain) (via search snippet)"
+        },
+        {
+          "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025 29.1)",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "Oxide channels can be formed in deposited molds at low temperature (all tiers at once), supporting an all-deposited backside cell module"
+        }
+      ],
+      "novelty": "TWIST: double-sided cell arrays sharing one bitline plane, enabled by the flip-and-thin that 4F2 periphery-under-cell already requires; not found published.",
+      "show_stoppers": "(1) Backside overlay to the buried bitline after bonding/thinning distortion (<=4-5 nm). (2) Low-temperature backside capacitor quality (ZrO2 at <=400 C crystallizes poorly, lower k). (3) Thermal and hydrogen budget of the front IGZO during backside processing.",
+      "revival_or_workaround": "(1) High-order distortion correction being developed for BSPDN backside litho; or relax F to 25-30 nm and recover density with B3-01 short bitlines. (2) B3-01 short bitlines cut the backside cell's need to ~1.4 fF. (3) Al2O3 hydrogen barriers between levels; In-poor IGZO; B3-20 cold bonding.",
+      "million_dollar_demo": "~$300k: 150 mm coupons at a university fab: bitline plane on an oxide stack, front IGZO VCT pillars at F = 50-100 nm, bond to a carrier, thin and build backside IGZO VCTs; measure backside overlay, front-cell drift after backside processing, and both cells' Ion/Ioff through the shared bitline.",
+      "resource_angle": "No EUV at F = 20 nm; halves bitline and periphery-wafer area per bit; oxide channels with Ga-free options.",
+      "us_buildable": "Cornell CNF, MIT.nano, Penn Singh Center for coupons; NY CREATES Albany for 300 mm bonding and thinning."
+    },
+    {
+      "id": "B3-06",
+      "name": "Ge-free dopant-contrast superlattice (Si / Si:B) for 3D silicon DRAM",
+      "one_liner": "Replace the strained Si/SiGe superlattice of 3D Si DRAM with lattice-near-matched Si / heavily-boron-doped Si layers removed by dopant-selective etching, cutting misfit strain ~5-16x and Ge use 5-16x (or to zero).",
+      "mechanism": "3D silicon DRAM (Samsung VS-DRAM, SK hynix, imec) starts from an epitaxial Si/Si0.8Ge0.2 superlattice whose SiGe layers are later etched out to free horizontal Si channels; imec's 120-bilayer stacks still show dislocations because the 0.84% mismatch accumulates strain, and A2 puts fleet-scale Ge demand at 6-38% of refined supply. Instead grow intrinsic Si alternating with heavily boron-doped Si (1-3e20 cm-3, optionally carbon co-doped, or with ~1-4% Ge to null the small lattice contraction) by the same low-temperature RPCVD. Remove the sacrificial layers through the slit with dopant-selective chemistry: an HF/HNO3/CH3COOH etch that attacks heavily doped Si far faster than intrinsic Si, or selective electrochemical porosification of the p+ layers followed by a fast porous-Si strip. The intrinsic layers become channels; boron tails matter only until the sacrificial layers are gone.",
+      "which_bottleneck": "A1 #2 (no manufacturable 3D cell: epitaxial stack defects), A2 germanium chokepoint (China ~2/3 of refined Ge; Ga/Ge export-ban suspension ends 2026-11-27).",
+      "step_change_claim": "Misfit 0.84% -> 0.05-0.16% (strain energy 30-260x lower), so tier count is no longer strain-limited; Ge per wafer 5-16x lower, or zero.",
+      "first_principles_estimate": "Misfit: Si0.8Ge0.2 = 0.2 x 4.18% = 0.84%. B lattice contraction beta ~5.2e-24 cm3/atom [UNVERIFIED-PK] -> 0.052% at 1e20, 0.156% at 3e20; strain energy (prop. to eps^2) x0.0039-0.035. Ge to null it: 1.24-3.7% (16-5x less than 20%). B diffusion D = 0.76 exp(-3.46 eV/kT): 650 C epi for 10 h -> sqrt(Dt) = 0.6 nm (sharp); a 1,000 C, 10 s spike -> 3.9 nm, so sacrificial removal must come before any >900 C step. Selectivity needed for a 300-1,000 nm lateral recess with <=5 nm channel loss: >=100:1. (models/B3_3dprocess_estimates.py section B3-06)",
+      "evidence": [
+        {
+          "title": "Epitaxial growth of up to 120 Si/SiGe bilayers for 3D DRAM",
+          "url": "https://semiengineering.com/tag/light-scattering/",
+          "shows": "120 pairs of 65 nm Si / 10 nm Si0.8Ge0.2 on 300 mm [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "ECS webinar Q&A: epitaxial Si/SiGe multilayers",
+          "url": "https://www.electrochem.org/ecsnews/ecs-webinar-qa-epitaxial-si-sige-multilayers-for-novel-logic-and-memory-devices",
+          "shows": "3D-DRAM Si/SiGe superlattice still shows edge dislocations and embedded defects [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "US 9,048,301 Nanowire MOSFET with support structures for source and drain",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9048301",
+          "shows": "Boron-doped Si used as an etch-stop layer beneath a SiGe sacrificial layer (B-doped Si as etch-contrast layer; SiGe remains the sacrificial standard) (via search snippet)"
+        },
+        {
+          "title": "SK hynix achieves yield in five-layer 3D DRAM development",
+          "url": "https://www.guru3d.com/story/sk-hynix-achieves-yield-in-fivelayer-3d-dram-development",
+          "shows": "5-layer 3D DRAM 56.1% yield; 32-192 layers needed [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST: dopant-selective etching and p+ porosification are decades-old MEMS/SOI techniques [UNVERIFIED-PK]; my search found SiGe as the universal sacrificial layer in stacked-channel patents and B-doped Si only as an etch stop, not as a Ge-free sacrificial superlattice for 3D DRAM.",
+      "show_stoppers": "(1) Etch selectivity of 1e20 B vs intrinsic Si may fall below 100:1 over 0.3-1 um lateral recesses. (2) Boron surface segregation smears interfaces and leaves 1e17-1e18 B in channels, shifting Vt and raising leakage. (3) Porosification needs a current path to every buried p+ layer.",
+      "revival_or_workaround": "(1) Raise contrast with 3e20 B plus C, or use bias-selective electrochemical etch stops (n/p+ pairs). (2) Carbon co-doping, lower growth temperature, thin intrinsic spacers, and counter-doping of channels. (3) Anodize from the slit with the substrate as back contact; intrinsic Si conducts enough at mA/cm2 anodization densities [ESTIMATE].",
+      "million_dollar_demo": "~$250k: buy or grow 10-40-pair Si/Si:B superlattices (university RPCVD or epi service), etch slits, measure per-layer HNA and anodization recess rates, SIMS boron profiles, XRD/TEM dislocations vs 20-120 pairs; then build floating-body or 1T1C test transistors on the freed layers.",
+      "resource_angle": "Cuts the 3D-DRAM germanium exposure A2 identified (6-38% of world refined Ge at fleet scale) by 5-16x or to zero, removing a Chinese-controlled input.",
+      "us_buildable": "University RPCVD epitaxy (Princeton, UT Austin, MIT.nano) or an epi service; characterization at NIST CNST and Brookhaven CFN."
+    },
+    {
+      "id": "B3-07",
+      "name": "Etch-compensated graded tier stack: uniform lateral recess by composition grading",
+      "one_liner": "Pre-cancel the depth-dependent lateral recess that limits 3D DRAM by grading each tier's sacrificial-film composition so its etch rate rises exactly where etchant supply falls: zero added masks, ~2x taller decks.",
+      "mechanism": "3D DRAM sets each cell's channel and capacitor length by a lateral recess from a vertical hole or slit, and Lam notes that recess sizes vary along the stack because the etchant depletes with depth. Instead of fighting that with chemistry, pre-compensate at deposition: ramp each tier's sacrificial composition with depth (Ge fraction in SiGe, Si/N ratio and hydrogen content in SiN, or boron level in B3-06 layers) so the intrinsic etch rate rises where etchant supply falls. Calibrate the profile once per stack recipe from per-tier TEM; the only tool knob is a gas-flow ramp. Finish with a few tens of lateral atomic-layer-etch cycles to trim the last nanometres uniformly.",
+      "which_bottleneck": "A1 #2 (lateral recess uniformity named by Lam; tier economics) and A1 #1 (Cs spread sets the worst-case cell, because Cs scales with horizontal capacitor length).",
+      "step_change_claim": "Recess spread +-12.5% -> +-2.5%: 8% smaller cell pitch along the recess and 11% higher worst-case Cs at 64 tiers; or ~2x taller deck (~130 vs ~66 tiers) per hole etch at equal uniformity, halving decks and HAR etches.",
+      "first_principles_estimate": "Diffusion-reaction (Thiele) model: rate(bottom)/rate(top) = 1/cosh(H/lambda). Calibrating a 25% drop at H = 4 um gives lambda = 5.0 um; then 8 um (133 tiers) -> 0.39x (grading range 2.6x) and 12 um -> 0.18x (5.5x). With a 600 nm recess plus 60 nm spacing, pitch 735 nm at +-12.5% vs 675 nm at +-2.5% (-8.2%); worst-case Cs 0.875 -> 0.975 of nominal. ALE trim of 20 nm at 0.5 nm/cycle = 40 cycles (600 nm by ALE alone would take 1,200 cycles). (models/B3_3dprocess_estimates.py section B3-07)",
+      "evidence": [
+        {
+          "title": "Baby Steps Toward 3D DRAM",
+          "url": "https://semiengineering.com/baby-steps-towards-3d-dram/",
+          "shows": "Lam: lateral recess etch is hard because recess sizes vary along the stack; horizontal capacitor; Samsung 3D ~2030 [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "Samsung 16-layer VS-DRAM (cnyes)",
+          "url": "https://hao.cnyes.com/post/269690",
+          "shows": "Samsung 16-tier VS-DRAM chip-level R/W; Cs rose ~linearly with horizontal capacitor length [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Epitaxial growth of up to 120 Si/SiGe bilayers for 3D DRAM",
+          "url": "https://semiengineering.com/tag/light-scattering/",
+          "shows": "120 pairs of 65 nm Si / 10 nm Si0.8Ge0.2 on 300 mm [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025 29.1)",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "SiO2/SiN stack with SiN replaced by InGaZnO forms horizontal transistors in all tiers at once; Ion >30 uA, Ioff <1 aA, 8 layers [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST: compositional grading is routine in epitaxy; using it as a deliberate depth-dependent etch-rate map to cancel transport-limited lateral recess in 3D DRAM or NAND molds was not found.",
+      "show_stoppers": "(1) Composition changes other film properties (stress, hydrogen, k), so grading can create new non-uniformities. (2) Run-to-run transport variation may exceed the compensable systematic part. (3) Pattern-density effects across the die make depletion two-dimensional.",
+      "revival_or_workaround": "(1) Grade a minor component (<=5% swing) and use H-lean films (B3-17) so stress stays in budget. (2) In-line scatterometry on test slits with closed-loop recipe tuning per lot. (3) Memory arrays are periodic, so slit pitch is constant; ALE final trim absorbs the rest.",
+      "million_dollar_demo": "~$200k: PECVD 32-64-pair SiO2/SiN stacks with linear and exponential SiH4/NH3 ramps, DRIE slits, hot-phosphoric recess, FIB/TEM per-tier recess maps; repeat with SiGe through an epi partner. Go/no-go: +-3% recess over 64 tiers.",
+      "resource_angle": "No new materials or masks; fewer decks and HAR etches cut fluorocarbon gas use and etch-tool time.",
+      "us_buildable": "Georgia Tech IEN, UT Austin TMNF, Stanford SNF (PECVD, DRIE, FIB); TEM at Oak Ridge CNMS or NIST CNST."
+    },
+    {
+      "id": "B3-08",
+      "name": "Vt-coded in-stack tier decoder: kill the staircase so 3D DRAM lines can be short",
+      "one_liner": "Replace the 3D-NAND staircase (~0.5 um per tier) with a binary decoder built into the stack: each tier's line passes 2*log2(N) select gates whose depletion/enhancement pattern encodes the tier number, shrinking line-end area 12-21x.",
+      "mechanism": "3D NAND reaches each tier's horizontal line through a staircase whose length grows with tier count; DRAM wants short lines (sub-page activation, low RC), and at 64 tiers a ~32 um staircase is longer than a 512-cell line. Instead, route every tier's horizontal line under 2*log2(N) vertical select-gate pillars before it merges into one common vertical contact. In each tier, each select region is permanently depletion-mode (always on) or enhancement-mode according to that tier's binary address, so driving the pillars with an address and its complement opens exactly one tier's path. The code is written per tier during deposition with one coarse (um-scale, i-line) block mask, or, as in Macronix-style LSM for 3D NAND, by programming charge-trap select gates once at test.",
+      "which_bottleneck": "A1 #2 (3D tier area and economics) and A1 #8 (page overfetch: short wordlines enable sub-page activation).",
+      "step_change_claim": "Line-termination area 12x smaller at 64 tiers (32 um staircase -> 2.7 um) and 21x at 128; line-end overhead for a 128-cell line 83% -> 30%, enabling 4x shorter wordlines and correspondingly less activation overfetch.",
+      "first_principles_estimate": "Staircase = N x 0.5 um [ASSUMPTION]; decoder = 2*ceil(log2 N) x 0.2 um + 0.3 um contact: N = 64 -> 2.7 um, N = 128 -> 3.1 um. Overhead for a 128-cell (6.4 um) line: 32/(32+6.4) = 83% -> 2.7/(2.7+6.4) = 30%; for 512 cells 56% -> 10%. Select-string RC: 12 x ~2 kOhm (wide oxide TFTs at the block edge) x 50 fF = 1.2 ns. Coding cost by mask: 64 coarse exposures at ~$5-10 [ASSUMPTION] = $320-640/wafer; by one-time programming: zero masks. (models/B3_3dprocess_estimates.py section B3-08)",
+      "evidence": [
+        {
+          "title": "US 8,867,280 3D stacked NAND flash array operable by LSM",
+          "url": "https://patents.google.com/patent/US8867280",
+          "shows": "Layer selection by multi-level operation (LSM): string-select transistor threshold-voltage patterns choose stacked layers; minimizes SSL count as layers grow (via search snippet)"
+        },
+        {
+          "title": "US 9,412,462 Determining threshold voltages of string selection transistors in a 3D stacked array",
+          "url": "https://patents.google.com/patent/US9412462",
+          "shows": "In LSM, SSL transistor Vts in adjacent SSLs are reversely distributed to select layers (via search snippet)"
+        },
+        {
+          "title": "Baby Steps Toward 3D DRAM",
+          "url": "https://semiengineering.com/baby-steps-towards-3d-dram/",
+          "shows": "Lam: lateral recess etch is hard because recess sizes vary along the stack; horizontal capacitor; Samsung 3D ~2030 [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025 29.1)",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "SiO2/SiN stack with SiN replaced by InGaZnO forms horizontal transistors in all tiers at once; Ion >30 uA, Ioff <1 aA, 8 layers [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST on known: Macronix-style layer selection by multi-level select-transistor Vt exists for 3D NAND; a permanent, deposition-coded binary tier decoder used to remove the staircase so 3D DRAM lines can be short was not found.",
+      "show_stoppers": "(1) Series resistance of 12 select gates on read-current paths slows sensing. (2) The depletion/enhancement Vt split must hold over temperature and lifetime in oxide TFTs (PBTI shifts enhancement devices). (3) Per-tier coding masks add cost and overlay steps.",
+      "revival_or_workaround": "(1) Use the decoder on wordlines (capacitive loads) and keep bitlines vertical; widen select devices, which sit outside the array. (2) Large Vt split (>1.5 V, depletion by an In-rich cap layer) with margin for 0.5 V drift. (3) One-time-programmable charge-trap select gates (LSM-style) remove the masks.",
+      "million_dollar_demo": "~$150k: an 8-16-tier oxide-TFT stack at a university fab with 3-4-bit decoders on dummy lines; measure tier selectivity, unselected-path leakage, RC, and Vt split after 125 C bake. Patent the deposition-coded variant early.",
+      "resource_angle": "Fewer staircase trim/etch cycles and less area per bit; no new materials.",
+      "us_buildable": "Cornell CNF, Purdue Birck, Notre Dame NDnano."
+    },
+    {
+      "id": "B3-09",
+      "name": "Sandwich stack: Smart-Cut single-crystal sense layers every 16 oxide tiers",
+      "one_liner": "Interleave a transferred single-crystal Si layer with 400 C CMOS sense amps every 16 oxide-channel tiers, so every vertical bitline is 16 cells tall and the in-tier capacitor shrinks from ~600 nm to ~30-60 nm.",
+      "mechanism": "Build oxide-channel 3D DRAM tiers (horizontal or vertical-channel 1T1C or 2T0C) in groups of 16, then bond a ~50 nm single-crystal Si layer on top by Smart Cut (H-implanted donor, low-temperature bond, split) and build n- and p-channel transistors in it at <=400 C, as CEA-Leti showed with full 2.5 V n&p SOI MOSFETs at 400 C (IEDM 2025, nanosecond laser anneal plus solid-phase regrowth). That layer holds the local sense amps, tier decoders and muxes for the 16 tiers below; the next 16 tiers go on top. Each vertical bitline is only 16 cells tall (~2-4 fF), so a 1T1C cell needs only ~0.3-0.6 fF, which fits in a ~30-60 nm lateral capacitor inside the tier, shrinking the per-tier footprint from A1's ~0.03 um2 base case to ~0.01 um2. Global bitlines run up to a bonded or top-level periphery.",
+      "which_bottleneck": "A1 #1 and #2 together (the horizontal capacitor sets the 3D footprint), A1 #10 (short bitlines allow low VARY), and the weak p-type oxide that limits in-tier sensing (B2-08).",
+      "step_change_claim": "In-tier capacitor 600 nm -> 31-59 nm; per-tier footprint ~3x smaller; 64 tiers -> ~4.5 Gb/mm2 (10x 1-beta) and ~5-7x bits/$ before yield.",
+      "first_principles_estimate": "Vertical BL: 16 x 0.08 fF + 1 um x 0.2 fF/um + 0.5 fF SA = 1.98 fF (30:1 mux -> 3.78 fF). A1 criterion -> Cs 0.31 (0.59) fF. In-tier MIM with ~160 nm perimeter at EOT 0.55 nm = 0.010 fF/nm -> 31 (59) nm long. Footprint 50 x 200 nm -> 0.070 Gb/mm2 per tier (eff 0.70); 64 tiers 4.48 Gb/mm2. Cost $2,000 base + 64 x $30-45 + 4 sense layers x $400-700 = $5,520-7,680 -> 5.0-6.9x bits/$ before yield. Sense area: one ~0.3 um2 latch per 30 vertical bitlines -> 30:1 mux. Smart-Cut H dose ~5e16 cm-2 vs a 1.4e11 cm-2 donor budget: the barrier must block 99.9997%. (models/B3_3dprocess_estimates.py section B3-09)",
+      "evidence": [
+        {
+          "title": "3D sequential integration closer to commercialisation thanks to CEA-Leti",
+          "url": "https://www.electronicsworld.co.uk/3d-sequential-integration-closer-to-commercialisation-thanks-to-cea-leti/874/",
+          "shows": "IEDM 2025: fully functional 2.5 V n&p SOI MOSFETs at 400 C using nanosecond laser anneal and solid-phase epitaxial regrowth (which result-set URL carried this fact is uncertain) (via search snippet)"
+        },
+        {
+          "title": "CEA-Leti demonstrates CMOS device fabrication at 500 C for 3D monolithic integration",
+          "url": "https://www.eejournal.com/industry_news/cea-leti-scientists-demonstrate-cmos-device-fabrication-at-500c-paving-the-way-to-high-performance-3d-monolithic-cmos-integration/",
+          "shows": "CoolCube: ring oscillators and SRAM bitcells processed at 500 C (VLSI 2020); bottom devices tolerate <=500 C for a couple of hours (via search snippet)"
+        },
+        {
+          "title": "Six breakthroughs in 3D sequential integration highlighted in IEDM paper",
+          "url": "https://www.eenewseurope.com/en/six-breakthroughs-in-3d-sequential-integration-highlighted-in-iedm-paper/",
+          "shows": "Smart Cut transfer of a crystalline Si layer onto a processed FD-SOI bottom level as the top-channel route (attribution within result set uncertain) (via search snippet)"
+        },
+        {
+          "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025 29.1)",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "SiO2/SiN stack with SiN replaced by InGaZnO forms horizontal transistors in all tiers at once; Ion >30 uA, Ioff <1 aA, 8 layers [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Samsung 16-layer VS-DRAM (cnyes)",
+          "url": "https://hao.cnyes.com/post/269690",
+          "shows": "Samsung 16-tier VS-DRAM chip-level R/W; Cs rose ~linearly with horizontal capacitor length [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "NEW combination: CoolCube-style sequential c-Si layers and oxide 3D DRAM tiers both exist; interleaving c-Si sense layers every N oxide tiers to bound bitline length, and thereby shrink the in-tier capacitor, was not found.",
+      "show_stoppers": "(1) Hydrogen from the Smart-Cut implant and split anneal poisons the IGZO below (needs 99.9997% blocking). (2) Cumulative 400 C exposure of the lowest tiers across 4 sense layers. (3) Cost and yield of 4 sequential c-Si transfers.",
+      "revival_or_workaround": "(1) Dense Al2O3/SiN hydrogen barriers, helium-assisted splitting, or B3-10's H-free sputtered-Si laser layer instead of Smart Cut. (2) 400 C-stable channels (In-poor IGZO, IGO, ALD In2O3 shown to survive 600 C at Purdue). (3) Larger groups (32 tiers per sense layer, 60:1 mux).",
+      "million_dollar_demo": "~$400k: 4-8 oxide tiers at a university fab, then one c-Si transfer + 400 C FET run with CEA-Leti or MIT Lincoln Laboratory (~$150-250k service); measure IGZO Vt and leakage before and after transfer, and the local-sense signal on 16-cell vertical bitlines.",
+      "resource_angle": "No Ge superlattice, no EUV (F 40-50 nm); Smart-Cut donors are reclaimable bulk wafers.",
+      "us_buildable": "MIT Lincoln Laboratory (Lexington MA), NY CREATES Albany; bulk donor wafers from GlobalWafers Sherman TX."
+    },
+    {
+      "id": "B3-10",
+      "name": "H-free sputtered-Si laser grains as in-stack CMOS and floating-body tiers",
+      "one_liner": "Excimer-laser-crystallize sputtered (hydrogen-free) amorphous Si into location-controlled single-crystal grains between oxide tiers, giving in-stack p- and n-FETs 8-17x stronger than p-oxide and floating-body cells without epitaxy, Ge or a hydrogen implant.",
+      "mechanism": "Sputter amorphous Si at ~100 C (no PECVD hydrogen) over ~0.5-1 um of SiO2 that carries a lattice of small grain-filter holes, then melt it with an excimer-laser pulse: the mu-Czochralski process grows one location-controlled single-crystal grain (3-7.5 um) from each hole, with electron/hole mobilities of 460-510 / 121-250 cm2/Vs reported by the Delft group. The ~100 ns pulse heats only the top ~0.3 um, so oxide tiers below stay cool. Use the grains for (a) complementary sense amps and decoders inside the stack, without Smart Cut's hydrogen implant (B3-09's main risk), and (b) floating-body capacitor-less 1T cells, which need holes and therefore cannot be made in n-type IGZO, for Ge-free 3D silicon DRAM tiers.",
+      "which_bottleneck": "A1 #2 (a 3D silicon cell without epitaxial Si/SiGe), A3 section 2.4 (floating body needs a p-capable channel), and the hydrogen show-stopper of B3-09.",
+      "step_change_claim": "In-stack p-FET drive 8-17x that of a p-type oxide TFT with zero implanted hydrogen; Ge-free, epi-free floating-body tiers (1-beta parity at ~17 tiers, 1 bit).",
+      "first_principles_estimate": "Mobility: single-grain p 121-250 vs p-oxide ~15 cm2/Vs -> 8-17x drive. Floating-body 10F2 at F = 40 nm, 60% of area inside usable grains, eff 0.70 -> 0.026 Gb/mm2 per tier; parity at 17 tiers. Thermal diffusion length in SiO2 for a 100 ns pulse = sqrt(8.6e-7 m2/s x 1e-7 s) = 0.29 um -> 0.5-1 um isolation per laser tier, so laser tiers stack at ~1 um pitch; use them as every-16th-tier sense layers rather than as every tier. (models/B3_3dprocess_estimates.py section B3-10)",
+      "evidence": [
+        {
+          "title": "IEICE Transactions listing: single-grain Si TFT monolithic 3D ICs (Delft)",
+          "url": "https://global.ieice.org/en_transactions/Keyword/keyword=3D-ICs",
+          "shows": "Two SG-TFT layers formed a CMOS inverter, 3D 6T-SRAM and lateral PIN photodiode; location-controlled 3 um grains with 460/121 cm2/Vs (e/h) (via search snippet)"
+        },
+        {
+          "title": "Preparation of large location-controlled Si grains by excimer-laser crystallization of Si film sputtered at 100 C",
+          "url": "https://resolve.cambridge.org/core/journals/mrs-online-proceedings-library-archive/article/preparation-of-large-locationcontrolled-si-grains-by-excimer-laser-crystallization-of-si-film-sputtered-at-100c/E6614A0EA3DAF89BED186A9217DBD1C8",
+          "shows": "Location-controlled single grains from a Si film sputtered at 100 C (title-level); SiO2 capping enlarged grains to 7.5 um with 510/210 cm2/Vs (attribution within result set uncertain) (via search snippet)"
+        },
+        {
+          "title": "ECS meeting abstract 206-0964: mu-Czochralski grain-filter excimer-laser crystallization",
+          "url": "https://www.electrochem.org/dl/ma/206/pdfs/0964.pdf",
+          "shows": "Grain-filter process sets grain position so a TFT channel sits inside one grain; p-channel up to 250 cm2/Vs (attribution within result set) (via search snippet)"
+        },
+        {
+          "title": "Unisantis unveils vertical capacitor-less DRAM",
+          "url": "https://www.eenewseurope.com/en/unisantis-unveils-vertical-capacitor-less-dram/",
+          "shows": "Unisantis Dynamic Flash Memory capacitor-less (floating-body) DRAM concept [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST on Delft mu-Czochralski: single-grain TFT 3D stacking (inverters, SRAM) is published; using H-free sputtered single-grain layers as the sense/decoder layers of an oxide 3D DRAM, or as floating-body DRAM tiers, was not found.",
+      "show_stoppers": "(1) Twins and defects inside grains raise leakage and variability (fatal for floating-body retention). (2) Grain pitch (~3-7 um) wastes ~40% of area and forces mats to tile to the grain lattice. (3) Laser coupling, debris and the ~1 um isolation layers make deep vias.",
+      "revival_or_workaround": "(1) Use grains only for sense-amp CMOS, which tolerates defects, not for storage; or larger capped grains (7.5 um). (2) Memory mats are periodic, so the grain-filter grid can match the mat grid. (3) Laser layers only every 16-32 tiers.",
+      "million_dollar_demo": "~$250k: sputter a-Si over a dummy IGZO tier, laser-crystallize at a university laser facility, build n/p TFTs and a latch in single grains; measure the IGZO tier's Vt shift before/after the laser and floating-body retention at 85 C.",
+      "resource_angle": "No Ge, no epitaxy, no hydrogen implant; excimer lasers are mature display tools (but neon laser gas is an A2 chokepoint).",
+      "us_buildable": "Columbia University (laser crystallization heritage) [UNVERIFIED-PK] or Penn State; devices at Penn Singh Center or Cornell CNF."
+    },
+    {
+      "id": "B3-11",
+      "name": "Memory interposer: oxide gain-cell tiers built into the silicon interposer",
+      "one_liner": "AI packages sit on 2,700-4,700 mm2 of silicon interposer that carries only wires; build 8 tiers of BEOL oxide gain cells into it and every package gains ~21-250 GB at ~0.3 pJ/bit with no added footprint.",
+      "mechanism": "Large AI packages use a silicon interposer that carries only wires and TSVs. Build 8 tiers of BEOL oxide gain cells (B3-04 coax cells, or A3-style vertical 2T0C) into the interposer's metal stack at <=400 C on the 65 nm-class line that makes interposers, with stitched periodic arrays under the GPU and HBM footprints and keep-outs around TSVs and bump fields. The GPU reads this memory straight down through its existing micro-bumps or hybrid bonds, adding a capacity tier between on-die SRAM and HBM with no extra footprint. Oxide cells hold >200 s at 95 C (imec), so the hot interposer is acceptable.",
+      "which_bottleneck": "A1 #5 data-movement energy, A1 #6 HBM tax, A2 white space 1 (capacity per cleanroom-hour using silicon already being bought).",
+      "step_change_claim": "+21-145 GB per package on a 2,700 mm2 interposer (up to ~250 GB on 4,700 mm2) at ~0.3 pJ/bit vs 3.5 for HBM, for ~$100-240 of added tier cost per interposer.",
+      "first_principles_estimate": "Usable 65%: 2,700 mm2 -> 1,755 mm2. 10F2 vertical 2T0C at F = 65 nm, 1 bit x 8 tiers, eff 0.508 -> 21 GB; coax 4F2, 2 bits x 8, eff 0.70 -> 145 GB (4,719 mm2: 37-254 GB). Cost: 8 tiers x $200-475 / 16 interposers per wafer = $100-238 per interposer. Energy: bump hop 0.05-0.1 + activation 0.18 + on-die 0.05 = ~0.3 pJ/bit. (models/B3_3dprocess_estimates.py section B3-11)",
+      "evidence": [
+        {
+          "title": "TSMC on track to qualify ultra-large CoWoS with 9x reticle sizes, 12 HBM4 stacks by 2027",
+          "url": "https://www.trendforce.com/news/2024/11/29/news-tsmc-on-track-to-qualify-ultra-large-cowos-with-9x-reticle-sizes-12-hbm4-stacks-by-2027/",
+          "shows": "5.5x-reticle CoWoS in 2025-26 with up to 12 HBM4; 9x by 2027; substrates ~100x100 mm (5.5x) and >120x120 mm (9x) (via search snippet)"
+        },
+        {
+          "title": "TSMC 'Super Carrier' CoWoS interposer gets bigger",
+          "url": "https://tomshardware.com/tech-industry/tsmc-super-carrier-cowos-interposer-gets-bigger-enabling-massive-ai-chips-to-reach-9-reticle-sizes-with-12-hbm4-stacks",
+          "shows": "9x package ~7,722 mm2 and 5.5x ~4,719 mm2 (figures vary; attribution within result set uncertain) (via search snippet)"
+        },
+        {
+          "title": "VLSI 2025 Technical Tip Sheet",
+          "url": "https://vlsisymposium.org/wp-content/uploads/EN09_Technical-Tip-Sheet-VLSI-2025_EN_fin.pdf",
+          "shows": "TSMC monolithically integrated a BEOL memory (oxide-semiconductor selector + low-temperature capacitor) fully in BEOL over advanced logic [CROSS-REF from B2-materials log; not re-opened by B3]"
+        },
+        {
+          "title": "imec IEEE EDL 2025 IGZO 2T0C",
+          "url": "https://imec-publications.be/entities/publication/948b2190-065d-48d2-a9b9-4f4ecd22c234",
+          "shows": "40 nm Lg 2T0C: >200 s at 95 C, >1e12 cycles, <10 ns write [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "AI chip component cost shares",
+          "url": "https://epoch.ai/data-insights/ai-chip-component-cost-shares",
+          "shows": "HBM share of AI-chip component cost 52% -> 63% (1Q24 -> 4Q25) [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "NEW combination: active interposers and BEOL oxide memory both exist; a capacity-scale memory interposer was not found in my search.",
+      "show_stoppers": "(1) Yield of a 2,700-4,700 mm2 interposer with memory added: a memory defect must not scrap a $20-40k package. (2) Large packages are moving to CoWoS-L (organic redistribution with small Si bridges), shrinking monolithic Si interposer area. (3) TSV stress and warpage near the memory tiers.",
+      "revival_or_workaround": "(1) Test the tiers before die attach and map out failing tiles (capacity binning) with spares. (2) Put the tiers into the Si bridges, the HBM base dies or a dedicated Si memory bridge; later into glass-core substrates. (3) TSV keep-out zones of 10-20 um, already in interposer design rules.",
+      "million_dollar_demo": "~$300k: an 8-tier oxide gain-cell coupon on a 200 mm passive-interposer-like wafer with dummy TSVs (university fab), plus a flip-chip-attached MPW test die that reads through micro-bumps; measure GB per mm2, bump-level pJ/bit and retention at 95 C.",
+      "resource_angle": "Converts passive silicon already in every AI package into memory; no EUV; milligrams of In/Ga.",
+      "us_buildable": "SkyWater (Bloomington MN; interposer/advanced packaging) [UNVERIFIED-PK], Intel (active base-die experience), NY CREATES Albany; assembly at Amkor Arizona."
+    },
+    {
+      "id": "B3-12",
+      "name": "Photonic periphery wafer: every bonded DRAM die is born with optical I/O",
+      "one_liner": "Next-generation DRAM already makes its periphery on a separate bonded wafer; make that wafer in a monolithic silicon-photonics CMOS process so each memory die talks over fiber at ~3.4 pJ/bit, with capacity no longer limited by HBM beachfront or TSV stacks.",
+      "mechanism": "Samsung's 4F2 DRAM builds the periphery on a separate wafer bonded under the cells. Make that periphery wafer in a monolithic photonics-CMOS process (microring modulators, Ge photodetectors, waveguides and 45 nm-class transistors on one wafer) so every DRAM die has optical I/O built in. The memory die connects to compute over fibers or a photonic interposer at metre scale, so capacity is not limited by the 8-12 HBM stacks that fit around a GPU or by TSV stacks. Closed-loop heaters keep the rings locked as DRAM die temperature moves.",
+      "which_bottleneck": "A1 #6 HBM TSV tax and beachfront, A1 #5 (off-package DDR at ~10-20 pJ/bit), A2 (HBM takes ~3x wafer per GB).",
+      "step_change_claim": "DRAM at a distance at ~3.4 pJ/bit (HBM parity) instead of ~10-20 pJ/bit for off-package DDR [UNVERIFIED], ~500 GB/s per die, and unlimited capacity per accelerator; no TSVs or HBM stacking on the memory side. Energy is NOT better than HBM today.",
+      "first_principles_estimate": "Link: 2.4 pJ/bit electronics + 0.7 pJ/bit laser (Celestial AI, Hot Chips 2025, company claim) + 0.3 array = 3.4 pJ/bit vs HBM 3.5. Bandwidth: 8 fibers x 16 wavelengths x 32 Gb/s = 4 Tb/s = 500 GB/s per die. Ring tuning: 256 rings x 2-5 mW = 0.5-1.3 W = 0.13-0.32 pJ/bit. (models/B3_3dprocess_estimates.py section B3-12)",
+      "evidence": [
+        {
+          "title": "Hot Chips 2025: Celestial AI CTO details in-die optical I/O",
+          "url": "https://convergedigest.com/hot-chips-2025-celestial-ai-cto-details-in-die-optical-i-o/",
+          "shows": "Celestial AI Photonic Fabric ~2.4 pJ/bit electronics + 0.7 pJ/bit lasers (company figures) (via search snippet)"
+        },
+        {
+          "title": "HoTI25: Celestial AI's Photonic Fabric",
+          "url": "https://convergedigest.com/hoti25-celestial-ais-photonic-fabric/?amp=1",
+          "shows": "Photonic Fabric 2.4 pJ/bit efficiency; <200 ns chip-to-memory latency claim (company) (via search snippet)"
+        },
+        {
+          "title": "Photonics to make Celestial HBM3 memory fabric",
+          "url": "https://www.nextplatform.com/2023/06/28/photonics-to-make-celestial-hbm3-memory-fabric",
+          "shows": "Optical memory expansion module concept (2 HBM stacks 72 GB + 4 DDR5 DIMMs up to 2 TB); ~6.2 pJ/bit memory transaction vs ~62.5 pJ NVLink (system-level; attribution uncertain) (via search snippet)"
+        },
+        {
+          "title": "Samsung reportedly produces sub-10nm 10a DRAM working die using 4F2 and VCT",
+          "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+          "shows": "10a 4F2 VCT with IGZO channel; periphery on a separate wafer joined by W2W hybrid bonding (PUC); 2028 target [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "NEW combination: optical memory fabrics (Celestial AI, Ayar Labs) place photonics in chiplets beside HBM or DDR; making the bonded DRAM periphery wafer itself photonic was not found.",
+      "show_stoppers": "(1) Energy only at parity with HBM today (~3.1 pJ/bit link). (2) 45 nm-class photonics-process transistors are too large and slow for periphery that must fit under the array. (3) Ring detuning from DRAM temperature swings; laser reliability and cost.",
+      "revival_or_workaround": "(1) The win is capacity and distance, not energy; ride the photonics roadmap toward ~1 pJ/bit. (2) Split the periphery: sense amps on a dense logic wafer (B3-01) and only the I/O layer photonic (a third bonded layer or photonic base die). (3) Athermal ring designs, closed-loop tuning and external laser sources.",
+      "million_dollar_demo": "~$300k: bond a small DRAM/oxide array coupon to a photonics MPW die from an academic silicon-photonics shuttle; demonstrate memory reads over fiber with BER and pJ/bit; measure ring lock across a 30-90 C sweep of the memory die.",
+      "resource_angle": "Memory dies without TSVs or interposers and more GB per DRAM wafer than HBM; U.S.-made photonics CMOS exists.",
+      "us_buildable": "GlobalFoundries Malta NY (monolithic photonics CMOS) [UNVERIFIED-PK], AIM Photonics (Albany/Rochester NY) MPW, MIT.nano for assembly."
+    },
+    {
+      "id": "B3-13",
+      "name": "Coil-stacked HBM: inductive links instead of TSVs, NAND-style wire-bonded power",
+      "one_liner": "Stack thinned DRAM dies that talk through ~2,000 small coils placed over their arrays and take power through edge wire bonds, removing TSV keep-out and TSV/bump yield loss from HBM (energy per bit is not improved).",
+      "mechanism": "Replace HBM's through-silicon vias and micro-bumps with inductive-coupling links: each thinned DRAM die carries ~2,000 small coils in its top metal over the array, and data hop vertically between dies by magnetic coupling (Keio's ThruChip Interface). Power enters the way NAND stacks do it: staggered dies with wire bonds, or a few coarse power vias at the die edge. The DRAM die loses its TSV keep-out field and the stack loses TSV/bump yield loss; coils also tolerate several um of misalignment, so stacking needs no fine-pitch alignment.",
+      "which_bottleneck": "A1 #6 HBM TSV/stacking tax (~3x wafer per bit; die +35-45%, yield -20-30%), and hybrid bonding's slip to HBM4E/HBM5.",
+      "step_change_claim": "HBM wafer-per-bit tax 3x -> ~2.0-2.3x (+28-50% HBM bits per wafer) with no hybrid-bonding dependence. Energy is NOT improved: ~0.7 pJ/bit per coil hop vs ~0.15 pJ/bit per TSV layer.",
+      "first_principles_estimate": "Coils: 2,048 x (50 um)^2 = 5.1 mm2 placed over the array. If TSV keep-out plus TSV/bump yield loss make up 33-50% of the HBM tax, the tax falls from 3.0x to 2.34-2.0x, i.e., +28-50% bits per wafer. Energy: Shiba (Hot Chips 2022, 7 nm SRAM) 0.7 pJ/bit at 8.5 Gb/s per link vs A1's ~0.15 pJ/bit per TSV layer, so worse. (models/B3_3dprocess_estimates.py section B3-13)",
+      "evidence": [
+        {
+          "title": "Shiba et al., inductive-coupling 3D SRAM stacking, Hot Chips 34 poster",
+          "url": "https://hc34.hotchips.org/assets/program/posters/HC2022.UTokyo.Kota_Shiba.v01.pdf",
+          "shows": "7 nm inductive-coupling link 0.7 pJ/bit at 8.5 Gb/s on a 2-high stack; removes TSVs; SRAM die area -26% vs TSV stacking (via search snippet)"
+        },
+        {
+          "title": "ThruChip interface for heterogeneous chip stacking (Kuroda)",
+          "url": "https://keio.elsevierpure.com/en/publications/thruchip-interface-for-heterogeneous-chip-stacking/",
+          "shows": "Inductive coupling linked a 90 nm 8-core processor and 65 nm SRAMs at 19.2 Gb/s, ~1 pJ/b (attribution within result set) (via search snippet)"
+        },
+        {
+          "title": "Circuit and package design for 44 GB/s inductive-coupling DRAM/SoC interface",
+          "url": "https://keio.elsevierpure.com/en/publications/circuit-and-package-design-for-44gbs-inductive-coupling-dramsoc-i/",
+          "shows": "TCI DRAM/SoC interface: 4x area efficiency vs TSV WIO2, 40% lower manufacturing cost, 5x lower power than LPDDR4 PoP (abstract claims) (via search snippet)"
+        },
+        {
+          "title": "Wireless 3D stacking",
+          "url": "https://semiengineering.com/wireless-3d-stacking",
+          "shows": "ThruChip company claim: stacked-DRAM I/O energy under one-tenth of TSV case (company claim) (via search snippet)"
+        },
+        {
+          "title": "TrendForce HBM vs DDR5 die size and yield",
+          "url": "https://www.trendforce.com/presscenter/news/20240318-12081.html",
+          "shows": "HBM die 35-45% larger than DDR5; yield incl. TSV packaging 20-30% lower [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "KNOWN (Kuroda/Keio, ThruChip) + TWIST: applied to 12-16-high HBM-class stacks with NAND-style wire-bonded power and coils over the DRAM array.",
+      "show_stoppers": "(1) Energy per bit worse than TSVs per hop; multi-hop relays multiply it. (2) Delivering 60-70 W to 12-16 dies without TSVs. (3) Coil crosstalk and magnetic coupling into DRAM sense amps.",
+      "revival_or_workaround": "(1) Target capacity-tier HBM where bandwidth per watt matters less, or use capacitive coupling for short hops. (2) Edge power rails (B3-14) or a few coarse, yield-tolerant power TSVs. (3) Place coils over cell arrays, not over sense amps; differential coils.",
+      "million_dollar_demo": "~$200k: a two-die stack of 28 nm MPW dies with coil arrays over a dummy DRAM-like array; measure BER, pJ/bit and sense-amp disturbance; package with wire-bonded power.",
+      "resource_angle": "Removes TSV etch/fill/reveal and hybrid-bond tools from HBM; more DRAM-wafer bits per HBM GB.",
+      "us_buildable": "MPW through a U.S. broker (GF/TSMC nodes); packaging at Amkor Arizona or Georgia Tech Packaging Research Center."
+    },
+    {
+      "id": "B3-14",
+      "name": "Sidewall-wired DRAM cube with adaptive (die-position-corrected) side-face lithography",
+      "one_liner": "Stack thinned DRAM dies with no TSVs, polish the cube face, and write the vertical bus on it with maskless laser lithography that adapts to each die's real position: 1,250-2,500 wires per face and plated side power rails.",
+      "mechanism": "Thin DRAM dies to 30-50 um, stack them with 2-5 um adhesive and no TSVs, then polish one or two faces of the cube to expose edge pads that each die routes to its edge. Pattern the vertical bus on the face with maskless laser direct imaging that first measures each die's actual position and adapts the wiring (adaptive patterning, as in fan-out packaging), so several um of die misplacement do not matter. Plated Cu stripes ~10 um thick carry power along the same face, and a base logic die at the bottom connects to the side bus.",
+      "which_bottleneck": "A1 #6 TSV tax and hybrid-bonding slip; HBM height limits (775-1,000 um).",
+      "step_change_claim": "TSV-free HBM-class stack: removes TSV keep-out and TSV/bond yield loss (HBM tax 3x -> ~2x [ESTIMATE]); 2,500-5,000 bus wires on two faces; 20-high stacks in under 1 mm.",
+      "first_principles_estimate": "Edge 10 mm at 4-8 um pitch = 1,250-2,500 wires per face. Vertical side wire 16 x 50 um = 0.8 mm, 160 fF -> 0.026 pJ/bit at 0.4 V swing. Penalty: each die routes ~5 mm to its edge: +1.0 pJ/bit at 0.2 pJ/bit/mm full swing, +0.25 pJ/bit at 0.05 pJ/bit/mm low swing. Power rail 10 um x 200 um x 0.8 mm = 6.8 mOhm. (models/B3_3dprocess_estimates.py section B3-14)",
+      "evidence": [
+        {
+          "title": "US 12,471,296 B2 (2025-11-11) HBM-style DRAM stack with sidewall edge pads",
+          "url": "https://patentsgazette.uspto.gov/week45/OG/html/1540-2/US12471296-20251111.html",
+          "shows": "Memory stack where each DRAM die has edge pads along a sidewall connected to a logic die; ~128-5,000 edge pads per die (claim figures across the patent family) (via search snippet)"
+        },
+        {
+          "title": "EP 4739075 A2 edge-pad memory die stack",
+          "url": "https://www.goveda.com/patent/EP-4739075-A2",
+          "shows": "Same family: no-TSV sidewall-pad DRAM stack vs commercial HBM's TSVs (via search snippet)"
+        },
+        {
+          "title": "Stacking of known good rebuilt wafers for high speed memory (3D Plus)",
+          "url": "https://escies.org/download/webDocumentFile?id=62314",
+          "shows": "3D Plus stacks rebuilt wafers of known-good dies with patented bus-metal vertical interconnect, avoiding TSVs (via search snippet)"
+        },
+        {
+          "title": "JEDEC relaxes HBM height; hybrid bonding delayed",
+          "url": "https://technews.tw/2026/07/07/jedec-samsung-and-sk-hynix-hybrid-bonding/",
+          "shows": "HBM package 720 um -> 775 um (HBM4); 825 to >900 um and up to 1,000 um proposed [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "TrendForce HBM vs DDR5 die size and yield",
+          "url": "https://www.trendforce.com/presscenter/news/20240318-12081.html",
+          "shows": "HBM die 35-45% larger than DDR5; yield incl. TSV packaging 20-30% lower [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "KNOWN (sidewall stacking by Irvine Sensors / 3D Plus heritage; a 2025 patent family for edge-pad DRAM stacks) + TWIST: adaptive maskless side-face lithography at 4-8 um pitch to reach HBM-class bus widths.",
+      "show_stoppers": "(1) On-die routing to the edge costs 0.25-1 pJ/bit and area. (2) Edge-pad formation through the scribe lane, plus chipping and cracking at polished faces. (3) Thermal path through adhesive layers.",
+      "revival_or_workaround": "(1) Low-swing repeaterless edge buses; floorplan bank I/O near the die edges. (2) Plasma dicing and edge passivation. (3) Thin, filled adhesives; WOW data show bumpless stacking lowers thermal resistance.",
+      "million_dollar_demo": "~$150k: stack 8 thinned commercial or MPW dies with edge pads, polish, laser-direct-write the side bus at 8 um then 4 um pitch; measure yield, resistance, crosstalk and thermal resistance.",
+      "resource_angle": "No TSV tools or hybrid bonders; packaging-class equipment available in the U.S.",
+      "us_buildable": "Adaptive-patterning fan-out ecosystem (Deca Technologies, Tempe AZ) [UNVERIFIED-PK], Georgia Tech Packaging Research Center, Amkor Arizona."
+    },
+    {
+      "id": "B3-15",
+      "name": "Origami memory stack: one thin membrane folded into N layers, wired through the folds [SPECULATIVE]",
+      "one_liner": "Build N memory dies as one continuous BEOL-only membrane on a glass carrier, release it and fold it accordion-style into an HBM-like stack whose vertical wiring is simply the metal running around each fold: no TSVs, no bumps, no die alignment.",
+      "mechanism": "Build N memory die images side by side as one continuous thin membrane (an oxide-cell array plus 3-4 metal levels, ~1.5-3 um thick) on a glass carrier with a laser-release layer, wiring neighbouring dies together across the gaps with ordinary BEOL lines. Release the membrane and fold it accordion-style into an N-layer stack bonded with thin adhesive, with fold radii of ~150-300 um. Vertical connectivity is the BEOL wiring that runs continuously around each fold, so there are no TSVs, no micro-bumps and no die-to-die alignment. The folded stack lands on a logic base die like HBM.",
+      "which_bottleneck": "A1 #6 HBM TSV/stacking tax, A2 (HBM wafer intensity).",
+      "step_change_claim": "[SPECULATIVE] HBM-like stacks at near-planar wafer cost per bit: stacking tax 3x -> ~1.05-1.1x (fold loss 4.5-8.6%), with 20,000+ vertical wires per fold.",
+      "first_principles_estimate": "Fold radius R = t/(2*eps): t = 3 um, eps = 0.5% -> 300 um; fold length pi*R = 0.94 mm; loss 8.6% per 10 mm layer. t = 1.5 um -> 150 um, 0.47 mm, 4.5%. Wires across a 10 mm fold at 1 um pitch x 2 metals = 20,000. Thermal: 16 adhesive layers of 2 um at 0.2 W/mK = 1.6 K cm2/W, similar to conventional micro-bump stacks (1.54) and worse than bumpless WOW (0.46). (models/B3_3dprocess_estimates.py section B3-15)",
+      "evidence": [
+        {
+          "title": "VLSI 2025 Technical Tip Sheet",
+          "url": "https://vlsisymposium.org/wp-content/uploads/EN09_Technical-Tip-Sheet-VLSI-2025_EN_fin.pdf",
+          "shows": "A memory array built fully in BEOL (oxide selector + low-temperature capacitor), i.e., memory that needs no single-crystal substrate and could be built on a carrier"
+        },
+        {
+          "title": "Bumpless WOW thermal resistance (Tokyo Tech news)",
+          "url": "https://www.titech.ac.jp/english/news/2017/038282.html",
+          "shows": "Total thermal resistance 0.46 K cm2/W (bumpless) vs 1.54 K cm2/W (conventional); suggests 3-4x further DRAM stacking (via search snippet)"
+        },
+        {
+          "title": "Micron says the silicon gap between HBM and DDR5 is widening",
+          "url": "https://www.tomshardware.com/tech-industry/semiconductors/micron-says-the-silicon-gap-between-hbm-and-ddr5-is-widening-with-every-generation",
+          "shows": "HBM3E needs ~3x the wafer area of DDR5 per bit at the same node [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "TrendForce HBM vs DDR5 die size and yield",
+          "url": "https://www.trendforce.com/presscenter/news/20240318-12081.html",
+          "shows": "HBM die 35-45% larger than DDR5; yield incl. TSV packaging 20-30% lower [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "[SPECULATIVE] NEW combination: foldable thin-film electronics and BEOL-only memory exist separately; folding one membrane into a memory stack with wiring through the folds was not found.",
+      "show_stoppers": "(1) Cracking of BEOL dielectrics and metal at the folds (0.5% strain assumed) and fold reliability over thermal cycling. (2) Handling and folding um-thin membranes at production throughput. (3) Defect yield of an N-times-larger continuous membrane.",
+      "revival_or_workaround": "(1) Fold zones with polymer-only dielectric and serpentine Cu (stretchable-electronics practice), or larger fold radius. (2) Fold on-carrier using hinge-release lines and plate tooling. (3) Fuse or laser-cut a bad layer out of the bus and carry spare layers (B3-19 arithmetic).",
+      "million_dollar_demo": "~$150k: fold a 4-layer membrane of daisy-chain wiring plus a small oxide TFT array built on polyimide-on-glass at a university fab; cycle-test the folds and measure continuity and TFT drift.",
+      "resource_angle": "No TSV or bonding tools; BEOL-only processing on reusable glass carriers.",
+      "us_buildable": "Flexible-electronics facilities (ASU, Penn State) [UNVERIFIED-PK], Purdue Birck."
+    },
+    {
+      "id": "B3-16",
+      "name": "Yield firewall: spare tiers per block plus pre-tested tier groups",
+      "one_liner": "Treat 3D DRAM tiers like NAND blocks but finer: carry 4 spare tiers per block, fused in through a programmable tier decoder, and build very tall stacks from tested 8-tier groups, so 64 tiers need a 0.5% per-tier defect rate instead of 0.2%.",
+      "mechanism": "Build 64 + s tiers per block and fuse out up to s defective tiers per block through the tier decoder (B3-08 makes tier selection programmable), so one killer defect in one tier no longer kills a block. For very tall stacks, build tiers in groups of 8 on separate carriers, run parametric tests on each group (vertical-bitline continuity, leakage, Vt maps from built-in test structures), and stack only good groups by die-to-wafer hybrid bonding. That turns a multiplicative 64-tier yield into a sum of 8-tier yields plus bond yields.",
+      "which_bottleneck": "A1 #2 compound tier yield (SK hynix's 5 tiers at 56.1% imply ~0.89 per tier; 64 tiers need >=0.998 per tier after repair).",
+      "step_change_claim": "Required per-block-tier killer-defect rate relaxed 2.5x (0.2% -> 0.5%) for 6% area overhead at 97.5% die yield; pre-tested groups lift 64-tier stack yield from 53% to ~97% at 0.99 per tier.",
+      "first_principles_estimate": "Block survival P(<=s defects in 64+s tiers): p = 0.01: s=0 0.526, s=2 0.971, s=4 0.9994; p = 0.005: s=4 ~1.0000. Die of 1,000 blocks: p = 0.005, s = 4 -> 97.5% (6.25% overhead); p = 0.01, s = 4 -> 54%. Tested groups: 0.99^8 = 0.923 per group (bad groups discarded), 7 bonds at 99.5% -> 0.966 stack yield vs 0.99^64 = 0.526 monolithic. (models/B3_3dprocess_estimates.py section B3-16)",
+      "evidence": [
+        {
+          "title": "SK hynix achieves yield in five-layer 3D DRAM development",
+          "url": "https://www.guru3d.com/story/sk-hynix-achieves-yield-in-fivelayer-3d-dram-development",
+          "shows": "5-layer 3D DRAM 56.1% yield; 32-192 layers needed [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "US 8,867,280 3D stacked NAND flash array operable by LSM",
+          "url": "https://patents.google.com/patent/US8867280",
+          "shows": "Programmable layer selection by select-transistor Vt in 3D NAND: the mechanism a spare-tier remap could use"
+        },
+        {
+          "title": "imec ECTC 2025 wafer-to-wafer hybrid bonding at 300 nm pitch",
+          "url": "https://www.imec-publications.be/entities/publication/6228fcc8-685e-4e72-83ba-3cb478415500/full",
+          "shows": "W2W hybrid bonding with interconnect pitch scaled to 300 nm [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Baby Steps Toward 3D DRAM",
+          "url": "https://semiengineering.com/baby-steps-towards-3d-dram/",
+          "shows": "Lam: lateral recess etch is hard because recess sizes vary along the stack; horizontal capacitor; Samsung 3D ~2030 [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST: NAND bad-block management and known-good-die stacking are known; tier-level sparing through a programmable in-stack decoder, and pre-tested tier groups for 3D DRAM, were not found.",
+      "show_stoppers": "(1) Defects that short across tiers (pillar-to-pillar, slit) kill several tiers at once. (2) Tier groups cannot be functionally tested without periphery. (3) Fine-pitch die-to-wafer bonding throughput and particles.",
+      "revival_or_workaround": "(1) Block-level fencing so vertical shorts disable one block, plus a die-level spare-block pool. (2) Parametric probe pads and built-in test structures on each group carrier. (3) Collective die-to-wafer bonding (all dies placed, then bonded at once).",
+      "million_dollar_demo": "~$100k: a Monte-Carlo yield model calibrated on a university 8-16-tier oxide stack with programmable tier decoders; demonstrate fusing out a deliberately damaged tier. Mostly modeling plus one test vehicle.",
+      "resource_angle": "Higher yield means fewer wafers per good GB (A2's binding constraint).",
+      "us_buildable": "Any university fab for the test vehicle (Cornell CNF, Purdue Birck); modeling in-house."
+    },
+    {
+      "id": "B3-17",
+      "name": "Hydrogen-lean batch-furnace mold for oxide 3D DRAM",
+      "one_liner": "Because the cell wafer is now separate from the periphery, deposit the whole 3D mold hot in a batch LPCVD furnace and out-gas it before any oxide channel goes in, shrinking the hydrogen reservoir next to each channel 4-8x.",
+      "mechanism": "NAND-style oxide 3D DRAM needs a 32-128-pair SiO2/SiN mold; single-wafer PECVD films carry ~3-25 at.% hydrogen, and hydrogen drives IGZO Vt drift (H-doping under PBTI, which imec cut ~30x with an H+O anneal). With the periphery on a separate bonded wafer, the cell wafer's mold can be made hot: deposit the alternating stack in a batch LPCVD furnace (100-150 wafers per load, ~4% H in LPCVD SiN, <1% in high-temperature oxide), then out-gas it at 800-900 C before any oxide channel is deposited (for example by Kioxia-style SiN->IGZO replacement). Add per-tier ALD Al2O3 hydrogen barriers around the replacement channels and finish with an O-rich anneal instead of forming gas.",
+      "which_bottleneck": "The multi-level drift doubt shared by every oxide 3D idea (A3 section 2.1 open problem 1; B2's biggest physics doubt) and A1 #3.",
+      "step_change_claim": "Hydrogen reservoir next to each channel 4-8x smaller (PECVD SiN 4.8e16 -> LPCVD 1.1e16 H/cm2 per 30 nm tier, or 5.9e15 for oxide), relaxing the fraction allowed to reach the channel for a 20 mV (3-bit) budget from 3 ppm to 13-24 ppm; mold deposition at ~11 wafer-minutes per 64-pair stack.",
+      "first_principles_estimate": "C_ox at EOT 3 nm = 1.15 uF/cm2 -> a 20 mV budget = 1.44e11 donors/cm2. 30 nm PECVD SiN (8e22 atoms/cm3, 20% H) = 4.8e16 H/cm2 -> only 3.0e-6 may reach the channel; LPCVD SiN (4% H) 1.1e16 -> 1.3e-5; PECVD TEOS oxide (3% H) 5.9e15 -> 2.4e-5. Batch: 64 x 30 nm SiN at 2.5 nm/min + 64 x 30 nm oxide at 8 nm/min + 128 x 5 min gas switching = 27.5 h per 150 wafers = 11 min per wafer. (models/B3_3dprocess_estimates.py section B3-17)",
+      "evidence": [
+        {
+          "title": "imec IEDM 2025 hydrogen-resilient IGZO",
+          "url": "https://imec-publications.be/handle/20.500.12860/59908",
+          "shows": "H+O anneal cuts H-doping during PBTI ~30x; 1.2 V overdrive for 5 yr at 95 C target [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "In-poor IGZO resilience to hydrogen",
+          "url": "https://arxiv.org/abs/2412.07362v3",
+          "shows": "In-poor IGZO more H-resilient; forming-gas damage and H-driven PBTI distinct [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Capacitorless 3D DRAM (Yole/imec)",
+          "url": "https://www.yolegroup.com/industry-news/capacitorless-3d-dram/",
+          "shows": "PBTI the main degradation for n-type IGZO: electron trapping plus H release from gate dielectric [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Kioxia core technology for high-density low-power 3D DRAM (IEDM 2025 29.1)",
+          "url": "https://www.kioxia.com/en-jp/about/news/2025/20251212-1.html",
+          "shows": "SiO2/SiN stack with SiN replaced by InGaZnO forms horizontal transistors in all tiers at once; Ion >30 uA, Ioff <1 aA, 8 layers [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "TWIST: hydrogen control for IGZO is known (imec, SEL); exploiting the bonded-periphery architecture to move the 3D mold into a hot, H-lean batch furnace and out-gas it before channel deposition was not found.",
+      "show_stoppers": "(1) Batch-furnace thickness uniformity (+-1-2%) and particles across 64-128 alternating layers. (2) Hot LPCVD SiN stress (~1 GPa tensile) bows wafers under um-thick stacks. (3) Hydrogen also comes from ALD precursors, the gate dielectric, bonding and packaging.",
+      "revival_or_workaround": "(1) Graded-tier compensation (B3-07), mid-stack metrology, or splitting into 2-4 furnace runs. (2) Si-rich low-stress SiN and backside compensation films. (3) H-free or ozone-based ALD, deuterium substitution, and Al2O3 barriers on both sides of each channel.",
+      "million_dollar_demo": "~$150k: LPCVD vs PECVD 16-pair molds, SiN->IGZO replacement, then PBTI and retention at 85-125 C plus SIMS/ERDA hydrogen profiles; target >=3x drift reduction.",
+      "resource_angle": "Batch furnaces are cheap per wafer; fewer PECVD chambers; lower drift means less refresh.",
+      "us_buildable": "Furnaces at Cornell CNF, Stanford SNF, Georgia Tech IEN; ERDA/SIMS at Sandia or PNNL EMSL."
+    },
+    {
+      "id": "B3-18",
+      "name": "BEOL bonus tiers: oxide gain-cell tiers stacked on a finished Si DRAM die",
+      "one_liner": "Seal a conventional 1-beta-class DRAM die with a hydrogen barrier and stack 8 tiers of oxide gain cells over the whole die, including the ~49% periphery that holds no bits today: 1.4-4.8x bits per die with no new front end.",
+      "mechanism": "Take a conventional 1-beta-class DRAM die, give ~15% of its area to extra sense and write-verify circuits, and after its last metal and hydrogen alloy anneal, seal it with an Al2O3/SiN hydrogen barrier and deposit 8 tiers of oxide gain cells (coax 4F2 B3-04, or vertical 2T0C) over the whole die, periphery included. The fast Si 1T1C array remains the hot tier (~15 ns), and the oxide tiers above form a dense, low-refresh warm tier (~30-50 ns) in the same package and interface. The add-on is a BEOL module that a separate, cheaper fab could run on finished DRAM wafers.",
+      "which_bottleneck": "A2 white space 1 (bits per cleanroom-hour and capex), A1 #7 (49% periphery area holds no bits), A1 #3.",
+      "step_change_claim": "Bits per die 1.4-4.8x with no new front end: conservative (10F2, 1 bit x 8) 22.9 Gb on a 16 Gb die area; coax 1 bit 45.5 Gb (2.85x); coax 2 bit 77.5 Gb (4.8x); bits/$ 0.7-4.0x depending on $100-475 per tier.",
+      "first_principles_estimate": "Base 16 Gb x 0.85 = 13.6 Gb; added 36.5 mm2 x (0.254 / 0.875 / 1.75 Gb/mm2) = +9.3 / +31.9 / +63.9 Gb. Wafer $3,800 + 8 tiers x $100 (NAND-like single etch) to $475 (A3 convention): conservative 1.18x / 0.71x bits/$; coax 1b 2.35x / 1.42x; coax 2b 4.0x / 2.4x. (models/B3_3dprocess_estimates.py section B3-18)",
+      "evidence": [
+        {
+          "title": "VLSI 2025 Technical Tip Sheet",
+          "url": "https://vlsisymposium.org/wp-content/uploads/EN09_Technical-Tip-Sheet-VLSI-2025_EN_fin.pdf",
+          "shows": "TSMC monolithically integrated a BEOL memory (oxide-semiconductor selector + low-temperature capacitor) fully in BEOL over advanced logic [CROSS-REF from B2-materials log; not re-opened by B3]"
+        },
+        {
+          "title": "1-Mbit 3D DRAM with oxide-semiconductor transistors on Si CMOS (IEEE J-EDS 2024)",
+          "url": "https://doaj.org/article/936c403535f14b428f2a5a71bfb5a0ef",
+          "shows": "Two vertical-FET oxide-semiconductor cell layers over planar Si CMOS sense amplifiers [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "imec IEDM 2025 hydrogen-resilient IGZO",
+          "url": "https://imec-publications.be/handle/20.500.12860/59908",
+          "shows": "H+O anneal cuts H-doping during PBTI ~30x; 1.2 V overdrive for 5 yr at 95 C target [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        },
+        {
+          "title": "Ultrathin oxide 2T0C DRAM (Adv. Funct. Mater. 2026)",
+          "url": "https://sigroup.sjtu.edu.cn/files/AdvFunctMater_UltrathinOxide_DRAM_2026.pdf",
+          "shows": "IGO 2T0C with HfO2 passivation >30,000 s (100x vs unpassivated), 10 ns write, 4-bit [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "NEW combination: oxide memory over Si CMOS is known (SEL DOSRAM lineage [UNVERIFIED-PK], the 1-Mbit J-EDS prototype, TSMC 2025); stacking it over a finished Si DRAM die, periphery included, as a co-designed hybrid die was not found.",
+      "show_stoppers": "(1) Hydrogen conflict: Si DRAM retention relies on hydrogen passivation while IGZO needs hydrogen kept out. (2) The base die must drive the new tiers, so it is a redesign, not a retrofit. (3) Two memory types in one die complicate test, repair and the controller.",
+      "revival_or_workaround": "(1) Sequence: DRAM H2 alloy anneal -> Al2O3/SiN cap -> oxide tiers with O-rich anneals; verify Si retention afterward. (2) Co-design from day one; in-tier oxide sense amps (B2-08) cut base-die area. (3) Expose the oxide tiers as a separate rank or CXL region.",
+      "million_dollar_demo": "~$300k: use DRAM test wafers or a university CMOS wafer as stand-in, cap with a hydrogen barrier, build 2-4 oxide tiers on top; measure Si interface-trap density and retention proxies before and after, plus oxide-cell retention.",
+      "resource_angle": "Multiplies output of existing DRAM fabs without new cleanrooms (A2's binding constraint); the BEOL module could be onshore even if base wafers are not.",
+      "us_buildable": "Micron Boise ID / Manassas VA (base wafers); BEOL module at SkyWater Bloomington MN or NY CREATES Albany; coupons at Purdue Birck."
+    },
+    {
+      "id": "B3-19",
+      "name": "Thin wafer-on-wafer DRAM with spare layers (64-high in today's package height)",
+      "one_liner": "Stack DRAM wafers thinned to ~4-10 um with bumpless 1-2 um TSVs, carry 12.5% spare layers so wafer stacking survives bad die sites, and fit 64 layers into 640 um.",
+      "mechanism": "Stack whole DRAM wafers thinned to ~4-10 um wafer-on-wafer with bumpless via-last TSVs of ~1-2 um diameter, the Tokyo Tech / WOW Alliance (BBCube) approach. Because wafer stacking cannot select known-good dies, add spare layers (18 for 16, or 72 for 64) and let the base die map out failed die sites layer by layer after in-die repair. Thin silicon makes each TSV ~20x smaller in area including keep-out and cuts stack thermal resistance ~3x versus bump stacks, and 10 um layers allow 64-high stacks inside today's package height.",
+      "which_bottleneck": "A1 #6 HBM TSV tax and the package height limit; hybrid bonding's slip.",
+      "step_change_claim": "TSV+keep-out area ~21x smaller per TSV; 64-high stacks in 640 um (4x capacity per stack vs 16-high); stack yield 94-99% with 12.5% spare layers at >=95% die-site yield.",
+      "first_principles_estimate": "TSV+keep-out (6 um + 2 x 5 um)^2 = 256 um2 vs (1.5 + 2 x 1)^2 = 12.2 um2. 64 x 10 um = 640 um. Yield: die-site y = 0.95 -> P(>=16 of 18) = 0.942, P(>=64 of 72) = 0.990 (16-high without spares: 0.44); y = 0.90 -> 0.73 / 0.71. Thermal: 0.46 vs 1.54 K cm2/W (WOW, 2017). (models/B3_3dprocess_estimates.py section B3-19)",
+      "evidence": [
+        {
+          "title": "300 mm DRAM wafer thinned to 4 um for WOW 3D stacking (Tokyo Tech news)",
+          "url": "https://www.titech.ac.jp/english/news/2014/027995.html",
+          "shows": "Ohba group with DISCO/Fujitsu/PEZY/WOW Alliance thinned a 40 nm 2Gb DRAM 300 mm wafer to 4 um (VLSI 2014) (via search snippet)"
+        },
+        {
+          "title": "Bumpless WOW thermal resistance (Tokyo Tech news)",
+          "url": "https://www.titech.ac.jp/english/news/2017/038282.html",
+          "shows": "Total thermal resistance 0.46 K cm2/W (bumpless) vs 1.54 K cm2/W (conventional); suggests 3-4x further DRAM stacking (via search snippet)"
+        },
+        {
+          "title": "Takayuki Ohba Laboratory (WOW / BBCube)",
+          "url": "https://www.wow.first.iir.isct.ac.jp/index_e.html",
+          "shows": "Multilayer stacking of ultra-thin (~10 um) wafers with bumpless TSVs and Damascene interconnects (BBCube) (via search snippet)"
+        },
+        {
+          "title": "TrendForce HBM vs DDR5 die size and yield",
+          "url": "https://www.trendforce.com/presscenter/news/20240318-12081.html",
+          "shows": "HBM die 35-45% larger than DDR5; yield incl. TSV packaging 20-30% lower [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "JEDEC relaxes HBM height; hybrid bonding delayed",
+          "url": "https://technews.tw/2026/07/07/jedec-samsung-and-sk-hynix-hybrid-bonding/",
+          "shows": "HBM package 720 um -> 775 um (HBM4); 825 to >900 um and up to 1,000 um proposed [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "KNOWN (WOW Alliance, Ohba) + TWIST: layer-level sparing to make wafer-on-wafer DRAM yield-tolerant, aimed at 64-high HBM-class stacks.",
+      "show_stoppers": "(1) W2W compound yield and the 12.5% cost of spare layers. (2) Handling 4-10 um wafers at production scale; warpage. (3) Removing heat from 64 active layers.",
+      "revival_or_workaround": "(1) Raise die-site yield to >=95% with repair and ECC; spares then cost less than HBM's 20-30% TSV/packaging yield loss. (2) Carrier-supported thinning, already shown at 300 mm. (3) Low-power layers (oxide cells, partial activation) and B3-03 cooling.",
+      "million_dollar_demo": "~$200k: with a WOW/BBCube partner, stack 4-8 thinned test wafers carrying daisy chains and simple memory test dies; measure TSV yield, layer-bypass operation and thermal resistance.",
+      "resource_angle": "Fewer and smaller TSVs, less silicon per HBM GB, no micro-bump solder.",
+      "us_buildable": "NY CREATES Albany (300 mm thinning and bonding), MIT Lincoln Laboratory 3D integration; know-how partnership with Institute of Science Tokyo."
+    },
+    {
+      "id": "B3-20",
+      "name": "Cold-bond stack: room-temperature surface-activated hybrid bonding for oxide memory",
+      "one_liner": "Bond oxide-memory wafers at room temperature with Ar-beam surface activation instead of 350 C+ anneals, removing a post-bond thermal dose equal to ~5-37 years at 85 C of drift kinetics from every multi-layer stack.",
+      "mechanism": "Standard hybrid bonding needs a post-bond anneal above ~350 C to close the Cu pads, and every sequential bond re-anneals everything below it. For oxide-channel memory wafers that cumulative heat (8-16 h at 350 C for an 8-layer stack) shifts Vt and redistributes hydrogen, which multi-level storage cannot tolerate. Use surface-activated bonding instead: Ar fast-atom-beam cleaning in ultra-high vacuum lets Cu-Cu (and, with Si nano-adhesion layers, dielectric) surfaces bond at room temperature without anneal. Memory layers can then be bonded after multi-level calibration and after hydrogen-sensitive steps, and heterogeneous layers (ferroelectric, photonic, organic) can join without a thermal limit.",
+      "which_bottleneck": "A3 white space 3's named risk (the bonding thermal cycle shifts oxide Vt), the multi-level drift doubt, and A1 #6/#7 (bonding is now in every DRAM roadmap).",
+      "step_change_claim": "Post-bond thermal budget 8-16 h at 350 C -> 0, removing a thermal dose equal to ~5-37 years at 85 C of activated drift kinetics per stack.",
+      "first_principles_estimate": "Acceleration exp(Ea/k x (1/358 K - 1/623 K)) for Ea = 0.58-0.72 eV (IGZO recovery/stress barriers, CPB 2015) = 2,960-20,400x; 16 h at 350 C ~ 5.4-37 years at 85 C. (models/B3_3dprocess_estimates.py section B3-20)",
+      "evidence": [
+        {
+          "title": "Feasibility of surface activated bonding for hybrid bonding and its alternatives (Suga)",
+          "url": "https://ieeetv.ieee.org/hbs/feasibility-of-the-surface-activated-bonding-for-hybrid-bonding-and-its-alternatives",
+          "shows": "SAB uses Ar fast-atom beams in UHV for room-temperature bonding without post-anneal; conventional hybrid bonding generally needs post-anneal >350 C (talk abstract) (via search snippet)"
+        },
+        {
+          "title": "Kim, Howlader, Itoh, Suga, room-temperature Cu-Cu direct bonding (JVST A 2003)",
+          "url": "https://www.ece.mcmaster.ca/~mrhowlader/Publications/Cu_Cu%20bonding.pdf",
+          "shows": "40-100 eV Ar beam activation in UHV; no thermal anneal needed, interface strong at room temperature (via search snippet)"
+        },
+        {
+          "title": "Review of Cu-Cu and hybrid bonding (Nanomaterials 2023, 13(17) 2490)",
+          "url": "https://www.mdpi.com/2079-4991/13/17/2490",
+          "shows": "Low-temperature Cu-Cu bonding remains challenging at fine pitch; alternatives Cu/SiO2, Cu/SiCN, Cu/polymer hybrid (via search snippet)"
+        },
+        {
+          "title": "Positive-bias stress and recovery in a-IGZO TFTs (Chinese Physics B 24(7) 077307, 2015)",
+          "url": "https://cpb.iphy.ac.cn/EN/10.1088/1674-1056/24/7/077307",
+          "shows": "Arrhenius effective barriers: 0.72 eV for positive-bias stress, 0.58 eV for recovery; stretched-exponential trapping/detrapping (via search snippet)"
+        },
+        {
+          "title": "imec ECTC 2025 wafer-to-wafer hybrid bonding at 300 nm pitch",
+          "url": "https://www.imec-publications.be/entities/publication/6228fcc8-685e-4e72-83ba-3cb478415500/full",
+          "shows": "W2W hybrid bonding with interconnect pitch scaled to 300 nm [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "KNOWN (Suga/Takagi surface-activated bonding) + TWIST: used as the enabling bond for multi-level oxide memory stacks and post-calibration bonding.",
+      "show_stoppers": "(1) SAB fine pitch is shown only at ~6 um; room-temperature hybrid (Cu + dielectric) bonding at <=1 um with CMP dishing is unproven. (2) UHV bonders are slow and expensive. (3) Ar-beam damage to thin oxide channels near the surface.",
+      "revival_or_workaround": "(1) Ultra-flat CMP (<1 nm dishing) or slightly protruding Cu; a 150-200 C hybrid bond as a middle path. (2) Use SAB only for the memory-critical bonds; cluster tools. (3) Keep >=200 nm of dielectric between the bond plane and channels.",
+      "million_dollar_demo": "~$200k: bond oxide TFT coupons by SAB at a partner lab with an Ar-FAB bonder vs a 350 C hybrid-bond control; measure Vt, retention and multi-level stability before and after; Cu-Cu daisy chains at 6 -> 2 um pitch.",
+      "resource_angle": "Removes anneal energy and allows more heterogeneous, resource-light layers; no new materials.",
+      "us_buildable": "NY CREATES Albany; university bonding labs; tool-vendor U.S. demo labs."
+    },
+    {
+      "id": "B3-21",
+      "name": "Grow-the-hole: bottom-up dual area-selective deposition replaces the high-aspect-ratio etch [SPECULATIVE]",
+      "one_liner": "Instead of etching um-deep holes through a 64-128-tier mold, grow the mold around metal pillars one tier at a time with selective tungsten on tungsten and selective dielectric on dielectric, then dissolve the pillars: perfectly vertical holes at AR 40-80 with no plasma etch.",
+      "mechanism": "3D memory molds are normally deposited and then plasma-etched with holes at aspect ratios of 40-80, the hardest and most fluorocarbon-hungry step in 3D NAND. Instead, define the hole lattice once at the bottom as metal seed dots and grow the stack around them. For each tier, selective CVD tungsten grows ~30 nm only on the exposed W pillar tops (selectivity holds for ~100 nm per cycle), a dielectric (SiO2 or SiN, alternating by tier) grows only on dielectric with a short-lived inhibitor on the W, and an in-situ NF3/H2 etch-back removes stray W nuclei. After the last tier the W pillars are dissolved, leaving vertical holes through the whole stack, aligned by construction.",
+      "which_bottleneck": "A1 #2 (3D needs one HAR etch through all tiers; bow, twist and CD variation), A2 (fluorocarbon/PFAS-adjacent etch gases and cryo-etch tool dependence).",
+      "step_change_claim": "[SPECULATIVE] Eliminates the high-aspect-ratio mold etch: AR 38 (64 tiers) to 77 (128 tiers) with zero plasma etch and no bow or twist; hole CD set by the seed, not by depth.",
+      "first_principles_estimate": "64 x 60 nm = 3.84 um; 100 nm holes -> AR 38 (128 tiers: AR 77). Selective W window ~100 nm per cycle (Saraswat 1984, cited in US 4,741,928) vs 30 nm per tier: 3x margin. Defects: stray nuclei at 0.1 (0.01)/cm2 per layer x 128 layers = 12.8 (1.28) shorts/cm2 before etch-back, so each etch-back must remove >99.9% of nuclei. (models/B3_3dprocess_estimates.py section B3-21)",
+      "evidence": [
+        {
+          "title": "US 4,741,928 Selective CVD tungsten on metal and semiconductor surfaces",
+          "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/4741928",
+          "shows": "Cites Saraswat et al. (1984): W selectivity lost after ~1000 A of growth on conductors unless deposition rate is low (via search snippet)"
+        },
+        {
+          "title": "US 8,778,797 Systems and methods for selective tungsten deposition in vias",
+          "url": "https://patents.google.com/patent/US8778797",
+          "shows": "Nucleation delay on dielectric vs metal enables bottom-up selective W fill; growth stopped before dielectric nucleation (via search snippet)"
+        },
+        {
+          "title": "US 4,804,560 Selectively depositing tungsten upon a semiconductor substrate",
+          "url": "https://patents.google.com/patent/US4804560",
+          "shows": "In-situ NF3/H2 dry etch in the CVD chamber removes stray W nuclei from the mask (selectivity restoration) (via search snippet)"
+        },
+        {
+          "title": "Lemaire, ASD 2017 workshop talk on selective W nucleation",
+          "url": "https://www.atomiclimits.com/wp-content/uploads/2017/05/7.-Paul-Lemaire-ASD2017.pdf",
+          "shows": "W nucleation delay depends on oxide composition, pressure and flow; little delay on Si and Au (via search snippet)"
+        },
+        {
+          "title": "NC State dissertation on area-selective deposition",
+          "url": "https://repository.lib.ncsu.edu/server/api/core/bitstreams/a07d0abb-7ce4-4842-9277-79f8ea8d8f8e/content",
+          "shows": "ASD by CVD/ALD/MLD studied to beat edge-placement error at ~5 nm [CROSS-REF from B2-materials log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "[SPECULATIVE] NEW combination: selective W via fill and area-selective dielectric deposition exist; alternating dual-ASD to grow a whole 3D memory mold around pillars was not found.",
+      "show_stoppers": "(1) Selectivity defects compounding over 128 cycles (each stray nucleus is a tier short). (2) Throughput: two selective depositions plus an etch-back per tier. (3) Lateral mushrooming of pillars and seams at the pillar wall.",
+      "revival_or_workaround": "(1) ASD + ALE super-cycles with in-line defect inspection; grow 16 tiers, planarize, continue. (2) Spatial ALD or batch CVD; only the hole lattice needs selectivity. (3) Conformal liner after pillar removal to smooth seams.",
+      "million_dollar_demo": "~$200k: 8-16-cycle W-pillar/SiO2 dual-ASD stacks on 100 mm wafers at a university ALD/CVD lab; measure selectivity loss per cycle, nuclei density and pillar verticality by cross-section.",
+      "resource_angle": "Removes the heaviest fluorocarbon HAR etch and the cryo-etch dependence; adds tungsten use (China ~80%), so Mo pillars are the preferred variant.",
+      "us_buildable": "NC State Nanofabrication Facility, Stanford SNF, Argonne Center for Nanoscale Materials (ALD)."
+    },
+    {
+      "id": "B3-22",
+      "name": "Sequential periphery-over-cell for Si DRAM: lithographic vias instead of hybrid bonds",
+      "one_liner": "Finish a conventional Si 1T1C array, Smart-Cut a thin crystalline Si layer on top, build the sense amps in it at 400-500 C, and reach every 64-128-cell bitline with a 100-200 nm lithographic via: per-segment sensing at 1-beta pitch with one wafer, not two.",
+      "mechanism": "Keep a conventional high-temperature Si 1T1C array (1-beta-class cell with a short capacitor), finish it including its capacitor, cap it with oxide, and transfer a ~50 nm single-crystal Si layer on top by Smart Cut. Build the sense amplifiers, sub-wordline drivers and decoders in that layer with CEA-Leti-style 400-500 C n&p CMOS. Connect each 64-128-cell bitline segment to its sense amp with a lithographically aligned via (~100-200 nm, overlay ~5-10 nm) instead of a hybrid-bond pad (>=300-400 nm pitch, ~50-100 nm overlay). This delivers A1 white space 1 (one sense amp per short bitline) at 1-beta pitch without the bond-pitch wall and without the second periphery wafer of bonded periphery-under-cell.",
+      "which_bottleneck": "A1 #1 (capacitor), #7 (periphery area), #10 (voltage floor), the bond-pitch gap of A1 white space 1, and the doubled wafer cost of bonded periphery-under-cell.",
+      "step_change_claim": "Capacitor 1.3 um -> 226-376 nm (AR 62 -> 11-18) with no mux; one wafer instead of two (vs bonded PUC); array efficiency ~0.51 -> ~0.7 (1.37x density).",
+      "first_principles_estimate": "A lithographic via instead of a bond pad saves ~2 fF: 64 cells Cbl 6 fF -> Cs 0.93 fF -> 226 nm pillar; 128 cells 10 fF -> 1.56 fF -> 376 nm. Sense-amp area budget (open bitline, two segments per SA): 0.137 um2 (64 cells) or 0.274 um2 (128 cells), tight because a ~10-transistor latch at a 28 nm-class rule is ~0.2-0.3 um2 [ESTIMATE], so start with 128-cell segments or a 2:1 mux. (models/B3_3dprocess_estimates.py section B3-22)",
+      "evidence": [
+        {
+          "title": "CEA-Leti demonstrates CMOS device fabrication at 500 C for 3D monolithic integration",
+          "url": "https://www.eejournal.com/industry_news/cea-leti-scientists-demonstrate-cmos-device-fabrication-at-500c-paving-the-way-to-high-performance-3d-monolithic-cmos-integration/",
+          "shows": "CoolCube: ring oscillators and SRAM bitcells processed at 500 C (VLSI 2020); bottom devices tolerate <=500 C for a couple of hours (via search snippet)"
+        },
+        {
+          "title": "3D sequential integration closer to commercialisation thanks to CEA-Leti",
+          "url": "https://www.electronicsworld.co.uk/3d-sequential-integration-closer-to-commercialisation-thanks-to-cea-leti/874/",
+          "shows": "IEDM 2025: fully functional 2.5 V n&p SOI MOSFETs at 400 C using nanosecond laser anneal and solid-phase epitaxial regrowth (which result-set URL carried this fact is uncertain) (via search snippet)"
+        },
+        {
+          "title": "Six breakthroughs in 3D sequential integration highlighted in IEDM paper",
+          "url": "https://www.eenewseurope.com/en/six-breakthroughs-in-3d-sequential-integration-highlighted-in-iedm-paper/",
+          "shows": "Smart Cut transfer of a crystalline Si layer onto a processed FD-SOI bottom level as the top-channel route (attribution within result set uncertain) (via search snippet)"
+        },
+        {
+          "title": "Samsung reportedly produces sub-10nm 10a DRAM working die using 4F2 and VCT",
+          "url": "https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/",
+          "shows": "10a 4F2 VCT with IGZO channel; periphery on a separate wafer joined by W2W hybrid bonding (PUC); 2028 target [CROSS-REF from A1-scaling log; not re-opened by B3]"
+        },
+        {
+          "title": "imec ECTC 2025 wafer-to-wafer hybrid bonding at 300 nm pitch",
+          "url": "https://www.imec-publications.be/entities/publication/6228fcc8-685e-4e72-83ba-3cb478415500/full",
+          "shows": "W2W hybrid bonding with interconnect pitch scaled to 300 nm [CROSS-REF from A3-frontier log; not re-opened by B3]"
+        }
+      ],
+      "novelty": "NEW combination: sequential 3D (CoolCube) and periphery-under/over-cell DRAM both exist; a sequential c-Si layer used as the DRAM periphery to reach per-segment sensing at cell pitch was not found.",
+      "show_stoppers": "(1) Dense, fast CMOS at <=400-500 C: Leti's 400 C devices are 2.5 V I/O-class, not 28 nm-dense. (2) Vias must land on bitlines through the capacitor level and transferred layer without shorting. (3) Smart-Cut transfer cost and defectivity on a finished 300 mm DRAM wafer.",
+      "revival_or_workaround": "(1) Si DRAM tolerates 500 C, so use Leti's 500 C flow (better devices) and 128-cell segments (0.27 um2 per SA). (2) A dedicated landing-pad level above the bitlines. (3) Smart Cut is a mature SOI production step, done once (not N times).",
+      "million_dollar_demo": "~$350k: a university-fab short-capacitor 1T1C test array (or an oxide 1T1C stand-in) plus a c-Si transfer and low-temperature FET run with CEA-Leti or MIT Lincoln Laboratory; measure via yield at 150-200 nm pitch, sense-amp offset and signal on 64/128-cell segments.",
+      "resource_angle": "One wafer instead of two (vs bonded PUC), no HAR capacitor etch, no EUV for the periphery layer.",
+      "us_buildable": "MIT Lincoln Laboratory (Lexington MA), NY CREATES Albany; cell arrays at a university fab; Smart-Cut donors are bulk wafers (GlobalWafers Sherman TX)."
+    }
+  ]
+}
