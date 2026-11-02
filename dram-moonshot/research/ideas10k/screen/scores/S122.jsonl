@@ -1,0 +1,105 @@
+{"id": "I-11598", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "interlayer exciton storage", "note": "Neutral indirect excitons dodge junction leakage, but RT lifetimes are ns-us and stored density/read signal tiny."}
+{"id": "I-11599", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "optically gated access", "note": "Dark-insulating photoconductor plug as access; per-row waveguides at DRAM pitch and ns organic photoresponse are doubts."}
+{"id": "I-11600", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "FeRh metamagnetic bit", "note": "Bit held inside thermal hysteresis needs tight die temperature; nanoscale Peltier cooling is weak."}
+{"id": "I-11601", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "neutral-ionic transition bit", "note": "TTF-CA transition sits near 81 K; pushing it to RT with usable hysteresis is unproven."}
+{"id": "I-11602", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "QI molecular access valve", "note": "QI antiresonance gating; >1e6 on/off with weak SAM gate coupling is unlikely."}
+{"id": "I-11603", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "OSL deep-trap bit", "note": "Deep traps retain for years but luminescence read is ms-slow and optical addressing limits density."}
+{"id": "I-11604", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "spin-Seebeck torque write", "note": "Thermal spin-torque efficiency is orders too low for deterministic ns switching."}
+{"id": "I-11605", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "anomalous Nernst readout", "note": "Very simple magnetic stack, but uV ANE signals at ns read are noise-limited."}
+{"id": "I-11606", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "leakage-cancelling diode", "note": "Cancels median junction leakage, but refresh is set by random-trap tail it cannot match."}
+{"id": "I-11607", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "Mn4N ferrimagnet MRAM", "note": "Active research material; Co/Pt-free benefit is real but incremental."}
+{"id": "I-11608", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "breathing MOF bit", "note": "Field-driven breathing mostly theoretical; us-ms kinetics far from DRAM class."}
+{"id": "I-11609", "P": 1, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "polymer-brush collapse bit", "note": "Coil-globule hysteresis is small and ms-slow; sealed solvent nanocells impractical."}
+{"id": "I-11610", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "dislocation-glide bit", "note": "Single-dislocation placement and reproducible glide are uncontrolled; contrast unknown."}
+{"id": "I-11611", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "radical pi-dimer bistability", "note": "Haddon bistable radicals known; needs die temperature inside a narrow hysteresis window."}
+{"id": "I-11612", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "piezotronic access device", "note": "0.3-0.4 eV barrier shift needs ~1% strain at ns from a row piezo."}
+{"id": "I-11613", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "biomineralized magnetite bits", "note": "Mms6-templated patterned media already shown; write path and placement yield unaddressed."}
+{"id": "I-11614", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "vdW magnet MTJ", "note": "Fe3GaTe2 RT vdW MTJs already demonstrated; wafer-scale growth is the gap."}
+{"id": "I-11615", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "plasma wall-charge memory", "note": "PDP memory effect is real; sub-micron discharges, speed and density unrealistic."}
+{"id": "I-11616", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "metallic-glass fictive bit", "note": "2-5% contrast plus continuous room-temperature aging drift undermine margin."}
+{"id": "I-11617", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "molecular-interface magnet", "note": "Cu/C60 emergent magnetism is weak; small-dot thermal stability doubtful."}
+{"id": "I-11618", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "interlayer-DMI chiral bit", "note": "IL-DMI field-free SOT known; twist-sense readout contrast modest."}
+{"id": "I-11619", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "voltage-controlled RKKY write", "note": "Gate-tuned interlayer coupling studied; full sign reversal through gated spacer unproven."}
+{"id": "I-11620", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "magnon-torque write", "note": "Magnon torque through NiO demonstrated; row-shared source with half-select is inefficient."}
+{"id": "I-11621", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "ps-heat toggle ferrimagnet", "note": "Single-pulse toggle in MRG/GdFeCo known; per-cell on-chip ps pulses are the hurdle."}
+{"id": "I-11622", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "insulating ferrite SOT/SMR", "note": "MAFO SOT switching known; SMR read signal ~1e-4 too small for fast sensing."}
+{"id": "I-11623", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CISS magnetization switching", "note": "Chiral-molecule magnet switching reported (Ben Dor 2017); reproducibility and speed uncertain."}
+{"id": "I-11624", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "skyrmion dot memory", "note": "Skyrmion memory widely pursued; BCP templating is a modest twist."}
+{"id": "I-11625", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "helimagnet chirality bit", "note": "Current control of MnAu2 helicity reported; magnetochiral read signal tiny."}
+{"id": "I-11626", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "FMR-multiplexed 3D magnet", "note": "3D resonant recording borrowed from HDD; layer-resolved readout on shared line is weak."}
+{"id": "I-11627", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "metastable DX-center bit", "note": "Engineered negative-U defect as bit; designing 1.3 eV barrier with electrical switching is open."}
+{"id": "I-11628", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "diarylethene molecular switch", "note": "Electrical ring-closure known; 1e4-1e6 fatigue rules out DRAM role."}
+{"id": "I-11629", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "capillary-condensation bit", "note": "Large k contrast; field-nucleated condensation and ns kinetics in sealed pores unproven."}
+{"id": "I-11630", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "thermally gated barrier node", "note": "1100 K local pulses cost pJ, heat neighbours and fatigue interfaces."}
+{"id": "I-11631", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "GLAD nanomagnet columns", "note": "GLAD column size variability is large; registration to crosspoint lines uncertain."}
+{"id": "I-11632", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "ion-irradiation patterning", "note": "Ion-irradiation patterned media known since 1998; useful process twist for MRAM."}
+{"id": "I-11633", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BPM imprint reuse", "note": "BPM imprint never reached volume; imprint replaces EUV but cell is still MRAM."}
+{"id": "I-11634", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "SmS valence-transition bit", "note": "Clamped-film metallic persistence and GPa ns pulses from AlN are doubtful."}
+{"id": "I-11635", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "frozen-dipole glass gate", "note": "Thermal poling of guest-host polymers known; ns poling and Tg relaxation limit."}
+{"id": "I-11636", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "four-state planar Hall", "note": "Fourfold-anisotropy multistate known; USMR sign read is tiny."}
+{"id": "I-11637", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "vertical VCMA-SOT strings", "note": "NAND-style 3D magnet tiers with one litho step; doubt: single-ring MR readout through shared channel is tiny."}
+{"id": "I-11638", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "spin-ice vertex MLC", "note": "Field-sequence writes via Oersted lines are energy-hungry; 2 bits/cell modest."}
+{"id": "I-11639", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "order-disorder alloy bit", "note": "Ni3Fe ordering kinetics are hours, not us; contrast only 2-3x."}
+{"id": "I-12018", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-reversing ferrimagnet", "note": "Two-amplitude heat write still needs a reference bias to set sign; akin to TAS-MRAM."}
+{"id": "I-12019", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "lamellar interface magnetism", "note": "Ilmenite is paramagnetic at RT; very high coercivity makes writing hard."}
+{"id": "I-12020", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "color-center spin storage", "note": "NV T1 is ms at RT, but ensembles needed for readout and optical pumping per cell."}
+{"id": "I-12021", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "polaron self-trapping node", "note": "Ti4O7 is metallic at RT; extra self-trapping barrier is uncertain."}
+{"id": "I-12022", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "spinodal nanomagnet arrays", "note": "Self-assembled nanocomposites known; lack of long-range order limits addressing."}
+{"id": "I-12023", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "row-hammer shield layer", "note": "Trap-rich layer near nodes may raise retention leakage; shielding concepts known."}
+{"id": "I-12024", "P": 2, "S": 1, "N": 4, "D": 2, "dup_of": "", "theme": "stishovite dielectric", "note": "k~10 is far below the ZrO2 k~40 already used; no capacitor gain."}
+{"id": "I-12025", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "L1_0 FeNi magnet", "note": "NITE tetrataenite exists; thin-film order for sub-20 nm bits unproven."}
+{"id": "I-12026", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "magnetic-bottle electron trap", "note": "Electron gyroradius at 1 T is microns; cannot confine in sub-micron cells."}
+{"id": "I-12027", "P": 2, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "stochastic-resonance sensing", "note": "Escape-count statistics need many events, so reads are slow and noisy."}
+{"id": "I-12028", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "grain-boundary trap bit", "note": "One engineered grain boundary per cell is hard to make uniform."}
+{"id": "I-12029", "P": 1, "S": 2, "N": 4, "D": 1, "dup_of": "", "theme": "quasicrystal phason bit", "note": "Phason flips are thermally random; single-flip electrical control and readout implausible."}
+{"id": "I-12030", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "water-wire dipole bit", "note": "One chain gives sub-electron polarization signal; channel filling control hard."}
+{"id": "I-12031", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "SOT bubble memory", "note": "SOT-driven TmIG domains known; bubble/racetrack memory widely pursued."}
+{"id": "I-12032", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "multi-sub-node cell", "note": "Averages tail like twin-cell DRAM; four access devices cost density."}
+{"id": "I-12033", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "hydrothermal perovskite dielectric", "note": "Epitaxial seeding on TiN trenches unlikely; thin-film dead layer caps k."}
+{"id": "I-12034", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "crack-pattern lithography", "note": "Controlled cracking exists; random hexagonal network lacks DRAM-grade registration."}
+{"id": "I-12035", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "nanobubble capacitance bit", "note": "Electrolysis degrades electrodes; H2/O2 recombination is slow."}
+{"id": "I-12036", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "2D polytype phase switch", "note": "Electrostatic MoTe2 2H-1T' switching already reported."}
+{"id": "I-12037", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "supercritical fluid deposition", "note": "SCFD conformal metals known; ~1.5x Cs is incremental."}
+{"id": "I-12038", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "passive resonant read gain", "note": "On-chip inductors far too large per bitline; bitline capacitance dominates."}
+{"id": "I-12039", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11613", "theme": "biomineralized magnetite bits", "note": "Same bio-grown single-domain magnetite bit as I-11613."}
+{"id": "I-12040", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "heater-gated ion gate", "note": "Glass immobilizes ions for retention; Tg cycling speed and reliability limit."}
+{"id": "I-12041", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "I-11603", "theme": "OSL deep-trap bit", "note": "Same stimulated-luminescence trap bit as I-11603, printed."}
+{"id": "I-12042", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "zeolite cation-hop dipole", "note": "Cation hopping is relaxational, not obviously bistable without collective ordering."}
+{"id": "I-12043", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-11627", "theme": "metastable DX-center bit", "note": "Same large-relaxation metastable donor bit as I-11627."}
+{"id": "I-12044", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-11599", "theme": "optically gated access", "note": "Same dark-insulating photoconductor access as I-11599."}
+{"id": "I-12045", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "lipid monolayer dielectric", "note": "k~2-3 gives ~6 fF/um2, far below high-k; printed niche."}
+{"id": "I-12046", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "meniscus electrodeposition pillars", "note": "MCED known; serial and micron-pitch."}
+{"id": "I-12047", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "blocking-temperature multilevel", "note": "Thermoremanence multiplexing; heat-window writes slow and distributions overlap."}
+{"id": "I-12048", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-11638", "theme": "spin-ice vertex MLC", "note": "Same artificial spin-ice vertex state bit as I-11638."}
+{"id": "I-12049", "P": 2, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "locked nanorod rotor", "note": "Physical rod rotation in softened polymer is ms-slow."}
+{"id": "I-12050", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "polymer electret gate", "note": "Polymer electret OFET memory is well known."}
+{"id": "I-12051", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "nanofluidic ICP bistable", "note": "Nanofluidic memristors reported; ms-s kinetics."}
+{"id": "I-12052", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "colloidal capacitor assembly", "note": "Capacitors made in a reactor; directed-assembly yield and contacts are doubts."}
+{"id": "I-12053", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "node-gated self-refresh rail", "note": "Quasi-static self-restoring cells known; extra device costs area."}
+{"id": "I-12054", "P": 2, "S": 1, "N": 4, "D": 3, "dup_of": "", "theme": "photosynthetic protein bit", "note": "Protein stability, density and single-complex readout are severe issues."}
+{"id": "I-12055", "P": 3, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "ferroelectret void dipole", "note": "Cellular-polymer ferroelectrets known; voids are microns."}
+{"id": "I-12056", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "Liesegang self-patterning", "note": "Periodic precipitation is irregular; sub-micron pitch control poor."}
+{"id": "I-12057", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "biomineralized high-k", "note": "Silicatein BaTiO3 nanoparticles shown; conformal crystalline films unproven."}
+{"id": "I-12058", "P": 2, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "chalcogenide photodarkening bit", "note": "Photodarkening is slow with small conductance change; arsenic toxicity."}
+{"id": "I-12059", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11608", "theme": "breathing MOF bit", "note": "Same breathing-MOF dielectric bit as I-11608."}
+{"id": "I-12438", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "activation-pumped self-refresh", "note": "State-dependent steering needs a nonlinear decision element per cell; a rectifier alone cannot."}
+{"id": "I-12439", "P": 3, "S": 1, "N": 4, "D": 4, "dup_of": "", "theme": "electrothermal bistable bridge", "note": "nW per hot bit totals watts per die even sparse-coded."}
+{"id": "I-12440", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11629", "theme": "capillary-condensation bit", "note": "Same capillary-condensation pore bit as I-11629."}
+{"id": "I-12441", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11608", "theme": "breathing MOF bit", "note": "Same breathing-MOF bit as I-11608."}
+{"id": "I-12442", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "supercooled metal phase bit", "note": "Wall-nucleation makes liquid-state retention stochastic; small metallic contrast."}
+{"id": "I-12443", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11634", "theme": "SmS valence-transition bit", "note": "Same stress-written SmS valence bit as I-11634."}
+{"id": "I-12444", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11600", "theme": "FeRh metamagnetic bit", "note": "Same FeRh in-hysteresis phase bit as I-11600."}
+{"id": "I-12445", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11621", "theme": "ps-heat toggle ferrimagnet", "note": "Same ps-heat toggle with read-before-write as I-11621."}
+{"id": "I-12446", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "manganite percolation switch", "note": "Phase separation in LPCMO occurs well below RT."}
+{"id": "I-12447", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "adatom work-function gate", "note": "Field-driven Cs/Ba adatom diffusion in a sealed 1 nm cavity: reactive, slow, hard to build."}
+{"id": "I-12448", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-12040", "theme": "heater-gated ion gate", "note": "Same heater-gated mobile-ion Vt shift as I-12040."}
+{"id": "I-12449", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-12051", "theme": "nanofluidic ICP bistable", "note": "Same concentration-polarization nanochannel bit as I-12051."}
+{"id": "I-12450", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-11635", "theme": "frozen-dipole glass gate", "note": "Same heat-above-Tg dipole poling gate as I-11635."}
+{"id": "I-12451", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-12053", "theme": "node-gated self-refresh rail", "note": "Same node-gated global replenishment as I-12053, optical source."}
+{"id": "I-12452", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "Te chirality bit", "note": "Enantiomer-selective recrystallization by spin current speculative; magnetochiral read tiny."}
+{"id": "I-12453", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "I-11638", "theme": "spin-ice vertex MLC", "note": "Same spin-ice vertex monopole state bit as I-11638."}
+{"id": "I-12454", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "superlubric twist-lock flake", "note": "Graphene edge is not polar; electrical rotation drive and wafer scale unclear."}
+{"id": "I-12455", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "skyrmion-bag multilevel", "note": "Controlled injection and extraction of inner skyrmions unproven."}
+{"id": "I-12456", "P": 1, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electrostatic-squeeze dielectric", "note": "Electrostatic pressure ~MPa cannot compress a vdW gap 15%."}
+{"id": "I-12457", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "electrofrozen water bit", "note": "RT electrofreezing contested; ice persisting after field removal implausible."}
+{"id": "I-12458", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "I-11601", "theme": "neutral-ionic transition bit", "note": "Same neutral-ionic co-crystal phase bit as I-11601."}

@@ -1,8 +1,8 @@
 # Screening report
 
-Scored 11597 of 11597 ideas (0 batches missing: none; malformed: 0). Screener-flagged same-mechanism duplicates: 2260. Shortlist: 301.
+Scored 12857 of 12857 ideas (0 batches missing: none; malformed: 0). Screener-flagged same-mechanism duplicates: 2332. Shortlist: 301.
 
-Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 425.
+Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 448.
 
 ## Top 50 by composite
 
@@ -47,17 +47,17 @@ Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 425.
 | 46 | I-10396 | 74.7 | 3 | 5 | 2 | 5 | QUICKWIN | layer-fusion tiling | Roll-to-roll web: stream tiles depth-first through every layer |
 | 47 | I-10409 | 74.7 | 3 | 5 | 2 | 5 | QUICKWIN | base-plus-delta fine-tunes | Benetton postponement: dye per-tenant fine-tunes at compute time |
 | 49 | I-10802 | 74.7 | 3 | 5 | 2 | 5 | QUICKWIN | DIMM reuse market | Retired-server DIMM reclamation business delivering tens-of-cents-per-GB pooled memory |
-| 50 | I-01230 | 73.3 | 4 | 5 | 1 | 4 | QUICKWIN | hybrid state-space models | Utility meters, not itemized bills: fixed-size recurrent state in SRAM |
-| 51 | I-05623 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | analog row-hammer counter | Smoke detector: leaky analog charge counters catch row hammer |
-| 52 | I-09018 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | effective-memory certification | SoftRAM 95 lesson: audited effective-GB rating for memory compression |
-| 53 | I-10435 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | scrambled error debiasing | Rotational molding: scramble stashed activations so flips average to zero |
-| 54 | I-11148 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | erasure-flag soft sensing | Erasure-flagging sense amps: weak decisions marked, not guessed |
-| 55 | I-01659 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | idle KV eviction | Minify resident chat sessions with typing-indicator KV prefetch |
-| 57 | I-03026 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | refresh-free regenerable pages | Expire-and-regenerate pages: let cells decay, recompute on miss |
-| 58 | I-03037 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | bit-plane KV tiering | Bit-plane segmented KV cache with attention-gated plane residency |
-| 59 | I-03958 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | transform-coded KV | JPEG for the KV cache: DCT along the token axis |
-| 63 | I-05807 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | bit-plane weight tiering | Bicycle gears: bit-plane tiering serves weights at shiftable precision |
-| 65 | I-08556 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | hierarchical KV recall | Temporal mipmap KV cache with on-demand full-resolution recall |
+| 50 | I-11727 | 74.7 | 3 | 5 | 2 | 5 | QUICKWIN | nvme-to-hbm direct load | Direct NVMe-to-HBM weight loading retires the 'host RAM twice HBM' rule |
+| 51 | I-11732 | 74.7 | 3 | 5 | 2 | 5 | QUICKWIN | single-copy dram replication | One DRAM replica plus flash followers primed by hot-set manifests |
+| 52 | I-11755 | 74.7 | 3 | 5 | 2 | 5 | QUICKWIN | gpu memory bin packing | Footprint-aware GPU slicing packs long-tail models into partitions |
+| 54 | I-01230 | 73.3 | 4 | 5 | 1 | 4 | QUICKWIN | hybrid state-space models | Utility meters, not itemized bills: fixed-size recurrent state in SRAM |
+| 55 | I-05623 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | analog row-hammer counter | Smoke detector: leaky analog charge counters catch row hammer |
+| 56 | I-09018 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | effective-memory certification | SoftRAM 95 lesson: audited effective-GB rating for memory compression |
+| 57 | I-10435 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | scrambled error debiasing | Rotational molding: scramble stashed activations so flips average to zero |
+| 58 | I-11148 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | erasure-flag soft sensing | Erasure-flagging sense amps: weak decisions marked, not guessed |
+| 59 | I-12611 | 73.3 | 3 | 4 | 4 | 4 | QUICKWIN | weak-bit symbol herding | Concentrate errors to cure them: weak-bit symbol herding |
+| 60 | I-01659 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | idle KV eviction | Minify resident chat sessions with typing-indicator KV prefetch |
+| 62 | I-03026 | 73.3 | 3 | 4 | 3 | 5 | QUICKWIN | refresh-free regenerable pages | Expire-and-regenerate pages: let cells decay, recompute on miss |
 
 ## Most common themes (non-duplicates)
 
@@ -68,20 +68,20 @@ Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 425.
 - interference lithography: 14
 - thyristor ram: 14
 - advance market commitment: 12
-- nems relay access: 11
+- nems relay access: 12
 - wafer-scale memory: 11
 - multilevel dram cell: 11
 - multi-level dram cell: 11
 - optical weight broadcast: 10
 - display-fab memory: 10
 - helium recycling: 10
+- ccd loop memory: 10
 - acoustic delay-line memory: 10
 - spatial ald: 10
 - single-electron memory: 10
 - retention-aware refresh: 9
 - mask-rom weights: 9
 - lifetime-aware refresh skip: 9
-- ccd loop memory: 9
 - metal-assisted chemical etch: 9
 - deuterium anneal: 9
 - time-domain sensing: 9
@@ -102,22 +102,22 @@ Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 425.
 - periphery wafer bonding: 8
 - dimm reuse via cxl: 7
 - dram futures market: 7
+- ccd shift-register memory: 7
 - adiabatic wordline drive: 7
 - nanoimprint array layers: 7
+- tunnel-diode latch cell: 7
 - deuterium passivation: 7
+- supercritical co2 clean: 7
 - vertical ccd memory: 6
-- ccd shift-register memory: 6
 - anodic alumina capacitor mold: 6
 - anodic alumina capacitor: 6
 - rutile tio2 capacitor: 6
+- field-emitter charge storage: 6
 - nem relay access: 6
 - capacitive proximity coupling: 6
 - synthetic silica crucibles: 6
-- tunnel-diode latch cell: 6
 - supercritical co2 drying: 6
 - self-timed sensing: 6
 - proximity gettering: 6
-- supercritical co2 clean: 6
 - modular fab construction: 6
 - interlayer microfluidic cooling: 6
-- air-gap bitlines: 6
