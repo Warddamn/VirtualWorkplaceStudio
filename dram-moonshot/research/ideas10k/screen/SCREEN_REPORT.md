@@ -1,8 +1,8 @@
 # Screening report
 
-Scored 11396 of 11597 ideas (2 batches missing: ['S075', 'S097']; malformed: 0). Screener-flagged same-mechanism duplicates: 2219. Shortlist: 301.
+Scored 11597 of 11597 ideas (0 batches missing: none; malformed: 0). Screener-flagged same-mechanism duplicates: 2260. Shortlist: 301.
 
-Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 419.
+Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 425.
 
 ## Top 50 by composite
 
@@ -62,33 +62,34 @@ Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 419.
 ## Most common themes (non-duplicates)
 
 - cryogenic dram: 37
+- area-selective deposition: 22
 - dimm reuse market: 21
-- area-selective deposition: 21
 - dimm reuse cxl: 14
 - interference lithography: 14
-- thyristor ram: 13
+- thyristor ram: 14
 - advance market commitment: 12
 - nems relay access: 11
+- wafer-scale memory: 11
 - multilevel dram cell: 11
+- multi-level dram cell: 11
 - optical weight broadcast: 10
 - display-fab memory: 10
 - helium recycling: 10
 - acoustic delay-line memory: 10
 - spatial ald: 10
-- wafer-scale memory: 10
-- multi-level dram cell: 10
 - single-electron memory: 10
 - retention-aware refresh: 9
 - mask-rom weights: 9
+- lifetime-aware refresh skip: 9
 - ccd loop memory: 9
 - metal-assisted chemical etch: 9
+- deuterium anneal: 9
 - time-domain sensing: 9
 - strategic dram reserve: 9
 - donor wafer reuse: 9
+- bitline charge recycling: 9
 - access-as-refresh: 8
-- lifetime-aware refresh skip: 8
 - interference lithography arrays: 8
-- deuterium anneal: 8
 - inductive die coupling: 8
 - monolayer doping: 8
 - nems access switch: 8
@@ -98,14 +99,14 @@ Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 419.
 - tungsten recycling: 8
 - molybdenum metallization: 8
 - porous electrode capacitor: 8
-- bitline charge recycling: 8
+- periphery wafer bonding: 8
 - dimm reuse via cxl: 7
+- dram futures market: 7
 - adiabatic wordline drive: 7
 - nanoimprint array layers: 7
 - deuterium passivation: 7
-- periphery wafer bonding: 7
 - vertical ccd memory: 6
-- dram futures market: 6
+- ccd shift-register memory: 6
 - anodic alumina capacitor mold: 6
 - anodic alumina capacitor: 6
 - rutile tio2 capacitor: 6
@@ -120,4 +121,3 @@ Flags: BREAKTHROUGH 0, MOONSHOT 10, QUICKWIN 419.
 - modular fab construction: 6
 - interlayer microfluidic cooling: 6
 - air-gap bitlines: 6
-- supercritical co2 cleaning: 6
