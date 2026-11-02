@@ -1,0 +1,96 @@
+{"id": "I-00595", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "panel-level glass interposer", "note": ""}
+{"id": "I-09296", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "RF frequency addressing", "note": "Needs high-Q AlScN resonators per block and fast ring-up; saves only global wires."}
+{"id": "I-00586", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "erasure-flag ECC sensing", "note": ""}
+{"id": "I-05636", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "resonant wordline recovery", "note": "Wordline RC kills Q; 0.05 mm2 spiral gives far too little L for ns edges."}
+{"id": "I-09772", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "antiferroelectric pump caps", "note": ""}
+{"id": "I-11135", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-00093", "theme": "time-domain sense amp", "note": ""}
+{"id": "I-08393", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "open periphery IP", "note": ""}
+{"id": "I-02420", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "molybdenum replaces tungsten", "note": "Mo fill widely pursued by tool vendors; U.S. sourcing is the twist."}
+{"id": "I-01483", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "external VPP delivery", "note": ""}
+{"id": "I-10696", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "known-good tile assembly", "note": ""}
+{"id": "I-01495", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "restore-skip read", "note": ""}
+{"id": "I-02867", "P": 3, "S": 3, "N": 3, "D": 1, "dup_of": "", "theme": "CFET sense amp", "note": ""}
+{"id": "I-01957", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "epitaxial contact posts", "note": ""}
+{"id": "I-00574", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "cell-cap pump reuse", "note": "Cell-type reservoir caps already used in DRAM periphery; SC converter twist."}
+{"id": "I-03329", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00574", "theme": "cell-cap pump reuse", "note": ""}
+{"id": "I-03785", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00574", "theme": "cell-cap pump reuse", "note": ""}
+{"id": "I-04261", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "Marx local wordline boost", "note": "Series stack of few-fF cell caps cannot drive ~100 fF wordline; charge sharing collapses boost."}
+{"id": "I-07461", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04260", "theme": "adiabatic wordline charging", "note": ""}
+{"id": "I-11168", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "nonvolatile row buffer", "note": ""}
+{"id": "I-10226", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "stochastic nanowire decoder", "note": ""}
+{"id": "I-01977", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "bipolar bitline preamp", "note": "Base current drains the femtocoulomb charge-share signal."}
+{"id": "I-11153", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "pyroelectric FE readout", "note": "Pyro charge at 10 K is ~tens of electrons per cell; far below sensing floor."}
+{"id": "I-03340", "P": 4, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "bio-inspired routing EDA", "note": ""}
+{"id": "I-04264", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "ferroelectric sense gain", "note": "Coercive-voltage spread exceeds 30-50 mV and per-activation switching exceeds HZO endurance."}
+{"id": "I-02866", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "multi-row redundancy mode", "note": ""}
+{"id": "I-01047", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "overdrive pre-emphasis", "note": ""}
+{"id": "I-08845", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "avalanche bitline preamp", "note": "Avalanche excess noise and gain spread vs mV signals; smaller Cs also worsens retention."}
+{"id": "I-03337", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "adaptive timing margin", "note": ""}
+{"id": "I-04255", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-DRAM row swap", "note": ""}
+{"id": "I-08871", "P": 3, "S": 4, "N": 3, "D": 2, "dup_of": "I-06094", "theme": "cryogenic DRAM", "note": "77 K kills leakage so 0.4 fF flat cells stack in tiers; doubt is cooling economics and tier transistors."}
+{"id": "I-02423", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "photonic row readout", "note": "Micro-rings cannot pitch-match sense amps; tuning power per ring."}
+{"id": "I-04239", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "joint-detection sensing", "note": ""}
+{"id": "I-03808", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "donor wafer reuse", "note": ""}
+{"id": "I-07952", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "vacuum-channel drivers", "note": ""}
+{"id": "I-03805", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "dry pre-gate clean", "note": ""}
+{"id": "I-03339", "P": 4, "S": 1, "N": 3, "D": 5, "dup_of": "", "theme": "bio-inspired power grid", "note": ""}
+{"id": "I-05627", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-00093", "theme": "time-domain sense amp", "note": ""}
+{"id": "I-09308", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "HCI offset trimming", "note": ""}
+{"id": "I-10240", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "structured-ASIC periphery", "note": ""}
+{"id": "I-10231", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "staggered tier SA sharing", "note": ""}
+{"id": "I-03798", "P": 5, "S": 1, "N": 1, "D": 2, "dup_of": "", "theme": "dry resist", "note": ""}
+{"id": "I-01488", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "I-01020", "theme": "shift-register row select", "note": ""}
+{"id": "I-06094", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic DRAM", "note": ""}
+{"id": "I-07926", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-situ margin refresh", "note": ""}
+{"id": "I-08409", "P": 4, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "weight ROM modules", "note": ""}
+{"id": "I-08836", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "nondestructive FE readout", "note": "Nonlinear-dielectric (SNDM) read is known; harmonic signal at cell scale and ns is tiny."}
+{"id": "I-10228", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "shared periphery foundry", "note": ""}
+{"id": "I-08876", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "1T-nC ferroelectric", "note": ""}
+{"id": "I-11130", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "tunnel-diode latch", "note": ""}
+{"id": "I-02858", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "shift-out row buffer", "note": ""}
+{"id": "I-05176", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "BTI-balancing data inversion", "note": ""}
+{"id": "I-01940", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "CCD row readout", "note": ""}
+{"id": "I-04695", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "speculative early sensing", "note": ""}
+{"id": "I-07018", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "edge-printed die stacking", "note": ""}
+{"id": "I-01020", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "shift-register row select", "note": ""}
+{"id": "I-10677", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "I-07926", "theme": "in-situ margin refresh", "note": ""}
+{"id": "I-10682", "P": 2, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "optical addressing", "note": ""}
+{"id": "I-03783", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "pulse-coincidence addressing", "note": "On-die lines are RC-dominated, so pulses diffuse instead of overlapping cleanly."}
+{"id": "I-04260", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "adiabatic wordline charging", "note": ""}
+{"id": "I-04698", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "adiabatic bitline charging", "note": ""}
+{"id": "I-08374", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04260", "theme": "adiabatic wordline charging", "note": ""}
+{"id": "I-02421", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "pinned-diode memory cell", "note": "CIS pinned diodes give long retention without tall caps; density ~10-14F2 limits it to energy tiers."}
+{"id": "I-03789", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "segmented bitline TFT preamp", "note": ""}
+{"id": "I-03346", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "power side-channel diagnostics", "note": ""}
+{"id": "I-04268", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wave-pipelined bus", "note": ""}
+{"id": "I-10235", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "LTPS periphery-over-array", "note": ""}
+{"id": "I-07482", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "adaptive body bias", "note": ""}
+{"id": "I-09321", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "in-DRAM dedup compare", "note": ""}
+{"id": "I-06561", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL diode-matrix decoder", "note": ""}
+{"id": "I-07009", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "inductive die coupling", "note": ""}
+{"id": "I-05167", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04260", "theme": "adiabatic wordline charging", "note": ""}
+{"id": "I-03809", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "DIMM reuse via CXL", "note": ""}
+{"id": "I-07002", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "hybrid-bonded bank I/O", "note": ""}
+{"id": "I-09330", "P": 2, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "deuterium passivation anneal", "note": "Nitride passivation blocks D2 diffusion; tail is not only Pb centers."}
+{"id": "I-02865", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "multilevel DRAM mode", "note": ""}
+{"id": "I-11167", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "persistent DRAM standard", "note": ""}
+{"id": "I-04737", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "hybrid volatile/NV mat", "note": ""}
+{"id": "I-11172", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "BEOL oxide-TFT periphery", "note": ""}
+{"id": "I-08388", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "chopped majority sensing", "note": "Digital majority with swapped inputs cannot cancel offset larger than signal; only noise averages."}
+{"id": "I-02857", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "analog row-hammer counter", "note": ""}
+{"id": "I-09769", "P": 3, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "AAO nanowire interconnect", "note": ""}
+{"id": "I-04718", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "floating-body self-restore", "note": ""}
+{"id": "I-07483", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "adaptive VBLP tracking", "note": ""}
+{"id": "I-05614", "P": 1, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "FDM resonator readout", "note": "Room-temp on-chip LC Q too low to resolve MHz shifts; resonators far larger than bitline pitch."}
+{"id": "I-06076", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-05614", "theme": "FDM resonator readout", "note": ""}
+{"id": "I-07930", "P": 1, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "dispersive cell readout", "note": "Per-cell capacitance shift on a bitline resonator is unresolvable at ns and room temperature."}
+{"id": "I-10256", "P": 4, "S": 1, "N": 2, "D": 3, "dup_of": "", "theme": "scribe-lane test logic", "note": ""}
+{"id": "I-09775", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "solid-state DUV litho", "note": ""}
+{"id": "I-07452", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "lateral-inhibition sensing", "note": ""}
+{"id": "I-09333", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "predictive thermal refresh", "note": ""}
+{"id": "I-00093", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "time-domain sense amp", "note": ""}
+{"id": "I-05169", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-00093", "theme": "time-domain sense amp", "note": ""}
+{"id": "I-06994", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-00093", "theme": "time-domain sense amp", "note": ""}
+{"id": "I-07471", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-00093", "theme": "time-domain sense amp", "note": ""}
+{"id": "I-03355", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "ephemeral-data refresh skip", "note": ""}
+{"id": "I-10248", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "self-tracking reference cells", "note": ""}

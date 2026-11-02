@@ -1,0 +1,105 @@
+{"id": "I-09856", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS bistable beam", "note": "Bistable NEMS memory is known; cell area with anchors and electrodes far exceeds DRAM, stiction and ns switching unproven."}
+{"id": "I-07106", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "socketed DRAM reuse", "note": "Chip-level CAMM; LPDDR signal integrity through elastomer sockets is the risk."}
+{"id": "I-03446", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "folded flex stacking", "note": "Folded-flex die stacking is old packaging art; fold-edge I/O density far below TSV/hybrid bond."}
+{"id": "I-08039", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "anodic alumina capacitors", "note": "AAO nanocapacitors known; registration of pores to the access grid at 40 nm pitch and defect density are the doubts."}
+{"id": "I-04829", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "access-as-refresh AI", "note": "Refresh skipping for recently activated rows (Smart Refresh) applied to LLM decode weights; modest gain."}
+{"id": "I-10805", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "nanoimprint replica stamps", "note": "Replica NIL stamps exist; 10-20 nm overlay and defect accumulation rule out DRAM critical layers."}
+{"id": "I-06179", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "In/Ga recycling", "note": "Spent ITO/IGZO target recycling is already standard practice."}
+{"id": "I-11255", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "helium policy priority", "note": "DPA rated orders exist; extending to fab gases is executable policy work, modest impact."}
+{"id": "I-01583", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "DIMM reuse CXL", "note": "Retired-DIMM reuse behind CXL already piloted by hyperscalers; die-level debond adds little."}
+{"id": "I-08941", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "adiabatic wordline drive", "note": "Stepwise charging is known adiabatic art; wordline energy is a minor slice of DRAM energy."}
+{"id": "I-03907", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "spatial ALD precursor", "note": "Spatial ALD struggles with conformality in 60:1+ holes due to short exposure times."}
+{"id": "I-08950", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "organic ferroelectric printed", "note": "Croconic acid films are hard to process; speed, endurance and crossbar disturb unproven."}
+{"id": "I-00210", "P": 5, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "dry resist", "note": "Metal-oxide dry resist is already commercial."}
+{"id": "I-00214", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dry wafer cleaning", "note": "Vapor-phase hfac/formic metal removal studied since 1990s; incomplete removal of some metals."}
+{"id": "I-08016", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fab energy siting", "note": "Fabs need firm power; interruptible share limited to deferrable loads."}
+{"id": "I-02970", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "2D native-oxide transistor", "note": "Native high-k oxide on ZrS2/HfSe2 is published; wafer-scale 2D growth remains the barrier."}
+{"id": "I-10800", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "roll-to-roll spatial ALD", "note": "Atmospheric spatial ALD on webs exists; film quality and leakage for memory unproven."}
+{"id": "I-02962", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "resource metering", "note": "Shadow-priced sub-metering is sound management practice; incremental."}
+{"id": "I-09426", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "room-temp hybrid bonding", "note": "Surface-activated bonding is established; particle sensitivity and alignment at <1 um pitch are the issues."}
+{"id": "I-06637", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "low-grade Si substrate", "note": "Metal out-diffusion from UMG substrate would wreck the DRAM retention tail; substrate is a small cost share."}
+{"id": "I-09882", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "chemical recycling", "note": "Electrolytic sulfuric/persulfate regeneration is already sold to fabs."}
+{"id": "I-09396", "P": 2, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "pyroelectric readout", "note": "Pyroelectric NDRO of nitride ferroelectrics is fresh; hundreds-of-electron signal and per-row heaters are severe doubts."}
+{"id": "I-06169", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "In-free oxide channel", "note": "ALD SnO2 TFTs researched; vacancy control for ultra-low off-current is the open question."}
+{"id": "I-01139", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "floating-body capacitorless", "note": "Bandgap-engineered SiGe-well 1T-DRAM is published; retention and disturb remain the gap."}
+{"id": "I-11246", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "helium recycling", "note": "Point-of-use He recovery is engineering only; a 3-tool pilot fits budget."}
+{"id": "I-05257", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dry wafer cleaning", "note": "HF vapor and remote-H cleans exist; particle removal still needs water."}
+{"id": "I-04327", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "magnetic core revival", "note": "Nanoscale ferrite rings lose bistable flux and inductive output; density uncompetitive."}
+{"id": "I-04328", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "weight broadcast streaming", "note": "Optical lockstep broadcast of one weight copy to many replicas; 40 Tb/s ingest per pod and lockstep scheduling are the doubts."}
+{"id": "I-02972", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "In-free oxide channel", "note": "Mg-Zn-Si-O by ALD supercycles is a plausible composite; stability and off-current unproven."}
+{"id": "I-10782", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "SiC refresh-free DRAM", "note": "Purdue showed SiC DRAM retention in 1990s; large F, poor SiC MOS interface and wafer cost limit it to niche tiers."}
+{"id": "I-08026", "P": 5, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "abundant-element process", "note": "Essentially a 1970s poly-Si gain-cell process; easy demo, low step change."}
+{"id": "I-00682", "P": 4, "S": 3, "N": 1, "D": 2, "dup_of": "", "theme": "periphery wafer bonding", "note": "CMOS-bonded-array DRAM is on major vendor roadmaps already."}
+{"id": "I-04354", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "CCD serial memory", "note": "Serial access and slow shift rates make it a streaming tier at best."}
+{"id": "I-04816", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "NDR static cell", "note": "Tunnel-diode SRAM (TSRAM) published late 1990s; Si peak-valley ratio is weak."}
+{"id": "I-03865", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-11246", "theme": "helium recycling", "note": "Same per-tool He recapture as I-11246."}
+{"id": "I-02527", "P": 2, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "process step removal", "note": "Skipping hydrogen passivation raises interface traps broadly, not just 1%; ECC cannot absorb the retention loss."}
+{"id": "I-07553", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "rutile TiO2 capacitor", "note": "Rutile templating works, but TiO2's ~3 eV gap gives high leakage, the reason industry chose ZrO2."}
+{"id": "I-08468", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-07553", "theme": "rutile TiO2 capacitor", "note": "Same rutile-templated TiO2 as I-07553 with Nb-SnO2 electrode."}
+{"id": "I-10303", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "crucible-free Si growth", "note": "Cold-crucible melt convection makes dislocation-free 300 mm CZ very hard."}
+{"id": "I-06624", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "display-glass memory", "note": "Oxide-TFT gain cells on Gen-8.5 glass; micron-scale pitch gives low density and slow long lines."}
+{"id": "I-10347", "P": 3, "S": 3, "N": 1, "D": 1, "dup_of": "", "theme": "multibeam e-beam litho", "note": "MAPPER-style multibeam direct write pursued for decades; throughput never met fab needs."}
+{"id": "I-01117", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "green wafer cleaning", "note": "Ozonated-water resist strip is known; not a full SPM replacement for heavy implant resist."}
+{"id": "I-03429", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "biotemplate capacitors", "note": "Frustules are microns wide; area gain cannot reach DRAM charge per footprint."}
+{"id": "I-03888", "P": 5, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "molybdenum interconnect", "note": "Mo replacing W is already being adopted by DRAM makers."}
+{"id": "I-10313", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "wafer spalling reuse", "note": "Spalling and porous-Si lift-off known; film quality, flatness and donor reuse yield are the doubts."}
+{"id": "I-00211", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "dry planarization", "note": "GCIB is too slow for global planarization; useful only for trim."}
+{"id": "I-05734", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "partial-good die reuse", "note": "Downbinned partial-good memory is long-standing practice."}
+{"id": "I-04339", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "perovskite high-k capacitor", "note": "BST thin-film dead layer and leakage killed it; SrMoO3 oxidizes in BST growth ambient."}
+{"id": "I-01584", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "multilevel DRAM cell", "note": "4-level DRAM studied since 1989; modern cell signal margins too small."}
+{"id": "I-05721", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "fab metal recovery", "note": "Shield and target reclamation exists; selective resin recovery is incremental."}
+{"id": "I-02035", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "solid-state DUV laser", "note": "Solid-state 193 nm sources exist for inspection; litho power level not reached."}
+{"id": "I-06668", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "legacy DRAM foundry", "note": "Legacy DRAM vendors already serve this; needs a fab line beyond $1M."}
+{"id": "I-09861", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "tungsten recycling", "note": "Exhaust WF6 recapture and target reclamation are known; modest W relief."}
+{"id": "I-10346", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "amorphous BCN barrier", "note": "Amorphous BN/BCN barriers researched; 1-2 nm pinhole-free coverage is the doubt."}
+{"id": "I-05719", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "area-selective ALD", "note": "Inhibitor-based area-selective ALD is an active field."}
+{"id": "I-03407", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "bioinspired dielectric growth", "note": "Biomimetic catalytic SrTiO3 deposition is novel; thin-film k collapse and crystallization anneal are doubts."}
+{"id": "I-08926", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "cryogenic DRAM", "note": "Cryo DRAM is well studied; 77 K cooling overhead offsets much of refresh savings."}
+{"id": "I-09844", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "quartz-free crucible", "note": "Si3N4 crucibles risk nitride particles and dislocations in CZ growth."}
+{"id": "I-03430", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-08950", "theme": "organic ferroelectric printed", "note": "Same croconic-acid printed ferroelectric as I-08950."}
+{"id": "I-04810", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "lifetime-aware refresh-free", "note": "Compiler-proved short data lifetimes enable refresh-free tier and shorter capacitors; weak-cell tail must still meet guarantee."}
+{"id": "I-06193", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "wet high-AR etch", "note": "MacEtch reaches high AR, but Ag contamination is a retention killer and catalyst wander hurts uniformity."}
+{"id": "I-06651", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "abundant-element capacitor", "note": "Known late-1990s HSG/ONO cell; works only at large nodes."}
+{"id": "I-00194", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "alternative interconnect metal", "note": "MAX phases need high crystallization temperature; thin-film resistivity unproven at scale."}
+{"id": "I-02067", "P": 2, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "steep-slope periphery", "note": "TFET drive current remains too low for DRAM periphery speed."}
+{"id": "I-08954", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "ceramic ferroelectric crossbar", "note": "MLCC co-fired FE plus varistor selector is novel; density at printed pitch is orders below DRAM."}
+{"id": "I-03894", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "deuterium passivation", "note": "Deuterium anneal is known and already used."}
+{"id": "I-03905", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "neon recycling", "note": "Excimer neon recycling is already offered by laser vendors."}
+{"id": "I-05263", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "I-01583", "theme": "DIMM reuse CXL", "note": "Same retired-die harvest into CXL as I-01583."}
+{"id": "I-08952", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "fiber-woven memory", "note": "Fiber crossing pitch of 20-50 um gives ~50 MB/m2, far below the claim; cell physics unspecified."}
+{"id": "I-04336", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "electrochemical analog synapse", "note": "Three-terminal ECRAM is known; write endurance not DRAM-class."}
+{"id": "I-08953", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "vacuum charge-storage", "note": "Field-emission Williams tube on glass is novel; vacuum panel cost and drift are severe."}
+{"id": "I-05266", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-09861", "theme": "tungsten recycling", "note": "Same fab WF6 exhaust recovery as I-09861."}
+{"id": "I-05256", "P": 2, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "SiC access transistor", "note": "Smart-Cut SiC film under the cap is a new combo; low-temperature SiC gate interface and cap leakage cap retention."}
+{"id": "I-06173", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-06624", "theme": "display-glass memory", "note": "Same Gen-8.5 oxide-TFT memory as I-06624."}
+{"id": "I-11245", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "DIMM repair reuse", "note": "hPPR spare rows are few per bank group, limiting rescue rate."}
+{"id": "I-06627", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "graphene interconnect", "note": "Intercalated graphene interconnects are published; buried wordline also acts as gate, adding work-function issues."}
+{"id": "I-07094", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-06627", "theme": "graphene interconnect", "note": "Same intercalated multilayer graphene lines as I-06627."}
+{"id": "I-09420", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "I-06627", "theme": "graphene interconnect", "note": "Same Ni-mediated intercalated graphene wordlines as I-06627."}
+{"id": "I-02493", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-06624", "theme": "display-glass memory", "note": "Same display-fab oxide-TFT memory as I-06624."}
+{"id": "I-09425", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "low-temp radical oxidation", "note": "Radical/plasma oxidation tools are commercial."}
+{"id": "I-04817", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "thyristor RAM", "note": "T-RAM was commercialized then abandoned on variability and holding current."}
+{"id": "I-06208", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "hybrid bonding activation", "note": "Minor process twist on established hybrid bonding."}
+{"id": "I-08948", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "In-free oxide channel", "note": "ZTO is a known IGZO alternative; gain cell use is a reasonable application."}
+{"id": "I-06658", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "synthetic silica crucible", "note": "Synthetic-silica inner-layer crucibles are already sold."}
+{"id": "I-07084", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-06658", "theme": "synthetic silica crucible", "note": "Same synthetic-silica crucible liner as I-06658, SiCl4 feed."}
+{"id": "I-08962", "P": 4, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "counter-cyclical memory finance", "note": "DRAM-price-indexed repayment for non-silicon memory fabs is a novel financing twist."}
+{"id": "I-07577", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "sliding ferroelectric 2D", "note": "Sliding ferroelectricity is real but tiny polarization and wafer-scale aligned bilayers are unsolved."}
+{"id": "I-08030", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "PFAS-free resist", "note": "Non-fluorinated PAGs are actively pursued by resist makers."}
+{"id": "I-03440", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "PFAS-free filtration", "note": "Electret charge decays; ULPA media already largely glass fiber."}
+{"id": "I-07109", "P": 5, "S": 2, "N": 2, "D": 5, "dup_of": "I-01583", "theme": "DIMM reuse CXL", "note": "Same retired-DIMM CXL reuse as I-01583."}
+{"id": "I-11249", "P": 3, "S": 2, "N": 2, "D": 4, "dup_of": "I-10313", "theme": "wafer spalling reuse", "note": "Same controlled-spalling wafer multiplication as I-10313."}
+{"id": "I-05735", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "minimal fab", "note": "Half-inch wafers give tiny bit output; cost per bit poor despite low capex."}
+{"id": "I-04808", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-10782", "theme": "SiC refresh-free DRAM", "note": "Same SiC 1T1C in SiC fabs as I-10782."}
+{"id": "I-09859", "P": 5, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "gallium supply", "note": "Bayer-liquor recovery is how nearly all primary gallium is already made."}
+{"id": "I-06631", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "supercritical CO2 cleaning", "note": "scCO2 drying for HAR collapse is known and in use."}
+{"id": "I-07095", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "I-08926", "theme": "cryogenic DRAM", "note": "Same LN2-immersed DRAM pools as I-08926."}
+{"id": "I-08497", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "solar Si carrier wafers", "note": "Solar-grade ingots for handle/dummy wafers is plausible; carrier share of demand overstated."}
+{"id": "I-00226", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "solvent rinse recycling", "note": "Solvent rinses do not remove ionic residues like water; IPA drying already common."}
+{"id": "I-08498", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "air-separation noble gas", "note": "ASU neon recovery is standard at large plants; fab-scale helium yield is small."}
+{"id": "I-06628", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-07553", "theme": "rutile TiO2 capacitor", "note": "Same rutile-templated TiO2 mechanism as I-07553, MoO2 electrode."}
+{"id": "I-07086", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-07553", "theme": "rutile TiO2 capacitor", "note": "Same rutile TiO2 on MoO2 as I-06628/I-07553."}
+{"id": "I-05273", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "laser-crystallized 3D tiers", "note": "Grain-filter laser crystallization is known; per-tier patterning keeps cost per bit from falling 10x."}
+{"id": "I-01108", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "I-10303", "theme": "crucible-free Si growth", "note": "Same cold-crucible CZ as I-10303."}
+{"id": "I-04798", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "reclaimed-wafer interposers", "note": "Reject wafers as passive interposers is plausible; fine RDL on i-line is the limit."}
+{"id": "I-08494", "P": 2, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "spacer pitch multiplication", "note": "SAOP from KrF accumulates CD variation; overlay for cuts and contacts is the doubt."}

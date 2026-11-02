@@ -1,0 +1,99 @@
+{"id": "I-01788", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "electro-optic retention imaging", "note": ""}
+{"id": "I-04069", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "in-field self-repair", "note": ""}
+{"id": "I-08651", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "wafer-scale memory", "note": ""}
+{"id": "I-08195", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "lifetime-aware refresh skip", "note": ""}
+{"id": "I-06812", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fleet fault prediction", "note": ""}
+{"id": "I-08229", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "PCM thermal buffer", "note": ""}
+{"id": "I-07746", "P": 4, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "aggressor quarantine", "note": ""}
+{"id": "I-01332", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "relaxed-spec trailing fab", "note": ""}
+{"id": "I-04080", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "subarray tenant isolation", "note": ""}
+{"id": "I-07755", "P": 3, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "TFT bias-stress recovery", "note": ""}
+{"id": "I-00369", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "replica-cell refresh timing", "note": ""}
+{"id": "I-01749", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "row-wide LDPC", "note": ""}
+{"id": "I-02236", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "panel-fab TFT memory", "note": ""}
+{"id": "I-03172", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "hammer-hardened zone", "note": ""}
+{"id": "I-04534", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "access-as-refresh", "note": ""}
+{"id": "I-00408", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "speculative ECC rollback", "note": ""}
+{"id": "I-02675", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "in-field retention profiling", "note": ""}
+{"id": "I-08201", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "twin-cell rescue", "note": ""}
+{"id": "I-03169", "P": 4, "S": 1, "N": 1, "D": 4, "dup_of": "I-08229", "theme": "PCM thermal buffer", "note": ""}
+{"id": "I-02226", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "weak-cell polarity coding", "note": ""}
+{"id": "I-09134", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "age-aware soft decoding", "note": ""}
+{"id": "I-10985", "P": 5, "S": 1, "N": 1, "D": 5, "dup_of": "", "theme": "DIMM chip-level refurbishment", "note": ""}
+{"id": "I-04060", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "physical hammer sensing", "note": ""}
+{"id": "I-08231", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-06812", "theme": "fleet fault prediction", "note": ""}
+{"id": "I-09137", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "NEMS adhesion latch", "note": ""}
+{"id": "I-02220", "P": 4, "S": 2, "N": 2, "D": 5, "dup_of": "", "theme": "ABFT tensor checksums", "note": ""}
+{"id": "I-08676", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "e-beam per-die repair", "note": ""}
+{"id": "I-04073", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "field hammer telemetry", "note": ""}
+{"id": "I-10489", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "periphery redundancy", "note": ""}
+{"id": "I-00840", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "relaxed refresh with recompute", "note": ""}
+{"id": "I-08205", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "percentile retention spec", "note": ""}
+{"id": "I-08680", "P": 5, "S": 2, "N": 1, "D": 5, "dup_of": "", "theme": "compression-funded ECC", "note": ""}
+{"id": "I-05907", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "hammer-resistant layout", "note": ""}
+{"id": "I-03603", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "coupling-cancel sensing", "note": ""}
+{"id": "I-00382", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "TRA majority redundancy", "note": ""}
+{"id": "I-03130", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "weak-cell patch CAM", "note": ""}
+{"id": "I-06839", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "poly-Si 3D tiers", "note": ""}
+{"id": "I-11413", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-02226", "theme": "weak-cell polarity coding", "note": ""}
+{"id": "I-07730", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "salvage-grade bins", "note": ""}
+{"id": "I-09585", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "SET electrometer sensing", "note": ""}
+{"id": "I-03174", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "wafer-level BIST burn-in", "note": ""}
+{"id": "I-06355", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "shielded buried wordline", "note": ""}
+{"id": "I-01758", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "bad-page-map DIMMs", "note": ""}
+{"id": "I-10029", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "carbon gettering junction", "note": ""}
+{"id": "I-10027", "P": 2, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "in-field H re-passivation", "note": ""}
+{"id": "I-08678", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00369", "theme": "replica-cell refresh timing", "note": ""}
+{"id": "I-06383", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "on-die SRAM row cache", "note": ""}
+{"id": "I-03163", "P": 4, "S": 1, "N": 1, "D": 3, "dup_of": "", "theme": "high-k vacancy anneal", "note": ""}
+{"id": "I-00411", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "rank modulation coding", "note": ""}
+{"id": "I-02213", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "adaptive negative WL bias", "note": ""}
+{"id": "I-05435", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "cooled memory refresh relaxation", "note": ""}
+{"id": "I-07285", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "low-VARY plus strong ECC", "note": ""}
+{"id": "I-09589", "P": 3, "S": 3, "N": 1, "D": 2, "dup_of": "", "theme": "RTD bistable cell", "note": ""}
+{"id": "I-05429", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "soft-decision sensing ECC", "note": ""}
+{"id": "I-02214", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-00408", "theme": "speculative ECC rollback", "note": ""}
+{"id": "I-02702", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-08201", "theme": "twin-cell rescue", "note": ""}
+{"id": "I-06808", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "I-02213", "theme": "adaptive negative WL bias", "note": ""}
+{"id": "I-05903", "P": 5, "S": 2, "N": 1, "D": 4, "dup_of": "", "theme": "VRT-aware refresh upgrade", "note": ""}
+{"id": "I-06373", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "bonded short-bitline sensing", "note": ""}
+{"id": "I-01754", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "randomized row remapping", "note": ""}
+{"id": "I-01773", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-02236", "theme": "panel-fab TFT memory", "note": ""}
+{"id": "I-04993", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "inter-WL barrier implant", "note": ""}
+{"id": "I-06852", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "tiered on-demand ECC", "note": ""}
+{"id": "I-05924", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "planned capacity retirement", "note": ""}
+{"id": "I-00844", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "I-07730", "theme": "salvage-grade bins", "note": ""}
+{"id": "I-02246", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "BEOL-only memory fabs", "note": ""}
+{"id": "I-01311", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "short isolation per mat", "note": ""}
+{"id": "I-08232", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "partial-good HBM stacks", "note": ""}
+{"id": "I-04551", "P": 2, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "self-clearing capacitor electrodes", "note": ""}
+{"id": "I-05469", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "current-sum scrubbing", "note": ""}
+{"id": "I-01780", "P": 3, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "multi-tube CNT access", "note": ""}
+{"id": "I-11422", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "error-tolerant KV memory", "note": ""}
+{"id": "I-10507", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "I-07730", "theme": "salvage-grade bins", "note": ""}
+{"id": "I-01762", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "charge-minimizing coding", "note": ""}
+{"id": "I-03605", "P": 3, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "anomaly-detection hammer", "note": ""}
+{"id": "I-04053", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "e-beam junction leakage screen", "note": ""}
+{"id": "I-02221", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "resolve-time soft sensing", "note": ""}
+{"id": "I-10988", "P": 5, "S": 1, "N": 2, "D": 5, "dup_of": "", "theme": "software pointer protection", "note": ""}
+{"id": "I-04084", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-01758", "theme": "bad-page-map DIMMs", "note": ""}
+{"id": "I-04992", "P": 4, "S": 2, "N": 1, "D": 2, "dup_of": "", "theme": "asymmetric SN junction", "note": ""}
+{"id": "I-03157", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "spare die in stacks", "note": ""}
+{"id": "I-01331", "P": 4, "S": 2, "N": 1, "D": 5, "dup_of": "I-02220", "theme": "ABFT tensor checksums", "note": ""}
+{"id": "I-05000", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "proximity gettering", "note": ""}
+{"id": "I-05929", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "insulated storage junction", "note": ""}
+{"id": "I-10524", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "I-10029", "theme": "carbon gettering junction", "note": ""}
+{"id": "I-06361", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "analog per-row hammer counter", "note": ""}
+{"id": "I-05900", "P": 4, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "randomized TRR sampling", "note": ""}
+{"id": "I-05433", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "unidirectional ECC", "note": ""}
+{"id": "I-03139", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-04069", "theme": "in-field self-repair", "note": ""}
+{"id": "I-04064", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "SA offset trimming", "note": ""}
+{"id": "I-03619", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "monolithic tier sparing", "note": "Tier sparing defeats 0.99^N compound yield; doubt: mid-fab per-tier test access and IGZO cell leakage at 100 tiers."}
+{"id": "I-06813", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-05429", "theme": "soft-decision sensing ECC", "note": ""}
+{"id": "I-10499", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "variable-strength ECC", "note": ""}
+{"id": "I-04070", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-01311", "theme": "short isolation per mat", "note": ""}
+{"id": "I-10072", "P": 5, "S": 1, "N": 2, "D": 4, "dup_of": "", "theme": "predictive DIMM replacement", "note": ""}
+{"id": "I-02684", "P": 4, "S": 2, "N": 1, "D": 5, "dup_of": "I-02220", "theme": "ABFT tensor checksums", "note": ""}
+{"id": "I-10976", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "2D product-code ECC", "note": ""}
+{"id": "I-05437", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "on-die subarray erasure coding", "note": ""}
+{"id": "I-03131", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-10499", "theme": "variable-strength ECC", "note": ""}
