@@ -1,0 +1,587 @@
+[
+ {
+  "batch": "S001",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S002",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S003",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S004",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S005",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S006",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S007",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S008",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S009",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S010",
+  "facet": "Access device, leakage and refresh",
+  "n": 105
+ },
+ {
+  "batch": "S011",
+  "facet": "Access device, leakage and refresh",
+  "n": 99
+ },
+ {
+  "batch": "S012",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S013",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S014",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S015",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S016",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S017",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S018",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S019",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S020",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S021",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S022",
+  "facet": "Array architecture and 3D integration",
+  "n": 96
+ },
+ {
+  "batch": "S023",
+  "facet": "Array architecture and 3D integration",
+  "n": 94
+ },
+ {
+  "batch": "S024",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S025",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S026",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S027",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S028",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S029",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S030",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S031",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S032",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S033",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S034",
+  "facet": "Bit storage element",
+  "n": 96
+ },
+ {
+  "batch": "S035",
+  "facet": "Bit storage element",
+  "n": 94
+ },
+ {
+  "batch": "S036",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S037",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S038",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S039",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S040",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S041",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S042",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S043",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S044",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S045",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S046",
+  "facet": "Interface, packaging and data movement",
+  "n": 96
+ },
+ {
+  "batch": "S047",
+  "facet": "Interface, packaging and data movement",
+  "n": 94
+ },
+ {
+  "batch": "S048",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S049",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S050",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S051",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S052",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S053",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S054",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S055",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S056",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S057",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 105
+ },
+ {
+  "batch": "S058",
+  "facet": "Manufacturing, lithography and capital intensity",
+  "n": 99
+ },
+ {
+  "batch": "S059",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S060",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S061",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S062",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S063",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S064",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S065",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S066",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S067",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S068",
+  "facet": "Materials and resource intensity",
+  "n": 105
+ },
+ {
+  "batch": "S069",
+  "facet": "Materials and resource intensity",
+  "n": 99
+ },
+ {
+  "batch": "S070",
+  "facet": "Phase B seeds",
+  "n": 101
+ },
+ {
+  "batch": "S071",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S072",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S073",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S074",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S075",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S076",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S077",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S078",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S079",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S080",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 105
+ },
+ {
+  "batch": "S081",
+  "facet": "Reliability, ECC and error tolerance",
+  "n": 99
+ },
+ {
+  "batch": "S082",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S083",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S084",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S085",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S086",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S087",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S088",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S089",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S090",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S091",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S092",
+  "facet": "Sensing and periphery",
+  "n": 96
+ },
+ {
+  "batch": "S093",
+  "facet": "Sensing and periphery",
+  "n": 94
+ },
+ {
+  "batch": "S094",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S095",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S096",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S097",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S098",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S099",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S100",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S101",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S102",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S103",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S104",
+  "facet": "Supply, industry and strategy",
+  "n": 96
+ },
+ {
+  "batch": "S105",
+  "facet": "Supply, industry and strategy",
+  "n": 94
+ },
+ {
+  "batch": "S106",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S107",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S108",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S109",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S110",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S111",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S112",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S113",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S114",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S115",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S116",
+  "facet": "System architecture: need less DRAM",
+  "n": 96
+ },
+ {
+  "batch": "S117",
+  "facet": "System architecture: need less DRAM",
+  "n": 94
+ }
+]
