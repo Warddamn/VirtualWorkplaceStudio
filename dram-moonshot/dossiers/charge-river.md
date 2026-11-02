@@ -572,6 +572,21 @@ Dated from an assumed funding close on 2027-01-01. Each kill names its revival c
 7. **2028-06-30.** Kill if **85 °C retention < 2 s** (park-and-shift then fails on endurance) or if **ΔCTE > 1e-3 after 1e12 cycles at 85 °C**. *Revival:* a stack with ≤ 0.25 aA per well and stable Vt to 1e12 cycles.
 8. **2028-09-30 (DEMO).** Do not raise on a DRAM-class claim if **loop raw BER > 1e-8** over ≥ 1e12 decisions at a 50 MHz stage clock. Between 5e-10 and 1e-8, raise only with t=4 ECC (≤ 3.7e-7 allowed). *Revival:* BER ≤ 5e-10 at ≥ 25 MHz together with s ≥ 96%.
 
+**Revised after red team.** These amend items 1-8 and add items 9-15.
+- **Item 0 (2027-01-07): new, a spend gate.** No fab spend until the imec papers are read and P is restated (RT-IND-03).
+- **Item 3: the NO-GO line moves.** It is now **< 0.9951** on the **overlapping-gate reference**; a single-level-gap failure alone does not kill (RT-PROC-05).
+- **Item 6: GATE 2.** It adds k_ws as a screen threshold: kill if a spare fraction > 10% is needed at k_ws ≤ 2.
+
+New items:
+
+9. **2027-03-31.** Drop IP claim #1 (buried heterochannel) if the professional FTO finds it claimed by imec or SEL. *Revival:* file on the readout, regeneration and integration claims instead (RT-IND-01).
+10. **2027-06-30.** Kill the buried-channel leg if **XPS gives ΔEc < 0.35 eV for every stack**, Ga-free stacks included. *Revival:* a 2.5e12 cm⁻² design with measured CTE ≥ 0.999, or a new cap with ≥ 0.5 eV (RT-DEV-01).
+11. **2027-12-31 (RTN gate).** Kill the 2-hole shared oxide source-follower readout if **> 5% of ≥ 1e4 nodes must be spared** to hold the 1e-9 per-read step quantile at ≤ 30 e- (2-5 ns CDS). *Revival:* bonded Si source followers at ≥ 1 µm pitch with 8-hole floating-diffusion sharing at ≤ 15 e-, or ≥ 600 e- packets (RT-CIRC-04, RT-DEV-02).
+12. **2028-03-31.** Kill the AR-40 deck path if the ALD composition spread top-to-bottom is **> ±20%** and the composition corners show it moves CTE by > 5e-4. *Revival:* per-deck ≤ AR 20 (four decks with joint tiers) or a single-cation channel (In2O3/ZTO) (RT-DEV-03, RT-PROC-06).
+13. **2028-08-31.** Kill the vertical claim if the 12-plate coupon's per-stage CTE is **> 5x worse than planar** at ≥ 50 MHz. *Revival:* a coupon within 2x after a gap or dielectric fix (RT-IND-04, RT-DEV-04).
+14. **Standing.** The **cost-per-bit leg is killed** (RT-PROC-04). *Revival:* a NAND-maker or reverse-costing figure ≤ $12 per plate pair **and** a working staircase-free phase contact, giving ≥ 1.6x on cost.
+15. **2028-09-30.** Do not claim ≥ 2.5x density unless the **joint regenerator tier** is shown on a partner coupon or the one-way loop meets BER ≤ 5e-10 at **194 transfers**. *Revival:* either result (RT-CIRC-02).
+
 ---
 
 ## 10. Sources
@@ -591,3 +606,95 @@ All URLs are logged in `research/sources/*.jsonl`; [dcr] = `dos-charge-river.jso
 **Facilities and MPW:** https://www.nano.upenn.edu/resources/fee-structure [dcr] · https://senic.gatech.edu/about/rates [dcr] · https://www.eenewseurope.com/en/tiny-tapeout-sees-industrial-boost-as-it-recovers-from-efabless-closure/ [dcr] · https://www.crowdsupply.com/wafer-space/gf180mcu-run-2 [dcr]
 
 **Resources, EUV, energy:** https://www.trendforce.com/news/2026/09/09/news-the-race-to-2028-samsung-sk-hynix-set-high-na-euv-timelines-for-dram-as-micron-stays-tight-lipped/ [A1-scaling.jsonl] · https://www.engineeringnews.co.za/article/china-halts-ban-on-gallium-germanium-antimony-exports-to-us-but-controls-remain-2025-11-10 [A2-resources.jsonl] · https://www.trendforce.com/news/2025/10/09/news-china-expands-rare-earth-curbs-subjects-14nm-logic-and-256-layer-memory-chips-to-case-by-case-review/ [A2-resources.jsonl] · https://siliconanalysts.com/analysis/chip-manufacturing-energy-cost [A2-resources.jsonl]
+
+**Red-team responses (revised after red team)** [rcr] = `resp-charge-river.jsonl`: https://imec-publications.be/handle/20.500.12860/59420 [rcr] · https://news.mynavi.jp/techplus/article/20241202-3075727/ [rcr] · https://www.eenewseurope.com/en/imec-taps-ccd-for-3d-cxl-memory-in-data-centres [rcr] · https://scholar.nycu.edu.tw/en/publications/band-alignment-of-indium-gallium-zinc-oxide%CE%B2-gasub2subosub3sub-he/ [rcr] · https://rsc.org/suppdata/d5/qi/d5qi00691k/d5qi00691k1.pdf [rcr] · https://www.mdpi.com/2072-666X/15/4/512 [rcr] · https://cpb.iphy.ac.cn/article/doi/10.1088/1674-1056/ac11e7 [rcr] · https://semiengineering.com/3d-nand-race-faces-huge-tech-and-cost-challenges [rcr] · https://semiwiki.com/semiconductor-services/techinsights/283426-lithovision-economics-in-the-3d-era/ [rcr] · https://blocksandfiles.com/2020/06/26/increasing-capacity-in-the-flash-industry-2/ [rcr]
+
+---
+
+## 11. Red-team outcome
+
+Four reviewers (device physics, process, circuits, industry) raised 19 objections on 2026-11-02. Each is answered in `research/redteam/responses_charge-river.json`, and none is deleted. Model revisions are in `models/charge-river.py` (RED-TEAM REVISIONS block; new sections 4b, 4c, 5a, 5b and 14), which exits 0. Output: `research/stage3/charge-river_model_output.md`. Sources: `research/sources/resp-charge-river.jsonl` (3 searches).
+
+**Counts.** 12 ACCEPTED-MITIGATED · 6 ACCEPTED-DOWNGRADE · 1 ACCEPTED-KILL (the cost-per-bit leg) · 0 REFUTED.
+
+| ID | Severity | Disposition | One-line action |
+|---|---|---|---|
+| RT-CIRC-charge-river-01 | MAJOR | ACCEPTED-MITIGATED | Inject with no per-hole TFT; one RST/SF/SEL set per 2 holes (1.5 TFT/hole) fits 0.054 µm². Priced: +$300 array base. C_FD 0.40 fF, 10 e- |
+| RT-CIRC-charge-river-02 | MAJOR | ACCEPTED-DOWNGRADE | Inject bottom, sense top, return through CMOS. Joint regenerator tier [SPECULATIVE], +$500/wafer, or a one-way fallback at CTE ≥ 0.9987 |
+| RT-CIRC-charge-river-03 | MINOR | ACCEPTED-DOWNGRADE | Energy restated with I/O and 33% recovery: 1.17-1.40 pJ per useful bit, 2.4-2.9x below HBM3, not ~48x |
+| RT-CIRC-charge-river-04 | MINOR | ACCEPTED-MITIGATED | RTN modelled. Screen at 25 e- (0.6-1.8% of nodes spared); ≥ 1e4-node array at 2-5 ns CDS; sparing included in density |
+| RT-DEV-charge-river-01 | MAJOR | ACCEPTED-MITIGATED | 0.3 eV leaves 1.4 kT, so η_buried 0.9 → 0.5 (factor 0.28). Spec raised to ΔEc ≥ 0.5 eV, cap ≤ 2.5 nm; Poisson-Schrödinger and XPS added |
+| RT-DEV-charge-river-02 | MAJOR | ACCEPTED-MITIGATED | DEV's ≤ 30 e- at 1e-9 adopted as a GO criterion. Screen and spare, larger source-follower gate, field re-screen, I-12627 dual source follower |
+| RT-DEV-charge-river-03 | MAJOR | ACCEPTED-DOWNGRADE | Decks at AR 40 with no CCD transfer across the joint. LHAR TEM/EDX, composition corners and a 12-plate coupon in the seed; full deck stays a partner milestone |
+| RT-DEV-charge-river-04 | MINOR | ACCEPTED-MITIGATED | Gap term added: barriers ≤ 2.5-3 kT tolerable, static pockets filled by fat zero. Gap electrostatics at M2 |
+| RT-DEV-charge-river-05 | MINOR | ACCEPTED-MITIGATED | k_ws becomes a screen threshold with a string spare map (2% of 3% spares). Bulk tail measured; 1e-8 tail at raise stage |
+| RT-IND-charge-river-01 | MAJOR | ACCEPTED-DOWNGRADE | $20k professional FTO before provisionals. Claims refocused on readout, regeneration and integration |
+| RT-IND-charge-river-02 | MAJOR | ACCEPTED-DOWNGRADE | Cost is $1.74/GB (0.85x), so the claim is restated as density plus standby energy. KV-tier buyer spec sought |
+| RT-IND-charge-river-03 | MINOR | ACCEPTED-MITIGATED | Record found, definition still absent. P restated as conditional; read the papers before any spend |
+| RT-IND-charge-river-04 | MAJOR | ACCEPTED-MITIGATED | 12-plate vertical buried-channel coupon at ≥ 50 MHz inside the seed |
+| RT-PROC-charge-river-01 | MAJOR | ACCEPTED-MITIGATED | ONON + replacement W with a channel-last order; 100 nm slits, 2-row strips. W-chemistry ΔCTE test |
+| RT-PROC-charge-river-02 | MAJOR | ACCEPTED-DOWNGRADE | Staircase costs 29% of area, so density falls 3.6x → 2.5x with the other fixes. Staircase-free contact [SPECULATIVE] |
+| RT-PROC-charge-river-03 | MAJOR | ACCEPTED-MITIGATED | No bottom sense node: the bottom only injects, and floating diffusions sit at segment tops |
+| RT-PROC-charge-river-04 | MAJOR | ACCEPTED-KILL (cost leg) | $25/plate: wafer $9,050, $1.74/GB. Revival needs ≤ $12/plate plus staircase-free contacts |
+| RT-PROC-charge-river-05 | MAJOR | ACCEPTED-MITIGATED | Overlapping two-level gates become the GATE-1 scoring reference; single-level gaps become the proxy |
+| RT-PROC-charge-river-06 | MINOR | ACCEPTED-MITIGATED | Smooth grading is absorbed per depth. LHAR TEM/EDX and composition corners predict k_ws; GATE 2 adds ±10% |
+
+### Redesigns adopted
+
+1. **Regeneration topology.** Every segment is fill-and-spill injected at its bottom from a per-column line, with no per-hole TFT, and sensed at its top. Decisions return through the CMOS.
+   - **Base:** two 100-plate decks with a [SPECULATIVE] oxide-TFT regenerator tier at the joint. It keeps 2 × 32 stages, 98 transfers, a 0.64 µs lap and 1.5e11 cycles.
+   - **Fallback:** a one-way 64-stage string. It needs 194 transfers and CTE ≥ 0.9987, with a 1.28 µs lap and 3e11 cycles.
+   - LIFO and P-BiCS U-strings were evaluated and rejected.
+2. **Readout.** Each floating diffusion is shared by 2 holes on one column line, from adjacent strips. It is a local strip with a gain FET while the column line stays clamped (the I-12302 principle): 0.40 fF, 125 mV signal, 10 e- read noise.
+   - One RST/SF/SEL set per 2 holes in one TFT sub-layer.
+   - Sense nodes are screened for RTN, mapped out and re-screened in the field.
+   - A dual source follower per floating diffusion (I-12627) is held as an option.
+3. **Process.** NAND ONON stack with replacement W and slits ≥ 100 nm.
+   - **Channel-last:** the liner and a sacrificial core go in first, W is replaced, the stack is outgassed, then the ALD oxide channel is deposited at ≤ 400 °C.
+   - 2-row clock strips with half-pitch column lines.
+   - A staircase at each strip end (29% of area).
+   - CMOS under the array, or bonding only at subarray edges.
+4. **Channel.** The core/cap offset spec rises from ≥ 0.3 to **≥ 0.5 eV with a cap ≤ 2.5 nm**. The modelled buried + fat-zero factor is 0.28x until measured.
+5. **Screening and sparing.** Strings above 1.5x median deferral and RTN-noisy nodes are mapped out, costing 3% of density.
+
+### Revised step-change claim
+
+**Density ~2.5x 1-beta** (1.14 Gb/mm²; 2.2-2.7x over strip lengths; ~3.5x only with staircase-free contacts), plus **~158x lower refresh/standby power** and **~2.4-3x lower energy per useful bit than HBM3** (I/O included), for a scheduled LLM weight/KV streaming tier. **Cost per bit is ~parity**: $1.74/GB, 0.85x DDR5, range ~0.7-1.5x. The claim was 3.6x density and 2.1x cost. The density step shrinks by ~30% and the cost step is gone.
+
+### Revised decisive experiment ($994k fully loaded, $519k direct, 24 months)
+
+1. **Read the papers and check freedom to operate** (M0).
+2. **Simulation and band offsets** (M0-2): Poisson-Schrödinger, gap electrostatics, XPS ΔEc.
+3. **Run 1, planar 3-phase CCDs.**
+   - Overlapping two-level-gate reference plus single-level gap proxies.
+   - Surface, buried and Ga-free channels at matched 4.5e12 cm⁻².
+   - ±10% composition corners.
+   - W-chemistry exposure splits.
+4. **ALD composition vs depth** in AR 40-80 structures (TEM/EDX).
+5. **RTN node array.** ≥ 1e4 oxide floating-diffusion/source-follower nodes sampled at the real **2-5 ns** CDS interval, ≥ 1e7 samples per node. This is the measurement the reviewers showed was missing.
+6. **GATE 1 (M10).** CTE ≥ 0.9973 with DFE at ≥ 150 MT/s, 25 and 85 °C, and buried ≥ 3x below surface.
+7. **RTN gate (M12-16).** ≤ 30 e- at 1e-9 with ≤ 2% spared.
+8. **12-plate vertical coupon at ≥ 50 MHz** (M14-20).
+9. **DEMO (M18-21).** An inject-bottom/sense-top 98-transfer loop, ≥ 1e12 decisions at 50 MHz, 25/85 °C, raw BER ≤ 5e-10, plus a 194-transfer one-way loop.
+10. **Trace simulator.** Schedulability and energy per useful bit, I/O included.
+
+### Revised verdicts
+
+- **PHYSICALLY POSSIBLE? YES.** No physics kill. The tightened specs are ΔEc ≥ 0.5 eV at 4.5e12 cm⁻², RTN screened at the CDS timescale, and inject/sense at opposite segment ends.
+- **STEP CHANGE IF IT WORKS? YES, on density (~2.5x) and standby energy (~158x); NO on cost** (~parity).
+- **PROVABLE WITH $1M? PARTLY.**
+  - The seed proves or kills the device physics: CTE at speed, the buried-channel benefit, RTN tails, a regenerated loop and a short vertical coupon.
+  - It cannot prove AR-40 heterostack decks, the deck-joint tier, staircase overhead or cost.
+
+### FINAL STATUS: **DOWNGRADED**
+
+- **No physics kill.** The concept stands as a density + standby-energy streaming tier.
+- **What shrank it:**
+  - The two-ended regeneration had no return path. The fix needs a speculative deck-joint tier, or a 2x tighter CTE.
+  - Staircases cost 29% of area.
+  - $25/plate erases the cost advantage.
+- **Net effect:** density falls 3.6x → 2.5x, and the cost leg is killed.
+- **Weaker supports:**
+  - The buried-channel benefit is weaker (0.28x vs 0.18x deferral).
+  - RTN needs screening.
+  - P(pass) still hinges on imec's unread CTE definition.
