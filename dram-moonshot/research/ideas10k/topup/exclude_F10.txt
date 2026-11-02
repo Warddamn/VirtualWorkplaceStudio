@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Supply, industry and strategy' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- strategic dram reserve
+- dram futures market
+- helium recycling
+- advance market commitment
+- dram foundry model
+- dimm reuse via cxl
+- e-waste lpddr harvest
+- cxl memory pooling
+- molybdenum wordlines
+- partial-good die binning
+- e-waste dram harvesting
+- partial-good die harvest
+- open dram pdk
+- modular fab construction
+- in-field test shift
+- lcd-fab oxide memory
+- porous-si layer transfer
+- memory compression tiering
+- cold-grade retention bin
+- dram package harvesting
+- take-or-pay fab finance
+- strategic memory reserve
+- buyer-owned fab
+- tool-as-a-service
+- synthetic silica crucibles
+- nanoimprint for dram
+- cold-crucible cz
+- expired-patent dram atlas
+- error-tolerant dram grade
+- compression and dedup memory
+- per-bit production credit
+- memory-as-a-service leasing
+- socketed memory mandate
+- second-life cxl memory
+- buyer-owned fab coop
+- buyer cooperative fab
+- memory leasing take-back
+- display-fab oxide memory
+- nanoimprint array layers
+- tungsten recycling
+- anodic alumina templates
+- memory leasing cascade
+- dimm deposit-refund
+- cxl memory market
+- array-periphery hybrid bonding
+- synthetic silica crucible
+- wafer-scale memory slab
+- display-line oxide memory
+- fab tool leasing
+- e-waste deposit refund
+- wafer-scale memory
+- bcp dsa capacitor array
+- area-selective deposition
+- wafer-scale dram
+- used dram certification
+- open-source gain-cell ip
+- cxl memory deduplication
+- mask-rom model weights
+- partial-good die harvesting
+- dimm reuse market
+- certified dram reclamation
+- interference litho arrays
+- shared weight multicast
+- memory demand response
+- approximate memory for ai
+- hardware memory compression
+- cxl memory pooling market
+- cryogenic dram
+- fab workforce training
+- fine-grained memory retirement
+- retention-aware binning
+- approximate-grade dram
+- error-tolerant memory grade
+- open edram ip
+- federated yield learning
+- fab tungsten recycling
+- low-water wafer rinse
+- tungsten target recycling
+- memory deposit-refund
+- open-hardware fab tools
+- minienvironment fab
+- dram mpw shuttle
+- modular prefab fab
+- dram puf provenance
+- display-glass igzo memory
+- panel-fab oxide gain cell
+- stacked igzo on glass
+- helium-sited fab
+- binned hbm skus
+- software footprint policy
+- deposit return scheme
+- long-term-support dram
+- helium substitution
+- chokepoint-weighted procurement
+- retention-aware refresh binning
+- retention-bin harvesting
+- cryogenic dram pool
+- array/periphery bonded stack
+- cmos-bonded-array dram
+- wurtzite ferroelectric memory
+- die harvesting
+- e-waste die harvesting
+- in-field dram testing
+- glass-substrate oxide memory
+- indium recycling
+- dsa array patterning
+- dry/scco2 cleaning
+- nanoimprint array litho
+- directed self-assembly
+- fab industrial symbiosis
+- molybdenum metallization
+- wip die bank
+- hbm partial-good salvage
+- production tax credit
+- helium recapture
+- spatial-ald micro-fab
+- hbm hybrid bonding
+- synthetic crucible silica
+- legacy-fab interposers
+- synthetic quartz crucibles
+- donor wafer reuse
+- pure-play dram foundry
+- non-prime carrier substrates
+- second-life hbm stacks
+- sic refresh-free dram
+- wf6 exhaust recovery
+- modular fab franchise
+- open die interface standard
+- nanoimprint array patterning
+- maskless e-beam litho
+- take-or-pay securitization
+- dram bit futures
+- legacy-line utility
+- cleanroom-less fab
+- hdd fab repurposing
+- modular fab cells
+- universal configurable die
+- h2 backside cooling
+- layer-transfer wafer reuse
+- printed oxide memory

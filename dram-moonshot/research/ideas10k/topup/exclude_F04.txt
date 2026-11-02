@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Array architecture and 3D integration' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- cryogenic dram
+- anodic alumina capacitor
+- donor wafer reuse
+- display-fab memory
+- 1s1c selector crosspoint
+- back-gate retention bias
+- vertical ccd shift string
+- wafer-scale memory-on-logic
+- 2d channel tiers
+- laser-crystallized si tiers
+- backside bitline 4f2
+- nems relay access
+- fine-grain activation
+- capillary self-alignment bonding
+- inductive die coupling
+- porous electrode capacitor
+- array-periphery hybrid bonding
+- through-silicon optical links
+- air-gap bitlines
+- interference lithography
+- wafer-scale dram-on-logic
+- vertical ccd strings
+- partial row activation
+- 77k cryogenic dram
+- dsa pillar patterning
+- nanoimprint array layers
+- fluidic self-assembly chiplets
+- binary tier select decoding
+- spare tier/die remap
+- cmos-bonded array
+- block-copolymer dsa
+- area-selective deposition
+- tsv-free edge stacking
+- edge-mounted die stacking
+- edge-stack sidewall bus
+- nand-like annular 3d dram
+- metal-assisted chemical etch
+- two-face shared periphery
+- gyroid capacitor electrode
+- nanoimprint array patterning
+- multi-deck bonded tiers
+- multilayer mim capacitor
+- vertical ccd memory
+- backside trench capacitor
+- display-fab oxide memory
+- vertical ccd memory string
+- tier-level redundancy
+- self-rolled nanomembrane tiers
+- redox pseudocapacitor cell
+- cryogenic floating-body dram
+- cross-tier erasure coding
+- hybrid-bond dram-on-logic
+- charge-transfer strings
+- thermal-aware refresh
+- twin-cell differential
+- monolayer doping
+- hexagonal cell lattice
+- partial-die remap stacks
+- helium-free backside cooling
+- indium-free oxide channel
+- vertical ccd string
+- vertical ccd columns
+- volatile charge-trap nand
+- macetch high-ar holes
+- dual-array periphery sandwich
+- short bitline local sensing
+- folded thin-film tiers
+- transfer-print kgd tiles
+- edge-bonded die stacks
+- photonic memory i/o
+- dram die harvesting
+- in-tier oxide sense amps
+- interference litho array
+- row-hammer shield planes
+- 2d-channel gain cell tiers
+- hierarchical bitline preamps
+- film-thickness-defined cell
+- in-tier local sensing
+- open tier standard
+- interference lithography arrays
+- vertical chain feram
+- lcd-fab oxide memory
+- aao capacitor mold
+- 3d product-code ecc
+- mpb hfzro high-k
+- wide-gap oxide channel
+- self-rolled membrane tiers
+- drawn coax capacitors
+- drawn glass scaffold
+- edl nanocapacitor
+- folded wafer stack
+- taper-compensated tiers
+- voltage-stacked tiers
+- tier back-gate bias
+- area-selective self-alignment
+- inductive coupling stack
+- vertical-word activation
+- array-periphery wafer bonding
+- nanoimprint lithography
+- bond-interface capacitor
+- folded die strip stack
+- fine-grain 3d activation
+- quantum-confined channel
+- shared stacked sense amps
+- double-sided periphery bonding
+- block-copolymer hex lattice
+- laser-crystallized tiers
+- pitch-for-tiers duv 3d
+- shared-layer tiers
+- two-sided shared-sa arrays
+- vacuum-channel access device
+- thermal fiber draw
+- split-wafer cell bonding
+- wide-bandgap sic access
+- negative-capacitance fet
+- edge-on superlattice array
+- porous-si tier isolation
+- oxide cmos periphery
+- rolled-up nanomembrane capacitor
+- nems access switch
+- shield-tier isolation
+- corrugated capacitor walls
+- tiered-latency dram
+- nand-line 3d dram
+- tungsten-free wordline
+- known-good mat-let assembly
+- vt-coded tier select
+- resonant wordline drive
+- wordline-heater anneal
+- sense-amp sharing
+- solution oxide tiers on logic
+- plateless differential cell
+- multilevel dram cell
+- wound film memory
+- nanoporous capacitor electrode
+- field-emitter charge storage
+- short bitline bonded sa
+- shared plate pillar layout
+- multilayer-plate capacitor
+- multi-level dram cell

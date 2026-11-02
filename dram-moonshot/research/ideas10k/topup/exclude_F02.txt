@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Access device, leakage and refresh' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- resonant adiabatic refresh
+- lifetime-aware refresh skip
+- vacuum field-emission access
+- dimm reuse market
+- 77 k cryogenic dram pool
+- per-cell vt trimming
+- retention-binned skus
+- nems access switch
+- proximity gettering
+- nems relay access
+- data-aware refresh skip
+- vacuum-channel access
+- decay-tracking sense reference
+- back-gate hold vt
+- tunnel-diode static cell
+- coulomb-blockade access
+- access-as-refresh
+- deuterium passivation
+- superconducting loop memory
+- tunnel-fet access
+- wide-gap drain heterojunction
+- canary refresh cells
+- optical wordline access
+- tunnel-diode latch cell
+- pinned-photodiode memory cell
+- cryogenic dram
+- per-cell vt trim
+- retention binning
+- display-fab memory
+- decay-tolerant data refresh
+- junctionless access device
+- compression-driven partial refresh
+- canary-cell refresh
+- 2d tmd channel
+- high-pressure d2 anneal
+- tracking sense reference
+- twin-cell mode
+- fixed-charge vt shift
+- charge-plasma access fet
+- thin-body access channel
+- nem relay access
+- resonant-tunneling access
+- negative-capacitance access gate
+- standby plate bias
+- pinned-well storage
+- antiferroelectric charge reservoir
+- retention-bin product grades
+- access-aware refresh skip
+- back-gate retention bias
+- broadcast self-refresh
+- online retention profiling
+- lifetime-tagged no-refresh
+- 1s1c crosspoint dram
+- sic wide-gap cell
+- row-column and access
+- sic dram cell
+- adaptive negative wordline
+- field-effect passivation
+- cryogenic dram cooling
+- silicon-on-nothing junction
+- deuterium anneal
+- adiabatic wordline drive
+- cold-source access fet
+- optical access switch
+- vacuum-gap access switch
+- nems access relay
+- negative-capacitance access
+- adaptive wordline bias
+- deuterium passivation anneal
+- local soi storage junction
+- implant-free junction
+- storage-side gidl field relief
+- bitline charge recycling
+- canary-based refresh
+- in-field electrothermal anneal
+- air-gap isolation
+- tfet access device
+- strain-gated mott switch
+- piezoelectronic access
+- nems tunneling access
+- negative-capacitance fet
+- single-electron memory
+- thermoelectric array cooling
+- air-gap spacers
+- optically gated access
+- parametron phase bit
+- in-field deuterium anneal
+- refresh-relaxed recoverable data
+- vertical ccd memory
+- refresh-skip data coding
+- asymmetric ecc refresh
+- bit-plane refresh tiers
+- oxide beol access
+- ots crosspoint capacitor stack
+- crosspoint 1s1c capacitor
+- canary refresh tracking
+- retention-aware refresh
+- weak-cell remap
+- in-situ trap anneal
+- ga2o3 access tft
+- os-guided refresh skip
+- temperature-aware refresh
+- stacked local sense amps
+- data-polarity retention
+- refresh-free ephemeral data
+- refresh-off clean pages
+- fleet retention telemetry
+- retention-reject die reuse
+- ephemeral memory binning
+- retention-aware page placement
+- approximate significance refresh
+- ecc-feedback refresh
+- thermoelectric memory cooling
+- crystallographic etch channels
+- polarity-aware data inversion
+- access-covered refresh skip
+- free-page refresh skip
+- canary-cell adaptive refresh
+- charge-transfer sensing
+- in-field trap anneal
+- nonvolatile shadow cell
+- sleep-mode vt shift
+- ga2o3 beol access
+- quantum-confined si channel
+- tunnel-diode bistable cell
+- feedback-fet access
+- strong ecc refresh relax
+- ccd charge-well storage
+- wide-gap access transistor
+- tunnel-fet access device
+- wide-gap storage junction
+- optical-gated access
+- bio-template lithography
+- coulomb blockade access
+- ccd loop memory
+- margin-sensing refresh
+- negative-charge alox passivation
+- refresh charge recycling
+- hbm thermal isolation
+- mature-node fat cell stacking

@@ -1,0 +1,307 @@
+{
+ "techniques": [
+  {
+   "id": "T26",
+   "name": "Constraint stacking",
+   "def": "Apply TWO forced constraints at once; the collision forces genuinely different mechanisms."
+  },
+  {
+   "id": "T27",
+   "name": "Distant-field transplant",
+   "def": "Transplant a working mechanism from a far field: music, linguistics, markets/finance, sports, medicine, astronomy, agriculture, military logistics, theatre."
+  },
+  {
+   "id": "T28",
+   "name": "Extremophiles, minerals and Earth systems",
+   "def": "Learn from tardigrades, deep-sea vents, minerals that record magnetic history, ice cores, tree rings, geodes, weather and ocean memory."
+  },
+  {
+   "id": "T29",
+   "name": "Time travel",
+   "def": "How a 1955 engineer would solve it with 2026 materials; how a 2100 engineer would; what the 1970s would have built if DRAM had never been invented."
+  },
+  {
+   "id": "T30",
+   "name": "Paradox as feature",
+   "def": "Embrace a contradiction (volatile AND permanent, dense AND sparse, analog AND digital, forgetful AND exact) and make it the mechanism."
+  },
+  {
+   "id": "T31",
+   "name": "Measurement-first invention",
+   "def": "Invent the instrument, metrology or test method that would unlock a new memory, then design the memory that the new measurement makes possible."
+  }
+ ],
+ "ideas_per_cell": 42,
+ "cells": [
+  {
+   "cell": "T26-F01",
+   "technique": "Constraint stacking",
+   "technique_def": "Apply TWO forced constraints at once; the collision forces genuinely different mechanisms.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "No EUV lithography allowed AND Zero refresh power",
+   "exclude_file": "research/ideas10k/topup/exclude_F01.txt"
+  },
+  {
+   "cell": "T28-F01",
+   "technique": "Extremophiles, minerals and Earth systems",
+   "technique_def": "Learn from tardigrades, deep-sea vents, minerals that record magnetic history, ice cores, tree rings, geodes, weather and ocean memory.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must be printable or roll-to-roll",
+   "exclude_file": "research/ideas10k/topup/exclude_F01.txt"
+  },
+  {
+   "cell": "T30-F01",
+   "technique": "Paradox as feature",
+   "technique_def": "Embrace a contradiction (volatile AND permanent, dense AND sparse, analog AND digital, forgetful AND exact) and make it the mechanism.",
+   "facet": "Bit storage element",
+   "facet_def": "How the bit is physically held (charge, polarization, spin, phase, ions, mechanics, light...).",
+   "constraint": "Must tolerate 1% bit error rate at the cell",
+   "exclude_file": "research/ideas10k/topup/exclude_F01.txt"
+  },
+  {
+   "cell": "T27-F02",
+   "technique": "Distant-field transplant",
+   "technique_def": "Transplant a working mechanism from a far field: music, linguistics, markets/finance, sports, medicine, astronomy, agriculture, military logistics, theatre.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Total budget $1M and 24 months",
+   "exclude_file": "research/ideas10k/topup/exclude_F02.txt"
+  },
+  {
+   "cell": "T29-F02",
+   "technique": "Time travel",
+   "technique_def": "How a 1955 engineer would solve it with 2026 materials; how a 2100 engineer would; what the 1970s would have built if DRAM had never been invented.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Must be made entirely in the U.S.",
+   "exclude_file": "research/ideas10k/topup/exclude_F02.txt"
+  },
+  {
+   "cell": "T31-F02",
+   "technique": "Measurement-first invention",
+   "technique_def": "Invent the instrument, metrology or test method that would unlock a new memory, then design the memory that the new measurement makes possible.",
+   "facet": "Access device, leakage and refresh",
+   "facet_def": "The switch that isolates the bit; retention; refresh energy and time.",
+   "constraint": "Max process temperature 400 C",
+   "exclude_file": "research/ideas10k/topup/exclude_F02.txt"
+  },
+  {
+   "cell": "T28-F03",
+   "technique": "Extremophiles, minerals and Earth systems",
+   "technique_def": "Learn from tardigrades, deep-sea vents, minerals that record magnetic history, ice cores, tree rings, geodes, weather and ocean memory.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)",
+   "exclude_file": "research/ideas10k/topup/exclude_F03.txt"
+  },
+  {
+   "cell": "T30-F03",
+   "technique": "Paradox as feature",
+   "technique_def": "Embrace a contradiction (volatile AND permanent, dense AND sparse, analog AND digital, forgetful AND exact) and make it the mechanism.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Must be manufacturable by a 10-person team",
+   "exclude_file": "research/ideas10k/topup/exclude_F03.txt"
+  },
+  {
+   "cell": "T26-F03",
+   "technique": "Constraint stacking",
+   "technique_def": "Apply TWO forced constraints at once; the collision forces genuinely different mechanisms.",
+   "facet": "Sensing and periphery",
+   "facet_def": "Reading tiny signals; sense amps, decoders, the ~49% of die area that is periphery.",
+   "constraint": "Zero refresh power AND Must reach 10x density at the same cost",
+   "exclude_file": "research/ideas10k/topup/exclude_F03.txt"
+  },
+  {
+   "cell": "T29-F04",
+   "technique": "Time travel",
+   "technique_def": "How a 1955 engineer would solve it with 2026 materials; how a 2100 engineer would; what the 1970s would have built if DRAM had never been invented.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Energy per access 10x lower",
+   "exclude_file": "research/ideas10k/topup/exclude_F04.txt"
+  },
+  {
+   "cell": "T31-F04",
+   "technique": "Measurement-first invention",
+   "technique_def": "Invent the instrument, metrology or test method that would unlock a new memory, then design the memory that the new measurement makes possible.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "No storage capacitor allowed",
+   "exclude_file": "research/ideas10k/topup/exclude_F04.txt"
+  },
+  {
+   "cell": "T27-F04",
+   "technique": "Distant-field transplant",
+   "technique_def": "Transplant a working mechanism from a far field: music, linguistics, markets/finance, sports, medicine, astronomy, agriculture, military logistics, theatre.",
+   "facet": "Array architecture and 3D integration",
+   "facet_def": "Cell layout, 4F2, vertical/stacked arrays, bonding, layer count.",
+   "constraint": "Must cut water use 10x",
+   "exclude_file": "research/ideas10k/topup/exclude_F04.txt"
+  },
+  {
+   "cell": "T30-F05",
+   "technique": "Paradox as feature",
+   "technique_def": "Embrace a contradiction (volatile AND permanent, dense AND sparse, analog AND digital, forgetful AND exact) and make it the mechanism.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "No silicon wafer (other substrate)",
+   "exclude_file": "research/ideas10k/topup/exclude_F05.txt"
+  },
+  {
+   "cell": "T26-F05",
+   "technique": "Constraint stacking",
+   "technique_def": "Apply TWO forced constraints at once; the collision forces genuinely different mechanisms.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be buildable in a university nanofab AND No new fab: only existing trailing-node capacity",
+   "exclude_file": "research/ideas10k/topup/exclude_F05.txt"
+  },
+  {
+   "cell": "T28-F05",
+   "technique": "Extremophiles, minerals and Earth systems",
+   "technique_def": "Learn from tardigrades, deep-sea vents, minerals that record magnetic history, ice cores, tree rings, geodes, weather and ocean memory.",
+   "facet": "Materials and resource intensity",
+   "facet_def": "Scarce or concentrated inputs (helium, quartz, tungsten, hafnium, PFAS), energy, water, abundant substitutes.",
+   "constraint": "Must be repairable/recyclable by design",
+   "exclude_file": "research/ideas10k/topup/exclude_F05.txt"
+  },
+  {
+   "cell": "T31-F06",
+   "technique": "Measurement-first invention",
+   "technique_def": "Invent the instrument, metrology or test method that would unlock a new memory, then design the memory that the new measurement makes possible.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "No EUV lithography allowed",
+   "exclude_file": "research/ideas10k/topup/exclude_F06.txt"
+  },
+  {
+   "cell": "T27-F06",
+   "technique": "Distant-field transplant",
+   "technique_def": "Transplant a working mechanism from a far field: music, linguistics, markets/finance, sports, medicine, astronomy, agriculture, military logistics, theatre.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must be printable or roll-to-roll",
+   "exclude_file": "research/ideas10k/topup/exclude_F06.txt"
+  },
+  {
+   "cell": "T29-F06",
+   "technique": "Time travel",
+   "technique_def": "How a 1955 engineer would solve it with 2026 materials; how a 2100 engineer would; what the 1970s would have built if DRAM had never been invented.",
+   "facet": "Manufacturing, lithography and capital intensity",
+   "facet_def": "Process steps, masks, EUV dependence, tool cost, fab cost, throughput.",
+   "constraint": "Must tolerate 1% bit error rate at the cell",
+   "exclude_file": "research/ideas10k/topup/exclude_F06.txt"
+  },
+  {
+   "cell": "T26-F07",
+   "technique": "Constraint stacking",
+   "technique_def": "Apply TWO forced constraints at once; the collision forces genuinely different mechanisms.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Total budget $1M and 24 months AND Must cut water use 10x",
+   "exclude_file": "research/ideas10k/topup/exclude_F07.txt"
+  },
+  {
+   "cell": "T28-F07",
+   "technique": "Extremophiles, minerals and Earth systems",
+   "technique_def": "Learn from tardigrades, deep-sea vents, minerals that record magnetic history, ice cores, tree rings, geodes, weather and ocean memory.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Must be made entirely in the U.S.",
+   "exclude_file": "research/ideas10k/topup/exclude_F07.txt"
+  },
+  {
+   "cell": "T30-F07",
+   "technique": "Paradox as feature",
+   "technique_def": "Embrace a contradiction (volatile AND permanent, dense AND sparse, analog AND digital, forgetful AND exact) and make it the mechanism.",
+   "facet": "System architecture: need less DRAM",
+   "facet_def": "Compression, dedup, tiering, compute-in-memory, data placement, approximate memory, KV-cache tricks.",
+   "constraint": "Max process temperature 400 C",
+   "exclude_file": "research/ideas10k/topup/exclude_F07.txt"
+  },
+  {
+   "cell": "T27-F08",
+   "technique": "Distant-field transplant",
+   "technique_def": "Transplant a working mechanism from a far field: music, linguistics, markets/finance, sports, medicine, astronomy, agriculture, military logistics, theatre.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must use only 1990s-era tools (>=180 nm)",
+   "exclude_file": "research/ideas10k/topup/exclude_F08.txt"
+  },
+  {
+   "cell": "T29-F08",
+   "technique": "Time travel",
+   "technique_def": "How a 1955 engineer would solve it with 2026 materials; how a 2100 engineer would; what the 1970s would have built if DRAM had never been invented.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Must be manufacturable by a 10-person team",
+   "exclude_file": "research/ideas10k/topup/exclude_F08.txt"
+  },
+  {
+   "cell": "T31-F08",
+   "technique": "Measurement-first invention",
+   "technique_def": "Invent the instrument, metrology or test method that would unlock a new memory, then design the memory that the new measurement makes possible.",
+   "facet": "Interface, packaging and data movement",
+   "facet_def": "HBM, TSVs, interposers, pJ/bit, optical or wireless links, chiplets.",
+   "constraint": "Zero refresh power",
+   "exclude_file": "research/ideas10k/topup/exclude_F08.txt"
+  },
+  {
+   "cell": "T28-F09",
+   "technique": "Extremophiles, minerals and Earth systems",
+   "technique_def": "Learn from tardigrades, deep-sea vents, minerals that record magnetic history, ice cores, tree rings, geodes, weather and ocean memory.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Energy per access 10x lower",
+   "exclude_file": "research/ideas10k/topup/exclude_F09.txt"
+  },
+  {
+   "cell": "T30-F09",
+   "technique": "Paradox as feature",
+   "technique_def": "Embrace a contradiction (volatile AND permanent, dense AND sparse, analog AND digital, forgetful AND exact) and make it the mechanism.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "No storage capacitor allowed",
+   "exclude_file": "research/ideas10k/topup/exclude_F09.txt"
+  },
+  {
+   "cell": "T26-F09",
+   "technique": "Constraint stacking",
+   "technique_def": "Apply TWO forced constraints at once; the collision forces genuinely different mechanisms.",
+   "facet": "Reliability, ECC and error tolerance",
+   "facet_def": "Making weaker or cheaper cells acceptable; row hammer; retention tails; self-healing.",
+   "constraint": "Must cut water use 10x AND Only one lithography mask added",
+   "exclude_file": "research/ideas10k/topup/exclude_F09.txt"
+  },
+  {
+   "cell": "T29-F10",
+   "technique": "Time travel",
+   "technique_def": "How a 1955 engineer would solve it with 2026 materials; how a 2100 engineer would; what the 1970s would have built if DRAM had never been invented.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "No silicon wafer (other substrate)",
+   "exclude_file": "research/ideas10k/topup/exclude_F10.txt"
+  },
+  {
+   "cell": "T31-F10",
+   "technique": "Measurement-first invention",
+   "technique_def": "Invent the instrument, metrology or test method that would unlock a new memory, then design the memory that the new measurement makes possible.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be buildable in a university nanofab",
+   "exclude_file": "research/ideas10k/topup/exclude_F10.txt"
+  },
+  {
+   "cell": "T27-F10",
+   "technique": "Distant-field transplant",
+   "technique_def": "Transplant a working mechanism from a far field: music, linguistics, markets/finance, sports, medicine, astronomy, agriculture, military logistics, theatre.",
+   "facet": "Supply, industry and strategy",
+   "facet_def": "New ways to raise usable memory supply: reuse/recycling, micro-fabs, open IP, cooperatives, financing, policy, distributed manufacturing, business models.",
+   "constraint": "Must be repairable/recyclable by design",
+   "exclude_file": "research/ideas10k/topup/exclude_F10.txt"
+  }
+ ]
+}

@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'System architecture: need less DRAM' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- mask-rom weights
+- kv recompute from tokens
+- succinct data structures
+- dimm reuse cxl
+- rack-wide page dedup
+- memory spot market
+- fine-tune delta compression
+- optical weight broadcast
+- compressed pointers
+- hardware pointer compression
+- prng-seed weights
+- internal memory market
+- erasure-coded memory store
+- weight broadcast streaming
+- approximate kv dedup
+- follow-the-sun scheduling
+- lossless exponent coding
+- trained-dictionary page compression
+- moe expert prefetch
+- layer streaming flash
+- weight streaming ring
+- dimm reuse via cxl
+- zero-line elision
+- hardware page meshing
+- compiler field narrowing
+- via-rom frozen weights
+- kv precision decay
+- moe expert offload
+- compositional embeddings
+- age-graded kv precision
+- layer-fusion tiling
+- idle kv eviction
+- binary vector quantization
+- ternary weight packing
+- age-tiered kv quantization
+- erasure-coded ram
+- learned indexes
+- predictive line compression
+- attention-score kv eviction
+- lossless weight entropy coding
+- holographic kv superposition
+- bit-plane tiering
+- profile-guided field narrowing
+- regenerable page recompute
+- sketched optimizer state
+- seed-regenerated tensors
+- line-granular cow
+- cross-layer kv sharing
+- line-granular tiering
+- end-to-end compressed format
+- gc headroom reduction
+- holographic attention correlator
+- memory-efficiency labeling
+- cxl switch dedup
+- sub-page memory meshing
+- anti-phase job scheduling
+- bit-plane precision tiering
+- high-bandwidth flash weights
+- idle session hibernation
+- kv gist recompute
+- 1-bit fine-tune deltas
+- hybrid state-space models
+- transform-coded kv
+- session-aware kv eviction
+- bit-plane weights
+- generated embeddings
+- neural texture compression
+- attention offload kv
+- dictionary hardware compression
+- compression-funded ecc
+- error-tolerant dram binning
+- flash weight streaming
+- serverless snapshot hibernation
+- compiled weight streaming
+- mixed-precision kv eviction
+- kv vector quantization
+- gist-token prompt compression
+- hash embedding generation
+- error-diffusion kv quantization
+- priced memory overcommit
+- recomputable page reclaim
+- erasure-coded in-memory stores
+- zygote cow runtimes
+- learned page prefetch
+- kv recomputation
+- error-bounded memory compression
+- learned ftl mapping
+- looped transformer weights
+- compressed cxl expander
+- in-flash kv attention
+- bit-plane tensor tiering
+- keyframe delta activations
+- temporal kv delta coding
+- learned context compression
+- ecc-to-data checksum swap
+- compressed 32-bit pointers
+- computational storage pushdown
+- temporal workload colocation
+- anti-phase job packing
+- erasure-coded memory
+- near-data filtering
+- background tab freezing
+- dimm reuse expanders
+- fused optimizer backward
+- snapshot lazy restore
+- sketch-fronted tables
+- hyperdimensional superposition
+- refresh-free ephemeral tier
+- reject-die salvage
+- adaptive succinct structures
+- cxl near-memory filtering
+- dimm health grading
+- elastic nested models
+- jit field narrowing
+- kv token merging
+- gpu hbm host swap
+- secure page dedup
+- content-addressed memory
+- superword tokenizer
+- client-side kv offload
+- memory chiplet reuse
+- kv product quantization
+- local-loss training
+- position-independent kv reuse
+- procedural weight generation
+- dram cache over cxl flash
+- inline line compression
+- dram-less ssd ftl
+- kv recompute from checkpoints
+- cxl pool dedup
+- never-read line tracking
+- memory-in-pixel display
+- usage-based memory billing
+- approximate-memory page tags
+- migrating threads
+- compression-embedded ecc
+- zero-line compression
+- llc-resident i/o rings
+- faulty-dram resale
+- dimm reuse cascade

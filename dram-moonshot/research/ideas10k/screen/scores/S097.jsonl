@@ -1,0 +1,96 @@
+{"id": "I-09157", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "open DRAM design kit", "note": "Open periphery/array IP like OpenRAM for DRAM; mature foundries lack capacitor modules, so likely gain-cell class."}
+{"id": "I-03175", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "partial-good DRAM bins", "note": "GPU-style harvesting; real gain likely 2-5% of bits."}
+{"id": "I-04565", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "skyrmion racetrack", "note": "Serial-access tier only; RT skyrmion motion and readout reliability unresolved."}
+{"id": "I-02718", "P": 5, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "used-tool legacy fab", "note": "Depreciated tools cut wafer cost; well-trodden path, needs fab-scale capital."}
+{"id": "I-04099", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "I-02718", "theme": "used-tool legacy fab", "note": ""}
+{"id": "I-07787", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "I-02718", "theme": "used-tool legacy fab", "note": ""}
+{"id": "I-11465", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "refurbished tool kits", "note": "Used-tool refurbishment market already exists."}
+{"id": "I-09180", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "CXL row-cache buffer", "note": "FPGA-provable; benefit bounded by locality already captured by row buffers."}
+{"id": "I-01345", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "open DRAM process flow", "note": "Recipes need heavy fab tuning; validating without a line is hard."}
+{"id": "I-07335", "P": 3, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "DRAM patent pool", "note": "Incumbent participation is the crux."}
+{"id": "I-04573", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "copy-exactly fab template", "note": "Intel Copy Exactly precedent."}
+{"id": "I-10549", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "I-09157", "theme": "open DRAM design kit", "note": ""}
+{"id": "I-04575", "P": 5, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "memory leasing reclaim", "note": "Extends bit-years; hardware-as-a-service precedent."}
+{"id": "I-08241", "P": 5, "S": 3, "N": 2, "D": 3, "dup_of": "I-04575", "theme": "memory leasing reclaim", "note": ""}
+{"id": "I-11014", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "I-02718", "theme": "used-tool legacy fab", "note": "Incumbents already migrate legacy parts to old lines."}
+{"id": "I-06402", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "DRAM futures market", "note": "Grading standardization and liquidity are hard; CFTC listing needed."}
+{"id": "I-06432", "P": 3, "S": 2, "N": 3, "D": 1, "dup_of": "", "theme": "shared EUV tolling", "note": "Mid-flow wafer shipping: overlay matching, queue time, contamination."}
+{"id": "I-09635", "P": 5, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "shared inspection cooperative", "note": ""}
+{"id": "I-05481", "P": 4, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "strategic die reserve", "note": "Die storage is stable but generation obsolescence erodes reserve value."}
+{"id": "I-02715", "P": 4, "S": 3, "N": 2, "D": 1, "dup_of": "", "theme": "buyer co-op fab", "note": "Like JV fabs and prepay LTAs; capex scale is the barrier."}
+{"id": "I-04103", "P": 3, "S": 2, "N": 2, "D": 1, "dup_of": "I-02715", "theme": "buyer co-op fab", "note": ""}
+{"id": "I-07781", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "fab-as-a-service REIT", "note": "DRAM flows are not modular bays; contamination and integration issues."}
+{"id": "I-08709", "P": 3, "S": 3, "N": 4, "D": 2, "dup_of": "", "theme": "HBM reclaim to CXL", "note": "Debonding underfilled HBM from interposers and bridging 1024-bit PHY to CXL is hard but new."}
+{"id": "I-04597", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "fine-grained row activation", "note": "Known art: selective bitline activation, Half-DRAM, SALP."}
+{"id": "I-11019", "P": 5, "S": 3, "N": 2, "D": 4, "dup_of": "", "theme": "CXL DIMM reuse", "note": "Hyperscalers already reuse DDR4 behind CXL; FPGA-provable."}
+{"id": "I-08700", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "I-02718", "theme": "used-tool legacy fab", "note": ""}
+{"id": "I-06885", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-11465", "theme": "refurbished tool kits", "note": ""}
+{"id": "I-01835", "P": 3, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "memory utility leasing", "note": "Stacked 100x multipliers are overclaimed; old DRAM energy and interface obsolescence."}
+{"id": "I-04122", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "high-temp heat reuse", "note": "Refresh rate and leakage climb above 85 C; energy penalty offsets heat revenue."}
+{"id": "I-05034", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DRAM talent recruitment", "note": "Already how CXMT and others ramped."}
+{"id": "I-02751", "P": 4, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "tool-level water recycling", "note": "POU reclaim exists; 10-20x intake cut is optimistic."}
+{"id": "I-03199", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "post-package repair", "note": "JEDEC PPR/sPPR already does field row repair."}
+{"id": "I-09166", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "", "theme": "licensed process transfer", "note": "Tech transfers (Qimonda-Winbond, Micron-Nanya) are precedent."}
+{"id": "I-09657", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "tool-free memory cartridges", "note": "Novel clamp, but low value over existing connectors."}
+{"id": "I-11005", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "I-03175", "theme": "partial-good DRAM bins", "note": ""}
+{"id": "I-00916", "P": 2, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "fluorine-free permitting", "note": "Zero-fluorine DRAM fab is not yet technically possible."}
+{"id": "I-02286", "P": 4, "S": 2, "N": 3, "D": 5, "dup_of": "", "theme": "open gain-cell prize", "note": "Fits $1M exactly; output is an embedded block, not commodity bits."}
+{"id": "I-01820", "P": 2, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "fiber-drawn memory arrays", "note": "Thermal drawing replaces litho cheaply; doubt: drawn semiconductors make poor transistors and per-bit density may lag badly."}
+{"id": "I-04586", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "NEMS relay memory", "note": "Contact wear and stiction limit endurance far below DRAM needs."}
+{"id": "I-02737", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "DRAM MPW shuttle", "note": "Needs incumbent willing to expose its flow."}
+{"id": "I-01376", "P": 5, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "veteran technician pipeline", "note": "Fab veteran-hiring programs already exist."}
+{"id": "I-05972", "P": 2, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "printed memory PDK", "note": "Printed IGZO cannot reach DRAM-class density or speed."}
+{"id": "I-03208", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "wafer-scale memory stitching", "note": "Anamartic wafer-scale memory precedent."}
+{"id": "I-04566", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "logic-fab gain cell", "note": "Gain cells at 28-65 nm are ~50-100x larger than 1a DRAM cells; cost/bit claim optimistic."}
+{"id": "I-00430", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "ion-cut layer transfer", "note": "Smart Cut donor reuse is standard SOI practice."}
+{"id": "I-07791", "P": 3, "S": 2, "N": 2, "D": 1, "dup_of": "", "theme": "fab conversion DPA", "note": "Logic lines lack capacitor and HAR etch modules; conversion cost understated."}
+{"id": "I-01803", "P": 4, "S": 3, "N": 3, "D": 4, "dup_of": "", "theme": "CXL memory pooling", "note": "Pooling known (Pond); market allocation twist; ms migration overhead."}
+{"id": "I-10555", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-08709", "theme": "HBM reclaim to CXL", "note": "Same debond-and-reuse core as I-08709, sourced from assembly fallout."}
+{"id": "I-09614", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "Talbot array lithography", "note": "ArFi SAQP already avoids EUV for arrays; overlay and array-edge stitching are doubts."}
+{"id": "I-03215", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-02737", "theme": "DRAM MPW shuttle", "note": ""}
+{"id": "I-08263", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "I-02737", "theme": "DRAM MPW shuttle", "note": ""}
+{"id": "I-08255", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "quartz-free crystal growth", "note": "Dislocation-free 300 mm growth from cold crucible skull is unproven."}
+{"id": "I-00912", "P": 3, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "halogen co-location", "note": "Cl2 cannot replace fluorine for oxide/nitride chamber cleans."}
+{"id": "I-04138", "P": 3, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "accelerated qualification", "note": "HTOL already accelerates; regulator acceptance is the barrier."}
+{"id": "I-00426", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "I-05481", "theme": "strategic die reserve", "note": ""}
+{"id": "I-10569", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "area-selective deposition", "note": "Widely pursued AS-ALD; selectivity defectivity limits."}
+{"id": "I-06395", "P": 3, "S": 4, "N": 3, "D": 1, "dup_of": "", "theme": "NAND-fab 3D DRAM", "note": "Reuses NAND deep-etch fleets for 3D DRAM; doubt: lateral-capacitor 3D DRAM is unproven at yield."}
+{"id": "I-07339", "P": 3, "S": 2, "N": 4, "D": 2, "dup_of": "", "theme": "reject-die SRAM harvest", "note": "Failed dies often fail in fabric too; small total capacity."}
+{"id": "I-05059", "P": 3, "S": 3, "N": 2, "D": 2, "dup_of": "I-03208", "theme": "wafer-scale memory stitching", "note": ""}
+{"id": "I-02300", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "", "theme": "DRAM PUF authentication", "note": "Retention PUFs published; temperature and aging drift."}
+{"id": "I-04589", "P": 4, "S": 3, "N": 1, "D": 3, "dup_of": "", "theme": "analog flash CIM", "note": "Mythic and SST memBrain already do this."}
+{"id": "I-01356", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "inventory swap matching", "note": ""}
+{"id": "I-10577", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "apprentice teaching fab", "note": ""}
+{"id": "I-04582", "P": 3, "S": 3, "N": 3, "D": 3, "dup_of": "", "theme": "CCD shift-register memory", "note": "Low-energy streaming for weights/KV; serial access, dark current limits retention."}
+{"id": "I-07338", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "stacked SRAM cubes", "note": "28 nm SRAM bits cost orders of magnitude more than DRAM."}
+{"id": "I-07816", "P": 2, "S": 3, "N": 3, "D": 3, "dup_of": "I-04582", "theme": "CCD shift-register memory", "note": "3-bit packets at small bucket sizes face CTE loss and dark current."}
+{"id": "I-11027", "P": 4, "S": 3, "N": 2, "D": 2, "dup_of": "", "theme": "periphery wafer bonding", "note": "CoP/CBA bonding already the industry 4F2 and 3D DRAM path."}
+{"id": "I-03641", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "I-09157", "theme": "open DRAM design kit", "note": ""}
+{"id": "I-03203", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "fluidic dielet assembly", "note": "Placement accuracy versus fine-pitch RDL is the doubt."}
+{"id": "I-05049", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "relaxed capacitor ECC", "note": "Sense margin at 2.5-3 fF needs short bitlines and strong ECC."}
+{"id": "I-10087", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "on-site acid regeneration", "note": ""}
+{"id": "I-09649", "P": 3, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "electromigration healing", "note": "EM rarely limits DRAM life."}
+{"id": "I-07324", "P": 4, "S": 2, "N": 3, "D": 2, "dup_of": "", "theme": "process knowledge escrow", "note": ""}
+{"id": "I-07804", "P": 2, "S": 4, "N": 3, "D": 2, "dup_of": "", "theme": "ephemeral DRAM grade", "note": "1 ms retention lets tiny storage nodes work; doubt: 0.1 fF needs gain-cell readout and 6-tier stacking is unproven."}
+{"id": "I-08693", "P": 5, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "retention-binned SKUs", "note": "Characterizable with SoftMC-style FPGA testers."}
+{"id": "I-00431", "P": 5, "S": 2, "N": 2, "D": 3, "dup_of": "I-03175", "theme": "partial-good DRAM bins", "note": ""}
+{"id": "I-02731", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "I-04573", "theme": "copy-exactly fab template", "note": ""}
+{"id": "I-09650", "P": 4, "S": 1, "N": 3, "D": 3, "dup_of": "", "theme": "wear telemetry SPD", "note": "Mechanical fatigue is not clearly the dominant DRAM wear-out."}
+{"id": "I-05519", "P": 1, "S": 4, "N": 4, "D": 3, "dup_of": "", "theme": "electric double-layer node", "note": "EDL gives ~10x areal capacitance; doubt: proton RC ~microseconds and faradaic leakage kill ns access and retention."}
+{"id": "I-00903", "P": 4, "S": 2, "N": 1, "D": 3, "dup_of": "", "theme": "dry metal-oxide resist", "note": "Lam dry resist is already commercial."}
+{"id": "I-06403", "P": 4, "S": 3, "N": 2, "D": 4, "dup_of": "I-01803", "theme": "CXL memory pooling", "note": ""}
+{"id": "I-07328", "P": 3, "S": 3, "N": 2, "D": 3, "dup_of": "", "theme": "nanoimprint array litho", "note": "Canon NIL for DRAM under evaluation; defectivity and overlay."}
+{"id": "I-09637", "P": 4, "S": 2, "N": 3, "D": 4, "dup_of": "", "theme": "solderless package clamps", "note": "CAMM2 already addresses serviceability."}
+{"id": "I-06891", "P": 2, "S": 2, "N": 2, "D": 3, "dup_of": "", "theme": "multi-level DRAM cell", "note": "15-20 fF at 20 nm pitch is not achievable; MLC DRAM sense margins poor."}
+{"id": "I-09178", "P": 3, "S": 2, "N": 4, "D": 3, "dup_of": "", "theme": "thyristor RAM", "note": "Power-fab doping expertise could tame T-RAM variability; cells large."}
+{"id": "I-07800", "P": 2, "S": 3, "N": 3, "D": 2, "dup_of": "", "theme": "spacer-defined sidewall cells", "note": "ALD-defined 5 nm gates leak too much; capacitor area still limits density."}
+{"id": "I-11453", "P": 4, "S": 2, "N": 2, "D": 2, "dup_of": "I-02715", "theme": "buyer co-op fab", "note": ""}
+{"id": "I-03644", "P": 4, "S": 2, "N": 1, "D": 1, "dup_of": "I-02718", "theme": "used-tool legacy fab", "note": ""}
+{"id": "I-03198", "P": 4, "S": 2, "N": 2, "D": 4, "dup_of": "I-04566", "theme": "logic-fab gain cell", "note": ""}
+{"id": "I-05956", "P": 3, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "helium substitution cooling", "note": "H2 in plasma chambers raises safety and process-chemistry concerns."}
+{"id": "I-09640", "P": 4, "S": 1, "N": 3, "D": 4, "dup_of": "", "theme": "passive wear indicator", "note": ""}
+{"id": "I-09639", "P": 3, "S": 3, "N": 4, "D": 3, "dup_of": "", "theme": "reworkable HBM stacks", "note": "Die-selective laser debond; release polymer may compromise reliability."}
+{"id": "I-08720", "P": 4, "S": 2, "N": 2, "D": 3, "dup_of": "I-00430", "theme": "ion-cut layer transfer", "note": ""}
+{"id": "I-00459", "P": 4, "S": 2, "N": 3, "D": 3, "dup_of": "", "theme": "memory-tier interface standard", "note": ""}
+{"id": "I-01353", "P": 4, "S": 2, "N": 2, "D": 1, "dup_of": "I-02718", "theme": "used-tool legacy fab", "note": ""}
+{"id": "I-02289", "P": 4, "S": 2, "N": 4, "D": 4, "dup_of": "", "theme": "DIMM reliability insurance", "note": "Telemetry-priced warranty is a novel reuse enabler."}

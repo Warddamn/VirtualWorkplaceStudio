@@ -32,6 +32,9 @@ PERMS, BANDS = 128, 32
 ROWS = PERMS // BANDS
 STOP = set("a an the of to and or in on for with by is are be as at from that this it its into via using use uses can than then".split())
 TECH = {t["id"]: t["name"] for t in CFG["techniques"]}
+_TC = DM / "research" / "ideas10k" / "topup" / "config.json"
+if _TC.exists():
+    TECH.update({t["id"]: t["name"] for t in json.loads(_TC.read_text())["techniques"]})
 FACET = {f["id"]: f["name"] for f in CFG["facets"]}
 
 
@@ -91,6 +94,23 @@ def load():
                           "why": d.get("step_change_claim", ""), "kind": "technology", "constrained": False,
                           "novelty": {"KNOWN": 1, "TWIST": 3, "NEW": 4}.get(str(d.get("novelty", "")).split()[0].upper().strip("[]"), 3),
                           "physics_risk": "medium", "source": "phaseB"})
+    # Novelty top-up round (loaded LAST so existing ids I-00001..I-11597 stay stable)
+    TOPRAW = DM / "research" / "ideas10k" / "topup" / "raw"
+    for f in sorted(TOPRAW.glob("*.jsonl")) if TOPRAW.exists() else []:
+        for i, ln in enumerate(f.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            ln = ln.strip()
+            if not ln:
+                continue
+            try:
+                d = json.loads(ln)
+            except json.JSONDecodeError:
+                bad.append(f"topup/{f.name}:{i}")
+                continue
+            if not str(d.get("title", "")).strip() or not str(d.get("idea", "")).strip():
+                continue
+            d["cell"] = d.get("cell") or f.stem
+            d["source"] = "topup"
+            ideas.append(d)
     return ideas, bad
 
 

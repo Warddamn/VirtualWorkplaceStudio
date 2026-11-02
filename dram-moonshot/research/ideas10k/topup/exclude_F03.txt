@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Sensing and periphery' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- time-domain sensing
+- cryogenic dram
+- partial row activation
+- negative-capacitance bitline
+- analog row-hammer counter
+- bipolar sense amp
+- analog activation counter
+- sa offset trim
+- bitline charge recycling
+- time-domain sense amp
+- stochastic nanowire decoder
+- inductive die-to-die link
+- open periphery ip
+- time-shared sense amp
+- ccd bitline readout
+- self-timed sensing
+- shift-register row select
+- canary-cell adaptive refresh
+- stepwise adiabatic charging
+- sense amp offset trim
+- bootstrapped wordline driver
+- controller-side repair map
+- bonded periphery foundry
+- bonded periphery wafer
+- self-referenced sensing
+- display-fab periphery
+- adiabatic wordline charging
+- tunnel-fet sense amp
+- tunnel-diode sense latch
+- ndr sense latch
+- retention-aware refresh
+- sequential wordline token
+- geiger-mode avalanche sensing
+- charge-transfer sensing
+- floating-diffusion readout
+- host-managed repair map
+- local bitline gain
+- sequential row token
+- adiabatic wordline drive
+- avalanche bitline sensing
+- nv sense-amp offset trim
+- segmented bitline preamp
+- charge-transfer presensing
+- replica-cell refresh timing
+- ecc-relaxed sensing
+- thermal-aware refresh
+- single-electron sensing
+- array-periphery wafer split
+- time-multiplexed sensing
+- multilevel dram cell
+- air-gap bitlines
+- ccd charge-transfer sensing
+- negative capacitance sensing
+- beol tft periphery
+- ramp-adc multilevel sensing
+- avalanche gain sense amp
+- cell-cap pump reuse
+- charge-transfer preamp
+- diode-matrix decoder
+- resonant wordline drive
+- nonvolatile sa offset trim
+- beol diode-matrix decoder
+- precharge-free sensing
+- online weak-row detection
+- set electrometer sensing
+- coincident dual-gate addressing
+- on-die photonic i/o
+- multilevel sar sensing
+- molybdenum metallization
+- threshold-switch sense amp
+- nems sense latch
+- oxide tft periphery above array
+- active guard bitlines
+- off-die vpp generation
+- optical row addressing
+- nem relay decoder
+- varactor parametric preamp
+- access-as-refresh
+- threshold-switch sustain refresh
+- host-managed repair
+- bond interface standard
+- wafer-on-logic dram
+- switched-cap signal boost
+- refresh-free retention contract
+- negative-impedance bitline
+- in-dram compression
+- 3d local micro-sa
+- decay-tracking reference
+- canary-cell monitoring
+- soft-decision sensing ecc
+- sa offset calibration
+- vertical ccd string
+- standard periphery wafer
+- cryogenic dram tier
+- cryogenic dram sensing
+- ac capacitive ndro readout
+- nonvolatile row buffer
+- shift-register refresh
+- periphery chiplet split
+- self-timed mats
+- adaptive sense reference
+- in-situ margin refresh
+- offset-cancelled sensing
+- leakage-tracking refresh
+- low-swing global i/o
+- content-aware refresh skip
+- periphery-array wafer bonding
+- cmos-bonded array
+- split periphery wafers
+- analog row-hammer integrator
+- optical bist readout
+- thyristor wordline driver
+- online weak-cell detection
+- time-multiplexed sa
+- constant-weight self-reference
+- parametric bitline amplification
+- shared periphery die
+- shared sense die stack
+- shared periphery foundry
+- merchant periphery foundry
+- ccd shift memory
+- hopf oscillator sensing
+- controller-offloaded periphery
+- glass-panel periphery
+- oxide cmos periphery
+- row-and-column cell select
+- inductive die-stack links
+- off-die vpp supply
+- multi-rate refresh
+- analog activation integrator
+- ferroelectric sa trim
+- piezo transformer pump
+- oxide-only periphery
+- multiplexed sense amps
+- adiabatic bitline charging
+- speculative early sensing
+- nems power gating
+- charge-amplifier sensing
+- back-gate sa trim
+- bipolar bitline preamp

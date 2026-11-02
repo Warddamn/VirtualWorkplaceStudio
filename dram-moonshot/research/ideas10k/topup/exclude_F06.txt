@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Manufacturing, lithography and capital intensity' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- interference lithography
+- area-selective deposition
+- spatial ald
+- interference lithography arrays
+- metal-assisted chemical etch
+- porous-si layer transfer
+- periphery wafer bonding
+- dsa capacitor holes
+- anodic alumina template
+- cold-crucible cz
+- dimm reuse market
+- anodic alumina capacitor mold
+- display-fab oxide memory
+- wafer-scale dram
+- self-rolled capacitor
+- shared fel euv source
+- cryogenic dram
+- aao capacitor template
+- macetch capacitor holes
+- mace deep silicon etch
+- helium recycling
+- h2 backside cooling
+- 1s1c selector crosspoint
+- display-fab memory
+- layer-transfer 3d tiers
+- bottom-up capacitor growth
+- hydrogen backside gas
+- supercritical co2 drying
+- nanoimprint replica templates
+- nanosphere lithography
+- maskless e-beam periphery
+- vacuum-transport fab
+- offtake fab finance
+- inductive die-stack links
+- 1s1c crossbar dram
+- modular containerized fab
+- aao capacitor mold
+- anodic alumina molds
+- monolayer doping
+- molybdenum metallization
+- relaxed-pitch 3d dram
+- porous capacitor electrode
+- strategic dram reserve
+- helium-free chuck cooling
+- crystal-plane wet trench
+- backside capacitor
+- dram foundry pdk
+- array-periphery wafer bonding
+- helium-free chuck
+- laser seeded recrystallization
+- roll-to-roll memory
+- folded membrane stacking
+- w-free wordline metal
+- porous-si seed reuse
+- tungsten-free wordline
+- multi-level dram cell
+- wafer-scale memory
+- shrink-polymer nil masters
+- cleanroom-free fab
+- wafer-scale dram slab
+- maskless dmd lithography
+- weight mask rom
+- beol oxide gain cell
+- beol igzo gain cell
+- capillary die self-assembly
+- lcd-fab gain cells
+- ccd shift-register memory
+- os defect remapping
+- laser self-organized gratings
+- sic refresh-free memory
+- nil template replication
+- photoelectrochemical macropores
+- nem relay access
+- fab project finance
+- wafer-scale dram blades
+- shared euv hub
+- array nanoimprint
+- laser-crystallized si tiers
+- sequential layer-transfer tiers
+- fluidic tile self-assembly
+- short bitline local sense
+- random cells remap
+- grayscale staircase
+- vertical thyristor ram
+- rutile tio2 high-k
+- backside trench capacitor
+- colloidal lithography
+- field burn-in scrubbing
+- kerfless seed reuse
+- tiled reticle composition
+- swappable chamber liners
+- inductive die stacking
+- self-limiting oxidation
+- helium substitution cooling
+- wafer-on-wafer hbm
+- defect-tolerant cleanroom relax
+- one-shot staircase ramp
+- electroless metal fill
+- anisotropic wet etch
+- fiber-drawn capacitor arrays
+- backside capacitor dram
+- continuous linear fab
+- beol gain-cell tolling
+- block-copolymer dsa
+- epitaxial vertical channel
+- sacrificial zno tiers
+- vicinal step templating
+- late-personalized array
+- defect-tolerant remapping
+- multi-shell capacitor
+- vacuum-channel access switch
+- cnt forest capacitor
+- s-layer protein mask
+- bitline air gaps
+- subtractive metal etch
+- contactless wafer test
+- late product personalization
+- multi-level nanoimprint
+- stochastic-tolerant euv dose
+- etch-free mram patterning
+- controlled spalling
+- nanoimprint array layers
+- mof dry resist
+- fluidic die assembly
+- directed self-assembly
+- printed edge interconnect
+- x-ray proximity lithography
+- fully self-aligned flow
+- ecc replaces redundancy
+- area-selective ald patterning
+- pattern shaping etch
+- cold-crucible crystal growth
+- double-sided wafer arrays
+- wafer-stacked dram tiers
+- modular fab construction
+- fab revival
+- sealed-pod fab
+- continuous czochralski
+- legacy-tool dram fab
+- euv capacity sharing

@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Reliability, ECC and error tolerance' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- analog hammer integrator
+- canary-cell refresh
+- selective twin-cell mode
+- dimm reuse market
+- bit-significance refresh tiering
+- retired dram reuse
+- lifetime-aware refresh skip
+- sub-spec die salvage
+- compression-funded ecc
+- asymmetric z-channel ecc
+- lifetime-tagged refresh skip
+- logic-die remap repair
+- reject-die graded sku
+- polarity-aware data inversion
+- cryogenic dram
+- self-clearing electrodes
+- analog hammer counter
+- in-situ thermal anneal
+- in-field microheater anneal
+- strong-ecc cxl controller
+- erasure-coded memory pools
+- row-wide ldpc
+- soft-decision sensing ecc
+- significance-aware refresh
+- erasure decoding maps
+- asymmetric error codes
+- hot-row sram cache
+- access-as-refresh
+- in-field retention profiling
+- abft tensor checksums
+- read-retry soft sensing
+- pilot-cell sense reference
+- time-aware sense reference
+- criticality-aware placement
+- row-group xor parity
+- bit-significance refresh
+- leakage-tracking refresh clock
+- wafer-scale memory
+- latch-time soft decoding
+- buried wordline shield
+- per-mat body bias
+- salvage-grade bins
+- relaxed-spec dram grade
+- sense-timing soft info
+- wide-bandgap access transistor
+- wordline air gaps
+- significance-graded cells
+- in-situ microheater anneal
+- downbin die market
+- error-tolerant number encoding
+- fault-aware fine-tuning
+- defect-aware coset coding
+- hot-row replication
+- bad-page-map dimms
+- age-adaptive ecc
+- aggressor quarantine
+- nv fault-map storage
+- morphable ecc refresh
+- subarray tenant isolation
+- cryogenic memory pool
+- feram imprint polarity rotation
+- write-as-refresh placement
+- jedec retention map
+- lifetime-matched refresh
+- weak-cell polarity coding
+- golden-copy refetch dram
+- aging-adaptive ecc
+- randomized trr sampling
+- redundant residue pim
+- triple-row activation tmr
+- multi-row charge summing
+- nems relay access
+- error-bounded weight encoding
+- hammer recombination layer
+- soft-decision sense ldpc
+- panel-fab tft memory
+- analog hammer accumulator
+- sense-margin erasure flags
+- vrt burn-in screening
+- hammer electron sweep-back
+- base-die repair cache
+- subarray fault isolation
+- repair-free os-mapped dies
+- fleet error telemetry
+- in-system die grading
+- raw-ber memory class
+- reram repair cam
+- fleet fault prediction
+- canary-row adaptive refresh
+- carbon gettering junction
+- speculative ecc rollback
+- keyed row remapping
+- speculative ecc
+- decay-tracking read reference
+- ecc-servo refresh control
+- randomized row remapping
+- detect-only crc refetch
+- hot-row quarantine
+- rack-scale erasure-coded memory
+- bit-significance tensor splitting
+- known-weak erasure decoding
+- replica-cell refresh timing
+- data whitening
+- variable-strength ecc
+- error-tolerant dnn training
+- display-glass memory
+- stochastic nanowire crossbar
+- twin-cell weak rows
+- row-migration hammer defense
+- self-healing underfill
+- closed-loop refresh control
+- wordline edge shaping
+- buried hammer sink line
+- neighbor wordline counter-pulse
+- hammer carrier sink
+- nems bistable beam
+- periodic polarity flipping
+- ecc-servoed undervolting
+- global refresh pulse
+- short isolation per mat
+- spare-die hbm stack
+- deuterium passivation
+- in-field self-repair
+- canary-row refresh tuning
+- temp-tracked nwl bias
+- 2d product-code ecc
+- multi-tier charge summing
+- subarray parity row
+- wordline slew shaping
+- nil template repair map
+- rtd bistable cell
+- vrt trap parking
+- self-clearing capacitor
+- pcm thermal buffer
+- fe nonvolatile snapshot
+- tunnel-diode latch cell
+- analog charge weights
+- twin-cell rescue
+- deuterium anneal
+- adaptive negative wl bias

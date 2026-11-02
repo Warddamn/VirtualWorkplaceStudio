@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Materials and resource intensity' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- cold-crucible cz
+- rutile tio2 capacitor
+- dimm reuse cxl
+- synthetic silica crucible
+- supercritical co2 clean
+- hydrogen backside cooling
+- in/ga-free oxide gain cell
+- cryogenic dram
+- anodic alumina capacitor mold
+- porous-si layer transfer
+- tungsten recycling
+- helium recycling
+- waste-heat membrane distillation
+- display-glass memory
+- dimm reuse via cxl
+- gasless solid-contact chuck
+- area-selective deposition
+- dimm reuse market
+- metal-assisted chemical etch
+- donor wafer reuse
+- thyristor ram
+- double-layer storage node
+- supercritical co2 cleaning
+- layer transfer reuse
+- partial-good die salvage
+- interference lithography
+- synthetic silica crucibles
+- macetch capacitor holes
+- block copolymer dsa
+- supercritical co2 drying
+- inductive die coupling
+- dry wafer cleaning
+- spatial ald
+- in-free oxide channel
+- periphery-under-array bonding
+- cold-crucible czochralski
+- mo wordline fill
+- molybdenum wordlines
+- solid-state duv source
+- electroless contact fill
+- fel euv source
+- anodic alumina template
+- perovskite titanate capacitor
+- mace trench capacitor
+- hydrogen chuck backside gas
+- pfas-free photoacid
+- h2 backside cooling
+- interference lithography arrays
+- anodic alumina mold
+- si-only 3d dram tiers
+- fsa fluorine recovery
+- sic refresh-free cell
+- deuterium passivation
+- kerf silicon recycling
+- carbon capacitor mold
+- wafer spalling reuse
+- nitride crucible
+- nanoimprint array layers
+- multibeam e-beam litho
+- swappable chamber liners
+- mini-environment fab
+- continuous cz
+- silicide wordline
+- fluorine loop closure
+- solid-state duv laser
+- bistable nems memory
+- graphene interconnect
+- oxide cmos periphery
+- helium recapture
+- cryogenic capacitorless dram
+- cryogenic 77k dram
+- helium recapture loop
+- mace capacitor holes
+- adiabatic charge recycling
+- templated rutile tio2
+- porous-si 3d dram sacrificial
+- rutile tio2 template
+- monolayer doping junctions
+- talbot/interference lithography
+- partial-good dram binning
+- unseparated zr-hf precursors
+- tungsten scrap precursor
+- adiabatic wordline drive
+- helium-free chuck cooling
+- zto oxide channel
+- sealed minienvironment fab
+- cryogenic dram pool
+- helium-free leak testing
+- sic dram cell
+- sic refresh-free dram
+- antiferroelectric zirconia capacitor
+- strategic materials reserve
+- hf/zr supply chain
+- vapor hf oxide etch
+- deuterium anneal
+- diamond access transistor
+- redox molecular capacitor
+- helium reserve policy
+- zto gain cell
+- membrane helium recovery
+- fab metal recovery
+- pfas-free resist
+- ald precursor recovery
+- biopolymer water-developed resist
+- intermetallic wordline
+- helium-free chuck contact
+- reworkable hbm stacks
+- anodized aluminum
+- mos2 gain cell
+- multi-level dram
+- nanoimprint replica stamps
+- glass-core substrate
+- molybdenum metallization
+- mo wordlines
+- molybdenum wordline
+- aao capacitor holes
+- nems relay access
+- p-type oxide cmos periphery
+- bistable buckled-beam nems
+- lean-gas helium membranes
+- engineered crucible liner
+- carbon mold capacitor
+- rutile tio2 template electrode
+- precursor recovery
+- silicon-on-nothing isolation
+- ald precursor recapture
+- porous-si sacrificial tiers
+- rare-metal-free mram
+- hbm backside slab reuse
+- intermetallic wordlines
+- bistable nanobeam memory
+- in-free oxide gain cell
+- microwave annealing
+- mof dry resist
+- pv silicon recycling
+- sic furnaceware
+- monolithic beol memory
+- cmp-free planarization
+- vo2 mott latch
+- minienvironment fab

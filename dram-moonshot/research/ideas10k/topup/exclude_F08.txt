@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Interface, packaging and data movement' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- through-silicon optical vias
+- optical weight broadcast
+- capacitive proximity coupling
+- edge-standing dies
+- resonant adiabatic bus
+- acoustic vertical links
+- dimm reuse cxl
+- simultaneous bidirectional signaling
+- glass panel interposer
+- interlayer microfluidic cooling
+- air-gap interposer wiring
+- cryogenic memory
+- bit-plane precision fetch
+- compiler-scheduled command-less dram
+- folded flex stacking
+- base-die access sequencer
+- cryogenic dram
+- fluidic self-assembly
+- microled imaging-fiber links
+- optical through-silicon vias
+- optical clock distribution
+- wavelength-addressed banks
+- rf frequency multiplexing
+- dimm reuse on cxl
+- near-memory gather
+- bit-plane progressive fetch
+- weight broadcast
+- predictive link compression
+- subarray-level hybrid bonding
+- link compression
+- dimm reuse market
+- open memory chiplet standard
+- spare-die stack remap
+- wafer-on-wafer dram-logic
+- delay-insensitive dram link
+- compiler-scheduled dram
+- compiler-scheduled streaming
+- laserless retro-modulation
+- microled wide-slow optics
+- capacitive proximity links
+- photonic wire bonding
+- charge-recycling bus
+- woven wire interposer
+- asynchronous memory link
+- printed rdl
+- backscatter memory link
+- wdm bank addressing
+- cryogenic dram system
+- resonant charge recovery
+- sub-thz dielectric waveguide
+- in-package wireless broadcast
+- voltage-stacked dies
+- reworkable hbm sockets
+- igzo memory on glass
+- field-aligned acf
+- staircase printed stack
+- liquid-metal reworkable bonds
+- cryogenic superconducting links
+- bit-plane tensor layout
+- kv recompute eviction
+- mask-rom weights
+- streaming-refresh leaky cells
+- procedural weight generation
+- end-to-end ecc
+- memory deduplication
+- thermal-aware page migration
+- glass panel interposers
+- contactless wafer probing
+- capillary self-alignment
+- charge-recycling i/o
+- drawn metal-in-glass vias
+- capacitive die coupling
+- seed-based weight compression
+- prng seed weights
+- optical memory disaggregation
+- tensor compression
+- logic-on-dram stacking
+- wafer-scale dram-on-logic
+- wafer-scale dram backplane
+- domestic hbm stacking
+- open-source hbm base die
+- link-level line dedup
+- exponent entropy coding
+- edge-bonded standing dies
+- wafer-scale dram bonding
+- panel-level glass interposer
+- wide-slow hybrid-bond i/o
+- embedded-die substrate memory
+- microled parallel optics
+- lcd-fab panel interposer
+- high-bandwidth flash
+- optical backscatter memory link
+- edge-mounted dies
+- micro-transfer-printed dielets
+- voltage-stacked dram
+- hbm second-life reuse
+- active interposer edram
+- chilled dram refresh
+- open packaging pdk
+- asymmetric read lanes
+- post-stack die bypass
+- latching photonic pooling switch
+- nanoimprint rdl
+- cryogenic dram pool
+- stepwise adiabatic charging
+- aao nanowire z-film
+- mm-wave dielectric waveguide
+- printed edge stack interconnect
+- near-memory accumulate
+- inductive wireless links
+- reworkable underfill
+- printed edge stacking
+- layer-transfer thin-film stacking
+- onshore hbm packaging
+- backscatter memory i/o
+- delay-insensitive link
+- pulse-position i/o
+- reworkable memory sockets
+- fluidic chiplet self-assembly
+- liquid-metal interconnects
+- liquid-metal interconnect
+- subarray-direct hybrid bonding
+- diamond heat spreading
+- fine-grained row activation
+- ultra-thin wafer stacking
+- double-sided memory stacking
+- capillary die self-alignment
+- inductive tsv-free stack
+- wafer-scale dram interposer
+- folded die stack
+- diamond thermal interlayer
+- via-last through stack
+- hbm capacity pooling
+- stack-to-stack links
+- mm-wave rack wireless
+- optical circuit-switched pooling
+- sub-thz polymer waveguides
+- optical memory pooling
+- compliant spring interconnect
+- sub-thz plastic waveguide links

@@ -1,0 +1,141 @@
+Mechanism families ALREADY covered in facet 'Bit storage element' (from screener theme tags, most common first). Your ideas must NOT belong to any of these families:
+- pseudocapacitive storage node
+- acoustic delay-line memory
+- double-layer capacitor
+- bistable buckled nems
+- single-electron storage
+- single-electron memory
+- nems parametron
+- cryogenic dram
+- pinned-well storage cell
+- sliding ferroelectric 2d
+- spin-crossover bit
+- vo2 hysteresis bit
+- thyristor ram
+- sliding ferroelectric
+- parametron phase bit
+- ferroelectric semiconductor fet
+- negative-capacitance capacitor
+- ferroelectric nematic lc
+- avalanche-gain read
+- ccd loop memory
+- cryo quantum paraelectric
+- conductive domain-wall memory
+- conducting domain-wall bit
+- sliding ferroelectric bilayer
+- protonic ecram
+- kinetic-inductance nanowire loop
+- antiferromagnet neel bit
+- bistable buckled nanobeam
+- tunnel-diode static latch
+- negative capacitance dielectric
+- polar vortex chirality
+- redox molecular capacitor
+- vertical ccd 3d memory
+- vertical ccd strings
+- superconducting loop memory
+- protonic gain cell
+- wurtzite ferroelectric capacitor
+- self-rolled capacitor
+- organic ferroelectric
+- wide-bandgap storage well
+- mn3sn antiferromagnet sot
+- nems access relay
+- molecular redox storage
+- nems relay access
+- cdw phase bit
+- 1t-tas2 cdw switching
+- vacuum-gap storage node
+- cdw 1t-tas2 switching
+- ferroelastic twin bit
+- kinetic-inductance flux memory
+- volatile 3d charge-trap tier
+- 77k cryogenic dram
+- metal-assisted chemical etch
+- afe knee-biased capacitor
+- organic proton ferroelectric
+- antiferroelectric dram capacitor
+- antiferroelectric charge boost
+- rutile tio2 dielectric
+- deuterium anneal
+- laminated plate capacitor
+- anodic alumina capacitor
+- hematite afm orbital torque
+- tunnel-diode sram
+- conducting domain-wall memory
+- porous electrode capacitor
+- display-fab glass dram
+- bonded storage-element wafer
+- wide-bandgap storage node
+- straintronic nanomagnet
+- conducting domain wall
+- microring charge readout
+- selector-gated crosspoint dram
+- electrowetting fluid bit
+- negative-capacitance dielectric
+- double-layer storage node
+- self-clearing electrode
+- bistable nems beam
+- nanoparticle shuttle bit
+- parametron nems
+- spin-crossover memory
+- short-retention tensor memory
+- sige qw floating body
+- rolled-membrane 3d tiers
+- vertical ccd 3d dram
+- storage-element test vehicle
+- biased antiferroelectric cap
+- perovskite nanosheet dielectric
+- anodized-alumina capacitor
+- volatile ag filament
+- afe-boosted capacitor
+- ferroelectric ndro capacitance
+- nonlinear-permittivity fe read
+- gated-diode gain cell
+- fiber-drawn capacitors
+- ferroelectric nematic dielectric
+- endohedral molecular dipole
+- selector-gated capacitor crosspoint
+- resonant-tunnel iii-v charge
+- vertical ccd memory
+- aao pore capacitor
+- ferro/dram hybrid parking
+- direct-tunnel charge trap
+- time-domain mlc sensing
+- tunnel-diode latch cell
+- display-glass memory
+- strain-mediated magnetoelectric
+- ferroelectric-semiconductor fet
+- sliding hbn ferroelectric
+- martensite variant bit
+- maxwell-wagner giant-k dielectric
+- wurtzite ferroelectric cap
+- lifetime-tagged ephemeral cells
+- display-fab memory
+- photonic bistable memory
+- thin-film core memory
+- gated-diode cell
+- superconducting nanowire memory
+- display-panel memory
+- mos varactor node
+- aao capacitor template
+- gan 2deg storage
+- proton-transfer ferroelectric
+- endohedral fullerene dipole
+- wide-bandgap access transistor
+- antiferromagnetic tunnel junction
+- sige quantum-well floating body
+- tunnel-diode latch
+- bifeo3 magnetoelectric
+- antiferromagnetic spintronics
+- 2d gain cell
+- noncollinear afm mram
+- magnetic nanoring crossbar
+- direct-tunnel dynamic flash
+- bifeo3 magnetoelectric write
+- adiabatic charge recycling
+- rtd goto-pair latch
+- liquid-metal droplet bit
+- solid-state nanobattery bit
+- dipolar molecular rotors
+- multilayer nanolaminate capacitor
