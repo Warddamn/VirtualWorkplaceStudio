@@ -148,8 +148,9 @@ int sdram_init(uint32_t sdclk_div)
     FMC_SDCR2 = SDCR_NC_8BIT | SDCR_NR_12BIT | SDCR_MWID_16 | SDCR_NB_4BANKS | SDCR_CAS(3);
     /* TRC and TRP are only taken from SDTR1 */
     FMC_SDTR1 = (FMC_SDTR1 & ~((0xFUL << 12) | (0xFUL << 20))) | ((7UL - 1U) << 12) | ((2UL - 1U) << 20);
-    /* TMRD 2, TXSR 7, TRAS 4, TRC 7, TWR 2, TRP 2, TRCD 2 (BSP values for 90 MHz; generous at 8 MHz) */
-    FMC_SDTR2 = SDTR(2, 7, 4, 7, 2, 2, 2);
+    /* TMRD 2, TXSR 7, TRAS 4, TRC 7, TWR 3, TRP 2, TRCD 2 (BSP values for 90 MHz, generous at 8 MHz,
+     * except TWR). TWR 3: RM0090 needs TWR >= TRAS - TRCD and TWR >= TRC - TRCD - TRP [UNVERIFIED] */
+    FMC_SDTR2 = SDTR(2, 7, 4, 7, 3, 2, 2);
 
     if (fmc_cmd(SDCMR_MODE_CLK_EN, 0U, 0U) != 0) return -1;
     spin_us(1000U);                                      /* >= 100 us power-up delay */

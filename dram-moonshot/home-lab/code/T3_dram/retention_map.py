@@ -28,9 +28,12 @@ capture_retention.py adds the H lines; '#' lines are comments)
   RUN,<id>,<method>,<pattern>,<inv>,<seed>,<wait_ms>,<repeat>,<temp_c_setpoint>
   TEMP,<id>,<start|end|now>,<temp_c or nan>         thermocouple reading (optional)
   F,<id>,<word_index_hex>,<expected_hex>,<observed_hex>
-  END,<id>,<fail_words>,<fail_bits>,<bits_1to0>,<bits_0to1>,<logged_words>,<interval_ms>,<OK|TRUNC>
+  END,<id>,<fail_words>,<fail_bits>,<bits_1to0>,<bits_0to1>,<logged_words>,<interval_ms>,<OK|TRUNC|ERR>
   methods: A = refresh relaxed to period <wait_ms> (held 3 periods), B = refresh paused for
            <wait_ms> (chip deselected), C = control (normal refresh, no pause), Z = COUNT=0 test.
+           For B the firmware reports interval_ms = pause + one normal refresh window (~54 ms):
+           every row really goes that long unrefreshed (the chip's row counter stops during the
+           pause and resumes where it left off). ERR runs (e.g. precharge timeout) are excluded.
   patterns: 0 ALL0, 1 ALL1, 2 CHECKER, 3 ROWSTRIPE, 4 COLSTRIPE, 5 RANDOM(seed); inv=1 inverts.
 """
 import argparse
@@ -52,7 +55,10 @@ PATTERN_NAMES = {0: "ALL0", 1: "ALL1", 2: "CHECKER", 3: "ROWSTRIPE", 4: "COLSTRI
 DEFAULT_WAITS_S = [0.064 * 2 ** i for i in range(11)]          # 64 ms .. 65.5 s, log2 grid
 CHIP_BITS_F429 = 4194304 * 16                                   # IS42S16400J: 64 Mbit
 DOSSIER = {"ddr5_rs8_85C": 8.9, "ddr4_rs8_85C": 13.1,
-           "pass_65C_x": 24.0, "kill_65C_x": 4.0}                  # dossiers/raw-ber-contract.md 2.5, 5.R
+           "pass_65C_x": 24.0, "pass_85C_x": 6.0, "kill_65C_x": 4.0}  # dossiers/raw-ber-contract.md 2.5, 5.R
+# Method B: the unrefreshed time is the pause plus one normal refresh window. At SDCLK 8 MHz and
+# COUNT 105 that window is 4096 x 106 / 8 MHz = 54.3 ms; the firmware reports it as +54 ms.
+B_EXTRA_MS = 54
 
 
 # --------------------------------------------------------------------------------------------
@@ -279,7 +285,10 @@ def parse_log(lines, default_words=CHIP_BITS_F429 // 16):
                 r = runs[int(f[1])]
                 r.fail_words, r.fail_bits, r.b10, r.b01 = int(f[2]), int(f[3]), int(f[4]), int(f[5])
                 r.logged, r.interval_ms, r.status = int(f[6]), int(f[7]), f[8]
-                log.runs.append(r)
+                if r.status == "ERR":
+                    log.errors.append("run %d ended with ERR (firmware fault): excluded" % r.rid)
+                else:
+                    log.runs.append(r)
             elif tag in ("ERR", "PONG"):
                 log.errors.append(line)
         except (ValueError, IndexError, KeyError) as exc:
@@ -560,8 +569,9 @@ def pname(r):
 
 def analyze_log(log, args, out):
     N, bpw = log.n_bits, log.bpw
-    res = {"temps": {}, "checks": {}}
-    data_runs = [r for r in log.runs if r.method in ("A", "B", "Z")]
+    res = {"temps": {}, "checks": {}, "overlap": []}
+    only = getattr(args, "method", "all") or "all"
+    data_runs = [r for r in log.runs if r.method in ("A", "B", "Z") and (only == "all" or r.method == only)]
     ctrl = [r for r in log.runs if r.method == "C"]
     out("# E6 retention-map report")
     out("")
@@ -569,6 +579,8 @@ def analyze_log(log, args, out):
         (log.chip, log.n_words, bpw, N, 1.0 / N))
     out("Runs: %d data runs, %d control runs, %d truncated (logging cap hit), %d parse notes." %
         (len(data_runs), len(ctrl), sum(r.truncated for r in log.runs), len(log.errors)))
+    if only != "all":
+        out("Only method %s runs are analysed (--method %s)." % (only, only))
     bad_ctrl = [r for r in ctrl if r.fail_bits > 0]
     out("Control runs (normal refresh, no pause) with failures: %d of %d %s" %
         (len(bad_ctrl), len(ctrl), "-> SETUP PROBLEM: fix before trusting anything" if bad_ctrl else "(good)"))
@@ -602,16 +614,28 @@ def analyze_log(log, args, out):
             rr = by_wait[wms]
             t_s = float(np.mean([r.wait_s for r in rr]))
             reps = sorted(set(r.repeat for r in rr))
+            meths = sorted(set(r.method for r in rr))
             fs, unions = [], []
+            fs_by_m = defaultdict(list)
             for rep in reps:
-                s0 = [r for r in rr if r.repeat == rep and is_solid0(r)]
-                s1 = [r for r in rr if r.repeat == rep and is_solid1(r)]
-                if s0 and s1:
-                    fs.append((s0[0].fail_bits + s1[0].fail_bits) / N)
-                rep_runs = [r for r in rr if r.repeat == rep]
-                if rep_runs and not any(r.truncated for r in rep_runs):
-                    u = np.unique(np.concatenate([r.bits(bpw)[0] for r in rep_runs]))
-                    unions.append(u.size / N)
+                for m in meths:          # pair ALL0 with ALL1 of the SAME repeat AND method
+                    s0 = [r for r in rr if r.repeat == rep and r.method == m and is_solid0(r)]
+                    s1 = [r for r in rr if r.repeat == rep and r.method == m and is_solid1(r)]
+                    if s0 and s1:
+                        f_pair = (s0[0].fail_bits + s1[0].fail_bits) / N
+                        fs.append(f_pair)
+                        fs_by_m[m].append(f_pair)
+                    rep_runs = [r for r in rr if r.repeat == rep and r.method == m]
+                    if rep_runs and not any(r.truncated for r in rep_runs):
+                        u = np.unique(np.concatenate([r.bits(bpw)[0] for r in rep_runs]))
+                        unions.append(u.size / N)
+            if "A" in fs_by_m and "B" in fs_by_m:
+                fa, fb = float(np.mean(fs_by_m["A"])), float(np.mean(fs_by_m["B"]))
+                ta = float(np.mean([r.wait_s for r in rr if r.method == "A"]))
+                tb = float(np.mean([r.wait_s for r in rr if r.method == "B"]))
+                res["overlap"].append({"temp_bin": tbin, "wait_ms": wms, "t_a": ta, "t_b": tb, "f_a": fa,
+                                       "f_b": fb, "n_a": fa * N, "n_b": fb * N,
+                                       "ratio": (fb / fa) if fa > 0 else float("inf") if fb > 0 else 1.0})
             worst = max(rr, key=lambda r: r.fail_bits)
             f_solid = float(np.mean(fs)) if fs else float("nan")
             f_union = float(np.mean(unions)) if unions else float("nan")
@@ -641,6 +665,23 @@ def analyze_log(log, args, out):
         if slopes:
             out("Local tail slope k (F ~ t^k): " + "; ".join(slopes))
         out("Pattern-dependence factor (median F_union / F_solid): %.2f" % tinfo["dpd_factor"])
+
+    # ---- 1b. method A vs B overlap (only when one log holds both at the same wait) ---------
+    if res["overlap"]:
+        out("")
+        out("## 1b. Method A (relaxed refresh) vs method B (paused refresh) at the same wait")
+        out("WARNING: this log mixes methods at the same wait. Section 1 averages them, and sections 6-7 pool")
+        out("their repeats. Use this table for the overlap check, then analyse each method's log on its own")
+        out("(or pass --method A / --method B). B's interval includes its fixed +%d ms (one normal window)." %
+            B_EXTRA_MS)
+        out("| temp bin | wait (s) A / B | F_solid A (bits) | F_solid B (bits) | B / A | within 2x? |")
+        out("|---|---|---|---|---|---|")
+        for o in res["overlap"]:
+            enough = min(o["n_a"], o["n_b"]) >= 20
+            ok = 0.5 <= o["ratio"] <= 2.0
+            out("| %.0f C | %.3f / %.3f | %.3e (%.0f) | %.3e (%.0f) | %.2f | %s |" % (
+                o["temp_bin"], o["t_a"], o["t_b"], o["f_a"], o["n_a"], o["f_b"], o["n_b"], o["ratio"],
+                ("yes" if ok else "NO") if enough else "too few bits (<20) to judge"))
 
     # ---- 2. tail quantiles ----------------------------------------------------------------
     out("")
@@ -825,9 +866,11 @@ def analyze_log(log, args, out):
         out(line)
         if growth:
             g, span_d, nrep = growth
-            extra = ""
-            if span_d:
+            if span_d and span_d >= 1.0:
                 extra = "; over %.2f days -> %.2g x static per day" % (span_d, g / span_d)
+            else:
+                extra = ("; growth per day: not meaningful (campaign < 1 day, mostly cells flickering near"
+                         " their threshold); see the strict-VRT share instead")
             out("   New cells appearing over %d repeats at %.3f s: +%.0f%% of the first repeat%s." %
                 (nrep, ref / 1000.0, 100 * g, extra))
     res["vrt"] = vrt_summary
@@ -907,7 +950,7 @@ def analyze_log(log, args, out):
         res["ecc"][tbin] = tres
         # sensitivity to the measured VRT growth (short campaigns overstate it: see section 6)
         vg = res["vrt"].get(tbin, {}).get("growth")
-        if vg and vg[1]:
+        if vg and vg[1] and vg[1] >= 1.0:          # a per-day rate needs at least a day of data
             g_meas = min(1000.0, vg[0] / vg[1])
             vm2 = 1.0 + g_meas * args.scrub_h / 24.0
             code = CODES[4]
@@ -950,9 +993,12 @@ def analyze_log(log, args, out):
             af = math.exp((garr["ea_ev"] / K_B) * (1 / (65.0 + T0) - 1 / (tc + T0)))
             x65 *= af
             note = " (moved to 65 C with the fitted Ea = %.2f eV: EXTRAPOLATION)" % garr["ea_ev"]
-        verdict = "PASS" if x65 >= DOSSIER["pass_65C_x"] else ("FAIL" if x65 < DOSSIER["kill_65C_x"] else "PARTIAL")
-        out("At 65 C: %.1fx%s. Dossier gate (section 5.R): PASS >= %.0fx, NO-GO < %.0fx -> %s." %
-            (x65, note, DOSSIER["pass_65C_x"], DOSSIER["kill_65C_x"], verdict))
+        verdict = ("PASS (65 C half of the gate only)" if x65 >= DOSSIER["pass_65C_x"] else
+                   ("NO-GO" if x65 < DOSSIER["kill_65C_x"] else "PARTIAL"))
+        out("At 65 C: %.1fx%s. Dossier gate (section 5.R): PASS needs >= %.0fx at 65 C AND >= %.0fx at 85 C;"
+            " NO-GO < %.0fx at 65 C -> %s." %
+            (x65, note, DOSSIER["pass_65C_x"], DOSSIER["pass_85C_x"], DOSSIER["kill_65C_x"], verdict))
+        out("This chip is rated to about 70 C, so only the 65 C half of the PASS line can be tested here.")
         out("Dossier model for comparison: ~%.1fx on DDR5 and ~%.1fx on retired DDR4 at 85 C (RS-8, chipkill kept)."
             % (DOSSIER["ddr5_rs8_85C"], DOSSIER["ddr4_rs8_85C"]))
         out("Your chip is an old-node SDR part at <=65 C, so expect a larger factor; the direction and the method"
@@ -987,7 +1033,9 @@ def predict(args, out):
     for t in (0.064, 1.0, 10.0, 100.0, 1000.0):
         i = q_allow / t
         out("| %g s | %.3g A = %.3g fA = %.0f aA |" % (t, i, i * 1e15, i * 1e18))
-    out("A 10 s cell leaks ~2 fA. Mapping retention times of 67 million cells is a femtoamp leakage census.")
+    out("A 10 s cell leaks about %.1f fA. Mapping retention times of 67 million cells is a femtoamp leakage"
+        " census (the current scale rests on the assumed C_s and dV_allow, so read it to within a factor"
+        " of 2-3)." % (q_allow / 10.0 * 1e15))
     out("")
     out("## B. Temperature: thermally activated leakage, t_ret ~ exp(Ea / kT)")
     out("| Ea (eV) | mechanism | 25->45 C | 45->65 C | 25->65 C | halves every |")
@@ -1054,6 +1102,56 @@ def predict(args, out):
     out("Compare: dossier ~%.1fx (DDR5, 85 C, RS-8 chipkill kept) and ~%.1fx (retired DDR4). Gate at 65 C:"
         " PASS >= %.0fx, NO-GO < %.0fx." % (DOSSIER["ddr5_rs8_85C"], DOSSIER["ddr4_rs8_85C"],
                                             DOSSIER["pass_65C_x"], DOSSIER["kill_65C_x"]))
+    out("Target 1 is an illustrative assumption, not an industry spec: 1e-15 per bit-hour is about %.0f FIT"
+        " per Gbit, about %.1f uncorrectable events per year in a 64 GB server. Target 2 (the dossier's) is"
+        " the one that matters." % (args.target_bit_hour * 2 ** 30 * 1e9,
+                                    args.target_bit_hour * 64 * 2 ** 33 * 8766))
+    out("")
+    out("## D2. Sensitivity to the temperature law (all models share the same 85 C anchor)")
+    out("Section 2.2's tail cells may have Ea ~0.35 eV. A lower Ea means less retention gained by cooling"
+        " from 85 C, so every number at 25-65 C moves the pessimistic way.")
+    out("| temperature law | retention scale | RS-8 65 C, target 2 | SEC-DED 45 C, target 1 / 2 |"
+        " first failing cell, 25 C | failing bits at 25 C: 1.024 s / 65.5 s | at 65 C: 2.048 s / 4.096 s |")
+    out("|---|---|---|---|---|---|---|")
+    sens = {}
+    rs8, sec = CODES[4], CODES[0]
+    for law, kw in (("halves every 10 C", {"halving_c": 10.0}), ("Arrhenius Ea 0.6 eV", {"ea_ev": 0.6}),
+                    ("Arrhenius Ea 0.35 eV", {"ea_ev": 0.35})):
+        for scale in (1.0, 0.5, 4.0):
+            m = RetentionModel(mu, sg, time_scale=scale, **kw)
+
+            def bf(p, m=m, t=65.0):
+                return min(0.5, m.cdf(p, t) * vmult)
+
+            def bf45(p, m=m):
+                return min(0.5, m.cdf(p, 45.0) * vmult)
+            pmf8 = unit_pmf_from(np.ones(1, np.int64), rs8.t)
+            pmf1 = unit_pmf_from(np.ones(1, np.int64), sec.t)
+            x_rs8 = safe_interval(bf, rs8, pmf8, 1.0, targets_for(rs8, args.target_bit_hour, args.scrub_h,
+                                                                  args.target_per_line)[1]) / JEDEC_WINDOW_S
+            s1, s2 = targets_for(sec, args.target_bit_hour, args.scrub_h, args.target_per_line)
+            x_s1 = safe_interval(bf45, sec, pmf1, 1.0, s1) / JEDEC_WINDOW_S
+            x_s2 = safe_interval(bf45, sec, pmf1, 1.0, s2) / JEDEC_WINDOW_S
+            first25 = m.time_at(1.0 / n, 25.0)
+            b25 = (m.cdf(1.024, 25.0) * n, m.cdf(65.536, 25.0) * n)
+            b65 = (m.cdf(2.048, 65.0) * n, m.cdf(4.096, 65.0) * n)
+            sens[(law, scale)] = {"rs8_65_t2_x": x_rs8, "sec_45_t1_x": x_s1, "sec_45_t2_x": x_s2,
+                                  "first25_s": first25, "bits25": b25, "bits65": b65}
+            out("| %s | x%g | %.1fx | %.1fx / %.1fx | %.2g s | %.1f / %.0f | %.0f / %.0f |" % (
+                law, scale, x_rs8, x_s1, x_s2, first25, b25[0], b25[1], b65[0], b65[1]))
+    lo = min(v["rs8_65_t2_x"] for v in sens.values())
+    hi = max(v["rs8_65_t2_x"] for v in sens.values())
+    out("Gate prediction, RS-8 at 65 C, target 2: central %.0fx (halving rule), %.0fx (Ea 0.6 eV), %.0fx"
+        " (Ea 0.35 eV); all corners %.0fx-%.0fx. PASS (>= 24x) is the central expectation; PARTIAL is a real"
+        " possibility; NO-GO (< 4x) is not expected." % (
+            sens[("halves every 10 C", 1.0)]["rs8_65_t2_x"], sens[("Arrhenius Ea 0.6 eV", 1.0)]["rs8_65_t2_x"],
+            sens[("Arrhenius Ea 0.35 eV", 1.0)]["rs8_65_t2_x"], lo, hi))
+    smoke = [v["bits25"][1] for v in sens.values()]
+    out("Smoke test at room temperature (25 C), ALL0 + ALL1 added together: 0 at 64 ms in every corner;"
+        " 0 at 1.024 s centrally (up to %.0f with a low-Ea tail); %.0f-%.0f at 65.5 s (central %.0f)." % (
+            max(v["bits25"][0] for v in sens.values()), min(smoke), max(smoke),
+            sens[("halves every 10 C", 1.0)]["bits25"][1]))
+    pred["sens"] = sens
     out("")
     out("## E. Refresh energy scales as 1/P: a %.0fx longer interval is a %.0fx cut in refresh energy"
         " (array refresh only; periphery and self-refresh entry costs are not modelled)." %
@@ -1124,7 +1222,19 @@ class SyntheticChip:
         return c[charged & (r < wait_s)]
 
     def hello(self):
-        return "HELLO,synthetic-0.1,SYNTH%dK,%d,%d,8000000,A|B|C" % (self.N // 1024, self.n_words, self.bpw)
+        return "HELLO,synthetic-0.2,SYNTH%dK,%d,%d,8000000,A|B|C" % (self.N // 1024, self.n_words, self.bpw)
+
+    def planted_fail_prob(self, p_s, temp_c):
+        """Planted truth, straight from the generating model: probability that a cell fails in one run
+        with its worst data pattern at interval p_s (lognormal base, pattern factor, VRT low state)."""
+        af = self.af(temp_c)
+        n_vrt = float(np.mean(self.vrt))
+        n_dpd = float(np.mean(self.dpd))
+        tot = 0.0
+        for d, wd in ((1.0, 1.0 - n_dpd), (self.dpd_factor, n_dpd)):
+            for v, wv in ((1.0, 1.0 - n_vrt * self.vrt_p_low), (self.vrt_low, n_vrt * self.vrt_p_low)):
+                tot += wd * wv * norm_cdf((math.log(p_s / (af * d * v)) - self.mu85) / self.sigma)
+        return tot
 
 
 def firmware_lines(rid, method, pattern, inv, seed, wait_ms, repeat, temp_set, temp_meas,
@@ -1151,10 +1261,11 @@ def firmware_lines(rid, method, pattern, inv, seed, wait_ms, repeat, temp_set, t
 
 
 def synthetic_campaign(chip, temps=(25.0, 45.0, 65.0), patterns=((0, 0), (1, 0), (2, 0), (2, 1), (3, 0), (5, 0)),
-                       waits_s=DEFAULT_WAITS_S, repeats=3, stop_ber=1e-2, cap=20000, seed=11, controls=True):
+                       waits_s=DEFAULT_WAITS_S, repeats=3, stop_ber=1e-2, cap=20000, seed=11, controls=True,
+                       method_for=None, rid0=0):
     rng = np.random.default_rng(seed)
     lines = [chip.hello()]
-    rid = 0
+    rid = rid0
     clock = 1.8e9
     for temp in temps:
         if controls:
@@ -1167,12 +1278,14 @@ def synthetic_campaign(chip, temps=(25.0, 45.0, 65.0), patterns=((0, 0), (1, 0),
                 for w in waits_s:
                     rid += 1
                     wait_ms = int(round(w * 1000))
-                    method = "A" if w <= 4.096 else "B"
-                    fb = chip.fail_bits(pat, inv, 1234, w, temp, rng)
+                    method = method_for or ("A" if w <= 4.096 else "B")
+                    interval_ms = wait_ms + (B_EXTRA_MS if method == "B" else 0)
+                    fb = chip.fail_bits(pat, inv, 1234, interval_ms / 1000.0, temp, rng)
                     clock += w + 8.0
                     lines.append("H,%.1f" % clock)
                     lines += firmware_lines(rid, method, pat, inv, 1234, wait_ms, rep, temp,
-                                            temp + rng.normal(0, 0.3), fb, chip.bpw, chip.wpr, cap)
+                                            temp + rng.normal(0, 0.3), fb, chip.bpw, chip.wpr, cap,
+                                            interval_ms=interval_ms)
                     if fb.size / chip.N > stop_ber:
                         break
         clock += 1800
@@ -1263,9 +1376,11 @@ def selftest():
     check("anti-cell block size recovered (128 rows)", res["anti_block_rows"] == chip.anti_block_rows,
           str(res["anti_block_rows"]))
     vrt_ok = [v for v in res["vrt"].values() if v["strict"] is not None]
-    check("VRT detected (strict > 0)", vrt_ok and max(v["strict"] for v in vrt_ok) > 0,
+    check("VRT detected (strict > 0; its size is NOT checked)", vrt_ok and max(v["strict"] for v in vrt_ok) > 0,
           str([round(v["strict"], 4) for v in vrt_ok]))
     check("intermittent >= strict", vrt_ok and all((v["loose"] or 0) >= 0 for v in vrt_ok))
+    check("short campaign: per-day VRT growth reported as not meaningful",
+          any("not meaningful" in s for s in lines_out))
     ecc = res["ecc"]
     if ecc:
         tb = sorted(ecc)[1] if len(ecc) > 1 else sorted(ecc)[0]
@@ -1285,7 +1400,32 @@ def selftest():
         check("safe interval grows as temperature falls (global fit)",
               all(ecc[a][("RS-8(80,64)", "random")][1] >= ecc[b][("RS-8(80,64)", "random")][1]
                   for a, b in zip(sorted(ecc), sorted(ecc)[1:])))
+        # planted truth: the same code math applied to the generating model, not to the fit
+        hot = max(ecc)
+        t_hot = res["temps"][hot]["temp_c"]
+        vmult = 1.0 + args.vrt_growth * args.scrub_h / 24.0
+        for code, mapping, which in ((CODES[4], "adjacent", 1), (CODES[0], "random", 0)):
+            pmf1 = unit_pmf_from(np.ones(1, np.int64), code.t)
+            tgt = targets_for(code, args.target_bit_hour, args.scrub_h, args.target_per_line)[which]
+            truth = safe_interval(lambda p, T=t_hot: min(0.5, chip.planted_fail_prob(p, T) * vmult),
+                                  code, pmf1, 1.0, tgt)
+            got = ecc[hot][(code.name, mapping)][which]
+            check("%s %s target %d at %.0f C within 2x of planted truth" % (code.name, mapping, which + 1, hot),
+                  0.5 <= got / truth <= 2.0, "analysis %.3g s, truth %.3g s (%.2fx)" % (got, truth, got / truth))
     check("verdict computed", "verdict" in res, res.get("verdict", ""))
+    # method A vs B overlap: same chip, both methods at 2.048 and 4.096 s, one mixed log
+    ov_lines = synthetic_campaign(chip, temps=(65.0,), patterns=((0, 0), (1, 0)), waits_s=[2.048, 4.096],
+                                  repeats=2, controls=False, method_for="A", seed=21)
+    ov_lines += synthetic_campaign(chip, temps=(65.0,), patterns=((0, 0), (1, 0)), waits_s=[2.048, 4.096],
+                                   repeats=2, controls=False, method_for="B", seed=22, rid0=1000)[1:]
+    ov_log = parse_log(ov_lines)
+    ov_res = analyze_log(ov_log, args, lambda s="": None)
+    ov = ov_res["overlap"]
+    check("A-vs-B overlap table: both waits, B/A within 2x", len(ov) == 2 and all(0.5 <= o["ratio"] <= 2 for o in ov),
+          ", ".join("%.3f s B/A %.2f (%.0f / %.0f bits)" % (o["t_a"], o["ratio"], o["n_a"], o["n_b"]) for o in ov))
+    a_only = argparse.Namespace(**dict(vars(args), method="A"))
+    ov_res_a = analyze_log(ov_log, a_only, lambda s="": None)
+    check("--method A filter drops B runs (no overlap rows)", not ov_res_a["overlap"] and ov_res_a["temps"])
     # numerical helpers
     check("norm_ppf round trip at 1e-12", abs(norm_cdf(norm_ppf(1e-12)) / 1e-12 - 1) < 1e-6)
     check("compound_ue == Poisson tail for single-unit events",
@@ -1344,6 +1484,8 @@ def main(argv=None):
     pa.add_argument("--target-per-line", type=float, default=2e-19)
     pa.add_argument("--cluster-sig", type=float, default=2.0,
                     help="sigma above chance before a cluster excess counts (0 = always count it)")
+    pa.add_argument("--method", default="all", choices=["all", "A", "B", "Z"],
+                    help="analyse only runs of this method (use for A-vs-B overlap logs)")
     pa.add_argument("--report", help="also write the report to this file")
     pa.add_argument("--csv", help="write the per-(temp, wait) F_solid table as CSV")
     a = ap.parse_args(argv)

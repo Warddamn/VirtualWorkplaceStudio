@@ -7,7 +7,8 @@
 #include "regs_f429.h"
 #include "uart.h"
 
-#define PCLK2_HZ 16000000UL   /* APB2 = HCLK = HSI 16 MHz after reset */
+#define PCLK2_HZ 16000000UL   /* APB2 = HCLK = HSI 16 MHz after reset. HSI drifts a few % when hot
+                                [UNVERIFIED]; garbled text only at 65 C points here (guide section 13) */
 
 void uart_init(uint32_t baud)
 {

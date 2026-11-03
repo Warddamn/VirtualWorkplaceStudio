@@ -13,6 +13,9 @@
  *        B  pause: precharge all banks, then hold chip select (SDNE1, PB6) high as a plain GPIO.
  *           With CS# high the SDRAM ignores every command, including the controller's refreshes.
  *           Wait <wait_ms>, hand the pin back to the FMC; normal refresh resumes at once.
+ *           The chip's internal row counter stops while it ignores refreshes and resumes where it
+ *           left off, so EVERY row goes unrefreshed for the pause plus exactly one normal window
+ *           (4096 x 106 / 8 MHz = 54 ms). The END line reports that true interval.
  *        C  control: no pause at all (must give zero failures).
  *        Z  (only if built with -DENABLE_METHOD_Z) write COUNT = 0. The STM32H7 manual text says
  *           0 means "no refresh"; that is NOT confirmed for the F4, so Z is off by default.
@@ -20,6 +23,11 @@
  *      FMC's refresh behaviour in that mode is not confirmed.
  *   3. read every word back, compare with the regenerated pattern, stream each failing word as
  *      F,<id>,<word_hex>,<expected_hex>,<observed_hex> (first 20,000 words), then an END summary.
+ *      If a precharge times out, the pause is skipped, "ERR,precharge timeout" is printed and END
+ *      carries status ERR (the host keeps reading to END; the analysis drops ERR runs).
+ *
+ * Clock: the internal 16 MHz RC oscillator (HSI). It drifts a few % over temperature
+ * [UNVERIFIED]; that scales every wait (harmless) and the baud rate (garbled text only when hot).
  *
  * Commands (one per line, 115200 8N1):
  *   PING | INFO | TEMP | RUN <id> <A|B|C|Z> <pattern 0-5> <inv 0/1> <seed> <wait_ms> <repeat> <temp_x10>
@@ -31,7 +39,7 @@
 #include "uart.h"
 #include "max31855.h"
 
-#define FW_VERSION    "e6-ret-0.1"
+#define FW_VERSION    "e6-ret-0.2"
 #define HCLK_HZ       16000000UL
 #define BAUD          115200UL
 #define LOG_CAP       20000UL
@@ -39,6 +47,7 @@
 #define MAX_WAIT_MS   3600000UL   /* refuse pauses over one hour */
 
 volatile uint32_t g_ms;
+static int s_sdram_ok;
 
 void SysTick_Handler(void)
 {
@@ -106,6 +115,7 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
 {
     uint32_t interval_ms = 0U;
     uint32_t fail_words = 0U, fail_bits = 0U, b10 = 0U, b01 = 0U, logged = 0U;
+    uint32_t bad = 0U;                        /* 1: the pause was skipped; END says ERR */
 
     uart_puts("RUN,");
     uart_put_u32(rid);
@@ -136,6 +146,13 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
     case 'A': {
         uint32_t count = sdram_count_for_period_ms(wait_ms);
         uint32_t period_us = sdram_period_us_for_count(count);
+        /* close the rows left open by the write loop: at a relaxed rate the next auto-refresh
+         * (which precharges) can be ~1 ms away, beyond tRAS(max) */
+        if (sdram_precharge_all() != 0) {
+            uart_puts("ERR,precharge timeout\r\n");
+            bad = 1U;
+            break;
+        }
         sdram_set_refresh_count(count);
         delay_ms(HOLD_PERIODS * (period_us / 1000U) + 1U);
         sdram_set_refresh_count(sdram_normal_count());
@@ -146,12 +163,15 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
         uint32_t t0;
         if (sdram_precharge_all() != 0) {
             uart_puts("ERR,precharge timeout\r\n");
+            bad = 1U;
+            break;                                /* never deselect with a bank still open */
         }
         sdram_deselect(1);
         t0 = g_ms;
         delay_ms(wait_ms);
         sdram_deselect(0);
-        interval_ms = g_ms - t0;
+        /* true unrefreshed time = pause + one full normal refresh window (a fixed ~54 ms) */
+        interval_ms = (g_ms - t0) + (sdram_period_us_for_count(sdram_normal_count()) + 500U) / 1000U;
         break;
     }
 #ifdef ENABLE_METHOD_Z
@@ -209,7 +229,7 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
     uart_put_u32(logged);
     uart_putc(',');
     uart_put_u32(interval_ms);
-    uart_puts(logged < fail_words ? ",TRUNC\r\n" : ",OK\r\n");
+    uart_puts(bad ? ",ERR\r\n" : (logged < fail_words ? ",TRUNC\r\n" : ",OK\r\n"));
 }
 
 /* ---- tiny command parser ------------------------------------------------------------------ */
@@ -237,10 +257,15 @@ static int parse_i32(const char *t, int32_t *out)
         return -1;
     }
     while (*t) {
+        int32_t d;
         if (*t < '0' || *t > '9') {
             return -1;
         }
-        v = v * 10 + (*t++ - '0');
+        d = (int32_t)(*t++ - '0');
+        if (v > (2147483647 - d) / 10) {
+            return -1;                            /* would overflow int32: reject */
+        }
+        v = v * 10 + d;
     }
     *out = sign * v;
     return 0;
@@ -261,7 +286,8 @@ int main(void)
     systick_init();
     uart_init(BAUD);
     thermo_init();
-    if (sdram_init(2U) != 0) {
+    s_sdram_ok = (sdram_init(2U) == 0);
+    if (!s_sdram_ok) {
         uart_puts("ERR,sdram init failed\r\n");
     }
     hello();
@@ -277,6 +303,10 @@ int main(void)
             put_temp_line(0U, "now");
         } else if (streq(tok, "RUN")) {
             int32_t v[8];
+            if (!s_sdram_ok) {                    /* an SDRAM access now would HardFault */
+                uart_puts("ERR,sdram not initialised\r\n");
+                continue;
+            }
             char method = 'C';
             int ok = 1;
             for (int i = 0; i < 8 && ok; i++) {
