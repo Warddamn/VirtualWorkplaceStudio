@@ -75,6 +75,8 @@ dV = (3.3 - 1.65) × 1 / (1 + 4.73) = 1.65 × 0.1745 = **+288 mV**
 
 **Compared with a real chip.** A real 1-beta DRAM cell has Cs ≈ 5.4 fF on a 34.7 fF bitline, a ratio of about 6.4. Its fresh signal is about 71 mV at a 1.05 V array [MODEL, `models/dram_cell_physics.py`]. Your 4.7 nF and 10 nF rows bracket that ratio. Same law, one million times more charge.
 
+[FIRST_PRINCIPLES.md](FIRST_PRINCIPLES.md#23-sense-signal-by-charge-sharing-δv--v2cscs--cbl-calcs-4) quotes a 1 nF cell on a 6.8 nF bitline (ratio 6.8, 212 mV, no strays) as its reference cell. E1 uses the commoner 4.7 nF and 10 nF values, which bracket it; add a 6.8 nF C0G to the sweep if you want that exact point (about +211 mV with 30 pF of stray).
+
 ### 2.2 Law 2: the read destroys the bit
 
 **Why.** After sharing, the cell sits at Vfinal, not at 3.3 V. Read it again without restoring and the signal shrinks by Cs/(Cs+Cbl) each time.
@@ -251,7 +253,7 @@ So the allowed droop is 3.30 - 1.76 = **1.54 V**.
 >   - When you take the bag out, leave it closed for 30 minutes so water does not condense on the cold board.
 > - **Warm run.** Keep the board at **≤55 °C**.
 >   - **Heater option 1, the resistor heater (section 6.5):** 12 V, 7.2 W, two 10 Ω resistors **in series**.
->     - Bolt the resistors and the 72 °C thermal fuse to an aluminium plate on metal spacers. Never let them touch foam.
+>     - Bolt the resistors and the 72 °C thermal fuse to an aluminium plate on metal spacers at least 20 mm high. Never let them touch foam: keep them at least 20 mm from every foam wall and the lid.
 >     - The firmware holds the set point, cuts off at 55 °C and turns the heater off if the sensor fails. A 100 kΩ gate pull-down keeps the heater off whenever the Pico is unplugged or resetting.
 >     - Never power the heater unless the script is running its thermostat. Never leave it running unattended.
 >   - **Heater option 2, a hair dryer:** only for a short demo (≤15 min, for example watching one cell's `peek` decay speed up). Not for the retention maps: a hair dryer is not made to run for hours and cannot hold 45 °C. Use it as sold, on its lowest setting, at least 30 cm away. Never cover it, never leave it, and stop if any plastic softens.
@@ -289,7 +291,7 @@ So the allowed droop is 3.30 - 1.76 = **1.54 V**.
 | 9 V battery and clip | VPP for the wordline | | 3-5 | |
 | Cleaning | IPA 99%, small brush | | 8 | Pharmacy, hardware store |
 | Desiccant and zip bags | For the cold run | | 5 | |
-| *Optional warm box* (section 6.5) | 12 V DC adapter rated ≥1 A; 2× 10 Ω 10 W resistors (wired in series); logic-level MOSFET, VGS(th) 1.0-2.0 V, RDS(on) ≤ 35 mΩ at VGS 4 V [DATASHEET]; 220 Ω and 100 kΩ resistors; 72 °C thermal fuse rated ≥2 A; aluminium plate, metal spacers ≥10 mm; 2-3 L foam box | IRLZ44N (TO-220) | 15-25 [ESTIMATE] | DigiKey, Mouser |
+| *Optional warm box* (section 6.5) | 12 V DC adapter rated ≥1 A; 2× 10 Ω 10 W resistors (wired in series); logic-level MOSFET, VGS(th) 1.0-2.0 V, RDS(on) ≤ 35 mΩ at VGS 4 V [DATASHEET]; 220 Ω and 100 kΩ resistors; 72 °C thermal fuse rated ≥2 A; aluminium plate, metal spacers ≥20 mm; 2-3 L foam box | IRLZ44N (TO-220) | 15-25 [ESTIMATE] | DigiKey, Mouser |
 | *Optional* hygrometer | Humidity explains many leakage surprises | any | 10 [ESTIMATE] | |
 | *Recommended* USB protection | Powered USB hub, or a USB isolator (ADuM3160-type, full speed) | any | 15-30 [ESTIMATE] | |
 
@@ -387,8 +389,9 @@ At picoamps, the breadboard is part of your circuit. Follow these rules for ever
 
 - **Series, never parallel.** In series the resistors make 20 Ω: 12²/20 = 7.2 W at 0.6 A, 3.6 W in each 10 W resistor. In parallel (5 Ω) they would draw 2.4 A and 28.8 W, 14.4 W in each 10 W resistor, overloading both and most adapters [ESTIMATE].
 - **Adapter.** 12 V DC, rated ≥1 A, unmodified and commercially made.
+- **Heater wiring.** Wire the 12 V heater loop with stranded wire and screw or crimp terminals. Never run heater current through the breadboard or jumper wires: their contacts are rated about 1 A (the [E4](E4_femtoamp_leakage_bench.md#53-mini-hot-chuck-and-thermostat-only-for-runs-above-room-temperature) rule).
 - **12 V never touches a Pico pin.** Only the gate resistor and the one common ground join the two circuits. Check with the multimeter before you plug in USB.
-- **Mounting.** Bolt both resistors to the aluminium plate. Stand the plate on metal spacers ≥10 mm high, so nothing hot touches foam.
+- **Mounting.** Bolt both resistors to the aluminium plate. Stand the plate on metal spacers ≥20 mm high, and keep the plate and resistors at least 20 mm from every foam wall and the lid, so nothing hot touches foam. This is the same 20 mm rule as [E4](E4_femtoamp_leakage_bench.md#6-safety) and [SAFETY.md](SAFETY.md#3-heaters-and-thermal-runaway).
 - **Fuse.** Clamp the fuse body to the plate beside the resistors with a metal clip or thermal tape, so it feels their temperature. Join its leads with crimp or screw terminals. Or solder quickly, ≥10 mm from the body, gripping the lead with pliers as a heat sink: soldering heat can open or weaken a thermal fuse.
 - **MOSFET.** The IRLZ44N has VGS(th) 1.0-2.0 V and RDS(on) ≤ 35 mΩ at VGS = 4 V [DATASHEET]. At 0.6 A a 3.3 V gate drive turns it fully on in practice [ESTIMATE]: it should stay cool. If it gets warm, use a MOSFET whose datasheet specifies RDS(on) at VGS ≤ 3.3 V.
 - **First test, attended, before any board goes in.** Connect the 220 Ω gate resistor to the Pico's 3V3 pin instead of GP18, so the heater is fully on. Close the 2-3 L box with only the DS18B20 inside and watch the temperature for 60 min (`e1_single_cell.py` in `peek` mode logs `temp_c` about every 30 s). If the air passes 55 °C, use a 9 V adapter instead (4 W). Move the gate resistor back to GP18 afterwards.
@@ -404,15 +407,16 @@ At picoamps, the breadboard is part of your circuit. Follow these rules for ever
    - Measure each Cs and Cbl with the multimeter's capacitance range, if it has one, and write the values on a strip of tape.
    - Measure VREF (it should be ~1.65 V) and the 9 V battery.
 2. **Measure your floor first, before any transistor.**
-   - Air-wire one 1 nF C0G to an LMC6482 follower input.
+   - Install MicroPython on the Pico and copy `t1_common.py` and `e1_single_cell.py` to it ([code/T1_pico/README.md](code/T1_pico/README.md), "How to run", steps 1-2). Run the PC commands below from `code/T1_pico/`.
+   - Air-wire one 1 nF C0G to an LMC6482 follower input, and wire that follower's output to GP27 (ADC1), as in Circuit A.
    - Touch the node briefly to 3.3 V with a jumper, then remove the jumper.
-   - Log the follower for 30-60 minutes. Run `e1_single_cell.py` in `peek` mode with the wordline disconnected.
+   - Log the follower for 30-60 minutes: set `MODE = "peek"` (`PEEK_S = 3600` is the default) and run `mpremote run e1_single_cell.py > e1_floor.csv`, with the wordline disconnected.
    - Run `python3 analyze_t1.py decay e1_floor.csv --c-pf 1000`. The result is the leakage of the capacitor, the op-amp and your wiring together.
    - **Pass:** under ~1 pA, 5x below the transistor's expected ~5 pA, so the transistor dominates. 1-5 pA works but blurs the temperature test. If it is higher, clean and dry the board before going on.
 3. **Build Circuit A.**
    - Start with the CD40109B VDD on **3.3 V**, not 9 V.
    - Install the ALD1106, VREF, the comparator, the followers and the DS18B20.
-   - Copy `t1_common.py` and `e1_single_cell.py` to the Pico.
+   - `t1_common.py` and `e1_single_cell.py` are already on the Pico (step 2).
    - **3b. Float test.** With the wordline closed, set `MODE = "float"` and `CBL_NF` to the fitted Cbl, and run `mpremote run e1_single_cell.py > e1_float.csv`. It precharges the bitline, floats it, and reads the BL follower twice 5 ms apart. Run `python3 analyze_t1.py float e1_float.csv`: drift × Cbl ÷ time is the leakage of the GPIOs, the comparator and the follower. **Pass:** drift < 0.5 mV.
 4. **See the threshold-voltage loss.**
    - Set `MODE = "peek"` and `PEEK_S = 60`, and run.

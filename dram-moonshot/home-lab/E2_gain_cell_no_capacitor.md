@@ -107,7 +107,7 @@ t_retention = C_SN × ΔV_allowed / I_leak          dV/dt = I_leak / C_SN   ("dr
 
 **The floor.** The read transistor's gate, C_trim and the board. C0G parts are only guaranteed ≥100 GΩ (KEMET [DATASHEET]): up to 33 pA at 3.3 V, which would cap every trimmed cell near 0.7 s. Typical parts are 100-1,000x better, and the 0.01-1 pA planning floor [ESTIMATE] assumes that. Step 3 tells you which you have. If the floor stays above 1 pA after cleaning, try another C0G batch or a polystyrene or polypropylene 220 pF capacitor. The reed-relay cell measures the floor. If the JFET and reed cells come out identical, you have hit it.
 
-**What to expect overall.** A spread of up to **~10,000x or more** in retention, set only by which switch you plug in. How big it is depends mostly on how leaky your 2N7000 really is at 3 V: the planning ranges overlap (2N7000 10 pA-10 nA, ALD1106 5-400 pA), so a quiet 2N7000 can even beat the ALD1106. The datasheet does not say, so that is the first new number you will learn.
+**What to expect overall.** A spread of up to **~10,000x or more** in retention, set only by which switch you plug in. How big it is depends mostly on how leaky your 2N7000 really is at 3 V: the planning ranges overlap (2N7000 10 pA-10 nA, ALD1106 5-400 pA), so a quiet 2N7000 can even beat the ALD1106. The datasheet does not say, so that is the first new number you will learn. [E4](E4_femtoamp_leakage_bench.md#27-your-predictions-written-down-before-you-build) plans a lower 2N7000 median (0.1-10 pA at 1 V) from the same thin evidence; the two ranges overlap, and the difference is deliberate (E2 plans for a leaky part at ~3 V).
 
 ### 2.3 Law 2: the read does not destroy the bit
 

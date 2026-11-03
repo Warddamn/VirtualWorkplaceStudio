@@ -162,7 +162,6 @@ Any loop-gain error makes it worse, as gain^laps. So **analog recirculation forg
 |---|---|
 | Charge packets can be moved through 1,000-4,000 transfers with measurable, modelable loss. You learn to extract per-transfer CTE with the astronomers' trailing-charge method, and to bound it honestly against readout smear. | Anything about oxide (IGZO) CCD CTE. A BBD is a chain of silicon MOS capacitors and switches, not a CCD, and not an amorphous oxide with band-tail traps. |
 | A circulating delay-line memory works: regeneration keeps data indefinitely, and analog recirculation forgets in a few laps. | Few-electron physics. Home packets are ~190,000 to 2.6 million electrons; the study's are ~313. Partition noise and single-trap effects are invisible here. |
-
 | How to state a BER honestly from zero errors (3/n). | Speed. 10-500 kHz here, against 50 MHz needed. Trap emission at 6.7 ns gate dwell is the dossier's open question. |
 | A "stopped" charge store is a DRAM cell with a retention-time spread across buckets. | Density, vertical 3D integration, cost, or the LLM-aware scheduler. |
 | Energy per transfer scales with C·V², with numbers. | That CHARGE-RIVER's 0.46 fJ per transfer is achievable. |

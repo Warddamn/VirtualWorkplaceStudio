@@ -5,7 +5,9 @@
 # make hosttest compile and run the pattern generator on the PC
 CC      = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
-CFLAGS  = -mcpu=cortex-m4 -mthumb -O2 -std=c11 -Wall -Wextra -ffreestanding -ffunction-sections
+# -fno-tree-loop-distribute-patterns stops GCC turning the startup copy/zero loops into memcpy/memset
+# calls, which -nostdlib would leave undefined (a link error you could not debug on day one).
+CFLAGS  = -mcpu=cortex-m4 -mthumb -O2 -std=c11 -Wall -Wextra -ffreestanding -ffunction-sections -fno-tree-loop-distribute-patterns
 LDFLAGS = -T stm32f429_flash.ld -nostdlib -nostartfiles -Wl,--gc-sections
 SRCS    = startup_f429.c main.c sdram_fmc.c patterns.c uart.c max31855.c
 

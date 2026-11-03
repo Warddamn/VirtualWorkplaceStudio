@@ -65,7 +65,7 @@ The chip numbers come from the study's 1-beta cell in [`models/dram_cell_physics
 
 The bench reference cell is our choice [ESTIMATE]:
 - a 1 nF C0G capacitor at 3.3 V, the USB and microcontroller rail. C0G (also called NP0) is a ceramic dielectric with almost no drift, leakage or memory effect;
-- a 6.8 nF "bitline" capacitor, so Cbl/Cs = 6.8, close to the chip's 6.4;
+- a 6.8 nF "bitline" capacitor, so Cbl/Cs = 6.8, close to the chip's 6.4. ([E1](E1_bit_on_the_bench.md#21-law-1-charge-sharing-conservation-of-charge) uses the commoner 4.7 nF and 10 nF values, which bracket it: about 288 and 150 mV with its 30 pF of stray);
 - an access switch that passes the full 3.3 V. Use a CMOS (complementary metal-oxide-semiconductor) analog switch, which has N and P transistors together. Or drive an N-channel MOSFET's (metal-oxide-semiconductor field-effect transistor's) gate at least V_t (its threshold voltage) above 3.3 V: a bench "VPP" of 5-10 V from the ≤30 V supply. A plain N-MOSFET driven from a 3.3 V pin stores only 3.3 V − V_t. For a 2N7000 (V_t 0.8-3 V, ~2.1 V typical [DATASHEET range, UNVERIFIED this session]) that is about 1.2 V (calcs §4). The read signal is (V_cell − V/2)·Cs/(Cs + Cbl), so a "1" stored below 1.65 V reads as a "0", and the 212 mV prediction below fails.
 
 ### 2.1 Charge: Q = C·V (calcs §2)
@@ -155,7 +155,7 @@ The read is also destructive: the cell's charge is spread out, so the chip must 
 
 **Home experiment:** E1. Sweep the "bitline" capacitor and plot the signal against Cbl/Cs. The points should fall on one curve.
 - **Measured parts.** Use C0G (NP0) or film for both capacitors, and measure each one with an LCR meter or component tester. Unmeasured ±5% parts limit the check to ~±7%. An X7R "bitline" capacitor also loses capacitance under DC bias, so avoid X7R.
-- **Charge injection.** When the switch turns off, some of its gate charge lands on the cell: about 20 pF of gate capacitance × a 5 V swing is ~100 pC, which gives ~10-50 mV on 1 nF [ESTIMATE, calcs §4]. Cancel it by reading a stored 1 and a stored 0 and taking half the difference.
+- **Charge injection.** When the switch turns off, some of its gate charge lands on the cell: about 20 pF of gate capacitance × a 5 V swing is ~100 pC; if 10-50% of it lands on the cell, that is ~10-50 mV on 1 nF [ESTIMATE, calcs §4]. Cancel it by reading a stored 1 and a stored 0 and taking half the difference.
 - **No microcontroller pins on the node.** Never wire the cell or the bitline straight to a microcontroller pin, which can leak nA: 1 nA empties 0.5 V from 1 nF in 0.5 s. Buffer the node with a low-input-current CMOS op-amp.
 - **No gate-protection Zeners.** Pick switch and read MOSFETs without built-in gate-protection Zener diodes (often marked "ESD protected", i.e. protected against electrostatic discharge; sometimes a "K" suffix such as 2N7002K [UNVERIFIED]). Those leak nA from the gate.
 
@@ -219,7 +219,7 @@ Leakage rises with temperature by an activation energy Ea. Near temperature T it
 | DRAM tail cells | ~0.35 [REPORTED, S8] | 16 K | 23 K | 5.0x |
 | Si generation, ~Eg/2 | 0.56 | 9.8 K | 14 K | 13x |
 | DRAM main cells | ~0.6-0.7 [REPORTED, S8] | 9.1 K | 13 K | 16x |
-| Rule of thumb: retention halves per 10 °C (JEDEC, the memory-standards body, only doubles the refresh rate above 85 °C [UNVERIFIED]) | 0.79 (implied) | 6.9 K | 10 K | 38x |
+| Rule of thumb: retention halves per 10 °C (JEDEC, the memory-standards body, only doubles the refresh rate above 85 °C [UNVERIFIED]) | 0.79 (implied near 85 °C; near 25-65 °C the same rule implies ~0.6, which is how [E6](E6_retention_tail_real_dram.md#22-temperature-leakage-is-thermally-activated) reads it) | 6.9 K | 10 K | 38x |
 | Oxide 2T0C extrapolation | 0.8 [STUDY] | 6.8 K | 9.8 K | 40x |
 | Si diffusion, ~Eg | 1.12 | 4.8 K | 7.0 K | 174x |
 
@@ -230,9 +230,9 @@ Leakage rises with temperature by an activation energy Ea. Near temperature T it
 
 **Two lessons:**
 - Patents report a lower Ea for tail cells than for typical cells [REPORTED, S8]. Weber et al. tie the tail to gate-induced drain leakage (GIDL) [REPORTED, S8]. So the weakest cells degrade more slowly with heat and are harder to "cool away". **The tail has its own physics.**
-- Ea is a fingerprint. Measure it and you learn the mechanism. For example, warm only the device under test (DUT) from 25 to 65 °C and fit Ea from its leakage (E4). Use either an aluminium block on a hot plate with a PID (proportional-integral-derivative) temperature controller, or a closed box warmed by a thermostat-controlled seedling or reptile heat mat. A dial hot plate alone cycles and overshoots; a 10 K error in the DUT's true temperature changes the fitted Ea by ~21-23% over 25→65 °C [ESTIMATE, calcs §7]. Tape a thermometer probe (thermocouple or DS18B20) to the DUT itself, and after each step wait 15-20 minutes until it reads steady to ±0.5 °C. Keep the amplifier and breadboard outside the warm zone, joined by short PTFE-insulated leads: a warmed ADA4530-1 raises its own bias current and fakes an Arrhenius slope. Choose the node capacitance so the droop stays inside your ADC range at 65 °C, where leakage is 13-174x higher than at 25 °C (table above).
+- Ea is a fingerprint. Measure it and you learn the mechanism. For example, warm only the device under test (DUT) from 25 to 65 °C and fit Ea from its leakage (E4). Use the guide's own heater with its hardware cut-outs: E4's series-wired resistor block with a bimetal thermostat and a thermal fuse ([E4 §5.3](E4_femtoamp_leakage_bench.md#53-mini-hot-chuck-and-thermostat-only-for-runs-above-room-temperature)), or E6's thermostat box with its four safety layers ([E6 §6](E6_retention_tail_real_dram.md#6-safety)); [SAFETY.md](SAFETY.md#3-heaters-and-thermal-runaway) compares them. Do not improvise a heat mat or a hot plate under a powered board. A dial hot plate alone cycles and overshoots; a 10 K error in the DUT's true temperature changes the fitted Ea by ~21-23% over 25→65 °C [ESTIMATE, calcs §7]. Tape a thermometer probe (thermocouple or DS18B20) to the DUT itself, and after each step wait 15-20 minutes until it reads steady to ±0.5 °C. Keep the amplifier and breadboard outside the warm zone, joined by short PTFE-insulated leads: a warmed ADA4530-1 raises its own bias current and fakes an Arrhenius slope. Choose the node capacitance so the droop stays inside your ADC range at 65 °C, where leakage is 13-174x higher than at 25 °C (table above).
 
-**Home experiments:** E4 (Ea of a junction's leakage); E6 (DRAM retention at two temperatures). For E6, warm the whole DRAM board in the same thermostat box and log the chip's case temperature, not the box setting.
+**Home experiments:** E4 (Ea of a junction's leakage); E6 (DRAM retention at two temperatures). For E6, warm the whole DRAM board in E6's own thermostat box and log the chip's case temperature, not the box setting.
 
 ### 2.8 Band gap: n_i = sqrt(Nc·Nv)·exp(−Eg/2kT) — the root of the BEST BET (calcs §8)
 
@@ -329,7 +329,7 @@ The ~10x does not need exotic physics. It comes from replacing millimetres of wi
 - Leave the far end of the coax open. A 50 Ω terminator would draw ~33 mA and swamp the effect.
 - Measure first with no cable and subtract that baseline (the buffer and probe have their own switching current).
 
-The extra current should then rise linearly with length, with slope f·C'·V ≈ 320 µA per metre at 1 MHz and 3.3 V. That straight line proves energy tracks distance.
+The extra current should then rise linearly with length, with slope f·C'·V ≈ 320 µA per metre at 1 MHz and 3.3 V. That straight line proves energy tracks distance. [E3](E3_price_of_distance.md#22-expected-readings) uses the RG-58C/U datasheet value, 101 pF/m, and so predicts 333 µA per metre; the 4% gap is this section's geometry estimate against the datasheet, not a contradiction.
 
 ### 2.11 Charge transfer: an isolated packet keeps CTE^N (calcs §11)
 
@@ -479,6 +479,12 @@ Halderman et al. found that DRAM keeps much of its data "for several seconds" at
 | 1.24 (prior) | 8.1x | 57x |
 | 2.0 | 30x | ~700x |
 
+**Four relaxation factors, four baselines.** Compare factors only when their baselines match:
+- [E1](E1_bit_on_the_bench.md#27-sixteen-cells-the-first-taste-of-tails)'s 1.1-1.4x is the second-weakest ÷ the weakest of 16 bench cells (one-error code on one 16-bit word).
+- This section's 2.3-30x (8x at σ_ln = 1.24) is the coded chip's safe interval ÷ the uncoded chip's 1%-any-error interval, at the same temperature.
+- [E6](E6_retention_tail_real_dram.md#24-expected-results-for-a-64-mbit-sdr-chip-67108864-cells)'s factors (for example SEC-DED 17x at 45 °C, RS-8 42x at 65 °C) are the safe interval ÷ the standard 64 ms window, under per-bit-hour or per-read targets. They are larger because 64 ms sits far below where even an uncoded chip first fails.
+- The study's ~9x is for DDR5 server modules at 85 °C with chipkill kept, against standard refresh.
+
 **Measuring σ_ln is the experiment's real result** (calcs §14). The study's own DDR5 figure is ~9x with chipkill (server error correction that survives a whole failed chip) kept. **This is the FASTEST PROOF's mechanism, demonstrated on a $4 chip (about $30-65 with the board that drives it).**
 
 Watch for the known traps:
@@ -495,14 +501,14 @@ The expected numbers come from `home_lab_calcs.py`. Each guide has its own parts
 
 | ID | Experiment | Effort: difficulty, time, cost | Laws tested | Key expected number (calcs §) | Supports | Proves at home | Cannot prove |
 |---|---|---|---|---|---|---|---|
-| E1 | A bit on the bench: discrete 1T1C cell | 3 · one day · ~$25-40 plus a shared core kit | Q=CV, t=CΔV/I, charge sharing, CV² | 212 mV signal (1 nF/6.8 nF, 3.3 V); 50 s retention at 10 pA (§3-5) | Background for all | The laws at ~1e6x scale; the destructive read | Anything about nanoscale leakage |
-| E2 | A gain cell without a capacitor | 3 · one weekend · ~$25-45 plus core kit | Transistor gain; non-destructive read | ~2,000x charge gain at a 1 ms read (§9) | HOT-SIDE, AND-STACK | Read without write-back | Oxide behaviour; 0.15 fF nodes |
+| E1 | A bit on the bench: discrete 1T1C cell | 3 for Part A, 4 for Part B · one day for Part A, a second weekend for Part B · ~$25-40 (A) + $30-45 (B), plus a shared core kit | Q=CV, t=CΔV/I, charge sharing, CV² | 212 mV signal (1 nF/6.8 nF, 3.3 V; E1's 4.7 nF bitline gives 288 mV); 50 s retention at 10 pA with 0.5 V droop (154 s with E1's 1.54 V budget) (§3-5) | Background for all | The laws at ~1e6x scale; the destructive read | Anything about nanoscale leakage |
+| E2 | A gain cell without a capacitor | 3 (4 with the JFET and its negative rail) · one weekend · ~$25-45 plus core kit | Transistor gain; non-destructive read | ~2,000x charge gain at a 1 ms read (§9) | HOT-SIDE, AND-STACK | Read without write-back | Oxide behaviour; 0.15 fF nodes |
 | E3 | The price of distance | 2 · half a day · ~$15-30 plus core kit | E = α·C'·L·V²; C' ≈ constant | +320 µA per metre of coax at 1 MHz, 3.3 V (§10) | HOT-SIDE | Energy linear in length | The 0.37 vs 3.95 pJ/bit system figure |
-| E4 | Femtoamp leakage bench and tail statistics | 3 (the craft is the hard part) · 1-2 weekends to build, then 2-4 weeks of logging · ~$80-250 | I = C·dV/dt; Arrhenius | Floor ~10-100 fA by hand, ~1-20 fA on the eval board, 0.1-1 fA at best; 10 fA on 100 pF droops 0.36 V/h. 27.8 aA is the arithmetic only (§3) | BEST BET's measurement method | The floating-node method; Ea of a junction | Attoamp tails of 1e5 oxide devices |
+| E4 | Femtoamp leakage bench and tail statistics | 3 for the first build, 4 with op-amp option A and the heater (the craft is the hard part) · 1-2 weekends to build (2-3 with the heater), then 2-3 weeks for 30 devices at room temperature, or 6-10 weeks part-time for the full plan · ~$105-150 first build, ~$165-235 full | I = C·dV/dt; Arrhenius | Floor ~10-100 fA by hand, ~1-20 fA on the eval board, 0.1-1 fA at best; 10 fA on 100 pF droops 0.36 V/h. 27.8 aA is the arithmetic only (§3) | BEST BET's measurement method | The floating-node method; Ea of a junction | Attoamp tails of 1e5 oxide devices |
 | E5 | Charge river: bucket-brigade device | 2-3 · one weekend, plus 1-2 weekends of runs · ~$40-60 | CTE^N; smear of incomplete transfer | One clock-wide pulse: trailing/main = N(1−CTE); 10% over 1,024 transfers → CTE 0.9999, or 0.89 dB extra loss at f_s/4 (§11) | CHARGE-RIVER | Measuring CTE; its clock and temperature dependence | Oxide buried-channel CTE at 150 MT/s |
-| E6 | Retention tail of a real DRAM chip (raw-BER at home) | 2 on a dev board (5 for a bare chip) · one weekend plus ~10 h of runs · ~$100-170 | Order statistics; Arrhenius; ECC | First failure ~1-4 s at 25 °C; SECDED stretches ~2-30x, 8x at the prior's σ_ln = 1.24 (§14) | RAW-BER (FASTEST PROOF) | A real 6.7e7-cell tail and its σ_ln; the code's leverage | DDR5 chipkill statistics; server VRT |
-| E7 | Make your own oxide transistor | 4 · 3-4 weekends · ~$1,100, less with makerspace tools; makerspace advised | Band gap; subthreshold slope | Expect pA-nA off-current, far above the n_i floor (§8) | BEST BET, AND-STACK materials | That an oxide switches; its on/off ratio | IGZO quality; the aA regime |
-| E8 | Your own oxide gain-cell memory | 4-5 · 2-3 weekends after E7 · ~$40-50 on top of E7 | All of the above combined | Retention = C·ΔV/I of your own transistor (§3, §9) | HOT-SIDE cell concept | A working home-made 2T0C bit | Density, 105 °C tails, endurance at scale |
+| E6 | Retention tail of a real DRAM chip (raw-BER at home) | 3 on a dev board (a bare chip is harder: see step 3 below) · 1-2 weekends to build and debug, then ~12-15 h of runs including heat-up · ~$110-200 | Order statistics; Arrhenius; ECC | First failure ~1-4 s at 25 °C; SECDED stretches ~2-30x, 8x at the prior's σ_ln = 1.24 (§14) | RAW-BER (FASTEST PROOF) | A real 6.7e7-cell tail and its σ_ln; the code's leverage | DDR5 chipkill statistics; server VRT |
+| E7 | Make your own oxide transistor | 4 · first proof (battery test) 1-2 weekends; full E7 3-4 weekends if you have built electronics, 6-10 if not · ~$410-550 plus a hot plate for the first proof, ~$1,200 with the measurement rig; makerspace advised | Band gap; subthreshold slope | Expect pA-nA off-current, far above the n_i floor (§8) | BEST BET, AND-STACK materials | That an oxide switches; its on/off ratio | IGZO quality; the aA regime |
+| E8 | Your own oxide gain-cell memory | 4 (5 for the 2×2 array) · 2-3 weekends after E7, 1-2 more for the array · ~$49 on top of E7 and its rig, ~$10 more for the array | All of the above combined | Retention = C·ΔV/I of your own transistor (§3, §9) | HOT-SIDE cell concept | A working home-made 2T0C bit | Density, 105 °C tails, endurance at scale |
 
 **Suggested order:**
 1. Run `--selftest`.
@@ -511,6 +517,8 @@ The expected numbers come from `home_lab_calcs.py`. Each guide has its own parts
 4. **E4.** Follow the ESD, shielding and temperature rules (§2.2, §2.7, §7).
 5. E2, E3 and E5 in any order.
 6. **E7 and E8 last,** ideally at a makerspace. They need the most care.
+
+The home-lab [README](README.md) lays out three paths. A software builder can start at step 3 (E6, at room temperature first) and come back to E1 later.
 
 ---
 
@@ -521,7 +529,7 @@ The expected numbers come from `home_lab_calcs.py`. Each guide has its own parts
 | The five DRAM laws hold at bench scale, to ~1-10% depending on how well you measure your parts | That any study concept works at nanometre scale |
 | Charge-sharing signal depends only on Cbl/Cs and V | That a 0.15 fF oxide node meets margins at 105 °C |
 | Wire energy scales with length, with C' about scale-free | The study's 0.37 vs 3.95 pJ/bit; that is a system model |
-| Floating-node droop can resolve currents of ~10 fA and up at home, and ~0.1-1 fA at best (eval board, blank subtraction, steady temperature). The floor is set by the buffer's bias current and its drift | aA-zA leakage. That needs the same method with no amplifier on the node during the wait, a guarded vacuum or dry fixture and tight temperature control (a university lab). Also: the 1e-4 leakage quantile of 0.01 µm² IGZO after a 400 °C bond |
+| Floating-node droop can resolve currents of ~10 fA and up at home, and ~1-10 fA at best (E4's plan: air or PTFE capacitor, blank subtraction, steady temperature); ~0.1-1 fA only if the buffer's bias current holds steady to a few percent [ESTIMATE]. The floor is set by the buffer's bias current and its drift | aA-zA leakage. That needs the same method with no amplifier on the node during the wait, a guarded vacuum or dry fixture and tight temperature control (a university lab). Also: the 1e-4 leakage quantile of 0.01 µm² IGZO after a 400 °C bond |
 | A real DRAM chip has a measurable retention tail, and ECC (error-correcting code) stretches refresh by a factor set by that tail's spread | DDR5 chipkill, multi-chip events, or 1,000 h module statistics |
 | Home oxide films can switch | That home films say anything about sputtered IGZO tails |
 | An isolated charge packet keeps CTE^N of its charge; the rest trails behind it as smear | Buried-channel oxide CTE at speed |
@@ -540,7 +548,7 @@ The expected numbers come from `home_lab_calcs.py`. Each guide has its own parts
 
 ## 7. Safety, for every experiment
 
-Each guide carries its own Safety box. These rules apply to all of them.
+Each guide carries its own Safety box. These rules apply to all of them. The consolidated version, with every guide's rules, a heater comparison and an SDS table, is [SAFETY.md](SAFETY.md).
 
 > **SAFETY — hard rules**
 >
@@ -560,8 +568,8 @@ Each guide carries its own Safety box. These rules apply to all of them.
 >
 > **Banned items and chemicals**
 > - **Banned.** Hydrofluoric acid, cyanide, mercury, liquid nitrogen, lasers above class 2, and pressurized toxic gases. Also banned: inverted canned air used as a freeze spray (flammable, causes frostbite) and dry ice in any closed container.
-> - **Also banned at home:** 2-methoxyethanol, the solvent in most published sol-gel ZnO and IGZO recipes (for example S22). Its safety data sheets list it as a reproductive toxin (Globally Harmonized System code H360FD: may damage fertility and the unborn child) and a flammable liquid (H226) [REPORTED, SDS snippets, S27]. Use ethanol or isopropanol recipes instead (a 2013 solvent comparison reportedly made ZnO films from all three [UNVERIFIED]). Also banned: metal-nitrate plus organic-solvent "combustion" precursors (indium, gallium or zinc nitrate in 2-methoxyethanol or acetylacetone), which react energetically when heated [REPORTED, S23]; concentrated acids for etching; and sputtering or any vacuum deposition. Do these at a university lab.
-> - **Chemicals (E7, E8).** Read the safety data sheet (SDS) before you buy. Wear nitrile gloves, indirect-vent splash goggles and a cotton (not polyester) lab coat or apron. Work beside an open window with a fan blowing outward. Use ≤20 mL of solution at a time. After that room-temperature dry, bake films at ≤100 °C, with no solvent bottle nearby, before any anneal; never put a solvent-wet sample on a plate hotter than ~100 °C. Keep an eyewash bottle or a tap within reach, and rinse eyes for 15 minutes if splashed. Store chemicals closed and labelled, in a locked box away from food, children and pets. Collect all zinc- or indium-containing waste in a labelled jar for household-hazardous-waste drop-off; never pour it down the drain. If a step cannot be made safe at home, do it at a makerspace or university lab.
+> - **Also banned at home:** 2-methoxyethanol, the solvent in most published sol-gel ZnO and IGZO recipes (for example S22). Its safety data sheets list it as a reproductive toxin (Globally Harmonized System code H360FD: may damage fertility and the unborn child) and a flammable liquid (H226) [REPORTED, SDS snippets, S27]. Use E7's water-based ammine route, or ethanol or isopropanol recipes, instead (a 2013 solvent comparison reportedly made ZnO films from all three [UNVERIFIED]). Also banned: metal-nitrate plus organic-solvent "combustion" precursors (indium, gallium or zinc nitrate in 2-methoxyethanol or acetylacetone), which react energetically when heated [REPORTED, S23]; concentrated acids for etching; and sputtering or any vacuum deposition. Do these at a university lab.
+> - **Chemicals (E7, E8).** Read the safety data sheet (SDS) before you buy. Wear nitrile gloves, indirect-vent splash goggles and a cotton (not polyester) lab coat or apron. Work beside an open window with a fan blowing outward. Use ≤20 mL of solution at a time. After that room-temperature dry, bake films at ≤100 °C, with no solvent bottle nearby, before any anneal; never put a sample wet with an organic solvent on a plate hotter than ~100 °C. (E7's water-based ammine ink has no organic solvent; E7 bakes it at 120-150 °C outdoors, [E7 §8](E7_make_your_own_oxide_transistor.md#8-procedure) step 13.) Keep an eyewash bottle or a tap within reach, and rinse eyes for 15 minutes if splashed. Store chemicals closed and labelled, in a locked box away from food, children and pets. Collect all zinc- or indium-containing waste in a labelled jar for household-hazardous-waste drop-off; never pour it down the drain. If a step cannot be made safe at home, do it at a makerspace or university lab.
 >
 > **People and pets**
 > - **Children and pets.** Keep them out of the room while the soldering iron, hot plate or chemicals are out. Store coin cells (CR2032 and similar) locked away: a swallowed coin cell can burn through tissue in hours, so get emergency help at once if one goes missing [UNVERIFIED]. Keep pet birds in another part of the house during any heating step; they are very sensitive to fumes [UNVERIFIED].

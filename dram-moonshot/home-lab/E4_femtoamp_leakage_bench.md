@@ -158,6 +158,8 @@ This is why the study's Gate A+ asks for **≥ 1e5 cells per split**: 1e5 is abo
 | Leakage at 85 °C vs 25 °C | 39× (0.56 eV) to 184× (0.8 eV) | [ESTIMATE] |
 | Highest quantile you can bound from 100 devices | q0.964 = 0.025^(1/100) (two-sided 95%) | [ESTIMATE] |
 
+The 2N7000 row differs on purpose from the planning values in [E2](E2_gain_cell_no_capacitor.md#22-law-1-retention-is-set-by-the-write-switchs-off-leakage) (10 pA-10 nA at ~3 V) and [E8](E8_your_own_oxide_gain_cell_memory.md#14-temperature-arrhenius) (10 pA). All three rest on the same thin evidence: the datasheet gives only ≤ 1 µA at 48 V. E4 sizes its capacitor for the lower, 1 V case; E2 and E8 plan for a leakier part. Your measurement replaces all three.
+
 If your measurement disagrees, that is data. Write down which row and by how much.
 
 ---
@@ -167,7 +169,6 @@ If your measurement disagrees, that is data. Write down which row and by how muc
 | This experiment PROVES (at home) | It does NOT prove |
 |---|---|
 | The charge-decay method works and you can run it: I = C·dV/dt resolves currents from pA down to ~1-10 fA with an air or PTFE capacitor (10-100 fA with a boxed film capacitor, until your blank shows better). | Anything about oxide (IGZO, IGO, ZTO) transistors. Your devices are silicon MOSFETs with a body diode. Oxide TFTs have no junction, and their leakage is channel and trap physics. |
-
 | You can calibrate a current scale (time-constant method) and measure a bench floor (blank). | Attoamp or zeptoamp metrology. The study's cells leak 1e-20 to 1e-17 A. Your floor is ~1e-15 A, 100-100,000x higher. |
 | You can turn many measurements into quantiles with honest confidence intervals, and spot a non-lognormal tail. | The 1e-4 or 2e-5 quantile of anything. That needs ≥ 3e4-1e5 devices (section 2.6). |
 | You can extract an activation energy and name the leakage mechanism. | Behaviour after the ≤ 400 °C hydrogen, thermal and bonding budget, at 0.01 µm² device size, at 105-125 °C. |
@@ -190,7 +191,7 @@ Prices are approximate snapshots, as of Nov 2026, from the pages in section 14. 
 | SOIC-8 breakout (option A only) | Carries the chip; +IN stays unsoldered | Any SOIC-8 breakout | 1-3 | Adafruit, Amazon | [UNVERIFIED] |
 | Electrometer op-amp, alternatives | 3 fA typical / ±20 fA max at 25 °C, ±900 fA at 85 °C (LMP7721); 20 fA max −40 to 85 °C with guard buffer (OPA928) | LMP7721MA/NOPB; OPA928DR | not confirmed | DigiKey, Mouser, TI | [DATASHEET 4, 6]; price [UNVERIFIED] |
 | No-solder option (expensive) | Ready-made ADA4530-1 buffer board | ADA4530-1R-EBZ-BUF | 660-700 | DigiKey, Arrow | [REPORTED, 2] |
-| Microcontroller | Runs the sequence, logs over USB | Raspberry Pi Pico 2 | 5 | Raspberry Pi resellers | [REPORTED, 9] |
+| Microcontroller | Runs the sequence, logs over USB. The firmware is written for both the Pico and the Pico 2; if the same board will later do E1 or E2, buy the RP2040 Pico (early Pico 2 pins leak, E1 §6.4) | Raspberry Pi Pico 2 or Pico | 5 | Raspberry Pi resellers | [REPORTED, 9] |
 | Analog-to-digital converter | 16-bit, programmable gain, I²C. Power it from the Pico's 3.3 V, not 5 V (section 5.1) | Adafruit ADS1115 breakout #1085 | 15 | Adafruit, Mouser, DigiKey | [REPORTED, 10] |
 | Temperature sensor | DS18B20 (±0.5 °C absolute; 0.0625 °C steps), stainless probe. **Needed even at room temperature: you log the temperature of every run** (leakage changes ~8% per K) | Adafruit #381 or equivalent | 4-10 | Adafruit, Pi Hut, Core Electronics | [REPORTED, 15] |
 | Storage capacitors | Polypropylene film/foil, low DA. **10 nF is the default for 2N7000s.** 470 pF for blanks, the floor check and low-leakage devices; 47 nF and 100 nF for hot runs | WIMA FKP2D011001D00 (1,000 pF, 100 V) and FKP2D001001D00 (100 pF) for small values; 10-100 nF from the WIMA FKP 2 / MKP 2 or KEMET R76 series (check the datasheet says polypropylene) | 0.20-0.60 small; ~0.30-1 for 10-100 nF | Anglia, Rapid, Future, Cytech, DigiKey | [REPORTED, 14]; 10-100 nF price [UNVERIFIED] |
@@ -212,7 +213,7 @@ Prices are approximate snapshots, as of Nov 2026, from the pages in section 14. 
 |---|---|---|---|---|---|
 | Heater resistors (2) | 10 Ω, 25 W, aluminium housed. Wired in **series**: 20 Ω on 12 V = 0.6 A, 7.2 W | Dale/Arcol HS25 10R | 2.25 each | Surplus Sales, RS | [REPORTED, 16] |
 | Power supply | 12 V DC, ≥ 1 A, a wall adapter with safety marks (UL/ETL/CE/UKCA) and a barrel plug; you add a barrel-jack socket. No mains wiring by you | any | 10-15 | any | [UNVERIFIED] |
-| Inline fuse | 1 A (blade or glass) in a holder, at the adapter output. 3 A only if you ever use the parallel wiring | any | 2-4 | any | [UNVERIFIED] |
+| Inline fuse | 1 A (blade or glass) in a holder, at the adapter output | any | 2-4 | any | [UNVERIFIED] |
 | Heater switch | Logic-level N-MOSFET, ≥ 5 A at 3.3 V gate drive, plus a 100 kΩ gate pull-down | e.g. IRLB8721 | 1-2 | Adafruit, DigiKey | [UNVERIFIED] |
 | Thermostat (hardware cut-out 1) | Normally-closed bimetal disc, opens at ~95 °C, resets itself; clamped to the block | KSD301 / KSD9700 type | 1-2 | Amazon, DigiKey | [UNVERIFIED] |
 | Thermal fuse (hardware cut-out 2) | One-shot cut-off rated ~110 °C, clamped to the block; fitted with crimp butt-splices | any 10 A axial thermal fuse | 1-3 | DigiKey, Amazon | [UNVERIFIED] |
@@ -271,7 +272,7 @@ Soldering iron (temperature controlled); digital multimeter with a capacitance r
 
 Keep the node at 0.5-2 V, inside the op-amp's input range on a single 5 V supply. Check your op-amp's common-mode range in its datasheet [UNVERIFIED for each part]. The firmware treats 0.45-2.04 V as the valid window: below it the buffer output is near its rail, above it the ADS1115 (±2.048 V range) clips.
 
-**Power the ADS1115 from the Pico's 3.3 V, never from VBUS.** The breakout's I²C pull-ups go to its own supply pin [UNVERIFIED this session], so 5 V there would put 5 V on GP4/GP5, and the RP2040's pins are not 5 V tolerant. The 10 kΩ in series with AIN0 limits the current if the 5 V buffer output ever goes above 3.3 V. Its gain error is about 0.2%, constant, because the ADS1115's input impedance is several MΩ on this range [DATASHEET from memory, UNVERIFIED this session, 28]. It scales every current equally, like the C uncertainty.
+**Power the ADS1115 from the Pico's 3.3 V, never from VBUS.** The breakout's I²C pull-ups go to its own supply pin [UNVERIFIED this session], so 5 V there would put 5 V on GP4/GP5, and the Pico's pins must never see 5 V. The 10 kΩ in series with AIN0 limits the current if the 5 V buffer output ever goes above 3.3 V. Its gain error is about 0.2%, constant, because the ADS1115's input impedance is several MΩ on this range [DATASHEET from memory, UNVERIFIED this session, 28]. It scales every current equally, like the C uncertainty.
 
 **The 10 GΩ resistor is the node's write and calibration path.** In position A (GP19 high) its far end sits on SRC: that writes the node in BLANK runs (no device can) and steps it in TAU_CAL. In position B (GP19 low, the default through the pull-down, also after a reset) its far end follows the node through the buffer. It then carries only the buffer's offset voltage divided by 10 GΩ: an offset of 40 µV gives 4 fA [ESTIMATE]. That current is constant and present in every run, including the blanks, so blank subtraction removes it. Its Johnson noise adds a random walk of only ~20 aA over 1,800 s [ESTIMATE]. Check your op-amp's offset in its datasheet: a 1 mV offset would give a constant 100 fA, still subtracted, but then judge the floor by how well the blanks *agree*. You never desolder anything from the cleaned node.
 
@@ -289,11 +290,11 @@ Keep the node at 0.5-2 V, inside the op-amp's input range on a single 5 V supply
 
 ### 5.3 Mini hot chuck and thermostat (only for runs above room temperature)
 
-Bolt the two 10 Ω heater resistors to the aluminium block and wire them in **series**. 12 V across 20 Ω is 0.6 A and 7.2 W. That is plenty for a ~36 g block (a few W hold 85 °C [ESTIMATE]), and it limits what any fault can do. Use the parallel wiring (28.8 W, 2.4 A, a 3 A fuse and `MAX_DUTY = 0.3`) only if series wiring cannot reach 85 °C. The block sits on PTFE or ceramic standoffs inside the tin. The cover over it is a folded aluminium-foil tent or a small steel can, never foam. The op-amp stays at the far side of the tin. Expect the tin's air to warm a few K at an 85 °C setpoint: that is why you run a blank at every setpoint.
+Bolt the two 10 Ω heater resistors to the aluminium block and wire them in **series**. 12 V across 20 Ω is 0.6 A and 7.2 W. That is plenty for a ~36 g block (a few W hold 85 °C [ESTIMATE]), and it limits what any fault can do. **Never wire the resistors in parallel:** that makes 28.8 W, four times the stuck-on power, and the home lab allows series heaters only ([SAFETY.md](SAFETY.md#3-heaters-and-thermal-runaway)). If series wiring cannot reach 85 °C, close the foil tent and the gaps, or end the temperature series at 65 °C. The block sits on PTFE or ceramic standoffs inside the tin. The cover over it is a folded aluminium-foil tent or a small steel can, never foam. The op-amp stays at the far side of the tin. Expect the tin's air to warm a few K at an 85 °C setpoint: that is why you run a blank at every setpoint.
 
 **Heater wiring.** Use 20-22 AWG stranded wire, soldered or in screw terminals. Never run heater current through a solderless breadboard or jumper wires: their contacts are rated about 1 A and can overheat [UNVERIFIED]. The chain is: 12 V adapter → barrel-jack socket → 1 A inline fuse → thermal fuse → bimetal thermostat → resistor → resistor → MOSFET drain; MOSFET source → GND. Fit the thermal fuse with crimp butt-splices. If you must solder it, keep at least 10 mm of lead, clamp pliers on the lead between the joint and the body as a heat sink, and touch the iron for under 3 s. Then check that the fuse reads ~0 Ω on the multimeter. Clamp the fuse and the thermostat to the block. Twist the heater wires together and route them away from the node.
 
-**First heat-up, watched.** With the tin closed and you watching, heat to 85 °C once from cold. Note how fast the block rises (expect ~0.1-0.2 K/s [ESTIMATE]) and that it settles without passing ~87 °C. If it cannot reach 85 °C, the firmware's runaway check stops it after 3 min; only then consider the parallel wiring.
+**First heat-up, watched.** With the tin closed and you watching, heat to 85 °C once from cold. Note how fast the block rises (expect ~0.1-0.2 K/s [ESTIMATE]) and that it settles without passing ~87 °C. If it cannot reach 85 °C, the firmware's runaway check stops it after 3 min. Then improve the foil tent, or make 65 °C the top point of `SERIES`. Do not switch to parallel wiring.
 
 The firmware switches the heater slowly (2 s windows), so there are few switching edges near the femtoamp node. The robust slope fit ignores the occasional spike. The PI gains are a starting point: tune them on your block.
 
@@ -310,7 +311,7 @@ The firmware switches the heater slowly (2 s windows), so there are few switchin
 > - **Burns.** Let the block cool below 45 °C before touching it or swapping devices.
 > - **Drilling and cutting.** Clamp the tin and the block in a vise, or to the bench with two clamps; never hold them by hand. Wear safety glasses. Use a sharp bit at low speed, with a drop of oil on aluminium. Deburr every hole by twisting a larger bit by hand, or with a file. Handle the cut tin in work gloves, and vacuum up swarf rather than brushing it with your hand. No vise? Drill the block on a makerspace drill press.
 > - **Isopropyl alcohol** is flammable (SDS: highly flammable liquid and vapour; eye irritant). Use it with the heater off and cold, in a ventilated room, away from flames. Store it capped. Let small amounts evaporate outdoors or discard as household hazardous waste.
-> - **Silica gel.** Buy only the cobalt-free orange type. Do not use blue indicating gel: it contains cobalt(II) chloride, classified as a carcinogen (Carc. 1B) and reproductive toxicant (Repr. 1B) in EU safety data sheets [REPORTED, 24]. Keep sachets closed and out of reach of children and pets (choking hazard). Regenerate orange gel on a foil tray in an oven at 100-120 °C for 2 h, or replace it. Orange gel can go in household waste.
+> - **Silica gel.** Buy only the cobalt-free orange type. Do not use blue indicating gel: it contains cobalt(II) chloride, classified as a carcinogen (Carc. 1B) and reproductive toxicant (Repr. 1B) in EU safety data sheets [REPORTED, 24]. Keep sachets closed and out of reach of children and pets (choking hazard). Replace spent gel, or regenerate orange gel on a foil tray at 100-120 °C for 2 h in an oven that never holds food ([FIRST_PRINCIPLES §7](FIRST_PRINCIPLES.md#7-safety-for-every-experiment): no equipment that will touch food again). Orange gel can go in household waste.
 > - **Soldering:** use ventilation or a fume extractor, eye protection, and wash your hands (lead solder).
 > - **Static:** the electrometer input is easily destroyed by a static discharge. Touch the grounded tin before touching the node.
 > - No chemicals beyond these, no vacuum, no cryogens, no lasers.
@@ -352,7 +353,7 @@ The firmware switches the heater slowly (2 s windows), so there are few switchin
 
 15. Number 30-120 devices with a marker. If you bought two brands, mix them in random order: a "split".
 16. Measure each one as in steps 11-12. Each takes ~35 minutes (15 min settle, 10 min soak, 10 min record). Swap a device about every 40-60 minutes while you are home; run blanks overnight. Run a BLANK every ~10 devices, on the same capacitor.
-17. Concatenate all CSV files into one (same columns) and analyse:
+17. Concatenate all CSV files into one (same columns; on macOS or Linux, `cat 2026-*_25C_*.csv > all_25C.csv`; the script skips repeated header lines and `#` lines) and analyse:
     `python3 leakage_tail.py --csv all_25C.csv --json results_25C.json`
     The `cap_pf` column already holds your measured C_s. Use `--cap-pf` only to override a whole file (the script warns if the override differs from the column by > 1%).
 

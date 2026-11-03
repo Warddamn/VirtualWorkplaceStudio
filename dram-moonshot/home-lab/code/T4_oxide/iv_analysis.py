@@ -601,6 +601,10 @@ def main(argv):
             svg_plot(ser, a.svg, os.path.basename(a.csv), "Vds (V)", "|Id| (A)")
     print(f"{a.mode} analysis of {a.csv}  (W={a.W} um, L={a.L} um, tox={a.tox_nm} nm)")
     print(fmt(rep))
+    if a.mode == "transfer":
+        print("  NOTE: Ioff_A is the lowest current in the sweep. If it is within ~3x of the scatter of your floor"
+              " test (floor.csv, E7 step 3), it measures your setup, not the channel; the planning channel"
+              " off-current is ~1e-16 A (E7 section 1.4).")
     if a.json:
         with open(a.json, "w") as f:
             json.dump(rep, f, indent=1, default=float)

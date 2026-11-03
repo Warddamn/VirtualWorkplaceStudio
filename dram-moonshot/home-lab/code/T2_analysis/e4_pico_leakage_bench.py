@@ -79,7 +79,7 @@ DROOP_MAX_V = 0.5        # stop once the node has fallen this far
 MAX_SETPOINT_C = 85.0    # E5 warm box: set 60 (the BBD's limit)
 HARD_CUTOFF_C = 90.0     # heater latched off above this block reading
 MAX_DUTY = 1.0           # heater = two 10 Ohm resistors in SERIES on 12 V = 7.2 W at full duty.
-                         # If you ever wire them in parallel (28.8 W), set MAX_DUTY = 0.3.
+                         # Never wire them in parallel (28.8 W): E4 guide section 5.3 and SAFETY.md.
 HEATER_PERIOD_MS = 2000  # time-proportional window: few switching edges near the fA node
 RUNAWAY_S = 180          # fault if the duty stays high this long while the block barely warms
 

@@ -28,6 +28,13 @@ From [DRAM_MOONSHOT_REPORT.md](DRAM_MOONSHOT_REPORT.md) section 1 and [decision.
 4. [IDEAS_INDEX.md](IDEAS_INDEX.md): the map of all 12,857 ideas.
 5. [MISSION.md](MISSION.md): the question, the framing and the rules.
 
+## Home lab
+
+Can any of this be tested at home? At bench scale, yes. [home-lab/](home-lab/README.md) has eight experiments, from a one-transistor bit on a breadboard (E1) to a zinc-oxide transistor and gain cell made at home (E7, E8), with a first-principles backbone ([FIRST_PRINCIPLES.md](home-lab/FIRST_PRINCIPLES.md)) and one safety guide ([SAFETY.md](home-lab/SAFETY.md)).
+The best first project for a software builder is E6: map the retention tail of a real 64 Mbit DRAM chip on a ~$30-63 development board, the FASTEST PROOF mechanism on a desk.
+Home work cannot measure the oxide leakage tail itself. It builds the method, the analysis code and the data package for the Oxide Tail Spec.
+Check it with `python3 home-lab/tools/check_home_lab.py`.
+
 ## File map
 
 | Path | What it holds |
@@ -36,6 +43,7 @@ From [DRAM_MOONSHOT_REPORT.md](DRAM_MOONSHOT_REPORT.md) section 1 and [decision.
 | [REDTEAM.md](REDTEAM.md) | Compiled red team (generated; do not edit by hand) |
 | [IDEAS_INDEX.md](IDEAS_INDEX.md) | Idea funnel index (generated; do not edit by hand) |
 | [MISSION.md](MISSION.md) | Mission, framing, capital frame, rules |
+| [home-lab/](home-lab/README.md) | Eight home experiments (E1-E8), first-principles backbone, safety guide and their code |
 | [dossiers/](dossiers/) | One technical dossier per final concept (sections 0-11) |
 | [models/](models/) | One Python model per concept, plus the shared `dram_cell_physics.py` |
 | [research/phaseA/](research/phaseA/) | Bottleneck map: scaling limits, materials, research frontier |

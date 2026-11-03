@@ -276,6 +276,7 @@ The STM32's FMC issues refresh automatically, timed by SDCLK (the SDRAM clock). 
 
    **5b. Fallback if init fails.** If you see `ERR,sdram init failed` and cannot find the cause in an evening: create an STM32CubeIDE project for this board. Keep the clock on HSI 16 MHz (no PLL, the clock multiplier). Call `BSP_SDRAM_Init()`, then set the refresh count to 105 (`HAL_SDRAM_ProgramRefreshRate` on the board code's SDRAM handle, or write the FMC SDRTR register directly). That gives SDCLK = 8 MHz and the normal 54 ms window [UNVERIFIED]. Then paste in `run_test()` and the command parser from `main.c`, plus `patterns.c`, `uart.c`, `max31855.c`, and `sdram_fmc.c` without its `sdram_init()`.
 6. **Talk to it.** The board talks over a UART (universal asynchronous receiver-transmitter; the STM32 calls its own a USART) at 115200 baud, 8N1 (eight data bits, no parity, one stop bit).
+   - From here on, run every Python command from `code/T3_dram/`, where `capture_retention.py` and `retention_map.py` live (`cd ..` from the firmware folder).
    - Find the port: `python3 -m serial.tools.list_ports` (Linux /dev/ttyACM0, macOS /dev/cu.usbmodem…, Windows COMn).
    - Open it: `python3 -m serial.tools.miniterm <port> 115200` (Ctrl+] quits).
    - Press reset: you should see `HELLO,e6-ret-0.2,IS42S16400J,4194304,16,8000000,A|B|C`. Type `PING`: expect `PONG`.
@@ -295,6 +296,7 @@ The STM32's FMC issues refresh automatically, timed by SDCLK (the SDRAM clock). 
    - Stand the box on a hard, non-flammable surface. Inside, put the spacer tile (or ceramic spacers) on the floor and the main tile on top.
    - Put the heater on the main tile beside, not under, where the board's header rows will be. Cover it with a strip of Kapton tape.
    - Mount the board on 25-30 mm nylon standoffs on the tile. Keep every pin, jumper, probe and cable at least 2 cm from the heater.
+   - Keep the heater at least 2 cm from every foam wall and from the lid. EPS foam is rated only to about 75 °C, and the heater runs 40-60 °C hotter than the box air (the same 20 mm rule as [E4](E4_femtoamp_leakage_bench.md#6-safety) and [SAFETY.md](SAFETY.md#3-heaters-and-thermal-runaway)).
    - Tape the W1209 probe on the SDRAM side of the board, next to the chip, with Kapton over the probe's metal tip so it cannot touch any pins.
    - Fix the KSD301 bimetal switch in the air at board height, 2-3 cm from the SDRAM, not touching the heater.
    - Bring the USB cable and the heater leads out through one small slot.
@@ -323,7 +325,7 @@ The STM32's FMC issues refresh automatically, timed by SDCLK (the SDRAM clock). 
 9. **Smoke test at room temperature,** with the heater unplugged and the lid ajar:
    `python3 capture_retention.py --port /dev/ttyACM0 --temp-c 25 --repeats 1 --waits 0.064 1.024 16.384 65.536 --out smoke.log`
    (use the chip temperature that `TEMP` reports for `--temp-c`.) Expect a clean control run and zero failures at 64 ms. At 1 s expect 0, though a handful is possible if your chip's tail has a low activation energy. At 65.5 s expect roughly 100 to 100,000 failing bits over ALL0 + ALL1 together (central about 13,000, so about 6,500 each, a BER of about 1e-4; BER = bit error rate, failing bits ÷ all bits). With a 0.35 eV tail it could be about 1.4 million [ESTIMATE, section 2.4]. One of ALL0/ALL1 may show almost none if your chip is mostly true cells or mostly anti cells (section 8). A closed box self-heats a few °C, and that alone can double the count. Any non-zero count at 65.5 s shows that refresh really stopped.
-10. **Dry run without hardware** at any time: `python3 capture_retention.py --simulate --temp-c 45 --out sim.log`, then `python3 retention_map.py analyze sim.log`.
+10. **Dry run without hardware** at any time: `python3 capture_retention.py --simulate --temp-c 45 --out sim.log`, then `python3 retention_map.py analyze sim.log`. The report says **SYNTHETIC DATA** at the top: its numbers come from a made-up chip and test only the pipeline. With one temperature, section 8 of the report prints NO VERDICT for the 65 °C gate; that is expected.
 
 ---
 
@@ -410,7 +412,7 @@ The report has these parts:
    - RS-8 (80,64), the dossier's code.
 
    Each runs with three mappings of cells to codewords: **adjacent** (real neighbouring addresses), **dq** (one symbol per data pin) and **random** (pseudo-random shuffle). Clustering is measured against chance coincidence. The output is the safe interval for target 1 and target 2, with EXTRAP flags.
-8. **Verdict:** your 65 °C factor against the dossier's gate (PASS ≥24x, printed as "PASS (65 °C half of the gate only)"; NO-GO <4x) and its ~9x / ~13x.
+8. **Verdict:** your 65 °C factor against the dossier's gate (PASS ≥24x, printed as "PASS (65 °C half of the gate only)"; NO-GO <4x) and its ~9x / ~13x. It needs a 65 °C bin, or at least two temperatures so the fitted Ea can move the hottest bin to 65 °C (marked EXTRAPOLATION). A single 25 °C or 45 °C campaign prints NO VERDICT.
 
 **`--selftest`** builds a synthetic 4 Mbit chip with a lognormal tail, VRT, coherent 2-bit clusters, 128-row anti-cell blocks and pattern dependence. It emulates the firmware's log line by line and runs the whole pipeline. Its 32 checks are of different strength, so here is what they do and do not show:
 - VRT is detected (strict share > 0), but its size is not checked.

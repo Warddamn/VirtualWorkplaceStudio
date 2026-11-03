@@ -577,6 +577,9 @@ def analyze_log(log, args, out):
     out("")
     out("Chip: %s, %d words x %d bits = %d bits (one failing bit = BER %.2e)." %
         (log.chip, log.n_words, bpw, N, 1.0 / N))
+    if str(log.chip).upper().startswith("SYNTH"):
+        out("**SYNTHETIC DATA** (from --simulate or --selftest): every number below comes from a made-up chip."
+            " It tests the pipeline, not any real DRAM. Do not quote it as a result.")
     out("Runs: %d data runs, %d control runs, %d truncated (logging cap hit), %d parse notes." %
         (len(data_runs), len(ctrl), sum(r.truncated for r in log.runs), len(log.errors)))
     if only != "all":
@@ -993,11 +996,19 @@ def analyze_log(log, args, out):
             af = math.exp((garr["ea_ev"] / K_B) * (1 / (65.0 + T0) - 1 / (tc + T0)))
             x65 *= af
             note = " (moved to 65 C with the fitted Ea = %.2f eV: EXTRAPOLATION)" % garr["ea_ev"]
-        verdict = ("PASS (65 C half of the gate only)" if x65 >= DOSSIER["pass_65C_x"] else
-                   ("NO-GO" if x65 < DOSSIER["kill_65C_x"] else "PARTIAL"))
-        out("At 65 C: %.1fx%s. Dossier gate (section 5.R): PASS needs >= %.0fx at 65 C AND >= %.0fx at 85 C;"
-            " NO-GO < %.0fx at 65 C -> %s." %
-            (x65, note, DOSSIER["pass_65C_x"], DOSSIER["pass_85C_x"], DOSSIER["kill_65C_x"], verdict))
+        if abs(tc - 65.0) > 3.0 and not garr:
+            # One temperature, far from 65 C: no measured or extrapolated 65 C factor exists.
+            verdict = "NO VERDICT (no 65 C data)"
+            x65 = None
+            out("At 65 C: not measured. The gate is defined at 65 C; this campaign's hottest bin is %.1f C,"
+                " and one temperature gives no activation energy to move it there -> %s."
+                " Run 45 and 65 C (or at least two temperatures) first." % (tc, verdict))
+        else:
+            verdict = ("PASS (65 C half of the gate only)" if x65 >= DOSSIER["pass_65C_x"] else
+                       ("NO-GO" if x65 < DOSSIER["kill_65C_x"] else "PARTIAL"))
+            out("At 65 C: %.1fx%s. Dossier gate (section 5.R): PASS needs >= %.0fx at 65 C AND >= %.0fx at 85 C;"
+                " NO-GO < %.0fx at 65 C -> %s." %
+                (x65, note, DOSSIER["pass_65C_x"], DOSSIER["pass_85C_x"], DOSSIER["kill_65C_x"], verdict))
         out("This chip is rated to about 70 C, so only the 65 C half of the PASS line can be tested here.")
         out("Dossier model for comparison: ~%.1fx on DDR5 and ~%.1fx on retired DDR4 at 85 C (RS-8, chipkill kept)."
             % (DOSSIER["ddr5_rs8_85C"], DOSSIER["ddr4_rs8_85C"]))

@@ -186,10 +186,12 @@ A silicon switch behaves differently. Below about Vgs = 0.5 V its junction leaka
 > - **Heater.**
 >   - A 10 Ω 25 W aluminium-clad resistor on 12 V gives 14.4 W. **Bolt it to the aluminium block** (at least 60 × 40 × 6 mm): in free air it overheats. The code caps the duty at 30% (~4.3 W); 65 °C needs only ~1-2 W [ESTIMATE].
 >   - Hardware cut-offs, in series with the heater: a resettable normally-closed bimetal thermostat (KSD301 type, 80 °C, ≥2 A) pressed to the block with thermal paste, plus a one-shot thermal fuse (~91 °C, ≥2 A) as backup. A 72-77 °C fuse can nuisance-trip during 65 °C runs, because thermal fuses are typically rated to hold only ~20-25 °C below their trip point [ESTIMATE].
->   - Do not solder within 5 mm of the fuse body: grip the lead with pliers as a heat sink, or use crimp connectors. If the thermostat's or fuse's metal case connects to a lead (check with the meter), wrap it in Kapton before pressing it to the block.
+>   - Do not solder within 10 mm of the fuse body (the E1, E4 and E6 rule): grip the lead with pliers as a heat sink, or use crimp connectors. If the thermostat's or fuse's metal case connects to a lead (check with the meter), wrap it in Kapton before pressing it to the block.
 >   - Heater MOSFET: GP15 → 220 Ω → gate, and 100 kΩ from gate to source, so the heater is OFF whenever the Pico is not driving the pin (boot, reset, crash, USB power lost).
+>   - The heater draws 1.2 A while on. Wire its loop with stranded wire and screw or crimp terminals, never through a breadboard or jumper wires (the [E4](E4_femtoamp_leakage_bench.md#53-mini-hot-chuck-and-thermostat-only-for-runs-above-room-temperature) rule).
 >   - Software guards: the heater turns off above 70 °C, and also if the NTC reads below 5 °C (an open or unplugged thermistor reads about −66 °C and would otherwise demand full power). The maximum setpoint, 65 °C, is enforced in code. Heated runs also start the Pico's hardware watchdog: if the program hangs, the Pico resets and the heater goes off. The Pico then reboots ~8 s after a heated run ends, so wait 10 s before the next command.
 >   - Put the block on a ceramic tile, and ground it to the measurement star ground. Stay nearby for the first heat-up.
+>   - Watch one complete heated run end to end before you ever leave one unattended, and keep a smoke alarm in the room. Until then, no heated run overnight. This is the [E4](E4_femtoamp_leakage_bench.md#6-safety) rule; [SAFETY.md](SAFETY.md#3-heaters-and-thermal-runaway) compares every heater.
 >   - A 65 °C block can burn skin with prolonged contact. Let it cool before handling.
 > - **ESD.** Touch the grounded tin before handling 2N7000s or the TFT chips.
 > - **Silica gel.** Use plain or orange (cobalt-free) silica gel. Blue indicating gel contains cobalt chloride [UNVERIFIED]. Keep it away from children and pets.
@@ -363,7 +365,7 @@ Room T ___ C, RH ___ %, dark tin Y/N     switch= matched socket every run Y/N   
 ## 11. What would surprise you (and would mean something new)
 
 - **Oxide-cell leakage below the relay floor.** Impossible as measured: recheck your floor. If it holds up with the E4 method, publish the method.
-- **Oxide leakage that does not rise from 25 to 65 °C** while silicon rises 15-150x, **and** that stays ≥3x above the relay floor at every temperature. That is the hot-side thesis in miniature. If it sits at the floor, it is the room-temperature floor, not the oxide. If your device beats a silicon junction at 65 °C by 100x or more while above the floor, that is a strong demo result.
+- **Oxide leakage that does not rise from 25 to 65 °C** while silicon rises 15-150x, **and** that stays ≥3x above the relay floor at every temperature. That is the temperature half of the hot-side thesis in miniature (not its attoamp level). If it sits at the floor, it is the room-temperature floor, not the oxide. If your device beats a silicon junction at 65 °C by 100x or more while above the floor, that is a strong demo result.
 - **Oxide Ea above silicon's.** It would mean a thermally activated defect path dominates. For the study, that is a warning sign about tails at 105-125 °C.
 - **Retention that improves after a few hours at 65 °C.** That points to annealing of traps or desorption of water. Useful process knowledge: does a pre-bake fix it?
 - **Step-like jumps in the decay.** At your size a single trap is invisible (section 1.8), so steps point to contamination, cracks or moving cables, not RTN.
