@@ -417,7 +417,7 @@ Key ideas:
 
 14. **Quick battery test: your first proof (about 1 hour).** Do it indoors, in dim light, with the chip under an opaque cup: daylight makes ZnO conduct even at 0 V gate. Use a fully annealed chip, and paint on a different table from any ammonia.
     - (a) **Moat first.** With the diamond scribe, scratch a closed square moat, about 6 × 6 mm, through the film in the middle of the chip. The film inside it must not reach any cleaved edge, because a cleaved edge is bare p++ silicon: the gate.
-    - (b) **Two stripes.** Inside the moat, paint two silver stripes about 3 mm long, side by side, with a gap of about 0.5 mm (W/L ≈ 6). If you can, use the wire mask of step 15 instead (L = 50-100 µm gives much more current). Keep the paint at least 1 mm inside the moat. Let it dry for 30 minutes.
+    - (b) **Two stripes.** Inside the moat, paint two silver stripes about 3 mm long, side by side, with a gap of about 0.5 mm (W/L ≈ 6). If you can, use the wire mask of step 15 instead (L = 50-100 µm gives 5-10x more current, so read the shunt on the 20 V range). Keep the paint at least 1 mm inside the moat. Let it dry for 30 minutes.
     - (c) **Gate.** Scratch through the oxide on the back of the chip and paint a silver spot there.
     - (d) **Wiring.** Three 9 V batteries in series (27 V) → 1 MΩ → gate. One 9 V battery (+) → 10 kΩ → drain stripe. Source stripe → 100 kΩ shunt → the joined battery negatives (0 V). Read the voltage across the 100 kΩ with the multimeter on its 2 V (or 200 mV) DC range: 1 mV = 10 nA. The drain must be positive (n-type channel).
     - (e) **Expected** [ESTIMATE, `expected_numbers.py` E7-8]: about 0.9-7 µA, i.e. 90-720 mV (planning value ~260 mV).
