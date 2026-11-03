@@ -90,11 +90,11 @@ Setup: 3.3 V buffer, 100 Ω low-side shunt, 1 MHz.
 | 1 MHz | 333 µA | 33.3 mV |
 | 2 MHz | 667 µA | 66.7 mV |
 
-**Voltage sweep, 1 m of RG-58:**
+**Voltage sweep, 1 m of RG-58** (2.0 V is the lowest supply the SN74AHC125 is specified for [DATASHEET]):
 
 | Supply | E per cycle | Relative to 3.3 V |
 |---|---|---|
-| 1.8 V | 327 pJ | **0.30x** |
+| 2.0 V | 404 pJ | **0.37x** |
 | 2.5 V | 631 pJ | **0.57x** |
 | 3.3 V | 1.10 nJ | 1.00x |
 
@@ -102,7 +102,7 @@ Setup: 3.3 V buffer, 100 Ω low-side shunt, 1 MHz.
 - **DMM.** 0.1 mV on the 100 Ω shunt is 1 µA, or 0.3 pF at 1 MHz.
 - **FNB58 USB power meter.** Its reported resolution is 10 µA, about 3 pF at 1 MHz on the 3.3 V side [REPORTED]. Resolution is not accuracy, and the last digits are noise.
 
-### 2.3 From the bench to the chip: one law, ten orders of magnitude
+### 2.3 From the bench to the chip: one law, eight orders of magnitude
 
 The study's model charges each bit **0.5 × C × V²**. That is its "activity" convention. Strict accounting for random data gives 0.25 × C × V². Ratios between paths do not depend on the choice.
 
@@ -119,6 +119,8 @@ The study's model charges each bit **0.5 × C × V²**. That is its "activity" c
 | Hybrid bond + via stack | 10 fF | 0.75 V | 2.8 fJ |
 | Oxide storage node | 0.15 fF | 0.6 V | 0.027 fJ |
 
+Top to bottom: 1.65 nJ ÷ 0.027 fJ = 6.1e7, which is 7.8 orders of magnitude [ESTIMATE].
+
 **Two surprises hide in this table.**
 1. **Capacitance per millimetre is not the difference.** An on-chip wire has *more* capacitance per millimetre (0.2 pF/mm [MODEL input]) than coax (0.1 pF/mm). Chips win by being **short** and running at **low voltage**. Coax at 3.3 V costs (3.3/0.75)² ≈ 19x more per pF than a 0.75 V chip wire.
 2. **HBM's 3.95 pJ is not one long wire.** It is "equivalent" to driving ~14 pF at 0.75 V, but most of it is PHY circuitry: drivers, receivers, termination, clocking. E3 tests the law that makes distance and voltage expensive. It does not test the PHY's internal design.
@@ -132,10 +134,13 @@ The study's model charges each bit **0.5 × C × V²**. That is its "activity" c
 | Item | Energy |
 |---|---|
 | Bitlines: (8.1 fF local + 126 fF global) × 0.9 V × 0.3 V swing | 36.2 fJ per cell read (2 bits) |
-| Plus sense and wordline | 22.7 fJ per bit |
+| Cell read per bit: (36.2 bitline + 9.0 sense + 0.2 wordline) ÷ 2 bits | 22.7 fJ |
+| Decode | 2.0 fJ |
 | Local data wire 0.1 mm | 8.1 fJ |
 | Bond + via | 2.8 fJ |
 | All of that ×2 for unmodelled periphery, plus 50 fJ controller/SRAM | **0.121 pJ/bit** |
+
+Check: (22.7 + 2.0 + 8.1 + 2.8) × 2 + 50 = 121 fJ.
 
 **Write, mix and delivery.**
 - **Write-verify (2 bits, 3 loops):** 0.543 pJ/bit. A 20% write mix gives **0.206 pJ/bit** at the port.
@@ -164,7 +169,7 @@ E ≈ (16 + 0.25 × 16) pF × 3.3² ≈ **218 pJ per bit** [ESTIMATE]
 
 **What a meter sees.** At 8 Mbit/s that is ~1.7 mW: ~0.53 mA on the 3.3 V rail, or **~0.41 mA at the 5 V USB input** (assuming an ~85% efficient regulator [UNVERIFIED]). A 10 µA USB meter can see it.
 
-**Internal SRAM.** About 1-10 pJ per 32-bit access in a 40 nm-class chip [ESTIMATE], or ~0.16 pJ per bit. That is **~1,000x less than the pins**. A 20 MB/s memory copy should add only ~12 µA at the USB input, at or below the meter's floor.
+**Internal SRAM.** About 1-10 pJ per 32-bit access in a 40 nm-class chip [ESTIMATE], or ~0.16 pJ per bit. That is **~1,000x less than the pins**. At the copy speed the script prints (for example 20 MB/s), the SRAM arrays themselves should add only ~12 µA at the USB input. The copy loop's CPU and bus work will probably add more (tens to hundreds of µA), and it can even shift the current by a few mA either way compared with the idle loop, because the processor runs different code [ESTIMATE]. That is logic energy, not memory-array energy. Per bit, the copy still comes out far below loaded SPI, because it moves roughly 30-100x more bits per second than 10 MHz SPI [ESTIMATE].
 
 **The lesson.** Leaving the chip costs ~100-1,000x more per bit than staying on it. A microcontroller shows the same off-chip-vs-on-chip gap that HBM-vs-hot-side shows on a GPU.
 
@@ -193,8 +198,9 @@ E ≈ (16 + 0.25 × 16) pF × 3.3² ≈ **218 pJ per bit** [ESTIMATE]
 ## 4. Safety
 
 > **SAFETY: E3**
-> - **Voltages.** Only USB 5 V and the Pico's 3.3 V. The optional voltage sweep uses an adjustable low-voltage regulator module fed from USB, set no higher than 3.3 V. No mains-powered builds.
-> - **USB power meter.** Use it only between a computer or a normal USB charger and the Pico. Never use it on modified chargers or anything mains-side.
+> - **Voltages.** Only USB 5 V and the Pico's 3.3 V. The optional voltage sweep uses an adjustable low-voltage regulator module fed from USB, set between 2.0 and 3.3 V. Set the module's output with the multimeter, with nothing attached, before connecting the buffer. No mains-powered builds.
+> - **USB power meter (FNB58).** It can "trigger" fast-charge modes (QC/PD) that raise the USB voltage to 9-20 V [REPORTED, it is sold as a fast-charge tester]. The Pico's VSYS input is rated 5.5 V maximum [DATASHEET, Raspberry Pi Pico]. Never open the meter's trigger or protocol menu with the Pico attached. Plug the meter into a computer USB port, not a fast charger. Check that it reads about 5.0 V with nothing attached, then plug in the Pico. Never use it on modified chargers or anything mains-side.
+> - **Children and pets.** Keep them away from the bench while the iron is hot. Store small parts and capacitors out of their reach: they are choking hazards.
 > - **Buffer limits.** Keep the buffer's supply at or below its rated maximum (check the datasheet). Use the 33-100 Ω series resistor, so that driving 1 nF does not overload the output.
 > - **Cables.** Long coax on the floor is a trip hazard. Tape it down or keep it on the bench.
 > - **Soldering.** Same rules as [E1](E1_bit_on_the_bench.md) section 4: iron ~350 °C, stand, ventilation, safety glasses.
@@ -207,7 +213,7 @@ Shared core kit: [E1](E1_bit_on_the_bench.md) section 5.1 (Pico or Pico 2, bread
 
 | Part | Spec that matters | Example part number | Approx. USD | Where to buy |
 |---|---|---|---|---|
-| Line driver | CMOS buffer at 3.3 V; inputs tolerant of 3.3 V when the buffer runs at a lower supply (AHC family [UNVERIFIED]) | SN74AHC125N (PDIP-14), or 74HC125 at 3.3 V only | 0.5-1 [ESTIMATE] | DigiKey, Mouser |
+| Line driver | CMOS buffer; VCC 2.0-5.5 V; inputs accept 0-5.5 V at any VCC, so the Pico's 3.3 V drive is fine when the buffer runs at 2.0 or 2.5 V [DATASHEET] | SN74AHC125N (PDIP-14), or 74HC125 at 3.3 V only | 0.5-1 [ESTIMATE] | DigiKey, Mouser |
 | Shunt | 100 Ω 1% metal film, low side | | — | |
 | Shunt filter | 10 kΩ + 10 µF (averages the pulses; τ = 0.1 s) | | — | |
 | Supply monitor divider | 100 kΩ ×2 | | — | |
@@ -216,9 +222,9 @@ Shared core kit: [E1](E1_bit_on_the_bench.md) section 5.1 (Pico or Pico 2, bread
 | Calibration loads | C0G, 5%: 100 pF, 330 pF, 1 nF | | 0.2 each | |
 | Coax | RG-58, ~101 pF/m nominal (30.8 pF/ft) [DATASHEET]; 1 m and 3 m with BNC ends | any RG-58C/U patch cables | 5-10 each [ESTIMATE] | |
 | BNC breakout | BNC-to-clip leads or a panel jack with wires | | 5 [ESTIMATE] | |
-| *Optional* USB power meter | ~10 µA resolution [REPORTED]; logging helps | FNIRSI FNB58 | ~€40 / ~$40-45 [REPORTED] | Electronics retailers |
+| *Optional* USB power meter | ~10 µA resolution [REPORTED]; logging helps. A fast-charge tester: never use its trigger menu with the Pico attached (section 4) | FNIRSI FNB58 | ~€40 / ~$40-45 [REPORTED] | Electronics retailers |
 | *Optional* SPI device for Part C | Any SPI chip; e.g. a 1 Mbit SPI SRAM | 23LC1024 (DIP-8) [UNVERIFIED] | 2-4 [ESTIMATE] | DigiKey, Mouser |
-| *Optional* voltage sweep | Adjustable regulator module, USB-powered, set to 1.8 / 2.5 / 3.3 V | LM317- or buck-module class | 2-5 [ESTIMATE] | |
+| *Optional* voltage sweep | Adjustable regulator module, USB-powered, set to 2.0 / 2.5 / 3.3 V (for a 1.8 V point, use an SN74LVC125A instead: 1.65-3.6 V, 5 V-tolerant inputs [REPORTED]) | LM317- or buck-module class | 2-5 [ESTIMATE] | |
 
 **Tools.**
 - DMM, soldering iron, wire strippers.
@@ -235,7 +241,7 @@ Shared core kit: [E1](E1_bit_on_the_bench.md) section 5.1 (Pico or Pico 2, bread
                                    |             |              |
    GP15 (PWM) ---> 1A  [74AHC125]  1Y ---[33 Ohm]---> LOAD centre (cable core / capacitor)
                    1OE -> GND (enabled)              LOAD return (cable shield) -> real GND
-                   other 3 channels: inputs -> GND, OE -> VCC (disabled)
+                   other 3 channels: inputs -> the buffer's own GND pin (G'), OE -> buffer VCC (disabled)
                    74AHC125 GND pin = node G'
                                    |
    (the decoupling caps return to G')
@@ -251,7 +257,7 @@ Shared core kit: [E1](E1_bit_on_the_bench.md) section 5.1 (Pico or Pico 2, bread
 - **The reading.** The average shunt current is therefore C·V·f plus the buffer's own switching and leakage current. The baseline load ("open") removes the buffer's own part.
 
 **Simplest path, if you have no buffer chip.**
-- Let the Pico's GPIO drive the load directly.
+- Let the Pico's GPIO drive the load directly, with the 33 Ω resistor between the GPIO and the cable core (without it, reflections on the open cable ring past the supply rails).
 - Read the whole-board current at the USB plug with the FNB58.
 - At 1 MHz, 1 m of RG-58 adds ~0.26 mA at the 5 V input [ESTIMATE].
 - This is coarser, but it is the same law.
@@ -283,23 +289,24 @@ Shared core kit: [E1](E1_bit_on_the_bench.md) section 5.1 (Pico or Pico 2, bread
 
 8. **Linearity in frequency.** Check that R² ≥ 0.995 for each load in step 7.
 9. **Series resistance does not matter.**
-   - With the 330 pF load at 100 kHz, swap the 33 Ω resistor for 330 Ω.
-   - Log both as labels `330pF_R33` and `330pF_R330`. Energy per cycle should agree within ±5%.
-   - Then try 3.3 kΩ at 1 MHz. It cannot settle (τ ≈ 1.1 µs against a 0.5 µs half-period), and the "energy" drops. Why? The swing never reaches full V.
+   - With the 330 pF load, log label `330pF_R33` (33 Ω series) and then `330pF_R330` (330 Ω).
+   - For BOTH, enter **500000** as the highest frequency. The 330 Ω run has τ = (330 + ~40) Ω × 330 pF ≈ 122 ns and settles (7τ per half-period) only below ~580 kHz. Swept to 2 MHz, its fitted C comes out ~24% low, and you would wrongly conclude that energy depends on R [ESTIMATE, `bench_calcs.py` E3.4].
+   - Energy per cycle should agree within ±5%.
+   - Then, as a separate demonstration, log `330pF_R3300` (3.3 kΩ) with highest frequency 1000000. It cannot settle (τ ≈ 1.1 µs against a 0.5 µs half-period at 1 MHz), so the current-vs-frequency curve bends over and the "energy" drops. Why? The swing never reaches full V.
 10. **Energy ∝ V² (optional).**
-    - Power the buffer from the adjustable module at 1.8 V and then 2.5 V (repeat 3.3 V from the Pico).
+    - Set the adjustable module to 2.0 V with the multimeter, nothing attached. Then power the buffer from it at 2.0 V and then 2.5 V (repeat 3.3 V from the Pico).
     - Run the 1 m RG-58 load at each voltage. The script records the effective voltage.
     - Fit log(E) vs log(V). The slope should be 2.
 
 ### Part C: off-chip vs on-chip (qualitative)
 
-11. **Set up the meter.** Put the USB power meter between the computer and the Pico, and turn on its logging or averaging.
+11. **Set up the meter.** Plug the USB power meter into a computer USB port (not a fast charger) and check it reads about 5.0 V with nothing attached. Do not open its trigger or protocol menu. Then plug in the Pico, and turn on the meter's logging or averaging.
 12. **Run the phases.**
     - Set `MODE = "spi"` and run. The script runs three 20 s phases with 3 s gaps: `idle_busy`, `sram_copy` and `spi_write` (10 MHz).
     - It prints the bytes per second of each phase. Note the meter's average current for each phase.
 13. **Repeat with a load.** Run again with 100 pF from the SPI clock pin (GP18) to ground, or with an SPI chip connected. The clock pin then switches ~100 pF more at 10 MHz: expect ~3.3 mA on the 3.3 V side (~2.6 mA at USB [ESTIMATE]).
 14. **Compute.** Energy per byte = (I_phase − I_idle) × 5 V ÷ (bytes per second). Compare SPI (unloaded, loaded) with SRAM copy.
-    - **Expected order:** loaded SPI ≫ unloaded SPI > SRAM copy ≈ idle.
+    - **Expected order, per bit:** loaded SPI ≫ unloaded SPI ≫ SRAM copy. The SRAM-copy phase may draw a few mA more or less than idle, because the processor runs different code. That current is the processor, not the memory. Per bit the copy is still far cheaper, because it moves roughly 30-100x more bits per second than 10 MHz SPI [ESTIMATE].
 
 ---
 
@@ -342,7 +349,7 @@ Shared core kit: [E1](E1_bit_on_the_bench.md) section 5.1 (Pico or Pico 2, bread
 | 1 | Linear in frequency | R² ≥ 0.995 for every load (within its settling limit) |
 | 2 | Calibration capacitors | Measured C within ±10% of nominal for 100 pF, 330 pF and 1 nF |
 | 3 | Cable length | 1 m and 3 m RG-58 within ±20% of 101 / 303 pF; 3 m ÷ 1 m = 3.0 ± 0.3 |
-| 4 | Series R | E per cycle with 33 Ω and 330 Ω equal within ±5% (at a settling frequency) |
+| 4 | Series R | E per cycle with 33 Ω and 330 Ω equal within ±5%, both swept only up to 500 kHz (step 9) |
 | 5 | V² (optional) | Exponent 2.0 ± 0.15 |
 | 6 | Off-chip vs on-chip (qualitative) | Loaded SPI costs clearly more per bit than the SRAM copy |
 
@@ -367,7 +374,8 @@ Shared core kit: [E1](E1_bit_on_the_bench.md) section 5.1 (Pico or Pico 2, bread
 | Negative C_load | The baseline was taken at a different supply voltage or temperature | Re-run "open" right before each load |
 | The 1 nF load reads low at high frequency | It is not settling | Use ≤250 kHz, as the script prompt suggests |
 | Buffer gets warm | The load is too large, or there is no series resistor | Use 100 Ω series for ≥1 nF |
-| Unused 74AHC125 inputs make the baseline drift | Floating CMOS inputs draw current | Tie unused inputs to GND and their OE high |
+| Unused 74AHC125 inputs make the baseline drift | Floating CMOS inputs draw current | Tie unused inputs to the buffer's own GND pin (G', which sits 0.1-0.3 V above real ground during the sweep) and their OE pins to the buffer's VCC |
+| The 330 Ω run reads a lower C than the 33 Ω run | The sweep went above the 330 Ω settling limit | Re-run with highest frequency 500000 (step 9) |
 
 ---
 
@@ -388,5 +396,7 @@ Read through search snippets on 2026-11-03. Prices are approximate as of Novembe
 4. FNIRSI FNB58 current resolution 0.00001 A; accuracy ±(0.5‰ + 2 digits) per retailers; "resolution is not accuracy" [REPORTED]: https://core-electronics.com.au/fnirsi-fnb58-usb-fast-charge-tester.html, https://www.elektormagazine.com/review/fnirsi-fnb58-review, price ~€40: https://eleshop.eu/fnirsi-fnb58-usb-tester-with-bluetooth.html
 5. Pico 2 launched at $5 (August 2024) [REPORTED]: https://eetimes.itmedia.co.jp/ee/articles/2408/09/news079.html
 6. RP2040 ADC ENOB 8.7 [REPORTED]: https://pigweed.googlesource.com/third_party/github/raspberrypi/pico-sdk/+/d0c7642369b91c934b014134c862000eee1dbca4%5E%21
-7. All [ESTIMATE] numbers, including the numeric RC-energy check and the replay of the hot-side model: [`code/T1_pico/bench_calcs.py`](code/T1_pico/bench_calcs.py) `--section e3` and `--selftest`.
-8. [UNVERIFIED]: SN74AHC125N input tolerance and DIP availability; Pico regulator efficiency (85% assumed); SRAM energy per access in the RP2040 (1-10 pJ per 32-bit word assumed); hook-up-wire and PCB pF/m (calculated from geometry, not measured); 23LC1024 price; FPGA board and shuttle costs.
+7. All [ESTIMATE] numbers, including the numeric RC-energy check, the settling-limit table and the replay of the hot-side model: [`code/T1_pico/bench_calcs.py`](code/T1_pico/bench_calcs.py) `--section e3` and `--selftest`.
+8. SN74AHC125: recommended VCC 2-5.5 V; inputs rated 0-5.5 V at any VCC [DATASHEET]: https://www.ti.com/lit/gpn/sn74ahc125. SN74LVC125A 1.65-3.6 V with 5 V-tolerant inputs [REPORTED]: https://www.ti.com/product/SN74LVC125A
+9. Raspberry Pi Pico VSYS input 1.8-5.5 V [DATASHEET]: https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf
+10. [UNVERIFIED]: SN74AHC125N DIP availability; FNB58 trigger voltages (9-20 V is the usual QC/PD range); Pico regulator efficiency (85% assumed); SRAM energy per access in the RP2040 (1-10 pJ per 32-bit word assumed); CPU current difference between the copy and idle loops; hook-up-wire and PCB pF/m (calculated from geometry, not measured); 23LC1024 price; FPGA board and shuttle costs.

@@ -336,9 +336,12 @@ def analyze_ecc(rows, quiet=False):
         print("ECC demo: first raw error at ~%.4g s; decoder gives up (status 2 or wrong data) at ~%.4g s"
               % (t_raw, t_bad))
         print("ECC refresh extension = %.2fx (E1 section 2.7 expects ~1.1-1.4x for 16 lognormal cells)" % ratio)
-        print("Waits tested: %d (fine pass steps %.1f%%)" % (len(set(w)), 100 * (sorted(set(w))[-1] /
-                                                                            sorted(set(w))[-2] - 1)
-                                                            if len(set(w)) > 1 else 0))
+        ws = sorted(set(w))
+        steps = [y / x - 1 for x, y in zip(ws, ws[1:]) if x > 0]
+        if any(r for wi, r in zip(w, raw) if wi == ws[0]):
+            print("WARNING: raw errors already at the shortest wait (%.3g s): lower RET_MIN_S and repeat" % ws[0])
+        print("Waits tested: %d, finest step %.1f%% (the fine pass uses 5%%; if the finest step is ~78%%, the fine "
+              "pass did not run and the ratio is not resolved)" % (len(ws), 100 * min(steps) if steps else float("nan")))
     return dict(t_raw=t_raw, t_bad=t_bad, ratio=ratio)
 
 
