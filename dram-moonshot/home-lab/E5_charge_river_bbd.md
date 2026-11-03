@@ -97,7 +97,7 @@ Stop the clock and each bucket is a capacitor behind an off switch: a DRAM cell.
 
 This formula holds for junction leakage. In a stopped BBD, half the transfer transistors stay at their source-follower cutoff and keep conducting slightly (subthreshold), so expect a **common-mode drift that grows with log(hold time)**, tens of mV per decade [ESTIMATE, textbook BBD subthreshold transfer], on top of it. Junction leakage also pulls every bucket the same way. With a fixed comparator threshold, the errors will then likely come as a near-simultaneous, one-direction cliff, set mostly by where the threshold sits, not as a per-bucket weak-cell tail. That is why step 15 logs analog levels and separates the two.
 
-We do not know the bucket leakage. Bound it from the datasheet: at the 10 kHz minimum clock, the full 1,024-stage delay is 51.2 ms [DATASHEET, 2]. If the designers allowed ≤ 10 mV of leakage drift over that time, then I_leak ≤ 1.4 pF × 10 mV / 51.2 ms ≈ 270 fA [ESTIMATE].
+We do not know the bucket leakage. Bound it from the datasheet: at the 10 kHz minimum clock, the full 1,024-stage delay is 51.2 ms [DATASHEET, 2]. If the designers allowed ≤ 10 mV of leakage drift over that time, then for a 1.4 pF bucket (the upper bound above) I_leak ≤ 1.4 pF × 10 mV / 51.2 ms ≈ 270 fA [ESTIMATE].
 
 | Bucket leakage | Retention at 25 °C (150 mV margin) | At 60 °C (Ea = 0.6 eV, ~12x faster) |
 |---|---|---|
@@ -283,7 +283,7 @@ All programs start and rest in phase A, so switching programs never adds a spuri
    Note h1/h0 and the one-chip bound **ε ≤ (h1/h0)/1,024** (the script marks it "bound OK" when lead/main ≈ 0 and no trailing sample is negative). If you have a scope, capture the output with the clock on channel 2 and analyse it at two sampling phases:
    `python3 ccd_cte.py --scope cap.csv --nstages 1024 --phase 0.25 --fold-period 32` (then `--phase 0.4`).
    If h1/h0 does not change with phase, and lead/main ≈ 0, readout smear is small at this clock.
-7. **Two lengths (optional).** Repeat with two V3207s in series (2,048 stages; chip 1's output feeds chip 2's input through the same bias network as section 5.1; both chips share the clock). Put both runs in one CSV with their `n_stages`. The script fits h1/h0 against N: **the slope is ε plus the interface smear divided by 1,024 (an upper bound on ε)**; the intercept is the single-chip readout smear. Treat a V3205SD as a separate chip with its own one-chip bound, not as a third length. Report the single-chip bound as your main number.
+7. **Two lengths (optional).** Repeat with two V3207s in series (2,048 stages; chip 1's output feeds chip 2's input through the same bias network as section 5.1; both chips share the clock). Put both runs in one CSV with their `n_stages`. The script fits h1/h0 against N: **the slope is ε plus the interface smear divided by 1,024 (an upper bound on ε)**; the intercept is the single-chip readout smear minus the interface smear. Treat a V3205SD as a separate chip with its own one-chip bound, not as a third length. Report the single-chip bound as your main number.
 8. **Clock sweep.** With the Pico ADC path, use 10 kHz, and 15 and 20 kHz only if lead/main stays within ±0.01 and the firmware prints no "not sampled" WARNING. For 50, 100 and 200 kHz use the oscilloscope path (`--scope`, step 6). 5 kHz is below the V3207's 10 kHz datasheet minimum: run it only as a deliberate probe of the leakage wall, and label it out of spec. Plot ε against f and look for the U-shape.
 9. **Compare** with the study bar: GO ≥ 0.9970, STRONG GO ≥ 0.999 per transfer. Record how far above (or below) the silicon BBD sits.
 
@@ -328,13 +328,13 @@ N1024_10000Hz,1024,10000,0,2.413205
 
 **CTE summary:**
 
-| Run | N | f_clk (kHz) | Sampling phase | Reps | Amplitude (mV) | lead/main | h1/h0 | ε (h1/h0) | ε (fit) | Notes |
-|---|---|---|---|---|---|---|---|---|---|---|
-| | | | | | | | | | | |
+| Run | N | f_clk (kHz) | Sampling phase | Reps | Amplitude (mV) | lead/main | h1/h0 | ε ≤ (h1/h0)/N | Bound OK? | ε (fit) | "not sampled" warning? | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | | | | | |
 
-| f_clk | Multi-length ε (slope) | Readout intercept | CTE | vs GO 0.9970 |
-|---|---|---|---|---|
-| | | | | |
+| f_clk | One-chip bound ε ≤ (h1/h0)/1,024 | Multi-length slope (upper bound if readouts differ) | Intercept | CTE ≥ | vs GO 0.9970 |
+|---|---|---|---|---|---|
+| | | | | | |
 
 **Loop / BER:**
 
@@ -344,15 +344,23 @@ N1024_10000Hz,1024,10000,0,2.413205
 
 **Retention (stopped clock):**
 
-| Chip | Temp °C | Hold (s) | Run | Errors | 1→0 | 0→1 | Failed positions |
-|---|---|---|---|---|---|---|---|
-| | | | | | | | |
+| Chip | Temp °C | Hold (s) | Run | Errors | 1s written | 1→0 | 0→1 | % of one value flipped | Failed positions |
+|---|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | | |
+
+**Retention (analog levels, from `ccd_cte.py --retention`):**
+
+| Chip | Temp °C | Run | Common-mode drift, 1s (mV/decade) | 0s (mV/decade) | Typical-bucket leak | Residual q0.9 | q0.99 | Weakest buckets |
+|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | |
 
 **Energy:**
 
-| f_run (kHz) | I_clock-driver on (µA) | off (µA) | I_BBD on (µA) | off (µA) | C_clk = ΔI/(2·V·f) (pF) | Power per stored bit (µW) |
-|---|---|---|---|---|---|---|
-| | | | | | | |
+| f_run (kHz) | Shunt mV, clock on | Shunt mV, off | I_clock-driver on (µA) | off (µA) | I_BBD on (µA) | off (µA) | Power per stored bit (µW) |
+|---|---|---|---|---|---|---|---|
+| | | | | | | | |
+
+C_clk = (slope of I_clock-driver against f, from 10, 50 and 100 kHz) / (2·V) = ______ pF. Bucket = C_clk/512 = ______ pF.
 
 ---
 
@@ -362,12 +370,13 @@ N1024_10000Hz,1024,10000,0,2.413205
 |---|---|---|
 | Self-test | `ccd_cte.py --selftest` prints PASS | Python/numpy problem |
 | Delay-line works | `delay` mode agreement ≥ 0.99, L within N/2 ± 4 | Wiring, threshold or clock problem: section 11 |
-| CTE extracted | lead/main within ±0.01; h1/h0 repeatable within ±10% over 3 captures; ε reported with readout smear separated (multi-length) or shown small (phase check) | Sampling at the wrong phase, or too few repeats |
+| CTE extracted | lead/main within ±0.01; h1/h0 repeatable within ±10% over 3 captures; no "not sampled" warning; ε reported as the one-chip upper bound (h1/h0)/1,024, plus the multi-length slope as a second upper bound if you built a chain | Sampling at the wrong phase, too fast a Pico ADC clock, or too few repeats |
 | Regenerated memory | 0 errors in ≥ 1e8 decisions at 10 kHz (BER < 3e-8); overnight ≥ 1e9 | Glitches, threshold drift or a weak bucket. Positions tell you which |
-| Without regeneration | Analog loop loses the pattern in < 20 laps; stopped clock shows a hold time with ≥ 50% errors | If the stopped clock holds > 1,000 s, report it: that is a surprise (section 10) |
-| Energy | C_clk from the current slope within 2x of 700 pF | The chip's clock load differs from the MN3007 figure: report your value |
+| Without regeneration (required: stopped clock) | A hold time at which ≥ 90% of the bits of one written value have flipped (≈ 45% of all bits), with ≥ 95% of errors in one direction; and a `retention_analog` run with the common-mode drift and the per-bucket residual reported separately | If the stopped clock holds > 1,000 s, report it: that is a surprise (section 10) |
+| Without regeneration (optional: analog loop) | With the gain trimmed just below 1 and no clipping, the pattern is lost in < 20 laps | Gain above 1 or clipping: re-trim (a clipping loop regenerates) |
+| Energy | C_clk measured from the current slope (linear in f, R² ≥ 0.98); bucket size, electrons, kT/C noise and energy recomputed from it | Not linear: the static current changed between readings, or the meter's burden voltage starved the driver (use the 10 Ω shunt) |
 
-The **experiment succeeds** when you have one CTE number with uncertainty and readout separated, a BER upper limit for the regenerated loop, a retention-time distribution for the stopped clock, and an energy-per-bit figure.
+The **experiment succeeds** when you have one CTE upper bound with uncertainty, a BER upper limit for the regenerated loop, a stopped-clock result with common-mode drift and per-bucket tail separated, and an energy-per-bit figure from your own C_clk.
 
 ---
 
@@ -378,7 +387,8 @@ The **experiment succeeds** when you have one CTE number with uncertainty and re
 - **Regenerated-loop errors that always hit the same positions.** Weak buckets, the BBD equivalent of DRAM weak cells: the tail problem again.
 - **Retention failures that move between buckets from run to run.** That would be variable retention time (VRT), the effect the [RAW-BER CONTRACT](../dossiers/raw-ber-contract.md) has to budget for.
 - **Retention much longer than 100 s** at 25 °C. BBD buckets leak less than our upper bound. Re-derive the leakage from your data: I = C_b·ΔV/t.
-- **A sharp error cliff with clock speed** rather than a gradual rise. A cliff points to a timing limit (clock edges, comparator delay); a gradual rise points to transfer physics.
+- **A sharp error cliff with clock speed** rather than a gradual rise. A cliff points to a timing limit. Suspect the comparator delay first (an LM393 needs ~0.3-1.3 µs, which bites near 150-300 kHz): if `REGEN_LATE = True` moves the cliff, it was the comparator. A gradual rise points to transfer physics.
+- **Stopped-clock errors that are NOT one-directional, or a per-bucket residual tail far wider than the noise.** The expected picture is a common-mode drift that grows with log(hold time) plus a thin tail. A fat tail of individual buckets would be real weak-cell statistics.
 
 ---
 
@@ -390,7 +400,10 @@ The **experiment succeeds** when you have one CTE number with uncertainty and re
 | Output pulses distorted or clipped | Input bias outside the linear range | Adjust the bias divider; test with a slow triangle |
 | `delay` agreement ~0.5 | Comparator threshold wrong or output inverted | Re-set the threshold to the midpoint; try `INVERT = True` |
 | lead/main clearly non-zero | Sampling during an output transition | Use a scope capture with the `--phase` option; try 0.2-0.4 |
-| h1/h0 changes with sampling phase | Readout bandwidth smear | Lower the clock, reduce series resistance into the ADC, or use the multi-length slope |
+| h1/h0 changes with sampling phase | Readout bandwidth smear | Lower the clock, reduce series resistance into the ADC, or quote the one-chip upper bound (it stays valid) |
+| Firmware prints "clock periods were not sampled" | The ADC interrupt cannot keep up (above ~10-20 kHz), or the FIFO ran dry and the clock stalled | Lower `F_REF_HZ`; use the scope path for 50-200 kHz |
+| Comparator never switches, or switches at the wrong level | LM393 input above ~3.5 V on a 5 V supply, or threshold set at the trimmer wiper instead of pin 2 | Measure OUT's DC level; add the 2:1 input divider (section 5.1); set V_th at the pin (step 4) |
+| Analog loop: CD4066 seems half-on | Its control pin driven straight from the 3.3 V GPIO | Drive it through the 74AHCT125 (section 5.1) or use a 74HCT4066 |
 | Errors in `loop` mode at a low clock | Threshold drift with temperature; comparator chatter | Add ~10 mV of hysteresis to the LM393 (a 1 MΩ positive-feedback resistor); re-set the threshold warm |
 | Firmware stalls at high clock in write mode | MicroPython cannot keep the FIFOs fed above ~50 kHz | Write and read at `F_REF_HZ` ≤ 20 kHz; only regeneration runs fast (it needs no CPU) |
 | Pico resets or USB drops | Clock-driver current spikes on USB 5 V | Add the ferrite and 100 µF; keep the BBD wiring short |
@@ -401,11 +414,11 @@ The **experiment succeeds** when you have one CTE number with uncertainty and re
 
 | Dossier gate (charge-river.md) | Home analogue | What carries over |
 |---|---|---|
-| Median per-transfer CTE ≥ 0.9970 with DFE at ≥ 150 MT/s, 25 and 85 °C | ε from the trailing-charge slope at 5-200 kHz, 25-60 °C | The extraction method and readout separation; the clock-sweep and temperature-sweep design |
+| Median per-transfer CTE ≥ 0.9970 with DFE at ≥ 150 MT/s, 25 and 85 °C | ε upper bound from the trailing charge at 10-200 kHz, 25-60 °C | The extraction method and honest bounding against readout smear; the clock-sweep and temperature-sweep design |
 | Regenerated 98-transfer loop, raw BER ≤ 5e-10 for ≥ 1e12 decisions | Regenerated 512-bit loop, zero-error BER bound | The 3/n zero-error rule, positional error logging, and the soak-overnight discipline |
 | Trap kinetics at short gate dwell | ε rising at high clock | Reading a rise in ε against clock as a time-constant problem |
-| Retention: a 20 s scrub needs ≤ 0.25 aA per well | Stopped-clock retention distribution of ~1.4 pF buckets | Retention = C·ΔV/I_leak, and weak-cell tail statistics (E4's `leakage_tail.py` statistics apply) |
-| Energy: 45 fJ shift per bit | 34 pJ per packet-transfer measured from C_clk | Energy ∝ C·V²: the case for fF plates and park-and-shift |
+| Retention: a 20 s scrub needs ≤ 0.25 aA per well | Stopped-clock retention of ≤ 1.4 pF buckets: common-mode drift and per-bucket tail, separated | Retention = C·ΔV/I_leak, the need to separate shared drift from weak cells, and weak-cell tail statistics (E4's `leakage_tail.py` statistics apply) |
+| Energy: 45 fJ shift per bit | ≤ 34 pJ per packet-transfer (if C_clk ≤ 700 pF), measured from your C_clk | Energy ∝ C·V²: the case for fF plates and park-and-shift |
 
 ---
 
@@ -440,3 +453,9 @@ Prices are distributor snapshots of uncertain date; treat them as approximate as
 13. imec IGZO CCD: IEDM 2024 planar 142-bit 4-phase, "CTE >98%" (undefined): https://imec-publications.be/handle/20.500.12860/59420 ; IMW 2026 vertical IGZO CCD, "a few thousand" electrons: https://www.eejournal.com/industry_news/imec-demonstrates-the-first-3d-implementation-of-a-charge-coupled-device-for-ai-memory-applications/ [REPORTED, as logged in the study dossier]
 14. Study files: [dossiers/charge-river.md](../dossiers/charge-river.md) sections 2.3-2.5 and 5 (CTE floor 0.9970, STRONG GO 0.999, 98 transfers, 313 e-, 45 fJ shift, DRAM 46 fJ/bit per 64 ms, BER ≤ 5e-10 demo, $35 paper step); [research/stage3/decision.json](../research/stage3/decision.json) (CCD rider and sky130 budget lines); [dossiers/raw-ber-contract.md](../dossiers/raw-ber-contract.md) (VRT). [MODEL / REPORTED as tagged there]
 15. Zero-error confidence bound (the "rule of three": 0 events in n trials gives a 95% upper limit ≈ 3/n): standard statistics. [ESTIMATE]
+16. Logic thresholds: 4000-series CMOS (CD4066B, CD4053B) on a 5 V supply needs ≥ 3.5 V for a logic high; HCT parts (74HCT4066, 74AHCT125) accept TTL levels (high ≥ 2.0 V), so a 3.3 V GPIO drives them. Standard datasheet values. [UNVERIFIED this session]
+17. LM393 (TI and others): input common-mode range 0 to Vcc − 1.5 V; input bias current 25 nA typical, up to ~250 nA over temperature; response time ~1.3 µs at small overdrive, ~0.3 µs at large overdrive. https://www.ti.com/product/LM393 [DATASHEET from memory, UNVERIFIED this session]
+18. TLV3201 (TI): ~40 ns push-pull comparator, 2.7-5.5 V supply. https://www.ti.com/product/TLV3201 [UNVERIFIED this session]
+19. 74AHCT125: extra supply current ΔICC (up to ~1.35 mA per input held at 3.4 V instead of VCC). https://www.ti.com/product/SN74AHCT125 [DATASHEET class value from memory, UNVERIFIED this session]
+20. Hard-interrupt latency on RP2040/RP2350 MicroPython (of order 10-20 µs for entry plus a short handler): our estimate; the firmware measures missed samples rather than relying on it. [ESTIMATE]
+
