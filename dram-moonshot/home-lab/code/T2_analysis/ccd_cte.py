@@ -21,8 +21,17 @@ so   h_0 / sum(h) = (1-eps)^N ~ exp(-N eps)      (packet "survival")
      |H(f)| = exp(-N eps (1 - cos(2 pi f / f_clk)))  (frequency response; -2 N eps nepers at Nyquist)
 
 Your readout (output buffer, filters, scope bandwidth) adds its own smear r that does NOT grow
-with N. Measuring two or more lengths N (e.g. one V3207 = 1024 stages, two in series = 2048, a
-V3205 = 4096) separates the two:  h_1/h_0 = eps * N + r.  The slope is eps.
+with N:  h_1/h_0 = eps * N + r.  Because r >= 0 for a low-pass readout, ONE chip already gives an
+honest upper bound:  eps <= (h_1/h_0) / N  (valid when lead/main ~ 0 and no trailing sample is
+negative). If two lengths share an IDENTICAL readout, the slope of h_1/h_0 against N is eps.
+A series chain (two V3207s) adds a chip-to-chip interface smear r_if that one chip lacks, so its
+slope is eps + r_if / 1024: again an upper bound, not a clean separation. A V3205SD is a
+different chip with a different output stage: treat it as a separate chip, not a third length.
+
+Retention (--retention): a CSV of hold_s,index,value (analog level of every bucket after the
+clock was stopped for hold_s). The script splits the change since the shortest hold into a
+common-mode drift (all '1' buckets, all '0' buckets) and a per-bucket residual; the residual is
+the weak-bucket tail, I_excess = C_b * residual / hold.
 
 Input formats
 -------------
@@ -40,6 +49,7 @@ Usage
     python3 ccd_cte.py --expected
     python3 ccd_cte.py --samples runs.csv --fold-period 32 [--skip 1100]
     python3 ccd_cte.py --scope capture.csv --nstages 1024 --phase 0.25 --fold-period 32
+    python3 ccd_cte.py --retention ret.csv [--cb-pf 1.4] [--adc-scale 1.682]
 
 Dependencies: Python 3.9+ standard library + numpy. Exit 0 = success.
 Author: dram-moonshot home-lab track T2. Written 2026-11-03.
@@ -123,7 +133,11 @@ def extract(values, n_stages, fold_period=None, skip=0, K=8, pre=8, se=None):
     # simple uncertainty on r1 from baseline noise
     s = noise if math.isfinite(noise) else 0.0
     r1_se = math.sqrt((s / main) ** 2 + (r1 * s / main) ** 2) if main != 0 else float("nan")
+    trail_min = float(np.min(trail[:3]) / main) if main != 0 else float("nan")
+    tol = max(0.01, 3 * s / abs(main)) if main != 0 else 0.01
+    bound_ok = bool(abs(lead / main) <= tol and trail_min >= -tol) if main != 0 else False
     return {"k0": k0, "sign": sign, "baseline": baseline, "noise_per_avg_sample": noise, "reps": reps,
+            "trail_min_over_main": trail_min, "one_chip_bound_valid": bound_ok,
             "amplitude": main, "lead_over_main": lead / main, "h": (np.concatenate([[main], trail]) / main).tolist(),
             "r1": r1, "r1_se": r1_se, "eps_r1": eps_r1, "eps_area": eps_area,
             "eps_fit": eps_fit, "r_fit": r_fit, "survival": main / total}
@@ -232,6 +246,95 @@ def resample_scope(t, v, clock=None, fclk=None, t0=None, phase=0.25):
 
 
 # ---------------------------------------------------------------------------------------------
+# Stopped-clock retention (analog levels)
+# ---------------------------------------------------------------------------------------------
+ADC_SCALE_DEFAULT = 37.0 / 22.0     # 15 kOhm over 22 kOhm divider: real OUT volts = ADC volts x 37/22
+CB_PF_DEFAULT = 700.0 / 512         # <= 1.37 pF per bucket if C_clk <= 700 pF (upper bound)
+
+
+def load_retention(path):
+    data = defaultdict(dict)
+    with open(path, newline="") as fh:
+        lines = [ln for ln in fh if ln.strip() and not ln.lstrip().startswith("#")]
+    rd = csv.DictReader(lines)
+    for row in rd:
+        row = {k.strip().lower(): v for k, v in row.items() if k is not None}
+        try:
+            h = float(row["hold_s"])
+            i = int(float(row["index"]))
+            v = float(row["value"])
+        except (KeyError, TypeError, ValueError):
+            continue                    # repeated header or malformed line
+        data[h][i] = v
+    holds = sorted(data)
+    L = min(len(data[h]) for h in holds)
+    return holds, {h: np.array([data[h][i] for i in sorted(data[h])[:L]]) for h in holds}
+
+
+def analyze_retention(holds, vals, cb_pf=CB_PF_DEFAULT, adc_scale=ADC_SCALE_DEFAULT, verbose=True):
+    """Split dV(hold) into a common-mode drift per written value and a per-bucket residual."""
+    if len(holds) < 3:
+        raise ValueError("need the reference hold plus >= 2 longer holds")
+    ref = holds[0]
+    v0 = vals[ref] * adc_scale
+    lo, hi = np.quantile(v0, [0.1, 0.9])
+    ones = v0 > 0.5 * (lo + hi)          # written value from the shortest hold
+    later = holds[1:]
+    dt = np.array([h - ref for h in later])
+    cm1, cm0, resid = [], [], []
+    for h in later:
+        dv = vals[h] * adc_scale - v0
+        c1 = float(np.median(dv[ones]))
+        c0 = float(np.median(dv[~ones]))
+        cm1.append(c1)
+        cm0.append(c0)
+        resid.append(dv - np.where(ones, c1, c0))
+    resid = np.array(resid)              # shape (n_holds, L)
+    # per-bucket excess leak: residual grows linearly with hold time -> fit through the origin
+    slope = (dt[:, None] * resid).sum(axis=0) / float((dt ** 2).sum())
+    I_ex = -cb_pf * 1e-12 * slope        # > 0: this bucket's voltage FELL faster than its group's
+    # common mode = log-time drift (subthreshold transfer) + linear-in-time leak of a TYPICAL bucket
+    A = np.vstack([np.log10(np.array(later) / ref), dt, np.ones_like(dt)]).T
+    (s1, k1, _), *_ = np.linalg.lstsq(A, np.array(cm1), rcond=None)
+    (s0, k0, _), *_ = np.linalg.lstsq(A, np.array(cm0), rcond=None)
+    s1, s0, k1, k0 = float(s1), float(s0), float(k1), float(k0)
+    order = np.argsort(-np.abs(I_ex))
+    out = {"holds_s": later, "cm_ones_V": cm1, "cm_zeros_V": cm0,
+           "cm_ones_V_per_decade": s1, "cm_zeros_V_per_decade": s0,
+           "I_typical_ones_A": -cb_pf * 1e-12 * k1, "I_typical_zeros_A": -cb_pf * 1e-12 * k0,
+           "I_excess_A": I_ex, "weakest": [int(i) for i in order[:5]], "n_ones": int(ones.sum()),
+           "L": int(len(v0)), "cb_pf": cb_pf}
+    if verbose:
+        print("=" * 96)
+        print("E5 STOPPED-CLOCK RETENTION (analog levels; real volts = ADC volts x %.3f)" % adc_scale)
+        print("=" * 96)
+        print(f"buckets: {out['L']}  ('1' written: {out['n_ones']})   reference hold: {ref} s   C_b = {cb_pf:.2f} pF")
+        print(f"  {'hold (s)':>9s} {'common mode, 1s':>16s} {'common mode, 0s':>16s} {'resid spread (sd)':>18s}")
+        for h, a, b, r in zip(later, cm1, cm0, resid):
+            print(f"  {h:9.3g} {a*1e3:13.1f} mV {b*1e3:13.1f} mV {np.std(r)*1e3:15.2f} mV")
+        print(f"  common mode = a x log10(hold) + b x hold: a = {s1*1e3:.1f} mV/decade ('1's), {s0*1e3:.1f} mV/decade ('0's);")
+        print(f"  b gives the TYPICAL bucket's leak: {I_ex_fmt(out['I_typical_ones_A'])} ('1's),"
+              f" {I_ex_fmt(out['I_typical_zeros_A'])} ('0's)")
+        print("  -> a steady mV-per-decade drift of everything is subthreshold transfer / shared leakage, NOT weak")
+        print("     buckets. With a fixed comparator threshold it makes a one-direction error cliff.")
+        q = np.quantile(I_ex, [0.5, 0.9, 0.99])
+        print(f"  per-bucket EXCESS leak I = C_b x residual / hold (within the output-stage gain, ~2x):")
+        print(f"    median {I_ex_fmt(q[0])}, q0.9 {I_ex_fmt(q[1])}, q0.99 {I_ex_fmt(q[2])}, max {I_ex_fmt(I_ex.max())}")
+        print("    weakest buckets (index: excess leak): " +
+              ", ".join(f"{i}: {I_ex_fmt(I_ex[i])}" for i in out["weakest"]))
+        print("  This residual is the weak-bucket tail: feed its values to E4's statistics if you like.")
+    return out
+
+
+def I_ex_fmt(x):
+    a = abs(x)
+    for unit, s in (("pA", 1e-12), ("fA", 1e-15), ("aA", 1e-18)):
+        if a >= s or unit == "aA":
+            return f"{x / s:.3g} {unit}"
+    return f"{x:.3g} A"
+
+
+# ---------------------------------------------------------------------------------------------
 # Reporting
 # ---------------------------------------------------------------------------------------------
 def report(runs_results, multi):
@@ -239,21 +342,24 @@ def report(runs_results, multi):
     print("E5 CHARGE-TRANSFER REPORT (negative-binomial deferred-charge model)")
     print("=" * 96)
     print(f"{'run':>8s} {'N':>6s} {'f_clk':>9s} {'reps':>5s} {'amp':>9s} {'lead/main':>10s} {'h1/h0':>9s}"
-          f" {'eps(h1/h0)':>11s} {'eps(area)':>11s} {'eps(fit)':>10s} {'r(fit)':>7s} {'CTE(fit)':>10s}")
+          f" {'eps<=h1/h0/N':>12s} {'bound':>6s} {'eps(area)':>11s} {'eps(fit)':>10s} {'r(fit)':>7s} {'CTE(fit)':>10s}")
     for name, N, f, r in runs_results:
         print(f"{name:>8s} {N:6d} {f:9.0f} {r['reps']:5d} {r['amplitude']*1e3:7.1f}mV {r['lead_over_main']:10.4f}"
-              f" {r['r1']:9.4f} {r['eps_r1']:11.3e} {r['eps_area']:11.3e} {r['eps_fit']:10.3e} {r['r_fit']:7.3f}"
-              f" {1-r['eps_fit']:10.6f}")
+              f" {r['r1']:9.4f} {r['eps_r1']:12.3e} {'OK' if r['one_chip_bound_valid'] else 'CHECK':>6s}"
+              f" {r['eps_area']:11.3e} {r['eps_fit']:10.3e} {r['r_fit']:7.3f} {1-r['eps_fit']:10.6f}")
     print("  lead/main should be ~0. If not, your sampling phase is wrong or the readout rings.")
-    print("  eps(h1/h0) and eps(area) INCLUDE readout smear; use the multi-length slope below as the answer.")
+    print("  eps <= (h1/h0)/N is an UPPER BOUND on eps from one chip: readout smear only ADDS to h1/h0. It holds")
+    print("  when lead/main ~ 0 and no trailing sample is negative ('bound OK'). eps(area) also includes smear.")
     for f, m in multi.items():
         if m is None:
-            print(f"f_clk = {f:.0f} Hz: only one length N measured -> cannot separate readout smear (measure 2+ lengths)")
+            print(f"f_clk = {f:.0f} Hz: one length only -> quote the one-chip bound eps <= (h1/h0)/N above")
             continue
-        print(f"f_clk = {f:.0f} Hz, {m['n_lengths']} lengths: eps = {m['eps_from_trail_slope']:.3e} (trail slope),"
-              f" {m['eps_from_survival_slope']:.3e} (survival slope); readout trail = {m['readout_trail_intercept']:.4f}")
+        print(f"f_clk = {f:.0f} Hz, {m['n_lengths']} lengths: slope = {m['eps_from_trail_slope']:.3e} (trail),"
+              f" {m['eps_from_survival_slope']:.3e} (survival); intercept = {m['readout_trail_intercept']:.4f}")
+        print("   The multi-length slope equals eps only if every length has the SAME readout. A series chain adds a")
+        print("   chip-to-chip interface smear r_if, so the slope is eps + r_if/N_chip: an UPPER bound on eps.")
         e = m["eps_from_trail_slope"]
-        print(f"   -> CTE = {1-e:.6f}. Charge-river GO needs >= 0.9970 (DFE); STRONG GO >= 0.999 (study dossier).")
+        print(f"   -> CTE >= {1-e:.6f}. Charge-river GO needs >= 0.9970 (DFE); STRONG GO >= 0.999 (study dossier).")
 
 
 # ---------------------------------------------------------------------------------------------
@@ -284,18 +390,26 @@ def expected():
                          ("one-way 64-stage fallback", 0.9987, 194), ("imec '>98%' read as PER transfer", 0.98, 98)):
         print(f"  {name:36s} CTE {cte:.4f} over {n:3d} transfers -> packet survival {cte**n:.3f}")
     print(f"  worst string (k_ws = 1.5) at 0.997: (1 - 1.5*0.003)^98 = {(1-0.0045)**98:.3f} (dossier: ~65%)")
-    print(f"  imec '>98%' read as END-TO-END over ~142 transfers -> eps <= {1-0.98**(1/142):.1e} per transfer")
+    print(f"  imec '>98%' read as END-TO-END over 142 bits x 4 phases = 568 transfers -> eps <= {1-0.98**(1/568):.1e}"
+          f" per transfer (dossier: 0.99996)")
     print("  A home BBD at eps ~1e-4 would beat the GO bar by ~30x: crystalline-silicon charge transfer is not")
     print("  the hard part. The open question is deposited OXIDE channels with traps, at 50 MHz, with 313 e-.")
 
     print("\n3) How big is a BBD bucket? (from the clock-pin capacitance)")
-    c_clk = 700e-12   # MN3007 clock input capacitance, max [REPORTED, Xvive listing]
+    c_clk = 700e-12   # MN3007 clock input capacitance, max [REPORTED, Xvive listing]; V3207: not found
     cb = c_clk / 512
-    print(f"  MN3007 clock input capacitance <= 700 pF [REPORTED]; 512 buckets per phase -> ~{cb*1e12:.2f} pF per bucket")
-    for swing in (0.1, 0.3):
-        print(f"  packet of {swing*1e3:.0f} mV on {cb*1e12:.2f} pF = {cb*swing/Q_E:,.0f} electrons")
-    print("  charge-river packet: ~313 electrons; imec vertical IGZO CCD: 'a few thousand' [REPORTED in dossier]")
-    print(f"  kT/C noise on one bucket at 300 K: {math.sqrt(KB_J*300/cb)*1e6:.0f} uV ({math.sqrt(KB_J*300*cb)/Q_E:.0f} e- rms)")
+    print(f"  V3207 clock input capacitance: NOT FOUND [UNVERIFIED]. The 15 V MN3007 is <= 700 pF [REPORTED]")
+    print(f"  -> <= {cb*1e12:.2f} pF per bucket over 512 buckets per phase: an UPPER bound for the V3207.")
+    print("  Measure C_clk yourself (step 18); bucket ~ C_clk/512 (still an upper bound: the line also drives gates).")
+    print(f"  {'C_clk':>8s} {'bucket':>9s} {'packet at 0.3 V':>16s} {'kT/C noise (300 K)':>22s}")
+    for cc in (700e-12, 300e-12, 150e-12, 51.2e-12):
+        b = cc / 512
+        print(f"  {cc*1e12:6.0f}pF {b*1e12:7.2f}pF {b*0.3/Q_E:13,.0f} e- {math.sqrt(KB_J*300/b)*1e6:8.0f} uV ="
+              f" {math.sqrt(KB_J*300*b)/Q_E:4.0f} e-")
+    c313 = (313 * Q_E) ** 2 / (KB_J * 300)
+    print(f"  kT/C noise equals the whole 313-electron charge-river packet when the bucket is {c313*1e12:.2f} pF.")
+    print("  Either way the home packet is >= ~190,000 electrons (600x the study's): a BBD cannot test few-electron")
+    print("  physics. charge-river packet: ~313 e-; imec vertical IGZO CCD: 'a few thousand' [REPORTED in dossier]")
 
     print("\n4) Stopped-clock retention: a BBD bucket is a DRAM-like capacitor + switch")
     # Assume the 10 kHz minimum clock keeps leakage drift below ~10 mV over the 51.2 ms delay
@@ -307,9 +421,16 @@ def expected():
         t25 = cb * 0.150 / I
         f60 = math.exp(0.6 / KB_EV * (1 / 298.15 - 1 / 333.15))
         print(f"  leak {I*1e15:6.0f} fA, 150 mV margin: retention {t25:7.2f} s at 25 C, {t25/f60:7.3f} s at 60 C (Ea 0.6 eV)")
+    print("  (The 0.77 s bound does not depend on the bucket size: C_b cancels. The 30 fA and 3 fA rows assume")
+    print(f"  {cb*1e12:.2f} pF and scale with C_b.)")
+    print("  This t = C dV / I counts junction leakage only. A stopped BBD also drifts in COMMON MODE: the transfer")
+    print("  transistors on the frozen phase sit at their source-follower cutoff and keep conducting slightly")
+    print("  (subthreshold), so every bucket moves together, roughly in proportion to log(hold time) [ESTIMATE].")
+    print("  With a fixed comparator threshold that shows up as a one-direction error CLIFF, not a weak-cell tail.")
     print("  -> expect retention of order 0.1-100 s at room temperature: the same 'seconds' scale as DRAM cells.")
 
     print("\n5) Energy: moving charge costs C V^2 per clock edge pair")
+    print("  Values below assume C_clk = 700 pF (MN3007 max): they are UPPER bounds; scale linearly with your C_clk.")
     for v, c, f, name in ((5.0, 700e-12, 10e3, "V3207-class at 5 V (C assumed = MN3007 max)"),
                           (15.0, 700e-12, 10e3, "MN3007 at 15 V")):
         p = 2 * c * v * v * f
@@ -356,6 +477,28 @@ def synth_stream(N, eps, r_ro, f, rng, A=0.3, base=2.5, sigma=1e-3, period=32, r
     y = np.convolve(y, readout_kernel(r_ro))[: len(x)]
     y = base + y[:n] + sigma * rng.standard_normal(n)
     return y
+
+
+def synth_retention(path, rng, L=512, cb=1.37e-12, scale=ADC_SCALE_DEFAULT):
+    """hold_s,index,value file as mode 'retention_analog' prints it (ADC volts, 12-bit steps)."""
+    bits = rng.integers(0, 2, L)
+    v_real = np.where(bits == 1, 2.58, 2.25) + 0.005 * rng.standard_normal(L)   # fixed pattern per bucket
+    I = np.exp(np.log(0.2e-15) + 0.7 * rng.standard_normal(L))     # 0.2 fA x 100 s / 1.37 pF = 15 mV
+    weak = [int(i) for i in rng.choice(L, 3, replace=False)]
+    I[weak] = 2e-15                                                # weak buckets: 146 mV in 100 s
+    holds = (0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)
+    lsb = 3.3 / 4096
+    with open(path, "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["hold_s", "index", "value"])
+        for h in holds:
+            dec = math.log10(h / 0.01)
+            cm = np.where(bits == 1, -0.025, -0.020) * dec
+            v = v_real + cm - I * (h - 0.01) / cb + 0.001 * rng.standard_normal(L)
+            adc = np.round(v / scale / lsb) * lsb
+            for i in range(L):
+                w.writerow([f"{h:.3f}", i, f"{adc[i]:.6f}"])
+    return weak
 
 
 def selftest(workdir=None):
@@ -426,6 +569,20 @@ def selftest(workdir=None):
     laps = math.log(2) / (-1024 * math.log1p(-1e-4))
     print(f"  N=1024, eps=1e-4: {laps:.2f} laps")
     ok &= abs(laps - 6.77) < 0.02
+
+    print("SELFTEST 6: stopped-clock retention: -25/-20 mV/decade common-mode drift, typical leak 0.2 fA,"
+          " 3 weak buckets at 2 fA")
+    rpath = os.path.join(workdir, "T2_retention_synthetic.csv")
+    weak_true = synth_retention(rpath, rng)
+    holds, vals = load_retention(rpath)
+    rr = analyze_retention(holds, vals, cb_pf=1.37, verbose=True)
+    print(f"  common mode recovered: {rr['cm_ones_V_per_decade']*1e3:.1f} / {rr['cm_zeros_V_per_decade']*1e3:.1f}"
+          f" mV/decade (true -25 / -20); weakest 3 = {sorted(rr['weakest'][:3])} (true {sorted(weak_true)})")
+    ok &= abs(rr["cm_ones_V_per_decade"] / -0.025 - 1) < 0.1 and abs(rr["cm_zeros_V_per_decade"] / -0.020 - 1) < 0.1
+    ok &= sorted(rr["weakest"][:3]) == sorted(weak_true)
+    print(f"  weak-bucket excess leak: {', '.join(I_ex_fmt(rr['I_excess_A'][i]) for i in weak_true)}"
+          f" (true 2 fA minus the group median ~0.2 fA)")
+    ok &= all(abs(rr["I_excess_A"][i] / 1.8e-15 - 1) < 0.15 for i in weak_true)
     print("SELFTEST", "PASS" if ok else "FAIL")
     return ok
 
@@ -455,6 +612,11 @@ def main(argv=None):
     ap.add_argument("--fold-period", type=int, default=None, help="pulse repeat period in samples (e.g. 32)")
     ap.add_argument("--skip", type=int, default=None, help="samples to drop at the start (default N/2+8: line fill)")
     ap.add_argument("--trail", type=int, default=8, help="trailing samples to analyse")
+    ap.add_argument("--retention", help="CSV: hold_s,index,value (firmware mode retention_analog)")
+    ap.add_argument("--cb-pf", type=float, default=CB_PF_DEFAULT,
+                    help="bucket capacitance in pF (default 700/512 = 1.37, an upper bound; use C_clk/512)")
+    ap.add_argument("--adc-scale", type=float, default=ADC_SCALE_DEFAULT,
+                    help="real OUT volts per ADC volt (15k/22k divider: 37/22 = 1.682)")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--workdir")
     ap.add_argument("--expected", action="store_true")
@@ -466,6 +628,10 @@ def main(argv=None):
         return 0
     if a.samples:
         run_samples(a.samples, fold_period=a.fold_period, skip=a.skip, K=a.trail)
+        return 0
+    if a.retention:
+        holds, vals = load_retention(a.retention)
+        analyze_retention(holds, vals, cb_pf=a.cb_pf, adc_scale=a.adc_scale)
         return 0
     if a.scope:
         if not a.nstages:

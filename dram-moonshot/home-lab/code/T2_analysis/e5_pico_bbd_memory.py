@@ -255,23 +255,35 @@ def count_errors_rotation(ref, got):
     return best
 
 
-def mode_retention(L):
+def write_hold_read(L, hold_s):
+    """Write a periodic pattern, stop the clock for hold_s, resume, read the line back (bits)."""
     base, wr = periodic_pattern(L, 4)
     sm = start(bbd_write, F_REF_HZ)
     stream(sm, pack(wr))
-    stop(sm)                       # clock frozen mid-period: every bucket holds its charge
-    time.sleep(HOLD_S)
+    stop(sm)                       # clock frozen: every bucket holds its charge
+    time.sleep(hold_s)
     sm.active(1)                   # resume where it stopped
     filler = bytes(32 * ((2 * L) // 32 + 2))
     rx = unpack(stream(sm, pack(filler)))
     stop(sm)
-    got = rx[:L]
-    e, rot = count_errors_rotation(base, got)
-    pos = [i for i in range(L) if got[i] != base[(i + rot) % L]]
-    ones_to_zero = sum(1 for i in pos if base[(i + rot) % L] == 1)
-    print("hold_s,errors,bits,ones_to_zero,zeros_to_one,positions")
-    print("%.3f,%d,%d,%d,%d,%s" % (HOLD_S, e, L, ones_to_zero, e - ones_to_zero,
-                                   ";".join(str(p) for p in pos)))
+    return base, rx[:L]
+
+
+def mode_retention(L):
+    # The write is deterministic, so the line content has the same rotation in every run. Fix it
+    # ONCE from a short reference hold: re-fitting it at every hold would hide errors once many
+    # bits flip, and could scramble the position -> bucket map.
+    base, ref = write_hold_read(L, REF_HOLD_S)
+    e0, rot = count_errors_rotation(base, ref)
+    print("# reference hold %.3f s: %d errors at rotation %d (rotation now fixed)" % (REF_HOLD_S, e0, rot))
+    ones = sum(base)
+    print("hold_s,errors,bits,ones_written,ones_to_zero,zeros_to_one,positions")
+    for h in HOLDS_S:
+        _, got = write_hold_read(L, h)
+        pos = [i for i in range(L) if got[i] != base[(i + rot) % L]]
+        ones_to_zero = sum(1 for i in pos if base[(i + rot) % L] == 1)
+        print("%.3f,%d,%d,%d,%d,%d,%s" % (h, len(pos), L, ones, ones_to_zero, len(pos) - ones_to_zero,
+                                          ";".join(str(p) for p in pos)))
 
 
 def mode_loop(L):
@@ -279,7 +291,7 @@ def mode_loop(L):
     sm = start(bbd_write, F_REF_HZ)
     stream(sm, pack(wr))
     stop(sm)
-    sm = start(bbd_regen_inv if INVERT else bbd_regen, F_RUN_HZ)
+    sm = start(regen_program(), F_RUN_HZ)
     t0 = time.ticks_ms()
     time.sleep(STORE_S)
     stop(sm)
@@ -300,13 +312,18 @@ BUF_N = max(CTE_SAMPLES, ANALOG_LAPS * (N_STAGES // 2 + 8))
 _buf = array.array("H", [0] * BUF_N)
 _n = 0
 _n_max = CTE_SAMPLES
+_irqs = 0
 _adc = ADC(PIN_ADC)
-ADC_TO_V = 3.3 / 65535   # multiply by your divider ratio for real volts (ratios do not need it)
+ADC_TO_V = 3.3 / 65535   # ADC volts. Real OUT volts = value x (15k + 22k) / 22k = value x 37/22
+                         # (with the old 10k/22k divider: x 32/22). Ratios do not need it.
 
 
 def _on_sample(sm):
     # hard IRQ: no allocation. _n < 0 means "still discarding line-fill samples".
-    global _n
+    # Valid only up to ~10-20 kHz: hard-IRQ entry plus this handler take of order 10-20 us, so at
+    # higher clocks the sample point moves and IRQs get merged. capture_samples() checks for that.
+    global _n, _irqs
+    _irqs += 1
     if _n < 0:
         _n += 1
     elif _n < _n_max:
@@ -315,21 +332,44 @@ def _on_sample(sm):
 
 
 def capture_samples(word, n_skip, n_keep, switch_after=None, sw=None):
-    """Run bbd_sample at F_REF_HZ feeding `word` repeatedly; ADC-sample once per clock."""
-    global _n, _n_max
+    """Run bbd_sample at F_REF_HZ feeding `word` repeatedly; ADC-sample once per clock.
+
+    switch_after (analog mode): pattern bits are sent only for clock periods < switch_after,
+    zeros after; the loop switch closes when the REAL clock count _n reaches switch_after
+    (the TX FIFO runs ~130-160 periods ahead of the state machine, so counting queued words
+    would close the loop too early)."""
+    global _n, _n_max, _irqs
     _n_max = min(n_keep, BUF_N)
     _n = -n_skip                   # negative = still discarding the line-fill samples
-    sm = start(bbd_sample, F_REF_HZ)
+    _irqs = 0
+    closed = False
+    sm = start(bbd_sample, F_REF_HZ, active=False)
     sm.irq(_on_sample, hard=True)
+    t_us = time.ticks_us()
+    sm.active(1)
     sent = 0
     while _n < _n_max:
-        if switch_after is not None and sw is not None and sent * 32 >= switch_after:
-            sw.value(1)
-            word = 0               # input now comes from the feedback amplifier
-        sm.put(word)
-        sent += 1
+        if sw is not None and not closed and switch_after is not None and _n >= switch_after:
+            sw.value(1)            # input now comes from the feedback amplifier
+            closed = True
+        if sm.tx_fifo() < 4:
+            w = word
+            if switch_after is not None:
+                first = sent * 32  # clock-period index of this word's first bit
+                if first >= switch_after:
+                    w = 0
+                elif first + 32 > switch_after:
+                    keep = switch_after - first          # leading bits that still belong to lap 1
+                    w = word & (((1 << keep) - 1) << (32 - keep))
+            sm.put(w)
+            sent += 1
+    el_us = time.ticks_diff(time.ticks_us(), t_us)
     stop(sm)
     sm.irq(None)
+    expect = el_us * F_REF_HZ / 1e6
+    if _irqs < 0.98 * expect:
+        print("# WARNING: ~%d of %d clock periods were not sampled (IRQs merged, or the clock stalled"
+              " because the FIFO ran dry): data INVALID, lower F_REF_HZ or use a scope" % (expect - _irqs, expect))
     return _buf
 
 
@@ -342,9 +382,27 @@ def mode_cte():
     print("# analyse: python3 ccd_cte.py --samples out.csv --fold-period 32 --skip 0")
 
 
+def mode_retention_analog(L):
+    """Analog level of every bucket after each hold. Comparator bits hide WHY bits fail: a stopped
+    BBD drifts in common mode (subthreshold transfer, junction leakage) on top of any per-bucket leak."""
+    base, wr = periodic_pattern(L, 4)
+    print("hold_s,index,value")
+    for h in (REF_HOLD_S,) + tuple(HOLDS_S):
+        sm = start(bbd_write, F_REF_HZ)
+        stream(sm, pack(wr))
+        stop(sm)
+        time.sleep(h)
+        buf = capture_samples(0, 0, L)     # new program starts in phase A: no extra clock edge
+        for i in range(L):
+            print("%.3f,%d,%.6f" % (h, i, buf[i] * ADC_TO_V))
+    print("# analyse: python3 ccd_cte.py --retention out.csv  (ADC volts; real = x 37/22)")
+
+
 def mode_analog(L):
     sw = Pin(PIN_SW, Pin.OUT, value=0)
-    # one lap of a slow square pattern written from DATA, then the switch closes the analog loop
+    # one lap of a slow square pattern written from DATA, then the switch closes the analog loop.
+    # Trim the loop gain slightly BELOW 1 and below clipping: a clipping loop is a crude
+    # regenerator, not an analog delay line, and would hide the forgetting.
     buf = capture_samples(0xFFFF0000, 0, ANALOG_LAPS * L, switch_after=L, sw=sw)
     sw.value(0)
     print("lap,index_in_lap,value")
@@ -353,7 +411,7 @@ def mode_analog(L):
 
 
 def mode_clock():
-    sm = start(bbd_regen, F_RUN_HZ)
+    sm = start(regen_program(), F_RUN_HZ)
     print("# clock running at %d Hz for 60 s: read the supply currents now" % F_RUN_HZ)
     time.sleep(60)
     stop(sm)
@@ -366,12 +424,14 @@ def main():
     if MODE == "delay":
         mode_delay()
         return
-    if MODE in ("retention", "loop", "analog") and L is None:
+    if MODE in ("retention", "retention_analog", "loop", "analog") and L is None:
         L = mode_delay()
         if L is None:
             raise RuntimeError("could not find the loop length: check wiring and comparator threshold")
     if MODE == "retention":
         mode_retention(L)
+    elif MODE == "retention_analog":
+        mode_retention_analog(L)
     elif MODE == "loop":
         mode_loop(L)
     elif MODE == "cte":

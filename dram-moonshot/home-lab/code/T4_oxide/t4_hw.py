@@ -212,7 +212,7 @@ def load_dac_cal():
     return True
 
 
-def _overload(v_raw, k):
+def _overload(v_raw):
     """True if the TIA output is clipped (ADS full scale) or, with a 3.3 V ADS, above its rail."""
     if abs(v_raw) > 0.93 * CFG["ads_fs"]:
         return True
@@ -318,7 +318,7 @@ class Rig:
         clipped = False
         for _ in range(4):
             v_raw = self._diff(ch, n_avg)
-            clipped = _overload(v_raw, 0)
+            clipped = _overload(v_raw)
             if ch == 1 or not autorange:
                 break
             k = order.index(self.range)
