@@ -4,7 +4,7 @@
 #
 # Contents: ADC averaging in volts, GPIO tri-state helpers, CSV logging (USB serial + optional file
 # on the Pico's flash), DS18B20 temperature, an optional low-voltage heater thermostat with a hard
-# 55 C cut-off, and elapsed-time helpers.
+# 55 C cut-off, a preheat-and-hold routine, an optional hardware watchdog, and timing helpers.
 
 import time
 from machine import Pin, ADC
@@ -12,9 +12,36 @@ from machine import Pin, ADC
 ADC_FULL_SCALE_V = 3.3     # Pico ADC reference = the filtered 3V3 rail. Measure yours and edit.
 
 
+_wdt = None                # hardware watchdog, started only when a heater is in use
+
+
+def start_watchdog(timeout_ms=8000):
+    """Start the hardware watchdog. Once started it cannot be stopped: if the script hangs for longer than
+    timeout_ms, the Pico resets, its pins float, and the heater MOSFET's 100 kOhm gate pull-down turns the
+    heater off. Side effect: the board also resets itself ~8 s after the script ends. That is expected."""
+    global _wdt
+    try:
+        from machine import WDT
+        _wdt = WDT(timeout=timeout_ms)
+    except Exception:
+        _wdt = None
+
+
+def feed():
+    if _wdt:
+        _wdt.feed()
+
+
 def low_ripple_supply():
     """Pico / Pico 2 (non-W): GPIO23 high puts the on-board regulator in PWM mode, which lowers ADC noise.
-    On Pico W / Pico 2 W this pin belongs to the radio chip, so leave it alone there."""
+    On Pico W / Pico 2 W, GPIO23 powers the radio chip, so this function leaves it alone there."""
+    try:
+        import os
+        machine_name = os.uname().machine     # e.g. "Raspberry Pi Pico W with RP2040"
+    except Exception:
+        machine_name = ""
+    if " W" in machine_name:
+        return
     try:
         Pin(23, Pin.OUT, value=1)
     except Exception:
@@ -67,18 +94,25 @@ class CsvLog:
                 self.f = None
         self.row(header)
 
+    def _write(self, s):
+        if self.f:
+            try:
+                self.f.write(s + "\n")
+                self.f.flush()
+            except OSError:
+                self.f = None
+                print("# LOGFILE write failed (flash full?); continuing on USB only")
+
     def row(self, fields):
+        feed()
         s = ",".join(fmt(x) for x in fields)
         print(s)
-        if self.f:
-            self.f.write(s + "\n")
-            self.f.flush()
+        self._write(s)
 
     def note(self, text):
+        feed()
         print("# " + text)
-        if self.f:
-            self.f.write("# " + text + "\n")
-            self.f.flush()
+        self._write("# " + text)
 
     def close(self):
         if self.f:
@@ -114,8 +148,11 @@ class Thermo:
 
 class Heater:
     """Optional bang-bang thermostat for a <=12 V resistor heater switched by a logic-level MOSFET.
+    Hardware: E1 guide section 6.5 (two 10 Ohm resistors in SERIES, 72 C thermal fuse, gate via 220 Ohm,
+    100 kOhm gate pull-down so the heater is off whenever the Pico is unplugged or resetting).
     Fails safe: heater OFF if the sensor is missing, reads NaN, or exceeds HARD_MAX_C.
-    Keep a thermal fuse in series with the heater as the hardware backstop."""
+    The thermal fuse in series with the heater is the hardware backstop. Never power the heater
+    unless a script is running this thermostat."""
 
     HARD_MAX_C = 55.0
 
@@ -126,6 +163,8 @@ class Heater:
         self.band = band_c
 
     def step(self):
+        """One thermostat step. Takes ~0.75 s (sensor conversion). Also feeds the watchdog."""
+        feed()
         t = self.thermo.read_c()
         if t != t or t >= self.HARD_MAX_C:      # NaN check: NaN != NaN
             self.pin.value(0)
@@ -138,6 +177,53 @@ class Heater:
 
     def off(self):
         self.pin.value(0)
+
+
+def hold_s(seconds, heater=None):
+    """Wait `seconds`. With a heater, keep stepping the thermostat, but never start a ~0.75 s sensor
+    conversion in the last 0.9 s, so short waits stay accurate to ~20 ms."""
+    end = time.ticks_add(time.ticks_ms(), int(seconds * 1000))
+    while True:
+        left = time.ticks_diff(end, time.ticks_ms())
+        if left <= 0:
+            return
+        if heater and left > 900:
+            heater.step()
+        else:
+            feed()
+            time.sleep_ms(min(left, 20))
+
+
+def preheat(heater, hold_for_s=1800, timeout_s=7200, tol_c=1.0):
+    """Bring the box to heater.setpoint, then keep it within tol_c for hold_for_s before any measurement.
+    Raises RuntimeError if there is no sensor, if the set point is not reached within timeout_s (dead heater,
+    open fuse, sensor off the board), or if it cannot be held. The caller's 'finally' turns the heater off."""
+    if not heater.thermo.roms:
+        heater.off()
+        raise RuntimeError("no DS18B20 found: the heater stays off")
+    t_start = time.ticks_ms()
+    t_in = None
+    reached = False
+    n = 0
+    while True:
+        t = heater.step()
+        now = time.ticks_ms()
+        elapsed = time.ticks_diff(now, t_start)
+        if n % 30 == 0:
+            print("# preheat %.2f C (set point %.1f C, %d s)" % (t, heater.setpoint, elapsed // 1000))
+        n += 1
+        if t == t and abs(t - heater.setpoint) <= tol_c:
+            reached = True
+            if t_in is None:
+                t_in = now
+            elif time.ticks_diff(now, t_in) >= hold_for_s * 1000:
+                print("# preheat done: %.1f C held for %d s" % (heater.setpoint, hold_for_s))
+                return
+        else:
+            t_in = None
+        if (not reached and elapsed > timeout_s * 1000) or elapsed > (timeout_s + 2 * hold_for_s) * 1000:
+            heater.off()
+            raise RuntimeError("set point not reached or not held: check the heater, the fuse and the sensor")
 
 
 def log_schedule(t_min_s, t_max_s, per_decade=4):

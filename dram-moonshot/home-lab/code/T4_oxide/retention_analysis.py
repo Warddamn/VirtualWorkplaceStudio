@@ -8,6 +8,10 @@ Physics
   retention to lose dV:             t_ret = C_SN * dV / I
   temperature:                      I(T) = I0 * exp(-Ea / kT)   (Arrhenius; fit ln I vs 1/kT)
   floor subtraction:                I_switch = I_cell - I_dummy  (dummy cell = same node, no channel)
+  validity: a cell within 3x of the floor cell at any temperature is FLOOR-LIMITED. Its Ea is then
+  not measured, and any retention ratio against it is only a lower bound.
+  temperature: the Arrhenius fit uses the median of the logged temp_c column when the run has one
+  (the label temperature is used to pair runs and as a fallback).
 
 Inputs
   Run CSV (one hold experiment): header with  t_s  and either  v_sn  (volts, e.g. from an
@@ -164,47 +168,68 @@ def arrhenius(temps_c, currents):
     return -m, i25, 1 - ss_res / ss_tot
 
 
-def crossover_c(ea1, i25_1, ea2, i25_2):
-    """Temperature where two Arrhenius lines cross, or None (parallel or outside -50..300 C)."""
+def crossover_c(ea1, i25_1, ea2, i25_2, t_range=None, margin=20.0):
+    """Temperature where two Arrhenius lines cross, or None (parallel, or outside -50..300 C, or,
+    when t_range=(t_lo, t_hi) is given, outside the measured range +/- margin)."""
     if abs(ea1 - ea2) < 1e-6:
         return None
     inv_t = 1 / 298.15 + KB_EV * math.log(i25_1 / i25_2) / (ea1 - ea2)
     if inv_t <= 0:
         return None
     tc = 1 / inv_t - 273.15
-    return tc if -50 < tc < 300 else None
+    if not -50 < tc < 300:
+        return None
+    if t_range is not None and not (t_range[0] - margin <= tc <= t_range[1] + margin):
+        return None
+    return tc
 
 
 def compare(runs, c_sn, calib, dv, t0, floor_label):
     res = {}
+    temp_warn = []
     for label, tc, path in runs:
         d = load_cols(path)
         v = to_vsn(d, calib)
         r = analyze_run(d["t_s"], v, c_sn, dv, t0)
+        r["T_label_C"] = tc
+        r["T_fit_C"] = tc
+        if "temp_c" in d and d["temp_c"].dtype.kind == "f" and len(d["temp_c"]):
+            t_log = float(np.median(d["temp_c"]))
+            r["T_logged_C"] = t_log
+            r["T_fit_C"] = t_log
+            if abs(t_log - tc) > 1.0:
+                temp_warn.append(f"{label} at {tc} C: logged median temperature is {t_log:.1f} C; the fit "
+                                 f"uses {t_log:.1f} C. Put the real room temperature in the --run label.")
         res.setdefault(label, {})[tc] = r
     out = {"per_run": {lab: {str(k): {kk: vv for kk, vv in r.items() if kk != "I_vs_V"}
                              for k, r in v.items()} for lab, v in res.items()},
-           "labels": {}, "warnings": []}
+           "labels": {}, "warnings": list(temp_warn)}
     floor = res.get(floor_label, {})
     for lab, byt in res.items():
         temps = sorted(byt)
         cur = [byt[t]["I_initial_A"] for t in temps]
-        entry = {"temps_C": temps, "I_cell_A": cur}
+        t_fit = [byt[t]["T_fit_C"] for t in temps]
+        entry = {"temps_C": temps, "T_fit_C": t_fit, "I_cell_A": cur, "floor_limited_at_C": []}
         if lab != floor_label and floor:
             sub = []
             for t, i in zip(temps, cur):
                 if t in floor:
                     fi = floor[t]["I_initial_A"]
                     if i < 3 * fi:
-                        out["warnings"].append(f"{lab} at {t} C: cell leakage {i:.2e} A < 3x dummy floor "
+                        entry["floor_limited_at_C"].append(t)
+                        out["warnings"].append(f"{lab} at {t} C: cell leakage {i:.2e} A < 3x {floor_label} floor "
                                                f"{fi:.2e} A -> you are measuring the setup, not the switch")
                     sub.append(max(i - fi, 1e-30))
                 else:
                     sub.append(i)
             entry["I_switch_A"] = sub
         if len(temps) >= 2 and all(c > 0 for c in cur):
-            ea, i25, r2 = arrhenius(temps, entry.get("I_switch_A", cur))
+            ea, i25, r2 = arrhenius(t_fit, entry.get("I_switch_A", cur))
             entry.update(Ea_eV=ea, I25_A=i25, R2=r2)
+            if entry["floor_limited_at_C"]:
+                entry["Ea_note"] = (f"NOT MEASURED: within 3x of the floor at {entry['floor_limited_at_C']} C. "
+                                    "Report: switch leakage <= floor; Ea of the switch unknown.")
+                out["warnings"].append(f"{lab}: Ea {ea:.2f} eV is the floor's, not the switch's (floor-limited)")
         entry["t_dv_s"] = [byt[t]["t_dv_s"] for t in temps]
         out["labels"][lab] = entry
     labs = [l for l in out["labels"] if l != floor_label and "Ea_eV" in out["labels"][l]]
@@ -219,10 +244,22 @@ def compare(runs, c_sn, calib, dv, t0, floor_label):
                 tb = b["t_dv_s"][b["temps_C"].index(t)]
                 ratio[t] = ta / tb
             growth = ratio[common[-1]] / ratio[common[0]] if len(common) >= 2 else None
+            t_all = a["T_fit_C"] + b["T_fit_C"]
+            t_rng = (min(t_all), max(t_all))
+            xc = crossover_c(a["Ea_eV"], a["I25_A"], b["Ea_eV"], b["I25_A"], t_rng)
+            xc_raw = crossover_c(a["Ea_eV"], a["I25_A"], b["Ea_eV"], b["I25_A"])
+            notes = []
+            if xc is None and xc_raw is not None:
+                notes.append(f"extrapolated crossover ({xc_raw:.0f} C) outside measured range "
+                             f"{t_rng[0]:.0f}-{t_rng[1]:.0f} C +/- 20 C: not reported")
+            for lab_x, e in ((labs[i], a), (labs[j], b)):
+                if e["floor_limited_at_C"]:
+                    notes.append(f"{lab_x} is floor-limited at {e['floor_limited_at_C']} C: retention ratios "
+                                 f"involving it are lower bounds and its Ea is not measured")
             pairs.append({"a": labs[i], "b": labs[j], "retention_ratio_a_over_b": ratio,
                           "ratio_growth_low_to_high_T": growth,
                           "dEa_b_minus_a_eV": b["Ea_eV"] - a["Ea_eV"],
-                          "crossover_C": crossover_c(a["Ea_eV"], a["I25_A"], b["Ea_eV"], b["I25_A"])})
+                          "crossover_C": xc, "notes": notes})
     out["pairs"] = pairs
     return out
 
@@ -230,7 +267,7 @@ def compare(runs, c_sn, calib, dv, t0, floor_label):
 # ------------------------------------------------------------------------------------------
 # selftest
 # ------------------------------------------------------------------------------------------
-def synth_run(path, c_sn, i_leak, rng, calib_fn=None, dur=2000.0, v0=3.0, kick=0.3):
+def synth_run(path, c_sn, i_leak, rng, calib_fn=None, dur=2000.0, v0=3.0, kick=0.3, tc=25.0):
     tau = c_sn * v0 / i_leak                       # ohmic-like leak toward 0 V
     dur = min(dur, 2.0 * tau)
     t = np.concatenate([[0.0], np.geomspace(0.5, dur, 160)])   # log-spaced, as pico_gaincell logs
@@ -243,7 +280,8 @@ def synth_run(path, c_sn, i_leak, rng, calib_fn=None, dur=2000.0, v0=3.0, kick=0
     else:
         i = calib_fn(v) * (1 + 0.003 * rng.standard_normal(len(v)))
         with open(path, "w") as f:
-            f.write("t_s,i_read_A,temp_c\n" + "".join(f"{a:.3f},{b:.6e},25\n" for a, b in zip(t, i)))
+            f.write("t_s,i_read_A,temp_c\n" + "".join(f"{a:.3f},{b:.6e},{tc + 0.05 * rng.standard_normal():.2f}\n"
+                                                    for a, b in zip(t, i)))
 
 
 def selftest():
@@ -271,7 +309,7 @@ def selftest():
             if lab != "dummy":
                 leak += arr(*truth["dummy"], tc)      # a real cell includes the setup floor
             p = os.path.join(tmp, f"{lab}_{int(tc)}.csv")
-            synth_run(p, c_sn, leak, rng, calib_fn=read_fn)
+            synth_run(p, c_sn, leak, rng, calib_fn=read_fn, tc=tc)
             runs.append((lab, tc, p))
     out = compare(runs, c_sn, calib_from_csv(cal), 0.1, None, "dummy")
     for lab in ("oxide", "si"):
@@ -292,6 +330,31 @@ def selftest():
     good_x = x is not None and 45 < x < 60
     print(f"  {'ok  ' if good_x else 'FAIL'} crossover (Ea 1.3 vs 0.56 eV, 10x apart at 25 C) = {x:.1f} C")
     ok &= good_x
+    x_out = crossover_c(0.35, 1e-12, 0.80, 1e-11, t_range=(25.0, 65.0))
+    good_xo = x_out is None and pr["crossover_C"] is None and any("outside measured range" in n for n in pr["notes"])
+    print(f"  {'ok  ' if good_xo else 'FAIL'} out-of-range crossover suppressed and noted "
+          f"(raw {crossover_c(0.35, 1e-12, 0.80, 1e-11):.1f} C)")
+    ok &= good_xo
+    # floor-limited oxide: cell sits at the floor -> flagged, Ea marked not measured
+    runs_fl = []
+    for lab, (i25, ea) in (("oxide", (1e-15, 0.35)), ("dummy", truth["dummy"])):
+        for tc in (25.0, 45.0, 65.0):
+            leak = arr(i25, ea, tc) + (arr(*truth["dummy"], tc) if lab == "oxide" else 0.0)
+            p = os.path.join(tmp, f"fl_{lab}_{int(tc)}.csv")
+            synth_run(p, c_sn, leak, rng, calib_fn=read_fn, tc=tc)
+            runs_fl.append((lab, tc, p))
+    out_fl = compare(runs_fl, c_sn, calib_from_csv(cal), 0.1, None, "dummy")
+    e = out_fl["labels"]["oxide"]
+    good_fl = len(e["floor_limited_at_C"]) == 3 and "NOT MEASURED" in e.get("Ea_note", "")
+    print(f"  {'ok  ' if good_fl else 'FAIL'} floor-limited oxide cell flagged; Ea marked not measured")
+    ok &= good_fl
+    # logged temperature overrides a wrong label
+    p = os.path.join(tmp, "room.csv")
+    synth_run(p, c_sn, 1e-12, rng, calib_fn=read_fn, tc=19.0)
+    out_t = compare([("x", 25.0, p)], c_sn, calib_from_csv(cal), 0.1, None, "dummy")
+    good_t = abs(out_t["per_run"]["x"]["25.0"]["T_fit_C"] - 19.0) < 0.2 and any("logged median" in w for w in out_t["warnings"])
+    print(f"  {'ok  ' if good_t else 'FAIL'} logged temp_c (19 C) used instead of the 25 C label, with a warning")
+    ok &= good_t
     # direct-voltage path + extrapolation flag
     p = os.path.join(tmp, "direct.csv")
     synth_run(p, c_sn, 1e-14, rng, dur=600.0)
@@ -342,9 +405,13 @@ def main(argv):
             if "Ea_eV" in e:
                 line += f"  Ea={e['Ea_eV']:.2f} eV  I25={e['I25_A']:.2e} A  R2={e['R2']:.3f}"
             print(line)
+            if e.get("Ea_note"):
+                print("   ", e["Ea_note"])
         for pr in rep["pairs"]:
             print(f"{pr['a']} vs {pr['b']}: retention ratio {pr['retention_ratio_a_over_b']}, growth "
                   f"{pr['ratio_growth_low_to_high_T']}, crossover {pr['crossover_C']}")
+            for n in pr["notes"]:
+                print("   note:", n)
         for w in rep["warnings"]:
             print("WARNING:", w)
     if a.json:

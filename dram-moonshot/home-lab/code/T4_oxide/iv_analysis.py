@@ -8,7 +8,8 @@ What it extracts
     Ion, Ioff, on/off ratio, turn-on voltage Von, subthreshold swing SS (V/decade),
     threshold voltage Vth and saturation mobility (sqrt(Id) method)  or  linear mobility
     (max transconductance, ELR method), hysteresis (forward vs reverse sweep), trap density
-    implied by SS, off-current per um of width, gate-leakage sanity check.
+    implied by SS, off-current per um of width, gate-leakage sanity check (needs --gleak: the
+    rig has one ammeter on the source, so gate current is measured in a separate gleak.csv run).
   Output curves (Id vs Vd at several Vg): saturation quality and a contact-barrier warning
     (S-shaped start = Schottky-like contacts).
 
@@ -21,11 +22,13 @@ Input: CSV with a header row. Recognised column names (case-insensitive):
   vg | vgs   gate-source voltage (V)        vd | vds   drain-source voltage (V)
   id | ids   drain current (A)              ig | igs   gate current (A, optional)
   dir        'f'/'r' sweep direction (optional; otherwise split at the maximum Vg)
-Lines starting with '#' are ignored. pico_smu.py writes this format.
+Lines starting with '#' are ignored. pico_smu.py writes this format (extra columns such as mode,
+range and t_s are ignored). A gate-leakage file from pico_smu.py 'gleak' has vgs and ig columns
+(no id); pass it with --gleak, not as the main CSV.
 
 Usage
   python3 iv_analysis.py transfer my_transfer.csv --W 1000 --L 10 --tox-nm 300 [--vd 20]
-          [--regime auto|sat|lin] [--voff 0] [--json out.json] [--svg out.svg]
+          [--gleak gleak.csv] [--regime auto|sat|lin] [--voff 0] [--json out.json] [--svg out.svg]
   python3 iv_analysis.py output my_output.csv --W 1000 --L 10
   python3 iv_analysis.py --selftest        (synthetic TFT curves; exit 0 on pass)
 """
@@ -68,7 +71,11 @@ def load_csv(path):
                 cols[key] = header.index(n)
                 break
     if "vg" not in cols or "id" not in cols:
-        raise ValueError(f"{path}: need at least vg and id columns, got {header}")
+        hint = ""
+        if "vg" in cols and "ig" in cols:
+            hint = (" -- this looks like a gate-leakage (gleak) file: pass it with --gleak next to a "
+                    "transfer CSV, e.g. transfer transfer_sat.csv --gleak gleak.csv")
+        raise ValueError(f"{path}: need at least vg and id columns, got {header}{hint}")
     data = {k: [] for k in cols}
     for ln in lines[1:]:
         parts = [p.strip() for p in ln.split(",")]
@@ -83,6 +90,40 @@ def load_csv(path):
         else:
             out[k] = np.array([float(s) for s in v])
     return out
+
+
+def load_gleak(path):
+    """Gate-leakage file (pico_smu.py 'gleak': mode,dir,vgs,vds,ig,range,t_s). Returns vg, |ig|
+    sorted by vg, averaging repeated gate voltages."""
+    with open(path) as f:
+        lines = [ln.strip() for ln in f if ln.strip() and not ln.lstrip().startswith("#")]
+    if not lines:
+        raise ValueError(f"{path}: no data")
+    header = [h.strip().lower() for h in lines[0].split(",")]
+    iv = next((header.index(n) for n in ALIASES["vg"] if n in header), None)
+    ii = next((header.index(n) for n in ALIASES["ig"] if n in header), None)
+    if iv is None or ii is None:
+        raise ValueError(f"{path}: a gleak file needs vg (or vgs) and ig columns, got {header}")
+    vg, ig = [], []
+    for ln in lines[1:]:
+        parts = [p.strip() for p in ln.split(",")]
+        if len(parts) < len(header):
+            continue
+        vg.append(float(parts[iv]))
+        ig.append(abs(float(parts[ii])))
+    vg, ig = np.array(vg), np.array(ig)
+    ux = np.unique(np.round(vg, 3))
+    um = np.array([ig[np.round(vg, 3) == x].mean() for x in ux])
+    if len(ux) < 2:
+        raise ValueError(f"{path}: need at least two gate voltages")
+    return {"vg": ux, "ig": um}
+
+
+def attach_gleak(d, g):
+    """Put the gate current from a gleak run onto the transfer curve's Vg grid (|ig|)."""
+    d = dict(d)
+    d["ig"] = np.interp(d["vg"], g["vg"], g["ig"])
+    return d
 
 
 def write_csv(path, d, keys):
@@ -256,6 +297,9 @@ def analyze_transfer(d, W_um, L_um, tox_nm=300.0, eps_r=3.9, vd=None, regime="au
                 "your 'off-current' may be gate leakage. Check oxide damage, scratches, probe punch-through.")
         if ig_max > 0.01 * ion:
             rep["warnings"].append(f"Gate current {ig_max:.1e} A exceeds 1% of Ion: leaky gate oxide.")
+    else:
+        rep["warnings"].append("Gate leakage NOT checked: no ig data. Run pico_smu 'gleak' and pass "
+                               "the file with --gleak gleak.csv (required for the PASS grade).")
     if rep.get("mu_cm2_Vs", 0) > 10:
         rep["warnings"].append("Mobility > 10 cm2/Vs for a home ZnO film is suspicious: unisolated film "
                                "makes the real width larger than W (fringe current). Scribe a moat and re-measure.")
@@ -443,7 +487,40 @@ def selftest():
     print(f"  {'ok  ' if clean else 'FAIL'} clean gate not flagged")
     ok &= clean
 
-    print("Selftest 4: output curves, ideal vs Schottky-like contacts")
+    print("Selftest 4: --gleak path with pico_smu-format files (transfer has no ig column)")
+    d = synth_transfer(17.5, 0.5, 6.0, 0.8, 2e-12, 0.0, W, L, rng)
+    pt = os.path.join(tmp, "transfer_sat.csv")
+    with open(pt, "w") as f:
+        f.write("# transfer sweep (pico_smu format)\nmode,dir,vgs,vds,id,range,t_s\n")
+        for k in range(len(d["vg"])):
+            f.write(f"transfer,{d['dir'][k]},{d['vg'][k]:.4f},{d['vd'][k]:.4f},{d['id'][k]:.6e},hi,{k*0.4:.2f}\n")
+    dt = load_csv(pt)
+    r = analyze_transfer(dt, W, L, 300.0)
+    nocheck = any("NOT checked" in w for w in r["warnings"])
+    print(f"  {'ok  ' if nocheck else 'FAIL'} missing gate-leakage data is reported")
+    ok &= nocheck
+    for ig_level, want in ((5e-12, True), (1e-14, False)):
+        pg = os.path.join(tmp, f"gleak_{ig_level:.0e}.csv")
+        with open(pg, "w") as f:
+            f.write("# gate leakage (pico_smu format)\nmode,dir,vgs,vds,ig,range,t_s\n")
+            for k, vg in enumerate(np.arange(-2.5, 24.51, 1.0)):
+                ig = -ig_level * (1 + 0.05 * rng.standard_normal())
+                f.write(f"gleak,f,{vg:.4f},0.0000,{ig:.6e},hi,{2*k:.2f}\n")
+        try:
+            load_csv(pg)
+            print("  FAIL gleak file accepted as a transfer file")
+            ok = False
+        except ValueError as e:
+            good_msg = "--gleak" in str(e)
+            print(f"  {'ok  ' if good_msg else 'FAIL'} gleak file as main CSV gives a hint, not a crash")
+            ok &= good_msg
+        r = analyze_transfer(attach_gleak(dt, load_gleak(pg)), W, L, 300.0)
+        got = any("gate leakage" in w for w in r["warnings"])
+        good = got == want
+        print(f"  {'ok  ' if good else 'FAIL'} --gleak with |ig| {ig_level:.0e} A: flagged={got} (expected {want})")
+        ok &= good
+
+    print("Selftest 5: output curves, ideal vs Schottky-like contacts")
     for v0, want in ((0.0, False), (1.5, True)):
         vgl, vdl, il = [], [], []
         for vg in (10.0, 15.0, 20.0, 25.0):
@@ -494,10 +571,20 @@ def main(argv):
     ap.add_argument("--voff", type=float, default=None, help="report Ioff at this Vg instead of the floor")
     ap.add_argument("--regime", choices=["auto", "sat", "lin"], default="auto")
     ap.add_argument("--temp-c", type=float, default=25.0)
+    ap.add_argument("--gleak", default=None, help="gate-leakage CSV from pico_smu 'gleak' (vgs, ig)")
     ap.add_argument("--json", default=None)
     ap.add_argument("--svg", default=None)
     a = ap.parse_args(argv)
-    d = load_csv(a.csv)
+    try:
+        d = load_csv(a.csv)
+    except ValueError as e:
+        print(f"ERROR: {e}")
+        return 2
+    if a.gleak:
+        if a.mode != "transfer":
+            print("ERROR: --gleak only applies to transfer analysis")
+            return 2
+        d = attach_gleak(d, load_gleak(a.gleak))
     if a.mode == "transfer":
         rep = analyze_transfer(d, a.W, a.L, a.tox_nm, a.eps, a.vd, a.regime, a.voff, a.temp_c)
         if a.svg:

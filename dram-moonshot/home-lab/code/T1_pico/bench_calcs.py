@@ -31,6 +31,8 @@ import sys
 
 import numpy as np
 
+_trapz = getattr(np, "trapezoid", None) or np.trapz     # numpy >= 2.0 / numpy 1.x
+
 KB_EV = 8.617333e-5      # Boltzmann constant, eV/K
 Q_E = 1.602177e-19       # C
 EPS0 = 8.854e-12         # F/m
@@ -44,7 +46,9 @@ INPUTS = {
     "adc_bits": (12, "[DATASHEET]", "RP2040/RP2350 ADC"),
     "adc_enob": (8.7, "[REPORTED]", "pico-sdk commit: RP2040 ADC ENOB 8.7 (measured, per RP2040 datasheet)"),
     # --- E1 parts
-    "ald1106_vth_typ_V": (0.7, "[UNVERIFIED]", "ALD1106 typical Vth; a distributor lists 1 V (likely max); measure yours"),
+    "ald1106_vth_typ_V": (0.7, "[DATASHEET]", "ALD1106 Vth 0.4 min / 0.7 typ / 1.0 max V at IDS = 1 uA (via snippet)"),
+    "ald1106_vth_min_V": (0.4, "[DATASHEET]", "as above"),
+    "ald1106_vth_max_V": (1.0, "[DATASHEET]", "as above"),
     "ald1106_ioff_typ_A_12V": (10e-12, "[DATASHEET]", "ALD1106 IDS(OFF) 10 pA typ / 400 pA max, VDS=12 V, VGS=0, 25 C"),
     "ald1106_ioff_max_A_12V": (400e-12, "[DATASHEET]", "as above"),
     "ald1106_ioff_typ_A_125C": (1e-9, "[DATASHEET]", "ALD1106 IDS(OFF) 1 nA typ / 4 nA max at 125 C"),
@@ -54,13 +58,17 @@ INPUTS = {
     "phi2_V": (0.7, "[ESTIMATE]", "2*phi_F"),
     "n2n7000_vth_typ_V": (2.1, "[DATASHEET]", "2N7000 VGS(th) 0.8 / 2.1 / 3.0 V at 1 mA"),
     "n2n7000_ciss_typ_F": (20e-12, "[DATASHEET]", "2N7000 Ciss 20 pF typ / 50 pF max (newer onsemi sheet; older: 60 pF max)"),
-    "n2n7000_crss_F": (5e-12, "[ESTIMATE]", "2N7000 reverse transfer capacitance, few pF; not verified"),
+    "n2n7000_crss_F": (5e-12, "[DATASHEET]", "2N7000 Crss 4 pF typ / 5 pF max at VDS 25 V (onsemi); max used"),
+    "n2n7000_coss_typ_F": (11e-12, "[DATASHEET]", "2N7000 Coss 11 pF typ / 25 pF max at VDS 25 V (onsemi)"),
+    "n2n7000_cds_lo_F": (6e-12, "[ESTIMATE]", "write-switch drain-source C = Coss - Crss (11-4 pF typ, 25-5 max)"),
+    "n2n7000_cds_hi_F": (20e-12, "[ESTIMATE]", "as above, max; larger at 3 V than at the 25 V test point"),
     "n2n7000_idss_max_A_48V": (1e-6, "[DATASHEET]", "2N7000 IDSS 1 uA max at VDS=48 V (production limit, not typical)"),
     "n2n7000_K_A_per_V2": (0.1, "[ESTIMATE]", "square-law K from ID(on) 600 mA typ at VGS 4.5 V"),
     "lmc6482_ib_typ_A": (0.02e-12, "[DATASHEET]", "LMC6482 input current 20 fA typ, 4 pA max (25 C)"),
     "lmc6482_ib_max_A": (4e-12, "[DATASHEET]", "as above"),
     "mcp6544_ib_A": (1e-12, "[REPORTED]", "MCP6541/6544 bias current 1 pA (distributor attribute)"),
     "sa_offset_noise_V": (0.020, "[ESTIMATE]", "comparator offset + reference error + noise budget"),
+    "resistor_tol": (0.01, "[ESTIMATE]", "1% metal-film resistors in the VREF divider and precharge pairs"),
     "c0g_ir_min_ohm_1nF": (1e11, "[DATASHEET]", "KEMET C0G: IR >= 1000 Ohm*F or 100 GOhm, whichever is lower -> 100 GOhm at 1 nF"),
     "bl_stray_F": (30e-12, "[ESTIMATE]", "bitline wiring + comparator + op-amp + 2 GPIO pins"),
     "r_bl_driver_ohm": (5e3, "[ESTIMATE]", "two 10 kOhm resistors from two GPIOs in parallel (Thevenin)"),
@@ -240,8 +248,8 @@ def rc_charge_energy_numeric(c, r, v, n=200000, t_mult=15.0):
     tau = r * c
     t = np.linspace(0.0, t_mult * tau, n)
     i = (v / r) * np.exp(-t / tau)
-    e_supply = np.trapezoid(v * i, t)
-    e_heat = np.trapezoid(i * i * r, t)
+    e_supply = _trapz(v * i, t)
+    e_heat = _trapz(i * i * r, t)
     return e_supply, e_heat
 
 
@@ -278,6 +286,16 @@ def e1_tables(rng):
         print("  read %d: dV = %+.1f mV" % (k, dv * 1e3))
     print("Each read shrinks the signal by Cs/(Cs+Cbl) = %.3f. Restore (write-back) after every read is mandatory."
           % (1e-9 / (1e-9 + 4.7e-9 + stray)))
+    kick_ald = kickback(9.0, V("ald1106_cov_F"), 1e-9)
+    v = vio
+    seq_k = []
+    for _ in range(4):
+        dv = charge_share_dv(v, vpre, 1e-9, 4.7e-9 + stray)
+        seq_k.append(dv)
+        v = vpre + dv - kick_ald          # each wordline fall also kicks the cell down (E1.4)
+    print("With the ~%.0f mV wordline kickback after each read (E1.4): %s mV. Reads 3-4 are then as small as the "
+          "kick, so judge the law on read 2 / read 1. A single reading has ~1 mV noise: use N_AVG = 1024."
+          % (kick_ald * 1e3, ", ".join("%+.1f" % (x * 1e3) for x in seq_k)))
 
     hr("E1.3  Threshold-voltage loss and the boosted wordline (ALD1106, body at 0 V)")
     vth0, g, p2 = V("ald1106_vth_typ_V"), V("body_gamma_sqrtV"), V("phi2_V")
@@ -292,11 +310,17 @@ def e1_tables(rng):
     dv_lost = charge_share_dv(sn33, vpre, 1e-9, 4.7e-9 + stray)
     print("Signal with the unboosted '1' (Cs 1 nF, Cbl 4.7 nF): %+.0f mV instead of %+.0f mV."
           % (dv_lost * 1e3, charge_share_dv(vio, vpre, 1e-9, 4.7e-9 + stray) * 1e3))
+    lo_sn = sn_max_vt_loss(3.3, vio, V("ald1106_vth_max_V"), g, p2)
+    hi_sn = sn_max_vt_loss(3.3, vio, V("ald1106_vth_min_V"), g, p2)
+    print("Across the datasheet Vth range (%.1f-%.1f V): unboosted '1' = %.2f-%.2f V, signal %+.0f to %+.0f mV."
+          % (V("ald1106_vth_min_V"), V("ald1106_vth_max_V"), lo_sn, hi_sn,
+             charge_share_dv(lo_sn, vpre, 1e-9, 4.7e-9 + stray) * 1e3,
+             charge_share_dv(hi_sn, vpre, 1e-9, 4.7e-9 + stray) * 1e3))
 
     hr("E1.4  Wordline kickback when the gate falls 9 V -> 0 V")
     rows = []
     for name, cov in (("ALD1106 (~1 pF overlap, est.)", V("ald1106_cov_F")),
-                      ("2N7000 (~half of Ciss 20 pF)", V("n2n7000_ciss_typ_F") / 2)):
+                      ("2N7000 (Crss ~5 pF gate-to-drain)", V("n2n7000_crss_F"))):
         for cs in (1e-9, 10e-9):
             rows.append((name, eng(cs, "F"), "%.1f mV" % (kickback(9.0, cov, cs) * 1e3)))
     table(["switch", "Cs", "kick"], rows)
@@ -332,6 +356,12 @@ def e1_tables(rng):
     droop, _ = allowed_droop_1t1c(vio, vpre, 1e-9, 4.7e-9 + stray, delta)
     print("  => planning retention at 22 C: %s (ALD typ) down to %s (cap at its worst-case spec)"
           % (eng(retention_time(1e-9, droop, i_ald_3v), "s"), eng(retention_time(1e-9, droop, i_c0g), "s")))
+    tol = V("resistor_tol")
+    err1 = vpre * tol          # worst case of one divider with two resistors at opposite tolerance ends
+    print("Sense budget check: with %.0f%% resistors, VREF and the precharge level can each be off by ~%.1f mV, so "
+          "they can differ by ~%.0f mV, more than the %.0f mV budget. Use 0.1%% parts, or measure v_pre - v_ref "
+          "(both are logged) and redo the lowest readable '1' with your offset." % (tol * 100, err1 * 1e3,
+                                                                                    2 * err1 * 1e3, delta * 1e3))
 
     hr("E1.7  Leakage vs temperature (retention scales as 1/leakage)")
     rows = []
@@ -351,7 +381,8 @@ def e1_tables(rng):
     eff = V("V_io") / 2 ** V("adc_enob")
     print("12-bit LSB = %.3f mV; ENOB 8.7 -> effective step %.1f mV; averaging 256 samples -> ~%.2f mV (if noise "
           "is random)." % (lsb * 1e3, eff * 1e3, eff * 1e3 / 16))
-    print("Smallest planned signal (Cbl/Cs ~22) is ~70 mV: >10 effective steps even for a single sample.")
+    print("Smallest planned signal (Cbl/Cs ~22) is ~72 mV: ~%.0f effective steps even for a single sample."
+          % (0.072 / eff))
 
     hr("E1.9  Sixteen cells: the first taste of tails (lognormal retention, Monte Carlo)")
     z4 = norm_ppf(1e-4)
@@ -408,6 +439,13 @@ def e2_tables():
           % (eng(crss, "F"), eng(cgs, "F"), a, eng(stray, "F"), eng(c_pure, "F")))
     print("  C_SN(trimmed, +%s C0G) = %s" % (eng(V("c_trim_F"), "F"), eng(c_trim, "F")))
     print("  (With a common-source read instead, Miller multiplies Crss and C_SN becomes bias-dependent; avoid.)")
+    cds_lo, cds_hi = V("n2n7000_cds_lo_F"), V("n2n7000_cds_hi_F")
+    a_pure = (c_pure + crss + cds_lo, c_pure + crss + cds_hi)
+    a_trim = (c_trim + crss + cds_lo, c_trim + crss + cds_hi)
+    print("  Cell A (2N7000 write switch): its drain sits on the node and adds Crss + C_ds (C_ds = Coss - Crss, "
+          "%s-%s): pure %s-%s, trimmed %s-%s -> use --c-pf 250 for cell A."
+          % (eng(cds_lo, "F"), eng(cds_hi, "F"), eng(a_pure[0], "F"), eng(a_pure[1], "F"),
+             eng(a_trim[0], "F"), eng(a_trim[1], "F")))
 
     hr("E2.2  Expected leakage of each write switch at ~3 V, 22 C")
     switches = [
@@ -431,9 +469,17 @@ def e2_tables():
         for cname, c in (("pure", c_pure), ("trimmed", c_trim)):
             rows.append((name, cname, eng(retention_time(c, 0.1, hi), "s"), eng(retention_time(c, 0.1, lo), "s"),
                          eng(retention_time(c, 0.2, lo), "s")))
+    for cname, (c_lo, c_hi) in (("cell A pure", a_pure), ("cell A trimmed", a_trim)):
+        rows.append(("2N7000 (incl. its own Crss + C_ds)", cname,
+                     "%s-%s" % (eng(retention_time(c_lo, 0.1, 10e-9), "s"), eng(retention_time(c_hi, 0.1, 10e-9), "s")),
+                     "%s-%s" % (eng(retention_time(c_lo, 0.1, 10e-12), "s"), eng(retention_time(c_hi, 0.1, 10e-12), "s")),
+                     "%s-%s" % (eng(retention_time(c_lo, 0.2, 10e-12), "s"), eng(retention_time(c_hi, 0.2, 10e-12), "s"))))
     table(["switch", "node", "100 mV @ high leak", "100 mV @ low leak", "200 mV @ low leak"], rows)
-    print("Floor: the read FET's own gate leakage and board/surface leakage (~0.01-1 pA) cap the best switch. "
-          "The reed-relay cell measures that floor.")
+    i_trim_worst = 3.3 / (V("c0g_ir_min_ohm_1nF"))   # 220 pF is below 10 nF, so the 100 GOhm limit applies
+    print("Floor: the read FET's own gate leakage, C_trim and the board. C0G parts are only GUARANTEED >= 100 GOhm "
+          "[DATASHEET]: up to %s at 3.3 V, which would cap every trimmed cell near %s. Typical parts are 100-1000x "
+          "better; the 0.01-1 pA planning floor [ESTIMATE] assumes that. Step 3 of E2 measures yours."
+          % (eng(i_trim_worst, "A"), eng(retention_time(c_trim, 0.1, i_trim_worst), "s")))
 
     hr("E2.4  Droop rate: your bench cell vs the published oxide cell")
     i_imec = V("chip_csn_F") * V("chip_dv_crit_V") / V("imec_ret_s_95C")
@@ -471,18 +517,32 @@ def e2_tables():
                             ("2N7000, WWL +9 -> -9 V (negative hold)", V("kick_2n7000_F"), 18.0),
                             ("ALD1106, WWL +9 -> 0 V", V("kick_ald1106_F"), 9.0),
                             ("JFET, gate ~+3 -> -9 V", V("kick_jfet_F"), 12.0),
-                            ("reed relay, coil 5 -> 0 V", V("kick_reed_F"), 5.0)):
-        rows.append((name, "%.0f mV" % (kickback(swing, ck, c_pure) * 1e3),
-                     "%.0f mV" % (kickback(swing, ck, c_trim) * 1e3)))
+                            ("reed relay, coil driver end 0 -> +5 V (UPWARD; mean coil swing +2.5 V)",
+                             V("kick_reed_F"), -2.5)):
+        rows.append((name, "%.0f mV" % (-kickback(swing, ck, c_pure) * 1e3),
+                     "%.0f mV" % (-kickback(swing, ck, c_trim) * 1e3)))
     table(["write switch", "kick, pure node", "kick, trimmed node"], rows)
-    print("A kick of volts on the pure node can push it below 0 V and forward-bias junctions: data lost. That is why "
-          "real 2T0C designs budget a 'window after WWL kickback' (dossier: 600 mV) and why the trim capacitor is used "
-          "for MOSFET switches here.")
+    print("(Negative = node pushed down.) Cell A's own node is bigger (E2.1), so its pure-node kicks are ~%.1f-%.1f V "
+          "rather than the table's value; trimmed values barely change."
+          % (kickback(9.0, V("kick_2n7000_F"), a_pure[1] - crss) , kickback(9.0, V("kick_2n7000_F"), a_pure[0] - crss)))
+    print("A 2.9 V kick takes a stored 3.3 V down to ~0.4 V, below the read FET's Vth, so a '1' reads as '0'. Lower "
+          "stored levels are pushed below 0 V, where the switch's body diode clamps them. The dossier requires a "
+          "window >= 600 mV after WWL kickback before it allows 2 bits per cell.")
+    print("Second step, when WBL parks 3.3 -> 0 V ~5 ms later, through the switch's drain-source capacitance:")
+    rows = []
+    for name, c_lo, c_hi in (("2N7000 (C_ds 6-20 pF)", V("n2n7000_cds_lo_F"), V("n2n7000_cds_hi_F")),
+                             ("ALD1106 / JFET / reed (C_ds <= 1 pF)", 0.0, 1e-12)):
+        rows.append((name, "%.0f to %.0f mV" % (-3.3 * c_lo / (c_trim + crss + c_lo) * 1e3 + 0.0,
+                                                -3.3 * c_hi / (c_trim + crss + c_hi) * 1e3)))
+    table(["write switch", "WBL-park step, trimmed node"], rows)
 
     hr("E2.7  Read disturb by capacitive coupling (read-enable toggles the drain 0 <-> 3.3 V)")
     for cname, c in (("pure", c_pure), ("trimmed", c_trim)):
-        print("  %-8s node: transient kick = Crss * 3.3 V / C_SN = %.0f mV (returns when the drain returns; "
-              "net charge unchanged)" % (cname, crss * 3.3 / c * 1e3))
+        # READ_EN falls 3.3 -> 0 V through Cgd, and the source falls ~1.1 V with it, so Cgs stops being
+        # bootstrapped: dV = (Cgd*3.3 + Cgs*1.1) / (C_SN + Cgs*A)   (C_SN already holds Cgs*(1-A))
+        kick = (crss * 3.3 + cgs * 1.1) / (c + cgs * a)
+        print("  %-8s node: transient kick = (Cgd*3.3 V + Cgs*1.1 V) / (C_SN + Cgs*A) = %.0f mV (returns when the "
+              "drain returns; net charge unchanged)" % (cname, kick * 1e3))
 
     hr("E2.8  Read transfer: source follower Vout = Vsn - Vth - sqrt(I/K)")
     vth = V("n2n7000_vth_typ_V")
@@ -582,7 +642,7 @@ def e3_tables():
     table(["f (1 m RG-58)", "extra current", "shunt"], rows)
 
     hr("E3.3  Supply-voltage sweep: E ~ V^2")
-    for vv in (1.8, 2.5, 3.3):
+    for vv in (2.0, 2.5, 3.3):          # SN74AHC125 operating range is 2.0-5.5 V [DATASHEET]
         print("  V = %.1f V: E per cycle on 1 m RG-58 = %s (%.2fx of 3.3 V)" % (vv, eng(c * vv * vv, "J"),
                                                                             (vv / 3.3) ** 2))
 
@@ -592,7 +652,19 @@ def e3_tables():
         print("  R = %6.0f Ohm: supply gives %s, resistor burns %s, cap stores %s"
               % (r, eng(es, "J"), eng(eh, "J"), eng(0.5 * 100e-12 * 3.3 ** 2, "J")))
 
-    hr("E3.5  From the bench to the chip: one law, ten orders of magnitude")
+    print("Settling limit (steady-state square wave into R*C): swing = V*tanh(T_half/(2*tau)), so the fitted C "
+          "comes out low when the sweep includes frequencies that do not settle. 330 pF load:")
+    rows = []
+    for r_s in (33.0, 330.0, 3300.0):
+        tau = (V("buffer_rout_ohm") + r_s) * 330e-12
+        for fmax in (2e6, 1e6, 5e5):
+            fs = np.array([f for f in (100e3, 250e3, 500e3, 1e6, 2e6) if f <= fmax])
+            i = 330e-12 * 3.3 * fs * np.tanh(1.0 / (2 * fs) / (2 * tau))
+            slope = np.polyfit(fs, i, 1)[0]
+            rows.append(("%g Ohm" % r_s, eng(tau, "s"), "%g kHz" % (fmax / 1e3), "%.1f%%" % ((slope / 3.3 / 330e-12 - 1) * 100)))
+    table(["series R", "tau", "highest f in sweep", "fitted C error"], rows)
+
+    hr("E3.5  From the bench to the chip: one law, eight orders of magnitude")
     hs = hotside_energy()
     act = HOTSIDE["activity"]
     ladder = [
@@ -611,15 +683,19 @@ def e3_tables():
     for name, cc, vv in ladder:
         rows.append((name, eng(cc, "F"), "%.2f V" % vv, eng(act * cc * vv * vv, "J")))
     table(["path", "C", "V", "E per bit = 0.5*C*V^2 (study convention)"], rows)
+    e_hi = act * ladder[0][1] * ladder[0][2] ** 2
+    e_lo = act * ladder[-1][1] * ladder[-1][2] ** 2
+    print("Top to bottom: %s / %s = %.1e, i.e. %.1f orders of magnitude." % (eng(e_hi, "J"), eng(e_lo, "J"),
+                                                                           e_hi / e_lo, math.log10(e_hi / e_lo)))
     print("Convention: the study's model charges activity 0.5 x C x V^2 per bit; strict accounting for random data "
           "gives 0.25 x C x V^2. The ratio between paths is what matters.")
 
     hr("E3.6  Where 0.37 vs 3.95 pJ/bit comes from (replicating models/hot-side-memory.py after red team)")
     print("Near tier read at the port: bitlines (%.1f fF local + %.0f fF global) x %.1f V x %.1f V swing = %.1f fJ "
-          "per cell, + sense + wordline -> %.1f fJ/bit; local wire %.1f fJ; bond+via %.1f fJ; x2 periphery; "
-          "+50 fJ controller = %.3f pJ"
+          "per cell; cell read per bit = (bitlines + sense 9.0 + wordline 0.2) / 2 bits = %.1f fJ; decode %.1f fJ; "
+          "local wire %.1f fJ; bond+via %.1f fJ; sum x2 periphery + 50 fJ controller = %.3f pJ"
           % (hs["c_rbl"], HOTSIDE["c_gbl_fF"], HOTSIDE["V_array"], HOTSIDE["dV_rbl_V"], hs["e_rbl_cell"],
-             hs["e_cell_read_bit"], hs["e_local"], hs["e_bond"], hs["e_read"] / 1e3))
+             hs["e_cell_read_bit"], HOTSIDE["E_decode_fJ_bit"], hs["e_local"], hs["e_bond"], hs["e_read"] / 1e3))
     print("2-bit write-verify at the port: %.3f pJ; 20%%-write mix: %.3f pJ" % (hs["e_write"] / 1e3,
                                                                              hs["e_mix"] / 1e3))
     print("Delivery wire: 0.5 x 0.2 pF/mm x 0.75^2 = %.2f fJ/bit/mm" % hs["e_wire_mm"])
@@ -640,9 +716,11 @@ def e3_tables():
     print("At 8 Mbit/s: %s on 3.3 V = %s, ~%s at the 5 V USB input (85%% converter) -> visible on a 10 uA USB meter"
           % (eng(p_spi_8mbps, "W"), eng(p_spi_8mbps / v, "A"),
              eng(p_spi_8mbps / 5.0 / V("pico_buck_eff"), "A")))
-    print("Internal SRAM: ~%s per bit [ESTIMATE] -> ~%.0fx less than the pins. A memory copy at 20 MB/s adds only ~%s "
-          "-> at or below the meter's floor." % (eng(e_bit_sram, "J"), e_bit_spi / e_bit_sram,
-                                                eng(e_bit_sram * 20e6 * 8 * 2 / 5.0 / V("pico_buck_eff"), "A")))
+    print("Internal SRAM: ~%s per bit [ESTIMATE] -> ~%.0fx less than the pins. At a copy speed of e.g. 20 MB/s the "
+          "SRAM arrays add only ~%s at USB. The copy loop's CPU and bus work will probably add more (tens to hundreds "
+          "of uA): that is logic energy, not memory-array energy." % (eng(e_bit_sram, "J"), e_bit_spi / e_bit_sram,
+                                                                     eng(e_bit_sram * 20e6 * 8 * 2 / 5.0 /
+                                                                         V("pico_buck_eff"), "A")))
     return hs
 
 
@@ -696,11 +774,23 @@ def selftest():
     check("HBM delivered 3.95 pJ (got %.3f)" % hs["hbm_pJ"], abs(hs["hbm_pJ"] - 3.95) < 0.005)
     # lognormal order statistics: 2nd/1st ratio grows with sigma
     rng = np.random.default_rng(1)
-    r1 = np.median(np.sort(rng.lognormal(0, 0.3, (5000, 16)), axis=1)[:, 1:2] /
-                   np.sort(rng.lognormal(0, 0.3, (5000, 16)), axis=1)[:, 0:1])
-    r2 = np.median(np.sort(rng.lognormal(0, 1.0, (5000, 16)), axis=1)[:, 1:2] /
-                   np.sort(rng.lognormal(0, 1.0, (5000, 16)), axis=1)[:, 0:1])
-    check("weak-cell gap grows with spread (%.2f < %.2f)" % (r1, r2), r1 < r2)
+    s1 = np.sort(rng.lognormal(0, 0.3, (5000, 16)), axis=1)     # within-array order statistics
+    s2 = np.sort(rng.lognormal(0, 1.0, (5000, 16)), axis=1)
+    r1 = np.median(s1[:, 1] / s1[:, 0])
+    r2 = np.median(s2[:, 1] / s2[:, 0])
+    check("weak-cell gap grows with spread (%.2f < %.2f)" % (r1, r2), r1 < r2 and 1.05 < r1 < 1.2)
+    # read-coupling kick (E2.7) and reed kick sign
+    c_t = 5e-12 + 15e-12 * 0.02 + 5e-12 + 220e-12
+    check("E2.7 read kick on the trimmed node ~135 mV (got %.0f)" % ((5e-12 * 3.3 + 15e-12 * 1.1) /
+                                                                     (c_t + 15e-12 * 0.98) * 1e3),
+          abs((5e-12 * 3.3 + 15e-12 * 1.1) / (c_t + 15e-12 * 0.98) - 0.135) < 0.003)
+    # settling: tanh swing -> fitted C at 330 Ohm within 1% when the sweep stops at 500 kHz
+    tau = 370 * 330e-12
+    fs = np.array([100e3, 250e3, 500e3])
+    i = 330e-12 * 3.3 * fs * np.tanh(1.0 / (2 * fs) / (2 * tau))
+    check("330 Ohm / 330 pF sweep to 500 kHz settles (C error %.2f%%)" % ((np.polyfit(fs, i, 1)[0] / 3.3 / 330e-12 - 1)
+                                                                          * 100),
+          abs(np.polyfit(fs, i, 1)[0] / 3.3 / 330e-12 - 1) < 0.01)
     print("SELFTEST " + ("PASSED" if ok else "FAILED"))
     return 0 if ok else 1
 
@@ -726,6 +816,10 @@ SOURCES = [
     ("imec 2T0C >200 s at 95 C", "https://imec-publications.be/entities/publication/"
      "948b2190-065d-48d2-a9b9-4f4ecd22c234", "[REPORTED] (via dossiers/hot-side-memory.md)"),
     ("hot-side energy model", "models/hot-side-memory.py (repo)", "[MODEL]"),
+    ("ALD1106 Vth 0.4/0.7/1.0 V at 1 uA", "https://web.ece.ucsb.edu/Faculty/rodwell/Classes/ECE137B/datasheets/"
+     "ALD1106.pdf", "[DATASHEET]"),
+    ("2N7000 Coss 11/25 pF, Crss 4/5 pF", "https://www.onsemi.com/download/data-sheet/pdf/2n7000-d.pdf", "[DATASHEET]"),
+    ("SN74AHC125 VCC 2-5.5 V, inputs to 5.5 V", "https://www.ti.com/lit/gpn/sn74ahc125", "[DATASHEET]"),
 ]
 
 

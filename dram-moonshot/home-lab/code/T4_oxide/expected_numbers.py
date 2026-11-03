@@ -42,17 +42,28 @@ PLAN = {
     "mu_cm2Vs": 0.3,
     "vth_V": 8.0,             # [ESTIMATE] enhancement mode on 300 nm SiO2
     "ss_V_per_dec": 1.0,      # [ESTIMATE] trap-rich film on thick oxide
-    "ioff_floor_A": 1e-12,    # [ESTIMATE] DIY rig floor (100 Mohm TIA, guarded)
+    "ioff_floor_A": 1e-12,    # [ESTIMATE] DIY rig floor (100 Mohm TIA, guarded, offset removed)
+    # Rig limits
+    "lm358_voh_min_V": 27.0,  # [DATASHEET] LM358 VOH at V+ = 30 V, RL 10 kohm: 27 V min, 28 V typ
+    "lm358_voh_typ_V": 28.0,
+    "vref_V": 2.5,            # TIA virtual node = TFT source
+    # Battery test (E7 step 14)
+    "batt_vg_V": 27.0,        # three 9 V batteries in series [ESTIMATE nominal]
+    "batt_vd_V": 9.0,         # one 9 V battery
+    "batt_r_drain_ohm": 1e4, "batt_r_shunt_ohm": 1e5, "batt_r_gate_ohm": 1e6,
     # E8 storage node
     "c_store_F": 10e-9,       # added C0G / polypropylene capacitor [ESTIMATE choice]
-    "c_read_gate_F": 50e-12,  # 2N7000 input capacitance, 40-60 pF per distributors [UNVERIFIED]
+    "c_read_gate_F": 50e-12,  # 2N7000 Ciss: onsemi 20 pF typ / 50 pF max at VDS 25 V [DATASHEET];
+                              # more at the ~2.5 V read bias, so the max is used for planning
     "c_wiring_F": 10e-12,     # air-wired node [ESTIMATE]
-    "sn_pad_area_mm2": 1.0,   # storage-side electrode area over the back gate [ESTIMATE]
-    "wwl_high_V": 27.5,       # write word line high (<= 30 V rule)
-    "v_one_V": 3.0,           # stored "1" (re-picked from calibration in practice)
+    "sn_pad_area_mm2": 1.5,   # E7 step 15 source stripe: 0.5 mm x 3 mm over the back gate [ESTIMATE]
+    "wwl_high_V": 27.0,       # write word line high = LM358 guaranteed maximum on a 30 V supply
+    "v_one_V": 2.0,           # stored "1": 2N7000 read current ~50 uA at ~1.5-2.2 V (calibration picks it)
     "dv_retention_V": 0.1,    # retention criterion: time to lose 100 mV
     # Leakage planning values for E8 (E2 measures the silicon side for real)
-    "I_ox_25C_A": 1e-12, "Ea_ox_eV": 0.35,   # [ESTIMATE] floor/trap-limited home TFT
+    # Oxide planning value = the RIG FLOOR (1 pA). The TFT channel itself at WWL 0 V is predicted at
+    # ~1e-15 A (E7-7 below), so a floor-limited oxide cell shows the floor's Ea, not the oxide's.
+    "I_ox_25C_A": 1e-12, "Ea_ox_eV": 0.35,   # [ESTIMATE] floor value; Ea a placeholder
     "I_si_25C_A": 1e-11, "Ea_si_lo_eV": 0.56, "Ea_si_hi_eV": 1.12,  # [ESTIMATE] junction-limited
 }
 
@@ -189,16 +200,23 @@ def s7_currents():
     for route in ("A", "B"):
         W, L = PLAN[f"{route}_W_um"], PLAN[f"{route}_L_um"]
         k = 0.5 * mu * cox * W / L         # A/V^2
-        for vg in (15.0, 20.0, 25.5):        # 25.5 V = rig maximum (28 V node - 2.5 V VREF)
+        vgs_max = PLAN["lm358_voh_min_V"] - PLAN["vref_V"]   # 27 V node - 2.5 V VREF = 24.5 V
+        for vg in (15.0, 20.0, vgs_max):
             idsat = k * (vg - vth) ** 2
             print(f"Route {route} (W/L={W/L:5.0f}) Vgs={vg:4.1f} V -> Id_sat ~ {idsat*1e6:7.2f} uA")
-        ion = k * (25.5 - vth) ** 2
+        ion = k * (vgs_max - vth) ** 2
         # current exactly at Vth from subthreshold/strong-inversion matching (EKV-like): (n*phi)^2
         nphi = PLAN["ss_V_per_dec"] / math.log(10)
         i_vth = k * (2 * nphi) ** 2 * math.log(2) ** 2
-        out[route] = {"Ion_A": ion, "I_at_Vth_A": i_vth,
+        # alternative EKV matching 2*n*beta*Ut^2*ln^2(2), with n*Ut = SS/ln10: gives a lower value
+        ut = KB_EV * 298.15
+        n_ideal = nphi / ut
+        i_vth_ekv = 2 * n_ideal * (2 * k) * ut ** 2 * math.log(2) ** 2
+        out[route] = {"Ion_A": ion, "I_at_Vth_A": i_vth, "I_at_Vth_EKV_A": i_vth_ekv,
                       "on_off_at_floor": ion / PLAN["ioff_floor_A"]}
-        print(f"  current near Vth ~ {i_vth:.1e} A ; on/off limited by 1 pA floor ~ {ion/PLAN['ioff_floor_A']:.1e}")
+        print(f"  current near Vth ~ {i_vth:.1e} A (EKV-style matching: {i_vth_ekv:.1e} A, "
+              f"{i_vth/i_vth_ekv:.0f}x lower; your measured curve replaces both)")
+        print(f"  on/off limited by 1 pA floor ~ {ion/PLAN['ioff_floor_A']:.1e}")
         # subthreshold-predicted channel current at hold biases
         for vgs in (0.0, -2.0):
             ich = i_vth * 10 ** ((vgs - vth) / PLAN["ss_V_per_dec"])
@@ -222,6 +240,77 @@ def s7_currents():
     print("Needed span: ~1e-4 A on to ~1e-12 A off = 8 decades -> three ranges + E4 bench below 1 pA.")
 
 
+def s8_battery_test():
+    hr("E7-8  Battery test (step 14): linear-regime current, shunt reading, and the false positive")
+    cox = cox_F_per_cm2(PLAN["tox_nm"])
+    vth = PLAN["vth_V"]
+    vg, vb = PLAN["batt_vg_V"], PLAN["batt_vd_V"]
+    rd, rs = PLAN["batt_r_drain_ohm"], PLAN["batt_r_shunt_ohm"]
+
+    def solve(mu, wl):
+        i = 0.0
+        for _ in range(60):                  # self-consistent: shunt lifts the source, drops Vds
+            vgs = vg - i * rs
+            vds = vb - i * (rd + rs)
+            vov = vgs - vth
+            if vov <= 0 or vds <= 0:
+                return 0.0, vds
+            if vds < vov:
+                i_new = mu * cox * wl * (vov - vds / 2) * vds
+            else:
+                i_new = 0.5 * mu * cox * wl * vov ** 2
+            i = 0.5 * (i + i_new)
+        return i, vds
+
+    print(f"Gate {vg:.0f} V via 1 Mohm (no DC current), drain {vb:.0f} V via 10 kohm, source -> 100 kohm shunt.")
+    print(f"Simple linear-regime estimate: Id = mu*Cox*(W/L)*(Vov - Vds/2)*Vds = mu*(W/L)*"
+          f"{cox*(vg-vth-vb/2)*vb*1e6:.3f} uA (Vov {vg-vth:.0f} V, Vds {vb:.0f} V)")
+    res = {}
+    for name, wl in (("blobs 1-2 mm apart, W/L ~1", 1.0), ("blobs, W/L ~3", 3.0),
+                     ("stripes 3 mm long, 0.5 mm gap, W/L ~6", 6.0)):
+        row = []
+        for mu in (0.1, PLAN["mu_cm2Vs"], 0.9):
+            i, vds = solve(mu, wl)
+            row.append(i)
+        res[wl] = row
+        print(f"  {name:40s} mu 0.1/{PLAN['mu_cm2Vs']}/0.9 -> {row[0]*1e6:5.2f} / {row[1]*1e6:5.2f} / "
+              f"{row[2]*1e6:5.2f} uA = {row[0]*rs*1e3:4.0f} / {row[1]*rs*1e3:4.0f} / {row[2]*rs*1e3:4.0f} mV on the shunt")
+    # false positive: gate current through film touching a cleaved edge (bare p++ Si = gate)
+    rsh = 1.0 / (PLAN["mu_cm2Vs"] * cox * (vg - vth))
+    print(f"\nFalse positive without a moat: accumulated film sheet resistance 1/(mu*Cox*Vov) = {rsh/1e6:.1f} Mohm/sq.")
+    for sq in (0.3, 3.0):
+        ig = vg / (PLAN["batt_r_gate_ohm"] + sq * rsh)
+        print(f"  gate -> 1 Mohm -> edge -> {sq:3.1f} squares of film -> source: {ig*1e6:4.1f} uA "
+              f"(= {ig*rs*1e3:.0f} mV), and it appears only when the gate is high")
+    print(f"  Upper bound (paint blob on an edge): {vg/PLAN['batt_r_gate_ohm']*1e6:.0f} uA. The 'drain unclipped' control")
+    print("  (reading must fall back to the gate-0 V level) separates this from transistor action.")
+    OUT["battery_test_A"] = {str(k): v for k, v in res.items()}
+    OUT["film_sheet_res_ohm_sq"] = rsh
+
+
+def s9_rig_limits():
+    hr("E7-9  Rig limits from datasheets: gate range, TIA offset, short-circuit current, relay drive")
+    vref = PLAN["vref_V"]
+    for name, voh in (("min", PLAN["lm358_voh_min_V"]), ("typ", PLAN["lm358_voh_typ_V"])):
+        old = voh * 1.1e6 / 1.2e6
+        print(f"LM358 VOH {name} {voh:.0f} V: gate node {voh:.1f} V -> Vgs max {voh-vref:.1f} V with the monitor at the "
+              f"amplifier output (old design, monitor after the 100 kohm: node {old:.2f} V, Vgs {old-vref:.1f} V)")
+    print("Offset of an un-zeroed TIA on the 100 Mohm range (Vos / Rf):")
+    for name, vos in (("LMC6482AI typical", 0.11e-3), ("LMC6482AI max", 0.75e-3), ("LMC6482I max", 3e-3)):
+        print(f"  {name:20s} {vos*1e3:5.2f} mV -> {vos/1e8*1e12:5.1f} pA error on every reading")
+    for r in (1e3, 1e4):
+        i = (20.0 - 5.6) / r
+        print(f"Drain-source short, 20 V through {r/1e3:.0f} kohm into the TIA input clamp (~5.6 V): {i*1e3:.1f} mA "
+              f"(LMC6482 abs max +/-5 mA) -> {'OK' if i < 5e-3 else 'TOO HIGH'}")
+    coil = 500.0
+    print(f"Reed relay, 5 V coil ~{coil:.0f} ohm, must-operate ~3.75 V [ESTIMATE]: from a 3.3 V GPIO = "
+          f"{3.3/coil*1e3:.1f} mA at 3.3 V (below must-operate) -> use a ULN2003A: ~{5-0.9:.1f} V across the coil")
+    print(f"Zener backstop on the 2N7000 adapter: (27 - 15) V / 100 kohm = {(27-15)/1e5*1e3:.2f} mA")
+    p_full = 12.0 ** 2 / 10.0
+    print(f"Heater: {p_full:.1f} W at full duty; capped at 30% = {0.3*p_full:.1f} W; 65 C on a ~25 K/W block "
+          f"needs ~{(65-25)/25:.1f} W [ESTIMATE]")
+
+
 # ------------------------------------------------------------------------------------------
 # E8 sections
 # ------------------------------------------------------------------------------------------
@@ -234,10 +323,12 @@ def e8_node():
     slow = (PLAN["v_one_V"] + PLAN["vth_V"]) * c_ov / c_tot
     print(f"Storage-side pad over back gate: {PLAN['sn_pad_area_mm2']} mm2 -> C_ov = {c_ov*1e12:.0f} pF")
     print(f"C_SN total = {c_tot*1e9:.2f} nF (10 nF added + read gate + wiring + C_ov)")
-    print(f"Kickback when WWL falls: fast edge {fast*1000:.0f} mV ; slow edge (after switch-off only) {slow*1000:.0f} mV")
+    print(f"Kickback when WWL falls from {PLAN['wwl_high_V']:.0f} V: fast edge {fast*1000:.0f} mV ; "
+          f"slow edge (after switch-off only, (V1+Vth)*C_ov/C_SN) {slow*1000:.0f} mV")
     for cs in (1e-9, 10e-9, 47e-9):
         ct = cs + PLAN["c_read_gate_F"] + PLAN["c_wiring_F"] + c_ov
         print(f"  with C_store {cs*1e9:4.0f} nF: fast-edge kick {PLAN['wwl_high_V']*c_ov/ct:5.2f} V")
+    print(f"Retention at 1 pA: {c_tot*PLAN['dv_retention_V']/1e-12:.0f} s to lose {PLAN['dv_retention_V']*1000:.0f} mV")
     print("Lesson: the gate overlap that every back-gated TFT has is a coupling capacitor. Real 2T0C cells")
     print("fight the same kickback; here you beat it with a big C_store and a small storage-side pad.")
     OUT["c_sn_F"] = c_tot
@@ -268,6 +359,8 @@ def e8_retention(c_tot):
     g_lo = (rows[65]["t_ox"] / rows[65]["t_si_lo"]) / (rows[25]["t_ox"] / rows[25]["t_si_lo"])
     g_hi = (rows[65]["t_ox"] / rows[65]["t_si_hi"]) / (rows[25]["t_ox"] / rows[25]["t_si_hi"])
     print(f"\nAdvantage growth 25 -> 65 C: x{g_lo:.1f} (Si Ea 0.56) to x{g_hi:.0f} (Si Ea 1.12).")
+    print("CAUTION: the oxide column is the RIG FLOOR (1 pA). The TFT channel at WWL 0 V is predicted at")
+    print("~1e-15 A, so this comparison is floor vs silicon until the oxide cell sits >= 3x above the floor.")
     print("Prediction: the oxide cell's lead widens as it gets hotter IF the oxide leakage has a lower")
     print("activation energy than the silicon junction. If both have Ea ~0.8 eV (as the study assumed for")
     print("imec cells), the ratio stays flat and the win is the absolute level. E8 measures which.")
@@ -291,10 +384,19 @@ def e8_retention(c_tot):
 def e8_hold_bias():
     hr("E8-3  Hold-bias test: subthreshold says leakage falls 10x per SS volts of more-negative hold")
     i_vth = OUT["currents"]["A"]["I_at_Vth_A"]
-    for vgs in (4.0, 2.0, 0.0, -2.0):
+    i_vth_ekv = OUT["currents"]["A"]["I_at_Vth_EKV_A"]
+    for vgs in (6.0, 5.0, 4.0, 2.0, 0.0, -2.0):
         ich = i_vth * 10 ** ((vgs - PLAN["vth_V"]) / PLAN["ss_V_per_dec"])
+        ich2 = i_vth_ekv * 10 ** ((vgs - PLAN["vth_V"]) / PLAN["ss_V_per_dec"])
         seen = max(ich, PLAN["ioff_floor_A"])
-        print(f"Vgs(hold) {vgs:+4.1f} V: channel {ich:.1e} A -> you will see ~{seen:.1e} A")
+        print(f"Vgs(hold) {vgs:+4.1f} V: channel {ich:.1e} A (EKV matching {ich2:.1e} A) -> you will see ~{seen:.1e} A")
+    print(f"Model spread: {i_vth/i_vth_ekv:.0f}x, set by how subthreshold is joined to the square law. Your")
+    print("measured E7 transfer curve replaces both. Biased-hold Arrhenius (E8 step 10b) needs 30-100 pA:")
+    for target in (30e-12, 100e-12):
+        v1 = PLAN["vth_V"] + PLAN["ss_V_per_dec"] * math.log10(target / i_vth)
+        v2 = PLAN["vth_V"] + PLAN["ss_V_per_dec"] * math.log10(target / i_vth_ekv)
+        print(f"  {target*1e12:3.0f} pA at WWL ~ {v1:.1f} V (EKV {v2:.1f} V); droop "
+              f"{target/OUT['c_sn_F']*1e3:.1f} mV/s on C_SN -> 10% of a 2 V '1' in {0.2/(target/OUT['c_sn_F']):.0f} s")
     print("Silicon switch (Vth ~2 V): below Vgs ~0.5 V the junction floor dominates, so making the hold")
     print("more negative does NOT help (it can hurt via GIDL). The oxide switch keeps improving until a floor.")
 
@@ -322,30 +424,48 @@ def bom():
     e7_core = {
         "MTI 100 mm p++ Si / 300 nm SiO2 wafer": 110, "diamond scribe": 12,
         "ZnO 99.999% 25 g (cheaper 99.9% grades ~40)": 181, "ammonium hydroxide 28-30% 500 mL": 50,
-        "syringe filters + syringes": 25, "glass vials, PTFE caps": 15, "silver conductive paint": 25,
+        "hydrophilic syringe filters + Luer-lock syringes": 25, "glass vials, PTFE caps": 15,
+        "distilled water + isopropanol": 12, "silver conductive paint": 25,
         "fine wire for channel mask": 10, "digital ceramic hot plate (<=380-400 C)": 290,
         "K-type thermocouple meter + Al block": 30, "DIY spin coater parts": 80, "0.001 g scale": 30,
         "USB microscope": 40, "PPE: splash goggles, nitrile gloves, lab coat": 55,
+        "1 L eyewash bottle": 12, "battery test: 4x 9 V + clips, 1M/100k/10k resistors, croc leads": 20,
     }
+    # minimum kit to reach the battery-test proof (E7 step 14), excluding the hot plate
+    first = ["MTI 100 mm p++ Si / 300 nm SiO2 wafer", "diamond scribe", "ammonium hydroxide 28-30% 500 mL",
+             "hydrophilic syringe filters + Luer-lock syringes", "glass vials, PTFE caps",
+             "distilled water + isopropanol", "silver conductive paint",
+             "PPE: splash goggles, nitrile gloves, lab coat", "1 L eyewash bottle",
+             "battery test: 4x 9 V + clips, 1M/100k/10k resistors, croc leads"]
     rig = {
-        "Raspberry Pi Pico 2": 5, "ADS1115 breakout": 15, "LMC6482 x2": 8, "LM358 x2": 2,
-        "LM4040-2.5 ref": 1, "reed relays x3": 10, "precision resistors incl. 100 Mohm": 12,
+        "Raspberry Pi Pico 2": 5, "ADS1115 breakout": 15, "LMC6482AIN x2 (A grade)": 8, "LM358 x2": 2,
+        "LM4040-2.5 ref": 1, "reed relays x3": 10, "ULN2003A relay driver": 1,
+        "BSS138 I2C level shifter (2 ch)": 4, "precision resistors incl. 100 Mohm": 12,
+        "film capacitors, decoupling, 100 nF monitor caps": 6,
         "PTFE standoffs": 5, "0-30 V bench supply": 65, "metal tin (dark + shield) + silica gel": 15,
         "multimeter": 30, "perfboard, wire, BNC": 20,
     }
     e8 = {
-        "2N7000 x10": 4, "C0G/polypropylene 10 nF x6": 6, "heater resistor + MOSFET + NTC + fuse": 15,
-        "aluminum block": 5, "12 V adapter": 10, "extra chips/wafer pieces for 4-6 TFTs": 0,
+        "2N7000 x10 + 1N4744A Zener": 5, "polypropylene/C0G 10 nF x6": 6,
+        "heater resistor + MOSFET + NTC + 80 C thermostat + 91 C fuse": 18,
+        "aluminum block >= 60x40x6 mm": 8, "copper-clad FR4 offcut (gate boards)": 2,
+        "12 V adapter": 10, "extra chips/wafer pieces for 4-6 TFTs": 0,
     }
     indium = {"indium nitrate 99.99% 10 g": 163, "zinc nitrate hexahydrate 100 g": 40,
               "gallium nitrate hydrate (optional)": 150}
     for name, d in (("E7 materials + process tools", e7_core), ("T4 mini-SMU rig", rig),
                     ("E8 add-on", e8), ("Optional IZO/IGZO upgrade", indium)):
         print(f"{name:32s} ~${sum(d.values()):,}")
+    f_lo = sum(e7_core[k] for k in first) + 40 + 30          # 99.9% ZnO ~$40, multimeter $30
+    f_hi = sum(e7_core[k] for k in first) + 181 + 30         # 99.999% ZnO
+    f_own = f_lo - 30 - 55                                   # already own multimeter and PPE
+    print(f"{'First proof (battery test)':32s} ~${f_lo:,}-{f_hi:,} plus a hot plate (~${f_own:,} if you own a "
+          f"multimeter and PPE)")
     tot = sum(e7_core.values()) + sum(rig.values()) + sum(e8.values())
     print(f"{'E7 + rig + E8 (no indium)':32s} ~${tot:,}  (about ${tot - 290 - 80:,} if a makerspace lends hot plate + spin coater)")
     OUT["bom_usd"] = {"e7": sum(e7_core.values()), "rig": sum(rig.values()), "e8": sum(e8.values()),
-                      "indium_upgrade": sum(indium.values()), "total_no_indium": tot}
+                      "indium_upgrade": sum(indium.values()), "total_no_indium": tot,
+                      "first_proof": [f_lo, f_hi, f_own]}
 
 
 def main(argv):
@@ -356,6 +476,8 @@ def main(argv):
     s5_film()
     precursor_masses()
     s7_currents()
+    s8_battery_test()
+    s9_rig_limits()
     c_tot = e8_node()
     e8_retention(c_tot)
     e8_hold_bias()
@@ -370,6 +492,7 @@ def main(argv):
     assert abs(OUT["cox_nF_cm2"]["300nm"] - 11.51) < 0.05
     assert OUT["ni_ratio_si_over_zno"] > 1e15
     assert np.isfinite(OUT["c_sn_F"])
+    assert 0.5 < OUT["currents"]["A"]["I_at_Vth_A"] / OUT["currents"]["A"]["I_at_Vth_EKV_A"] / 17 < 2
     return 0
 
 

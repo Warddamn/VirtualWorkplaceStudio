@@ -17,7 +17,12 @@
 #   "destructive"  read the same '1' four times WITHOUT restore, then restore and read again.
 #   "retention"    DRAM-style test: write 1, wait t (log-spaced), read; repeat. Logs dV and the bit.
 #   "peek"         write 1, then log the storage-node follower every second (decay curve -> leakage).
-# Output: CSV on USB serial. Capture on a PC with:  mpremote run e1_single_cell.py > e1_share.csv
+#   "float"        bitline float test: precharge, float (wordline closed), read the BL follower twice 5 ms
+#                  apart. Drift x Cbl / dt = leakage of the GPIOs, comparator and follower on the bitline.
+# Output: CSV on USB serial. 'share' and 'destructive' ask questions: run them from Thonny with LOGFILE set.
+# 'retention', 'peek' and 'float' ask nothing and can be captured with, for example:
+#     mpremote run e1_single_cell.py > e1_ret_room.csv
+# (mpremote run does not pass typed answers to the board, so a script waiting in input() would hang.)
 
 import time
 from machine import Pin, ADC
@@ -27,11 +32,12 @@ from t1_common import (adc_volts, tristate, drive, CsvLog, Thermo, Clock, low_ri
 MODE = "share"
 PIN_WL, PIN_BL_A, PIN_BL_B, PIN_SA = 2, 3, 4, 5
 CS_NF = 1.0                  # storage capacitor you fitted (nF)
+CBL_NF = 4.7                 # bitline capacitor fitted now (nF); used by 'retention' and 'float' (no typed input)
 PARK = "half"                # where the bitline rests between operations: "half" (V/2) or "zero"
 PRECHARGE_MS = 5             # >= 7 tau of 5 kOhm x (Cbl + Cs); 5 ms covers Cbl up to ~100 nF
 WRITE_MS = 5                 # wordline-on time for a write / restore
 SHARE_MS = 1                 # wordline-on time before sensing (charge sharing settles in ~1 us)
-N_AVG = 64                   # ADC samples per voltage reading
+N_AVG = 64                   # ADC samples per voltage reading (use 1024 for 'destructive': its last reads are ~mV)
 REPEATS = 10                 # reads per stored value in "share" mode
 RET_MIN_S, RET_MAX_S = 1.0, 1800.0   # retention schedule (seconds)
 PEEK_S = 3600                # duration of a "peek" decay log (seconds)
@@ -137,7 +143,7 @@ def mode_destructive(cell, log, clk, thermo):
 
 
 def mode_retention(cell, log, clk, thermo):
-    cbl = float(input("Cbl fitted now in nF: ").strip() or "4.7")
+    cbl = CBL_NF
     log.note("retention: write 1, park bitline at '%s', wait, read. Schedule %g..%g s" % (PARK, RET_MIN_S, RET_MAX_S))
     for wait in log_schedule(RET_MIN_S, RET_MAX_S, 4):
         for bit in (1, 0):
@@ -162,6 +168,30 @@ def mode_peek(cell, log, clk, thermo):
         time.sleep_ms(1000)
 
 
+def mode_float(cell, log, clk, thermo):
+    """Leakage on the floating bitline (not the cell): drift x Cbl / dt. Pass: drift < 0.5 mV in ~5 ms."""
+    log.note("float test: bitline precharged to V/2, floated with the wordline CLOSED; Cbl = %g nF" % CBL_NF)
+    temp = thermo.read_c()
+    for k in range(20):
+        cell.bl("half")
+        time.sleep_ms(PRECHARGE_MS)
+        cell.bl("float")
+        time.sleep_us(50)
+        t1a = time.ticks_us()
+        v1 = adc_volts(cell.adc_bl, N_AVG)
+        t1b = time.ticks_us()
+        time.sleep_ms(5)
+        t2a = time.ticks_us()
+        v2 = adc_volts(cell.adc_bl, N_AVG)
+        t2b = time.ticks_us()
+        cell.park()
+        dt = (time.ticks_diff(t2a, t1a) + time.ticks_diff(t2b, t1b)) / 2e6     # centre to centre (s)
+        r = {"v_pre": v1, "v_after": v2, "dv": v2 - v1, "sa_bit": -1, "adc_bit": -1,
+             "v_ref": adc_volts(cell.adc_ref, 16)}
+        row(log, "float", clk, temp, CBL_NF, dt, k, -1, r)
+        time.sleep_ms(20)
+
+
 def main():
     low_ripple_supply()
     cell = Cell()
@@ -178,6 +208,8 @@ def main():
             mode_retention(cell, log, clk, thermo)
         elif MODE == "peek":
             mode_peek(cell, log, clk, thermo)
+        elif MODE == "float":
+            mode_float(cell, log, clk, thermo)
         else:
             log.note("unknown MODE")
     finally:

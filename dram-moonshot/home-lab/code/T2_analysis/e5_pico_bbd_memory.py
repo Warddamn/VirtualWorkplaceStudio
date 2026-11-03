@@ -9,11 +9,16 @@
 # copies each bit read at the output (through a comparator) straight back into the input:
 # exactly what a mercury delay-line memory of 1949 did, and what a DRAM sense amplifier does.
 #
-# MODES (set MODE below, then:  mpremote run e5_pico_bbd_memory.py > out.csv)
+# MODES (set MODE below, then, with a NEW file name every run:
+#        mpremote run e5_pico_bbd_memory.py | tee 2026-11-03_cte_1024_10k_r1.csv )
 #   "delay"     : write a pseudo-random sequence, find the loop length L (clock periods) by correlation.
 #   "cte"       : one pulse every 32 samples, ADC-sampled once per clock -> CSV for ccd_cte.py --samples.
-#   "retention" : write a pattern, STOP the clock for HOLD_S seconds, restart, count flipped bits
-#                 and which positions (buckets) flipped. A BBD bucket is a DRAM-like capacitor.
+#                 Valid only up to F_REF_HZ ~10-20 kHz (hard-IRQ latency); use a scope above that.
+#   "retention" : for each hold in HOLDS_S: write a pattern, STOP the clock, restart, count flipped
+#                 bits and which positions (buckets) flipped. The rotation is fixed ONCE from a
+#                 0.01 s reference hold. A BBD bucket is a DRAM-like capacitor.
+#   "retention_analog": same holds, but logs the ANALOG level of every bucket (hold_s,index,value)
+#                 -> ccd_cte.py --retention separates common-mode drift from the weak-bucket tail.
 #   "loop"      : write a pattern, regenerate it at F_RUN_HZ for STORE_S seconds, read it back,
 #                 count errors -> bit-error rate per bit per lap.
 #   "analog"    : no regeneration: flip an analog switch (CD4066) so the BBD output, through an
@@ -28,8 +33,10 @@
 #   GP2, GP3  CLK1, CLK2 -> 74AHCT125 buffers powered from the BBD supply (5 V) -> BBD clock pins
 #   GP4       DATA -> 100 kOhm -> BBD input node (biased by a divider, see E5 write-up)
 #   GP5       COMP <- LM393 output (open collector, 10 kOhm pull-up to 3.3 V)
-#   GP6       ANALOG-LOOP switch control (CD4066): 0 = input from DATA, 1 = input from feedback amp
-#   GP26      ADC0 <- BBD output through a divider that keeps it below 3.3 V
+#   GP6       ANALOG-LOOP switch control -> spare 74AHCT125 buffer (5 V logic) -> CD4066 control
+#             (a CD4066B on 5 V needs >= 3.5 V for "high"; 3.3 V straight from the Pico is not enough)
+#             0 = input from DATA, 1 = input from feedback amp
+#   GP26      ADC0 <- BBD output through a 15 kOhm / 22 kOhm divider (5 V -> 2.97 V)
 
 import time
 import array
@@ -40,8 +47,11 @@ from machine import Pin, ADC
 MODE = "delay"
 N_STAGES = 1024          # V3207 = 1024; two in series = 2048; V3205SD = 4096
 F_REF_HZ = 10_000        # clock for writing / reading (datasheet range 10-200 kHz for V3207)
-F_RUN_HZ = 10_000        # clock while regenerating in "loop" mode (sweep this: 5k ... 500k)
-HOLD_S = 1.0             # "retention": how long the clock is stopped
+F_RUN_HZ = 10_000        # clock while regenerating in "loop" mode (sweep this: 10k ... 500k)
+REGEN_LATE = False       # True: decide at cycle 14 of 16 in phase A (more comparator settling time;
+                         # use above ~150 kHz with an LM393, whose response is ~0.3-1.3 us)
+HOLDS_S = (0.03, 0.1, 0.3, 1, 3, 10, 30, 100)   # "retention" modes: clock-stop times (s)
+REF_HOLD_S = 0.01        # reference hold: fixes the rotation / the 0-s analog levels
 STORE_S = 60             # "loop": how long data circulates with regeneration
 CTE_SAMPLES = 32 * 80    # "cte": ADC samples to capture (80 pulses)
 INVERT = False           # True if your comparator output is inverted relative to the input
@@ -91,6 +101,34 @@ def bbd_regen_inv():
     wrap()
 
 
+@rp2.asm_pio(sideset_init=(HI, LO), out_init=LO)
+def bbd_regen_late():
+    wrap_target()
+    nop()                .side(0b01) [7]
+    nop()                .side(0b01) [5]
+    mov(pins, pins)      .side(0b01) [1]   # decide at cycle 14 of 16: more comparator settling time
+    nop()                .side(0b10) [7]
+    nop()                .side(0b10) [7]
+    wrap()
+
+
+@rp2.asm_pio(sideset_init=(HI, LO), out_init=LO)
+def bbd_regen_late_inv():
+    wrap_target()
+    nop()                .side(0b01) [7]
+    nop()                .side(0b01) [5]
+    mov(pins, invert(pins)) .side(0b01) [1]
+    nop()                .side(0b10) [7]
+    nop()                .side(0b10) [7]
+    wrap()
+
+
+def regen_program():
+    if REGEN_LATE:
+        return bbd_regen_late_inv if INVERT else bbd_regen_late
+    return bbd_regen_inv if INVERT else bbd_regen
+
+
 @rp2.asm_pio(sideset_init=(HI, LO), out_init=LO,
              out_shiftdir=rp2.PIO.SHIFT_LEFT, autopull=True, pull_thresh=32)
 def bbd_sample():
@@ -103,10 +141,11 @@ def bbd_sample():
     wrap()
 
 
-def start(prog, f_clk):
+def start(prog, f_clk, active=True):
     sm = rp2.StateMachine(SM_ID, prog, freq=int(32 * f_clk),
                           sideset_base=Pin(PIN_CLK1), out_base=Pin(PIN_DATA), in_base=Pin(PIN_COMP))
-    sm.active(1)
+    if active:
+        sm.active(1)
     return sm
 
 

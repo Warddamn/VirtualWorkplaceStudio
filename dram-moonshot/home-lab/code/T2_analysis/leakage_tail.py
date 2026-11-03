@@ -33,15 +33,31 @@ Required columns (header names are case-insensitive; aliases accepted):
     voltage       node voltage in volts                             (alias: voltage_V, v)
 Optional columns:
     run           repeat index if one device is measured more than once at one temperature
-    cap_pf        node capacitance for that row in pF (overrides --cap-pf)
+    cap_pf        node capacitance for that row in pF (the firmware writes CAP_PF here).
+                  --cap-pf, when given, OVERRIDES this column for every record.
     temp_meas_C   logged block temperature for that row (used with --cap-tempco-ppm)
+
+Valid-range rule (why a "quiet" trace can mean a LEAKY device)
+----------------------------------------------------------------
+The buffer is linear only between ~0.45 V and the ADS1115 full scale (2.048 V). A node that
+leaves that window, or falls more than 0.5 V, is no longer measuring the current. Each record
+is therefore cut at its first out-of-range point:
+    ok         never left the window: normal fit
+    truncated  left the window, but >= 30 in-range points remain after --skip-s: fit those
+    drained    fewer than 30 points remain: the device leaked MORE than the node could hold.
+               Its current is reported as a LOWER BOUND, I_lb = C * (V_start - V_limit) / t_out,
+               and it is never called "below floor" (right-censored: at least this leaky)
+    invalid    the node was already outside the window at the first sample (e.g. a BLANK
+               whose node was never written): the record is dropped with a warning
 
 Usage
 -----
     python3 leakage_tail.py --selftest [--workdir DIR]        # synthetic data, checks recovery
     python3 leakage_tail.py --expected                       # first-principles numbers for E4
-    python3 leakage_tail.py --csv my_log.csv --cap-pf 470 --skip-s 60 [--json out.json]
+    python3 leakage_tail.py --csv my_log.csv --skip-s 60 [--json out.json]
+    python3 leakage_tail.py --csv my_log.csv --cap-pf 10230  # override the cap_pf column
     python3 leakage_tail.py --plan 2e-13 --window-s 600      # pick a capacitor for a current
+    python3 leakage_tail.py --plan 1e-10 --cap-pf 47000      # longest window for this C
 
 Dependencies: Python 3.9+ standard library + numpy. No scipy, no matplotlib.
 Author: dram-moonshot home-lab track T2. Written 2026-11-03. Exit code 0 = success.
@@ -62,6 +78,13 @@ KB_EV = 8.617333262e-5          # Boltzmann constant, eV/K
 KB_J = 1.380649e-23             # Boltzmann constant, J/K
 Q_E = 1.602176634e-19           # elementary charge, C
 ZERO_C = 273.15
+
+# Valid node window (must match V_MIN / V_MAX / DROOP_MAX_V in e4_pico_leakage_bench.py)
+V_LO = 0.45                     # below this the single-supply buffer is near its output rail
+V_HI = 2.04                     # ADS1115 +/-2.048 V full scale clips at 2.0479 V
+DROOP_MAX = 0.50                # leakage depends on bias: stop trusting the slope after 0.5 V
+N_MIN_FIT = 30                  # fewer in-range points than this -> "drained" (lower bound)
+DROOP_BELOW_FLOOR = 0.30        # a run may be called "below floor" only if it drooped < 0.3 V
 
 # ---------------------------------------------------------------------------------------------
 # CSV loading
@@ -156,19 +179,59 @@ def ols(t, v):
     return m, b, se, s
 
 
-def fit_record(rec, cap_pf_default, skip_s=60.0, cap_tempco_ppm=None):
-    """Fit one decay record. Returns a dict with slope and current (A).
+def _record_cap_pf(rec, cap_pf_default, cap_override):
+    cap_col = rec["cap_pf"]
+    col = float(np.nanmedian(cap_col)) if np.isfinite(cap_col).any() else None
+    if cap_override is not None:
+        return float(cap_override), col
+    return (col if col is not None else float(cap_pf_default)), col
+
+
+def fit_record(rec, cap_pf_default, skip_s=60.0, cap_tempco_ppm=None, cap_override=None):
+    """Fit one decay record. Returns a dict with slope, current (A) and a status.
 
     Sign convention: I_leak > 0 means charge is LEAVING the node (node voltage falling for a
     positive node). I_leak = -C * dV/dt.
+
+    status: "ok", "truncated", "drained" (I_lb_A is a LOWER bound) or "invalid" (see module doc).
     """
-    t, v = rec["t"], rec["v"]
-    sel = t >= (t[0] + skip_s)
-    if sel.sum() < 10:
-        sel = np.ones_like(t, dtype=bool)
-    t, v = t[sel], v[sel]
-    cap = rec["cap_pf"][sel]
-    cap_pf = float(np.nanmedian(cap)) if np.isfinite(cap).any() else float(cap_pf_default)
+    t_all, v_all = rec["t"], rec["v"]
+    cap_pf, cap_col = _record_cap_pf(rec, cap_pf_default, cap_override)
+    C = cap_pf * 1e-12
+    base = {"cap_pf": cap_pf, "cap_pf_column": cap_col, "n_raw": int(len(t_all)),
+            "v_first": float(v_all[0]) if len(v_all) else float("nan")}
+
+    # 1) valid-range cut: the record is trusted only up to its first out-of-range point
+    v_ref = float(v_all[0])
+    if not (V_LO < v_ref < V_HI):
+        return dict(base, status="invalid",
+                    reason=f"first sample {v_ref:.3f} V is outside {V_LO}-{V_HI} V (node never written, or railed)")
+    ok_all = (v_all > V_LO) & (v_all < V_HI) & (v_all > v_ref - DROOP_MAX)
+    bad = np.nonzero(~ok_all)[0]
+    first_bad = int(bad[0]) if len(bad) else len(t_all)
+    left_range = first_bad < len(t_all)
+
+    sel = np.zeros(len(t_all), dtype=bool)
+    sel[:first_bad] = True
+    sel &= t_all >= (t_all[0] + skip_s)
+    if sel.sum() < N_MIN_FIT:
+        if left_range:
+            # Drained (or rose out of range) before enough points: report a bound, not a fit.
+            dt = float(t_all[first_bad] - t_all[0])
+            if v_all[first_bad] >= V_HI:
+                I_b = -C * (V_HI - v_ref) / dt          # node ROSE: charge flowing IN, at least this much
+            else:
+                v_lim = max(V_LO, v_ref - DROOP_MAX)
+                I_b = C * (v_ref - v_lim) / dt          # node fell past the limit within dt
+            return dict(base, status="drained", I_lb_A=I_b, t_out_s=dt,
+                        v_out=float(v_all[first_bad]),
+                        reason=f"node left the valid window after {dt:.0f} s: current is a LOWER bound")
+        # simply a short record that stayed in range: use every in-range point, ignore skip_s
+        sel = np.zeros(len(t_all), dtype=bool)
+        sel[:first_bad] = True
+        if sel.sum() < 10:
+            return dict(base, status="invalid", reason=f"only {int(sel.sum())} points")
+    t, v = t_all[sel], v_all[sel]
     tm = rec["tm"][sel]
     tempco_applied = False
     if cap_tempco_ppm is not None and np.isfinite(tm).all():
@@ -185,13 +248,15 @@ def fit_record(rec, cap_pf_default, skip_s=60.0, cap_tempco_ppm=None):
         m2, _ = theil_sen(t[half:], v[half:])
         if abs(m_ts) > 0:
             curv = (m2 - m1) / abs(m_ts)  # >0: decay slowing (bias-dependent leak or DA tail)
-    C = cap_pf * 1e-12
     return {
+        **base,
+        "status": "truncated" if left_range else "ok",
+        "t_out_s": float(t_all[first_bad] - t_all[0]) if left_range else None,
         "n_points": int(len(t)),
         "window_s": float(t[-1] - t[0]),
         "v_start": float(v[0]), "v_end": float(v[-1]),
         "dv_total": float(v[-1] - v[0]),
-        "cap_pf": cap_pf,
+        "droop_total_V": float(v_ref - v_all[first_bad - 1]),
         "slope_ts_V_per_s": m_ts,
         "slope_ols_V_per_s": m_ols,
         "slope_se_V_per_s": se,
@@ -345,71 +410,110 @@ QUANTS_DEFAULT = (0.1, 0.5, 0.9, 0.99)
 
 
 def analyze(recs, cap_pf=470.0, skip_s=60.0, blank_name="BLANK", quantiles=QUANTS_DEFAULT,
-            boot=2000, cap_tempco_ppm=None, floor_sigma=3.0, verbose=True, seed=1):
+            boot=2000, cap_tempco_ppm=None, floor_sigma=3.0, verbose=True, seed=1, cap_override=None):
     rng = np.random.default_rng(seed)
     fits = {}
     for key, rec in recs.items():
-        fits[key] = fit_record(rec, cap_pf, skip_s=skip_s, cap_tempco_ppm=cap_tempco_ppm)
+        fits[key] = fit_record(rec, cap_pf, skip_s=skip_s, cap_tempco_ppm=cap_tempco_ppm,
+                               cap_override=cap_override)
+    warnings = []
+    if cap_override is not None:
+        n_diff = sum(1 for f in fits.values() if f["cap_pf_column"] is not None
+                     and abs(f["cap_pf_column"] / cap_override - 1) > 0.01)
+        if n_diff:
+            warnings.append(f"--cap-pf {cap_override:g} overrides a cap_pf column that differs by > 1% in "
+                            f"{n_diff} record(s). Intended? (Set CAP_PF in the firmware instead.)")
+    for (dev, T, run), f in sorted(fits.items()):
+        if f["status"] == "invalid":
+            warnings.append(f"INVALID record dropped: {dev} at {T} C run {run}: {f['reason']}")
 
-    # Blank (floor) per temperature: mean over blank runs at that temperature
+    # Blank (floor) per temperature: mean over usable blank runs at that temperature
     blanks = {}
     for (dev, T, run), f in fits.items():
         if dev.upper() == blank_name.upper():
-            blanks.setdefault(T, []).append(f["I_ts_A"])
+            if f["status"] in ("ok", "truncated"):
+                blanks.setdefault(T, []).append(f["I_ts_A"])
+            elif f["status"] == "drained":
+                warnings.append(f"BLANK at {T} C run {run} DRAINED: the bench itself leaks >= {fmtA(f['I_lb_A'])}."
+                                " Not used as a floor. Fix the bench (section 11).")
     blank_I = {T: float(np.mean(v)) for T, v in blanks.items()}
     blank_sd = {T: (float(np.std(v, ddof=1)) if len(v) > 1 else float("nan")) for T, v in blanks.items()}
 
-    # Per device & temperature current (average over runs), blank-subtracted
+    # Per device & temperature current (average over usable runs), blank-subtracted
     per = {}
     for (dev, T, run), f in fits.items():
-        if dev.upper() == blank_name.upper():
+        if dev.upper() == blank_name.upper() or f["status"] == "invalid":
             continue
         per.setdefault((dev, T), []).append(f)
     devices = sorted({d for d, _ in per})
     temps = sorted({T for _, T in per})
+    for T in temps:
+        if len(blanks.get(T, [])) < 2:
+            warnings.append(f"T = {T} C: {len(blanks.get(T, []))} usable BLANK run(s): floor not established"
+                            " (need >= 2 that agree)")
     table = {}
     for (dev, T), fl in per.items():
-        I_raw = float(np.mean([f["I_ts_A"] for f in fl]))
-        I_se = float(np.sqrt(np.sum([f["I_se_A"] ** 2 for f in fl])) / len(fl))
+        good = [f for f in fl if f["status"] in ("ok", "truncated")]
         b = blank_I.get(T, 0.0)
-        I = I_raw - b
-        floor = max(floor_sigma * I_se, abs(b) * 0.5 if b else 0.0, 1e-18)
-        table[(dev, T)] = {"I_raw_A": I_raw, "I_A": I, "I_se_A": I_se, "floor_A": floor,
-                           "below_floor": bool(I <= floor), "runs": len(fl),
-                           "cap_pf": fl[0]["cap_pf"], "dv_total": fl[0]["dv_total"],
-                           "curvature": fl[0]["curvature"]}
+        bsd = blank_sd.get(T, float("nan"))
+        if good:
+            I_raw = float(np.mean([f["I_ts_A"] for f in good]))
+            I_se = float(np.sqrt(np.sum([f["I_se_A"] ** 2 for f in good])) / len(good))
+            I = I_raw - b
+            floor = max(floor_sigma * I_se, floor_sigma * bsd if math.isfinite(bsd) else 0.0,
+                        0.5 * abs(b) if b else 0.0, 1e-18)
+            # Only a quiet run that never left the window may be called "below floor"
+            quiet = all(f["status"] == "ok" and f["droop_total_V"] < DROOP_BELOW_FLOOR for f in good)
+            table[(dev, T)] = {"I_raw_A": I_raw, "I_A": I, "I_se_A": I_se, "floor_A": floor,
+                               "below_floor": bool(I <= floor and quiet), "censored": False,
+                               "status": "truncated" if any(f["status"] == "truncated" for f in good) else "ok",
+                               "runs": len(good), "cap_pf": good[0]["cap_pf"], "dv_total": good[0]["dv_total"],
+                               "curvature": good[0]["curvature"]}
+        else:   # every run drained: right-censored, current is AT LEAST the bound
+            I_lb = float(max(f["I_lb_A"] for f in fl))
+            table[(dev, T)] = {"I_raw_A": I_lb, "I_A": I_lb - b, "I_se_A": float("nan"), "floor_A": float("nan"),
+                               "below_floor": False, "censored": True, "status": "drained",
+                               "runs": len(fl), "cap_pf": fl[0]["cap_pf"], "dv_total": None, "curvature": None}
 
     results = {"blank_I_A": blank_I, "blank_sd_A": blank_sd, "temperatures_C": temps,
-               "n_devices": len(devices), "per_temperature": {}, "arrhenius": {}, "records": {}}
+               "n_devices": len(devices), "per_temperature": {}, "arrhenius": {}, "records": {},
+               "warnings": warnings}
     for (dev, T), r in table.items():
         results["records"][f"{dev}@{T}"] = r
 
     nd = NormalDist()
     for T in temps:
-        vals = np.array([table[(d, T)]["I_A"] for d in devices if (d, T) in table])
-        below = np.array([table[(d, T)]["below_floor"] for d in devices if (d, T) in table])
-        floors = np.array([table[(d, T)]["floor_A"] for d in devices if (d, T) in table])
+        keys = [(d, T) for d in devices if (d, T) in table]
+        vals = np.array([table[k]["I_A"] for k in keys])
+        below = np.array([table[k]["below_floor"] for k in keys])
+        cens = np.array([table[k]["censored"] for k in keys])
+        trunc = np.array([table[k]["status"] == "truncated" for k in keys])
+        floors = np.array([table[k]["floor_A"] for k in keys])
         n = len(vals)
         # Left-censoring: values below the bench floor are replaced by the floor. This biases
-        # LOW quantiles only; upper-tail quantiles (the ones that matter for retention) are unaffected.
+        # LOW quantiles only. Right-censoring: drained devices enter at their LOWER bound, so every
+        # quantile (and every upper CI limit) is then a LOWER bound on the true value.
         x = np.where(below, floors, vals)
         x = np.maximum(x, 1e-21)
+        xs = np.sort(x)
         qrows = []
         for p in quantiles:
             q = float(np.quantile(x, p))
             lo, hi = order_stat_ci(n, p)
-            xs = np.sort(x)
             os_lo = float(xs[lo - 1]) if lo else None
             os_hi = float(xs[hi - 1]) if hi else None
-            b_lo, b_hi = bootstrap_quantile_ci(x, p, B=boot, rng=rng)
+            if n * min(p, 1 - p) < 5:
+                b_lo = b_hi = None            # a bootstrap CI cannot reach beyond the sample extremes
+            else:
+                b_lo, b_hi = bootstrap_quantile_ci(x, p, B=boot, rng=rng)
             qrows.append({"p": p, "q_A": q, "os_ci": [os_lo, os_hi], "boot_ci": [b_lo, b_hi]})
+        # drained devices enter at their lower bound: dropping them would shrink sigma_ln
         mu, sd, sd_rob = lognormal_fit(x[~below] if (~below).sum() >= 5 else x)
         pc = ppcc(x)
         pc_crit = ppcc_critical(n, rng=np.random.default_rng(11))
         # Lognormal extrapolation to the 1e-4 upper tail (MODEL, not data)
         z4 = nd.inv_cdf(1 - 1e-4)
         q4 = math.exp(mu + sd * z4)
-        # bootstrap the extrapolation
         bs = []
         for _ in range(min(boot, 1000)):
             s = x[rng.integers(0, n, n)]
@@ -417,7 +521,8 @@ def analyze(recs, cap_pf=470.0, skip_s=60.0, blank_name="BLANK", quantiles=QUANT
             bs.append(math.exp(m_ + s_ * z4))
         q4_ci = [float(np.quantile(bs, 0.025)), float(np.quantile(bs, 0.975))]
         results["per_temperature"][T] = {
-            "n": n, "n_below_floor": int(below.sum()), "quantiles": qrows,
+            "n": n, "n_below_floor": int(below.sum()), "n_drained_lower_bound": int(cens.sum()),
+            "n_truncated": int(trunc.sum()), "quantiles": qrows,
             "lognormal_mu_ln": mu, "lognormal_sigma_ln": sd, "sigma_ln_robust": sd_rob,
             "median_A": float(np.median(x)), "ppcc": pc, "ppcc_crit_5pct": pc_crit,
             "lognormal_rejected": bool(pc < pc_crit),
@@ -425,11 +530,12 @@ def analyze(recs, cap_pf=470.0, skip_s=60.0, blank_name="BLANK", quantiles=QUANT
             "tail_ratio_q99_over_median": float(np.quantile(x, 0.99) / np.median(x)) if n >= 2 else None,
         }
 
-    # Arrhenius per device (needs >= 3 temperatures and positive currents above floor)
+    # Arrhenius per device (needs >= 3 temperatures with measured, above-floor, uncensored currents)
     eas = {}
     for d in devices:
         pts = [(T, table[(d, T)]["I_A"]) for T in temps
-               if (d, T) in table and not table[(d, T)]["below_floor"] and table[(d, T)]["I_A"] > 0]
+               if (d, T) in table and not table[(d, T)]["below_floor"] and not table[(d, T)]["censored"]
+               and table[(d, T)]["I_A"] > 0]
         if len(pts) >= 3:
             Ea, lnI0, r2 = arrhenius_fit([p[0] for p in pts], [p[1] for p in pts])
             eas[d] = {"Ea_eV": Ea, "r2": r2, "n_T": len(pts)}
@@ -472,19 +578,35 @@ def print_report(res):
             print(f"bench floor (blank) at {T:5.1f} C: {fmtA(b)}  (sd between blank runs: {fmtA(res['blank_sd_A'][T])})")
     else:
         print("no BLANK runs found: currents are NOT floor-corrected (op-amp bias current included)")
+    for w in res.get("warnings", []):
+        print(f"WARNING: {w}")
     for T, r in res["per_temperature"].items():
         print("-" * 92)
-        print(f"T = {T} C   n = {r['n']}   below floor: {r['n_below_floor']}   median = {fmtA(r['median_A'])}")
+        print(f"T = {T} C   n = {r['n']}   below floor: {r['n_below_floor']}   median = {fmtA(r['median_A'])}"
+              f"   truncated fits: {r['n_truncated']}")
+        if r["n_drained_lower_bound"]:
+            print(f"  {r['n_drained_lower_bound']} run(s) DRAINED: the node could not hold these devices, so their"
+                  " currents are LOWER bounds.")
+            print("  Every quantile and upper CI limit below is then a LOWER bound too. Re-measure those devices"
+                  " with a 10x larger C_s (or a shorter window).")
         print(f"  lognormal: sigma_ln = {r['lognormal_sigma_ln']:.2f} (robust {r['sigma_ln_robust']:.2f}),"
               f" PPCC = {r['ppcc']:.4f} (5% critical {r['ppcc_crit_5pct']:.4f})"
               f" -> {'NOT lognormal (heavier or odd tail)' if r['lognormal_rejected'] else 'consistent with lognormal'}")
         print(f"  {'quantile':>9s} {'value':>12s} {'order-stat 95% CI':>30s} {'bootstrap 95% CI':>28s}")
+        foot = False
         for q in r["quantiles"]:
             lo, hi = q["os_ci"]
             os_s = f"[{fmtA(lo) if lo is not None else ' <min   '}, {fmtA(hi) if hi is not None else ' >max   '}]"
-            print(f"  {q['p']:9.4g} {fmtA(q['q_A']):>12s} {os_s:>30s} [{fmtA(q['boot_ci'][0])}, {fmtA(q['boot_ci'][1])}]")
+            mark = ""
+            if q["boot_ci"][0] is None:
+                mark, foot = " *", True
+            print(f"  {q['p']:9.4g} {fmtA(q['q_A']):>12s} {os_s:>30s} [{fmtA(q['boot_ci'][0])}, {fmtA(q['boot_ci'][1])}]{mark}")
+        if foot:
+            print("  * bootstrap CI not valid this far into the tail (n x tail fraction < 5): it can never"
+                  " exceed the sample maximum. Trust the order-statistic column.")
         print(f"  1e-4 upper quantile by LOGNORMAL EXTRAPOLATION (model, not data): {fmtA(r['q_1e-4_lognormal_extrapolation_A'])}"
-              f"  95% CI [{fmtA(r['q_1e-4_extrap_CI_A'][0])}, {fmtA(r['q_1e-4_extrap_CI_A'][1])}]")
+              f"  95% CI [{fmtA(r['q_1e-4_extrap_CI_A'][0])}, {fmtA(r['q_1e-4_extrap_CI_A'][1])}]"
+              + ("  (drained runs present: treat as a LOWER bound)" if r["n_drained_lower_bound"] else ""))
     a = res.get("arrhenius")
     print("-" * 92)
     if a:
@@ -522,13 +644,16 @@ def expected():
     cases = [("imec-class 2T0C cell, typical (study: 75 zA on 0.15 fF)", 0.15e-15, 75e-21),
              ("hot-side 1e-4 tail ceiling, 1 b at 1 s (22.5 aA on 0.15 fF)", 0.15e-15, 22.5e-18),
              ("home bench, 100 pF node, 1 fA", 100e-12, 1e-15),
-             ("home bench, 470 pF node, 1 pA", 470e-12, 1e-12),
-             ("home bench, 10 nF node, 100 pA (hot)", 10e-9, 100e-12)]
-    print(f"  {'case':62s} {'dV/dt':>14s} {'time for 10 mV':>16s}")
+             ("home bench, 10 nF node, 1 pA (typical 2N7000)", 10e-9, 1e-12),
+             ("home bench, 470 pF node, 1 pA (C too small: drains)", 470e-12, 1e-12),
+             ("home bench, 100 nF node, 100 pA (hot)", 100e-9, 100e-12)]
+    print(f"  {'case':62s} {'dV/dt':>14s} {'time for 10 mV':>16s} {'0.9 V -> 0.45 V':>16s}")
     for name, C, I in cases:
         s = I / C
-        print(f"  {name:62s} {s*1e6:10.3g} uV/s {0.01/s:13.3g} s")
+        print(f"  {name:62s} {s*1e6:10.3g} uV/s {0.01/s:13.3g} s {0.45/s:13.3g} s")
     print("  -> a 0.15 fF cell turns 75 zA into ~0.5 mV/s. The cell IS the electrometer: small C is the trick.")
+    print("  -> but the bench node must also HOLD the current for the whole window: C_s >= I x T / 0.3 V.")
+    print("     A 1 pA device empties a 470 pF node in ~210 s, so a 1,800 s record would be mostly a flat rail.")
 
     print("\n2) Noise-limited current resolution of a straight-line fit (ADS1115, +/-2.048 V range):")
     lsb = 4.096 / 65536
@@ -536,13 +661,18 @@ def expected():
     print(f"  ADC LSB = {lsb*1e6:.1f} uV; assumed rms noise per 1-s sample = {sig_v*1e6:.1f} uV")
     print(f"  sigma_slope = sigma_v * sqrt(12/N) / T   (N points evenly over T seconds)")
     print(f"  {'C node':>8s} {'window':>8s} {'sigma_I (1 sigma)':>18s}")
-    for C in (100e-12, 470e-12, 1e-9):
+    for C in (100e-12, 470e-12, 1e-9, 10e-9):
         for T in (300, 600, 1800):
             N = T
             s = sig_v * math.sqrt(12 / N) / T
             print(f"  {C*1e12:6.0f}pF {T:7d}s {fmtA(C*s):>18s}")
-    print("  -> noise is NOT the limit at 100 pF; op-amp bias current, dielectric absorption, humidity and")
-    print("     temperature drift are. Plan on a ~1-10 fA practical floor after blank subtraction.")
+    print("  -> noise is NOT the limit; op-amp bias current, capacitor insulation, dielectric absorption,")
+    print("     humidity and temperature drift are. Plan on ~1-10 fA after blank subtraction with an air or PTFE")
+    print("     capacitor, and 10-100 fA with a boxed film capacitor until your blank shows otherwise.")
+    print("  Capacitor insulation: WIMA FKP 2 guarantees >= 5e5 MOhm at 20 C [REPORTED, retailer copies of the")
+    print(f"  WIMA data] -> <= {0.9/5e11*1e12:.1f} pA at 0.9 V. Real film leakage is usually far lower; your blank measures it.")
+    print("  Temperature drift on a big C: polypropylene ~ -200 ppm/K on a ~1 V node is ~200 uV/K. On 10 nF a")
+    print("  20 fA blank moves only 3.6 uV in 1,800 s, so measure the fA floor on 470 pF, not on 10 nF.")
 
     print("\n3) kT/C noise on the node (one-time, frozen at switch-off):")
     for C in (0.15e-15, 100e-12, 1e-9):
@@ -558,11 +688,18 @@ def expected():
         print(f"  {name:>14s} {da*100:5.2f}% {fmtA(a):>28s} {fmtA(b):>34s}")
     print("  -> use polypropylene or PTFE, and SOAK the node at its start voltage before switching off.")
 
-    print("\n5) Gate kickback when the DUT switches off: dV = -Cgd * dVg / (C_node + Cgd)")
-    for cn in (100e-12, 470e-12, 1e-9):
-        cgd = 5e-12  # 2N7000 reverse-transfer capacitance order of magnitude [UNVERIFIED]
-        print(f"  Cgd = 5 pF, gate swing 9 V, C_node = {cn*1e12:5.0f} pF: kickback = {-cgd*9/(cn+cgd)*1e3:7.1f} mV")
-    print("  (The 2T0C literature sees the same word-line coupling into the storage node.)")
+    print("\n5) Kickback when the DUT switches off: dV = -[Cgd*(V_node + Vth) + Cds*V_WBL] / C_node")
+    print("   Only the part of the 9 V gate swing below V_node + Vth (~2-4 V) couples: above it the channel is")
+    print("   still on and the 6.9 kOhm bit line holds the node. Then the bit line steps 1.03 V -> 0 V through Cds.")
+    print("   Cgd ~5 pF (2N7000 Crss 4 typ / 5 max at 25 V [DATASHEET], larger near 1 V);")
+    print("   Cds ~10-50 pF near 1 V [ESTIMATE: Coss 11 typ / 25 max at 25 V, x2-4 for a junction at ~1 V].")
+    print(f"  {'C_node':>8s} {'gate term':>20s} {'bit-line term':>22s} {'total':>22s}")
+    for cn in (470e-12, 1e-9, 10e-9, 47e-9):
+        g = (-5e-12 * 4 / cn, -5e-12 * 2 / cn)
+        d = (-50e-12 * 1.03 / cn, -10e-12 * 1.03 / cn)
+        print(f"  {cn*1e12:6.0f}pF {g[0]*1e3:8.1f} to {g[1]*1e3:5.1f} mV {d[0]*1e3:9.1f} to {d[1]*1e3:5.1f} mV"
+              f" {(g[0]+d[0])*1e3:9.1f} to {(g[1]+d[1])*1e3:5.1f} mV")
+    print("  -> a bigger C_s is the cure; the gate voltage matters little. (2T0C papers see the same coupling.)")
 
     print("\n6) Arrhenius scaling, I ~ exp(-Ea/kT):")
     print(f"  {'Ea (eV)':>8s} {'x per +10 K near 25 C':>22s} {'x from 25 to 85 C':>18s}  meaning")
@@ -582,11 +719,18 @@ def expected():
             cells.append(f"{c:8.0f} pF,{dv*1e3:7.1f} mV")
         print(f"  {fmtA(I25):>10s} | " + " | ".join(f"{c:>23s}" for c in cells))
     print("  If droop at 100 pF is < 1 mV, lengthen the window (1800 s) or accept a floor-limited result.")
+    print("\n7b) Minimum C_s so a device stays inside the 0.3 V droop limit: C_s >= I x T / 0.3 V")
+    print(f"  {'I':>10s} {'T = 120 s':>12s} {'T = 600 s':>12s} {'T = 1,800 s':>12s}")
+    for I in (1e-13, 1e-12, 1e-11, 1e-10):
+        print(f"  {fmtA(I):>10s} " + " ".join(f"{I*T/0.3*1e12/1e3:9.2f} nF" for T in (120, 600, 1800)))
+    print("  For a POPULATION, size C_s so the MEDIAN droops ~30 mV: then a device 10x leakier still stays")
+    print("  under 0.3 V. 2N7000s at 25 C (median 0.1-10 pA, 600 s): about 2.2-100 nF; 10 nF is a good start.")
 
     print("\n8) Sample size: why the Oxide Tail Spec needs >=1e5 cells per split")
     print_sample_size_table()
-    print("  With n = 100 devices you can bound the 90th-97th percentile from data. The 1e-4 quantile from")
-    print("  100 devices is a lognormal EXTRAPOLATION: it is only as good as the lognormal assumption.")
+    print(f"  With n = 100 devices the highest quantile you can bound from data alone (two-sided 95%) is")
+    print(f"  q = 0.025^(1/n) = {0.025**(1/100):.3f}. The 1e-4 quantile from 100 devices is a lognormal")
+    print("  EXTRAPOLATION: it is only as good as the lognormal assumption.")
 
     print("\n9) Calibration currents:")
     for R, V in ((10e9, 0.1), (10e9, 0.01), (10e9, 0.001), (100e9, 0.001)):
@@ -703,7 +847,70 @@ def selftest(workdir=None):
     ea_med = res["arrhenius"]["Ea_median_eV"]
     print(f"  Ea median estimated {ea_med:.3f} eV vs true sample median {ea_med_true:.3f} eV")
     ok &= abs(ea_med - ea_med_true) < 0.03
+    q99 = [q for q in res["per_temperature"][25.0]["quantiles"] if q["p"] == 0.99][0]
+    print(f"  q0.99 bootstrap CI suppressed at n = 120 (n x 0.01 < 5): {q99['boot_ci'] == [None, None]}")
+    ok &= q99["boot_ci"] == [None, None]
+
+    print("SELFTEST 5: the node-range rule. A fixed 470 pF node, 1,800 s, buffer clamped near 0 V, ADC clips at"
+          " 2.048 V")
+    ok &= selftest_range_rule()
+
+    print("SELFTEST 6: --cap-pf overrides the cap_pf column")
+    rec = synth_record(1e-13, 470e-12, 600, np.random.default_rng(3))
+    f_col = fit_record(rec, 470.0)
+    f_ovr = fit_record(rec, 470.0, cap_override=500.0)
+    ratio = f_ovr["I_ts_A"] / f_col["I_ts_A"]
+    print(f"  I(override 500 pF) / I(column 470 pF) = {ratio:.4f} (expect {500/470:.4f})")
+    ok &= abs(ratio - 500 / 470) < 1e-9
     print("SELFTEST", "PASS" if ok else "FAIL")
+    return ok
+
+
+def synth_record(I_A, C_F, window_s, rng, v0=0.9, dev="X", cap_col_pf=None):
+    """One decay record as the real bench would log it: settling bump, 1-LSB noise, the buffer's
+    output clamped near 0 V, the ADS1115 clipped at 2.0479 V, then quantised."""
+    lsb = 4.096 / 65536
+    t = np.arange(0, window_s + 1, 1.0)
+    v = v0 - I_A / C_F * t + 2e-3 * np.exp(-t / 20.0) + lsb * rng.standard_normal(len(t))
+    v = np.clip(v, 0.004, 2.0479)
+    v = np.round(v / lsb) * lsb
+    cap = np.full(len(t), (cap_col_pf if cap_col_pf is not None else C_F * 1e12))
+    return {"t": t, "v": v, "cap_pf": cap, "tm": np.full(len(t), math.nan), "dev": dev}
+
+
+def selftest_range_rule():
+    ok = True
+    rng = np.random.default_rng(9)
+    recs = {}
+    cases = {"P1pA": 1e-12, "P10pA": 1e-11, "Plow": 2e-15 + 3e-15}   # every run also carries the 3 fA bench
+    for name, I in cases.items():
+        recs[(name, 25.0, "0")] = synth_record(I, 470e-12, 1800, rng)
+    # three good blanks (+3 fA) and one whose node was never written (starts at 2.6 V -> ADC reads 2.0479 V)
+    for k in range(3):
+        recs[("BLANK", 25.0, str(k))] = synth_record(3e-15, 470e-12, 1800, rng)
+    recs[("BLANK", 25.0, "railed")] = synth_record(15e-15, 470e-12, 1800, rng, v0=2.6)
+    res = analyze(recs, cap_pf=470.0, skip_s=60.0, boot=200, verbose=False)
+    r1 = res["records"]["P1pA@25.0"]
+    r10 = res["records"]["P10pA@25.0"]
+    rlo = res["records"]["Plow@25.0"]
+    print(f"  1 pA device : status {r1['status']:9s} I = {fmtA(r1['I_A'])} (true 1 pA), below floor = {r1['below_floor']}")
+    print(f"  10 pA device: status {r10['status']:9s} I >= {fmtA(r10['I_A'])} (true 10 pA), below floor = {r10['below_floor']}")
+    print(f"  2 fA device : status {rlo['status']:9s} I = {fmtA(rlo['I_A'])} (true 2 fA after the 3 fA blank)")
+    ok &= r1["status"] in ("truncated", "drained") and r1["I_A"] >= 0.5e-12 and not r1["below_floor"]
+    ok &= r1["status"] != "truncated" or abs(r1["I_A"] / 1e-12 - 1) < 0.10
+    ok &= r10["status"] == "drained" and r10["censored"] and 0.5e-12 <= r10["I_A"] <= 1e-11 and not r10["below_floor"]
+    ok &= rlo["status"] == "ok" and abs(rlo["I_A"] - 2e-15) < 1e-15
+    railed_dropped = any("INVALID" in w and "railed" in w for w in res["warnings"])
+    print(f"  blank whose node started at 2.6 V (ADC clipped): dropped as INVALID = {railed_dropped};"
+          f" floor from the 3 good blanks = {fmtA(res['blank_I_A'][25.0])} (true 3 fA)")
+    ok &= railed_dropped and abs(res["blank_I_A"][25.0] - 3e-15) < 1e-15
+    nd = res["per_temperature"][25.0]["n_drained_lower_bound"]
+    print(f"  drained (lower-bound) devices counted at 25 C: {nd} (expect 1)")
+    ok &= nd == 1
+    # the old behaviour this replaces: a plain fit over the whole clamped trace
+    t, v = recs[("P10pA", 25.0, "0")]["t"], recs[("P10pA", 25.0, "0")]["v"]
+    m_naive, _ = theil_sen(t[t >= 60], v[t >= 60])
+    print(f"  (a naive fit of the clamped 10 pA trace would report {fmtA(-470e-12 * m_naive + 0.0)}: a 'perfect' device)")
     return ok
 
 
@@ -711,7 +918,10 @@ def selftest(workdir=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--csv", help="log CSV: device,temperature,time,voltage[,run,cap_pf,temp_meas_C]")
-    ap.add_argument("--cap-pf", type=float, default=470.0, help="node capacitance if no cap_pf column (pF)")
+    ap.add_argument("--cap-pf", type=float, default=None,
+                    help="node capacitance in pF. Given: OVERRIDES the cap_pf column for every record. "
+                         "Not given: the cap_pf column is used (470 pF if there is no column). With --plan: "
+                         "prints the longest window this C can hold.")
     ap.add_argument("--skip-s", type=float, default=60.0, help="seconds to skip after switch-off (settling)")
     ap.add_argument("--blank-name", default="BLANK")
     ap.add_argument("--quantiles", default="0.1,0.5,0.9,0.99")
@@ -732,16 +942,26 @@ def main(argv=None):
         expected()
         return 0
     if a.plan:
-        c, dv = plan_capacitor(a.plan, a.window_s)
-        print(f"For I = {fmtA(a.plan)} over {a.window_s:.0f} s: use C = {c:.0f} pF -> droop {dv*1e3:.1f} mV")
+        I, W = a.plan, a.window_s
+        c, dv = plan_capacitor(I, W)
+        print(f"For I = {fmtA(I)} over {W:.0f} s:")
+        print(f"  one device      : C = {c:.0f} pF -> droop {dv*1e3:.1f} mV (target ~100 mV)")
+        cp, dvp = plan_capacitor(I, W, dv_target_V=0.03)
+        print(f"  a POPULATION with this median: C = {cp:.0f} pF -> median droop {dvp*1e3:.1f} mV;"
+              f" a device 10x leakier droops {10*dvp*1e3:.0f} mV {'(OK, < 300 mV)' if 10*dvp < 0.3 else '(too much: shorten the window)'}")
+        print(f"  minimum C for this current to stay inside the 0.3 V droop limit: {I*W/0.3*1e12:.0f} pF")
+        if a.cap_pf:
+            t03 = 0.3 * a.cap_pf * 1e-12 / I
+            print(f"  with C = {a.cap_pf:.0f} pF this current droops 0.3 V after {t03:.0f} s: set RECORD_S <= "
+                  f"{min(t03, 1800):.0f}" + (" and use --skip-s 10 (record < 120 s)" if t03 < 120 else ""))
         return 0
     if not a.csv:
         ap.print_help()
         return 0
     recs = load_csv(a.csv)
     qs = tuple(float(x) for x in a.quantiles.split(","))
-    res = analyze(recs, cap_pf=a.cap_pf, skip_s=a.skip_s, blank_name=a.blank_name, quantiles=qs,
-                  boot=a.boot, cap_tempco_ppm=a.cap_tempco_ppm)
+    res = analyze(recs, cap_pf=470.0, skip_s=a.skip_s, blank_name=a.blank_name, quantiles=qs,
+                  boot=a.boot, cap_tempco_ppm=a.cap_tempco_ppm, cap_override=a.cap_pf)
     if a.json:
         def conv(o):
             if isinstance(o, dict):
