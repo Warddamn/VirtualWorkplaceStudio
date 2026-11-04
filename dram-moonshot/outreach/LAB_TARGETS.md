@@ -43,7 +43,7 @@
 
 | # | Group | One line on why |
 |---|---|---|
-| 1 | **Peide Ye**, Purdue ECE | ALD In₂O₃ FETs built for DRAM, which survive 600 °C (EDL 2024) [REPORTED]. Purdue's 2026-09-16 news item names him as lead of the 3-tier 200 mm platform [REPORTED, re-check] |
+| 1 | **Peide Ye**, Purdue ECE | ALD In₂O₃ FETs built for DRAM, which survive 600 °C (EDL 2024) [REPORTED]. Purdue's 2026-09-16 news item names Ye as lead of the 3-tier 200 mm platform [REPORTED, re-check] |
 | 2 | **Suman Datta**, Georgia Tech ECE | Senior author of the first IWO (tungsten-doped In₂O₃) 2T gain-cell eDRAM, with leakage and retention measured at 25 and 85 °C (IEDM 2020). Now works on oxide BEOL memory at Georgia Tech [REPORTED] |
 | 3 | **Muhammad Ashraful Alam**, Purdue ECE | A reliability physicist who has measured PBTI and hot-carrier drift in ALD In₂O₃ TFTs (EDL 2022). The tail question is a reliability question [REPORTED] |
 | 4 | **Shimeng Yu**, Georgia Tech ECE | Oxide 2T gain-cell arrays and benchmarking (IEEE Trans. Computers 2026); knows what a ≥1e5-cell test array needs [REPORTED] |
@@ -201,7 +201,7 @@ The criteria, in order [ESTIMATE]:
 
 | Faculty | Institution | Matching publication (title, year) | Why they fit the spec | Official page | Name / institution / topic |
 |---|---|---|---|---|---|
-| **Peide Ye** | Purdue University, ECE | Lin et al., top-gate enhancement-mode ALD In₂O₃ FETs with a 600 °C thermal budget "for DRAM applications", IEEE EDL 2024; Si et al., ultimately scaled ALD In₂O₃ transistors (8 nm channel), Nature Electronics 2022 [REPORTED]. Purdue's 2026-09-16 news item on the 3-tier In₂O₃ platform on 200 mm names him as lead [REPORTED, re-check] | The In₂O₃ channel split and the hydrogen-tolerant 600 °C option; Purdue has reported >1e5 devices on 200 mm [REPORTED] | [engineering.purdue.edu/~yep](https://engineering.purdue.edu/~yep/Papers/EDL_2024_In2O3%20600C_Lin.pdf) (group papers); [Purdue ECE 2026 news](https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing) | ✔ / ✔ (2024 papers on Purdue's site) / ✔ |
+| **Peide Ye** | Purdue University, ECE | Lin et al., top-gate enhancement-mode ALD In₂O₃ FETs with a 600 °C thermal budget "for DRAM applications", IEEE EDL 2024; Si et al., ultimately scaled ALD In₂O₃ transistors (8 nm channel), Nature Electronics 2022 [REPORTED]. Purdue's 2026-09-16 news item on the 3-tier In₂O₃ platform on 200 mm names Ye as lead [REPORTED, re-check] | The In₂O₃ channel split and the hydrogen-tolerant 600 °C option; Purdue has reported >1e5 devices on 200 mm [REPORTED] | [engineering.purdue.edu/~yep](https://engineering.purdue.edu/~yep/Papers/EDL_2024_In2O3%20600C_Lin.pdf) (group papers); [Purdue ECE 2026 news](https://engineering.purdue.edu/ECE/News/2026/purdue-researchers-build-3d-chip-platform-for-faster-more-efficient-ai-computing) | ✔ / ✔ (2024 papers on Purdue's site) / ✔ |
 | **Suman Datta** | Georgia Tech, ECE | H. Ye, …, K. Ni, A. Raychowdhury, S. Datta, "Double-gate W-doped amorphous indium oxide transistors for monolithic 3D capacitorless gain cell eDRAM", IEDM 2020 (done at Notre Dame); Phadke, Datta, Yu et al., capacitive coupling in oxide-channel 2T gain cells, IEEE TED 2024 [REPORTED] | First IWO 2T gain cell (per the Notre Dame thesis), with leakage and retention measured at 25 and 85 °C; his GT page lists AOS for BEOL memory | [ece.gatech.edu/faculty-staff-directory/suman-datta](https://www.ece.gatech.edu/faculty-staff-directory/suman-datta) | ✔ / ✔ / ✔ |
 | **Shimeng Yu** | Georgia Tech, ECE | Waqar, Kwak, Lee, Phadke, Shon, Gholamrezaei, Skadron, Yu, "Optimization and Benchmarking of Monolithically Stackable Gain Cell Memory for Last-Level Cache", IEEE Trans. Computers 75(3), March 2026 (AOS 2T gain cells) [REPORTED] | Array and circuit side: what a ≥1e5-cell structure and its readout need; system benchmarks against SRAM and eDRAM | [shimeng.ece.gatech.edu](https://shimeng.ece.gatech.edu/?p=916) | ✔ / ✔ / ✔ |
 | **Asif Islam Khan** | Georgia Tech, ECE (courtesy MSE) | T. Song, A. I. Khan, "3D DRAM with stacked oxide-semiconductor channel transistors", Nature Electronics 2025 (listed on his directory page) [REPORTED] | Ferroelectric and oxide BEOL devices; 3D oxide DRAM view relevant to AND-STACK | [ece.gatech.edu/faculty-staff-directory/asif-islam-khan](https://www.ece.gatech.edu/faculty-staff-directory/asif-islam-khan) | ✔ / ✔ / ✔ (main focus is ferroelectrics) |
@@ -214,7 +214,7 @@ The criteria, in order [ESTIMATE]:
 
 | Person or group | What was found | What is missing |
 |---|---|---|
-| **Kai Ni**, University of Notre Dame, EE | Co-author on the IEDM 2020 IWO 2T gain cell; listed at Notre Dame on a 2025 arXiv paper and as PI of a Notre Dame student project [REPORTED] | Official faculty page not found; his own oxide-channel memory papers not confirmed [UNVERIFIED] |
+| **Kai Ni**, University of Notre Dame, EE | Co-author on the IEDM 2020 IWO 2T gain cell; listed at Notre Dame on a 2025 arXiv paper and as PI of a Notre Dame student project [REPORTED] | Official faculty page not found; Ni's own oxide-channel memory papers not confirmed [UNVERIFIED] |
 | **Jason P. Campbell**, NIST (Gaithersburg, MD) | RTN in highly scaled nMOSFETs (2009) and fast-BTI methods (2008) [REPORTED] | Silicon, not oxide; current role at NIST [UNVERIFIED]. A method partner for fast RTN capture, not a fab |
 | **Thomas N. Jackson**, Penn State | PEALD ZnO TFTs and circuits at 200 °C, 2008-2016 [REPORTED] | Current activity [UNVERIFIED] |
 | **Ioannis Kymissis**, Columbia | Thin-film and metal-oxide hybrid electronics [REPORTED] | No IGZO or memory paper found; weak fit |
@@ -283,15 +283,15 @@ The FASTEST PROOF needs DRAM Bender-style FPGA rigs for DDR4, plus open DDR5 RDI
 - Stony Brook: no nanofab found.
 - Purdue's 3-tier In₂O₃ platform (2026): that it was built at Birck. (Ye's lead role is confirmed by Purdue's news item; re-check.)
 - Every tool-capability cell marked "Ask" in §1.2: ALD, e-beam or stepper, forming-gas and D₂O anneals, 125 °C hot-chuck probers and bonders.
-- Karl Hirschman: the 2024 papers' affiliations were not shown. (His current RIT role is now sourced to the RIT directory; re-check.)
-- Kai Ni: official Notre Dame page; his own oxide-memory papers.
+- Karl Hirschman: the 2024 papers' affiliations were not shown. (Hirschman's current RIT role is now sourced to the RIT directory; re-check.)
+- Kai Ni: official Notre Dame page; Ni's own oxide-memory papers.
 - Jason P. Campbell: current NIST role.
 - Thomas N. Jackson: current activity.
 - Arijit Raychowdhury: current role.
 - Saugata Ghose: academic rank and official page.
 - Becky Peterson: whether the Lurie Nanofabrication Facility director role is current (the page is undated).
-- Minesh Patel: the year he joined Rutgers (2024) was not re-checked.
-- Moinuddin Qureshi: whether his lab runs real-chip FPGA test rigs.
+- Minesh Patel: the year Patel joined Rutgers (2024) was not re-checked.
+- Moinuddin Qureshi: whether the Qureshi lab runs real-chip FPGA test rigs.
 - Antmicro: headquarters location.
 - Introspect Technology: location.
 - Time zones and drive times (Purdue in Eastern Time; RIT a day's drive from New York or Boston): prior knowledge, not sourced.
