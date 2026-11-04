@@ -13,7 +13,9 @@ Inputs
         "revised_verdicts": {"possible": "...", "profitable": "...", "doable": "..."},
         "responses": [{"id": "RT-VET-DD1-01", "response": "...",
                        "disposition": "REFUTED|ACCEPTED-MITIGATED|ACCEPTED-DOWNGRADE|ACCEPTED-KILL",
-                       "action": "..."}]}
+                       "action": "..."}],
+        "corrections": [{"date": "...", "by": "...", "text": "...", "affects": ["..."]}]  (optional; rendered under
+        the final status, so later owner corrections never rewrite the verbatim record)}
   research/redteam/summary.md (optional narrative inserted at the top)
 Output
   REDTEAM.md
@@ -100,6 +102,9 @@ def main():
         if rv:
             lines += [f"*Revised verdicts* — Possible: {rv.get('possible', '')} · Profitable: {rv.get('profitable', '')} · "
                       f"Doable by this founder: {rv.get('doable', '')}", ""]
+        for c in rd.get("corrections", []):  # later owner corrections; the record above and below stays verbatim
+            lines += [f"**Correction ({c.get('date', '')}, {c.get('by', 'study owner')}):** {c.get('text', '')}"
+                      + (f" *Affects:* {', '.join(c['affects'])}." if c.get("affects") else ""), ""]
         os_ = sorted((o for o in objections if o["dd"] == dd),
                      key=lambda o: (SEV_ORDER.get(o.get("severity"), 9), o["persona"], o["id"]))
         for o in os_:

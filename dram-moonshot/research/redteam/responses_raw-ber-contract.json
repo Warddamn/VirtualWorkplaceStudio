@@ -129,17 +129,20 @@
  "corrections": [
   {
    "date": "2026-11-04",
-   "by": "study owner (after the red team; the objections and responses above are unchanged)",
+   "by": "study owner, after the red team",
    "affects": [
     "status_reason",
     "revised_verdicts.profitable",
-    "RT-CIRC-raw-ber-contract-03",
+    "RT-DEV-raw-ber-contract-02",
+    "RT-DEV-raw-ber-contract-03",
     "RT-DEV-raw-ber-contract-04",
+    "RT-PROC-raw-ber-contract-01",
+    "RT-CIRC-raw-ber-contract-03",
     "RT-CIRC-raw-ber-contract-05",
     "RT-IND-raw-ber-contract-04",
     "RT-IND-raw-ber-contract-05"
    ],
-   "text": "The retired-DDR4 figures in these responses (837 ms = 13.1x central, 7.8x pessimistic, 258 ms = 4.0x degraded; 5.4e-5 RS-8 limit; 1.1e-4 / 1.1e-3 chip-fault UE; 1.5e-3 census bound) gave DDR4 a 640-bit line with 128 check bits, the DDR5 RDIMM organisation. A DDR4 x4 ECC RDIMM carries 512 data + 64 check bits per 64 B line. Model section 10.11 now gives, chipkill kept, 85 C: two channels in lockstep (RS(144,128)) 698 ms = 10.9x central, 6.9x pessimistic, 7.0x with a chip dead, chip-fault UE ~1e-14; one channel (RS(72,64)) 258 ms = 4.0x, 3.4x pessimistic, no relaxation with a chip dead, chip-fault UE 1.6e-6 / 1.6e-5. The 13.1x holds only if the controller spends 11.1% of DDR4 capacity on extra check bits. DDR5 figures are unchanged. See dossiers/raw-ber-contract.md section 12.1."
+   "text": "The retired-DDR4 figures in these responses (837 ms = 13.1x central, 7.8x pessimistic, 258 ms = 4.0x degraded; 5.4e-5 RS-8 limit; 1.1e-4 / 1.1e-3 chip-fault UE; 1.5e-3 census bound; ~700x/day VRT line for kill #4; 0.007% Berlekamp-Massey lines) gave DDR4 a 640-bit line with 128 check bits, the DDR5 RDIMM organisation. A DDR4 x4 ECC RDIMM carries 512 data + 64 check bits per 64 B line. Model section 10.11 now gives, chipkill kept, 85 C: two channels in lockstep (RS(144,128)) 698 ms = 10.9x central, 6.9x pessimistic, 7.0x with a chip dead, chip-fault UE ~1e-14; one channel (RS(72,64)) 258 ms = 4.0x, 3.4x pessimistic, no relaxation with a chip dead, chip-fault UE 1.6e-6 / 1.6e-5, and it cannot hold 0.5 s at 85 C at any VRT growth. Lockstep holds 0.5 s up to ~324x/day; Berlekamp-Massey stays at 0.007% of lines in lockstep and ~0% on one channel. Where a response compares DDR5 behind SEC (1.5e-5) with 'raw DDR4' (5.4e-5), read the 5.4e-5 as a raw 640-bit line. The 13.1x holds only if the controller spends 11.1% of DDR4 capacity on extra check bits. DDR5 figures are unchanged. See dossiers/raw-ber-contract.md section 12.1. The objections and responses are unchanged."
   }
  ]
 }

@@ -354,7 +354,7 @@ Does a per-module servo hold the grade it predicts? The flag question is dropped
 |---|---|---|
 | RS-8 safe interval incl. VRT (1 h scrub), 2e-19 | ≥6x window at 85 C (DDR5 ≥0.19 s; DDR4 ≥0.38 s) and ≥24x at 65 C | <4x window at 65 C (DDR5 <128 ms; DDR4 <256 ms) |
 | Multi-byte (multi-chip) error events | ≤10% of events; no mechanism >2x its 32/64 ms rate | >10% of events, or a new multi-chip mechanism |
-| VRT | g ≤700x/day (10-min scrub holds the interval); per-codeword pairs within 2x of Poisson | 10-min scrub cannot hold 6x window at 85 C (85 C claim killed; 45-65 C kept) |
+| VRT | g ≤700x/day (10-min scrub holds the interval; corrected 2026-11-04: that is the 640-bit RS-8 line for 0.5 s at 85 C; on DDR4 it is ~324x/day in lockstep, and one DDR4 channel cannot hold 6x at 85 C at any growth, §12.1); per-codeword pairs within 2x of Poisson | 10-min scrub cannot hold 6x window at 85 C (85 C claim killed; 45-65 C kept) |
 | Servo / sort proxy | 1 h grade holds ≥1,000 h for ≥95% of modules | <90% |
 | DDR5 inference | ECS counts resolve singletons at the operating BER; post-SEC model within 2x | ECS masked and no vendor test mode → DDR5 claim stays unproven |
 | 1,000 h soaks (DDR4 CXL, DDR5 tester) | 0 UE; corrected errors within 2x of model | any UE |
@@ -689,7 +689,7 @@ That compares with 15x (7.7-30x) claimed without chipkill.
 | One channel, RS(72,64) | ~4x (258 ms) | 3.4x | ~16x (1.0 s) | none (1.0x) | no capacity cost; no random-error margin while a dead chip is unmarked |
 | 640-bit layout, RS(80,64) (the row above) | ~13x (837 ms) | 7.8x | ~52x (3.3 s) | 4.0x | 11.1% of capacity for extra check bits, plus parity-line reads [ESTIMATE] |
 
-So "~13x on retired DDR4" becomes **~11x with two channels in lockstep, or ~4x on one channel**. On one channel the 85 C GO line (≥6x) fails in the model, though kill #1 (<4x at 65 C) does not trigger. The DDR5 numbers do not change: a DDR5 sub-channel really carries 128 check bits per 64 B line. With the measured DDR3L tail (§12) the corrected layouts give 36x (lockstep) and 15x (one channel) at 85 C.
+So "~13x on retired DDR4" becomes **~11x with two channels in lockstep, or ~4x on one channel**. On one channel both GO lines fail in the model (4.0x against ≥6x at 85 C; ~16x against ≥24x at 65 C), though kill #1 (<4x at 65 C) does not trigger. The DDR5 numbers do not change: a DDR5 sub-channel really carries 128 check bits per 64 B line. With the measured DDR3L tail (§12) the corrected layouts give 36x (lockstep) and 15x (one channel) at 85 C.
 - **Module level.** DDR5 refresh falls 0.98 → 0.11 W per 64 GB, 23-29% of a 3 W idle module. That is worth ~$3.9 per module over 5 years ($0.062/GB, ~4% of module cost) at 20% self-refresh residency.
 - **64Gb.** Refresh-busy time falls 18% → 2% on an all-bank basis, ~6-16 points after same-bank refresh. The original claim was 41% → 2.6%.
 - **New cells.** Margin stays 1.88x (50 → 26.6 mV, Cs 5.4 → 2.7 fF) with **no flag bonus**. The concept's largest value, new cells qualified against the grade, stays conditional and outside the $1M proof.
@@ -792,5 +792,5 @@ The concept's promise (weak bits ship behind a controller) stands, as a smaller,
 | VRT growth at which a 10-minute scrub loses 0.5 s (kill #4) | ~700x/day | ~324x/day | never reaches 0.5 s | ~700x/day |
 | Real DDR3L tail, case B (§12, REALDATA §4.6) | 2.66 s = 42x | 2.28 s = 36x | 0.98 s = 15x | 2.66 s = 42x |
 
-- **What it changes.** The retired-DDR4 headline becomes **~11x in lockstep (6.9x pessimistic, 7x degraded) or ~4x on one channel (3.4x pessimistic, none degraded)**; ~13x needs 11.1% of capacity. In the model, one channel fails the 85 C GO line (≥6x) but not kill #1 (<4x at 65 C). With the measured DDR3L tail every layout passes both. Lockstep is the better DDR4 landing zone: it beats the old 640-bit row in degraded mode (7.0x vs 4.0x), and the chip-fault term behind kill #10 nearly vanishes. The DDR5 headline (~9x), its range and the module value are unchanged.
+- **What it changes.** The retired-DDR4 headline becomes **~11x in lockstep (6.9x pessimistic, 7x degraded) or ~4x on one channel (3.4x pessimistic, none degraded)**; ~13x needs 11.1% of capacity. In the model, one channel fails both GO lines (4.0x against ≥6x at 85 C; ~16x against ≥24x at 65 C) but not kill #1 (<4x at 65 C). With the measured DDR3L tail every layout passes both. Lockstep is the better DDR4 landing zone: it beats the old 640-bit row in degraded mode (7.0x vs 4.0x), and the chip-fault term behind kill #10 nearly vanishes. The DDR5 headline (~9x), its range and the module value are unchanged.
 - **Open question.** With 8 check bytes, 4 byte errors is the most a byte code can correct. A binary code that corrects BCH-6-class random bits and a whole x4 chip in 64 check bits is not known to us; the Hamming bound allows one. That goes to the coding advisor with the 128-bit question from RT-CIRC-03.
