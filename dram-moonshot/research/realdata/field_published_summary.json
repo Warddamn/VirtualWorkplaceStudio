@@ -1,0 +1,139 @@
+{
+ "m2mfp_purley": {
+  "months": [
+   {
+    "month": "2024-01",
+    "ce_dimms": 26450,
+    "failed_dimms": 163,
+    "monthly_failure_share": 0.006162570888468809,
+    "ci95": [
+     0.00528847879678951,
+     0.007180092119579777
+    ],
+    "ces_per_ce_dimm": 3872.348393194707
+   },
+   {
+    "month": "2024-02",
+    "ce_dimms": 24682,
+    "failed_dimms": 133,
+    "monthly_failure_share": 0.005388542257515599,
+    "ci95": [
+     0.0045490154941365294,
+     0.006382011463437402
+    ],
+    "ces_per_ce_dimm": 3943.6180617454015
+   },
+   {
+    "month": "2024-03",
+    "ce_dimms": 26919,
+    "failed_dimms": 174,
+    "monthly_failure_share": 0.006463835952301348,
+    "ci95": [
+     0.005574405422295738,
+     0.007494111089720586
+    ],
+    "ces_per_ce_dimm": 3965.451205468257
+   },
+   {
+    "month": "2024-04",
+    "ce_dimms": 29776,
+    "failed_dimms": 144,
+    "monthly_failure_share": 0.004836109618484685,
+    "ci95": [
+     0.004109466111299988,
+     0.005690505423807169
+    ],
+    "ces_per_ce_dimm": 3599.151397098334
+   },
+   {
+    "month": "2024-05",
+    "ce_dimms": 29046,
+    "failed_dimms": 155,
+    "monthly_failure_share": 0.0053363630103973,
+    "ci95": [
+     0.004561419333902864,
+     0.006242136992545399
+    ],
+    "ces_per_ce_dimm": 4110.9760035805275
+   }
+  ],
+  "pooled_monthly_failure_share": 0.005618346934749731,
+  "pooled_ci95": [
+   0.005236000497553858,
+   0.006028444108099578
+  ],
+  "note": "DIMM counts are DIMMs that logged >=1 CE that month, not the whole fleet [REPORTED]"
+ },
+ "iid_multichip_share": {
+  "DDR4 RS-8 limit 5.45e-5": 0.015611872343591713,
+  "DDR4 RS-8 servoed (limit/3)": 0.005220103176723794,
+  "DDR4 BCH-12 limit 3.3e-4": 0.09289233493407108,
+  "DDR5 post-SEC events at RS-8 limit 1.52e-5": 9.594561456e-06
+ },
+ "iid_multibyte_share_rs80x8": {
+  "DDR4 RS-8 limit 5.45e-5": 0.01711233279793071,
+  "DDR4 RS-8 servoed (limit/3)": 0.005725674316040898,
+  "DDR4 BCH-12 limit 3.3e-4": 0.10130376931019032
+ },
+ "iid_multichip_share_ddr4_x4_18x32": {
+  "DDR4 RS-8 limit 5.45e-5": 0.014744616874389138,
+  "DDR4 RS-8 servoed (limit/3)": 0.004930100077244921,
+  "DDR4 BCH-12 limit 3.3e-4": 0.08774713907563284
+ },
+ "field_published": [
+  {
+   "item": "Multi-bit share of DDR4 field faults (corrected)",
+   "value": "~23%",
+   "tag": "REPORTED",
+   "url": "https://arxiv.org/pdf/2408.15302"
+  },
+  {
+   "item": "Multi-bit share of DDR4 field faults (original HPCA 2023 abstract, superseded)",
+   "value": ">45%",
+   "tag": "REPORTED",
+   "url": "https://ieeexplore.ieee.org/document/10071066"
+  },
+  {
+   "item": "Single-bit share of DRAM faults on Cielo/Hopper by vendor",
+   "value": "64.6% / 69.5% / 58.4%",
+   "tag": "REPORTED",
+   "url": "https://sc.osti.gov/-/media/ascr/ascac/pdf/meetings/201512/ResilienceASCAC2015.pdf"
+  },
+  {
+   "item": "Single-column share of DRAM faults by vendor",
+   "value": "8.7% / 8.8% / 11.9%",
+   "tag": "REPORTED",
+   "url": "https://sc.osti.gov/-/media/ascr/ascac/pdf/meetings/201512/ResilienceASCAC2015.pdf"
+  },
+  {
+   "item": "Jaguar: permanent faults share; multi-bit (row/column/bank) share of failures",
+   "value": ">=70%; almost 50%",
+   "tag": "REPORTED",
+   "url": "https://math.nist.gov/mcsd/Seminars/2015/2015-07-21-Diniz-presentation.pdf"
+  },
+  {
+   "item": "Alibaba: CEs first appear only within 1 h before the failure (short warning)",
+   "value": ">40% of 2,137",
+   "tag": "REPORTED",
+   "url": "https://shujiehan.github.io/_pages/files/srds22.pdf"
+  },
+  {
+   "item": "Astra: faults uniform over socket, column, bank; not over node, rank, slot",
+   "value": "qualitative",
+   "tag": "REPORTED",
+   "url": "https://www.osti.gov/servlets/purl/2003151"
+  },
+  {
+   "item": "Huawei: predictable UEs (CEs first) are the majority; sudden UEs have no CE first",
+   "value": "qualitative",
+   "tag": "REPORTED",
+   "url": "https://arxiv.org/pdf/2406.05354"
+  },
+  {
+   "item": "Google fleet: CE rate; DIMMs with errors per year",
+   "value": "25,000-70,000 FIT/Mbit; >8% of DIMMs",
+   "tag": "REPORTED",
+   "url": "https://research.google/pubs/dram-errors-in-the-wild-a-large-scale-field-study/"
+  }
+ ]
+}

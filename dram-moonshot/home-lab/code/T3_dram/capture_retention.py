@@ -49,7 +49,7 @@ A_MAX_S = 4.096         # longest relaxed period at SDCLK 8 MHz (4096 rows x 819
 LOG_CAP = 20000         # the firmware logs at most this many failing words per run
 F_LINE_BYTES = 25       # "F,123,3fffff,ffff,fffb\r\n" is ~22-25 characters
 B_EXTRA_MS = rm.B_EXTRA_MS
-TERMINAL_ERRS = ("ERR,bad RUN command", "ERR,unknown command", "ERR,sdram not initialised")
+TERMINAL_ERRS = ("ERR,bad RUN command", "ERR,unknown command", "ERR,sdram not initialised", "ERR,hardfault")
 
 
 class SerialDevice:
@@ -211,6 +211,11 @@ def do_run(dev, fh, rid, item, temp_c, timeout_s, n_bits, warn_dt=2.0):
 def campaign(dev, args, out_path):
     dev.send("INFO")
     hello = dev.readline(5.0)
+    for _ in range(5):                    # skip boot lines (SELFTEST, ERR) still in the buffer
+        if not hello or hello.startswith("HELLO"):
+            break
+        print("  device:", hello)
+        hello = dev.readline(5.0)
     if not hello or not hello.startswith("HELLO"):
         print("No HELLO from the device (got %r). Check port, baud and firmware." % hello)
         return 2

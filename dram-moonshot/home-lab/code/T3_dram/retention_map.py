@@ -485,6 +485,10 @@ def targets_for(code, target_bit_hour, scrub_h, target_per_line):
 # --------------------------------------------------------------------------------------------
 # Fits
 # --------------------------------------------------------------------------------------------
+MAX_FIT_SIGMA = 10.0    # ln-units; published DRAM retention tails have sigma of about 1-3
+MAX_FIT_ABS_MU = 50.0   # |ln(median / 1 s)|; beyond this exp() is meaningless (and overflows near 700)
+
+
 def fit_lognormal(points):
     """points: list of (t_s, F, n_bits_failing). Weighted probit regression z = (ln t - mu)/sigma."""
     pts = [(t, f, n) for t, f, n in points if n >= 3 and 0 < f < 0.3]
@@ -501,7 +505,12 @@ def fit_lognormal(points):
     if a <= 0:
         return None
     sigma = 1.0 / a
-    return {"mu": -b * sigma, "sigma": sigma, "n_points": len(pts)}
+    mu = -b * sigma
+    # A (nearly) flat curve, e.g. the same few defective cells failing at every wait, gives a huge
+    # sigma and an absurd median (exp overflow). That is not a lognormal tail: report no fit.
+    if sigma > MAX_FIT_SIGMA or abs(mu) > MAX_FIT_ABS_MU:
+        return None
+    return {"mu": mu, "sigma": sigma, "n_points": len(pts)}
 
 
 def fit_global_arrhenius(points_by_temp):
@@ -518,7 +527,7 @@ def fit_global_arrhenius(points_by_temp):
     A = np.array(rows) * np.array(ws)[:, None]
     sol, *_ = np.linalg.lstsq(A, np.array(zs) * np.array(ws), rcond=None)
     a, b, c = sol
-    if a <= 0:
+    if a <= 0 or 1.0 / a > MAX_FIT_SIGMA:
         return None
     sigma = 1.0 / a
     e_over_k = -b * sigma
@@ -897,7 +906,7 @@ def analyze_log(log, args, out):
         elif ti["fit"]:
             mu, sg, src = ti["fit"]["mu"], ti["fit"]["sigma"], "this temperature"
         else:
-            out("%.1f C: no lognormal fit (need >=2 points with >=3 failing cells); skipped." % ti["temp_c"])
+            out("%.1f C: no lognormal fit (need >=2 points with >=3 failing cells and a rising curve); skipped." % ti["temp_c"])
             continue
         runs = [r for r in ti["runs"] if not r.truncated]
         by_wait = defaultdict(list)
