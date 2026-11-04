@@ -276,12 +276,25 @@ def published():
     tot_f = sum(x[2] for x in M2MFP_MONTHS)
     S["m2mfp_purley"] = dict(months=m, pooled_monthly_failure_share=tot_f / tot_d, pooled_ci95=list(wilson(tot_f, tot_d)),
                              note="DIMM counts are DIMMs that logged >=1 CE that month, not the whole fleet [REPORTED]")
-    # iid coincidence share at the code limits used by the raw-ber model (models/raw-ber-contract.py section 10.1)
-    lims = {"DDR4 RS-8 limit 5.45e-5": 5.446e-5, "DDR4 RS-8 servoed (limit/3)": 5.446e-5 / 3,
-            "DDR4 BCH-12 limit 3.3e-4": 3.32e-4}
+    # iid coincidence share at the code limits used by the raw-ber model (models/raw-ber-contract.py section 10.1).
+    # Correction 2026-11-04: these limits belong to a 640-bit line with 128 check bits (DDR5 organisation; DDR4 only in
+    # the capacity-trading layout (c) of model section 10.11). Real DDR4 layouts follow in iid_share_ddr4_layouts.
+    lims = {"640-bit RS-8 limit 5.45e-5 (DDR4 layout c)": 5.446e-5, "640-bit RS-8 servoed (limit/3)": 5.446e-5 / 3,
+            "640-bit BCH-12 limit 3.3e-4 (DDR4 layout c)": 3.32e-4}
     S["iid_multichip_share"] = {k: iid_multichip_share(v) for k, v in lims.items()}
     S["iid_multibyte_share_rs80x8"] = {k: iid_multichip_share(v, 80, 8) for k, v in lims.items()}
     S["iid_multichip_share_ddr4_x4_18x32"] = {k: iid_multichip_share(v, 18, 32) for k, v in lims.items()}
+    # model section 10.11 limits [ESTIMATE]: (a) one 72-bit channel, RS(72,64), 18 chips x 32 bits (72 bytes);
+    # (b) two channels in lockstep, RS(144,128), 36 chips x 32 bits (144 bytes) per 128 B access
+    pa, pb = 8.258e-7, 3.026e-5
+    S["iid_share_ddr4_layouts"] = {
+        "(a) one channel RS(72,64) limit 8.3e-7: >1 chip": iid_multichip_share(pa, 18, 32),
+        "(a) one channel RS(72,64) limit 8.3e-7: >1 byte": iid_multichip_share(pa, 72, 8),
+        "(a) one channel RS(72,64) servoed (limit/3): >1 chip": iid_multichip_share(pa / 3, 18, 32),
+        "(b) lockstep RS(144,128) limit 3.0e-5: >1 chip": iid_multichip_share(pb, 36, 32),
+        "(b) lockstep RS(144,128) limit 3.0e-5: >1 byte": iid_multichip_share(pb, 144, 8),
+        "(b) lockstep RS(144,128) servoed (limit/3): >1 chip": iid_multichip_share(pb / 3, 36, 32),
+    }
     # behind DDR5 on-die SEC only 2+-bit events per 136-bit word escape; their per-chip-slice rate ~ C(136,2) p^2
     p5 = 1.524e-5
     q5 = math.comb(136, 2) * p5 ** 2
@@ -429,7 +442,7 @@ def main():
         with open(p, "w") as f:
             json.dump(S, f, indent=1)
         print(json.dumps({k: S[k] for k in ("iid_multichip_share", "iid_multibyte_share_rs80x8",
-                                            "iid_multichip_share_ddr4_x4_18x32")}, indent=1))
+                                            "iid_multichip_share_ddr4_x4_18x32", "iid_share_ddr4_layouts")}, indent=1))
         print(f"M2-MFP pooled monthly failure share of CE DIMMs: {S['m2mfp_purley']['pooled_monthly_failure_share']:.4f} "
               f"CI {S['m2mfp_purley']['pooled_ci95']}")
         print(f"[wrote {p}]")

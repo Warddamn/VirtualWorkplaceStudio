@@ -36,7 +36,7 @@ Same t=12 controller code behind DDR5 on-die SEC(136,128) with miscorrection: ma
 | 1e-03 | 99 | 4.83 | 1.15 |
 | 1e-02 | 625 | 30.52 | 8.79 |
 
-Reading: at 1e-4 the 4 KB code needs only ~1-2% parity, but the line code already fits in the 25% side band a commodity ECC RDIMM carries, so relaxed refresh on today's DRAM needs no page code at all for iid errors.
+Reading: at 1e-4 the 4 KB code needs only ~1-2% parity, but the line code already fits in the 25% side band a commodity DDR5 ECC RDIMM carries, so relaxed refresh on today's DRAM needs no page code at all for iid errors. [Correction 2026-11-04: a DDR4 ECC RDIMM carries 12.5% (64 check bits per 64 B line); see section 10.11.]
 
 ## 2. Margin: what a raw-BER budget buys at the sense amp
 
@@ -140,6 +140,8 @@ Largest refresh interval whose static BER x (1 + VRT growth x scrub interval) fi
 | pow5 bound | BCH-12 iid | 718 ms | 2870 ms | 11480 ms |
 | pow5 bound | RS-8 clustered | 500 ms | 1999 ms | 7997 ms |
 
+[Correction 2026-11-04: 128 check bits per 64 B line is the DDR5 RDIMM organisation. With these DDR3/DDR4-era tails the table describes retired DDR4 only in the capacity-trading layout (c) of section 10.11; a DDR4 RDIMM line carries 64 check bits.]
+
 VRT sensitivity (lognormal model, 85 C): largest interval vs VRT growth and scrub interval
 
 | VRT growth /day | scrub 10 min | scrub 1 h | scrub 24 h |
@@ -200,13 +202,13 @@ Fleet scale: 7.1 MW saved per exabyte of server DRAM (before PUE).
   64Gb: refresh-blocked time 17.9% -> 0.57% (bandwidth/latency recovered ~17.4 pts)
 
 New-die check-bit cost: t=9 line BCH = 17.6% vs on-die 6.25% -> same 1b cell gives 0.404 Gb/mm2 (0.90x of 0.447). The contract pays for itself only through the cells it enables (shorter pillar, 3D tiers), never on today's planar cell.
-Commodity path: the 25% ECC side band already exists on RDIMMs, so the contract adds zero bits there; the choice is BCH-12 (6x more random-bit headroom, no chipkill) or RS-8 (keeps chipkill, section 4).
+Commodity path: the 25% ECC side band already exists on DDR5 RDIMMs, so the contract adds zero bits there; the choice is BCH-12 (6x more random-bit headroom, no chipkill) or RS-8 (keeps chipkill, section 4). [Correction 2026-11-04: DDR4 RDIMMs carry 12.5%, not 25%; section 10.11.]
 
 ## 9. GO / NO-GO for the decisive experiment
 
 Measured on 50-100 DDR4 modules (no on-die ECC: raw physics) + retention-reject DIMMs, DRAM Bender, 45/65/85 C, 0.25-2 s refresh, truncated-tRAS half-charge restore, reduced-tRCD double reads as the flag proxy, >=4 weeks of VRT soak, hammer with controller RFM:
 
-GO-A (refresh, commodity): measured BER at 0.5 s / 85 C (equivalently ~2 s / 65 C), including VRT growth over a 1 h scrub, <= 3.3e-04 with <= 0.41% of error bits in >=3-bit clusters per codeword (BCH-12), or <= 5.4e-05 with clusters confined to bytes/chips (RS-8, chipkill kept). Either gives a >=7.7x refresh-energy cut and refresh-blocked time 7.6% -> <1% on 16Gb dies.
+GO-A (refresh, commodity): measured BER at 0.5 s / 85 C (equivalently ~2 s / 65 C), including VRT growth over a 1 h scrub, <= 3.3e-04 with <= 0.41% of error bits in >=3-bit clusters per codeword (BCH-12), or <= 5.4e-05 with clusters confined to bytes/chips (RS-8, chipkill kept). Either gives a >=7.7x refresh-energy cut and refresh-blocked time 7.6% -> <1% on 16Gb dies. [Correction 2026-11-04: a DDR4 module has a 64-bit, not 128-bit, side band per 64 B line; these limits apply to DDR4 only in layout (c) of section 10.11.]
 GO-B (margin, new cells): at emulated half-charge raw BER 1e-4, >=50% of errors flagged at a <=0.5-sigma window (<=6 false flags per error), so Chase needs t<=8 (80 bits) where hard decoding needs t=9 (90 bits); per-codeword error counts within 2x of Poisson out to 6 errors per 512 b.
 NO-GO: largest safe interval <256 ms at 65 C even with RS-8 (RAIDR-class profiling already gets ~4x without ECC), or >10% of error events spanning more than one byte (not modelled here: such clusters need chip-level symbols and would pull the interval back toward RAIDR-class gains), or <25% of half-charge errors flaggable (flags then save <=10 check bits and the SA flag latch is not worth 3-7% die area). Revival condition for a NO-GO-A: oxide/IGZO cells, whose retention tail sits 1e3-1e4x to the right, re-run the same test.
 
@@ -222,22 +224,24 @@ Code limits at the 2e-19/read target (max internal raw BER, iid errors; DDR5 row
 
 | part | controller code | chipkill | max raw BER |
 |---|---|---|---|
-| DDR4 (no on-die ECC) | BCH-12 | no | 3.32e-04 |
-| DDR4 | RS(80,64) bytes | yes | 5.45e-05 |
-| DDR4 | RS(80,64), one chip marked dead | degraded | 8.26e-07 |
+| DDR4 (no on-die ECC), 640-bit layout (c) | BCH-12 | no | 3.32e-04 |
+| DDR4, 640-bit layout (c) | RS(80,64) bytes | yes | 5.45e-05 |
+| DDR4, 640-bit layout (c) | RS(80,64), one chip marked dead | degraded | 8.26e-07 |
 | DDR5 behind on-die SEC | BCH-12 | no | 1.68e-04 |
 | DDR5 behind on-die SEC | RS(80,64) bytes | yes | 1.52e-05 |
 | DDR5 behind on-die SEC | RS(80,64), one chip marked dead | degraded | 2.07e-07 |
 
-On-die SEC HURTS the chipkill code (a red-team-run finding): it strips singletons but turns doublets into 2-3-bit chip-confined events that each consume 2-3 RS symbols, so three such events on one read exceed t=8 (failure ~p^6 instead of ~p^9 for iid singles). RS-8 behind SEC tolerates ~3.6x less internal BER than RS-8 on raw DDR4. The symbol count is an upper bound (each post-SEC bit in its own byte; for 3 bits in 8 bytes that holds 66% of the time anyway).
+[Correction 2026-11-04: the DDR4 rows give retired DDR4 a 640-bit line with 128 check bits, the DDR5 RDIMM organisation. A DDR4 x4 RDIMM carries 64 check bits per 64 B line, so these rows hold only for layout (c), which spends 11.1% of capacity on extra check bits. Realistic DDR4 layouts: section 10.11.]
+
+On-die SEC HURTS the chipkill code (a red-team-run finding): it strips singletons but turns doublets into 2-3-bit chip-confined events that each consume 2-3 RS symbols, so three such events on one read exceed t=8 (failure ~p^6 instead of ~p^9 for iid singles). RS-8 behind SEC tolerates ~3.6x less internal BER than RS-8 on the same 640-bit line without SEC. The symbol count is an upper bound (each post-SEC bit in its own byte; for 3 bits in 8 bytes that holds 66% of the time anyway).
 
 Safe refresh interval (1 h scrub, VRT 1x/day). DDR5 retention = DDR3/DDR4-era anchors x 0.5 in time [RT-DEV-02 derate; 1.0 = no derate]. 'cut' = interval / the part's own JEDEC window (DDR4 64 ms, DDR5 32 ms).
 
 | part / code | retention model | ret. scale | 85 C | cut at 85 C | 65 C | 45 C |
 |---|---|---|---|---|---|---|
-| DDR4 / RS-8 chipkill | logn | 1 | 837 ms | 13.1x | 3346 ms | 13384 ms |
-| DDR4 / RS-8 chipkill | pow5 | 1 | 500 ms | 7.8x | 1999 ms | 7997 ms |
-| DDR4 / RS-8 degraded (chip dead) | logn | 1 | 258 ms | 4.0x | 1031 ms | 4125 ms |
+| DDR4 (c) / RS-8 chipkill | logn | 1 | 837 ms | 13.1x | 3346 ms | 13384 ms |
+| DDR4 (c) / RS-8 chipkill | pow5 | 1 | 500 ms | 7.8x | 1999 ms | 7997 ms |
+| DDR4 (c) / RS-8 degraded (chip dead) | logn | 1 | 258 ms | 4.0x | 1031 ms | 4125 ms |
 | DDR5 / RS-8 behind SEC | pow3 | 0.5 | 643 ms | 20.1x | 2574 ms | 10294 ms |
 | DDR5 / RS-8 behind SEC | logn | 0.5 | 285 ms | 8.9x | 1139 ms | 4556 ms |
 | DDR5 / RS-8 behind SEC | pow5 | 0.5 | 194 ms | 6.1x | 775 ms | 3099 ms |
@@ -279,13 +283,13 @@ Fast path 2 ns (syndrome zero), single-symbol fix 4 ns, multi-symbol Berlekamp-M
 
 | case | operating raw BER | lines with any error | lines needing BM | mean added ns | p99 path |
 |---|---|---|---|---|---|
-| DDR4, RS-8 at limit | 5.4e-05 | 3.425% | 0.0594% | 2.15 | single fix |
-| DDR4, RS-8 servoed | 1.8e-05 | 1.155% | 0.0067% | 2.05 | single fix |
-| DDR4, BCH-12 at 1e-4 (critic case) | 1.0e-04 | 6.200% | 0.1963% | 2.29 | single fix |
+| DDR4 (c), RS-8 at limit | 5.4e-05 | 3.425% | 0.0594% | 2.15 | single fix |
+| DDR4 (c), RS-8 servoed | 1.8e-05 | 1.155% | 0.0067% | 2.05 | single fix |
+| DDR4 (c), BCH-12 at 1e-4 (critic case) | 1.0e-04 | 6.200% | 0.1963% | 2.29 | single fix |
 | DDR5 behind SEC, RS-8 at limit | 1.5e-05 | 0.002% | 0.0007% | 2.00 | fast |
 | DDR5 behind SEC, RS-8 servoed | 5.1e-06 | 0.000% | 0.0001% | 2.00 | fast |
 
-Reading: the critic's 5.6% slow path is real for raw DDR4 at 1e-4, but almost all of it is single-symbol errors that a lookup fixes in a few ns; BM is needed on <0.2% of lines. Behind DDR5's on-die SEC the controller rarely sees an error at all. The CXL hop itself adds 70-150 ns: the commodity product is a capacity tier, and DRAM-class latency needs the decoder in the host memory controller (where chipkill decoders already sit) or on-die.
+Reading: the critic's 5.6% slow path is real for a raw 640-bit line at 1e-4, but almost all of it is single-symbol errors that a lookup fixes in a few ns; BM is needed on <0.2% of lines. Behind DDR5's on-die SEC the controller rarely sees an error at all. The CXL hop itself adds 70-150 ns: the commodity product is a capacity tier, and DRAM-class latency needs the decoder in the host memory controller (where chipkill decoders already sit) or on-die. [Correction 2026-11-04: DDR4 rows are layout (c); DDR4 layouts (a) and (b) are in section 10.11.]
 
 ## 10.5 Flag ledger (RT-CIRC-01, RT-CIRC-02, RT-IND-02, RT-DEV-01)
 
@@ -327,13 +331,13 @@ Multi-bit (row/column/bank) faults: 30 FIT/die x 40 dies = 0.0105 per module-yea
 | case | operating raw BER | q = P(other-chip symbol error) | mark after 1 read | after 10 | after 100 |
 |---|---|---|---|---|---|
 | 64 ms today (DDR4 anchors) | 1.8e-09 | 1.04e-06 | 1.1e-08 | 1.1e-07 | 1.1e-06 |
-| DDR4 RS-8 at limit | 5.4e-05 | 3.09e-02 | 3.2e-04 | 3.2e-03 | 3.2e-02 |
-| DDR4 RS-8 servoed | 1.8e-05 | 1.04e-02 | 1.1e-04 | 1.1e-03 | 1.1e-02 |
+| DDR4 (c) RS-8 at limit | 5.4e-05 | 3.09e-02 | 3.2e-04 | 3.2e-03 | 3.2e-02 |
+| DDR4 (c) RS-8 servoed | 1.8e-05 | 1.04e-02 | 1.1e-04 | 1.1e-03 | 1.1e-02 |
 | DDR5 behind SEC, RS-8 at limit | 1.5e-05 | 1.52e-05 | 1.6e-07 | 1.6e-06 | 1.6e-05 |
 | DDR5 behind SEC, RS-8 servoed | 5.1e-06 | 1.70e-06 | 1.8e-08 | 1.8e-07 | 1.8e-06 |
 
-Reading: relaxed refresh turns benign chip faults into UE risk through coincidence with random errors (q rises ~1e4x vs 64 ms on raw DDR4). On DDR4 the controller must mark a chip on its first chip-confined multi-symbol correction; marking after 10 reads already uses the whole 1e-3 budget. Behind DDR5 on-die SEC, q stays small.
-Census power: 1.8e+05 module-hours with zero events of a mechanism bound its rate at <= 0.15 per module-year (95%). With immediate marking, that bounds its UE share at <= 1.5e-03 (DDR4 servoed) and <= 2.5e-07 (DDR5) per module-year, against the 1e-3 budget. Each mechanism's rate is measured as events, not inferred from 1e15 codeword reads; multi-chip common-mode events (VPP droop, thermal slew faster than the scheduler) remain the residual that only fleet telemetry bounds.
+Reading: relaxed refresh turns benign chip faults into UE risk through coincidence with random errors (q rises ~1e4x vs 64 ms on raw DDR4). On DDR4 the controller must mark a chip on its first chip-confined multi-symbol correction; marking after 10 reads already uses the whole 1e-3 budget. Behind DDR5 on-die SEC, q stays small. [Correction 2026-11-04: the DDR4 rows are layout (c), 640-bit line. On a real DDR4 line (section 10.11) q is much smaller on one channel, because its lower code limit sets a lower operating BER, and negligible in lockstep, where a dead chip leaves 4 spare symbols.]
+Census power: 1.8e+05 module-hours with zero events of a mechanism bound its rate at <= 0.15 per module-year (95%). With immediate marking, that bounds its UE share at <= 1.5e-03 (DDR4 (c) servoed) and <= 2.5e-07 (DDR5) per module-year, against the 1e-3 budget. Each mechanism's rate is measured as events, not inferred from 1e15 codeword reads; multi-chip common-mode events (VPP droop, thermal slew faster than the scheduler) remain the residual that only fleet telemetry bounds.
 
 ## 10.7 VRT coincidence inside a codeword (RT-DEV-03)
 
@@ -365,7 +369,7 @@ Pauses (0.5, 1.0, 2.0) s x 4 patterns x 2 temperatures = 28 s of pause plus 12 s
 
 ## 10.10 New-cell routes: oxide revival, stacked write (I-12627), plate-strip sensing (I-12302) (RT-DEV-05)
 
-Stacked write devices square the leakage-tail fraction only for independent defects: p_eff = p (rho + (1 - rho) p), rho = shared-defect share. Applies to gain/oxide cells whose hold leakage is the write path, not to Si 1T1C storage-node junction/GIDL leakage. DDR4-anchor tail, RS-8 limit, 85 C:
+Stacked write devices square the leakage-tail fraction only for independent defects: p_eff = p (rho + (1 - rho) p), rho = shared-defect share. Applies to gain/oxide cells whose hold leakage is the write path, not to Si 1T1C storage-node junction/GIDL leakage. DDR4-anchor tail, RS-8 limit of a 640-bit line (128 check bits), 85 C:
 
 | rho | p_eff at 1 s | safe interval |
 |---|---|---|
@@ -378,9 +382,78 @@ Plate-strip sense node (2.7 fF, 0.5 V swing): Cs for 50 mV = 0.30 fF; for the co
 
 Oxide revival (RT-DEV-05): no published IGZO array retention CDF reaches 1e-6 at 85 C; the '1e3-1e4x' figure was a typical-Ioff ratio, not a tail. The revival condition is restated as a measurement.
 
+## 10.11 DDR4 line geometry (correction 2026-11-04)
+
+Correction. Sections 10.1, 10.4 and 10.6 gave retired DDR4 the DDR5 RDIMM line: 640 bits = 512 data + 128 check bits, RS(80,64), an x4 chip = 8 bytes. A DDR4 x4 ECC RDIMM moves 72 bits x burst 8 = 512 data + 64 check bits per 64 B line (12.5%), 18 x4 chips x 4 bytes [REPORTED; GEO_INPUTS]. Three DDR4 layouts follow. Each keeps the 2e-19 target per codeword decode (one decode per 64 B request) and the DDR3/DDR4-era tails, VRT 1x/day and 1 h scrub of section 10.1:
+
+- (a) One 72-bit channel, 576-bit line: RS(72,64) over bytes, t=4. A dead chip is 4 byte errors = t, so chipkill is kept but no random-error margin is left until the chip is marked, and double-chip detection is not guaranteed. Reference row: the host-style x4 SSC code (4 x RS(18,16), one symbol per chip) on the same bits.
+- (b) Two channels in lockstep, 1152-bit access (1024 data + 128 check): RS(144,128) over bytes, t=8; a dead chip uses 4 of 8. No capacity cost, but every 64 B request fetches 128 B (half the rank/bank parallelism, ~2x prefetch energy [REPORTED; GEO_INPUTS]).
+- (c) CXL capacity trade: 64 more check bits per 512 data bits kept in DRAM data space (one parity line per 8 data lines) -> RS(80,64) as on DDR5. Usable capacity 512/576 = 88.9% (-11.1%), plus up to 1/8 of a line of extra reads per access when the parity line is not cached [ESTIMATE]. Layout (c) equals the old DDR4 rows exactly.
+
+Code limits (max iid raw BER at the target; no on-die ECC):
+
+| layout | data + check bits | capacity cost | code | chipkill | max raw BER | one chip marked dead |
+|---|---|---|---|---|---|---|
+| (a) one channel | 512 + 64 | 0 | host SSC, 4 x RS(18,16) | yes (single symbol) | 2.2e-12 | 3.7e-22 |
+| (a) one channel | 512 + 64 | 0 | RS(72,64) bytes, t=4 | yes, no spare | 8.26e-07 | 1.96e-09 |
+| (a) one channel | 512 + 64 | 0 | BCH t=6 (m=10, 60 bits) | no | 1.26e-05 | - |
+| (b) lockstep | 1024 + 128 | 0 (128 B access) | RS(144,128) bytes, t=8 | yes, 4 spare | 3.03e-05 | 6.45e-06 |
+| (b) lockstep | 1024 + 128 | 0 (128 B access) | BCH t=11 (m=11, 121 bits) | no | 1.29e-04 | - |
+| (c) capacity trade | 512 + 128 | 11.1% | RS(80,64) bytes, t=8 (old DDR4 row) | yes | 5.45e-05 | 8.26e-07 |
+| (c) capacity trade | 512 + 128 | 11.1% | BCH-12 (old DDR4 row) | no | 3.32e-04 | - |
+
+Safe refresh interval, retired DDR4 (DDR3/DDR4-era anchors, no derate). The lognormal tail at 64 ms already carries 1.9e-09 (VRT included), so a code whose limit sits below that gives no relaxation [model tail; real parts repair those cells at test].
+
+| layout / code | retention model | 85 C | x of 64 ms | 65 C | 45 C |
+|---|---|---|---|---|---|
+| (a) host SSC 4 x RS(18,16) | logn | none (limit < 64 ms tail BER) | 1.0x at best | - | - |
+| (a) RS(72,64) | logn | 258 ms | 4.0x | 1.03 s | 4.13 s |
+| (a) RS(72,64) | pow5 | 216 ms | 3.4x | 865 ms | 3.46 s |
+| (a) RS(72,64) | pow3 | 487 ms | 7.6x | 1.95 s | 7.79 s |
+| (a) RS(72,64), one chip dead | logn | 65 ms | 1.0x | 258 ms | 1.03 s |
+| (a) RS(72,64), one chip dead | pow5 | 65 ms | 1.0x | 258 ms | 1.03 s |
+| (a) BCH t=6 (no chipkill) | logn | 539 ms | 8.4x | 2.16 s | 8.63 s |
+| (b) lockstep RS(144,128) | logn | 698 ms | 10.9x | 2.79 s | 11.17 s |
+| (b) lockstep RS(144,128) | pow5 | 444 ms | 6.9x | 1.78 s | 7.11 s |
+| (b) lockstep RS(144,128) | pow3 | 1.62 s | 25.3x | 6.47 s | 25.88 s |
+| (b) lockstep RS(144,128), one chip dead | logn | 446 ms | 7.0x | 1.78 s | 7.13 s |
+| (b) lockstep RS(144,128), one chip dead | pow5 | 326 ms | 5.1x | 1.30 s | 5.22 s |
+| (b) lockstep BCH t=11 (no chipkill) | logn | 1.11 s | 17.3x | 4.42 s | 17.68 s |
+| (c) RS(80,64), -11.1% capacity | logn | 837 ms | 13.1x | 3.35 s | 13.38 s |
+| (c) RS(80,64), -11.1% capacity | pow5 | 500 ms | 7.8x | 2.00 s | 8.00 s |
+| (c) RS(80,64), -11.1% capacity | pow3 | 1.97 s | 30.7x | 7.87 s | 31.48 s |
+| (c) RS(80,64), one chip dead | logn | 258 ms | 4.0x | 1.03 s | 4.13 s |
+| (c) RS(80,64), one chip dead | pow5 | 216 ms | 3.4x | 865 ms | 3.46 s |
+| (c) BCH-12 (no chipkill) | logn | 1.53 s | 23.8x | 6.11 s | 24.42 s |
+
+Decoder load (as section 10.4; each bit error its own symbol):
+
+| case | operating raw BER | lines with any error | lines needing BM | mean added ns |
+|---|---|---|---|---|
+| (a) RS(72,64) at limit | 8.3e-07 | 0.048% | 0.00001% | 2.00 |
+| (a) RS(72,64) servoed | 2.8e-07 | 0.016% | 0.00000% | 2.00 |
+| (b) RS(144,128) at limit | 3.0e-05 | 3.425% | 0.05935% | 2.15 |
+| (b) RS(144,128) servoed | 1.0e-05 | 1.155% | 0.00670% | 2.05 |
+| (c) RS(80,64) servoed (old DDR4 row) | 1.8e-05 | 1.155% | 0.00670% | 2.05 |
+
+Chip-fault coincidence (as section 10.6; 0.0105 multi-bit faults per module-year, 40-die basis kept; a 64 GB DDR4 x4 RDIMM has 36-72 dies, so scale by 0.9-1.8x [ESTIMATE]). q = P(a dead, not yet marked chip plus random symbol errors elsewhere exceed the code on one read):
+
+| case | operating raw BER | q | mark after 1 read | after 10 | after 100 | census-bound UE share |
+|---|---|---|---|---|---|---|
+| (a) RS(72,64) at limit | 8.3e-07 | 4.49e-04 | 4.7e-06 | 4.7e-05 | 4.7e-04 | 6.6e-05 |
+| (a) RS(72,64) servoed | 2.8e-07 | 1.50e-04 | 1.6e-06 | 1.6e-05 | 1.6e-04 | 2.2e-05 |
+| (b) RS(144,128) at limit | 3.0e-05 | 3.62e-10 | 3.8e-12 | 3.8e-11 | 3.8e-10 | 5.3e-11 |
+| (b) RS(144,128) servoed | 1.0e-05 | 1.52e-12 | 1.6e-14 | 1.6e-13 | 1.6e-12 | 2.2e-13 |
+| (c) RS(80,64) servoed (old DDR4 row) | 1.8e-05 | 1.04e-02 | 1.1e-04 | 1.1e-03 | 1.1e-02 | 1.5e-03 |
+
+Reading: at 85 C (lognormal, central) one 72-bit channel gives 258 ms = 4.0x of 64 ms with chipkill (pessimistic 3.4x) and no relaxation once a chip is dead (65 ms); the host SSC code gives none. Lockstep gives 698 ms = 10.9x (pessimistic 6.9x) and 446 ms = 7.0x with a chip dead, at the cost of 128 B accesses. The old ~13x (837 ms) needs layout (c) and costs 11.1% of capacity. The DDR5 rows are unchanged: a DDR5 RDIMM sub-channel really carries 128 check bits per 64 B line. At 65 C: (a) 1.03 s, (b) 2.79 s, (c) 3.35 s.
+Kill #4 basis (10-minute scrub, 85 C, lognormal: the VRT growth at which 0.5 s can no longer be held): (a) cannot hold 0.5 s at any growth rate; (b) holds it up to ~324x/day (604 ms at 100x/day); (c) holds it up to ~698x/day (720 ms at 100x/day).
+Against the dossier's DDR4 gate (model tail, central): kill #1 (<4x = 256 ms at 65 C) triggered in no layout; GO (>=6x = 0.38 s at 85 C and >=24x at 65 C) met in (b), (c). With 8 check bytes, 4 byte errors is the most any byte code can correct (Singleton bound). A binary code that corrects BCH-6-class random bits and also a whole x4 chip in 64 check bits is not known to us; the Hamming bound does not forbid one (~2^46 + ~2^36 patterns < 2^64 syndromes), so it stays an open coding question, as RT-CIRC-03 recorded for the 128-bit case.
+
 ## Headline (revised after red team)
 
 - Commodity DDR5 RDIMM, chipkill kept (RS-8 behind on-die SEC, max internal BER 1.5e-05), DDR5 retention derated 0.5x: safe interval at 85 C 285 ms central / 194 ms pessimistic = 8.9x / 6.0x refresh energy vs the 32 ms spec; degraded mode (chip dead) 92 ms = 2.9x; at 65 C 1139 ms.
+- Retired DDR4 behind CXL, chipkill kept (corrected 2026-11-04, section 10.11; vs 64 ms, 85 C central / pessimistic): two channels in lockstep 698 ms = 10.9x / 6.9x, 7.0x with a chip dead; one channel 258 ms = 4.0x / 3.4x, 1.0x with a chip dead. The earlier 13.1x / 7.8x (4.0x degraded) used DDR5's 128-bit side band and needs a layout that spends 11.1% of DDR4 capacity on check bits.
 - Refresh power 0.98 W -> 0.110 W per 64 GB; with 20% self-refresh residency (hybrid policy) $3.94 per module over 5 yr. 64Gb (tRFC 700 ns) blocked time 18% -> 2.0% (all-bank basis).
 - Flag leg: net -2.2% to -0.2% of die even with ideal flags; a delayed-strobe flag sees skew, not signal. Removed from the headline and the GO/NO-GO.
 - Margin for new cells unchanged at 1.88x (50 -> 26.6 mV, Cs 5.4 -> 2.7 fF) without flags; plate-strip sensing (I-12302) would need only 0.30 -> 0.15 fF.
@@ -469,3 +542,14 @@ Oxide revival (RT-DEV-05): no published IGZO array retention CDF reaches 1e-6 at
 | flag_cmp_noise_mV | (0.0, 1.5, 3.6, 7.1) | ESTIMATE: flag comparator offset/noise (1.5 mV = critic's pass line) |
 | flag_pos_bits | 10 | log2(640) rounded up: bits to name one flagged position in a 640-bit line. RT-CIRC-02 |
 | flag_sa_area_die | (0.02, 0.04) | RT-CIRC-02 critic: second latch + comparator per SA = +20-40% SA strip = +2-4% die [ESTIMATE] |
+
+## GEO_INPUTS (DDR4 line-geometry correction, 2026-11-04)
+
+| key | value | source / basis |
+|---|---|---|
+| ddr4_bus_bits | 72 | DDR4 ECC DIMM bus = 64 data + 8 ECC bits [REPORTED: US 11,437,114, https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11437114, via search snippet]; fixed burst 8 [DATASHEET: Micron DDR4 RDIMM, https://dtsheet.com/model/4467123, via search snippet] -> 512 data + 64 check bits per 64 B line |
+| ddr4_x4_chips | 18 | 16 data + 2 ECC x4 chips per 72-bit rank [REPORTED: https://arxiv.org/pdf/1908.01806, via search snippet]; each chip gives 4 DQ x 8 beats = 32 bits = 4 byte symbols per line |
+| ddr4_ssc_codewords | 4 | host-style x4 SSC: one 8-bit symbol per chip over 2 beats, 16 data + 2 check symbols per codeword, 4 codewords per 8-beat request (AMD 2013) [REPORTED: https://arxiv.org/pdf/1908.01806, via search snippet]. Intel SDDC on x4 DDR4 runs in independent-channel mode [REPORTED: Lenovo/Dell server manuals via search snippet] |
+| ddr4_lockstep_bits | 1152 | two 72-bit channels in lockstep: 36 x4 chips, 144-bit word = 128 data + 16 check bits per beat [REPORTED: US 9,772,900, https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9772900; arXiv 1908.01806]; burst 8 -> 1024 data + 128 check per 128 B access. Lockstep halves rank/bank parallelism and doubles prefetch energy at burst 8 [REPORTED: same patent, via search snippet] |
+| ddr4_extra_check_bits | 64 | ESTIMATE/design: layout (c) stores 64 more check bits per 512 data bits in DRAM data space (one parity line per 8 data lines) -> 128 check bits, RS(80,64) as on DDR5; worst line: a dead chip holds 4 data + 4 parity bytes (8 erasures) |
+| ddr4_dies_note | (36, 72) | ESTIMATE: a 64 GB DDR4 x4 RDIMM holds 36 (16Gb) to 72 (8Gb) dies; section 10.11 keeps the model's 40-die fault count (scale the chip-fault UE by 0.9-1.8x) |

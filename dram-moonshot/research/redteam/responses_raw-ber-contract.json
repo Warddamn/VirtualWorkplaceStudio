@@ -125,5 +125,21 @@
    "disposition": "ACCEPTED-DOWNGRADE",
    "action": "Section 7's '$10-15M ASIC' is demoted to contingent. Firmware licensing into incumbent CXL controllers is the first vehicle. Two design-in letters become a raise milestone."
   }
+ ],
+ "corrections": [
+  {
+   "date": "2026-11-04",
+   "by": "study owner (after the red team; the objections and responses above are unchanged)",
+   "affects": [
+    "status_reason",
+    "revised_verdicts.profitable",
+    "RT-CIRC-raw-ber-contract-03",
+    "RT-DEV-raw-ber-contract-04",
+    "RT-CIRC-raw-ber-contract-05",
+    "RT-IND-raw-ber-contract-04",
+    "RT-IND-raw-ber-contract-05"
+   ],
+   "text": "The retired-DDR4 figures in these responses (837 ms = 13.1x central, 7.8x pessimistic, 258 ms = 4.0x degraded; 5.4e-5 RS-8 limit; 1.1e-4 / 1.1e-3 chip-fault UE; 1.5e-3 census bound) gave DDR4 a 640-bit line with 128 check bits, the DDR5 RDIMM organisation. A DDR4 x4 ECC RDIMM carries 512 data + 64 check bits per 64 B line. Model section 10.11 now gives, chipkill kept, 85 C: two channels in lockstep (RS(144,128)) 698 ms = 10.9x central, 6.9x pessimistic, 7.0x with a chip dead, chip-fault UE ~1e-14; one channel (RS(72,64)) 258 ms = 4.0x, 3.4x pessimistic, no relaxation with a chip dead, chip-fault UE 1.6e-6 / 1.6e-5. The 13.1x holds only if the controller spends 11.1% of DDR4 capacity on extra check bits. DDR5 figures are unchanged. See dossiers/raw-ber-contract.md section 12.1."
+  }
  ]
 }

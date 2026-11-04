@@ -36,7 +36,7 @@ Three judges read the red-teamed dossiers without seeing each other: a physicist
 - **What.** Error-correcting codes (ECC) carry the rare weak bits, as a flash controller does for NAND, so DRAM refresh can run far less often.
 - **Step change.**
   - ~9x less refresh energy on DDR5 server modules at 85 °C, keeping chipkill [MODEL]. Chipkill is the code that survives a dead chip.
-  - ~13x on retired DDR4 behind a CXL (memory-expansion link) controller [MODEL].
+  - On retired DDR4 behind a CXL (memory-expansion link) controller: ~11x with two memory channels in lockstep, ~4x on a single channel [MODEL]. *Corrected 2026-11-04:* the earlier ~13x gave DDR4 the 128 check bits of a DDR5 line; a DDR4 line has 64, so ~13x would cost 11% of capacity ([dossier §12.1](dossiers/raw-ber-contract.md#121-ddr4-line-geometry-correction-2026-11-04)).
 - **Decisive experiment.** Phase 1 runs on DRAM Bender test stations and open DDR5 testers. No fab, no new physics. ~$124k [ESTIMATE], yes/no at month 6 (2027-06-30).
 - **Kill line.** NO-GO if any of these holds:
   - the chipkill-safe interval, including variable retention time (VRT), is <4x the JEDEC standard refresh window at 65 °C;
@@ -244,7 +244,7 @@ The rank and EV (S × P × D) are pre-red-team values from [FINAL_CONCEPTS.md](r
 | 1 (75) | [MARGIN STACK](dossiers/margin-stack.md) | A gain transistor per 64 cells plus double sampling and an ECC budget, so oxide-access cells need far less capacitor | Capacitor 5.42 → 0.5 fF (10.8x shorter): ~10x less deep capacitor etch. But +9-25% $/bit and −11% density. Owner re-score EV 24 | Withdrawn: the 17-40x stretch, the 28x refresh claim | $563k; month 17 |
 | 2 (64) | [HOT-SIDE MEMORY](dossiers/hot-side-memory.md) | Oxide gain-cell tiers in the backside-power carrier wafer | ~10x energy/bit vs HBM; ~90 W per GPU; refresh ~225x rarer than Si; $4.6-12/GB | No kill. "Refresh-free" became "refresh-light" | ~$240k; month 11 |
 | 3 (60) | [AND-STACK](dossiers/and-stack.md) | One hole etch, 3D-NAND style; a 2-bit capacitorless oxide cell per tier | 5.9x 1-beta at 64 tiers; 2.3x bits/$ vs 2026, 1.1-1.4x vs 2032 | **Killed:** single-film closure (topologically impossible) | ~$0.4M; month 14 |
-| 4 (60) | [RAW-BER CONTRACT](dossiers/raw-ber-contract.md) | An error contract and controller, so weak bits and slow refresh can ship | ~9x refresh energy on DDR5 (6.1-20x); ~13x on retired DDR4; ~$3.9 per module over 5 yr | **Killed:** the per-read sense-amp "unsure" flag | $124k; month 6 |
+| 4 (60) | [RAW-BER CONTRACT](dossiers/raw-ber-contract.md) | An error contract and controller, so weak bits and slow refresh can ship | ~9x refresh energy on DDR5 (6.1-20x); ~11x on retired DDR4 in lockstep, ~4x on one channel (corrected from ~13x, 2026-11-04); ~$3.9 per module over 5 yr | **Killed:** the per-read sense-amp "unsure" flag | $124k; month 6 |
 | 5 (48) | [PIXEL-STACK](dossiers/pixel-stack.md) | Read a 3D 1T1C stack like an image sensor, with an oxide amp tier every 16 tiers | ~4.6x 1-beta at 64 tiers; ~1.5x vs incumbent 3D at equal tiers; bits/$ ~parity | Dropped: 2.5x bits/$; "removes Smart-Cut" | ~$390k; month 9 |
 | 6 (45) | [DIODE-TOWER](dossiers/diode-tower.md) | Per-tier oxide Schottky diodes steer 16-64 capacitor tiers onto one pillar | 3.9x 1-beta at 64 tiers; ~1.8x bits/$; EV ~16; P(pass) ~5-10% | AgOx anode demoted (not integrable); ferroelectric fallback dropped | ~$260k; month 7 |
 | 7 (40) | [CHARGE-RIVER](dossiers/charge-river.md) | Charge packets march through vertical oxide CCD strings, scheduled for LLM streaming | ~2.5x density; ~158x lower standby power; cost ~parity ($1.74/GB) | **Killed:** the cost-per-bit leg | Gate 1, month 10 |
@@ -361,7 +361,7 @@ The pre-red-team rank 1, MARGIN STACK, fell furthest.
 |---|---|
 | Margin at raw BER 1e-4 | 3.72σ instead of 7σ: 50 → 26.6 mV (1.88x); capacitor 5.42 → 2.68 fF |
 | DDR5, chipkill, 85 °C | Safe interval 285 ms = 8.9x the 32 ms spec; 194 ms pessimistic (~6x); 2.9x with a chip dead; 35x at 65 °C |
-| Retired DDR4, chipkill, 85 °C | 837 ms = 13.1x of 64 ms (7.8x pessimistic) |
+| Retired DDR4, chipkill, 85 °C (corrected 2026-11-04) | Two channels in lockstep: 698 ms = 10.9x of 64 ms (6.9x pessimistic; 7.0x with a chip dead). One channel: 258 ms = 4.0x (3.4x pessimistic; none with a chip dead). The earlier 837 ms = 13.1x assumed DDR5's 128 check bits per line, which on DDR4 costs 11.1% of capacity |
 | Module refresh power, DDR5 64 GB | 0.98 → 0.11 W; ~$3.94 per module over 5 years [ESTIMATE] |
 
 **Why the judges picked it.** It is the only decisive experiment with no fabrication and no new physics, and it starts in week 1. Its census of error clustering and VRT tells whether the 1.88x margin holds on real silicon. MARGIN STACK, PIXEL-STACK, HOT-SIDE and AND-STACK's 2-bit mode all bank on that margin. The judges agree the stand-alone prize is small: "the proof and the instrument, not the company" (physicist).

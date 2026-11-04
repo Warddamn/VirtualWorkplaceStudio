@@ -3,7 +3,7 @@
 NEW DRAM Stage 3 dossier. Author: agent `dosw-raw-ber-contract`, 2026-11-02. Concept slug `raw-ber-contract`.
 
 Inputs:
-- Model `models/raw-ber-contract.py`, re-run 2026-11-02 (exit 0; matches `research/stage3/raw-ber-contract_model_output.md`). Re-run again after the red team with a "RED-TEAM REVISIONS" block and a new section 10 (exit 0).
+- Model `models/raw-ber-contract.py`, re-run 2026-11-02 (exit 0; matches `research/stage3/raw-ber-contract_model_output.md`). Re-run again after the red team with a "RED-TEAM REVISIONS" block and a new section 10 (exit 0). Re-run on 2026-11-04 with a DDR4 line-geometry correction (new model §10.11; see §12).
 - Red team: `research/redteam/rt_{DEV,PROC,CIRC,IND}.json` (19 objections on this dossier); responses in `research/redteam/responses_raw-ber-contract.json`; sources `research/sources/resp-raw-ber-contract.jsonl` (8 entries). Outcome in §11.
 - Notes `research/stage3/raw-ber-contract_notes.md`; assumptions `research/assumptions/dos-raw-ber-contract.md`.
 - Sources `research/sources/dos-raw-ber-contract.jsonl` (43 entries) plus A1, A2 and other dossier logs.
@@ -45,7 +45,7 @@ Tags: [REPORTED] a logged source, usually a search snippet; [ESTIMATE] model ari
 - **PHYSICALLY POSSIBLE? Yes** for relaxed refresh behind a code: standard coding theory on measured retention tails, no new physics. **No** for the delayed-strobe sense-amp flag as specified. Its 3.6 mV window is only τ·ln2 ≈ 14-35 ps of latch time, against 50-150 ps of strobe skew (RT-CIRC-01). That leg is killed.
 - **STEP CHANGE IF IT WORKS? Yes on refresh energy and refresh-busy time, but smaller than first claimed.** Keeping chipkill (RS-8) gives:
   - **~9x on DDR5 RDIMMs at 85 C.** The range is 6-20x by tail model, 18x without the DDR5 retention derate, ~35x at 65 C and 2.9x in degraded mode.
-  - **~13x on retired DDR4 behind CXL** (7.8x pessimistic).
+  - **~11x on retired DDR4 behind CXL with two channels in lockstep** (6.9x pessimistic, 7x with a chip dead), and **~4x on a single DDR4 channel** (3.4x pessimistic, none with a chip dead). *Corrected 2026-11-04 (§12, model §10.11).* The earlier ~13x (7.8x pessimistic) gave DDR4 the 128 check bits of a DDR5 line; a DDR4 line has 64. It holds only if the controller spends 11.1% of DDR4 capacity on extra check bits.
 
   The original 15x gave up chipkill. At module level, refresh falls 0.98 → 0.11 W per 64 GB (DDR5's real 32 ms window), worth ~$3.9 per module over 5 years at 20% self-refresh residency. 64Gb refresh-busy time falls 18% → 2%, not 41% → 2.6%. Margin for new cells stays 1.88x (50 → 26.6 mV, Cs halved), with no flag bonus.
 - **PROVABLE WITH $1M IN 24 MONTHS? Partly.**
@@ -178,11 +178,13 @@ BCH-12 tolerates only **~0.4% of error bits in 3-bit clusters** at 1e-4, and ess
 
 **VRT sensitivity.** At 100x/day growth with a 24 h scrub, the interval falls to 375 ms; a 10-minute scrub (3.4 mW) holds 1.3 s.
 
-**(revised after red team) DDR5 RDIMMs versus retired DDR4.** The tables above use DDR3/DDR4-era tails with no on-die ECC, so they describe retired DDR4. With chipkill kept (model §10.1):
+**(revised after red team) DDR5 RDIMMs versus retired DDR4.** The tables above use DDR3/DDR4-era tails with no on-die ECC on a 640-bit line with 128 check bits. **(corrected 2026-11-04)** That line is the DDR5 RDIMM organisation. A DDR4 x4 RDIMM carries 512 data + 64 check bits per 64 B line [REPORTED, §12], so the tables describe retired DDR4 only if the controller stores 64 more check bits in data space, at 11.1% of capacity. With chipkill kept (model §10.1 and §10.11):
 
 | Part / code (chipkill kept) | 85 C central | 85 C pessimistic | 65 C central | Degraded (one chip dead), 85 C |
 |---|---|---|---|---|
-| Retired DDR4 / RS-8 | 837 ms (13.1x of 64 ms) | 500 ms (7.8x) | 3.3 s | 258 ms (4.0x) |
+| Retired DDR4, two channels in lockstep / RS(144,128) (corrected 2026-11-04) | 698 ms (10.9x of 64 ms) | 444 ms (6.9x) | 2.8 s | 446 ms (7.0x) |
+| Retired DDR4, one channel / RS(72,64) (corrected 2026-11-04) | 258 ms (4.0x) | 216 ms (3.4x) | 1.0 s | none (65 ms, 1.0x) |
+| Retired DDR4, 640-bit layout that gives up 11.1% of capacity / RS-8 (the red-team-era "Retired DDR4" row) | 837 ms (13.1x of 64 ms) | 500 ms (7.8x) | 3.3 s | 258 ms (4.0x) |
 | DDR5 / RS-8 behind on-die SEC, retention ×0.5 | 285 ms (8.9x of 32 ms) | 194 ms (6.1x) | 1.14 s (35x) | 92 ms (2.9x); 366 ms at 65 C |
 | DDR5, no retention derate | 569 ms (17.8x) | - | 2.3 s | - |
 | DDR5 / BCH-12 behind SEC (no chipkill, for comparison) | 603 ms (18.9x) | - | 2.4 s | not correctable |
@@ -190,10 +192,10 @@ BCH-12 tolerates only **~0.4% of error bits in 3-bit clusters** at 1e-4, and ess
 - **Power and value.** DDR5 refresh at its 32 ms window is 0.98 W per 64 GB [A1 per-cell energy; ESTIMATE]. At the central interval it falls to 0.11 W, saving 0.87 W. A hybrid self-refresh policy keeps 0.69 W at 20% self-refresh residency, worth $3.94 per module over 5 years (RT-CIRC-04).
 - **Refresh-blocked time at 1 s** is 0.24% for 16Gb, not 0.48%.
 - **64Gb at tRFC 700 ns** goes from 17.9% blocked to 2.0% at the DDR5 central interval. Same-bank refresh already hides perhaps half to two thirds of the 17.9% (RT-IND-03).
-- **Latency.** The decoder slow path is small. On raw DDR4, 1.2% of lines hold an error, almost all single-symbol, so a ~4 ns lookup fixes them; only 0.007% need Berlekamp-Massey. Behind DDR5's on-die SEC, ~0% of lines need any fix. The CXL hop (70-150 ns) makes the commodity product a capacity tier (RT-CIRC-05).
-- **A new correlated-fault term.** Relaxed refresh turns benign chip faults into UE risk through coincidence with random errors. On DDR4 that requires marking a chip on its first chip-confined correction: 1.1e-4 UE per module-year with first-read marking, against 1.1e-3 after 10 reads (RT-DEV-04; model §10.6).
+- **Latency.** The decoder slow path is small. On raw DDR4 (640-bit layout, and also in lockstep after the 2026-11-04 correction), 1.2% of lines hold an error, almost all single-symbol, so a ~4 ns lookup fixes them; only 0.007% need Berlekamp-Massey. On one DDR4 channel, 0.016% of lines hold an error. Behind DDR5's on-die SEC, ~0% of lines need any fix. The CXL hop (70-150 ns) makes the commodity product a capacity tier (RT-CIRC-05).
+- **A new correlated-fault term.** Relaxed refresh turns benign chip faults into UE risk through coincidence with random errors. On DDR4 that requires marking a chip on its first chip-confined correction: 1.1e-4 UE per module-year with first-read marking, against 1.1e-3 after 10 reads (RT-DEV-04; model §10.6). *(Corrected 2026-11-04: those figures are for the 640-bit layout. On one DDR4 channel they are 1.6e-6 and 1.6e-5, because its lower code limit sets a lower operating BER. In lockstep a dead chip leaves 4 spare symbols and the term is 1.6e-14 with first-read marking; model §10.11.)*
 
-**Positive finding.** The commodity path needs **no new storage and no page code**: the RDIMM's 25% side band, re-coded as BCH-12 or RS-8, carries it.
+**Positive finding.** The commodity path needs **no new storage and no page code**: the DDR5 RDIMM's 25% side band, re-coded as BCH-12 or RS-8, carries it. *(Corrected 2026-11-04: a DDR4 RDIMM's side band is 12.5%. On DDR4 the path needs no new storage only with two channels in lockstep or with RS(72,64) on one channel, at the smaller gains above; the 640-bit layout costs 11.1% of capacity.)*
 
 ### 2.6 One budget, two ways to spend it (critic correction)
 
@@ -264,7 +266,7 @@ Energy value: 0.456 W × 43,830 h × 1.3 PUE = 26 kWh = **$2.60 per 64 GB over 5
 
 | # | Show-stopper | Number | Workaround path |
 |---|---|---|---|
-| 1 | Clustered errors (sub-wordline/MAT faults, SEC miscorrection) | BCH-12 survives only ~0.4% of error bits in 3-bit clusters | RS-8 (keeps chipkill): 0.84 s central, 0.50 s pessimistic at 85 C; chip-symbol codes for multi-byte clusters; 4-16x more at 45-65 C |
+| 1 | Clustered errors (sub-wordline/MAT faults, SEC miscorrection) | BCH-12 survives only ~0.4% of error bits in 3-bit clusters | RS-8 (keeps chipkill): 0.84 s central, 0.50 s pessimistic at 85 C on a 640-bit line (on DDR4, corrected 2026-11-04: 0.70 / 0.44 s in lockstep, 0.26 / 0.22 s on one channel); chip-symbol codes for multi-byte clusters; 4-16x more at 45-65 C |
 | 2 | Refresh latching makes retention errors confident | Flags catch 14-60% of first-period errors, ~0 for resident data | Flags for margin only; hard-decision codes plus scrub for refresh |
 | 3 | Unknown VRT growth | 100x/day, 24 h scrub → 375 ms | 10-min scrub holds 1.3 s for 3.4 mW; measure g |
 | 4 | Hammer at relaxed refresh; partial restore weakens victims (PaCRAM, DejaVu) | 2.17e7 ACT per 1 s window; TRR slots lost | Controller RFM (0.4% typical, 8% attack) or PRAC; measure weakened-victim HCfirst |
@@ -285,7 +287,7 @@ None is a physics wall. Items 1-4 are the measurement that decides the concept.
 
 ### 5.R Revised decisive experiment (revised after red team)
 
-**Question (revised).** With chipkill kept (RS-8), does each part's error stream fit the 128-bit side band at 2e-19 per read with refresh ≥6x its own JEDEC window at 85 C, and ≥24x at 65 C? The windows are 64 ms for DDR4 and 32 ms for DDR5. The stream must include:
+**Question (revised).** With chipkill kept (RS-8), does each part's error stream fit its side band at 2e-19 per read (128 check bits per 64 B line on DDR5; on DDR4, 64 per line, or 128 per 128 B access in lockstep: corrected 2026-11-04, §12.1) with refresh ≥6x its own JEDEC window at 85 C, and ≥24x at 65 C? The windows are 64 ms for DDR4 and 32 ms for DDR5. The stream must include:
 - VRT accumulated over the scrub period;
 - the post-on-die-ECC event structure of 1a/1b DDR5;
 - the chip-fault coincidence term.
@@ -503,7 +505,7 @@ M0 = 2027-01-01. Each criterion is physics or measurement; standards adoption is
 1. **By 2027-06-30 (M6): kill the commodity relaxed-refresh product** if the RS-8 (chipkill) safe interval is <4x the part's own JEDEC window at 65 C, including VRT over a 1 h scrub. That is <256 ms for DDR4 and <128 ms for DDR5. *Revival (revised after red team, RT-DEV-05):* an oxide or gain-cell array whose measured retention CDF reaches ≤1e-6 at 85 C, sits ≥10x right of Si at the same Cs, and has PBTI/hydrogen drift and RTN-like Ioff switching characterised as extra error terms. Or stacked write devices (I-12627) with a measured tail-correlation share ρ ≤0.1: model §10.10 gives 0.84 → 1.8 s at ρ = 0.1, and 5.6 s only at ρ = 0. ~~Revival: re-run on IGZO cells "1e3-1e4x to the right"~~: that was a typical-Ioff ratio, not a tail.
 2. **By M6: kill binary BCH** if >0.4% of error bits arrive in ≥3-bit clusters per codeword; **kill both line codes** if >10% of error events span more than one byte. *Revival:* chip-symbol codes in a wider side band (DDR6/LPDDR6 organisations [UNVERIFIED-PK]).
 3. **KILLED by the red team (RT-CIRC-01, RT-CIRC-02): the per-read sense-amp flag leg.** A delayed strobe sees 50-150 ps skew against a 14-35 ps window. Even ideal flags net −2.2% to −0.2% of die after transport and the second SA latch. ~~By M6: kill the SA flag latch if <25% flaggable~~. *Revival:* silicon with a flag-window σ ≤1.5 mV across ≥1k SAs at 85 C without per-SA trim (amplitude-domain, or a locally referenced strobe with ≤15 ps skew), **and** a positive measured ledger. That ledger means check bits saved exceed transport bits plus SA area, e.g. on new cells where margin errors dominate and the parity saving is ≥25% (RT-IND-02). CDS-derived flags on MARGIN STACK silicon remain a candidate.
-4. **By 2027-09-30 (M9): kill the 85 C claim** (keep 45-65 C temperature-tracking) if measured VRT growth is so fast that a 10-minute scrub cannot hold ≥0.5 s at 85 C. In the model (lognormal tail) that needs growth above ~700x static BER per day with RS-8 or ~5,000x with BCH-12; at 100x/day a 10-minute scrub still holds 0.72 s (RS-8) to 1.3 s (BCH-12) [ESTIMATE].
+4. **By 2027-09-30 (M9): kill the 85 C claim** (keep 45-65 C temperature-tracking) if measured VRT growth is so fast that a 10-minute scrub cannot hold ≥0.5 s at 85 C. In the model (lognormal tail) that needs growth above ~700x static BER per day with RS-8 or ~5,000x with BCH-12; at 100x/day a 10-minute scrub still holds 0.72 s (RS-8) to 1.3 s (BCH-12) [ESTIMATE]. *(Corrected 2026-11-04: those are 640-bit figures. On DDR4 in lockstep the RS line is ~324x/day (0.60 s at 100x/day); on one DDR4 channel the model never reaches 0.5 s at 85 C, so this kill already applies there; model §10.11.)*
 5. **By 2027-12-31 (M12): kill relaxed refresh on non-PRAC parts** if weakened victims at 1 s show HCfirst <50% of the 64 ms value *and* controller RFM at ≤8% bank time cannot hold zero flips under many-sided patterns.
 6. **By 2028-04-30 (M16): stop and diagnose before any raise** if the 1,000 h soak shows any UE or corrected errors >2x the Phase 1 model.
 7. ~~By M19: kill the flag latch if the sky130 latch needs a window >1σ~~ **(revised after red team: moot; the leg is already killed, see #3).** The single sky130 slot's amplitude-flag structure only measures the revival condition.
@@ -513,7 +515,7 @@ M0 = 2027-01-01. Each criterion is physics or measurement; standards adoption is
    - ECS masking prevents resolving singletons at the operating BER and no vendor test mode is obtained. In that case the claim is "unproven", not "killed".
 
    *Revival:* vendor ECC-off maps under NDA (RT-DEV-02, RT-PROC-01, RT-IND-04).
-10. **(new, revised after red team) By M12: kill relaxed refresh beyond 4x on raw DDR4** if the controller cannot mark a chip on its first chip-confined multi-symbol correction in the soak. Marking after 10 reads uses the whole 1e-3 UE budget (model §10.6; RT-DEV-04).
+10. **(new, revised after red team) By M12: kill relaxed refresh beyond 4x on raw DDR4** if the controller cannot mark a chip on its first chip-confined multi-symbol correction in the soak. Marking after 10 reads uses the whole 1e-3 UE budget (model §10.6; RT-DEV-04). *(Corrected 2026-11-04: that budget figure is for the 640-bit layout. On one DDR4 channel, marking after 10 reads costs 1.6e-5, and in lockstep the term is negligible, so this kill binds only the 640-bit layout; model §10.11.)*
 
 ---
 
@@ -632,6 +634,8 @@ Full responses with numbers are in `research/redteam/responses_raw-ber-contract.
 | RT-IND-raw-ber-contract-04 | MAJOR | ACCEPTED-MITIGATED | Demo redefined around DDR5 + retired-DDR4 system soaks. |
 | RT-IND-raw-ber-contract-05 | MINOR | ACCEPTED-DOWNGRADE | Section 7's '$10-15M ASIC' is demoted to contingent. |
 
+*Correction (2026-11-04): the RT-CIRC-03 action's "~13x (retired DDR4)" and its 4x DDR4 degraded figure used a 640-bit DDR4 line with 128 check bits. See the correction note in §11.3.*
+
 ### 11.2 Redesigns adopted
 
 1. **Chipkill by default** (RT-CIRC-03). The headline code is RS(80,64) over bytes, not BCH-12. When a chip is marked dead, its rank drops to a degraded interval until service: 258 ms on retired DDR4 and 92 ms on DDR5 at 85 C, or 366 ms at 65 C. BCH-12 is kept only for tiers that waive chipkill.
@@ -655,6 +659,8 @@ Full responses with numbers are in `research/redteam/responses_raw-ber-contract.
     - **I-12627 (two series write transistors).** Recorded as an oxide/gain-cell tail route. It only works if shared-defect share ρ ≤0.1: the RS-8 interval goes 0.84 → 1.8 s at ρ = 0.1, and to 5.6 s only at ρ = 0.
     - **I-12302 (plate-strip sensing).** Recorded as the new-cell margin route: Cs 0.30 → 0.15 fF with the contract, against 5.42 → 2.68 fF on the bitline. It is ~18x larger than the flag's +8%, but has planar Micron prior art, so it is not this dossier's IP.
 
+*Correction (2026-11-04): items 1, 4 and 7 quote DDR4 figures for a 640-bit line (258 ms degraded; 1.1e-4 / 1.1e-3 UE per module-year; 0.007% of lines on Berlekamp-Massey). On real DDR4 layouts (model §10.11): degraded mode is 446 ms in lockstep and none on one channel; the chip-fault term is ≤1.6e-5 after 10 reads on one channel and negligible in lockstep; Berlekamp-Massey stays at 0.007% of lines in lockstep and ~0% on one channel. See §11.3.*
+
 **Model inputs changed (RED-TEAM REVISIONS block):**
 - `trfc_ns[64Gb]`: 1600 → 700 ns (RT-PROC-04, RT-IND-03).
 - `trefw_ddr5_s`: implicit 0.064 → 0.032 s (RT-DEV-02, RT-PROC-01).
@@ -674,6 +680,16 @@ The model exits 0, and the output is overwritten in `research/stage3/raw-ber-con
 | Retired DDR4 behind CXL (vs 64 ms) | ~13x | 7.8x pessimistic | - | 4x |
 
 That compares with 15x (7.7-30x) claimed without chipkill.
+
+**Correction (2026-11-04).** The "Retired DDR4 behind CXL" row above gave DDR4 a 640-bit line with 128 check bits, which is the DDR5 RDIMM organisation. A DDR4 x4 ECC RDIMM carries 512 data + 64 check bits per 64 B line (§12). The red-team record above is left as written. The corrected numbers (model §10.11; chipkill kept; against 64 ms) are:
+
+| DDR4 layout | 85 C central | Pessimistic | 65 C | Degraded mode | Cost |
+|---|---|---|---|---|---|
+| Two channels in lockstep, RS(144,128) | ~11x (698 ms) | 6.9x | ~44x (2.8 s) | 7.0x | every 64 B request fetches 128 B: half the rank/bank parallelism, ~2x prefetch energy [REPORTED] |
+| One channel, RS(72,64) | ~4x (258 ms) | 3.4x | ~16x (1.0 s) | none (1.0x) | no capacity cost; no random-error margin while a dead chip is unmarked |
+| 640-bit layout, RS(80,64) (the row above) | ~13x (837 ms) | 7.8x | ~52x (3.3 s) | 4.0x | 11.1% of capacity for extra check bits, plus parity-line reads [ESTIMATE] |
+
+So "~13x on retired DDR4" becomes **~11x with two channels in lockstep, or ~4x on one channel**. On one channel the 85 C GO line (≥6x) fails in the model, though kill #1 (<4x at 65 C) does not trigger. The DDR5 numbers do not change: a DDR5 sub-channel really carries 128 check bits per 64 B line. With the measured DDR3L tail (§12) the corrected layouts give 36x (lockstep) and 15x (one channel) at 85 C.
 - **Module level.** DDR5 refresh falls 0.98 → 0.11 W per 64 GB, 23-29% of a 3 W idle module. That is worth ~$3.9 per module over 5 years ($0.062/GB, ~4% of module cost) at 20% self-refresh residency.
 - **64Gb.** Refresh-busy time falls 18% → 2% on an all-bank basis, ~6-16 points after same-bank refresh. The original claim was 41% → 2.6%.
 - **New cells.** Margin stays 1.88x (50 → 26.6 mV, Cs 5.4 → 2.7 fF) with **no flag bonus**. The concept's largest value, new cells qualified against the grade, stays conditional and outside the $1M proof.
@@ -708,7 +724,7 @@ That compares with 15x (7.7-30x) claimed without chipkill.
 ### 11.5 Revised verdicts
 
 - **PHYSICALLY POSSIBLE? Yes** for relaxed refresh behind a side-band code. **No** for the delayed-strobe sense-amp flag as specified (killed).
-- **STEP CHANGE IF IT WORKS? Yes, smaller:** refresh energy and busy time ~9x (DDR5) to ~13x (retired DDR4) at 85 C with chipkill. The range and module value are in §11.3. New-cell margin stays 1.88x with no flag bonus.
+- **STEP CHANGE IF IT WORKS? Yes, smaller:** refresh energy and busy time ~9x (DDR5) to ~13x (retired DDR4) at 85 C with chipkill. The range and module value are in §11.3. New-cell margin stays 1.88x with no flag bonus. *Correction (2026-11-04): read the retired-DDR4 figure as ~11x with two channels in lockstep or ~4x on one channel (§11.3).*
 - **PROVABLE WITH $1M? Partly.**
   - **Yes:** DDR4 physics; DDR5 post-SEC statistics; census; servo test; soaks. Phase 1 is ~$124k and decides at M6.
   - **No:**
@@ -730,17 +746,51 @@ That compares with 15x (7.7-30x) claimed without chipkill.
 - **The strategic 64Gb and value claims shrink.** Recovery falls from ~38 to ~6-16 points, and the value is ~$3.9 per module.
 - **Provability falls from "yes" to "partly".**
 
+*Correction (2026-11-04): retired DDR4 behind CXL is ~11x with two channels in lockstep and ~4x on one channel, not ~13x (§11.3). The DOWNGRADED status and the DDR5 headline are unchanged.*
+
 The concept's promise (weak bits ship behind a controller) stands, as a smaller, better-specified claim.
 
 ## 12. Real-data check (2026-11-04)
 
-*Added after the red team. It does not change §11; it reports what public data says about §11's numbers. Full report: [REALDATA_RAW_BER.md](../research/realdata/REALDATA_RAW_BER.md).*
+*Added after the red team. It does not rewrite §11; it reports what public data says about §11's numbers. §12.1 adds a DDR4 line-geometry correction, which §11 flags with correction notes. Full report: [REALDATA_RAW_BER.md](../research/realdata/REALDATA_RAW_BER.md).*
 
 - **What was tested.** The one reachable public raw retention dataset, CMU SAFARI's 31 DDR3L modules from 2015-16 at 20 and 70 °C ambient with refresh paused 64 ms to 2.048 s [REPORTED: https://github.com/CMU-SAFARI/DRAM-Voltage-Study]. The fitted tail was swapped into the model's own safe-interval code. Published field-study aggregates were checked against the chipkill and chip-marking rules. No public DDR4/DDR5 retention data or chip-level field log could be used.
 - **Retention tail.** The model's anchors are 166-10,000x too pessimistic for these parts at 70 °C. Its width (σ_ln 1.24 vs 1.05 measured) is slightly optimistic on its own [ESTIMATE].
 - **~9x on DDR5 at 85 °C: SUPPORTED as conservative for DDR3-class cells; NOT TESTABLE for DDR5.** The measured tail gives 0.96 s (~30x); pessimistic variants 25-28x, worst module 18x, no-extrapolation bound 11.5x [ESTIMATE]. It still rests on the untested 0.5x DDR5 derate, on-die ECC structure and VRT growth.
-- **~13x on retired DDR4: SUPPORTED on retention** (~42x) [ESTIMATE]. The model gives DDR4 a 128-check-bit line; a real DDR4 x4 line has 64 [UNVERIFIED: training knowledge], so the code side needs a re-run.
-- **Kill #1 (<4x at 65 °C): not triggered** on these parts, ≥32x with no extrapolation [ESTIMATE].
+- **~13x on retired DDR4: CORRECTED on the code side (2026-11-04, §12.1); SUPPORTED on retention.** The ~13x gave DDR4 a 128-check-bit line; a real DDR4 x4 line has 64 [REPORTED, §12.1]. The corrected model gives ~11x with two channels in lockstep and ~4x on one channel. With the measured tail: lockstep 2.28 s (36x), one channel 0.98 s (15x), and the 640-bit layout 2.66 s (42x, the first version's figure). The bound with no BER extrapolation is 11.5x for all three, and 8.6x for the worst module on one channel [ESTIMATE].
+- **Kill #1 (<4x at 65 °C): not triggered** on these parts, ≥32x with no extrapolation (≥24x for the worst module on one DDR4 channel) [ESTIMATE].
 - **Cooling bonus (§2.5, x4 and x16): CONTRADICTED at the measured error rate** (tail Ea ~0.13-0.16 eV, not 0.72 eV) [ESTIMATE]. Do not use the 45 °C figures.
 - **Chipkill as default and first-correction marking: SUPPORTED** by field aggregates: ~23% of DDR4 faults are multi-bit, and warnings are often under an hour [REPORTED: https://arxiv.org/pdf/2408.15302 , https://shujiehan.github.io/_pages/files/srds22.pdf].
 - **Kill #2 and the ≤10% multi-chip line: NOT TESTABLE.** Chance alone puts ~10% of error events on two or more bytes at the BCH-12 limit, so read the line as ">10% above the independent-error expectation" [ESTIMATE].
+
+### 12.1 DDR4 line geometry (correction, 2026-11-04)
+
+*A reviewer asked whether the model gave retired DDR4 the DDR5 line. It did. This note records the check; §11 is left as written, with correction notes.*
+
+- **Where it was.** The model sizes every commodity line from the DDR5 RDIMM: `rdimm_sideband_bits` = 128 (model line 56), `chip_slice_bits` = 64 and `chips_per_line` = 10 (lines 62-63), and `max_p_rs` defaults to RS(80,64) over bytes, t=8, 640 bits (lines 655-659), with a dead chip as 8 erased bytes (line 686). The §10.1 DDR4 rows reused those limits (lines 1033-1035 and 1058-1060), §10.4 used `640 * p_op` (line 1160) and §10.6 used `576 * p_op`, nine 64-bit chips (line 1261). So the "DDR4" cases were a 640-bit line with 128 check bits (25%), RS(80,64) and 8-byte chips: DDR5 geometry with DDR3/DDR4-era tails.
+- **Error or design choice? An error.** Nothing in this dossier, the notes or `responses_raw-ber-contract.json` says the DDR4 path trades capacity for check bits. §2.5 says the opposite ("no new storage ... the RDIMM's 25% side band"), and RT-CIRC-03's response treats 128 bits as given.
+- **What the parts carry.**
+  - DDR4 ECC DIMM: a 72-bit bus, 64 data + 8 ECC bits [REPORTED: https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11437114, via search snippet], burst 8 [DATASHEET: Micron DDR4 RDIMM, https://dtsheet.com/model/4467123, via search snippet]. So a 64 B line is 512 data + 64 check bits (12.5%), from 18 x4 chips of 32 bits each.
+  - x4 chipkill on DDR4 is done two ways. One channel: a single-symbol code with one 8-bit symbol per chip (16 data + 2 check symbols, four codewords per line; AMD, 2013) [REPORTED: https://arxiv.org/pdf/1908.01806, via search snippet]; Intel runs x4 SDDC in independent-channel mode [REPORTED: Lenovo and Dell server manuals, via search snippets]. Two channels in lockstep: a 144-bit word of 128 data + 16 check bits per beat over 36 x4 chips [REPORTED: https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9772900 and arXiv 1908.01806]. Lockstep halves rank/bank parallelism and doubles prefetch energy at burst 8 [REPORTED: same patent].
+  - DDR5 RDIMM: two 40-bit sub-channels (32 data + 8 ECC), burst 16, 10 x4 devices per sub-channel [REPORTED: https://www.rambus.com/memory-interface-chips/ddr5-dimm-chipset/ddr5-rcd/, via search snippet]. That is 512 + 128 bits per 64 B line, so the DDR5 rows were right and are unchanged.
+- **The fix (model §10.11, new `GEO_INPUTS`).** Three DDR4 layouts, all keeping the 2e-19 target per decode, the tails, VRT and scrub of §10.1:
+  - **(a) One channel, 576-bit line, RS(72,64) over bytes, t=4.** Chipkill is kept: a dead chip is 4 byte errors, exactly t. But no random-error margin is left until the chip is marked, and double-chip detection is not guaranteed. The host-style single-symbol code (4 × RS(18,16)) gives no relaxation at all (limit 2.2e-12).
+  - **(b) Two channels in lockstep, 1,152-bit access (1,024 + 128), RS(144,128), t=8.** A dead chip uses 4 of 8. No capacity cost, but 128 B per access.
+  - **(c) The old 640-bit line.** It needs the controller to keep 64 more check bits per 64 B line in DRAM data space. That costs 11.1% of capacity (usable 88.9%), plus up to 1/8 of a line of extra reads when the parity line is not cached [ESTIMATE].
+
+| DDR4, 85 C, chipkill kept, vs 64 ms | Before (as published) | (b) lockstep | (a) one channel | (c) 640-bit, −11.1% capacity |
+|---|---|---|---|---|
+| Code limit, max raw BER | 5.45e-5 | 3.03e-5 | 8.26e-7 | 5.45e-5 |
+| Central (lognormal) | 837 ms = 13.1x | 698 ms = 10.9x | 258 ms = 4.0x | 837 ms = 13.1x |
+| Pessimistic (pow5) | 500 ms = 7.8x | 444 ms = 6.9x | 216 ms = 3.4x | 500 ms = 7.8x |
+| Optimistic (pow3) | 1.97 s | 1.62 s = 25x | 487 ms = 7.6x | 1.97 s |
+| 65 C, central | 3.3 s | 2.8 s | 1.0 s | 3.3 s |
+| One chip dead, 85 C | 258 ms = 4.0x | 446 ms = 7.0x | 65 ms = 1.0x (none) | 258 ms = 4.0x |
+| No chipkill (BCH) | BCH-12: 1.53 s | BCH t=11: 1.11 s | BCH t=6: 539 ms | BCH-12: 1.53 s |
+| Lines needing Berlekamp-Massey, servoed | 0.007% | 0.007% | ~0% | 0.007% |
+| Chip-fault UE per module-year, mark after 1 / 10 reads, servoed | 1.1e-4 / 1.1e-3 | 1.6e-14 / 1.6e-13 | 1.6e-6 / 1.6e-5 | 1.1e-4 / 1.1e-3 |
+| VRT growth at which a 10-minute scrub loses 0.5 s (kill #4) | ~700x/day | ~324x/day | never reaches 0.5 s | ~700x/day |
+| Real DDR3L tail, case B (§12, REALDATA §4.6) | 2.66 s = 42x | 2.28 s = 36x | 0.98 s = 15x | 2.66 s = 42x |
+
+- **What it changes.** The retired-DDR4 headline becomes **~11x in lockstep (6.9x pessimistic, 7x degraded) or ~4x on one channel (3.4x pessimistic, none degraded)**; ~13x needs 11.1% of capacity. In the model, one channel fails the 85 C GO line (≥6x) but not kill #1 (<4x at 65 C). With the measured DDR3L tail every layout passes both. Lockstep is the better DDR4 landing zone: it beats the old 640-bit row in degraded mode (7.0x vs 4.0x), and the chip-fault term behind kill #10 nearly vanishes. The DDR5 headline (~9x), its range and the module value are unchanged.
+- **Open question.** With 8 check bytes, 4 byte errors is the most a byte code can correct. A binary code that corrects BCH-6-class random bits and a whole x4 chip in 64 check bits is not known to us; the Hamming bound allows one. That goes to the coding advisor with the 128-bit question from RT-CIRC-03.

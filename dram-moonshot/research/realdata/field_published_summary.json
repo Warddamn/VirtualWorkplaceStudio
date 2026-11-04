@@ -65,20 +65,28 @@
   "note": "DIMM counts are DIMMs that logged >=1 CE that month, not the whole fleet [REPORTED]"
  },
  "iid_multichip_share": {
-  "DDR4 RS-8 limit 5.45e-5": 0.015611872343591713,
-  "DDR4 RS-8 servoed (limit/3)": 0.005220103176723794,
-  "DDR4 BCH-12 limit 3.3e-4": 0.09289233493407108,
+  "640-bit RS-8 limit 5.45e-5 (DDR4 layout c)": 0.015611872343591713,
+  "640-bit RS-8 servoed (limit/3)": 0.005220103176723794,
+  "640-bit BCH-12 limit 3.3e-4 (DDR4 layout c)": 0.09289233493407108,
   "DDR5 post-SEC events at RS-8 limit 1.52e-5": 9.594561456e-06
  },
  "iid_multibyte_share_rs80x8": {
-  "DDR4 RS-8 limit 5.45e-5": 0.01711233279793071,
-  "DDR4 RS-8 servoed (limit/3)": 0.005725674316040898,
-  "DDR4 BCH-12 limit 3.3e-4": 0.10130376931019032
+  "640-bit RS-8 limit 5.45e-5 (DDR4 layout c)": 0.01711233279793071,
+  "640-bit RS-8 servoed (limit/3)": 0.005725674316040898,
+  "640-bit BCH-12 limit 3.3e-4 (DDR4 layout c)": 0.10130376931019032
  },
  "iid_multichip_share_ddr4_x4_18x32": {
-  "DDR4 RS-8 limit 5.45e-5": 0.014744616874389138,
-  "DDR4 RS-8 servoed (limit/3)": 0.004930100077244921,
-  "DDR4 BCH-12 limit 3.3e-4": 0.08774713907563284
+  "640-bit RS-8 limit 5.45e-5 (DDR4 layout c)": 0.014744616874389138,
+  "640-bit RS-8 servoed (limit/3)": 0.004930100077244921,
+  "640-bit BCH-12 limit 3.3e-4 (DDR4 layout c)": 0.08774713907563284
+ },
+ "iid_share_ddr4_layouts": {
+  "(a) one channel RS(72,64) limit 8.3e-7: >1 chip": 0.00022460186404108518,
+  "(a) one channel RS(72,64) limit 8.3e-7: >1 byte": 0.0002345092207065973,
+  "(a) one channel RS(72,64) servoed (limit/3): >1 chip": 7.487078518832447e-05,
+  "(b) lockstep RS(144,128) limit 3.0e-5: >1 chip": 0.016852826277768396,
+  "(b) lockstep RS(144,128) limit 3.0e-5: >1 byte": 0.017209803267360987,
+  "(b) lockstep RS(144,128) servoed (limit/3): >1 chip": 0.005638228581855912
  },
  "field_published": [
   {

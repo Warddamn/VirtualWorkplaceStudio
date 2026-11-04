@@ -21,6 +21,8 @@ What it computes (sections):
   7. Row hammer under relaxed refresh (RFM substitution), typed pages (page-code RMW, decode energy).
   8. Value: energy $, bandwidth, density cost of check bits, vs $1.48/GB and 0.447 Gb/mm2.
   9. GO / NO-GO thresholds for the decisive experiment.
+  10. Red-team revisions (10.1-10.10) and the DDR4 line-geometry correction of 2026-11-04 (10.11): a DDR4 x4
+      RDIMM carries 64 check bits per 64 B line, not the 128 of a DDR5 RDIMM sub-channel.
 
 Every input carries a source URL or "ESTIMATE: basis". Sources: research/sources/dos-raw-ber-contract.jsonl.
 """
@@ -174,6 +176,43 @@ RT_INPUTS = {
     "flag_sa_area_die": ((0.02, 0.04), "RT-CIRC-02 critic: second latch + comparator per SA = +20-40% SA strip = "
                                        "+2-4% die [ESTIMATE]"),
 }
+
+
+# --------------------------------------------------------------------------------------------
+# DDR4 LINE-GEOMETRY CORRECTION (2026-11-04). The red-team-era DDR4 rows (sections 10.1, 10.4, 10.6) gave retired
+# DDR4 the DDR5 RDIMM line: 640 bits = 512 data + 128 check bits, RS(80,64) with an x4 chip = 8 bytes. A DDR4 x4
+# ECC RDIMM moves 72 bits x burst 8 per 64 B line = 512 data + 64 check bits (12.5%), 18 x4 chips x 32 bits. Section
+# 10.11 models three DDR4 layouts: (a) one 72-bit channel, RS(72,64) over bytes; (b) two channels in lockstep,
+# RS(144,128) over bytes on a 128 B access; (c) a CXL layout that stores 64 more check bits per line in DRAM data
+# space (RS(80,64), -11.1% capacity). The old DDR4 rows equal layout (c) exactly and are kept, relabelled.
+# DDR5 rows are unchanged: 2 x 40-bit sub-channels (32 data + 8 ECC) x burst 16 = 512 + 128 per 64 B line.
+# --------------------------------------------------------------------------------------------
+GEO_INPUTS = {
+    "ddr4_bus_bits": (72, "DDR4 ECC DIMM bus = 64 data + 8 ECC bits [REPORTED: US 11,437,114, "
+                          "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11437114, via search snippet]; "
+                          "fixed burst 8 [DATASHEET: Micron DDR4 RDIMM, https://dtsheet.com/model/4467123, via search "
+                          "snippet] -> 512 data + 64 check bits per 64 B line"),
+    "ddr4_x4_chips": (18, "16 data + 2 ECC x4 chips per 72-bit rank [REPORTED: https://arxiv.org/pdf/1908.01806, via "
+                          "search snippet]; each chip gives 4 DQ x 8 beats = 32 bits = 4 byte symbols per line"),
+    "ddr4_ssc_codewords": (4, "host-style x4 SSC: one 8-bit symbol per chip over 2 beats, 16 data + 2 check symbols per "
+                              "codeword, 4 codewords per 8-beat request (AMD 2013) [REPORTED: https://arxiv.org/pdf/"
+                              "1908.01806, via search snippet]. Intel SDDC on x4 DDR4 runs in independent-channel mode "
+                              "[REPORTED: Lenovo/Dell server manuals via search snippet]"),
+    "ddr4_lockstep_bits": (1152, "two 72-bit channels in lockstep: 36 x4 chips, 144-bit word = 128 data + 16 check bits "
+                                 "per beat [REPORTED: US 9,772,900, https://image-ppubs.uspto.gov/dirsearch-public/print/"
+                                 "downloadPdf/9772900; arXiv 1908.01806]; burst 8 -> 1024 data + 128 check per 128 B access. "
+                                 "Lockstep halves rank/bank parallelism and doubles prefetch energy at burst 8 [REPORTED: "
+                                 "same patent, via search snippet]"),
+    "ddr4_extra_check_bits": (64, "ESTIMATE/design: layout (c) stores 64 more check bits per 512 data bits in DRAM data "
+                                  "space (one parity line per 8 data lines) -> 128 check bits, RS(80,64) as on DDR5; worst "
+                                  "line: a dead chip holds 4 data + 4 parity bytes (8 erasures)"),
+    "ddr4_dies_note": ((36, 72), "ESTIMATE: a 64 GB DDR4 x4 RDIMM holds 36 (16Gb) to 72 (8Gb) dies; section 10.11 keeps "
+                                 "the model's 40-die fault count (scale the chip-fault UE by 0.9-1.8x)"),
+}
+
+
+def G(k):
+    return GEO_INPUTS[k][0]
 
 
 def R(k):
@@ -385,7 +424,8 @@ def section_codes(tgt):
         out(f"| {p:.0e} | {t} | {mp*t/kp*100:.2f} | {(1/cap-1)*100:.2f} |")
     out("")
     out("Reading: at 1e-4 the 4 KB code needs only ~1-2% parity, but the line code already fits in the 25% side band "
-        "a commodity ECC RDIMM carries, so relaxed refresh on today's DRAM needs no page code at all for iid errors.")
+        "a commodity DDR5 ECC RDIMM carries, so relaxed refresh on today's DRAM needs no page code at all for iid errors. "
+        "[Correction 2026-11-04: a DDR4 ECC RDIMM carries 12.5% (64 check bits per 64 B line); see section 10.11.]")
     return p_sb, p_od, res
 
 
@@ -740,6 +780,10 @@ def section_refresh(p_sb, p_rs):
             pm[(mdl, code)] = r
             out(f"| {name} | {code} | {r[0]*1e3:.0f} ms | {r[1]*1e3:.0f} ms | {r[2]*1e3:.0f} ms |")
     out("")
+    out("[Correction 2026-11-04: 128 check bits per 64 B line is the DDR5 RDIMM organisation. With these DDR3/DDR4-era "
+        "tails the table describes retired DDR4 only in the capacity-trading layout (c) of section 10.11; a DDR4 RDIMM "
+        "line carries 64 check bits.]")
+    out("")
     out("VRT sensitivity (lognormal model, 85 C): largest interval vs VRT growth and scrub interval")
     out("")
     out("| VRT growth /day | scrub 10 min | scrub 1 h | scrub 24 h |")
@@ -860,8 +904,9 @@ def section_value(base_ref, P_choice, res_t):
     out(f"New-die check-bit cost: t={t4} line BCH = {par*100:.1f}% vs on-die 6.25% -> same 1b cell gives "
         f"{dens:.3f} Gb/mm2 ({dens/V('density_1b_Gb_mm2'):.2f}x of {V('density_1b_Gb_mm2')}). The contract pays for "
         "itself only through the cells it enables (shorter pillar, 3D tiers), never on today's planar cell.")
-    out("Commodity path: the 25% ECC side band already exists on RDIMMs, so the contract adds zero bits there; the "
-        "choice is BCH-12 (6x more random-bit headroom, no chipkill) or RS-8 (keeps chipkill, section 4).")
+    out("Commodity path: the 25% ECC side band already exists on DDR5 RDIMMs, so the contract adds zero bits there; the "
+        "choice is BCH-12 (6x more random-bit headroom, no chipkill) or RS-8 (keeps chipkill, section 4). [Correction "
+        "2026-11-04: DDR4 RDIMMs carry 12.5%, not 25%; section 10.11.]")
     return usd / gb
 
 
@@ -894,7 +939,8 @@ def section_go(tgt, p_sb, p_rs, flag_table, pm):
     out(f"GO-A (refresh, commodity): measured BER at 0.5 s / 85 C (equivalently ~2 s / 65 C), including VRT growth over "
         f"a 1 h scrub, <= {p_sb:.1e} with <= {bf3*100:.2g}% of error bits in >=3-bit clusters per codeword (BCH-12), or "
         f"<= {p_rs:.1e} with clusters confined to bytes/chips (RS-8, chipkill kept). Either gives a >=7.7x refresh-"
-        "energy cut and refresh-blocked time 7.6% -> <1% on 16Gb dies.")
+        "energy cut and refresh-blocked time 7.6% -> <1% on 16Gb dies. [Correction 2026-11-04: a DDR4 module has a "
+        "64-bit, not 128-bit, side band per 64 B line; these limits apply to DDR4 only in layout (c) of section 10.11.]")
     out(f"GO-B (margin, new cells): at emulated half-charge raw BER 1e-4, >=50% of errors flagged at a <=0.5-sigma "
         f"window (<=6 false flags per error), so Chase needs t<={tc50} ({tc50*10} bits) where hard decoding needs "
         f"t={th} ({th*10} bits); per-codeword error counts within 2x of Poisson out to 6 errors per 512 b.")
@@ -984,17 +1030,21 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     out("")
     out("| part | controller code | chipkill | max raw BER |")
     out("|---|---|---|---|")
-    out(f"| DDR4 (no on-die ECC) | BCH-12 | no | {p_sb:.2e} |")
-    out(f"| DDR4 | RS(80,64) bytes | yes | {p_rs:.2e} |")
-    out(f"| DDR4 | RS(80,64), one chip marked dead | degraded | {p_rs_er:.2e} |")
+    out(f"| DDR4 (no on-die ECC), 640-bit layout (c) | BCH-12 | no | {p_sb:.2e} |")
+    out(f"| DDR4, 640-bit layout (c) | RS(80,64) bytes | yes | {p_rs:.2e} |")
+    out(f"| DDR4, 640-bit layout (c) | RS(80,64), one chip marked dead | degraded | {p_rs_er:.2e} |")
     out(f"| DDR5 behind on-die SEC | BCH-12 | no | {p_od:.2e} |")
     out(f"| DDR5 behind on-die SEC | RS(80,64) bytes | yes | {p_rs_od:.2e} |")
     out(f"| DDR5 behind on-die SEC | RS(80,64), one chip marked dead | degraded | {p_rs_od_er:.2e} |")
     out("")
+    out("[Correction 2026-11-04: the DDR4 rows give retired DDR4 a 640-bit line with 128 check bits, the DDR5 RDIMM "
+        "organisation. A DDR4 x4 RDIMM carries 64 check bits per 64 B line, so these rows hold only for layout (c), "
+        "which spends 11.1% of capacity on extra check bits. Realistic DDR4 layouts: section 10.11.]")
+    out("")
     out("On-die SEC HURTS the chipkill code (a red-team-run finding): it strips singletons but turns doublets into "
         "2-3-bit chip-confined events that each consume 2-3 RS symbols, so three such events on one read exceed "
         "t=8 (failure ~p^6 instead of ~p^9 for iid singles). RS-8 behind SEC tolerates ~3.6x less internal BER than "
-        "RS-8 on raw DDR4. The symbol count is an upper bound (each post-SEC bit in its own byte; for 3 bits in "
+        "RS-8 on the same 640-bit line without SEC. The symbol count is an upper bound (each post-SEC bit in its own byte; for 3 bits in "
         "8 bytes that holds 66% of the time anyway).")
     out("")
     sc = R("ret_time_scale_ddr5")
@@ -1005,9 +1055,9 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     out("| part / code | retention model | ret. scale | 85 C | cut at 85 C | 65 C | 45 C |")
     out("|---|---|---|---|---|---|---|")
     cases = [
-        ("DDR4 / RS-8 chipkill", p_rs, "logn", 1.0, w4),
-        ("DDR4 / RS-8 chipkill", p_rs, "pow5", 1.0, w4),
-        ("DDR4 / RS-8 degraded (chip dead)", p_rs_er, "logn", 1.0, w4),
+        ("DDR4 (c) / RS-8 chipkill", p_rs, "logn", 1.0, w4),
+        ("DDR4 (c) / RS-8 chipkill", p_rs, "pow5", 1.0, w4),
+        ("DDR4 (c) / RS-8 degraded (chip dead)", p_rs_er, "logn", 1.0, w4),
         ("DDR5 / RS-8 behind SEC", p_rs_od, "pow3", sc, w5),
         ("DDR5 / RS-8 behind SEC", p_rs_od, "logn", sc, w5),
         ("DDR5 / RS-8 behind SEC", p_rs_od, "pow5", sc, w5),
@@ -1027,7 +1077,7 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     I_d = iv[("DDR5 / RS-8 degraded (chip dead)", "logn", sc)][0]
     I_c65 = iv[("DDR5 / RS-8 behind SEC", "logn", sc)][1]
     I_d65 = iv[("DDR5 / RS-8 degraded (chip dead)", "logn", sc)][1]
-    I_4c = iv[("DDR4 / RS-8 chipkill", "logn", 1.0)][0]
+    I_4c = iv[("DDR4 (c) / RS-8 chipkill", "logn", 1.0)][0]
     RES.update(I_c=I_c, I_p=I_p, I_o=I_o, I_d=I_d, I_c65=I_c65, I_d65=I_d65, I_4c=I_4c)
     base32 = refresh_numbers(w5)[0]
     pr, ps, _ = refresh_numbers(I_c)
@@ -1097,8 +1147,9 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     out("")
     out("| case | operating raw BER | lines with any error | lines needing BM | mean added ns | p99 path |")
     out("|---|---|---|---|---|---|")
-    for name, p_op, ondie in (("DDR4, RS-8 at limit", p_rs, False), ("DDR4, RS-8 servoed", p_rs / R("servo_ber_guard"), False),
-                              ("DDR4, BCH-12 at 1e-4 (critic case)", 1e-4, False),
+    for name, p_op, ondie in (("DDR4 (c), RS-8 at limit", p_rs, False),
+                              ("DDR4 (c), RS-8 servoed", p_rs / R("servo_ber_guard"), False),
+                              ("DDR4 (c), BCH-12 at 1e-4 (critic case)", 1e-4, False),
                               ("DDR5 behind SEC, RS-8 at limit", p_rs_od, True),
                               ("DDR5 behind SEC, RS-8 servoed", p_rs_od / R("servo_ber_guard"), True)):
         if ondie:
@@ -1113,11 +1164,12 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
         path = "BM" if p2 > 0.01 else ("single fix" if p1 > 0.01 else "fast")
         out(f"| {name} | {p_op:.1e} | {p1*100:.3f}% | {p2*100:.4f}% | {mean:.2f} | {path} |")
     out("")
-    out(f"Reading: the critic's 5.6% slow path is real for raw DDR4 at 1e-4, but almost all of it is single-symbol "
+    out(f"Reading: the critic's 5.6% slow path is real for a raw 640-bit line at 1e-4, but almost all of it is single-symbol "
         "errors that a lookup fixes in a few ns; BM is needed on <0.2% of lines. Behind DDR5's on-die SEC the "
         f"controller rarely sees an error at all. The CXL hop itself adds {R('cxl_adder_ns')[0]:.0f}-"
         f"{R('cxl_adder_ns')[1]:.0f} ns: the commodity product is a capacity tier, and DRAM-class latency needs the "
-        "decoder in the host memory controller (where chipkill decoders already sit) or on-die.")
+        "decoder in the host memory controller (where chipkill decoders already sit) or on-die. [Correction 2026-11-04: "
+        "DDR4 rows are layout (c); DDR4 layouts (a) and (b) are in section 10.11.]")
 
     # ---------------- 10.5 flag ledger ----------------
     hr("10.5 Flag ledger (RT-CIRC-01, RT-CIRC-02, RT-IND-02, RT-DEV-01)")
@@ -1199,7 +1251,7 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     out("|---|---|---|---|---|---|")
     p64 = ber_ret(0.064, "logn")
     rows = (("64 ms today (DDR4 anchors)", p64, False),
-            ("DDR4 RS-8 at limit", p_rs, False), ("DDR4 RS-8 servoed", p_rs / R("servo_ber_guard"), False),
+            ("DDR4 (c) RS-8 at limit", p_rs, False), ("DDR4 (c) RS-8 servoed", p_rs / R("servo_ber_guard"), False),
             ("DDR5 behind SEC, RS-8 at limit", p_rs_od, True),
             ("DDR5 behind SEC, RS-8 servoed", p_rs_od / R("servo_ber_guard"), True))
     for name, p_op, ondie in rows:
@@ -1216,10 +1268,12 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     out("Reading: relaxed refresh turns benign chip faults into UE risk through coincidence with random errors "
         "(q rises ~1e4x vs 64 ms on raw DDR4). On DDR4 the controller must mark a chip on its first chip-confined "
         "multi-symbol correction; marking after 10 reads already uses the whole 1e-3 budget. Behind DDR5 on-die SEC, "
-        "q stays small.")
+        "q stays small. [Correction 2026-11-04: the DDR4 rows are layout (c), 640-bit line. On a real DDR4 line "
+        "(section 10.11) q is much smaller on one channel, because its lower code limit sets a lower operating BER, "
+        "and negligible in lockstep, where a dead chip leaves 4 spare symbols.]")
     out(f"Census power: {R('census_module_hours'):.1e} module-hours with zero events of a mechanism bound its rate "
         f"at <= {ev:.2f} per module-year (95%). With immediate marking, that bounds its UE share at <= "
-        f"{ev*RES[('q','DDR4 RS-8 servoed')]:.1e} (DDR4 servoed) and <= {ev*RES[('q','DDR5 behind SEC, RS-8 servoed')]:.1e} "
+        f"{ev*RES[('q','DDR4 (c) RS-8 servoed')]:.1e} (DDR4 (c) servoed) and <= {ev*RES[('q','DDR5 behind SEC, RS-8 servoed')]:.1e} "
         "(DDR5) per module-year, against the 1e-3 budget. Each mechanism's rate is measured as events, not "
         "inferred from 1e15 codeword reads; multi-chip common-mode events (VPP droop, thermal slew faster than the "
         "scheduler) remain the residual that only fleet telemetry bounds.")
@@ -1273,7 +1327,8 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     hr("10.10 New-cell routes: oxide revival, stacked write (I-12627), plate-strip sensing (I-12302) (RT-DEV-05)")
     out("Stacked write devices square the leakage-tail fraction only for independent defects: p_eff = p (rho + "
         "(1 - rho) p), rho = shared-defect share. Applies to gain/oxide cells whose hold leakage is the write path, "
-        "not to Si 1T1C storage-node junction/GIDL leakage. DDR4-anchor tail, RS-8 limit, 85 C:")
+        "not to Si 1T1C storage-node junction/GIDL leakage. DDR4-anchor tail, RS-8 limit of a 640-bit line (128 check bits), "
+        "85 C:")
     out("")
     out("| rho | p_eff at 1 s | safe interval |")
     out("|---|---|---|")
@@ -1304,6 +1359,183 @@ def section_redteam(tgt, p_sb, p_od, p_rs, p_rs_er, sig):
     return RES
 
 
+# --------------------------------------------------------------------------------------------
+# 10.11 DDR4 LINE-GEOMETRY CORRECTION (2026-11-04): see the GEO_INPUTS block at the top
+# --------------------------------------------------------------------------------------------
+def max_p_ssc(tgt, erased=False):
+    """Host-style x4 SSC on one DDR4 channel: 4 codewords of 18 byte symbols (16 data + 2 check), one symbol per chip
+    (4 DQ x 2 beats). Healthy: a codeword fails at >= 2 symbol errors. One chip marked dead (1 erasure per codeword):
+    no correction is left, so any further symbol error fails. Every bit error counts as its own symbol (upper bound);
+    union bound over the 4 codewords."""
+    ncw = int(G("ddr4_ssc_codewords"))
+    nbits = (18 - (1 if erased else 0)) * 8
+    a = 0 if erased else 1
+    lo, hi = -26.0, -1.5
+    for _ in range(90):
+        mid = (lo + hi) / 2
+        if ncw * pois_sf(a, nbits * 10 ** mid) <= tgt:
+            lo = mid
+        else:
+            hi = mid
+    return 10 ** lo
+
+
+def section_ddr4_geometry(tgt, p_sb, p_rs, p_rs_er, RES):
+    hr("10.11 DDR4 line geometry (correction 2026-11-04)")
+    w4 = 0.064
+    chips = int(G("ddr4_x4_chips"))
+    line4 = G("ddr4_bus_bits") * 8
+    lock = int(G("ddr4_lockstep_bits"))
+    cap_c = G("ddr4_extra_check_bits") / (512 + G("ddr4_extra_check_bits"))
+    out("Correction. Sections 10.1, 10.4 and 10.6 gave retired DDR4 the DDR5 RDIMM line: 640 bits = 512 data + 128 "
+        f"check bits, RS(80,64), an x4 chip = 8 bytes. A DDR4 x4 ECC RDIMM moves {G('ddr4_bus_bits')} bits x burst 8 = "
+        f"512 data + {line4 - 512} check bits per 64 B line ({(line4 - 512) / 512 * 100:.1f}%), {chips} x4 chips x 4 "
+        "bytes [REPORTED; GEO_INPUTS]. Three DDR4 layouts follow. Each keeps the 2e-19 target per codeword decode (one "
+        "decode per 64 B request) and the DDR3/DDR4-era tails, VRT 1x/day and 1 h scrub of section 10.1:")
+    out("")
+    out(f"- (a) One 72-bit channel, {line4}-bit line: RS(72,64) over bytes, t=4. A dead chip is 4 byte errors = t, so "
+        "chipkill is kept but no random-error margin is left until the chip is marked, and double-chip detection is "
+        "not guaranteed. Reference row: the host-style x4 SSC code (4 x RS(18,16), one symbol per chip) on the same bits.")
+    out(f"- (b) Two channels in lockstep, {lock}-bit access (1024 data + 128 check): RS(144,128) over bytes, t=8; a dead "
+        "chip uses 4 of 8. No capacity cost, but every 64 B request fetches 128 B (half the rank/bank parallelism, ~2x "
+        "prefetch energy [REPORTED; GEO_INPUTS]).")
+    out(f"- (c) CXL capacity trade: {G('ddr4_extra_check_bits')} more check bits per 512 data bits kept in DRAM data "
+        f"space (one parity line per 8 data lines) -> RS(80,64) as on DDR5. Usable capacity 512/576 = "
+        f"{(1 - cap_c) * 100:.1f}% ({-cap_c * 100:.1f}%), plus up to 1/8 of a line of extra reads per access when the "
+        "parity line is not cached [ESTIMATE]. Layout (c) equals the old DDR4 rows exactly.")
+    out("")
+    pa, pa_er = max_p_rs(tgt, t_sym=4, n_sym=72), max_p_rs(tgt, t_sym=4, n_sym=72, erased=4)
+    pb, pb_er = max_p_rs(tgt, t_sym=8, n_sym=144), max_p_rs(tgt, t_sym=8, n_sym=144, erased=4)
+    ps, ps_er = max_p_ssc(tgt), max_p_ssc(tgt, erased=True)
+    pa_bch, pb_bch = max_p_hard(6, 512, 10, tgt), max_p_hard(11, 1024, 11, tgt)
+    RES.update(g_pa=pa, g_pa_er=pa_er, g_pb=pb, g_pb_er=pb_er, g_ps=ps, g_ps_er=ps_er, g_pa_bch=pa_bch, g_pb_bch=pb_bch)
+    out("Code limits (max iid raw BER at the target; no on-die ECC):")
+    out("")
+    out("| layout | data + check bits | capacity cost | code | chipkill | max raw BER | one chip marked dead |")
+    out("|---|---|---|---|---|---|---|")
+    out(f"| (a) one channel | 512 + 64 | 0 | host SSC, 4 x RS(18,16) | yes (single symbol) | {ps:.1e} | {ps_er:.1e} |")
+    out(f"| (a) one channel | 512 + 64 | 0 | RS(72,64) bytes, t=4 | yes, no spare | {pa:.2e} | {pa_er:.2e} |")
+    out(f"| (a) one channel | 512 + 64 | 0 | BCH t=6 (m=10, 60 bits) | no | {pa_bch:.2e} | - |")
+    out(f"| (b) lockstep | 1024 + 128 | 0 (128 B access) | RS(144,128) bytes, t=8 | yes, 4 spare | {pb:.2e} | {pb_er:.2e} |")
+    out(f"| (b) lockstep | 1024 + 128 | 0 (128 B access) | BCH t=11 (m=11, 121 bits) | no | {pb_bch:.2e} | - |")
+    out(f"| (c) capacity trade | 512 + 128 | {cap_c * 100:.1f}% | RS(80,64) bytes, t=8 (old DDR4 row) | yes | {p_rs:.2e} | "
+        f"{p_rs_er:.2e} |")
+    out(f"| (c) capacity trade | 512 + 128 | {cap_c * 100:.1f}% | BCH-12 (old DDR4 row) | no | {p_sb:.2e} | - |")
+    out("")
+    mult = 1 + V("vrt_growth_per_day") * V("scrub_interval_h") / 24.0
+    b64 = ber_ret(w4, "logn") * mult
+
+    def fiv(i):
+        return "<=16 ms" if i <= 0.0161 else (f"{i * 1e3:.0f} ms" if i < 1.0 else f"{i:.2f} s")
+
+    out(f"Safe refresh interval, retired DDR4 (DDR3/DDR4-era anchors, no derate). The lognormal tail at 64 ms already "
+        f"carries {b64:.1e} (VRT included), so a code whose limit sits below that gives no relaxation [model tail; real "
+        "parts repair those cells at test].")
+    out("")
+    out("| layout / code | retention model | 85 C | x of 64 ms | 65 C | 45 C |")
+    out("|---|---|---|---|---|---|")
+    rows = [("(a) host SSC 4 x RS(18,16)", ps, ("logn",)),
+            ("(a) RS(72,64)", pa, ("logn", "pow5", "pow3")),
+            ("(a) RS(72,64), one chip dead", pa_er, ("logn", "pow5")),
+            ("(a) BCH t=6 (no chipkill)", pa_bch, ("logn",)),
+            ("(b) lockstep RS(144,128)", pb, ("logn", "pow5", "pow3")),
+            ("(b) lockstep RS(144,128), one chip dead", pb_er, ("logn", "pow5")),
+            ("(b) lockstep BCH t=11 (no chipkill)", pb_bch, ("logn",)),
+            ("(c) RS(80,64), -11.1% capacity", p_rs, ("logn", "pow5", "pow3")),
+            ("(c) RS(80,64), one chip dead", p_rs_er, ("logn", "pow5")),
+            ("(c) BCH-12 (no chipkill)", p_sb, ("logn",))]
+    iv = {}
+    for name, plim, mdls in rows:
+        for mdl in mdls:
+            if plim < b64:
+                r = [0.0, 0.0, 0.0]
+                iv[(name, mdl)] = r
+                out(f"| {name} | {mdl} | none (limit < 64 ms tail BER) | 1.0x at best | - | - |")
+                continue
+            r = [p_max_interval(mdl, plim, ts) for ts in (1.0, 4.0, 16.0)]
+            iv[(name, mdl)] = r
+            out(f"| {name} | {mdl} | {fiv(r[0])} | {r[0] / w4:.1f}x | {fiv(r[1])} | {fiv(r[2])} |")
+    for key, name in (("a", "(a) RS(72,64)"), ("b", "(b) lockstep RS(144,128)"), ("c", "(c) RS(80,64), -11.1% capacity")):
+        RES[f"g_I{key}"] = iv[(name, "logn")][0]
+        RES[f"g_I{key}_p"] = iv[(name, "pow5")][0]
+        RES[f"g_I{key}_o"] = iv[(name, "pow3")][0]
+        RES[f"g_I{key}65"] = iv[(name, "logn")][1]
+    for key, name in (("a", "(a) RS(72,64), one chip dead"), ("b", "(b) lockstep RS(144,128), one chip dead"),
+                      ("c", "(c) RS(80,64), one chip dead")):
+        RES[f"g_I{key}_d"] = iv[(name, "logn")][0]
+        RES[f"g_I{key}_d65"] = iv[(name, "logn")][1]
+    out("")
+    out("Decoder load (as section 10.4; each bit error its own symbol):")
+    out("")
+    out("| case | operating raw BER | lines with any error | lines needing BM | mean added ns |")
+    out("|---|---|---|---|---|")
+    for name, p_op, nb in (("(a) RS(72,64) at limit", pa, line4), ("(a) RS(72,64) servoed", pa / R("servo_ber_guard"), line4),
+                           ("(b) RS(144,128) at limit", pb, lock), ("(b) RS(144,128) servoed", pb / R("servo_ber_guard"), lock),
+                           ("(c) RS(80,64) servoed (old DDR4 row)", p_rs / R("servo_ber_guard"), 640)):
+        lam = nb * p_op
+        p1 = 1 - math.exp(-lam)
+        p2 = 1 - math.exp(-lam) * (1 + lam)
+        mean = R("lat_fast_ns") + (p1 - p2) * R("lat_single_ns") + p2 * R("lat_bm_ns")
+        out(f"| {name} | {p_op:.1e} | {p1 * 100:.3f}% | {p2 * 100:.5f}% | {mean:.2f} |")
+    out("")
+    nf = dcp.INPUTS["rdimm_dies"] * R("multibit_fault_fit_per_die") * 1e-9 * 8766
+    ev = RES["census_bound"]
+    out(f"Chip-fault coincidence (as section 10.6; {nf:.4f} multi-bit faults per module-year, 40-die basis kept; a 64 GB "
+        "DDR4 x4 RDIMM has 36-72 dies, so scale by 0.9-1.8x [ESTIMATE]). q = P(a dead, not yet marked chip plus "
+        "random symbol errors elsewhere exceed the code on one read):")
+    out("")
+    out("| case | operating raw BER | q | mark after 1 read | after 10 | after 100 | census-bound UE share |")
+    out("|---|---|---|---|---|---|---|")
+    other_a = (chips - 1) * 32
+    other_b = (2 * chips - 1) * 32
+    for name, p_op, kind in (("(a) RS(72,64) at limit", pa, "a"), ("(a) RS(72,64) servoed", pa / R("servo_ber_guard"), "a"),
+                             ("(b) RS(144,128) at limit", pb, "b"), ("(b) RS(144,128) servoed", pb / R("servo_ber_guard"), "b"),
+                             ("(c) RS(80,64) servoed (old DDR4 row)", p_rs / R("servo_ber_guard"), "c")):
+        if kind == "a":
+            q = 1 - math.exp(-other_a * p_op)  # t=4 used up by the dead chip's 4 bytes
+        elif kind == "b":
+            q = pois_sf(4, other_b * p_op)  # 4 of t=8 left after the dead chip
+        else:
+            q = 1 - math.exp(-576 * p_op)  # worst line: the dead chip holds 4 data + 4 parity bytes
+        RES[("gq", name)] = q
+        ue = [nf * n * q for n in (1, 10, 100)]
+        out(f"| {name} | {p_op:.1e} | {q:.2e} | {ue[0]:.1e} | {ue[1]:.1e} | {ue[2]:.1e} | {ev * q:.1e} |")
+    out("")
+    ia, ib, ic = RES["g_Ia"], RES["g_Ib"], RES["g_Ic"]
+    out(f"Reading: at 85 C (lognormal, central) one 72-bit channel gives {fiv(ia)} = {ia / w4:.1f}x of 64 ms with chipkill "
+        f"(pessimistic {RES['g_Ia_p'] / w4:.1f}x) and no relaxation once a chip is dead ({fiv(RES['g_Ia_d'])}); the host "
+        f"SSC code gives none. Lockstep gives {fiv(ib)} = {ib / w4:.1f}x (pessimistic {RES['g_Ib_p'] / w4:.1f}x) and "
+        f"{fiv(RES['g_Ib_d'])} = {RES['g_Ib_d'] / w4:.1f}x with a chip dead, at the cost of 128 B accesses. The old "
+        f"~{ic / w4:.0f}x ({fiv(ic)}) needs layout (c) and costs {cap_c * 100:.1f}% of capacity. The DDR5 rows are "
+        "unchanged: a DDR5 RDIMM sub-channel really carries 128 check bits per 64 B line. At 65 C: (a) "
+        f"{fiv(RES['g_Ia65'])}, (b) {fiv(RES['g_Ib65'])}, (c) {fiv(RES['g_Ic65'])}.")
+    vrt_txt = []
+    for key, plim in (("a", pa), ("b", pb), ("c", p_rs)):
+        if p_max_interval("logn", plim, 1.0, 0.0, 1 / 6) < 0.5:
+            vrt_txt.append(f"({key}) cannot hold 0.5 s at any growth rate")
+            continue
+        lo, hi = 0.0, 1e5
+        for _ in range(60):
+            mid = (lo + hi) / 2
+            if p_max_interval("logn", plim, 1.0, mid, 1 / 6) >= 0.5:
+                lo = mid
+            else:
+                hi = mid
+        vrt_txt.append(f"({key}) holds it up to ~{lo:.0f}x/day ({fiv(p_max_interval('logn', plim, 1.0, 100.0, 1 / 6))} "
+                       "at 100x/day)")
+    out("Kill #4 basis (10-minute scrub, 85 C, lognormal: the VRT growth at which 0.5 s can no longer be held): "
+        + "; ".join(vrt_txt) + ".")
+    kill = [k for k in "abc" if RES[f"g_I{k}65"] < 4 * w4]
+    go = [k for k in "abc" if RES[f"g_I{k}"] >= 6 * w4 and RES[f"g_I{k}65"] >= 24 * w4]
+    out(f"Against the dossier's DDR4 gate (model tail, central): kill #1 (<4x = 256 ms at 65 C) triggered in "
+        f"{', '.join('(' + k + ')' for k in kill) if kill else 'no layout'}; GO (>=6x = 0.38 s at 85 C and >=24x at 65 C) "
+        f"met in {', '.join('(' + k + ')' for k in go) if go else 'no layout'}. With 8 check bytes, 4 byte errors is the "
+        "most any byte code can correct (Singleton bound). A binary code that corrects BCH-6-class random bits and also "
+        "a whole x4 chip in 64 check bits is not known to us; the Hamming bound does not forbid one (~2^46 + ~2^36 "
+        "patterns < 2^64 syndromes), so it stays an open coding question, as RT-CIRC-03 recorded for the 128-bit case.")
+    return RES
+
+
 def write_md():
     hdr = ["# RAW-BER CONTRACT: model output",
            "",
@@ -1317,6 +1549,10 @@ def write_md():
         inp.append(f"| {k} | {v} | {s} |")
     inp += ["", "## RT_INPUTS (red-team revisions)", "", "| key | value | source / basis |", "|---|---|---|"]
     for k, (v, s) in RT_INPUTS.items():
+        inp.append(f"| {k} | {v} | {s} |")
+    inp += ["", "## GEO_INPUTS (DDR4 line-geometry correction, 2026-11-04)", "", "| key | value | source / basis |",
+            "|---|---|---|"]
+    for k, (v, s) in GEO_INPUTS.items():
         inp.append(f"| {k} | {v} | {s} |")
     os.makedirs(os.path.dirname(OUT_MD), exist_ok=True)
     with open(OUT_MD, "w") as f:
@@ -1337,11 +1573,18 @@ def main():
     usd_gb = section_value(base_ref, 1.0, res_t)
     bf3 = section_go(tgt, p_sb, p_rs, flag_table, pm)
     RT = section_redteam(tgt, p_sb, p_od, p_rs, burst_res[(3, 0.0)][2], sig)
+    section_ddr4_geometry(tgt, p_sb, p_rs, burst_res[(3, 0.0)][2], RT)
     hr("Headline (revised after red team)")
     out(f"- Commodity DDR5 RDIMM, chipkill kept (RS-8 behind on-die SEC, max internal BER {RT['p_rs_od']:.1e}), DDR5 "
         f"retention derated 0.5x: safe interval at 85 C {RT['I_c']*1e3:.0f} ms central / {RT['I_p']*1e3:.0f} ms "
         f"pessimistic = {RT['cut_c']:.1f}x / {RT['cut_p']:.1f}x refresh energy vs the 32 ms spec; degraded mode "
         f"(chip dead) {RT['I_d']*1e3:.0f} ms = {RT['cut_d']:.1f}x; at 65 C {RT['I_c65']*1e3:.0f} ms.")
+    out(f"- Retired DDR4 behind CXL, chipkill kept (corrected 2026-11-04, section 10.11; vs 64 ms, 85 C central / "
+        f"pessimistic): two channels in lockstep {RT['g_Ib']*1e3:.0f} ms = {RT['g_Ib']/0.064:.1f}x / "
+        f"{RT['g_Ib_p']/0.064:.1f}x, {RT['g_Ib_d']/0.064:.1f}x with a chip dead; one channel {RT['g_Ia']*1e3:.0f} ms = "
+        f"{RT['g_Ia']/0.064:.1f}x / {RT['g_Ia_p']/0.064:.1f}x, {RT['g_Ia_d']/0.064:.1f}x with a chip dead. The earlier "
+        f"{RT['g_Ic']/0.064:.1f}x / {RT['g_Ic_p']/0.064:.1f}x ({RT['g_Ic_d']/0.064:.1f}x degraded) used DDR5's 128-bit "
+        "side band and needs a layout that spends 11.1% of DDR4 capacity on check bits.")
     out(f"- Refresh power {RT['base32']:.2f} W -> {RT['base32']-RT['sav']:.3f} W per 64 GB; with 20% self-refresh "
         f"residency (hybrid policy) ${RT['usd02']:.2f} per module over 5 yr. 64Gb (tRFC 700 ns) blocked time "
         f"{RT['b64']*100:.0f}% -> {RT['b64c']*100:.1f}% (all-bank basis).")

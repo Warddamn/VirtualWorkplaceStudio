@@ -12,7 +12,8 @@
   "slug": "raw-ber-contract",
   "confidence_range": "0.6-0.7",
   "why": "No fab, no new physics: ~$124k on DRAM Bender + open DDR5 testers gives a binary by month 6 and the error budget every cell concept relies on (~9x refresh-energy cut on DDR5 RDIMMs at 85 C with chipkill kept; ~13x on retired DDR4 behind CXL).",
-  "kill": "NO-GO if the chipkill-safe interval incl. VRT is <4x the JEDEC window at 65 C, multi-chip events >10%, or the 1 h grade holds on <95% of modules over 1,000 h."
+  "kill": "NO-GO if the chipkill-safe interval incl. VRT is <4x the JEDEC window at 65 C, multi-chip events >10%, or the 1 h grade holds on <95% of modules over 1,000 h.",
+  "correction_2026_11_04": "Correction added 2026-11-04 by the study owner, not by the judge: the '~13x on retired DDR4 behind CXL' figure quoted above gave DDR4 the 128 check bits of a DDR5 RDIMM line; a DDR4 x4 ECC RDIMM carries 64 per 64 B line. The corrected model (models/raw-ber-contract.py section 10.11) gives ~11x with two channels in lockstep (6.9x pessimistic, 7x with a chip dead) and ~4x on one channel (3.4x pessimistic, none with a chip dead); ~13x needs 11.1% of DDR4 capacity spent on extra check bits. The text above is left as written; the DDR5 figures are unaffected. See dossiers/raw-ber-contract.md section 12.1."
  },
  "MOONSHOT": {
   "slug": "and-stack",

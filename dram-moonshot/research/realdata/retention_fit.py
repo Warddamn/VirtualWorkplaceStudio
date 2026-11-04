@@ -16,9 +16,11 @@ What it computes:
      not in the data, so the VRT cell fraction itself cannot be measured).
   5. Bank-level uniformity (are errors spread evenly over the 8 banks?).
   6. Comparison against the BER the raw-ber-contract model assumes, and a re-run of the model's safe-interval
-     calculation (models/raw-ber-contract.py: lognormal_params L664, ber_ret L672, p_max_interval L685,
-     refresh_numbers L701, max_p_rs L615, max_p_rs_ondie L917, the section 10.1 case table L1007-1021)
-     with the fitted parameters swapped in.
+     calculation (models/raw-ber-contract.py: lognormal_params, ber_ret, p_max_interval, refresh_numbers,
+     max_p_rs, max_p_rs_ondie, the section 10.1 case table) with the fitted parameters swapped in.
+     DDR4 correction (2026-11-04, model section 10.11): a DDR4 x4 RDIMM line carries 64 check bits, not 128.
+     The DDR4 cases are now (a) one 72-bit channel, RS(72,64); (b) two channels in lockstep, RS(144,128);
+     (c) the old 640-bit RS(80,64) case, which needs 11.1% of capacity spent on extra check bits.
 
 Run (stdlib + numpy):
   python3 -I research/realdata/retention_fit.py --csv /path/to/retention_time_profile.csv
@@ -265,7 +267,10 @@ def code_limits(m):
     V = m.V
     tgt = V("ue_budget_per_module_yr") / (V("avg_bw_GBps") * 1e9 / 64 * 3.156e7)  # = model section_target()
     return dict(tgt=tgt,
-                ddr4_rs8=m.max_p_rs(tgt), ddr4_rs8_degraded=m.max_p_rs(tgt, erased=8),
+                ddr4_rs8=m.max_p_rs(tgt), ddr4_rs8_degraded=m.max_p_rs(tgt, erased=8),  # layout (c), 640-bit line
+                ddr4a_rs72=m.max_p_rs(tgt, t_sym=4, n_sym=72), ddr4a_rs72_degraded=m.max_p_rs(tgt, t_sym=4, n_sym=72, erased=4),
+                ddr4b_rs144=m.max_p_rs(tgt, t_sym=8, n_sym=144),
+                ddr4b_rs144_degraded=m.max_p_rs(tgt, t_sym=8, n_sym=144, erased=4),
                 ddr5_rs8_sec=m.max_p_rs_ondie(tgt), ddr5_rs8_sec_degraded=m.max_p_rs_ondie(tgt, erased=True),
                 ddr4_bch12=m.max_p_hard(int(V("rdimm_sideband_bits")) // int(V("bch_m_line")),
                                         int(V("line_data_bits")), int(V("bch_m_line")), tgt))
@@ -305,17 +310,24 @@ def temp_scales(ea_hot, ea_cool):
     return {"85": 1.0, "70": a, "65": a * arrhenius(ea_cool, 65, 70), "45": a * arrhenius(ea_cool, 45, 70)}
 
 
-CASES = [("DDR4 / RS-8 chipkill", "ddr4_rs8", 1.0, 0.064),
-         ("DDR4 / RS-8 degraded (chip dead)", "ddr4_rs8_degraded", 1.0, 0.064),
-         ("DDR4 / BCH-12 (no chipkill)", "ddr4_bch12", 1.0, 0.064),
+DDR4_A = "DDR4 (a) one channel / RS(72,64) chipkill"
+DDR4_B = "DDR4 (b) lockstep / RS(144,128) chipkill"
+DDR4_C = "DDR4 (c) 640-bit, -11.1% capacity / RS-8 chipkill"
+CASES = [(DDR4_A, "ddr4a_rs72", 1.0, 0.064),
+         ("DDR4 (a) one channel / RS(72,64) degraded (chip dead)", "ddr4a_rs72_degraded", 1.0, 0.064),
+         (DDR4_B, "ddr4b_rs144", 1.0, 0.064),
+         ("DDR4 (b) lockstep / RS(144,128) degraded (chip dead)", "ddr4b_rs144_degraded", 1.0, 0.064),
+         (DDR4_C, "ddr4_rs8", 1.0, 0.064),
+         ("DDR4 (c) 640-bit / RS-8 degraded (chip dead)", "ddr4_rs8_degraded", 1.0, 0.064),
+         ("DDR4 (c) 640-bit / BCH-12 (no chipkill)", "ddr4_bch12", 1.0, 0.064),
          ("DDR5 / RS-8 behind SEC, x0.5 derate", "ddr5_rs8_sec", 0.5, 0.032),
          ("DDR5 / RS-8 behind SEC, no derate", "ddr5_rs8_sec", 1.0, 0.032),
          ("DDR5 / RS-8 degraded, x0.5 derate", "ddr5_rs8_sec_degraded", 0.5, 0.032)]
 
 
 def safe_intervals(m, lim, ts, vrt=None, scrub_h=None):
-    """Mirror of the model's section 10.1 case table (L1007-1021): safe interval per part/code at each
-    temperature in ts ({label: temp_scale}); scale 0.5 is the model's DDR5 retention derate (L138)."""
+    """Mirror of the model's section 10.1 case table, plus the DDR4 layouts of section 10.11: safe interval per part/code at each
+    temperature in ts ({label: temp_scale}); scale 0.5 is the model's DDR5 retention derate (L140)."""
     res = {}
     for name, key, scale, win in CASES:
         row = {"window_s": win}
@@ -557,7 +569,8 @@ def analyse(recs, n_boot=400, seed=1, quiet=False):
     S["pooled_max_test"] = dict(mu70=PM["mu70"], s_ln=PM["s_ln"], ea=PM["ea"], ber70=PM["c70"])
 
     # bootstrap CIs (resampling DIMMs) for the central case B and the optimistic case A
-    cb = {"A_ddr5_85": [], "A_ddr4_85": [], "B_ddr5_85": [], "B_ddr4_85": [], "B_ddr5_70": [], "B_ddr4_70": []}
+    cb = {"A_ddr5_85": [], "A_ddr4_85": [], "B_ddr5_85": [], "B_ddr4_85": [], "B_ddr5_70": [], "B_ddr4_70": [],
+          "B_ddr4a_85": [], "B_ddr4b_85": [], "B_ddr4b_70": []}
     for bb in boots[: min(len(boots), 200)]:
         if bb.get("ea") is None:
             continue
@@ -569,6 +582,9 @@ def analyse(recs, n_boot=400, seed=1, quiet=False):
                     a70 = arrhenius(eh, 70, 85)
                     cb["B_ddr5_70"].append(m.p_max_interval("logn", lim["ddr5_rs8_sec"], 0.5 * a70))
                     cb["B_ddr4_70"].append(m.p_max_interval("logn", lim["ddr4_rs8"], a70))
+                    cb["B_ddr4a_85"].append(m.p_max_interval("logn", lim["ddr4a_rs72"], 1.0))
+                    cb["B_ddr4b_85"].append(m.p_max_interval("logn", lim["ddr4b_rs144"], 1.0))
+                    cb["B_ddr4b_70"].append(m.p_max_interval("logn", lim["ddr4b_rs144"], a70))
     S["rerun_boot_ci95_s"] = {k: [float(np.percentile(v, 2.5)), float(np.percentile(v, 97.5))] for k, v in cb.items() if v}
 
     # measurement bounds with no BER extrapolation (70 C data; 85 C needs only the temperature step)
@@ -597,6 +613,8 @@ def analyse(recs, n_boot=400, seed=1, quiet=False):
             r["ddr4_rs8_i70_s"] = m.p_max_interval("logn", lim["ddr4_rs8"], a85)
             r["ddr5_rs8_i85_s"] = m.p_max_interval("logn", lim["ddr5_rs8_sec"], 0.5)
             r["ddr5_rs8_i70_s"] = m.p_max_interval("logn", lim["ddr5_rs8_sec"], 0.5 * a85)
+            r["ddr4a_rs72_i85_s"] = m.p_max_interval("logn", lim["ddr4a_rs72"], 1.0)
+            r["ddr4b_rs144_i85_s"] = m.p_max_interval("logn", lim["ddr4b_rs144"], 1.0)
     pdv = [r for r in per if "ddr4_rs8_i85_s" in r]
 
     def dist(key, win):
@@ -605,7 +623,9 @@ def analyse(recs, n_boot=400, seed=1, quiet=False):
                     min_cut=float(v.min() / win), p10_cut=float(np.percentile(v, 10) / win),
                     median_cut=float(np.median(v) / win))
     S["per_dimm_intervals_caseB"] = dict(n=len(pdv), ddr4_85=dist("ddr4_rs8_i85_s", 0.064), ddr4_70=dist("ddr4_rs8_i70_s", 0.064),
-                                         ddr5_85=dist("ddr5_rs8_i85_s", 0.032), ddr5_70=dist("ddr5_rs8_i70_s", 0.032))
+                                         ddr5_85=dist("ddr5_rs8_i85_s", 0.032), ddr5_70=dist("ddr5_rs8_i70_s", 0.032),
+                                         ddr4a_85=dist("ddr4a_rs72_i85_s", 0.064), ddr4b_85=dist("ddr4b_rs144_i85_s", 0.064),
+                                         note="ddr4_* = layout (c), 640-bit line; ddr4a_* = one channel; ddr4b_* = lockstep")
     # C2 review addition: fleet refresh-energy cut, DDR5 85 C, case B. A per-module servo runs each module at its own
     # interval (fleet power = mean over modules); one fixed fleet interval must suit the worst module.
     base = m.refresh_numbers(0.032)[0]
@@ -617,15 +637,18 @@ def analyse(recs, n_boot=400, seed=1, quiet=False):
     vs = {}
     for g in (1.0, 100.0, 700.0):
         rr = rerun(P["mu70"], P["s_ln"], EA_MODEL, P["ea"], vrt=g)
-        vs[f"g={g:g}/day"] = {k: rr[k] for k in ("DDR4 / RS-8 chipkill", "DDR5 / RS-8 behind SEC, x0.5 derate")}
+        vs[f"g={g:g}/day"] = {k: rr[k] for k in (DDR4_A, DDR4_B, DDR4_C, "DDR5 / RS-8 behind SEC, x0.5 derate")}
     S["vrt_sensitivity_caseB"] = vs
     S["energy_cut_ddr5_85"] = {k: energy_cut(m, v["DDR5 / RS-8 behind SEC, x0.5 derate"]["i85_s"]) for k, v in reruns.items()}
     S["energy_cut_ddr5_85"]["model original"] = energy_cut(m, model_iv["DDR5 / RS-8 behind SEC, x0.5 derate"]["i85_s"])
     S["extrapolation_gap"] = dict(highest_fleet_ber_measured=max(P["c70"].values()),
                                   highest_single_dimm_ber=max(worst_c70.values()),
                                   ddr5_limit=lim["ddr5_rs8_sec"], ddr4_limit=lim["ddr4_rs8"],
+                                  ddr4a_limit=lim["ddr4a_rs72"], ddr4b_limit=lim["ddr4b_rs144"],
                                   decades_fleet_to_ddr5_limit=math.log10(lim["ddr5_rs8_sec"] / max(P["c70"].values())),
-                                  decades_fleet_to_ddr4_limit=math.log10(lim["ddr4_rs8"] / max(P["c70"].values())))
+                                  decades_fleet_to_ddr4_limit=math.log10(lim["ddr4_rs8"] / max(P["c70"].values())),
+                                  decades_fleet_to_ddr4a_limit=math.log10(lim["ddr4a_rs72"] / max(P["c70"].values())),
+                                  decades_fleet_to_ddr4b_limit=math.log10(lim["ddr4b_rs144"] / max(P["c70"].values())))
     say(f"pooled sigma_ln {P['s_ln']:.3f}, Ea {P['ea']:.3f} eV ({P['ea_kind']}), k_pow {P['k_pow']:.2f}")
     return S
 
@@ -636,7 +659,8 @@ def write_outputs(S, out_dir):
     with open(js, "w") as f:
         json.dump(S, f, indent=1, default=float)
     cols = ["dimm", "vendor", "s_ln", "median70_s", "slope_2s", "ber70_1024", "ber70_2048", "ber20_2048",
-            "ea_ev", "ea_kind", "ddr4_rs8_i85_s", "ddr4_rs8_i70_s", "ddr5_rs8_i85_s", "ddr5_rs8_i70_s"]
+            "ea_ev", "ea_kind", "ddr4_rs8_i85_s", "ddr4_rs8_i70_s", "ddr5_rs8_i85_s", "ddr5_rs8_i70_s",
+            "ddr4a_rs72_i85_s", "ddr4b_rs144_i85_s"]
     pc = os.path.join(out_dir, "retention_per_dimm.csv")
     with open(pc, "w", newline="") as f:
         w = csv.writer(f)
@@ -681,7 +705,8 @@ def print_report(S):
     for k, v in S["measured_bounds"].items():
         print(f"    {k:55s} 70C {v['i70_s']:.3f} s ({v['cut70']:.1f}x)  85C(model Ea) {v['i85_s_modelEa']:.3f} s ({v['cut85_modelEa']:.1f}x)")
     print(f"Per-DIMM intervals, case B: {S['per_dimm_intervals_caseB']}")
-    print(f"VRT sensitivity, case B: " + "; ".join(f"{g}: DDR4 85C {v['DDR4 / RS-8 chipkill']['i85_s']:.2f} s, DDR5 85C "
+    print(f"VRT sensitivity, case B: " + "; ".join(f"{g}: DDR4 (a/b/c) 85C {v[DDR4_A]['i85_s']:.2f}/{v[DDR4_B]['i85_s']:.2f}/"
+          f"{v[DDR4_C]['i85_s']:.2f} s, DDR5 85C "
           f"{v['DDR5 / RS-8 behind SEC, x0.5 derate']['i85_s']:.2f} s, DDR5 70C {v['DDR5 / RS-8 behind SEC, x0.5 derate']['i70_s']:.2f} s"
           for g, v in S["vrt_sensitivity_caseB"].items()))
     print("Energy cut DDR5 85 C vs 32 ms: " + "; ".join(f"{k[:1]} {v:.1f}x" for k, v in S["energy_cut_ddr5_85"].items()))
