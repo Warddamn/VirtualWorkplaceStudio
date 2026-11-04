@@ -31,9 +31,14 @@ From [DRAM_MOONSHOT_REPORT.md](DRAM_MOONSHOT_REPORT.md) section 1 and [decision.
 ## Home lab
 
 Can any of this be tested at home? At bench scale, yes. [home-lab/](home-lab/README.md) has eight experiments, from a one-transistor bit on a breadboard (E1) to a zinc-oxide transistor and gain cell made at home (E7, E8), with a first-principles backbone ([FIRST_PRINCIPLES.md](home-lab/FIRST_PRINCIPLES.md)) and one safety guide ([SAFETY.md](home-lab/SAFETY.md)).
-The best first project for a software builder is E6: map the retention tail of a real 64 Mbit DRAM chip on a ~$30-63 development board, the FASTEST PROOF mechanism on a desk.
+The best first project for a software builder is E6: map the retention tail of a real 64 Mbit DRAM chip on a ~$32-66 development board, the FASTEST PROOF mechanism on a desk.
 Home work cannot measure the oxide leakage tail itself. It builds the method, the analysis code and the data package for the Oxide Tail Spec.
 Check it with `python3 home-lab/tools/check_home_lab.py`.
+
+## Outreach
+
+The Monday action, ready to send: [outreach/](outreach/README.md) holds the Oxide Tail Spec (one page plus working notes), a ranked list of nanofabs, faculty groups and DRAM test partners, five email drafts, and a reply tracker.
+Start at [outreach/README.md](outreach/README.md). Every rate and name there rests on search snippets, so confirm by email before you budget.
 
 ## File map
 
