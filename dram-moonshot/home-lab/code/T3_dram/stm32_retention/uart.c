@@ -33,11 +33,12 @@ void uart_init(uint32_t baud)
     (void)RCC_APB2ENR;
     for (uint32_t pin = 9U; pin <= 10U; pin++) {
         uint32_t sh2 = pin * 2U;
-        GPIO_MODER(PORTA) = (GPIO_MODER(PORTA) & ~(3UL << sh2)) | (MODER_AF << sh2);
-        GPIO_AFRH(PORTA) = (GPIO_AFRH(PORTA) & ~(0xFUL << ((pin - 8U) * 4U))) |
-                           (GPIO_AF7_USART1 << ((pin - 8U) * 4U));
         /* pull-up (ST's example uses none): keeps RX idle-high if no VCP or adapter is connected */
         GPIO_PUPDR(PORTA) = (GPIO_PUPDR(PORTA) & ~(3UL << sh2)) | (PUPD_PULLUP << sh2);
+        /* AF number before the mode, as HAL_GPIO_Init (stm32f4xx_hal_gpio.c:218-234) */
+        GPIO_AFRH(PORTA) = (GPIO_AFRH(PORTA) & ~(0xFUL << ((pin - 8U) * 4U))) |
+                           (GPIO_AF7_USART1 << ((pin - 8U) * 4U));
+        GPIO_MODER(PORTA) = (GPIO_MODER(PORTA) & ~(3UL << sh2)) | (MODER_AF << sh2);
     }
     /* oversampling by 16: BRR = PCLK / baud (mantissa.fraction in 12.4 format) */
     USART1_BRR = (PCLK2_HZ + baud / 2U) / baud;

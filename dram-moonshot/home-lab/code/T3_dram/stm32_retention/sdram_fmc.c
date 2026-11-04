@@ -50,7 +50,8 @@ static uint32_t s_sdclk_hz = HCLK_HZ / 2U;
 static void pin_af12(uint32_t port, uint32_t pin)
 {
     uint32_t sh2 = pin * 2U;
-    GPIO_MODER(port)   = (GPIO_MODER(port) & ~(3UL << sh2)) | (MODER_AF << sh2);
+    /* Same order as HAL_GPIO_Init (stm32f4xx_hal_gpio.c:187-234): speed, type, pull, AF number, and
+     * the mode last, so the pin never runs as AF0 for a moment. */
     GPIO_OSPEEDR(port) = (GPIO_OSPEEDR(port) & ~(3UL << sh2)) | (OSPEED_VERY_HIGH << sh2);
     GPIO_OTYPER(port)  &= ~(1UL << pin);                /* push-pull */
     GPIO_PUPDR(port)   = (GPIO_PUPDR(port) & ~(3UL << sh2)) | (PUPD_NONE << sh2);
@@ -60,6 +61,7 @@ static void pin_af12(uint32_t port, uint32_t pin)
         GPIO_AFRH(port) = (GPIO_AFRH(port) & ~(0xFUL << ((pin - 8U) * 4U))) |
                           (GPIO_AF12_FMC << ((pin - 8U) * 4U));
     }
+    GPIO_MODER(port)   = (GPIO_MODER(port) & ~(3UL << sh2)) | (MODER_AF << sh2);
 }
 
 static int wait_not_busy(void)
@@ -93,7 +95,13 @@ uint32_t sdram_normal_count(void)
 }
 
 /* For a deliberately relaxed period we want the period itself, so no margin:
- * full-array refresh period = rows x (COUNT + 1) / SDCLK  ->  COUNT = period x SDCLK / rows - 1 */
+ * full-array refresh period = rows x (COUNT + 1) / SDCLK  ->  COUNT = period x SDCLK / rows - 1
+ * RM0090 forbids COUNT = TWR + TRP + TRC + TRCD + 4 cycles [REPORTED, see sdram_init]. It does not
+ * say which bank's TWR and TRCD count. Bank 2 gives 3 + 2 + 7 + 2 + 4 = 18 (below 41, never written).
+ * The unused bank 1 keeps TWR = TRCD = 16 cycles (reset value 0xF; RM0090 asks for TWR to stay
+ * there), so with TRC and TRP from SDTR1 it gives 16 + 2 + 7 + 16 + 4 = 45 [ESTIMATE]. A 24 ms
+ * method-A wait would land on 45, so that one value is skipped (COUNT 46 = 24.1 ms instead). */
+#define SDRTR_COUNT_AVOID  45U
 uint32_t sdram_count_for_period_ms(uint32_t period_ms)
 {
     uint64_t c = ((uint64_t)period_ms * s_sdclk_hz) / (1000ULL * SDRAM_ROWS_PER_BANK);
@@ -102,6 +110,9 @@ uint32_t sdram_count_for_period_ms(uint32_t period_ms)
     }
     if (c > SDRTR_COUNT_MAX + 1U) {
         c = SDRTR_COUNT_MAX + 1U;
+    }
+    if (c - 1U == SDRTR_COUNT_AVOID) {
+        c++;
     }
     return (uint32_t)(c - 1U);
 }
@@ -191,8 +202,10 @@ int sdram_init(uint32_t sdclk_div)
      * of RM0090 Rev 18 and of ST's STM32H5 FMC text, 2026-11-04; the manual itself was not reachable];
      * 3 meets both, and costs nothing at 8 MHz. The same text says that with one SDRAM device the
      * unused bank's TWR stays at its reset value 0xF: SDTR1 below changes only TRC and TRP, so it does.
-     * RM0090 also says COUNT must not equal TWR + TRP + TRC + TRCD + 4 cycles (= 18 here) [REPORTED,
-     * same snippet]; every COUNT this firmware writes is >= 41 (or 0 in the experimental method Z). */
+     * RM0090 also says COUNT must not equal TWR + TRP + TRC + TRCD + 4 cycles [REPORTED, search
+     * snippet of RM0090 Rev 18, FMC_SDRTR; re-checked 2026-11-04]: 18 with bank 2's values, 45 with
+     * the unused bank 1's reset TWR and TRCD. Every COUNT this firmware writes is >= 41 and never 45
+     * (sdram_count_for_period_ms), or 0 in the experimental method Z. */
     FMC_SDTR1 = (FMC_SDTR1 & ~(SDTR_TRC_MASK | SDTR_TRP_MASK)) | ((7UL - 1U) << SDTR_TRC_POS) |
                 ((2UL - 1U) << SDTR_TRP_POS);
     FMC_SDTR2 = SDTR(2, 7, 4, 7, 3, 2, 2);
@@ -214,9 +227,12 @@ int sdram_init(uint32_t sdclk_div)
 
 /* ---- power-on self-test ------------------------------------------------------------------------
  * Catches wiring, pin-mapping and bank-mapping errors in a few milliseconds, before any campaign.
- * Data bus: walking one and walking zero at word 0, with the complement written to word 1 in between
- * so a floating bus cannot "remember" the value. Address bus: the classic test of every word-address
- * bit (column A0-A7, row A0-A11, bank BA0-BA1 = 22 bits), for bits stuck high, stuck low or shorted. */
+ * Data bus: walking one and walking zero at word 0, with the complement written to the last word
+ * (0x3FFFFF) in between so a floating bus cannot "remember" the value. The last word, not word 1:
+ * with column A0 stuck low, word 1 would alias word 0 and the fault would be reported as a data
+ * line; no single stuck address line makes 0x3FFFFF alias word 0. Address bus: the classic test of
+ * every word-address bit (column A0-A7, row A0-A11, bank BA0-BA1 = 22 bits), for bits stuck high,
+ * stuck low or shorted. */
 static volatile uint16_t *const k_mem = (volatile uint16_t *)(uintptr_t)SDRAM_BANK2_BASE;
 
 static int st_fail(uint32_t w, uint32_t e, uint32_t o, uint32_t *bw, uint32_t *be, uint32_t *bo)
@@ -238,7 +254,7 @@ int sdram_selftest(uint32_t *bad_word, uint32_t *expected, uint32_t *observed)
             d = (uint16_t)~d;
         }
         k_mem[0] = d;
-        k_mem[1] = (uint16_t)~d;
+        k_mem[SDRAM_N_WORDS - 1U] = (uint16_t)~d;
         v = k_mem[0];
         if (v != d) {
             return st_fail(0U, d, v, bad_word, expected, observed);

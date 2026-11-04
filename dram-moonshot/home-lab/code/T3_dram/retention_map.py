@@ -54,8 +54,10 @@ LN2 = math.log(2.0)
 PATTERN_NAMES = {0: "ALL0", 1: "ALL1", 2: "CHECKER", 3: "ROWSTRIPE", 4: "COLSTRIPE", 5: "RANDOM"}
 DEFAULT_WAITS_S = [0.064 * 2 ** i for i in range(11)]          # 64 ms .. 65.5 s, log2 grid
 CHIP_BITS_F429 = 4194304 * 16                                   # IS42S16400J: 64 Mbit
-DOSSIER = {"ddr5_rs8_85C": 8.9, "ddr4_rs8_85C": 13.1,
-           "pass_65C_x": 24.0, "pass_85C_x": 6.0, "kill_65C_x": 4.0}  # dossiers/raw-ber-contract.md 2.5, 5.R
+# Retired DDR4 corrected 2026-11-04 (dossier 12.1, model 10.11): a DDR4 line has 64 check bits, not 128, so the old
+# 13.1x became 10.9x with two channels in lockstep and 4.0x on one channel (13.1x only at -11.1% capacity).
+DOSSIER = {"ddr5_rs8_85C": 8.9, "ddr4_lockstep_85C": 10.9, "ddr4_1ch_85C": 4.0,
+           "pass_65C_x": 24.0, "pass_85C_x": 6.0, "kill_65C_x": 4.0}  # dossiers/raw-ber-contract.md 2.5, 5.R, 12.1
 # Method B: the unrefreshed time is the pause plus one normal refresh window. At SDCLK 8 MHz and
 # COUNT 105 that window is 4096 x 106 / 8 MHz = 54.3 ms; the firmware reports it as +54 ms.
 B_EXTRA_MS = 54
@@ -1019,8 +1021,9 @@ def analyze_log(log, args, out):
                 " NO-GO < %.0fx at 65 C -> %s." %
                 (x65, note, DOSSIER["pass_65C_x"], DOSSIER["pass_85C_x"], DOSSIER["kill_65C_x"], verdict))
         out("This chip is rated to about 70 C, so only the 65 C half of the PASS line can be tested here.")
-        out("Dossier model for comparison: ~%.1fx on DDR5 and ~%.1fx on retired DDR4 at 85 C (RS-8, chipkill kept)."
-            % (DOSSIER["ddr5_rs8_85C"], DOSSIER["ddr4_rs8_85C"]))
+        out("Dossier model for comparison: ~%.1fx on DDR5 and, on retired DDR4, ~%.1fx with two channels in lockstep"
+            " or ~%.1fx on one channel, at 85 C (chipkill kept)."
+            % (DOSSIER["ddr5_rs8_85C"], DOSSIER["ddr4_lockstep_85C"], DOSSIER["ddr4_1ch_85C"]))
         out("Your chip is an old-node SDR part at <=65 C, so expect a larger factor; the direction and the method"
             " are what transfer, not the number.")
         res["verdict"] = verdict
@@ -1119,9 +1122,10 @@ def predict(args, out):
             out("| %s | %.0f C | %.3g s | %.1fx | %.3g-%.3g s | %.3g s | %.1fx |" % (
                 code.name, t, pc[0], pc[0] / JEDEC_WINDOW_S, vals["pess"][0], vals["opt"][0],
                 pc[1], pc[1] / JEDEC_WINDOW_S))
-    out("Compare: dossier ~%.1fx (DDR5, 85 C, RS-8 chipkill kept) and ~%.1fx (retired DDR4). Gate at 65 C:"
-        " PASS >= %.0fx, NO-GO < %.0fx." % (DOSSIER["ddr5_rs8_85C"], DOSSIER["ddr4_rs8_85C"],
-                                            DOSSIER["pass_65C_x"], DOSSIER["kill_65C_x"]))
+    out("Compare: dossier ~%.1fx (DDR5, 85 C, RS-8 chipkill kept) and ~%.1fx / ~%.1fx (retired DDR4, two channels in"
+        " lockstep / one channel). Gate at 65 C: PASS >= %.0fx, NO-GO < %.0fx."
+        % (DOSSIER["ddr5_rs8_85C"], DOSSIER["ddr4_lockstep_85C"], DOSSIER["ddr4_1ch_85C"],
+           DOSSIER["pass_65C_x"], DOSSIER["kill_65C_x"]))
     out("Target 1 is an illustrative assumption, not an industry spec: 1e-15 per bit-hour is about %.0f FIT"
         " per Gbit, about %.1f uncorrectable events per year in a 64 GB server. Target 2 (the dossier's) is"
         " the one that matters." % (args.target_bit_hour * 2 ** 30 * 1e9,

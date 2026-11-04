@@ -52,12 +52,17 @@
 #include "uart.h"
 #include "max31855.h"
 
-#define FW_VERSION    "e6-ret-0.4"
+#define FW_VERSION    "e6-ret-0.5"
 #define HCLK_HZ       16000000UL
 #define BAUD          115200UL
 #define LOG_CAP       20000UL
 #define HOLD_PERIODS  3U
 #define MAX_WAIT_MS   3600000UL   /* refuse pauses over one hour */
+#ifdef ENABLE_METHOD_Z
+#define METHOD_Z_BUILT 1
+#else
+#define METHOD_Z_BUILT 0
+#endif
 
 #define HSE_START_MS  100U        /* HAL's HSE_STARTUP_TIMEOUT (100 ms) */
 #define PLL_LOCK_MS   10U         /* HAL's PLL_TIMEOUT_VALUE is 2 ms; 10 ms of margin */
@@ -233,6 +238,11 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
     for (uint32_t w = 0; w < SDRAM_N_WORDS; w++) {
         k_sdram[w] = pattern_word(pat, inv, seed, w);
     }
+    /* The FMC buffers SDRAM writes in a 16-entry write FIFO [REPORTED, RM0090 via search snippet].
+     * Reading the last word back makes those posted writes reach the chip before the precharge and
+     * the pause; in method B a write still queued when chip select goes high would be lost and would
+     * look like a retention failure [ESTIMATE: ordering not documented by ST; one read costs ~1 us]. */
+    (void)k_sdram[SDRAM_N_WORDS - 1U];
 
     /* 2. take refresh away. Code and stack live in internal flash/SRAM: no SDRAM access here. */
     switch (method) {
@@ -455,8 +465,9 @@ int main(void)
                     ok = 0;
                 }
             }
+            /* Z only in a -DENABLE_METHOD_Z build: otherwise it would silently run as a control */
             if (!ok || v[2] < 0 || v[2] > 5 || v[6] < 0 || v[5] < 0 || (uint32_t)v[5] > MAX_WAIT_MS ||
-                !(method == 'A' || method == 'B' || method == 'C' || method == 'Z')) {
+                !(method == 'A' || method == 'B' || method == 'C' || (METHOD_Z_BUILT && method == 'Z'))) {
                 uart_puts("ERR,bad RUN command\r\n");
                 continue;
             }

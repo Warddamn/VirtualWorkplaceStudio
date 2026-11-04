@@ -57,6 +57,11 @@ int32_t thermo_read_c_x100(void)
     if (d & (1UL << 16)) {
         return TEMP_INVALID;                             /* fault bit, or nothing fitted (pull-up) */
     }
+    if (d == 0U) {
+        return TEMP_INVALID;                             /* SO stuck low (breakout unpowered or SO
+                                                            shorted): a real frame at a bench cannot
+                                                            read 0.00 C on both junctions [ESTIMATE] */
+    }
     int32_t raw = (int32_t)(d >> 18);
     if (raw & 0x2000) {
         raw -= 0x4000;                                   /* sign-extend 14 bits */
