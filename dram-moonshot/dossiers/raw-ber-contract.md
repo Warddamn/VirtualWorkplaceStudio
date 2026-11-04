@@ -731,3 +731,16 @@ That compares with 15x (7.7-30x) claimed without chipkill.
 - **Provability falls from "yes" to "partly".**
 
 The concept's promise (weak bits ship behind a controller) stands, as a smaller, better-specified claim.
+
+## 12. Real-data check (2026-11-04)
+
+*Added after the red team. It does not change §11; it reports what public data says about §11's numbers. Full report: [REALDATA_RAW_BER.md](../research/realdata/REALDATA_RAW_BER.md).*
+
+- **What was tested.** The one reachable public raw retention dataset, CMU SAFARI's 31 DDR3L modules from 2015-16 at 20 and 70 °C ambient with refresh paused 64 ms to 2.048 s [REPORTED: https://github.com/CMU-SAFARI/DRAM-Voltage-Study]. The fitted tail was swapped into the model's own safe-interval code. Published field-study aggregates were checked against the chipkill and chip-marking rules. No public DDR4/DDR5 retention data or chip-level field log could be used.
+- **Retention tail.** The model's anchors are 166-10,000x too pessimistic for these parts at 70 °C. Its width (σ_ln 1.24 vs 1.05 measured) is slightly optimistic on its own [ESTIMATE].
+- **~9x on DDR5 at 85 °C: SUPPORTED as conservative for DDR3-class cells; NOT TESTABLE for DDR5.** The measured tail gives 0.96 s (~30x); pessimistic variants 25-28x, worst module 18x, no-extrapolation bound 11.5x [ESTIMATE]. It still rests on the untested 0.5x DDR5 derate, on-die ECC structure and VRT growth.
+- **~13x on retired DDR4: SUPPORTED on retention** (~42x) [ESTIMATE]. The model gives DDR4 a 128-check-bit line; a real DDR4 x4 line has 64 [UNVERIFIED: training knowledge], so the code side needs a re-run.
+- **Kill #1 (<4x at 65 °C): not triggered** on these parts, ≥32x with no extrapolation [ESTIMATE].
+- **Cooling bonus (§2.5, x4 and x16): CONTRADICTED at the measured error rate** (tail Ea ~0.13-0.16 eV, not 0.72 eV) [ESTIMATE]. Do not use the 45 °C figures.
+- **Chipkill as default and first-correction marking: SUPPORTED** by field aggregates: ~23% of DDR4 faults are multi-bit, and warnings are often under an hour [REPORTED: https://arxiv.org/pdf/2408.15302 , https://shujiehan.github.io/_pages/files/srds22.pdf].
+- **Kill #2 and the ≤10% multi-chip line: NOT TESTABLE.** Chance alone puts ~10% of error events on two or more bytes at the BCH-12 limit, so read the line as ">10% above the independent-error expectation" [ESTIMATE].

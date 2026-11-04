@@ -1,6 +1,6 @@
 # The FASTEST PROOF on real public data: raw-ber-contract
 
-*Task C1. As of 2026-11-04. Scripts and derived numbers are in this folder. Raw data stays outside the repository; `fetch_data.py` re-downloads it.*
+*Task C1. As of 2026-11-04. Scripts and derived numbers are in this folder. Raw data stays outside the repository; `fetch_data.py` re-downloads it. Reviewed and corrected by task C2 the same day; section 9 lists the changes.*
 
 **Evidence tags.** [DATASHEET] = a part's datasheet. [REPORTED] = a paper, press or official page, with its URL. [ESTIMATE] = arithmetic in this folder's scripts on real data, or the study's own model. [UNVERIFIED] = not checked.
 
@@ -15,14 +15,14 @@
 **Main findings** [ESTIMATE unless tagged]:
 
 1. **The model's retention tail is far too pessimistic for these parts.** At 70 °C the model expects 166x to 10,000x more failing bits than were measured between 0.5 and 2 s. At 256 ms it expects ~158 failing bits per module per test. All 28 modules measured at 70 °C showed 0.
-2. **The tail's shape is close to the model's; its position is not.** The fitted lognormal width σ_ln (the spread of log retention time) is 1.05 (CI 0.97-1.12). The model uses 1.24. Per module it ranges 0.73-1.25.
-3. **The weakest cells barely speed up with heat.** Between 20 and 70 °C their retention time shrinks only ~2x. That is Ea = 0.13 eV (CI 0.10-0.17). The model assumes ~0.72 eV ("x4 per 20 °C"). So cooling a module buys much less than the model says: 45 °C gives ~1.4x over 70 °C, not the model's ~5.7x.
+2. **The tail's shape is close to the model's; its position is not.** The fitted lognormal width σ_ln (the spread of log retention time) is 1.05 (CI 0.97-1.12). The model uses 1.24. Per module it ranges 0.73-1.25. The tail widens with time: the local width grows from 0.78 (0.5-1 s) to 1.08 (1.5-2 s), which bends the safe way.
+3. **The weakest cells barely speed up with heat, at the error rate measured.** Between 20 and 70 °C, the time to reach a fleet-mean BER of ~3e-9 shrinks only ~2x. That is Ea = 0.13 eV (CI 0.10-0.17), or 0.16 eV without module C4, which holds 76% of the 20 °C errors. The model assumes ~0.72 eV ("x4 per 20 °C"). Only 10 of 28 modules have errors at 20 °C; the other 18 give lower bounds (≥0.09-0.25 eV) that 0.72 eV also meets. The code limits sit near BER 1e-5, 3.7 decades deeper, where Ea is not measured and is likely higher. So cooling a module may buy much less than the model says: at the measured rate, 45 °C gives ~1.4x over 70 °C, not the model's ~5.7x.
 4. **Re-running the model with the measured tail lengthens the safe interval about 3x.** DDR5 case, chipkill kept, 85 °C, with the model's own 0.5x DDR5 derate and its 0.72 eV above 70 °C: **0.96 s (CI 0.85-1.14 s), i.e. 30x the 32 ms window**. The model says 0.285 s (8.9x). Three pessimistic variants give 0.80-0.89 s (25-28x). The worst single module gives 0.59 s (18x). A bound that needs no extrapolation in BER gives at least 0.37 s (11.5x).
 5. **Kill line at 65 °C: not triggered on these parts.** The data is taken at 70 °C, which is hotter than 65 °C, so it is a conservative check. At 2.048 s the fleet-mean BER sits 276x below the DDR4 chipkill limit, and the worst module 44x below. For the DDR5 case (0.5x derate, so the same cells at 1.024 s) the margins are 77x and 12x. That is ≥32x the window with no BER extrapolation, against a NO-GO line of <4x.
-6. **Field data.** Public field studies show that 30-42% of DRAM faults are not single-bit, and ~23% of DDR4 faults hit several bits [REPORTED]. That supports keeping chipkill. Over 40% of DRAM-caused server failures show CEs within the hour before [REPORTED]. That supports the "mark the chip on its first correction" rule. The multi-chip kill line (>10% of events) cannot be tested with public data.
-7. **A flaw found in the kill line.** If errors are independent, chance alone puts 0.5-1.6% of events on two chips with RS-8. At the BCH-12 limit it is 9.3%, close to the 10% NO-GO line. The census must compare against this chance level.
+6. **Field data.** Public field studies show that 30-42% of DRAM faults are not single-bit, and ~23% of DDR4 faults hit several bits [REPORTED]. That supports keeping chipkill. In over 40% of DRAM-caused server failures, CEs first appear less than an hour before the failure [REPORTED]. Warnings are short. That supports the dossier's rule to mark a chip on its first chip-confined correction, not after many. The multi-chip kill line (>10% of events) cannot be tested with public data.
+7. **A flaw found in the kill line.** If errors are independent, chance alone puts 0.5-1.6% of events on two chips with RS-8. At the BCH-12 limit it is 9.3%, close to the 10% NO-GO line. Counted by bytes, as kill #2 words it, chance alone gives 0.6-1.7% with RS-8 and 10.1% at the BCH-12 limit, already over the line. The census must compare against this chance level.
 
-**Verdict on the ~9x claim.** Public data does not contradict it. For DDR3-class cells it looks conservative by about 3x (25-30x instead of 9x). It is **not testable for DDR5 with public data**. The DDR5 number rests on three untested inputs: the 0.5x retention derate, the on-die SEC error structure and VRT growth. Keep ~9x as the planning number. Treat ~25-30x as upside that only the Phase 1 DDR5 leg can confirm.
+**Verdict on the ~9x claim.** Public data does not contradict it. For DDR3-class cells it looks conservative by about 3x (25-30x instead of 9x). It is **not testable for DDR5 with public data**. The DDR5 number rests on three untested inputs: the 0.5x retention derate, the on-die SEC error structure and VRT growth. Keep ~9x as the planning number. Treat ~25-30x as upside that only the Phase 1 DDR5 leg can confirm. That upside needs a per-module servo (fleet cut ~31x); one fixed interval for every module must suit the worst one and gives ~18x.
 
 ---
 
@@ -30,16 +30,16 @@
 
 | # | Name | Source URL | License | Size | What it has | Used? |
 |---|---|---|---|---|---|---|
-| 1 | SAFARI DRAM-Voltage-Study, `retention_time_profile.csv` | https://github.com/CMU-SAFARI/DRAM-Voltage-Study | No license file in the repo, so all rights are reserved by default [REPORTED: repo tree, commit b2089c3] | 1,539,105 bytes, 28,657 rows | 31 DDR3L SO-DIMMs (10 vendor A, 12 B, 9 C); 2 GB each, 4 x 4Gb chips [REPORTED: https://arxiv.org/abs/1705.10292, via search snippet]; 20 and 70 °C ambient; 1.15/1.2/1.35 V; refresh paused 64-2048 ms; bit-error counts per bank per test | **Yes.** Raw file kept out of git; only fits and fleet means are committed |
+| 1 | SAFARI DRAM-Voltage-Study, `retention_time_profile.csv` | https://github.com/CMU-SAFARI/DRAM-Voltage-Study | No license file in the repo, so all rights are reserved by default [REPORTED: repo tree, commit b2089c3] | 1,539,105 bytes, 28,657 rows | 31 DDR3L SO-DIMMs (10 vendor A, 12 B, 9 C); 2 GB each, 4 x 4Gb chips [REPORTED: https://arxiv.org/abs/1705.10292, via search snippet]; 20 and 70 °C ambient; 1.15/1.2/1.35 V; refresh paused 64-2048 ms; bit-error counts per bank per test. C2 check: the file's row-weighted means equal the paper's reported average weak-cell counts (section 3) | **Yes.** Raw file kept out of git; only fits and fleet means are committed |
 | 2 | Same repo, `dimm_faulty_cachelines_out.csv` | same | same | 3,848 bytes | Voltage-induced errors, not retention | No (off topic) |
-| 3 | Alibaba SRDS'22 DRAM error logs (`dramdata`) | https://github.com/alibaba-edu/dcbrain/tree/master/dramdata ; data at https://tianchi.aliyun.com/dataset/132973 | CC BY-SA 4.0 [REPORTED: Tianchi page via search snippet] | ~410 MB zip [REPORTED] | >70M CEs from >250K servers and 3M DIMMs over 8 months. Fields: server, DIMM, rank, bank, row, column, error type, time. Trouble tickets with UE/CE-driven failure type and time. **No chip (device) field** [REPORTED: readme] | No. Tianchi was blocked from this session and needs a login; it is also above the 200 MB budget. `field_logs.py` reads it as is |
-| 4 | Huawei SmartMem (WWW 2025 competition) | https://www.codabench.org/competitions/3586/ ; site source https://github.com/hwcloud-RAS/SmartMem.github.io | CC BY-NC 4.0 under competition rules that forbid redistribution [REPORTED: the site's terms page] | Not stated | Per-DIMM mcelog with 23 columns, **including deviceid (chip), bank group, bank, row, column and a DQ x beat error bitmap**; DIMM failure tickets [REPORTED: the site's dataset page] | No. Needs Codabench registration; cannot be shared. The best public source for the multi-chip question |
+| 3 | Alibaba SRDS'22 DRAM error logs (`dramdata`) | https://github.com/alibaba-edu/dcbrain/tree/master/dramdata ; data at https://tianchi.aliyun.com/dataset/132973 | CC BY-SA 4.0 per C1's search snippet; a C2 search of the same page showed no licence text [UNVERIFIED] | 410.69 MB `dramdata.zip`, uploaded 2022-06-20 [REPORTED: Tianchi page via search snippet] | >70M CEs from >250K servers and 3M DIMMs over 8 months. Fields: server, DIMM, rank, bank, row, column, error type, time. Trouble tickets with UE/CE-driven failure type and time. **No chip (device) field** [REPORTED: readme, re-read by C2] | No. Tianchi was blocked from this session and needs a login; it is also above the 200 MB budget. `field_logs.py` reads it as is |
+| 4 | Huawei SmartMem (WWW 2025 competition) | https://www.codabench.org/competitions/3586/ ; site source https://github.com/hwcloud-RAS/SmartMem.github.io | CC BY-NC 4.0 under competition rules that forbid redistribution [REPORTED: the site's terms page] | Not stated | Per-DIMM mcelog with 23 columns, **including deviceid (chip), bank group, bank, row, column and a DQ x beat error bitmap**; DIMM failure tickets [REPORTED: the site's dataset page] | No. Needs Codabench registration; cannot be shared; **non-commercial use only**, academic research included [REPORTED: terms page]. The per-DIMM files carry no serial-number column (the file name is the serial) [REPORTED: dataset page]. The best public source for the multi-chip question |
 | 5 | Huawei M2-MFP repository | https://github.com/hwcloud-RAS/M2-MFP | CC BY-NC-SA 4.0 [REPORTED: README] | README and code only; data "will be provided in future updates" | Monthly counts: DIMMs with CEs, failed DIMMs, CE totals (Jan-Jul 2024, Intel Purley and Cascade) | Aggregates only (section 4.8) |
-| 6 | Sandia Astra memory error and system monitoring data | https://doi.org/10.5281/zenodo.6515019 [REPORTED: cited in a later paper, via search snippet] | Not verified [UNVERIFIED] | Not verified | CE records plus power and temperature for a petascale Arm system [REPORTED: https://www.osti.gov/biblio/2003151] | No. zenodo.org was blocked |
+| 6 | Sandia Astra memory error and system monitoring data | https://doi.org/10.5281/zenodo.6515019 [REPORTED: cited in a later paper, via search snippet]; a C2 search found the paper's promise to publish the data but not the record itself [UNVERIFIED] | Not verified [UNVERIFIED] | Not verified | CE records plus power and temperature for a petascale Arm system [REPORTED: https://www.osti.gov/biblio/2003151] | No. zenodo.org was blocked |
 | 7 | Khan et al. SIGMETRICS 2014 "full data sets" (retention, VRT) | http://www.ece.cmu.edu/~safari/tools/dram-sigmetrics2014-fulldata.html [REPORTED: search snippet] | Not verified | Not verified | Retention-failure data from the VRT study [UNVERIFIED: contents] | No. Host blocked. **The most valuable missing set for VRT** |
-| 8 | EINSim (on-die ECC simulator) | https://github.com/CMU-SAFARI/EINSim | MIT [REPORTED: README] | Small | Simulator. The README says the real-chip experimental data was **withheld for confidentiality**; only simulated "proxy" data ships [REPORTED] | No (no chip data) |
+| 8 | EINSim (on-die ECC simulator) | https://github.com/CMU-SAFARI/EINSim | MIT [REPORTED: README] | Small | Simulator. The README at tag `full-size-dataset-v1.0` says the real-chip experimental data was **withheld for confidentiality**; only simulated "proxy" data ships [REPORTED, checked by C2] | No (no chip data) |
 | 9 | BEER, HARP (on-die ECC tools) | https://github.com/CMU-SAFARI/BEER , https://github.com/CMU-SAFARI/HARP | MIT [REPORTED: READMEs] | Small | Tools that recover or work around on-die ECC; simulated errors | No (tools, not data). Useful for Phase 1 |
-| 10 | SoftMC, DRAM Bender (test platforms) | https://github.com/CMU-SAFARI/SoftMC , https://github.com/CMU-SAFARI/DRAM-Bender | Not checked | - | Retention-test programs, no result data | No. These are the Phase 1 tools |
+| 10 | SoftMC, DRAM Bender (test platforms) | https://github.com/CMU-SAFARI/SoftMC , https://github.com/CMU-SAFARI/DRAM-Bender | MIT [REPORTED: LICENSE files, checked by C2] | - | Retention-test programs, no result data | No. These are the Phase 1 tools |
 | 11 | Liu et al. ISCA 2013 (248 DDR3 chips, VRT) | https://arxiv.org/pdf/2306.16037 (retrospective) | - | - | No public data link found [REPORTED: search] | No |
 | 12 | Google 2009, Sridharan (Jaguar, Cielo, Hopper), Beigi 2023 (DDR4), Cheng 2022 (Alibaba) field studies | see Sources | - | - | Published aggregates only, used as parameters (section 4.8) | As parameters only |
 | 13 | Decay-based DRAM PUF data (PUF: physically unclonable function) | https://par.nsf.gov/servlets/purl/10077358 | - | - | No public dataset found [REPORTED: search] | No |
@@ -66,7 +66,8 @@ All scripts are stdlib + numpy and have `--selftest` (synthetic data with known 
 - 53% of non-zero rows are exact repeats: whole blocks of tests appear two or more times. Repeats do not move a mean, but they would fake precision. So every fit counts one test's worth of errors per condition, and every CI comes from resampling modules.
 - At long intervals, exactly half the tests on a module show 0 errors and the other half show thousands. That is the classic signature of a data pattern and its inverse: only charged cells can leak. So the **mean over tests equals random data**, where half the cells are charged. This matches the model's `data_pattern_factor` = 0.5 (models/raw-ber-contract.py line 79).
 - Bits per module = 2 GB × 8 = 1.718e10.
-- Temperatures are the reported ambient values; chips may run a few °C warmer [UNVERIFIED]. That makes the 70 °C data a conservative stand-in for 65 °C.
+- Temperatures are ambient. The authors test at an ambient 20±1 °C unless stated, and call both 20 and 70 °C ambient [REPORTED: https://arxiv.org/pdf/1712.08304 and https://arxiv.org/pdf/1705.10292, via search snippets]. Chips may run a few °C warmer [UNVERIFIED]. That makes the 70 °C data a conservative stand-in for 65 °C. If the chips sat 10-20 °C above the 20 °C ambient and the 70 °C chips did not, Ea would be 0.17-0.23 eV instead of 0.13 eV [ESTIMATE].
+- **Cross-check with the paper (C2).** The file's row-weighted mean at 70 °C and 2.048 s is 2,510 errors per test at 1.35 V and 2,641 at 1.15 V; at 20 °C it is 66 and 75. These equal the paper's reported average weak-cell counts [REPORTED: same two URLs, via search snippets]. So the file is the paper's data, and the authors average over all tests, zero tests included. This report weights each module equally instead. That gives a 35% higher BER at 70 °C, the safe direction [ESTIMATE].
 
 **Fits** [ESTIMATE].
 - **Tail.** Cell failure fraction F(t) = Φ((ln t − μ)/σ_ln), fitted by a Poisson likelihood over all seven intervals, including the zero counts. Done per module and on the fleet mean (each module weighted equally). 400 bootstrap resamples over modules.
@@ -106,21 +107,26 @@ All scripts are stdlib + numpy and have `--selftest` (synthetic data with known 
 | σ_ln, fleet fit | **1.05** (CI 0.97-1.12) | 1.24 |
 | σ_ln per module | median 1.00; 10th-90th percentile 0.78-1.19; range 0.73-1.25 | - |
 | By vendor (median σ_ln) | A 1.18, B 0.82, C 1.10 | - |
+| Local σ_ln between adjacent intervals | 0.78 (0.5-1 s), 0.98 (1-1.5 s), 1.08 (1.5-2 s) | - |
 | Local slope d ln BER / d ln t at 2 s | 4.9 (lognormal); 4.86 (CI 4.51-5.27) between 1.5 and 2 s | ~5 at 64 ms, falling (model note, line 713) |
 | Median retention at 70 °C (fit extrapolation, not a measured median) | 358 s | 232 s |
 
 The fitted μ and median describe the tail's shape only. The data reaches at most F ≈ 2.5e-6 in one module, so the main body of the distribution is never seen.
+
+C2 independent check [ESTIMATE]: a plain least-squares probit fit over the four non-zero intervals gives σ_ln 0.88. It weights the steep 0.5-1 s part. Re-run the same way, it gives 0.80 s (25x) for DDR5 at 85 °C, inside the range of cases C-E. The Poisson fit's 0.96 s comes out the same from separate code.
 
 ### 4.3 Temperature
 
 | Quantity | Value [ESTIMATE] |
 |---|---|
 | Fleet Ea of the weakest cells (BER ~3e-9) | **0.13 eV** (CI 0.10-0.17); 0.11 eV matched at 1.536 s; 0.16 eV with the outlier-resistant estimator |
+| Same, without module C4 (it holds 76% of the 20 °C errors) | 0.16 eV |
 | Per-module point estimates (10 modules with errors at 20 °C) | 0.016-0.197 eV |
 | Per-module lower bounds (18 modules with no errors at 20 °C) | ≥0.09 to ≥0.25 eV |
 | Model's implied Ea | 0.72 eV (85-65 °C), 0.64 eV (65-45 °C) |
 
 - **What it means.** For these weakest cells, 70 °C retention is only ~2x shorter than at 20 °C. This fits published device work: the extreme tail holds a low-Ea share, and that share shrinks toward the main distribution [REPORTED: Weber et al., https://tore.tuhh.de/entities/publication/d044c2f2-f544-42c7-8293-2985814bdad2 ; Hamamoto et al. 1998, https://next.sciencegate.app/document/10.1109/16.678551].
+- **Which cells it describes (C2).** It is the Ea of the cells that fail first at 20 °C. Those are mostly low-Ea cells, because Ea is spread over cells [REPORTED: Hamamoto, same URL] and field-driven leakage (GIDL, gate-induced drain leakage) dominates the extreme tail [REPORTED: Weber, same URL]. The code limits sit near BER 1e-5, where higher-Ea cells take part. So the gain from cooling below 70 °C is unmeasured there, not shown to be small.
 - **Main versus tail Ea.** The main distribution is never reached, so its Ea is NOT TESTABLE with this data.
 - **Above 70 °C.** No data exists. Cases B-E use the model's 0.72 eV there, which is the more pessimistic choice.
 
@@ -136,8 +142,8 @@ The fitted μ and median describe the tail's shape only. The data reaches at mos
 ### 4.5 Spatial spread over banks (70 °C, 2.048 s)
 
 - 28 modules. The busiest bank holds a median 13.9% of a module's errors (12.5% if even); the maximum is 18.7%.
-- 2 of 28 modules fail a χ² evenness test at p < 0.001.
-- **Reading.** Retention errors are spread evenly at bank scale. That fits the model's independent-error assumption at coarse scale only. Codeword-level clusters need bit addresses, which this file lacks.
+- 11 of 28 modules fail a χ² evenness test at p < 0.001, counting one charged test. (C2 fix: the first version counted the mean over all tests, which halves every count because half the tests are zero, and reported 2 of 28.)
+- **Reading.** Errors reach all 8 banks, with a modest but real imbalance between banks. Bank scale says nothing about clusters inside a codeword, which is what the codes care about. Those need bit addresses, which this file lacks.
 
 ### 4.6 Re-run of the model's safe interval
 
@@ -159,6 +165,8 @@ Chipkill kept (RS-8), 2e-19 per read, 1 h scrub, VRT 1x/day; "cut" = interval ÷
 | Case | Model | A | B | C | D | E |
 |---|---|---|---|---|---|---|
 | Cut | 8.9x | 67x | **29.5x** | 27x | 25x | 25x |
+
+**Fleet view, case B** [ESTIMATE]: with a per-module servo, each module runs at its own interval and the fleet cut is 31x. One fixed interval for all 28 modules must suit the worst one (B7) and gives 18x.
 
 **Per module, case B** (28 modules):
 
@@ -195,7 +203,7 @@ Even at the kill-line growth rate, the DDR5 case stays above the 6x GO line at 8
 | Single-bit share of DRAM faults, Cielo/Hopper, vendors A/B/C | 64.6% / 69.5% / 58.4% | [REPORTED] https://sc.osti.gov/-/media/ascr/ascac/pdf/meetings/201512/ResilienceASCAC2015.pdf |
 | Single-column share, same | 8.7% / 8.8% / 11.9% | [REPORTED] same |
 | Jaguar: permanent faults; multi-bit (row, column, bank) faults | ≥70%; almost 50% of failures | [REPORTED] https://math.nist.gov/mcsd/Seminars/2015/2015-07-21-Diniz-presentation.pdf |
-| Alibaba: DRAM-caused server failures with CEs within 1 h before | >40% of 2,137 | [REPORTED] https://shujiehan.github.io/_pages/files/srds22.pdf (search snippet) |
+| Alibaba: in most DRAM-caused server failures, CEs appear only shortly before; for >40%, within 1 h | of 2,137 failures | [REPORTED] https://shujiehan.github.io/_pages/files/srds22.pdf (search snippet) |
 | Huawei: UEs that CEs warn of first ("predictable") are the majority | qualitative | [REPORTED] https://arxiv.org/pdf/2406.05354 |
 | Astra: faults even over socket, column and bank; uneven over node, rank and slot | qualitative | [REPORTED] https://www.osti.gov/biblio/2003151 |
 | Google fleet: CE rate; DIMMs with errors per year | 25,000-70,000 FIT per Mbit; >8% of DIMMs | [REPORTED] https://research.google/pubs/dram-errors-in-the-wild-a-large-scale-field-study/ |
@@ -205,14 +213,14 @@ FIT = failures per billion device-hours.
 
 **Chance level of multi-chip events** [ESTIMATE]. Assume independent raw errors on a 10-chip x4 line, 64 bits per chip (`field_logs.py`, checked by Monte Carlo):
 
-| Operating point | Share of erroneous lines with errors on ≥2 chips |
-|---|---|
-| DDR4 RS-8 at its limit (5.4e-5) | 1.6% |
-| DDR4 RS-8 servoed (limit ÷ 3) | 0.52% |
-| DDR4 BCH-12 at its limit (3.3e-4) | **9.3%** |
-| DDR5 behind on-die SEC, post-SEC events at the RS-8 limit | ~0.001% |
+| Operating point | Errors on ≥2 chips (10 × 64 bits) | On ≥2 bytes of RS(80,64) (80 × 8 bits) | On ≥2 chips, DDR4 x4 line (18 × 32 bits) |
+|---|---|---|---|
+| DDR4 RS-8 at its limit (5.4e-5) | 1.6% | 1.7% | 1.5% |
+| DDR4 RS-8 servoed (limit ÷ 3) | 0.52% | 0.57% | 0.49% |
+| DDR4 BCH-12 at its limit (3.3e-4) | **9.3%** | **10.1%** | 8.8% |
+| DDR5 behind on-die SEC, post-SEC events at the RS-8 limit | ~0.001% | - | - |
 
-The dossier's ">10% multi-chip events" line is almost reached by chance alone at the BCH-12 operating point. It should read ">10% *above the independent-error expectation*".
+The dossier's ">10% multi-chip events" line is almost reached by chance alone at the BCH-12 operating point, and passed when counted by bytes. It should read ">10% *above the independent-error expectation*".
 
 ---
 
@@ -221,20 +229,20 @@ The dossier's ">10% multi-chip events" line is almost reached by chance alone at
 | # | Claim (dossier / model) | Verdict | Evidence |
 |---|---|---|---|
 | 1 | Retention tail anchors: BER 3.6e-9 at 64 ms and 1.1e-10 at 32 ms (85 °C), lognormal (model lines 73-77, 664) | **CONTRADICTED** (too pessimistic, on DDR3L 2015-16) | 166-603x above measured at 1-2 s and 70 °C; ~158 bits per test expected at 256 ms, 0 seen on 28 modules |
-| 2 | Tail width σ_ln ≈ 1.24 | **WEAKENED** (slightly; conservative side) | 1.05 (CI 0.97-1.12); per module 0.73-1.25 |
-| 3 | Retention x4 per 20 °C (Ea ≈ 0.64-0.72 eV) for the cooling bonus (65 °C, 45 °C) | **CONTRADICTED** for the weakest cells, 20-70 °C | Ea 0.13 eV (CI 0.10-0.17). 45 °C gives ~1.4x over 70 °C, not the model's ~5.7x. The model's 45 °C DDR5 interval (4.56 s) is above the data-based one (3.2-3.8 s) |
+| 2 | Tail width σ_ln ≈ 1.24 | **WEAKENED** (slightly) | 1.05 (CI 0.97-1.12); per module 0.73-1.25. A narrower tail rises faster, so this input alone errs on the optimistic side: holding the model's 64 ms anchor, σ_ln 1.05 cuts the DDR5 interval 0.25 → 0.18 s. The tail's position (row 1) more than offsets it |
+| 3 | Retention x4 per 20 °C (Ea ≈ 0.64-0.72 eV) for the cooling bonus (65 °C, 45 °C) | **CONTRADICTED** at the measured BER (~3e-9, 20-70 °C); NOT TESTABLE at the code-limit BER (~1e-5) | Ea 0.13 eV (CI 0.10-0.17); 0.16 eV without C4; 18 of 28 modules give only lower bounds. 45 °C gives ~1.4x over 70 °C, not the model's ~5.7x. The model's 45 °C DDR5 interval (4.56 s) is above the data-based one (3.2-3.8 s) |
 | 4 | Same rule from 70 to 85 °C | NOT TESTABLE WITH PUBLIC DATA | No data above 70 °C. The re-run uses the model's 0.72 eV there (pessimistic) |
 | 5 | Tail versus main Ea | NOT TESTABLE WITH PUBLIC DATA | Main distribution not reached (max F ≈ 2.5e-6) |
 | 6 | Kill #1: NO-GO if the RS-8 interval incl. VRT is <4x the window at 65 °C | **SUPPORTED** (not triggered) for DDR3-class cells; NOT TESTABLE for DDR5 | ≥32x measured at 70 °C with no BER extrapolation; 84-116x modelled (case B) |
 | 7 | GO: ≥6x at 85 °C and ≥24x at 65 °C | **SUPPORTED** for DDR3-class cells | 85 °C: ≥11.5x bound, 25-30x cases B-E; 65 °C: ≥32x bound |
-| 8 | **~9x refresh-energy cut on DDR5 RDIMMs at 85 °C** | **SUPPORTED as conservative for DDR3-class cells; NOT TESTABLE for DDR5** | Case B 29.5x (CI 0.85-1.14 s → 27-36x); worst module 18x; bound 11.5x. The 0.5x DDR5 derate, the on-die SEC structure and VRT are untested |
-| 9 | ~13x on retired DDR4 behind CXL | **SUPPORTED** (conservative; DDR3L used as the proxy) | 2.66 s = 42x (case B); 34-36x pessimistic; bound 11.5x |
+| 8 | **~9x refresh-energy cut on DDR5 RDIMMs at 85 °C** | **SUPPORTED as conservative for DDR3-class cells; NOT TESTABLE for DDR5** | Case B 29.5x (CI 0.85-1.14 s → 27-36x); fleet 31x with a per-module servo, 18x with one fixed interval; worst module 18x; bound 11.5x. The 0.5x DDR5 derate, the on-die SEC structure and VRT are untested |
+| 9 | ~13x on retired DDR4 behind CXL | **SUPPORTED** (conservative; DDR3L used as the proxy) | 2.66 s = 42x (case B); 34-36x pessimistic; bound 11.5x. Two caveats (C2): retired DDR4 is newer silicon than these DDR3L parts and, as in the model, gets no derate; and the code side inherits the model's 128-bit side band, while a real DDR4 x4 line has 64 check bits (section 8) |
 | 10 | Degraded mode (one chip dead): 2.9x DDR5, 4.0x DDR4 at 85 °C | **SUPPORTED** (conservative) | 11.5x / 15x (case B); worst-module bounds 5.7x / 8.6x |
 | 11 | VRT growth ≤700x/day (kill #4); VRT pairs within 2x of chance | NOT TESTABLE WITH PUBLIC DATA | No addresses or timestamps. Even at 700x/day, case B keeps DDR5 at 14x |
-| 12 | Kill #2: BCH dies if >0.4% of error bits sit in ≥3-bit clusters; both codes die if >10% of events span >1 byte | NOT TESTABLE WITH PUBLIC DATA | No bit addresses. Bank-level spread is even (2 of 28 modules uneven), which is consistent with, but does not prove, independent errors |
-| 13 | Multi-chip events ≤10% (GO line) | NOT TESTABLE WITH PUBLIC DATA | Field logs run at normal refresh, and the only chip-level logs (SmartMem) are gated. Chance alone gives 0.5-1.6% with RS-8 and 9.3% at the BCH-12 limit, so the line needs a chance-corrected definition |
+| 12 | Kill #2: BCH dies if >0.4% of error bits sit in ≥3-bit clusters; both codes die if >10% of events span >1 byte | NOT TESTABLE WITH PUBLIC DATA | No bit addresses. Banks show a modest imbalance (11 of 28 modules uneven at p < 0.001; busiest bank ≤18.7%). Bank scale says nothing about codeword clusters |
+| 13 | Multi-chip events ≤10% (GO line) | NOT TESTABLE WITH PUBLIC DATA | Field logs run at normal refresh, and the only chip-level logs (SmartMem) are gated. Chance alone gives 0.5-1.6% with RS-8 and 9.3% at the BCH-12 limit (10.1% counted by bytes), so the line needs a chance-corrected definition |
 | 14 | Chipkill must be the default (RT-CIRC-03) | **SUPPORTED** | 30-42% of field faults are not single-bit; ~23% of DDR4 faults are multi-bit; column faults are 9-12% |
-| 15 | First-read chip marking works because faults show CEs before UEs (kill #10, model §10.6) | **SUPPORTED** (weakly) | >40% of DRAM-caused failures show CEs within 1 h before; predictable UEs are the majority. The share of "sudden" UEs (no CE first) is not public |
+| 15 | First-read chip marking works because faults show CEs before UEs (kill #10, model §10.6) | **SUPPORTED** (weakly) | Predictable UEs (CEs first) are the majority. Warnings are short: in >40% of DRAM-caused failures, CEs first appear <1 h before. So marking must happen on the first chip-confined correction. Field data are at standard refresh, and the share of "sudden" UEs (no CE first) is not public |
 | 16 | The servo's 1 h grade holds for 1,000 h on ≥95% of modules | NOT TESTABLE WITH PUBLIC DATA | No timestamps. Warning: 6 of 17 modules show >3x spread between repeated tests at one condition, larger than the 3x guard; the cause is unresolved |
 | 17 | UE budget basis: field DIMM UE rates ~0.2-1% per year (model line 47) | NOT TESTABLE WITH PUBLIC DATA | M2-MFP gives 0.56% per month of *CE-logging* DIMMs failing; the fleet denominator is not published |
 | 18 | Row hammer at relaxed refresh (kill #5) | NOT TESTABLE WITH PUBLIC DATA | No public data at relaxed refresh |
@@ -251,7 +259,7 @@ The dossier's ">10% multi-chip events" line is almost reached by chance alone at
   2. **On-die SEC changes the error structure.** The model says it turns doublets into 3-bit events (§2.4). No public chip data exists; EINSim's real-chip data is confidential.
   3. **VRT growth is unmeasured.** At 700x/day the DDR5 case falls to 14x.
   4. **The sample is small.** It is 31 modules from one study, while the dossier wants ≥30 lots per vendor.
-- **The cooling bonus is overstated.** The weakest cells have Ea ~0.13 eV, so a temperature-tracking controller gains little below 70 °C. The 65 °C GO line still passes, because the whole tail sits so much further right. But the dossier's 45 °C figures (x16, e.g. 13-24 s in §2.5) should not be used.
+- **The cooling bonus is unproven, and probably overstated.** At the measured BER the weakest cells have Ea ~0.13-0.16 eV, so a temperature-tracking controller may gain little below 70 °C. At the operating BER it is unmeasured. The 65 °C GO line still passes, because the whole tail sits so much further right. But the dossier's 45 °C figures (x16, e.g. 13-24 s in §2.5) should not be used.
 - **Recommendation.** Keep ~9x as the planning number. Public DDR3L data suggests the true value could be ~3x higher. Drop the x16 45 °C multiplier from any headline. Redefine the multi-chip kill line against the independent-error expectation.
 
 ---
@@ -263,7 +271,7 @@ The dossier's ">10% multi-chip events" line is almost reached by chance alone at
 | Bit-level clusters in codewords (kill #2); VRT fraction and growth g (kill #4); Ea of the *same* cells at 25/45/65 °C (not fleet means) | **Home-lab E6** ([../../home-lab/E6_retention_tail_real_dram.md](../../home-lab/E6_retention_tail_real_dram.md)) | Log every failing address on a 64 Mbit SDRAM at 64 ms-65 s and 25/45/65 °C, with repeat maps every 20 s-20 min for VRT. Going out to 16-65 s reaches BER 1e-5-1e-4 *directly*, removing this report's 2-decade extrapolation (for that chip). Feed the address logs to `field_logs.py`-style census code and to E6's `retention_map.py analyze`. It cannot answer the DDR5 questions |
 | DDR5 derate, post-SEC event structure, ECS (error check and scrub) counts, chipkill-safe interval on 1a/1b RDIMMs | **Dossier Phase 1, DDR5 leg** (§5.R step 3; ~$124k Phase 1 total, ~$20k for the two open testers [ESTIMATE: dossier]) | ≥24 RDIMMs on the open Antmicro DDR5 testers; BEER-style H-matrix recovery (https://github.com/CMU-SAFARI/BEER) |
 | Lot-to-lot spread; ≥30 lots per vendor; 1 h grade vs 1,000 h hold | Dossier Phase 1 steps 1 and 6 | 150 DDR4 modules screened, 60 deep-mapped, 20 soaked 1,000 h |
-| Multi-chip event share in the field; CE-before-UE share; DQ x beat patterns | SmartMem / M2-MFP (register on Codabench) or the Alibaba set (Tianchi) | `python3 -I research/realdata/field_logs.py --log <log> --tickets <tickets>`. Do not commit SmartMem data: its rules forbid redistribution |
+| Multi-chip event share in the field; CE-before-UE share; DQ x beat patterns | SmartMem / M2-MFP (register on Codabench) or the Alibaba set (Tianchi) | `python3 -I research/realdata/field_logs.py --log <log files> --tickets <tickets>` (SmartMem: pass the per-DIMM files; each takes its serial from its file name). Do not commit SmartMem data: its rules forbid redistribution and allow non-commercial use only, so a company decision probably needs an academic partner or Huawei's permission [UNVERIFIED: not legal advice] |
 | VRT over months on DDR3 | Khan et al. 2014 full data (host blocked here) | Allow www.ece.cmu.edu, fetch it, and extend `retention_fit.py` if it holds per-cell lists |
 | Behaviour above 70 °C | E6 cannot go there (chip rated ~70 °C); Phase 1 thermal rigs can | Map at 85 °C directly; drop the 0.72 eV assumption |
 
@@ -286,9 +294,32 @@ Outputs: `retention_fit_summary.json` (all numbers above), `retention_per_dimm.c
 - **Assumptions about the file.** The file does not say which data pattern each test used, or whether the whole module was tested. "Mean over tests = random data" rests on the 50% zero-test pattern [ESTIMATE]. If only part of each module was tested, every BER here is too low by that fraction [UNVERIFIED].
 - **The 20 °C data is odd.** Some modules (A1, B5) show almost no temperature dependence. That could be real (field-enhanced leakage) or a labeling or setup issue [UNVERIFIED].
 - **The field verdicts rest on published aggregates read through search snippets,** not on raw logs.
-- **Network.** Many hosts were blocked in this session (listed below). The SmartMem dataset and terms pages were read from the site's source repository on github.com because its github.io site was blocked. No data was fetched that way.
+- **DDR4 line geometry is the model's, not DDR4's (C2).** The model's DDR4 cases use the DDR5 line: 640 bits with 128 check bits (RS(80,64)). A standard DDR4 x4 ECC RDIMM moves 18 chips × 32 bits per 64-byte line, with 64 check bits [UNVERIFIED: training knowledge, JEDEC 72-bit bus, burst of 8]. If that holds, the ~13x retired-DDR4 figure needs a model re-run with the real side band, or a controller that gives up capacity for check bits. Public data cannot test it.
+- **Licences (C2).** The committed files hold statistics derived from the SAFARI file (fits, fleet means, per-module means at three conditions), with attribution, and no raw rows. The five M2-MFP monthly rows in `field_logs.py` are quoted from a CC BY-NC-SA 4.0 README with attribution; recheck that use if this work turns commercial [UNVERIFIED: not legal advice].
+- **Network.** Many hosts were blocked in this session (listed below). The SmartMem dataset and terms pages were read from the site's source repository on github.com because its github.io site was blocked. No data was fetched that way. Task C2 read the same repository (commit 76988b9) the same way, and tried research.nvidia.com once for the paper; it did not resolve and was not retried.
 
-**Blocked hosts in this session:** zenodo.org, courses.grainger.illinois.edu, people.inf.ethz.ch, users.ece.cmu.edu, www.ece.cmu.edu, hwcloud-ras.github.io, hyxie2023.github.io, github.com web pages and API (git clone and raw.githubusercontent.com worked), tianchi.aliyun.com, www.usenix.org, www.osti.gov, safari.ethz.ch, people.cs.rutgers.edu, www.pdl.cmu.edu, www.research-collection.ethz.ch, figshare.com, dataverse.harvard.edu, www.kaggle.com, huggingface.co, ar5iv.labs.arxiv.org, www.semanticscholar.org, api.semanticscholar.org, dl.acm.org, export.arxiv.org, doi.org, www.sandia.gov, ieee-dataport.org, data.mendeley.com, osf.io. Hosts blocked in earlier sessions (arxiv.org, ieeexplore.ieee.org and others) were not retried.
+**Blocked hosts in this session:** zenodo.org, courses.grainger.illinois.edu, people.inf.ethz.ch, users.ece.cmu.edu, www.ece.cmu.edu, hwcloud-ras.github.io, hyxie2023.github.io, github.com web pages and API (git clone and raw.githubusercontent.com worked), tianchi.aliyun.com, www.usenix.org, www.osti.gov, safari.ethz.ch, people.cs.rutgers.edu, www.pdl.cmu.edu, www.research-collection.ethz.ch, figshare.com, dataverse.harvard.edu, www.kaggle.com, huggingface.co, ar5iv.labs.arxiv.org, www.semanticscholar.org, api.semanticscholar.org, dl.acm.org, export.arxiv.org, doi.org, www.sandia.gov, ieee-dataport.org, data.mendeley.com, osf.io, research.nvidia.com (C2). Hosts blocked in earlier sessions (arxiv.org, ieeexplore.ieee.org and others) were not retried.
+
+---
+
+## 9. Review by task C2 (2026-11-04)
+
+An adversarial statistics and device-physics review. All three scripts and their `--selftest` were re-run; the retention outputs were reproduced byte for byte before the fixes below.
+
+| What was checked | Result |
+|---|---|
+| Data file | Hash and pinned commit match; no licence file in the repository; README confirms 31 DDR3L SO-DIMMs from 2015-16 and points the file to the paper's section 4.6. Row-weighted means equal the paper's averages (section 3) |
+| Key numbers re-derived with separate code | σ_ln, Ea, the 0.96 s DDR5 interval, 166-10,000x model excess and the bound: all reproduced. A plain probit fit gives 0.80 s (section 4.2) |
+| Standard-refresh field logs used as relaxed-refresh evidence | Not found. Field data is used only for hard-fault shares and warning time, both independent of refresh rate |
+| Selection bias | Fleet Ea is driven by the 10 modules with 20 °C errors, C4 most (fixed in text). M2-MFP denominators are CE-logging DIMMs (already flagged). Field fault shares are shares of faulty DIMMs, used only to argue for chipkill |
+| Event definitions | Kill #2 counts bytes; the chance level is now given both ways. `field_logs.py` now counts a chip as (rank, device) and adds a DIMM-level share, because events cluster in a few DIMMs |
+| Independence in ECC math | Untestable here (no addresses). Bank χ² was understated by half (fixed: 11 of 28 uneven, not 2) |
+| Units, temperatures | Bits and BER definitions consistent. Temperatures are ambient [REPORTED]; sensitivity added |
+| Licences, raw data in the repository | No raw rows anywhere in the repository. SmartMem is non-commercial only (added). Tianchi licence and the Zenodo record could not be confirmed (tagged) |
+
+**Fixes made.** `retention_fit.py`: bank χ² on one charged test; new outputs for Ea without the dominant module, the BER at which Ea is matched, the local tail width and the fleet energy cut. `field_logs.py`: SmartMem per-DIMM files take their serial from the file name (before, failures could never match their logs); several `--log` files; chip = (rank, device); DIMM-level multi-chip share; chance level by bytes and for the DDR4 x4 line. This report: verdicts 2, 3, 12, 13 and 15 reworded; finding 3 scoped to the measured BER.
+
+**Verdicts not changed.** The ~9x claim stays SUPPORTED as conservative for DDR3-class cells and NOT TESTABLE for DDR5.
 
 ---
 
@@ -297,17 +328,18 @@ Outputs: `retention_fit_summary.json` (all numbers above), `retention_per_dimm.c
 **Data and code**
 - https://github.com/CMU-SAFARI/DRAM-Voltage-Study (dataset 1; commit b2089c3c7c2aac1d0936b4cfc572a675f5fd73f4)
 - https://raw.githubusercontent.com/CMU-SAFARI/DRAM-Voltage-Study/b2089c3c7c2aac1d0936b4cfc572a675f5fd73f4/characterization_results/retention_time_profile.csv
-- https://arxiv.org/abs/1705.10292 (Chang et al., SIGMETRICS 2017: 124 DDR3L chips, 31 modules, 4Gb chips, 2 GB modules; via search snippet)
+- https://arxiv.org/abs/1705.10292 (Chang et al., SIGMETRICS 2017: 124 DDR3L chips, 31 modules, 4Gb chips, 2 GB modules; 2,510 and 2,641 average weak cells at 70 °C and 2.048 s; via search snippets)
+- https://arxiv.org/pdf/1712.08304 (Chang, PhD thesis: tests at an ambient 20±1 °C; 66 and 75 weak cells at 20 °C and 2.048 s; via search snippet)
 - https://github.com/alibaba-edu/dcbrain/tree/master/dramdata
 - https://tianchi.aliyun.com/dataset/132973
 - https://github.com/zncheng/dramanalysis
-- https://github.com/hwcloud-RAS/SmartMem.github.io (dataset and terms pages)
+- https://github.com/hwcloud-RAS/SmartMem.github.io (dataset and terms pages; commit 76988b92bb6a6afc095d7334651099b125f9f180)
 - https://www.codabench.org/competitions/3586/
 - https://github.com/hwcloud-RAS/M2-MFP
 - https://doi.org/10.5281/zenodo.6515019
 - http://www.ece.cmu.edu/~safari/tools/dram-sigmetrics2014-fulldata.html
 - https://www.pdl.cmu.edu/ftp/NVM/khan-efficacy-sigmetrics2014.pdf
-- https://github.com/CMU-SAFARI/EINSim
+- https://github.com/CMU-SAFARI/EINSim (and tag full-size-dataset-v1.0, README "Running the examples")
 - https://github.com/CMU-SAFARI/BEER
 - https://github.com/CMU-SAFARI/HARP
 - https://github.com/CMU-SAFARI/SoftMC
@@ -322,6 +354,7 @@ Outputs: `retention_fit_summary.json` (all numbers above), `retention_per_dimm.c
 - https://sc12.supercomputing.org/schedule/event_detail.php-evid=pap113.html (Sridharan and Liberty, SC12)
 - https://shujiehan.github.io/_pages/files/srds22.pdf (Cheng et al., SRDS 2022)
 - https://www.osti.gov/biblio/2003151 (Ferreira et al., Astra, HPDC 2022)
+- https://www.sandia.gov/research/publications/details/understanding-memory-failures-on-a-petascale-arm-system-2022-06-27/ (Astra paper page; data "will be made publicly available")
 - https://arxiv.org/pdf/2406.05354 (Yu et al., DSN 2024)
 - https://arxiv.org/pdf/2312.02855 (Yu et al., error bits)
 - https://sc22.supercomputing.org/proceedings/tech_paper/tech_paper_pages/pap137.html (Li et al., SC22)
@@ -329,6 +362,7 @@ Outputs: `retention_fit_summary.json` (all numbers above), `retention_per_dimm.c
 
 **Retention physics**
 - https://next.sciencegate.app/document/10.1109/16.678551 (Hamamoto et al., 1998)
+- https://www.bohrium.com/paper-details/on-the-retention-time-distribution-of-dynamic-random-access-memory-dram/812461776217047041-3976 (Hamamoto abstract: the deep level's Ea is normally distributed among cells)
 - https://tore.tuhh.de/entities/publication/d044c2f2-f544-42c7-8293-2985814bdad2 (Weber et al., tail activation energies)
 - https://arxiv.org/pdf/2306.16037 (Liu et al. ISCA 2013, retrospective)
 - https://people.cs.rutgers.edu/~mp2099/files/patel_isca2017_reach_paper.pdf (Patel et al., REAPER)
