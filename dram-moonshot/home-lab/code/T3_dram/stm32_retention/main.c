@@ -27,6 +27,10 @@
  *      F,<id>,<word_hex>,<expected_hex>,<observed_hex> (first 20,000 words), then an END summary.
  *      If a precharge times out, the pause is skipped, "ERR,precharge timeout" is printed and END
  *      carries status ERR (the host keeps reading to END; the analysis drops ERR runs).
+ *      If normal refresh cannot be proven restored after a pause (the refresh count does not read
+ *      back, or PB6 does not return to the FMC), the run ends in ERR AND every later RUN or SELFTEST
+ *      is refused ("ERR,sdram not initialised") until the board is reset, so no later run (a
+ *      control run included) can silently use an SDRAM that is not being refreshed normally.
  *
  * Clock: 16 MHz from the board's 8 MHz HSE crystal through the PLL (M 4, N 64, P 8), so the baud
  * rate and every wait are crystal-accurate even when the board is hot. If the crystal or PLL does
@@ -48,7 +52,7 @@
 #include "uart.h"
 #include "max31855.h"
 
-#define FW_VERSION    "e6-ret-0.3"
+#define FW_VERSION    "e6-ret-0.4"
 #define HCLK_HZ       16000000UL
 #define BAUD          115200UL
 #define LOG_CAP       20000UL
@@ -97,7 +101,12 @@ void delay_ms(uint32_t ms)
  * unused 48 MHz domain. Ranges: HAL stm32f4xx_hal_rcc.h:1409-1413, stm32f4xx_hal_rcc_ex.h:6931.
  * Sequence as HAL_RCC_OscConfig / HAL_RCC_ClockConfig (stm32f4xx_hal_rcc.c): HSEON, wait HSERDY,
  * write PLLCFGR, PLLON, wait PLLRDY, SW = PLL, wait SWS = PLL. Flash stays at 0 wait states (16 MHz).
- * AHB, APB1 and APB2 prescalers stay at their reset value 1. Any timeout: back to HSI. */
+ * AHB, APB1 and APB2 prescalers stay at their reset value 1. Any timeout: back to HSI.
+ * PLLCFGR bit 29 is reserved and reads 1 at reset (RCC_PLLCFGR_RST_VALUE 0x24003010, stm32f429xx.h:
+ * 17127). ST is inconsistent about it: HAL_RCC_OscConfig, which ST's examples for this board call,
+ * writes the register whole and clears it (stm32f4xx_hal_rcc.c:492-496), while the macro
+ * __HAL_RCC_PLL_CONFIG sets it (stm32f4xx_hal_rcc_ex.h:5871). We keep it at its reset value, as
+ * the macro does and as ST's usual "reserved, keep at reset value" rule asks [UNVERIFIED wording]. */
 static void clock_init(void)
 {
 #ifndef E6_CLOCK_HSI
@@ -109,8 +118,8 @@ static void clock_init(void)
             return;
         }
     }
-    RCC_PLLCFGR = RCC_PLLCFGR_SRC_HSE | RCC_PLLCFGR_M(4) | RCC_PLLCFGR_N(64) | RCC_PLLCFGR_P(8) |
-                  RCC_PLLCFGR_Q(8);
+    RCC_PLLCFGR = RCC_PLLCFGR_RSVD29 | RCC_PLLCFGR_SRC_HSE | RCC_PLLCFGR_M(4) | RCC_PLLCFGR_N(64) |
+                  RCC_PLLCFGR_P(8) | RCC_PLLCFGR_Q(8);
     RCC_CR |= RCC_CR_PLLON;
     t0 = g_ms;
     while ((RCC_CR & RCC_CR_PLLRDY) == 0U) {
@@ -246,6 +255,7 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
         if (sdram_set_refresh_count(sdram_normal_count()) != 0) {
             uart_puts("ERR,refresh count readback\r\n");
             bad = 1U;
+            s_sdram_ok = 0;                           /* normal refresh not proven back: refuse RUN until reset */
         }
         interval_ms = (period_us + 500U) / 1000U;     /* the retention interval actually tested */
         break;
@@ -267,6 +277,7 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
         if (sdram_deselect(0) != 0) {
             uart_puts("ERR,sdne1 pin\r\n");          /* PB6 did not return to the FMC */
             bad = 1U;
+            s_sdram_ok = 0;                           /* the SDRAM may get no refresh at all: refuse RUN until reset */
         }
         /* true unrefreshed time = pause + one full normal refresh window (a fixed ~54 ms) */
         interval_ms = (g_ms - t0) + (sdram_period_us_for_count(sdram_normal_count()) + 500U) / 1000U;
@@ -275,14 +286,19 @@ static void run_test(uint32_t rid, char method, uint32_t pat, uint32_t inv, uint
 #ifdef ENABLE_METHOD_Z
     case 'Z': {
         uint32_t t0 = g_ms;
-        if (sdram_precharge_all() != 0 || sdram_set_refresh_count(0U) != 0) {
+        if (sdram_precharge_all() != 0) {
             uart_puts("ERR,precharge timeout\r\n");
+            bad = 1U;
+        } else if (sdram_set_refresh_count(0U) != 0) {
+            uart_puts("ERR,refresh count readback\r\n");
             bad = 1U;
         } else {
             delay_ms(wait_ms);
         }
         if (sdram_set_refresh_count(sdram_normal_count()) != 0) {
+            uart_puts("ERR,refresh count readback\r\n");
             bad = 1U;
+            s_sdram_ok = 0;                           /* normal refresh not proven back: refuse RUN until reset */
         }
         interval_ms = g_ms - t0;
         break;

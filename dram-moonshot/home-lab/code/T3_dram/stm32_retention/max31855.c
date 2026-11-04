@@ -4,9 +4,11 @@
  * Evidence that PE2-PE4 are free: ST's board-support package configures port E only for the FMC
  * (PE0, PE1, PE7-PE15: 32f429idiscovery-bsp @ d77779a2a4e9 stm32f429i_discovery_sdram.c:369-372) and
  * no other BSP file touches port E; Zephyr's board file assigns no PE2-PE6 function; one ST community
- * user reports PE2-PE5 free [REPORTED, anecdote]. PE2-PE6 double as the TRACE pins [UNVERIFIED, from
- * memory of the datasheet pin table], which the
- * ST-LINK's SWD link does not use. UM1670's free-I/O table itself was not reachable [UNVERIFIED]:
+ * user reports PE2-PE5 free [REPORTED, anecdote]. PE2, PE3 and PE4 double as SYS_TRACECLK,
+ * SYS_TRACED0 and SYS_TRACED1 (ST's CubeMX pin database, STMicroelectronics/STM32_open_pin_data
+ * @ 7d1f1514ed55 mcu/STM32F429ZITx.xml). They are plain GPIO unless a debugger sets DBGMCU_CR
+ * TRACE_IOEN (the bit exists in stm32f429xx.h; "0 at reset" is from memory [UNVERIFIED]); the
+ * ST-LINK's SWD link does not use them. UM1670's free-I/O table itself was not reachable [UNVERIFIED]:
  * confirm on the board before wiring. Power the breakout from 3V3 and GND.
  * MAX31855 frame: D31..D18 = thermocouple temperature, signed, 0.25 C per LSB; D16 = fault.
  */

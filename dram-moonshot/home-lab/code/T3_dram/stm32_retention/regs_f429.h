@@ -45,6 +45,8 @@
 #define RCC_PLLCFGR_P(p)  ((uint32_t)(((p) / 2U) - 1U) << 16) /* [CMSIS]:10586 PLLP [17:16]; 2,4,6,8 -> 0..3 */
 #define RCC_PLLCFGR_SRC_HSE (1UL << 22)            /* [CMSIS]:10592 PLLSRC */
 #define RCC_PLLCFGR_Q(q)  ((uint32_t)(q) << 24)    /* [CMSIS]:10600 PLLQ [27:24] */
+#define RCC_PLLCFGR_RSVD29 (1UL << 29)             /* reserved, 1 at reset ([CMSIS]:17127 RST_VALUE 0x24003010);
+                                                      HAL stm32f4xx_hal_rcc_ex.h:5871 writes it as 0x20000000U */
 #define RCC_CFGR_SW_MASK  (3UL << 0)               /* [CMSIS]:10611 */
 #define RCC_CFGR_SW_HSI   0UL                      /* [CMSIS]:10617 */
 #define RCC_CFGR_SW_PLL   2UL                      /* [CMSIS]:10619 */

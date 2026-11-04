@@ -143,6 +143,11 @@ int sdram_deselect(int on)
     if (on) {
         GPIO_BSRR(SDNE1_PORT) = (1UL << SDNE1_PIN);  /* output latch = 1 (chip select inactive) */
         GPIO_MODER(SDNE1_PORT) = (GPIO_MODER(SDNE1_PORT) & ~(3UL << sh2)) | (MODER_OUTPUT << sh2);
+        /* IDR samples the pin once per AHB1 clock; if the switch landed while the FMC was driving
+         * SDNE1 low for a command, give the input path a few clocks before reading it, so a stale
+         * sample cannot cause a false "ERR,sdne1 pin" [ESTIMATE: margin, not a measured need]. */
+        (void)GPIO_IDR(SDNE1_PORT);
+        (void)GPIO_IDR(SDNE1_PORT);
         if (((GPIO_MODER(SDNE1_PORT) >> sh2) & 3UL) != MODER_OUTPUT ||
             (GPIO_IDR(SDNE1_PORT) & (1UL << SDNE1_PIN)) == 0U) {
             return -1;
@@ -182,8 +187,12 @@ int sdram_init(uint32_t sdclk_div)
     /* Timing, as HAL FMC_SDRAM_Timing_Init for bank 2 ([LLC]:1266-1281): TRC and TRP are only taken
      * from SDTR1; the rest goes in SDTR2 (its TRC/TRP fields are don't-care). Cycle counts as the BSP
      * ([BSPC]:90-103): TMRD 2, TXSR 7, TRAS 4, TRC 7, TRP 2, TRCD 2, except TWR = 3 (BSP: 2). RM0090
-     * is recalled to require TWR >= TRAS - TRCD (= 2) and TWR >= TRC - TRCD - TRP (= 3) [UNVERIFIED:
-     * RM text not reachable]; 3 meets both, and costs nothing at 8 MHz. */
+     * requires TWR >= TRAS - TRCD (= 2) and TWR >= TRC - TRCD - TRP (= 3) [REPORTED: search snippets
+     * of RM0090 Rev 18 and of ST's STM32H5 FMC text, 2026-11-04; the manual itself was not reachable];
+     * 3 meets both, and costs nothing at 8 MHz. The same text says that with one SDRAM device the
+     * unused bank's TWR stays at its reset value 0xF: SDTR1 below changes only TRC and TRP, so it does.
+     * RM0090 also says COUNT must not equal TWR + TRP + TRC + TRCD + 4 cycles (= 18 here) [REPORTED,
+     * same snippet]; every COUNT this firmware writes is >= 41 (or 0 in the experimental method Z). */
     FMC_SDTR1 = (FMC_SDTR1 & ~(SDTR_TRC_MASK | SDTR_TRP_MASK)) | ((7UL - 1U) << SDTR_TRC_POS) |
                 ((2UL - 1U) << SDTR_TRP_POS);
     FMC_SDTR2 = SDTR(2, 7, 4, 7, 3, 2, 2);
