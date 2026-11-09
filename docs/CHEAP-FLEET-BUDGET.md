@@ -1,8 +1,14 @@
 # The Cheap Fleet: Running Agents Well Under $2,000 a Month
 
 *Companion to `AGENT-FLEET-STRATEGY.md`, written after that document's economics section
-gave a misleading impression. Researched 2026-09-10. Prices in this space move monthly and
-several below changed within the last 30 days, so re-check before committing.*
+gave a misleading impression. Researched 2026-09-10; section 8 re-checked 2026-11-09. Prices
+in this space move monthly, so re-check before committing.*
+
+> **Data quality note, 2026-11-09.** The November figures in section 8 come from price
+> trackers and secondary aggregators, not from vendor pages: `runpod.io`, `deepinfra.com`,
+> `docs.z.ai`, `cerebras.ai` and `api-docs.deepseek.com` were all unreachable from the
+> research session. The direction of travel is consistent across many independent sources,
+> but verify an exact number on the vendor's own page before spending against it.
 
 ---
 
@@ -249,20 +255,55 @@ RTX 5090 box pinned at 100% duty cycle for 30 straight days produces **11.8 bill
 realistic 10% solo duty cycle it pays back in 29 months against Groq pricing, and never
 against the cheapest tier.
 
-The hardware market makes it worse: the DRAM crisis has pushed RTX 5090 street prices to
-around **$4,700 against a $1,999 MSRP**, Mac Studio prices rose 25–37.5% this generation, and
-relief is not expected until late 2027 or 2028.
+The hardware market makes it worse, and **re-checked 2026-11-09, it has got worse since this
+section was written**:
+
+| | Sept 2026 | Nov 2026 |
+|---|---|---|
+| RTX 5090 street | ~$4,700 | **~$5,500–7,800** (trackers: $6,118 on Nov 1, $6,919 on Nov 3) |
+| RTX 5090 MSRP | $1,999 | $1,999, still notional; Founders Edition out of stock |
+| Mac Studio max memory | 512GB option already gone | **capped at 96GB** — the 128GB model was dropped too |
+| DRAM relief forecast | late 2027–2028 | **tight through all of 2027**, balance in Q2 2028 (Goldman/TrendForce Oct 27; UBS) |
+
+No new consumer GPU has landed since September. A 24GB RTX 5080 Super was rumoured and is
+reportedly dead because 3GB GDDR7 modules cost about three times as much. Apple's top Mac
+Studio configuration was *reduced* to 96GB "amid supply constraints and local AI frenzy" —
+the machine you would have bought for this no longer exists at the memory size you wanted.
 
 Two more reasons specific to agents:
 
 - **Quantization breaks exactly where agents break.** 4-bit builds (NVFP4, AWQ INT4) were
   observed failing to close tool-call JSON envelopes while FP8 and INT8 completed the same
-  calls. Structured output degrades below Q4_K_M.
+  calls. Structured output degrades below Q4_K_M. This matters because 4-bit is precisely
+  what you need to fit a capable model onto consumer VRAM.
 - **Ollama and LM Studio are single-user tools.** Ollama defaults to `OLLAMA_NUM_PARALLEL=1`
   and FIFO-queues the rest. A fleet needs vLLM or SGLang.
 
-Rented GPU is the real middle path, but only if you saturate it: a rented 5090 is $0.040 per
-million tokens at 100% utilization and $0.395 at 10%.
+### Renting is not a rescue, with one exception
+
+Renting removes the capital risk but not the utilization problem, because **cost per token is
+just the hourly rate divided by the tokens you actually produce in that hour.** A GPU at 10%
+utilization costs roughly 10× per token.
+
+Worked, at November 2026 rental rates:
+
+| Rented GPU | Rate | Saturated throughput | Cost per M tokens, **100% utilised** | At a realistic **10%** |
+|---|---|---|---|---|
+| H100 80GB, interactive speed | ~$4.00/hr | ~2,600 tok/s | **~$0.42** | ~$4.20 |
+| H100 80GB, max batching (50 tok/s per user) | ~$4.00/hr | ~8,970 tok/s | **~$0.12** | ~$1.24 |
+| RTX 5090, ~30B model | $0.25–0.64/hr | ~4,570 tok/s | **~$0.015–0.039** | ~$0.15–0.39 |
+
+So a *saturated* consumer-GPU rental genuinely beats buying tokens, by several times. A
+saturated H100 at interactive speed does not. And at any realistic solo duty cycle, every row
+collapses to a wash or worse — before counting the 10–20 hours a month of maintenance one
+2026 analysis puts on self-hosting.
+
+Published break-even figures agree: against frontier APIs, roughly 2–5M tokens a day; against
+cheap open-model APIs, **50M+ tokens a day, with some analyses saying never**.
+
+**The exception worth knowing: rent for saturated batch work.** If you have a job that can
+run a GPU flat out for hours — a sweep over hundreds of inputs, a whole-codebase migration —
+spin one up, saturate it, kill it. For bursty interactive agent work, you cannot keep it fed.
 
 **Use local hardware only if you already own it.** Spend the budget on tokens.
 
