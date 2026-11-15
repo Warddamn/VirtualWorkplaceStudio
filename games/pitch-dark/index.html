@@ -1,0 +1,1625 @@
+<title>Pitch Dark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one dark room. A single ember (the talk button) sits in the middle of the play screen;
+   everything else is quiet type at the edges. Deliberately single-theme: the game is played in the dark. */
+:root {
+  --night: #0b0a09;
+  --soot: #161311;
+  --rule: #2d2724;
+  --ash: #948a80;
+  --bone: #ece5da;
+  --ember: #efa05a;
+  --ember-hot: #ffd8a8;
+  --on-ember: #1d1108;
+  --frost: #a9c3d9;
+  --blood: #de7d69;
+  --tint-1: #eaa9a4;
+  --tint-2: #dcb56f;
+  --tint-3: #b9c7d4;
+  --display: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+html, body, #app { height: 100%; }
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--bone);
+  font: 400 1rem/1.55 var(--ui);
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--frost); outline-offset: 3px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+kbd {
+  font: 600 .72em/1 var(--ui); letter-spacing: .04em;
+  padding: .28em .5em; border: 1px solid var(--rule); border-bottom-width: 2px;
+  border-radius: 5px; color: var(--bone);
+}
+
+.screen {
+  box-sizing: border-box;
+  min-height: 100%;
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 46px; padding: .8rem 1.35rem;
+  border-radius: 999px; border: 1px solid var(--rule);
+  background: transparent; color: var(--bone);
+  font-weight: 500; font-size: .95rem; cursor: pointer;
+  transition: border-color .2s, background-color .2s, color .2s;
+}
+.btn:hover { border-color: var(--ash); }
+.btn.primary {
+  background: var(--ember); color: var(--on-ember); border-color: transparent;
+  box-shadow: 0 0 46px color-mix(in srgb, var(--ember) 38%, transparent);
+}
+.btn.primary:hover { background: var(--ember-hot); }
+.btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+.link {
+  background: none; border: 0; padding: .4rem 0; cursor: pointer;
+  color: var(--ash); text-decoration: underline; text-underline-offset: 3px; font-size: .9rem;
+}
+.link:hover { color: var(--bone); }
+
+/* ---------- start ---------- */
+.start { display: grid; align-content: center; position: relative; overflow: hidden; }
+.start::before {
+  content: ""; position: absolute; pointer-events: none;
+  right: -22vmax; bottom: -28vmax; width: 64vmax; height: 64vmax; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--ember) 30%, transparent) 0%,
+    color-mix(in srgb, var(--ember) 9%, transparent) 38%, transparent 68%);
+  animation: breathe-glow 7s ease-in-out infinite;
+}
+.start-inner {
+  position: relative; display: grid; gap: 1.9rem;
+  max-width: 40rem; margin-left: clamp(0px, 7vw, 7rem); padding-block: 3vh;
+}
+.eyebrow {
+  margin: 0; color: var(--ember);
+  font: 600 .72rem/1 var(--ui); letter-spacing: .2em; text-transform: uppercase;
+}
+.title {
+  margin: 0; font-family: var(--display); font-weight: 400;
+  font-size: clamp(3.4rem, 14vw, 7.25rem); line-height: .88; letter-spacing: -.012em;
+  text-wrap: balance;
+  animation: strike 1.7s ease-out 1 both;
+}
+.lede {
+  margin: 0; max-width: 33ch;
+  font-family: var(--display); font-size: clamp(1.2rem, 2.8vw, 1.5rem); line-height: 1.42;
+}
+.how { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; max-width: 50ch; color: var(--ash); }
+.how li { display: grid; grid-template-columns: 1.4rem 1fr; align-items: baseline; }
+.how li::before { content: ""; width: .5rem; height: 1px; background: var(--ember); transform: translateY(-.3em); }
+.how strong { color: var(--bone); font-weight: 500; }
+.case-card { display: grid; gap: .55rem; border-top: 1px solid var(--rule); padding-top: 1.4rem; }
+.case-card h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(1.7rem, 4vw, 2.2rem); line-height: 1.1; }
+.case-card p { margin: 0; color: var(--ash); max-width: 46ch; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; margin-top: .6rem; }
+.more { display: grid; gap: .35rem; justify-items: start; }
+.more p { margin: 0; color: var(--ash); font-size: .85rem; }
+.notes { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; font-size: .85rem; color: var(--ash); max-width: 52ch; }
+.notes:empty { display: none; }
+.notes li { display: flex; gap: .55rem; }
+.notes li::before { content: "•"; color: var(--ember); }
+
+/* ---------- generating ---------- */
+.gen { display: grid; place-content: center; justify-items: center; gap: 1.5rem; text-align: center; }
+.gen .flame {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 58%, var(--ember-hot) 0%, var(--ember) 30%, color-mix(in srgb, var(--ember) 18%, var(--night)) 70%, var(--night) 100%);
+  box-shadow: 0 0 80px color-mix(in srgb, var(--ember) 45%, transparent);
+  animation: flicker 1.4s linear infinite;
+}
+.gen h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 2rem; }
+.gen p { margin: 0; color: var(--ash); max-width: 36ch; }
+
+/* ---------- play ---------- */
+.play { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto auto; gap: .75rem; }
+.bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .4rem 1rem; color: var(--ash); font-size: .82rem; }
+.bar .brand { font-family: var(--display); font-size: 1.2rem; color: var(--bone); margin-right: .55rem; }
+.bar .clock { display: flex; align-items: baseline; gap: .7rem; font-variant-numeric: tabular-nums; }
+.bar #clock { color: var(--bone); font-weight: 600; font-size: .98rem; }
+.bar #left.low { color: var(--blood); }
+
+.stage { display: grid; place-items: center; align-content: center; gap: 1.1rem; min-height: 0; }
+.orb {
+  --size: clamp(140px, 34vmin, 232px);
+  --tint: var(--ember);
+  position: relative; width: var(--size); height: var(--size); max-width: 100%;
+  border: 0; padding: 0; border-radius: 50%; background: transparent; cursor: pointer;
+  touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.orb::before {
+  content: ""; position: absolute; inset: -38%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tint) 42%, transparent) 0%,
+    color-mix(in srgb, var(--tint) 11%, transparent) 36%, transparent 66%);
+  opacity: .5; transition: opacity .5s, background .5s;
+}
+.orb::after {
+  content: ""; position: absolute; inset: 12%; border-radius: 50%; pointer-events: none;
+  border: 1.5px solid var(--frost); opacity: 0;
+}
+.orb-core {
+  position: absolute; inset: 17%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 50% 58%, var(--ember-hot) 0%, var(--tint) 33%,
+    color-mix(in srgb, var(--tint) 26%, var(--night)) 72%, var(--night) 100%);
+  box-shadow: 0 0 64px color-mix(in srgb, var(--tint) 38%, transparent);
+  transform: scale(.82); opacity: .72; transition: transform .35s, opacity .35s, background .5s;
+}
+.orb[data-state="idle"] .orb-core { animation: breathe 4.6s ease-in-out infinite; }
+.orb[data-state="listening"] { --tint: var(--frost); }
+.orb[data-state="listening"]::before { opacity: .9; }
+.orb[data-state="listening"] .orb-core { transform: scale(1); opacity: 1; }
+.orb[data-state="listening"]::after { animation: ring 1.5s ease-out infinite; }
+.orb[data-state="thinking"] .orb-core { animation: flicker 1.3s linear infinite; }
+.orb[data-state="speaking"]::before { opacity: .8; }
+.orb[data-state="speaking"] .orb-core { opacity: .95; animation: murmur .9s ease-in-out infinite alternate; }
+.orb-label { margin: 0; min-height: 1.6em; color: var(--ash); font-size: .9rem; text-align: center; }
+
+.caption {
+  width: 100%; max-width: 46rem; margin-inline: auto; box-sizing: border-box;
+  min-height: 7.5rem; max-height: 36vh; overflow-y: auto;
+  display: grid; align-content: end; gap: .7rem; padding-block: .25rem .5rem;
+}
+.caption.overflowing { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 2.2rem); mask-image: linear-gradient(to bottom, transparent, #000 2.2rem); }
+.you { margin: 0; color: var(--frost); font-family: var(--display); font-style: italic; font-size: 1.08rem; line-height: 1.4; }
+.you .who { font-style: normal; }
+.line { margin: 0; color: var(--ash); font-family: var(--display); font-size: clamp(1.1rem, 2.4vw, 1.36rem); line-height: 1.42; text-wrap: pretty; transition: color .3s; }
+.line.now { color: var(--bone); }
+.who {
+  display: block; color: var(--line-tint, var(--ember));
+  font: 600 .66rem/1.9 var(--ui); letter-spacing: .17em; text-transform: uppercase;
+}
+
+.type { display: flex; gap: .5rem; width: 100%; max-width: 46rem; margin-inline: auto; }
+.type input {
+  flex: 1; min-width: 0; min-height: 46px; box-sizing: border-box; padding: .7rem 1.1rem;
+  background: var(--soot); border: 1px solid var(--rule); border-radius: 999px; color: var(--bone);
+}
+.type input::placeholder { color: var(--ash); }
+
+.controls { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+.ctl {
+  min-height: 40px; padding: .5rem 1rem; border-radius: 999px; cursor: pointer;
+  background: transparent; border: 1px solid var(--rule); color: var(--ash); font-size: .86rem; font-weight: 500;
+}
+.ctl:hover { color: var(--bone); border-color: var(--ash); }
+.ctl[aria-pressed="true"] { color: var(--bone); border-color: var(--ash); }
+.ctl.stop { color: var(--bone); border-color: var(--ember); }
+.count { margin-left: .35rem; color: var(--ember); font-variant-numeric: tabular-nums; }
+
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 40;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 88px);
+  max-width: min(30rem, calc(100% - 32px)); box-sizing: border-box;
+  padding: .7rem 1.1rem; border-radius: 12px; border: 1px solid var(--rule);
+  background: var(--soot); color: var(--bone); font-size: .88rem; text-align: center;
+  box-shadow: 0 10px 40px color-mix(in srgb, var(--night) 80%, transparent);
+}
+.toast button { margin-left: .5rem; }
+
+/* ---------- notebook ---------- */
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 20;
+  width: min(26rem, 100%); box-sizing: border-box; overflow-y: auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 22px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 28px) 22px;
+  background: var(--soot); border-left: 1px solid var(--rule);
+  box-shadow: -30px 0 70px color-mix(in srgb, var(--night) 70%, transparent);
+  display: grid; align-content: start; gap: 1.9rem;
+}
+.drawer-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.drawer-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 1.8rem; }
+.drawer section { display: grid; gap: .7rem; min-width: 0; }
+.drawer h3 { margin: 0; color: var(--ash); font: 600 .68rem/1.4 var(--ui); letter-spacing: .17em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 1rem; }
+.drawer h3 span { color: var(--ember); letter-spacing: .05em; font-variant-numeric: tabular-nums; }
+.people, .clues { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; }
+.people li { display: grid; grid-template-columns: .7rem 1fr; gap: .1rem .6rem; align-items: baseline; }
+.people .dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--line-tint); transform: translateY(-.1em); }
+.people .name { font-family: var(--display); font-size: 1.15rem; }
+.people .role { grid-column: 2; color: var(--ash); font-size: .85rem; line-height: 1.4; }
+.victim { margin: 0; color: var(--ash); font-size: .88rem; line-height: 1.5; }
+.clues li { font-size: .92rem; line-height: 1.45; padding-left: .9rem; border-left: 1px solid var(--rule); }
+.empty { margin: 0; color: var(--ash); font-size: .88rem; }
+.log { display: grid; gap: .6rem; font-size: .86rem; line-height: 1.45; color: var(--ash); }
+.log p { margin: 0; }
+.log b { color: var(--bone); font-weight: 500; }
+.log .me { color: var(--frost); }
+.log hr { border: 0; border-top: 1px solid var(--rule); margin: .3rem 0; width: 100%; }
+details summary { cursor: pointer; color: var(--bone); font-size: .9rem; }
+details[open] summary { margin-bottom: .8rem; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; }
+.seg button { background: transparent; border: 0; padding: .45rem .9rem; cursor: pointer; color: var(--ash); font-size: .85rem; min-height: 36px; }
+.seg button[aria-pressed="true"] { background: var(--rule); color: var(--bone); }
+.setting { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; font-size: .9rem; }
+.row { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+/* ---------- ending ---------- */
+.end {
+  position: fixed; inset: 0; z-index: 30; overflow-y: auto; box-sizing: border-box;
+  background: color-mix(in srgb, var(--night) 95%, transparent);
+  padding-block: calc(env(safe-area-inset-top, 0px) + 40px) calc(env(safe-area-inset-bottom, 0px) + 40px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.end-inner { max-width: 40rem; margin: 0 auto; display: grid; gap: 1.4rem; }
+.end h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(2.6rem, 9vw, 4.6rem); line-height: .95; text-wrap: balance; }
+.end h2.bad { color: var(--blood); }
+.end .sum { margin: 0; font-family: var(--display); font-size: 1.3rem; line-height: 1.45; }
+.end h3 { margin: 0; color: var(--ash); font: 600 .68rem/1.4 var(--ui); letter-spacing: .17em; text-transform: uppercase; }
+.end .truth { margin: 0; color: var(--bone); line-height: 1.65; max-width: 62ch; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1rem; margin: 0; border-block: 1px solid var(--rule); padding-block: 1rem; }
+.stats div { display: grid; gap: .15rem; }
+.stats dt { color: var(--ash); font-size: .78rem; }
+.stats dd { margin: 0; font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+
+/* ---------- motion ---------- */
+@keyframes breathe { 0%, 100% { transform: scale(.8); opacity: .62; } 50% { transform: scale(.86); opacity: .8; } }
+@keyframes breathe-glow { 0%, 100% { opacity: .85; } 50% { opacity: 1; } }
+@keyframes flicker {
+  0% { opacity: .72; } 11% { opacity: .46; } 19% { opacity: .82; } 33% { opacity: .55; }
+  52% { opacity: .88; } 68% { opacity: .5; } 84% { opacity: .78; } 100% { opacity: .72; }
+}
+@keyframes murmur { from { transform: scale(.88); } to { transform: scale(.99); } }
+@keyframes ring { from { transform: scale(.92); opacity: .75; } to { transform: scale(1.42); opacity: 0; } }
+@keyframes strike {
+  0% { opacity: .12; } 7% { opacity: .7; } 11% { opacity: .18; } 19% { opacity: .9; }
+  25% { opacity: .45; } 42%, 100% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 520px) {
+  .caption { max-height: 32vh; }
+  .bar .clock { width: 100%; justify-content: space-between; }
+}
+</style>
+
+<div id="app">
+  <section id="screen-start" class="screen start" aria-labelledby="t-title">
+    <div class="start-inner">
+      <p class="eyebrow">A murder mystery for your ears</p>
+      <h1 id="t-title" class="title">Pitch Dark</h1>
+      <p class="lede">The lights are out, and someone in the room is a killer. You can't see a thing. Listen, ask questions, and feel your way to the truth.</p>
+      <ul class="how">
+        <li><span><strong>Put on headphones.</strong> Dim the lights, or just close your eyes.</span></li>
+        <li><span><strong>Hold <kbd>Space</kbd>, or the glowing button,</strong> and talk to anyone in the room. Let go when you're done.</span></li>
+        <li><span><strong>Name the killer before the deadline.</strong> You get about fifteen questions. Then the doors open and the killer walks free.</span></li>
+      </ul>
+      <div class="case-card">
+        <p class="eyebrow">Case one</p>
+        <h2>The Kell Inn</h2>
+        <p>A blizzard on Larch Pass. The power is out, and the innkeeper is dead at the foot of the cellar stairs.</p>
+        <div class="actions">
+          <button id="btnBegin" class="btn primary" type="button">Begin the case</button>
+          <button id="btnContinue" class="btn" type="button" hidden>Continue</button>
+        </div>
+      </div>
+      <div class="more">
+        <button id="btnGenerate" class="link" type="button">Write me a brand-new case</button>
+        <p>Claude makes up a new mystery, with new suspects and a new killer. It takes about a minute.</p>
+      </div>
+      <ul id="startNotes" class="notes" aria-live="polite"></ul>
+    </div>
+  </section>
+
+  <section id="screen-gen" class="screen gen" hidden aria-live="polite">
+    <div class="flame" aria-hidden="true"></div>
+    <h2>Writing a new case</h2>
+    <p id="genStatus">Choosing a place to plunge into darkness…</p>
+    <button id="btnGenStop" class="btn" type="button">Stop</button>
+  </section>
+
+  <section id="screen-play" class="screen play" hidden>
+    <header class="bar">
+      <div><span class="brand">Pitch Dark</span><span id="caseTitle"></span></div>
+      <div class="clock"><span id="clock">1:00 AM</span><span id="left">15 questions until dawn</span></div>
+    </header>
+    <div class="stage">
+      <button id="orb" class="orb" type="button" data-state="idle" aria-label="Hold to speak"><span class="orb-core"></span></button>
+      <p id="orbLabel" class="orb-label">Hold <kbd>Space</kbd> to speak</p>
+    </div>
+    <div id="caption" class="caption" aria-live="off">
+      <p id="you" class="you" hidden></p>
+      <div id="lines" style="display:grid;gap:.7rem"></div>
+    </div>
+    <form id="typeForm" class="type" hidden>
+      <label for="say" class="sr">What do you say?</label>
+      <input id="say" type="text" autocomplete="off" enterkeyhint="send" placeholder="Ask anyone anything…">
+      <button class="btn" type="submit">Say it</button>
+    </form>
+    <nav class="controls" aria-label="Game controls">
+      <button id="btnStop" class="ctl stop" type="button" hidden>Stop voice</button>
+      <button id="btnRepeat" class="ctl" type="button">Repeat</button>
+      <button id="btnType" class="ctl" type="button" aria-pressed="false">Type</button>
+      <button id="btnNotes" class="ctl" type="button">Notebook<span id="noteCount" class="count">0/0</span></button>
+    </nav>
+  </section>
+
+  <aside id="notebook" class="drawer" hidden aria-labelledby="nb-title">
+    <div class="drawer-head">
+      <h2 id="nb-title">Notebook</h2>
+      <button id="btnNotesClose" class="ctl" type="button">Close</button>
+    </div>
+    <section>
+      <h3>In the dark with you</h3>
+      <ul id="nbPeople" class="people"></ul>
+    </section>
+    <section>
+      <h3>The victim</h3>
+      <p id="nbVictim" class="victim"></p>
+    </section>
+    <section>
+      <h3>What you've found <span id="nbCount"></span></h3>
+      <ul id="nbClues" class="clues"></ul>
+      <p id="nbEmpty" class="empty">Nothing yet. Feel around, listen, and ask.</p>
+    </section>
+    <section>
+      <details id="nbLogWrap">
+        <summary>Everything that's been said</summary>
+        <div id="nbLog" class="log"></div>
+      </details>
+    </section>
+    <section>
+      <h3>Settings</h3>
+      <div class="setting"><span>Voice speed</span>
+        <div class="seg" role="group" aria-label="Voice speed">
+          <button id="rate1" type="button" aria-pressed="true">Normal</button>
+          <button id="rate2" type="button" aria-pressed="false">Brisk</button>
+        </div>
+      </div>
+      <div class="setting"><span>Wind and fire</span>
+        <div class="seg" role="group" aria-label="Wind and fire">
+          <button id="amb1" type="button" aria-pressed="true">On</button>
+          <button id="amb0" type="button" aria-pressed="false">Off</button>
+        </div>
+      </div>
+      <div class="row">
+        <button id="btnRestart" class="ctl" type="button">Start this case over</button>
+        <button id="btnHome" class="ctl" type="button">Title screen</button>
+      </div>
+    </section>
+  </aside>
+
+  <section id="end" class="end" hidden aria-labelledby="endVerdict">
+    <div class="end-inner">
+      <p id="endWhen" class="eyebrow"></p>
+      <h2 id="endVerdict" tabindex="-1"></h2>
+      <p id="endSum" class="sum"></p>
+      <dl class="stats">
+        <div><dt>Clues found</dt><dd id="stClues"></dd></div>
+        <div><dt>Questions used</dt><dd id="stQs"></dd></div>
+        <div><dt>The killer</dt><dd id="stKiller" style="font-size:1.05rem;line-height:1.3"></dd></div>
+      </dl>
+      <h3>What really happened</h3>
+      <p id="endTruth" class="truth"></p>
+      <div class="actions">
+        <button id="btnAgain" class="btn primary" type="button">Play this case again</button>
+        <button id="btnEndNew" class="btn" type="button">Write a new case</button>
+        <button id="btnEndHome" class="link" type="button">Title screen</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+const $ = (id) => document.getElementById(id);
+const QUESTIONS = 15;
+const STEP_MIN = 20;
+const NARRATOR_VOICE = "buttery";
+const SUSPECT_VOICES = ["airy", "rounded", "glassy"];
+const SUSPECT_TINTS = ["var(--tint-1)", "var(--tint-2)", "var(--tint-3)"];
+const SAVE_KEY = "pitchdark.save.v1";
+const PREFS_KEY = "pitchdark.prefs.v1";
+const REPEAT_RE = /^(repeat( that)?|say (that|it) again|again|pardon|what did (you|they|he|she) say)[.!?]*$/i;
+
+const store = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+
+/* =====================================================================
+   CASE ONE: hand-built, fair-play mystery
+   ===================================================================== */
+const KELL = {
+  id: "kell-inn",
+  title: "The Kell Inn",
+  tagline: "A blizzard on Larch Pass. The power is out, and the innkeeper is dead at the foot of the cellar stairs.",
+  deadline: "dawn",
+  start_hour: 1,
+  intro: [
+    { who: "narrator", text: "Close your eyes. You won't need them tonight." },
+    { who: "narrator", text: "You're a guest at the Kell Inn, high on Larch Pass. At twenty to one, the blizzard took the power. The fire has burned down to embers that give no light at all." },
+    { who: "narrator", text: "At ten to one, from the back hall, came a crash, and a cry, and then nothing. You felt your way there along the wall with the others." },
+    { who: "narrator", text: "Hollis felt his way down the cellar stairs. At the bottom lies Ambrose Kell, who owns this inn. Face down, with a wound on the back of his head. He's dead." },
+    { who: "narrator", text: "The others say he fell. But his heavy flashlight was lying beside him, switched off. Who switches off their light while they fall down the stairs?" },
+    { who: "narrator", text: "Three other people are in the dark with you." },
+    { who: "marguerite", text: "It's Marguerite. Ambrose was my uncle. Honestly, can somebody please find a candle?" },
+    { who: "hollis", text: "Hollis Crane. I keep this place running. Kept it running for him, anyway." },
+    { who: "okafor", text: "Felix Okafor. Doctor, retired. I'm only a guest here. I'm so sorry. There's nothing anyone can do for him now." },
+    { who: "narrator", text: "The road is buried and the phone is dead. At dawn the snowplow comes up the pass, the doors open, and whoever did this walks out with everyone else. You have until then. About fifteen questions." },
+    { who: "narrator", text: "Ask anyone anything. Feel your way around. Listen. When you know who did it, say: I accuse. And tell them why." }
+  ],
+  final_prompt: "Grey light is creeping under the front door. Down the pass, an engine grinds closer: the snowplow. There's time for one thing only. Who killed Ambrose Kell, and how do you know?",
+  player: "The player is a guest at the inn, travelling alone, with no connection to anyone here. They were dozing in an armchair by the great-room fire when the power failed at 12:40. If they think back, they remember: the cellar door squealing, far down the back hall, more than once. About a minute after the crash, the armchair right beside theirs, the doctor's, creaked as someone dropped into it, breathing hard, like a man who had just climbed stairs. A little later the third step of the main staircase cracked like a gunshot and Marguerite called out from the stairs, coming down. When they all felt their way to the cellar door, Hollis was already there. Hollis went down and checked Kell. The doctor stayed at the top and talked him through finding a pulse, saying his knees couldn't manage the steep stairs. Only give these memories when the player thinks back or asks what they heard. Give the doctor's chair first; give the staircase if they ask about Marguerite or the stairs.",
+  victim: "Ambrose Kell, 68, owner of the Kell Inn. Found face down at the bottom of the cellar stairs just before one in the morning, with a wound on the back of his head. He had gone down to start the generator.",
+  world: "Great room: the fire is down to warm embers that give no light. Four armchairs face the hearth; the player's chair and the doctor's are side by side. On the hearth stands a copper kettle, full to the brim with lukewarm water; the rug around it is completely dry. A window rattles in the wind. In the quiet, a pocket watch ticks in the doctor's waistcoat. Back hall: a long, cold, stone-floored hallway from the great room to the side door. Near the side door is a boot room alcove with puddles of melting snow where Hollis stood. Halfway along is the cellar door; its hinges squeal loudly whenever it opens or closes. Cellar stairs: twelve steep wooden steps. Kell lies face down at the bottom, feet on the last step. His heavy metal flashlight lies by his hand, switched off, its lens cracked, and sticky at one end. On the bottom step is a small curved disc of glass, about the size of a large coin, smooth and domed. Cellar: the floor is ankle-deep in icy snowmelt that has been seeping in for days. A cider barrel has been leaking into it, so the water, and the whole cellar, smells sweet and sour, like rotting apples. The generator sits against the far wall, cold, its pull-cord hanging loose. Kitchen: a cold stove and drawers of cutlery and string. No candles; they are kept in the pantry. Pantry: a box of candles on a shelf, but no match in the house will light; the spare boxes are drowned in the cellar. There is no light to be had tonight. Main staircase: wide wooden stairs up from the front hall, beside the great room. The third step from the bottom creaks as loud as a gunshot. Upstairs: guest rooms, and Kell's office, where a desk drawer hangs open and papers are scattered across the floor. Outside: the blizzard. The side door opens onto a buried yard and the woodshed. Going out is dangerous and pointless.",
+  suspects: [
+    {
+      id: "marguerite",
+      name: "Marguerite Vale",
+      role: "Kell's niece, 34. She will inherit the inn.",
+      manner: "Quick, anxious, talks too much and fills every silence. Says 'honestly' a lot. Warm, but gets defensive and a little sharp when cornered.",
+      claims: "I was in the kitchen looking for candles when the lights went out, and I stayed there, feeling around in the drawers. I never found any. I came out when I heard the crash.",
+      truth: "She owes about forty thousand on a failed business and wanted to know whether she was in her uncle's will. At half past twelve she slipped upstairs to his office and searched his desk. She was reading a letter when the lights went out at 12:40, and she stayed upstairs in the dark, frightened, with the letter folded in her cardigan pocket. After the crash she came down the main staircase. She did not kill him.",
+      knows: "The letter she found and read before the lights went out said: 'F.O. Last payment by the 14th, or the medical board hears about Elmwood. A.K.' She didn't understand it. At dinner she heard her uncle say quietly to the doctor, 'Last time, Felix,' and the doctor didn't answer. She knows Hollis and her uncle argued that afternoon about Hollis's drinking, and that her uncle threatened to fire him.",
+      cracks_when: "The player points out that she came down the main staircase (the creaking third step), or that the candles are kept in the pantry and not the kitchen, or feels or hears the folded paper in her cardigan pocket. Then she admits she was upstairs in the office, admits her debts, and tells exactly what the letter said."
+    },
+    {
+      id: "hollis",
+      name: "Hollis Crane",
+      role: "The caretaker, 61. He's worked at the inn for twenty years.",
+      manner: "Gruff mountain man. Short sentences, dry humour, long pauses. Hates being pushed. Calls the player 'friend' once he softens.",
+      claims: "I was out at the woodshed fetching logs when the lights went. I came in the side door when I heard the crash.",
+      truth: "He was at the woodshed, drinking from a flask he hides there. He came back in the side door at about 12:44 and stood in the dark boot room, warming up and finishing the flask. Kell had threatened that afternoon to fire him for drinking, and he didn't want to be found drunk. From the boot room he heard everything at the cellar door. He did not kill Kell.",
+      knows: "From the boot room he heard the cellar door squeal three times. At about 12:45: heavy steps going down, Kell's. At about 12:48: light, quick, soft steps, slippers not boots, going down after him. Then low voices arguing in the cellar, then the crash and the cry. Then the door squealed a third time and the same soft, quick steps hurried past him up the hall toward the great room. He also knows: the cellar is ankle-deep in snowmelt and a cider barrel has been leaking into it for days; candles are kept in the pantry, never the kitchen; the third step on the main staircase creaks like a gunshot; Marguerite is deep in debt and inherits the inn; the doctor said his knees couldn't manage the cellar stairs tonight, but he's been up and down the main stairs all weekend without trouble; Kell had been tense all week, ever since the doctor booked his room.",
+      cracks_when: "The player points out that nobody could hear the crash from the woodshed in a blizzard, or notices that he smells of whiskey, or asks what he heard at the cellar door and keeps pressing. Then he admits he was in the boot room drinking, and tells exactly what he heard."
+    },
+    {
+      id: "okafor",
+      name: "Dr. Felix Okafor",
+      role: "A retired surgeon, 66, and a guest at the inn.",
+      manner: "Calm, courteous, precise, warm-voiced. Calls the player 'my friend'. Never raises his voice. Gently steers suspicion toward Hollis by mentioning the argument and the drinking.",
+      claims: "I was asleep in my armchair by the fire the whole time; the crash woke me. My knees won't manage those cellar stairs, so I talked Hollis through finding a pulse from the top.",
+      truth: "Twelve years ago at Elmwood Hospital he operated drunk and a patient died. Kell was an orderly there, saw it, and has blackmailed him ever since. He came to the inn to make a final payment, but at dinner Kell demanded more. When Kell went down to start the generator at 12:45, Okafor followed at 12:48 in his slippers, argued in whispers, then struck him on the back of the head with Kell's own flashlight, switched it off, and climbed back up in the dark. The glass of his pocket watch popped out in the struggle. He hurried back up the hall in soaked slippers and dropped into his armchair at about 12:53.",
+      knows: "Everything in his truth, which he hides. If anyone asks the time, he opens his pocket watch with a click and reads it by touching the hands with a fingertip, because it has no glass. He will mention, regretfully, that Hollis and Kell argued that afternoon and that Hollis drinks.",
+      cracks_when: "Only when the player confronts him with at least two pieces of key evidence, such as the glass disc together with his glassless watch, his soaked slippers and cuffs that smell of cider, the dry kettle and rug, the letter to F.O., or Hollis hearing slippered steps. Until then he has an answer for everything: wet feet? He knocked the kettle over by the fire. The watch glass? It broke months ago. Elmwood, or the letter? Ambrose was a bitter man with a long memory. The stairs? He never went near them."
+    }
+  ],
+  killer: "okafor",
+  motive: "Kell had blackmailed him for twelve years over a patient who died at Elmwood Hospital when Okafor operated drunk, and at dinner Kell demanded more.",
+  truth: "Dr. Felix Okafor killed Ambrose Kell. Twelve years ago at Elmwood Hospital, Okafor operated drunk and a patient died. Kell was an orderly there, saw it, and had been blackmailing him ever since. Okafor came to the inn to make a final payment, but at dinner Kell demanded more: 'Last time, Felix.' At 12:45 Kell went down to start the generator. Okafor followed in his slippers, argued in whispers, and struck him on the back of the head with Kell's own flashlight, then switched it off and climbed back up in the dark. He hurried up the hall, past Hollis hiding drunk in the boot room, and dropped into his armchair, out of breath, his slippers soaked in cider-sour water. The glass from his pocket watch lay on the bottom step. Marguerite lied to hide that she'd been searching her uncle's desk. Hollis lied to hide his drinking. Neither of them killed him.",
+  clues: [
+    { id: "flashlight", label: "Kell's flashlight was beside him, switched off.", how: "Told in the opening." },
+    { id: "crystal", label: "A small domed disc of glass, the size of a large coin, on the bottom cellar step.", how: "Searching the cellar stairs, or around the body." },
+    { id: "flooded", label: "The cellar is ankle-deep in icy water that smells of leaked cider.", how: "Stepping down into the cellar, or Hollis describing it." },
+    { id: "wet_cuffs", label: "The doctor's slippers and trouser cuffs are soaked, and smell of cider.", how: "Touching or smelling the doctor's feet, slippers or trousers." },
+    { id: "kettle_dry", label: "The kettle on the hearth is full, and the rug around it is dry.", how: "Searching the hearth or the kettle in the great room." },
+    { id: "watch", label: "The doctor's pocket watch has no glass. He reads it by touching the hands.", how: "Asking the doctor the time, or asking to hold his watch." },
+    { id: "memory", label: "Just after the crash, you heard the doctor drop into his chair, out of breath.", how: "The player thinks back to what they heard by the fire." },
+    { id: "squeals", label: "Hollis heard the cellar door squeal three times, and soft, slippered steps hurry back up the hall.", how: "Hollis tells it once he admits he was in the boot room." },
+    { id: "stairs", label: "Marguerite came down the main staircase after the crash, not out of the kitchen.", how: "The player's memory of the creaking third step, or Hollis on the stairs and the candles." },
+    { id: "letter", label: "A letter in Kell's desk: 'F.O. Last payment by the 14th, or the medical board hears about Elmwood.'", how: "Marguerite tells it after admitting she was upstairs." },
+    { id: "last_time", label: "At dinner, Kell told the doctor quietly: 'Last time, Felix.'", how: "Marguerite, when asked about dinner, the doctor, or anything odd that evening." },
+    { id: "whiskey", label: "Hollis smells of whiskey and woodsmoke.", how: "Getting close to Hollis, or smelling him." },
+    { id: "argument", label: "Kell threatened to fire Hollis this afternoon for drinking.", how: "The doctor or Marguerite, when asked who had a grudge." },
+    { id: "debts", label: "Marguerite is deep in debt, and inherits the inn.", how: "Hollis, when asked about Marguerite, or Marguerite herself once she cracks." }
+  ],
+  key_evidence: ["crystal", "watch", "wet_cuffs", "kettle_dry", "memory", "squeals", "letter", "last_time"],
+  start_found: ["flashlight"]
+};
+
+/* =====================================================================
+   Prompts
+   ===================================================================== */
+const GM_RULES = `You are the narrator and game master of PITCH DARK, a murder mystery played entirely by voice, in total darkness. Every word you write is read aloud to the player the moment you write it.
+
+HOW TO WRITE
+- The narrator speaks to the player in second person ("You kneel. The stone is wet."). Suspects speak for themselves, in first person, in the manner described for them.
+- Keep replies short, like a radio play: usually 1 to 4 lines and under 90 words in all. Short sentences. No lists, no markdown, no emoji, no stage directions in brackets. Put sounds and sensations in narrator lines.
+- The player can't see anything, ever. Describe only sound, touch, smell, taste and temperature. If the player tries to look, read, or make a light, remind them it's pitch dark: there is no light to be had until the deadline.
+- Every reply gives the player something: an answer, a sensation, a reaction, or a thread to pull.
+- The player's words come from speech-to-text and may be garbled. Match them generously to the nearest suspect, place or object; a name that sounds close counts, and "the doctor", "the niece" and so on count too.
+- When the player speaks to a suspect, that suspect answers. When they speak to nobody in particular, the narrator answers, or the most fitting suspect speaks up. Suspects may briefly cut in on each other when it's dramatic.
+- Never speak for the player. Never repeat their question back to them.
+- Stay inside the case file. Never invent suspects, weapons or facts that would change the solution. Small sensory detail is fine.
+
+HOW SUSPECTS BEHAVE
+- Each suspect tells the story in "claims" and holds to it until the player confronts them with something in their "cracks_when". Then they admit what's in their "truth", in character.
+- Suspects share what they "know" when the player asks about it. They never hand over the solution.
+- The killer never confesses unless the player has confronted them with at least two pieces of key evidence. Even then, a quiet, broken admission is enough.
+
+CLUES
+- A clue is found when the player's own question or action uncovers it in THIS reply. Put its id in "found". Never list a clue the player didn't earn, or one that's already found.
+- If the player asks for a hint, the narrator gives one small sensory nudge toward a clue they haven't found. A hint costs time.
+
+TIME
+- A real question or action costs time: "tick": true. Asking for help, the rules, the time, or a recap of what they know is free: "tick": false. For a recap, the narrator briefly sums up the clues they've found.
+- When 3 or fewer questions are left, the narrator mentions that the deadline is close.
+
+ACCUSING
+- An accusation is when the player clearly names someone as the killer ("I accuse Hollis", "it was you, doctor", "she killed him"). Wondering aloud ("could it be him?") is not an accusation: have the narrator ask whether they're making one.
+- An accusation ends the game in this reply. Judge it:
+  "solved": they named the killer and gave at least one real piece of evidence that points to the killer.
+  "lucky": they named the killer but gave no real evidence.
+  "wrong": they named someone else.
+- On any ending, play the moment out: the accused reacts in character, then the narrator tells what really happened, from the truth in the case file, in four or five sentences. Up to 8 lines and 220 words in all.
+
+REPLY FORMAT
+One JSON object per line and nothing else. Speech lines first, in the order they're spoken:
+{"who":"narrator","text":"..."}
+{"who":"<suspect id>","text":"..."}
+The last line is always the meta line:
+{"meta":{"found":[],"tick":true,"end":null,"accused":null}}
+"end" is null, "solved", "lucky", "wrong" or "escaped". "accused" is the id of the suspect the player accused, or null.`;
+
+const FINAL_RULE = `THE DEADLINE HAS ARRIVED. This is the player's last chance, and the game ends with this reply no matter what. If they name someone, judge the accusation as usual. If they don't clearly name anyone, end with "escaped": the killer walks free, and the narrator tells what really happened.`;
+
+const GEN_PROMPT = `Write a brand-new, original murder mystery for PITCH DARK, a game played entirely by voice in total darkness. A narrator reads the story aloud, the player asks questions out loud, and three suspects answer in their own voices. Reply with only one JSON object, in exactly this shape:
+
+{
+  "title": "the place, 2 to 4 words, e.g. 'The Saltmarsh Light'",
+  "tagline": "one sentence for the case card",
+  "deadline": "what arrives to end the night, as a short noun phrase: 'dawn', 'the rescue boat', 'the morning shift'",
+  "start_hour": 1,
+  "intro": [{"who": "narrator or a suspect id", "text": "one spoken line"}],
+  "final_prompt": "one narrator line for the moment the deadline arrives, asking the player to name the killer and say how they know",
+  "player": "who the player is, where they were when it happened, and what they remember hearing if they think back, with instructions for when to reveal each memory",
+  "victim": "name, age, who they were, where and how they were found",
+  "world": "every place the player can reach, and what they would hear, feel and smell there, including where each physical clue is",
+  "suspects": [
+    {"id": "lowercase first name", "name": "full name", "role": "one sentence: who they are", "manner": "how they talk", "claims": "the story they tell", "truth": "what they really did", "knows": "what they know and will share when asked", "cracks_when": "exactly what the player must confront them with before they admit the truth"}
+  ],
+  "killer": "the killer's suspect id",
+  "motive": "one sentence",
+  "truth": "what really happened, step by step with times, in 6 to 9 sentences, ending with why the innocent suspects lied",
+  "clues": [{"id": "short_snake_case", "label": "one sentence as the player would write it in a notebook", "how": "how the player can uncover it"}],
+  "key_evidence": ["ids of clues that point to the killer"],
+  "start_found": ["ids of clues the intro already gives the player"]
+}
+
+Rules:
+- The whole case happens in complete darkness, for a reason inside the story (a power cut, a cave, a ship with no lamps, a mine, a blackout). No one can make light until the deadline. Pick a fresh setting, not a mountain inn in a blizzard.
+- The player can only learn things by asking, listening, touching, smelling and remembering what they heard. No clue may need sight or reading in the dark.
+- Exactly three suspects, all in the dark with the player. Their names are easy to say aloud and sound nothing alike.
+- One suspect is the killer. Each innocent suspect has a secret and tells one lie to protect it, which makes them look guilty.
+- 11 to 14 clues. At least 5 point to the killer, and every one of those is in key_evidence. At least 2 are red herrings for each innocent suspect.
+- The killer's lie must be breakable: give them a physical trace and an excuse for it that another clue disproves.
+- Fair play: a careful player can solve it in 10 questions. The intro must not point at the killer.
+- The intro is spoken aloud: 9 to 12 lines and under 230 words in total, in second person. Set the scene, describe the body and one detail that proves it was murder, then let each suspect introduce themselves in one line, in their own voice. Say what the deadline is and that the player has about fifteen questions. End by telling the player they can ask anyone anything, feel around, listen, and say "I accuse" when they know.
+- No real people, no gore beyond what the story needs.`;
+
+/* =====================================================================
+   State
+   ===================================================================== */
+const caps = { S: null, T: null, D: null, P: null, resolved: new Set(), framed: !!(window.claude && typeof window.claude.use === "function") };
+let prefs = Object.assign({ rate: 1, ambience: true }, store.get(PREFS_KEY) || {});
+let G = null;              // the saved game
+let phase = "start";       // start | generating | intro | play | ended
+let playState = "idle";    // idle | listening | thinking | speaking
+let currentBlock = null;   // what the caption shows: the intro, or a turn
+let introBlock = null;
+let ttsState = "idle";
+let ttsOff = false;
+let ttsPausedUntil = 0;
+let dictState = "idle";
+let dictBlocked = false;
+let listening = false;
+let stopping = false;
+let heard = "";
+let partial = "";
+const ptt = { pressing: false, toggled: false, downAt: 0, consumeUp: false };
+let chain = Promise.resolve();
+let turnSeq = 0;
+let genCtl = null;
+let missCount = 0;
+let toastTimer = null;
+const hoverless = window.matchMedia ? window.matchMedia("(hover: none)").matches : false;
+
+/* =====================================================================
+   Sound: wind, embers, clock ticks and small cues, all synthesized
+   ===================================================================== */
+const Sound = {
+  ctx: null, out: null, amb: null, tickTimer: null, crackleTimer: null, level: "normal",
+  init() {
+    if (this.ctx) { if (this.ctx.state === "suspended") this.ctx.resume().catch(() => {}); return; }
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try { this.ctx = new AC(); } catch { this.ctx = null; return; }
+    const c = this.ctx;
+    this.out = c.createGain(); this.out.gain.value = 0.9; this.out.connect(c.destination);
+    this.amb = c.createGain(); this.amb.gain.value = 0; this.amb.connect(this.out);
+    const len = Math.floor(c.sampleRate * 6);
+    const buf = c.createBuffer(1, len, c.sampleRate);
+    const d = buf.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; last = (last + 0.02 * w) / 1.02; d[i] = last * 3.2; }
+    const fade = 4000;
+    for (let i = 0; i < fade; i++) { const k = i / fade; d[i] *= k; d[len - 1 - i] *= k; }
+    const src = c.createBufferSource(); src.buffer = buf; src.loop = true;
+    const bp = c.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 430; bp.Q.value = 0.7;
+    const lfo = c.createOscillator(); lfo.frequency.value = 0.06;
+    const lfoAmt = c.createGain(); lfoAmt.gain.value = 260;
+    lfo.connect(lfoAmt); lfoAmt.connect(bp.frequency);
+    const gust = c.createGain(); gust.gain.value = 0.55;
+    const lfo2 = c.createOscillator(); lfo2.frequency.value = 0.13;
+    const lfo2Amt = c.createGain(); lfo2Amt.gain.value = 0.3;
+    lfo2.connect(lfo2Amt); lfo2Amt.connect(gust.gain);
+    src.connect(bp); bp.connect(gust); gust.connect(this.amb);
+    src.start(); lfo.start(); lfo2.start();
+    this.scheduleCrackle();
+    this.mode(this.level);
+  },
+  mode(level) {
+    this.level = level;
+    if (!this.ctx) return;
+    const target = !prefs.ambience ? 0 : level === "listening" ? 0.025 : level === "speaking" ? 0.09 : level === "off" ? 0 : 0.15;
+    const g = this.amb.gain, t = this.ctx.currentTime;
+    g.cancelScheduledValues(t); g.setTargetAtTime(target, t, level === "listening" ? 0.08 : 0.5);
+  },
+  burst(seconds, curve) {
+    const c = this.ctx, n = Math.max(1, Math.floor(c.sampleRate * seconds));
+    const b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, curve);
+    const s = c.createBufferSource(); s.buffer = b; return s;
+  },
+  pop() {
+    const c = this.ctx; if (!c) return;
+    const s = this.burst(0.025, 6);
+    const hp = c.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 1800 + Math.random() * 2600;
+    const g = c.createGain(); g.gain.value = 0.05 + Math.random() * 0.14;
+    s.connect(hp); hp.connect(g); g.connect(this.amb); s.start();
+  },
+  scheduleCrackle() {
+    clearTimeout(this.crackleTimer);
+    this.crackleTimer = setTimeout(() => {
+      if (this.ctx && this.ctx.state === "running" && prefs.ambience && !document.hidden) {
+        this.pop();
+        if (Math.random() < 0.25) setTimeout(() => this.pop(), 30 + Math.random() * 70);
+      }
+      this.scheduleCrackle();
+    }, 140 + Math.random() * 950);
+  },
+  click(freq, gain) {
+    const c = this.ctx; if (!c) return;
+    const t = c.currentTime;
+    const s = this.burst(0.02, 8);
+    const bp = c.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = freq; bp.Q.value = 5;
+    const g = c.createGain(); g.gain.value = gain;
+    s.connect(bp); bp.connect(g); g.connect(this.out); s.start(t);
+    const o = c.createOscillator(); o.frequency.setValueAtTime(freq / 16, t);
+    const og = c.createGain(); og.gain.setValueAtTime(gain * 0.35, t); og.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+    o.connect(og); og.connect(this.out); o.start(t); o.stop(t + 0.08);
+  },
+  thinking(on) {
+    clearInterval(this.tickTimer); this.tickTimer = null;
+    if (!on || !this.ctx) return;
+    let tock = false;
+    const step = () => { this.click(tock ? 2200 : 2800, 0.6); tock = !tock; };
+    step(); this.tickTimer = setInterval(step, 640);
+  },
+  tone(f, dur, gain, type, delay) {
+    const c = this.ctx; if (!c) return;
+    const t = c.currentTime + (delay || 0);
+    const o = c.createOscillator(); o.type = type || "sine"; o.frequency.setValueAtTime(f, t);
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(this.out); o.start(t); o.stop(t + dur + 0.03);
+  },
+  listenOn() { this.tone(523, 0.13, 0.11); this.tone(784, 0.18, 0.11, "sine", 0.08); },
+  listenOff() { this.tone(784, 0.11, 0.09); this.tone(523, 0.18, 0.09, "sine", 0.07); },
+  miss() { this.tone(311, 0.32, 0.08, "triangle"); },
+  clue() {
+    [[196, 0.2, 2.6], [392, 0.07, 1.8], [541, 0.05, 1.4], [1058, 0.025, 0.9]].forEach(([f, g, d]) => this.tone(f, d, g));
+    this.tone(294, 2.2, 0.08, "sine", 0.32);
+  },
+  suspend() { if (this.ctx && this.ctx.state === "running") this.ctx.suspend().catch(() => {}); },
+  resume() { if (this.ctx && this.ctx.state === "suspended") this.ctx.resume().catch(() => {}); },
+};
+
+/* =====================================================================
+   Helpers
+   ===================================================================== */
+const suspectIndex = (id) => G ? G.case.suspects.findIndex((s) => s.id === id) : -1;
+const suspect = (id) => { const i = suspectIndex(id); return i >= 0 ? G.case.suspects[i] : null; };
+function nameOf(who) { if (who === "narrator") return "Narrator"; const s = suspect(who); return s ? s.name : "Narrator"; }
+function voiceOf(who) { const i = suspectIndex(who); return i >= 0 ? SUSPECT_VOICES[i % 3] : NARRATOR_VOICE; }
+function tintOf(who) { const i = suspectIndex(who); return i >= 0 ? SUSPECT_TINTS[i % 3] : "var(--ember)"; }
+function normWho(w) {
+  const s = String(w || "").toLowerCase().trim();
+  if (!s || s === "narrator" || !G) return "narrator";
+  const list = G.case.suspects;
+  const exact = list.find((x) => x.id === s);
+  if (exact) return exact.id;
+  const loose = list.find((x) => s.includes(x.id) || x.name.toLowerCase().includes(s) || x.name.toLowerCase().split(/\s+/).some((p) => p.length > 2 && s.includes(p)));
+  return loose ? loose.id : "narrator";
+}
+function cleanText(t) {
+  return String(t || "").replace(/\[[^\]]*\]/g, "").replace(/[*_#`]/g, "").replace(/\s+/g, " ").trim().slice(0, 1900);
+}
+function slug(s) { return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, ""); }
+function clockMinutes() { return G.case.start_hour * 60 + (QUESTIONS - G.left) * STEP_MIN; }
+function clockLabel(mins) {
+  const m = ((mins == null ? clockMinutes() : mins) % 1440 + 1440) % 1440;
+  const h = Math.floor(m / 60), mm = m % 60;
+  return `${h % 12 === 0 ? 12 : h % 12}:${String(mm).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`;
+}
+function untilLabel() {
+  if (G.final) return `Last chance before ${G.case.deadline}`;
+  return `${G.left} question${G.left === 1 ? "" : "s"} until ${G.case.deadline}`;
+}
+const ttsUsable = () => !!caps.T && !ttsOff && Date.now() > ttsPausedUntil;
+const dictUsable = () => !!caps.D && !dictBlocked;
+function save() { if (G) store.set(SAVE_KEY, G); }
+function savePrefs() { store.set(PREFS_KEY, prefs); }
+
+function toast(msg, action) {
+  const el = $("toast");
+  el.textContent = msg;
+  if (action) {
+    const b = document.createElement("button");
+    b.className = "link"; b.type = "button"; b.textContent = action.label;
+    b.addEventListener("click", action.run);
+    el.append(b);
+  }
+  el.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.hidden = true; }, action ? 9000 : 4200);
+}
+function permsAction() {
+  return caps.P ? { label: "Permissions", run: () => caps.P.manage().catch(() => toast("Open the artifact's Permissions menu to change this.")) } : null;
+}
+
+/* =====================================================================
+   Capabilities
+   ===================================================================== */
+function loadCaps() {
+  if (!caps.framed) { renderStartNotes(); return; }
+  ["sample", "tts", "dictation", "permissions"].forEach((name) => {
+    window.claude.use(name).then((ns) => {
+      if (name === "sample") caps.S = ns;
+      if (name === "tts") { caps.T = ns; if (ns) wireTts(ns); }
+      if (name === "dictation") { caps.D = ns; if (ns) wireDictation(ns); }
+      if (name === "permissions") caps.P = ns;
+    }).catch(() => {}).finally(() => {
+      caps.resolved.add(name);
+      renderStartNotes(); updateOrb();
+      if (name === "dictation" && phase !== "start" && !dictUsable()) openTyping(false);
+    });
+  });
+}
+function renderStartNotes() {
+  const ul = $("startNotes"); ul.textContent = "";
+  const add = (t) => { const li = document.createElement("li"); li.textContent = t; ul.append(li); };
+  if (!caps.framed) {
+    add("Open this page on claude.ai to play. Claude tells the story, and that only works there.");
+    $("btnBegin").disabled = true; $("btnGenerate").disabled = true; $("btnContinue").disabled = true;
+    return;
+  }
+  const r = caps.resolved;
+  if (r.has("sample") && !caps.S) {
+    add("Claude can't run the story in this view, so the game can't start here. Try opening it in a browser on claude.ai.");
+    $("btnBegin").disabled = true; $("btnGenerate").disabled = true; $("btnContinue").disabled = true;
+  }
+  if (r.has("dictation") && !caps.D) add("Talking isn't available in this browser, so you'll type your questions instead. For voice, use Chrome or Edge on a computer.");
+  if (r.has("tts") && !caps.T) add("Read-aloud isn't available here, so the story will appear as text.");
+}
+
+function wireTts(T) {
+  T.onState(({ state, reason }) => {
+    ttsState = state;
+    $("btnStop").hidden = state === "idle";
+    if (state === "speaking") {
+      Sound.thinking(false); Sound.mode("speaking");
+      if (!listening && (phase === "play" || phase === "intro")) setPlayState("speaking");
+    } else if (state === "idle") {
+      if (!listening) Sound.mode("normal");
+      if (phase === "play" && !listening) {
+        const b = currentBlock;
+        setPlayState(b && b.isTurn && !b.done ? "thinking" : "idle");
+      }
+      if (reason === "viewer_stopped" && currentBlock) { currentBlock.revealed = true; renderCaption(); }
+    }
+  });
+  T.onLine(({ id }) => { if (id) showActive(id); });
+  try { const p = T.setRate && T.setRate(prefs.rate); if (p && p.catch) p.catch(() => {}); } catch {}
+}
+
+function wireDictation(D) {
+  D.onPartial(({ text }) => { if (!listening) return; partial = text; renderYou(); });
+  D.onFinal(({ text }) => { if (!listening) return; heard = heard ? heard + text : text.replace(/^\s+/, ""); partial = ""; renderYou(); });
+  D.onState(({ state, reason }) => {
+    dictState = state;
+    if (state === "idle" && listening && !stopping) {
+      if (reason === "viewer_stopped" || reason === "time_limit") { finishListening(); return; }
+      resetListening();
+      if (reason === "not_granted" || reason === "unavailable") {
+        dictBlocked = true; openTyping(true);
+        toast("The microphone is off for this page, so you can type instead.", permsAction());
+      } else if (reason === "rate_limited") {
+        toast("Too many people are talking at once. Try again in a moment.");
+      } else if (reason === "upstream_error") {
+        toast("The microphone cut out. Try again.");
+      }
+    }
+    updateOrb();
+  });
+}
+
+/* =====================================================================
+   Screens
+   ===================================================================== */
+function showScreen(name) {
+  $("screen-start").hidden = name !== "start";
+  $("screen-gen").hidden = name !== "gen";
+  $("screen-play").hidden = name !== "play";
+  if (name !== "play") { $("notebook").hidden = true; }
+  $("end").hidden = true;
+}
+function showStart() {
+  phase = "start";
+  stopAllAudio();
+  showScreen("start");
+  const saved = store.get(SAVE_KEY);
+  const btn = $("btnContinue");
+  btn.hidden = !(saved && saved.case && !saved.ended && saved.turns && saved.turns.length);
+  if (!btn.hidden) btn.textContent = saved.case.id === KELL.id ? "Continue where you left off" : `Continue ${saved.case.title}`;
+  renderStartNotes();
+}
+function stopAllAudio() {
+  Sound.thinking(false);
+  if (caps.T && ttsState !== "idle") caps.T.stop().catch(() => {});
+  if (listening) { listening = false; if (caps.D) caps.D.stop().catch(() => {}); }
+  resetListening();
+  if (currentBlock) currentBlock.muted = true;
+}
+
+function newGame(c) {
+  return { v: 1, case: c, turns: [], found: (c.start_found || []).slice(), left: QUESTIONS, final: false, ended: null, accused: null, introDone: false };
+}
+
+async function beginCase(c) {
+  Sound.init(); Sound.mode("normal");
+  stopAllAudio();
+  G = newGame(c); save();
+  missCount = 0;
+  enterPlayScreen();
+  phase = "intro";
+  setPlayState("speaking");
+  if (caps.P) {
+    const want = [];
+    if (caps.D) want.push("dictation");
+    if (caps.S) want.push("sample");
+    if (want.length) {
+      try {
+        const st = await caps.P.request(want);
+        if (st && st.dictation === "denied") { dictBlocked = true; openTyping(false); }
+        if (st && st.sample === "denied") toast("The game needs permission to use Claude to answer you.", permsAction());
+      } catch {}
+    }
+  }
+  playIntro();
+}
+
+function enterPlayScreen() {
+  showScreen("play");
+  $("caseTitle").textContent = G.case.title;
+  renderHeader(); renderNotebook();
+  if (!dictUsable() && caps.resolved.has("dictation")) openTyping(false);
+  $("caption").setAttribute("aria-live", caps.T ? "off" : "polite");
+}
+
+function resumeGame(saved, withVoice) {
+  G = saved;
+  enterPlayScreen();
+  const lastTurn = G.turns[G.turns.length - 1];
+  introBlock = makeIntroBlock();
+  if (lastTurn) {
+    currentBlock = { key: "r" + (++turnSeq), isTurn: true, done: true, you: lastTurn.you, lines: lastTurn.lines.map((l, i) => ({ ...l, id: `r${turnSeq}-${i}` })), revealed: true, activeIdx: -1 };
+  } else {
+    currentBlock = introBlock; introBlock.revealed = true;
+  }
+  phase = "play"; G.introDone = true;
+  renderCaption(); setPlayState("idle");
+  if (G.ended) { showEnd(); return; }
+  if (withVoice && ttsUsable()) {
+    const line = { who: "narrator", text: `You're back at ${G.case.title}. It's ${clockLabel()}. ${untilLabel()}.`, id: "back-0" };
+    caps.T.speak([ttsLine(line)]).catch((e) => onSpeakError(e, null));
+  }
+}
+
+/* =====================================================================
+   Intro
+   ===================================================================== */
+function makeIntroBlock() {
+  const lines = G.case.intro.slice();
+  if (dictUsable() || !caps.resolved.has("dictation")) {
+    lines.push({ who: "narrator", text: hoverless ? "Hold the glowing button while you talk, and let go when you're done." : "Hold the space bar, or the glowing button, while you talk. Let go when you're done." });
+  } else {
+    lines.push({ who: "narrator", text: "Type what you want to say in the box below." });
+  }
+  return { key: "intro", isTurn: false, done: true, lines: lines.map((l, i) => ({ who: normWho(l.who), text: l.text, id: `intro-${i}` })), revealed: false, activeIdx: -1 };
+}
+function playIntro() {
+  introBlock = makeIntroBlock();
+  if (phase !== "intro") { introBlock.revealed = true; if (!currentBlock) currentBlock = introBlock; renderCaption(); return; }
+  currentBlock = introBlock;
+  renderCaption();
+  if (!ttsUsable()) { introBlock.revealed = true; renderCaption(); enterPlay(); return; }
+  caps.T.speak(introBlock.lines.map(ttsLine)).then(() => enterPlay(), (e) => { onSpeakError(e, introBlock); enterPlay(); });
+}
+function enterPlay() {
+  if (phase !== "intro") return;
+  phase = "play"; G.introDone = true; save();
+  if (currentBlock === introBlock && ttsState === "idle") { introBlock.revealed = true; renderCaption(); }
+  if (!listening) setPlayState(ttsState === "idle" ? "idle" : "speaking");
+}
+
+/* =====================================================================
+   Speaking (text to speech)
+   ===================================================================== */
+function ttsLine(l) { return { text: l.text, voice: voiceOf(l.who), id: l.id, language: "en" }; }
+
+function speakLine(turn, line) {
+  if (!ttsUsable() || turn.muted) { turn.revealed = true; return; }
+  turn.pending++;
+  const payload = [ttsLine(line)];
+  const p = turn.started ? caps.T.add(payload) : caps.T.speak(payload);
+  turn.started = true;
+  p.catch((e) => onSpeakError(e, turn)).finally(() => { turn.pending--; maybeTurnAudioDone(turn); });
+}
+
+function onSpeakError(e, block) {
+  const code = e && e.code;
+  if (block) { block.revealed = true; renderCaption(); }
+  if (code === "stopped" || code === "busy") return;
+  if (code === "not_granted" || code === "unavailable") {
+    ttsOff = true; $("caption").setAttribute("aria-live", "polite");
+    toast("Read-aloud is off for this page, so the story continues on screen.", permsAction());
+  } else if (code === "rate_limited") {
+    ttsPausedUntil = Date.now() + (e.retryAfterMs || 60000);
+    toast("Read-aloud has hit its limit for now. The story continues on screen.");
+  } else if (code === "no_gesture") {
+    toast("Click anywhere in the game, then press Repeat to hear that.");
+  } else {
+    toast("The voice cut out. Press Repeat to hear it again.");
+  }
+}
+
+function showActive(id) {
+  const b = currentBlock; if (!b) return;
+  const idx = b.lines.findIndex((l) => l.id === id);
+  if (idx < 0) return;
+  b.activeIdx = idx;
+  $("orb").style.setProperty("--tint", tintOf(b.lines[idx].who));
+  renderCaption();
+}
+
+function repeatLast() {
+  const b = currentBlock;
+  if (!b || !b.lines.length || (b.isTurn && !b.done)) return;
+  if (!ttsUsable()) { b.revealed = true; renderCaption(); toast("Read-aloud is off, so the words are on screen."); return; }
+  b.muted = false; b.revealed = false; b.activeIdx = -1;
+  renderCaption();
+  caps.T.speak(b.lines.map(ttsLine)).catch((e) => onSpeakError(e, b));
+}
+
+function bargeIn() {
+  if (phase === "intro") enterPlay();
+  if (currentBlock) { currentBlock.muted = true; currentBlock.revealed = true; }
+  if (caps.T && ttsState !== "idle") caps.T.stop().catch(() => {});
+  Sound.thinking(false);
+  renderCaption();
+}
+
+/* =====================================================================
+   Listening (dictation), push to talk with tap-to-toggle
+   ===================================================================== */
+function onPressDown() {
+  Sound.init();
+  if (phase !== "play" && phase !== "intro") return;
+  if (!dictUsable()) { openTyping(true); return; }
+  if (listening) { ptt.consumeUp = true; finishListening(); return; }
+  startListening();
+  ptt.pressing = true; ptt.downAt = performance.now();
+}
+function onPressUp() {
+  if (ptt.consumeUp) { ptt.consumeUp = false; return; }
+  if (!ptt.pressing) return;
+  ptt.pressing = false;
+  if (!listening) return;
+  const held = performance.now() - ptt.downAt;
+  if (held < 400 || dictState === "starting") { ptt.toggled = true; updateOrb(); return; }
+  finishListening();
+}
+function startListening() {
+  heard = ""; partial = "";
+  bargeIn();
+  listening = true; ptt.toggled = false;
+  setPlayState("listening");
+  Sound.listenOn(); Sound.mode("listening");
+  renderYou();
+  caps.D.start().catch(onDictStartError);
+}
+function resetListening() {
+  listening = false; ptt.pressing = false; ptt.toggled = false;
+  heard = ""; partial = "";
+  Sound.mode("normal");
+  if (phase === "play" || phase === "intro") setPlayState(ttsState !== "idle" ? "speaking" : (currentBlock && currentBlock.isTurn && !currentBlock.done) ? "thinking" : "idle");
+  renderYou();
+}
+function onDictStartError(e) {
+  const code = e && e.code;
+  if (stopping || (code === "stopped" && !listening)) return;
+  resetListening();
+  if (code === "not_granted" || code === "unavailable") {
+    dictBlocked = true; openTyping(true);
+    toast(code === "not_granted" ? "The game can't hear you because the microphone is off for this page. You can type instead." : "Talking isn't available here. You can type instead.", code === "not_granted" ? permsAction() : null);
+  } else if (code === "dismissed") {
+    toast("The game needs your microphone to hear you. Press again to allow it.");
+  } else if (code === "no_gesture") {
+    toast("Press and hold the button to talk.");
+  } else if (code !== "stopped") {
+    toast("The microphone didn't start. Try again in a moment.");
+  }
+}
+async function finishListening() {
+  if (!listening || stopping) return;
+  stopping = true;
+  Sound.listenOff();
+  try { await caps.D.stop(); } catch {}
+  const text = (heard || partial).trim();
+  stopping = false;
+  listening = false; ptt.toggled = false; ptt.pressing = false;
+  heard = ""; partial = "";
+  Sound.mode("normal");
+  if (!text) { resetListening(); nothingHeard(); return; }
+  submit(text);
+}
+function nothingHeard() {
+  Sound.miss();
+  missCount++;
+  toast("Nothing came through. Hold the button the whole time you're talking.");
+  if (missCount <= 2 && ttsUsable()) {
+    caps.T.speak([{ text: "Only the wind answers. Hold the button the whole time you're talking, then let go.", voice: NARRATOR_VOICE, language: "en" }]).catch(() => {});
+  }
+}
+
+/* =====================================================================
+   A turn: send what the player said, stream the reply line by line
+   ===================================================================== */
+function submit(text) {
+  if (!G || G.ended) return;
+  if (phase === "intro") enterPlay();
+  const t = text.trim();
+  if (!t) return;
+  if (REPEAT_RE.test(t)) { repeatLast(); return; }
+  if (!caps.S) { toast("Claude can't run the story in this view."); return; }
+  $("you").hidden = false;
+  $("you").innerHTML = ""; appendYou($("you"), t);
+  chain = chain.then(() => runTurn(t)).catch(() => {});
+}
+
+function extractObjects(buf) {
+  const objs = [];
+  let depth = 0, start = -1, inStr = false, esc = false, cut = 0;
+  for (let i = 0; i < buf.length; i++) {
+    const ch = buf[i];
+    if (inStr) { if (esc) esc = false; else if (ch === "\\") esc = true; else if (ch === "\"") inStr = false; continue; }
+    if (ch === "\"") { if (depth > 0) inStr = true; continue; }
+    if (ch === "{") { if (depth === 0) start = i; depth++; }
+    else if (ch === "}" && depth > 0) {
+      depth--;
+      if (depth === 0) { try { objs.push(JSON.parse(buf.slice(start, i + 1))); } catch {} cut = i + 1; start = -1; }
+    }
+  }
+  return { objs, rest: depth > 0 && start >= 0 ? buf.slice(start) : (depth === 0 ? "" : buf.slice(cut)) };
+}
+
+function buildPrompt(you) {
+  const c = G.case;
+  const casefile = {
+    title: c.title, deadline: c.deadline, player: c.player, victim: c.victim, world: c.world,
+    suspects: c.suspects.map(({ id, name, role, manner, claims, truth, knows, cracks_when }) => ({ id, name, role, manner, claims, truth, knows, cracks_when })),
+    killer: c.killer, motive: c.motive, truth: c.truth,
+    clues: c.clues.map(({ id, label, how }) => ({ id, label, how })),
+    key_evidence: c.key_evidence
+  };
+  const label = (who) => (who === "narrator" ? "NARRATOR" : who.toUpperCase());
+  const opening = c.intro.map((l) => `${label(normWho(l.who))}: ${l.text}`).join("\n");
+  const story = G.turns.slice(-30).map((t) => [`PLAYER: ${t.you}`].concat(t.lines.map((l) => `${label(l.who)}: ${l.text}`)).join("\n")).join("\n\n");
+  const found = G.found.slice();
+  const unfound = c.clues.map((x) => x.id).filter((id) => !found.includes(id));
+  return [
+    GM_RULES,
+    "CASE FILE (secret: never read it out, and never reveal the truth before an ending)\n" + JSON.stringify(casefile, null, 1),
+    `SUSPECT IDS: ${c.suspects.map((s) => `${s.id} (${s.name})`).join(", ")}`,
+    `STATE\nTime now: ${clockLabel()}. Questions left before ${c.deadline}: ${G.left}.\nClues found: ${found.join(", ") || "none"}\nClues not yet found: ${unfound.join(", ") || "none"}` + (G.final ? "\n\n" + FINAL_RULE : ""),
+    "OPENING (the player has heard this)\n" + opening,
+    "STORY SO FAR (oldest first)\n" + (story || "(nothing yet)"),
+    "THE PLAYER JUST SAID (speech-to-text, may contain mistakes):\n" + JSON.stringify(you),
+    "Reply now, in the reply format: one JSON object per line, ending with the meta line."
+  ].join("\n\n");
+}
+
+async function runTurn(you) {
+  if (!G || G.ended) return;
+  const turn = { key: "t" + (++turnSeq), isTurn: true, you, lines: [], meta: null, raw: "", muted: false, started: false, pending: 0, done: false, audioDone: false, revealed: false, activeIdx: -1, newClues: [] };
+  currentBlock = turn;
+  renderCaption();
+  if (!listening) setPlayState("thinking");
+  Sound.thinking(!listening);
+  let buf = "";
+  const eat = (delta) => {
+    buf += delta;
+    const { objs, rest } = extractObjects(buf);
+    buf = rest;
+    objs.forEach((o) => takeObject(turn, o));
+  };
+  let failure = null;
+  try {
+    await caps.S(buildPrompt(you), {
+      modelTier: "quick",
+      cache: false,
+      onText: ({ delta }) => { turn.raw += delta; eat(delta); }
+    });
+  } catch (e) { failure = e; }
+  Sound.thinking(false);
+
+  if (!turn.lines.length && !turn.meta && turn.raw.trim() && !turn.raw.includes("{")) {
+    turn.raw.split(/\n+/).map(cleanText).filter(Boolean).forEach((text) => emitLine(turn, { who: "narrator", text }));
+  }
+  if (failure && !turn.lines.length) {
+    turn.done = true; turn.audioDone = true;
+    if (!listening) setPlayState("idle");
+    const code = failure.code;
+    if (code === "not_granted" || code === "sampling_disabled" || code === "not_declared" || code === "capability_disabled") {
+      toast("The game needs permission to use Claude to answer you.", permsAction());
+    } else if (code === "rate_limited") {
+      toast("The narrator needs a breather: you've hit a usage limit. Try again in a little while.");
+    } else if (code === "session_expired") {
+      toast("You've been signed out of Claude. Sign in again, then say that again.");
+    } else if (code === "refused") {
+      toast("The narrator won't answer that. Try asking another way.");
+    } else {
+      toast("The narrator lost the thread. Say that again.");
+    }
+    turn.lines = []; currentBlock = turn; turn.revealed = true; renderCaption();
+    return;
+  }
+  if (!turn.lines.length) {
+    emitLine(turn, { who: "narrator", text: "The wind fills the silence. Try asking that another way." });
+    turn.meta = { found: [], tick: false, end: null };
+  }
+  finalizeTurn(turn);
+}
+
+function takeObject(turn, o) {
+  if (!o || typeof o !== "object") return;
+  if (o.meta && typeof o.meta === "object") { turn.meta = o.meta; return; }
+  if (typeof o.text === "string") {
+    const text = cleanText(o.text);
+    if (text) emitLine(turn, { who: normWho(o.who), text });
+  }
+}
+
+function emitLine(turn, line) {
+  line.id = `${turn.key}-${turn.lines.length}`;
+  turn.lines.push(line);
+  if (turn.lines.length === 1) Sound.thinking(false);
+  if (ttsUsable() && !turn.muted) speakLine(turn, line);
+  else turn.revealed = true;
+  if (currentBlock === turn) renderCaption();
+}
+
+function finalizeTurn(turn) {
+  const m = turn.meta && typeof turn.meta === "object" ? turn.meta : {};
+  const ids = new Set(G.case.clues.map((c) => c.id));
+  const found = (Array.isArray(m.found) ? m.found : []).map((x) => slug(x)).filter((id) => ids.has(id) && !G.found.includes(id));
+  const uniq = [...new Set(found)];
+  G.found.push(...uniq);
+  turn.newClues = uniq;
+  const ends = ["solved", "lucky", "wrong", "escaped"];
+  const end = ends.includes(m.end) ? m.end : null;
+  if (m.tick !== false && !G.final && !end) G.left = Math.max(0, G.left - 1);
+  if (end) {
+    G.ended = end;
+    const acc = m.accused ? normWho(m.accused) : null;
+    G.accused = acc && acc !== "narrator" ? acc : null;
+  } else if (G.final) {
+    emitLine(turn, { who: "narrator", text: `${capital(G.case.deadline)} arrives. The doors open, and the killer walks out with everyone else.` });
+    G.ended = "escaped";
+  } else if (G.left === 0) {
+    G.final = true;
+    emitLine(turn, { who: "narrator", text: G.case.final_prompt });
+  }
+  G.endedAt = G.ended ? clockMinutes() : null;
+  G.turns.push({ you: turn.you, lines: turn.lines.map(({ who, text }) => ({ who, text })), at: clockLabel(), found: uniq });
+  turn.done = true;
+  save();
+  renderHeader(); renderNotebook();
+  if (!ttsUsable() || turn.muted) turn.revealed = true;
+  if (currentBlock === turn) renderCaption();
+  maybeTurnAudioDone(turn);
+}
+
+function maybeTurnAudioDone(turn) {
+  if (!turn.done || turn.pending > 0 || turn.audioDone) return;
+  turn.audioDone = true;
+  afterTurnAudio(turn);
+}
+
+function afterTurnAudio(turn) {
+  if (turn.newClues && turn.newClues.length) {
+    if (!listening) Sound.clue();
+    const first = G.case.clues.find((c) => c.id === turn.newClues[0]);
+    toast(turn.newClues.length === 1 && first ? `In your notebook: ${first.label}` : `${turn.newClues.length} new clues in your notebook.`);
+    turn.newClues = [];
+  }
+  if (G.ended) { setPlayState("idle"); setTimeout(showEnd, 1400); return; }
+  if (!listening && ttsState === "idle" && currentBlock === turn) setPlayState("idle");
+}
+
+function capital(s) { s = String(s || ""); return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* =====================================================================
+   Rendering
+   ===================================================================== */
+function setPlayState(s) { playState = s; updateOrb(); }
+function updateOrb() {
+  const orb = $("orb"), label = $("orbLabel");
+  if (!orb) return;
+  orb.dataset.state = playState;
+  if (playState === "listening") orb.style.setProperty("--tint", "var(--frost)");
+  if (playState === "idle" || playState === "thinking") orb.style.setProperty("--tint", "var(--ember)");
+  let html, aria;
+  if (playState === "listening") {
+    html = ptt.toggled ? "Listening. Tap again to send." : "Listening. Let go to send.";
+    aria = "Listening. Press again to send.";
+  } else if (playState === "thinking") {
+    html = "Waiting for an answer…"; aria = "Waiting for an answer";
+  } else if (playState === "speaking") {
+    html = phase === "intro" ? "Press to skip ahead and talk" : "Press to interrupt"; aria = "Press to interrupt and talk";
+  } else if (!dictUsable() && caps.resolved.has("dictation")) {
+    html = "Type below to speak"; aria = "Type your question";
+  } else {
+    html = hoverless ? "Hold to speak" : "Hold <kbd>Space</kbd> to speak"; aria = "Hold to speak";
+  }
+  label.innerHTML = html;
+  orb.setAttribute("aria-label", aria);
+}
+
+function renderHeader() {
+  if (!G) return;
+  $("clock").textContent = clockLabel();
+  const left = $("left");
+  left.textContent = untilLabel();
+  left.classList.toggle("low", G.final || G.left <= 3);
+}
+
+function appendYou(el, text) {
+  const who = document.createElement("span"); who.className = "who"; who.textContent = "You";
+  who.style.setProperty("--line-tint", "var(--frost)");
+  el.append(who, document.createTextNode(text));
+}
+function renderYou() {
+  const el = $("you");
+  el.textContent = "";
+  if (listening) {
+    el.hidden = false;
+    const t = (heard + (partial ? (heard ? " " : "") + partial : "")).trim();
+    appendYou(el, t || "…");
+    return;
+  }
+  const b = currentBlock;
+  if (b && b.isTurn && b.you) { el.hidden = false; appendYou(el, b.you); }
+  else el.hidden = true;
+}
+
+function renderCaption() {
+  renderYou();
+  const box = $("lines");
+  box.textContent = "";
+  const b = currentBlock;
+  if (!b) return;
+  const showAll = b.revealed || !ttsUsable();
+  const upto = showAll ? b.lines.length - 1 : b.activeIdx;
+  const from = showAll ? 0 : Math.max(0, upto - 2);
+  for (let i = from; i <= upto; i++) {
+    const l = b.lines[i]; if (!l) continue;
+    const p = document.createElement("p");
+    p.className = "line" + (i === upto ? " now" : "");
+    p.style.setProperty("--line-tint", tintOf(l.who));
+    const who = document.createElement("span"); who.className = "who"; who.textContent = nameOf(l.who);
+    p.append(who, document.createTextNode(l.text));
+    box.append(p);
+  }
+  const cap = $("caption"); cap.scrollTop = cap.scrollHeight;
+  cap.classList.toggle("overflowing", cap.scrollHeight > cap.clientHeight + 2);
+}
+
+function renderNotebook() {
+  if (!G) return;
+  const c = G.case;
+  const people = $("nbPeople"); people.textContent = "";
+  c.suspects.forEach((s) => {
+    const li = document.createElement("li");
+    li.style.setProperty("--line-tint", tintOf(s.id));
+    const dot = document.createElement("span"); dot.className = "dot";
+    const name = document.createElement("span"); name.className = "name"; name.textContent = s.name;
+    const role = document.createElement("span"); role.className = "role"; role.textContent = s.role;
+    li.append(dot, name, role); people.append(li);
+  });
+  $("nbVictim").textContent = c.victim;
+  const list = $("nbClues"); list.textContent = "";
+  const found = G.found.map((id) => c.clues.find((x) => x.id === id)).filter(Boolean);
+  found.forEach((cl) => { const li = document.createElement("li"); li.textContent = cl.label; list.append(li); });
+  $("nbEmpty").hidden = found.length > 0;
+  $("nbCount").textContent = `${found.length} of ${c.clues.length}`;
+  $("noteCount").textContent = `${found.length}/${c.clues.length}`;
+  const log = $("nbLog"); log.textContent = "";
+  const addLine = (who, text, me) => {
+    const p = document.createElement("p"); if (me) p.className = "me";
+    const b = document.createElement("b"); b.textContent = (me ? "You" : nameOf(who)) + ": ";
+    p.append(b, document.createTextNode(text)); log.append(p);
+  };
+  c.intro.forEach((l) => addLine(normWho(l.who), l.text));
+  G.turns.forEach((t) => {
+    log.append(document.createElement("hr"));
+    addLine(null, t.you, true);
+    t.lines.forEach((l) => addLine(l.who, l.text));
+  });
+}
+
+function openTyping(focus) {
+  const f = $("typeForm");
+  f.hidden = false;
+  $("btnType").setAttribute("aria-pressed", "true");
+  if (focus) $("say").focus();
+  updateOrb();
+}
+function toggleTyping() {
+  const f = $("typeForm");
+  if (f.hidden) openTyping(true);
+  else if (dictUsable()) { f.hidden = true; $("btnType").setAttribute("aria-pressed", "false"); }
+  else $("say").focus();
+}
+
+function openNotebook() { if (!G) return; renderNotebook(); $("notebook").hidden = false; $("btnNotesClose").focus(); }
+function closeNotebook() { $("notebook").hidden = true; $("btnNotes").focus(); }
+
+/* =====================================================================
+   Ending
+   ===================================================================== */
+function showEnd() {
+  if (!G || !G.ended) return;
+  phase = "ended";
+  const c = G.case;
+  const k = c.suspects.find((s) => s.id === c.killer);
+  const kName = k ? k.name : "the killer";
+  const acc = G.accused ? c.suspects.find((s) => s.id === G.accused) : null;
+  const v = $("endVerdict");
+  const map = {
+    solved: ["Solved", `You named ${kName}, and you could back it up.`],
+    lucky: ["A lucky guess", `You named ${kName}, but you never said why. The right answer, on a hunch.`],
+    wrong: ["The wrong person", `You accused ${acc ? acc.name : "the wrong person"}. It was ${kName}.`],
+    escaped: ["Gone by " + c.deadline, `Nobody was named in time, and ${kName} walked out with everyone else.`]
+  };
+  const [title, sum] = map[G.ended] || map.escaped;
+  v.textContent = title;
+  v.classList.toggle("bad", G.ended === "wrong" || G.ended === "escaped");
+  $("endSum").textContent = sum;
+  $("endWhen").textContent = `${c.title} · ${clockLabel(G.endedAt == null ? clockMinutes() : G.endedAt)}`;
+  $("stClues").textContent = `${G.found.length} of ${c.clues.length}`;
+  $("stQs").textContent = `${QUESTIONS - G.left} of ${QUESTIONS}`;
+  $("stKiller").textContent = kName;
+  $("endTruth").textContent = c.truth;
+  $("notebook").hidden = true;
+  $("end").hidden = false;
+  v.focus();
+}
+
+/* =====================================================================
+   A brand-new case, written by Claude
+   ===================================================================== */
+function normalizeCase(r) {
+  if (!r || typeof r !== "object") return null;
+  const str = (v) => (typeof v === "string" ? v.trim() : "");
+  const rawS = Array.isArray(r.suspects) ? r.suspects.slice(0, 3) : [];
+  if (rawS.length < 3) return null;
+  const used = new Set();
+  const suspects = rawS.map((s, i) => {
+    let id = slug(str(s.id) || str(s.name).split(/\s+/)[0]).replace(/_/g, "") || "suspect" + (i + 1);
+    while (used.has(id)) id += "x";
+    used.add(id);
+    return { id, name: str(s.name) || `Suspect ${i + 1}`, role: str(s.role), manner: str(s.manner), claims: str(s.claims), truth: str(s.truth), knows: str(s.knows), cracks_when: str(s.cracks_when), _raw: slug(str(s.id)) };
+  });
+  const findS = (v) => {
+    const t = slug(str(v)).replace(/_/g, "");
+    return suspects.find((s) => s.id === t || s._raw.replace(/_/g, "") === t || slug(s.name).replace(/_/g, "").includes(t)) || null;
+  };
+  const killer = findS(r.killer);
+  if (!killer) return null;
+  const seen = new Set();
+  const clues = (Array.isArray(r.clues) ? r.clues : []).map((c) => ({ id: slug(str(c && c.id)), label: str(c && c.label), how: str(c && c.how) }))
+    .filter((c) => c.id && c.label && !seen.has(c.id) && seen.add(c.id));
+  if (clues.length < 6) return null;
+  const ids = new Set(clues.map((c) => c.id));
+  const whoOf = (w) => { const s = String(w || "").toLowerCase(); if (!s || s === "narrator") return "narrator"; const m = findS(s); return m ? m.id : "narrator"; };
+  const intro = (Array.isArray(r.intro) ? r.intro : []).map((l) => ({ who: whoOf(l && l.who), text: cleanText(l && l.text) })).filter((l) => l.text).slice(0, 14);
+  if (intro.length < 3) return null;
+  suspects.forEach((s) => delete s._raw);
+  const hour = Number.isFinite(+r.start_hour) ? Math.min(23, Math.max(0, Math.round(+r.start_hour))) : 1;
+  return {
+    id: "gen-" + Date.now(), generated: true,
+    title: str(r.title) || "An Unlit Room",
+    tagline: str(r.tagline),
+    deadline: str(r.deadline) || "dawn",
+    start_hour: hour,
+    intro,
+    final_prompt: cleanText(r.final_prompt) || "Time's up. Who did it, and how do you know?",
+    player: str(r.player), victim: str(r.victim), world: str(r.world),
+    suspects, killer: killer.id,
+    motive: str(r.motive), truth: str(r.truth) || str(r.motive),
+    clues,
+    key_evidence: (Array.isArray(r.key_evidence) ? r.key_evidence : []).map(slug).filter((id) => ids.has(id)),
+    start_found: (Array.isArray(r.start_found) ? r.start_found : []).map(slug).filter((id) => ids.has(id))
+  };
+}
+
+async function generateCase() {
+  Sound.init();
+  if (!caps.S) { toast("Claude can't write a case in this view."); return; }
+  stopAllAudio();
+  phase = "generating";
+  showScreen("gen");
+  $("genStatus").textContent = "Choosing a place to plunge into darkness…";
+  Sound.thinking(true);
+  genCtl = new AbortController();
+  const steps = [[0, "Choosing a place to plunge into darkness…"], [900, "Introducing the suspects…"], [2600, "Giving everyone a secret…"], [5200, "Hiding the clues…"], [8000, "Checking the alibis…"]];
+  try {
+    const raw = await caps.S.json(GEN_PROMPT, {
+      modelTier: "default", cache: false, signal: genCtl.signal,
+      onText: ({ text }) => { const s = steps.filter(([n]) => text.length >= n).pop(); if (s) $("genStatus").textContent = s[1]; }
+    });
+    Sound.thinking(false);
+    const c = normalizeCase(raw);
+    if (!c) { showStart(); toast("That case came out tangled. Try writing another."); return; }
+    beginCase(c);
+  } catch (e) {
+    Sound.thinking(false);
+    showStart();
+    if (e && e.code === "cancelled") return;
+    if (e && e.code === "rate_limited") toast("You've hit a usage limit. Try again in a little while.");
+    else if (e && (e.code === "not_granted" || e.code === "sampling_disabled")) toast("The game needs permission to use Claude to write a case.", permsAction());
+    else toast("That case came out tangled. Try writing another.");
+  } finally { genCtl = null; }
+}
+
+/* =====================================================================
+   Wiring
+   ===================================================================== */
+function isTypingTarget(t) { return t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable); }
+
+document.addEventListener("pointerdown", () => Sound.init(), { capture: true });
+document.addEventListener("keydown", (e) => {
+  Sound.init();
+  if (e.key === "Escape") {
+    if (!$("notebook").hidden) { e.preventDefault(); closeNotebook(); }
+    return;
+  }
+  if (isTypingTarget(e.target)) return;
+  if (phase !== "play" && phase !== "intro") return;
+  if (!$("notebook").hidden || !$("end").hidden) return;
+  if (e.code === "Space") {
+    e.preventDefault();
+    if (e.repeat) return;
+    onPressDown();
+  } else if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+    if (e.key === "r" || e.key === "R") repeatLast();
+    else if (e.key === "n" || e.key === "N") openNotebook();
+    else if (e.key === "t" || e.key === "T") { e.preventDefault(); toggleTyping(); }
+  }
+});
+document.addEventListener("keyup", (e) => {
+  if (e.code !== "Space" || isTypingTarget(e.target)) return;
+  if (phase !== "play" && phase !== "intro") return;
+  e.preventDefault();
+  onPressUp();
+});
+
+const orb = $("orb");
+orb.addEventListener("pointerdown", (e) => {
+  if (e.button !== 0) return;
+  e.preventDefault();
+  try { orb.setPointerCapture(e.pointerId); } catch {}
+  onPressDown();
+});
+orb.addEventListener("pointerup", onPressUp);
+orb.addEventListener("pointercancel", onPressUp);
+orb.addEventListener("contextmenu", (e) => e.preventDefault());
+orb.addEventListener("click", (e) => {
+  if (e.detail !== 0) return; // keyboard Enter only; pointer presses are handled above
+  const was = listening;
+  onPressDown();
+  ptt.consumeUp = false;
+  if (!was && listening) { ptt.pressing = false; ptt.toggled = true; updateOrb(); }
+});
+
+$("typeForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const v = $("say").value.trim();
+  if (!v) return;
+  $("say").value = "";
+  Sound.init();
+  if (phase !== "play" && phase !== "intro") return;
+  bargeIn();
+  submit(v);
+});
+
+$("btnBegin").addEventListener("click", () => beginCase(KELL));
+$("btnContinue").addEventListener("click", () => {
+  Sound.init(); Sound.mode("normal");
+  const saved = store.get(SAVE_KEY);
+  if (saved && saved.case) resumeGame(saved, true);
+});
+$("btnGenerate").addEventListener("click", generateCase);
+$("btnGenStop").addEventListener("click", () => { if (genCtl) genCtl.abort(); });
+$("btnStop").addEventListener("click", () => {
+  if (currentBlock) { currentBlock.muted = true; currentBlock.revealed = true; renderCaption(); }
+  if (caps.T) caps.T.stop().catch(() => {});
+});
+$("btnRepeat").addEventListener("click", repeatLast);
+$("btnType").addEventListener("click", toggleTyping);
+$("btnNotes").addEventListener("click", openNotebook);
+$("btnNotesClose").addEventListener("click", closeNotebook);
+$("btnRestart").addEventListener("click", () => { $("notebook").hidden = true; if (G) beginCase(G.case); });
+$("btnHome").addEventListener("click", showStart);
+$("btnAgain").addEventListener("click", () => { if (G) beginCase(G.case); });
+$("btnEndNew").addEventListener("click", generateCase);
+$("btnEndHome").addEventListener("click", showStart);
+
+function setRate(r) {
+  prefs.rate = r; savePrefs();
+  $("rate1").setAttribute("aria-pressed", String(r === 1));
+  $("rate2").setAttribute("aria-pressed", String(r !== 1));
+  if (caps.T && caps.T.setRate) { try { const p = caps.T.setRate(r); if (p && p.catch) p.catch(() => {}); } catch {} }
+}
+function setAmbience(on) {
+  prefs.ambience = on; savePrefs();
+  $("amb1").setAttribute("aria-pressed", String(on));
+  $("amb0").setAttribute("aria-pressed", String(!on));
+  Sound.mode(Sound.level);
+}
+$("rate1").addEventListener("click", () => setRate(1));
+$("rate2").addEventListener("click", () => setRate(1.2));
+$("amb1").addEventListener("click", () => setAmbience(true));
+$("amb0").addEventListener("click", () => setAmbience(false));
+
+document.addEventListener("visibilitychange", () => { if (document.hidden) Sound.suspend(); else Sound.resume(); });
+
+/* =====================================================================
+   Boot
+   ===================================================================== */
+function boot(data) {
+  setRate(prefs.rate === 1 ? 1 : 1.2);
+  setAmbience(prefs.ambience !== false);
+  loadCaps();
+  const hotG = data && data.G;
+  if (hotG && hotG.case && data.phase !== "start") { resumeGame(hotG, false); return; }
+  showStart();
+}
+try {
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === "function") hot.snapshot(() => ({ G, phase: G ? (phase === "start" || phase === "generating" ? "start" : "play") : "start" }));
+  if (hot && typeof hot.ready === "function") hot.ready(boot);
+  else boot(hot && hot.data ? hot.data : {});
+} catch { boot({}); }
+})();
+</script>
