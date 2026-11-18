@@ -1,78 +1,83 @@
 # Pitch Dark
 
-A murder mystery you play with only your ears and your voice.
+Short audio games you play by listening and talking out loud. There's nothing to look
+at, so you can close your eyes. An AI host and a cast of voices talk back.
 
-Every case happens with the lights out, so you can't see anything, ever. You hold a
-button (or the space bar) and talk to the people in the room. An AI narrator and the
-suspects answer out loud, each in their own voice. You find clues by listening,
-touching and smelling, catch people in their lies, and name the killer before the
-deadline.
+There are four quick daily puzzles and one longer mystery. Each daily puzzle is the
+same for everyone that day, takes a minute or two, and gives a result you can share.
+Every game also has unlimited practice rounds.
 
-## How a game goes
+## The games
 
-1. **The opening.** The narrator sets the scene, there's a body, and each suspect
-   introduces themselves in their own voice.
-2. **Fifteen questions.** Each question or action moves the clock 20 minutes
-   (1:00 AM to dawn). Asking for help, the time, or a recap of your clues is free.
-3. **Anything you can say, you can do.** "Feel the doctor's slippers." "Hollis, what
-   did you hear from the boot room?" "Think back. What did I hear by the fire?"
-   "Give me a hint." (A hint costs a question.)
-4. **Suspects lie.** Each one has a story and holds to it until you confront them
-   with the right evidence. Then they crack. Innocent people lie too, about their own
-   secrets, which makes them look guilty.
-5. **The accusation.** Say "I accuse …" and why. The verdict:
-   - **Solved**: the right person, backed by real evidence.
-   - **A lucky guess**: the right person, no evidence.
-   - **The wrong person**: someone else.
-   - **Gone by dawn**: time ran out and the killer walked out with everyone else.
+### The Link (daily)
+Five words share one hidden connection. They're read out one at a time, hardest first:
+*Florida… Map… Piano…* Say what links them ("things with keys"). Say "next" to hear
+another word; a wrong guess also reveals the next one. You score better the earlier you
+get it.
+Share: `🟥🟥🟩⬜⬜`
 
-The notebook (press N) lists the suspects, every clue you've found, and the full
-transcript, for players who want to glance at it. The game is designed to be played
-with your eyes closed.
+### Warmer (daily)
+There's a secret word. Say any word and you'll hear how close it is in meaning:
+freezing, cold, warm, hot, burning. A rising tone tells you the same thing by ear. You
+get 20 guesses, with hints after guesses 6, 12 and 16. It works by meaning, not
+spelling, because speech-to-text can't tell "cord" from "chord".
+Share: `🟦🟨🟧🟥✅  Found in 5`
 
-## Case one: The Kell Inn
+### Who's Lying? (daily)
+Sam, Max and Robin each say one fact about today's topic. One of them is lying. You can
+ask each of them one follow-up question, and the liar bluffs. Then name the liar. Every
+lie is a common myth, and the true facts are surprising, so you learn something either
+way.
+Share: `✅ Caught the liar · 1 question`
 
-A blizzard on Larch Pass. At 12:40 AM the power fails. At 12:52 there's a crash in the
-back hall, and the innkeeper, Ambrose Kell, is found dead at the bottom of the cellar
-stairs. His flashlight is beside him, switched off.
+### The Box (daily)
+Something is hidden in a box. Say "shake the box" to hear it: it might rattle, slosh,
+jingle, tick or squeak (all synthesized in the page). Then ask up to 10 yes-or-no
+questions and guess.
+Share: `⬛⬛⬛📦  Opened in 4`
 
-| Suspect | Voice | Their story | Their secret |
-|---|---|---|---|
-| Marguerite Vale, niece and heir | airy | "I was in the kitchen looking for candles." | She was upstairs searching her uncle's desk, and found a blackmail letter. |
-| Hollis Crane, caretaker | rounded | "I was at the woodshed till I heard the crash." | He was hiding drunk in the boot room, right by the cellar door, and heard everything. |
-| Dr. Felix Okafor, retired surgeon | glassy | "I slept in my chair the whole time." | (Play it to find out.) |
+### Lights Out (mystery)
+A whodunit in the pitch dark at a snowbound inn. Question the suspects, feel and smell
+for clues, and name the killer before dawn.
+- **Simple names:** Rose (niece), Hank (handyman), Doctor Bell, Lily (cook) and Tom
+  (salesman). Names stay on screen, and you can ask "who's here?" at any time.
+- **Difficulty:** choose 3, 4 or 5 suspects. Each extra suspect is an innocent with
+  their own secret and red herrings.
+- **Question limit:** 8, 12, 20, or no limit.
+- **Free actions:** small talk, recaps and "who's who" don't use up questions.
+- **New cases:** "Write me a new case" has Claude invent a new mystery with the same
+  settings.
 
-The case has 14 clues: eight point to the killer, and the rest are red herrings. Each
-clue is something you discover by sound, touch, smell or memory, because there's no
-light. The full case file, with the solution, is the `KELL` object in `index.html`.
-Spoilers are in there.
+## Talking to the game
 
-## Endless cases
+- **Tap and talk:** tap Space (or the glowing button) once, then talk. It sends when you
+  pause.
+- **Hold to talk:** or hold Space while you talk, and let go to send.
+- **Interrupt:** tap while anyone is speaking.
+- **Always available:** say "repeat", "help" or "menu" in any game.
+- **From the home screen:** tap Space and say a game's name, or press "Read the games
+  aloud".
+- **Sounds:** short cues play when listening starts and stops, a clock ticks while the
+  AI thinks, and there are sounds for right, wrong and finding a clue.
 
-"Write me a brand-new case" asks Claude to invent a whole new mystery: a new setting
-in total darkness (a cave, a stalled ship, a mine), three suspects, a killer, a
-timeline, clues and red herrings. It uses the same format as the hand-built case.
+Without voice (Safari, Firefox, the mobile apps), everything works by typing and
+reading the text on screen.
 
 ## How it's built
 
-A single HTML page that runs as a claude.ai artifact and uses four platform
-capabilities:
+A single HTML page that runs as a claude.ai artifact. It uses the platform's
+`dictation` (speech to text), `tts` (Claude voices: one for the narrator and one per
+character) and `sample` (Claude) capabilities.
 
-| Need | Capability | Notes |
-|---|---|---|
-| Hear the player | `dictation` | Push to talk: hold to speak, or tap once to start and tap again to send. |
-| Speak the story | `tts` | Narrator plus one voice per suspect. Replies are spoken line by line as they stream in, so the first words come out fast. |
-| Run the story | `sample` | Each turn sends the rules, the secret case file, the state and the transcript. Claude replies with one JSON line per spoken line, then a meta line (`found`, `tick`, `end`, `accused`). |
-| One permission prompt | `permissions` | Asks for the microphone and Claude together when the case begins. |
+Most answers are checked in the page itself, with no wait for the AI. That covers
+names, "next", exact guesses, the facts and the box contents. Claude handles what needs
+judgment, on the fastest model:
+- **The Link:** loosely worded guesses.
+- **Warmer:** how warm each guess is.
+- **Who's Lying?:** the follow-up answers.
+- **The Box:** the yes-or-no answers.
+- **Lights Out:** the whole story, streamed line by line.
 
-The page itself tracks the clock, the clues (only ids from the case file count), the
-deadline, the endings and saved progress. The model only has to act and judge.
-
-Sound design is synthesized in the page with Web Audio: wind and fire crackle in the
-background, quieter while you talk, a grandfather-clock tick while the narrator
-thinks, chimes when listening starts and stops, and a low bell when you find a clue.
-
-Without voice (Safari, Firefox, the mobile apps) it falls back to typing, and to text
-on screen when read-aloud isn't available.
-
-Keys: **Space** talk · **R** repeat · **N** notebook · **T** type · **Esc** stop the voice
+The puzzles themselves are written into the page, not generated, so the daily one
+really is the same for everyone. Daily progress, streaks and the mystery in progress
+are saved in your browser.
