@@ -22,6 +22,7 @@
   --tint-3: #b9c7d4;
   --tint-4: #a8d1b0;
   --tint-5: #c8b4e4;
+  --tint-6: #8fd0d6;
   --display: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: dark;
@@ -165,6 +166,8 @@ kbd { font: 600 .72em/1 var(--ui); letter-spacing: .04em; padding: .28em .5em; b
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: .45rem; }
 .chip { display: inline-flex; align-items: baseline; gap: .4rem; padding: .3rem .8rem; border: 1px solid var(--rule); border-radius: 999px; font-size: .84rem; color: var(--ash); }
 .chip b { color: var(--line-tint, var(--bone)); font-weight: 600; }
+.goal { margin: 0; text-align: center; font-family: var(--display); font-size: 1.14rem; line-height: 1.35; text-wrap: balance; }
+.goal small { display: block; color: var(--ash); font: 600 .62rem/1.9 var(--ui); letter-spacing: .15em; text-transform: uppercase; }
 @media (max-width: 560px) {
   .cards3 { grid-template-columns: 1fr; gap: .5rem; }
   .card3 p { font-size: .95rem; }
@@ -301,6 +304,7 @@ details[open] summary { margin-bottom: .8rem; }
       <section><h3>What you've found <span id="dClueCount"></span></h3><ul id="dClues" class="list"></ul><p id="dCluesEmpty" class="plain">Nothing yet. Feel around, listen, and ask.</p></section>
       <section><details><summary>Everything that's been said</summary><div id="dLog" class="log"></div></details></section>
     </div>
+    <section id="dStoryWrap" hidden><details><summary>Your story so far</summary><div id="dStory" class="log"></div></details></section>
     <section><h3>How to play</h3><ul id="dHow" class="list"></ul></section>
     <section>
       <h3>Talking</h3>
@@ -351,6 +355,7 @@ const LAUNCH = Date.UTC(2026, 10, 18);
 function today() { const d = new Date(); return Math.max(1, Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - LAUNCH) / 864e5) + 1); }
 const dailyKey = (id, day) => `pd.daily.${id}.${day}`;
 const MYSTERY_KEY = "pd.mystery.v2";
+const QUEST_KEY = "pd.quest.v1";
 const PREFS_KEY = "pd.prefs.v2";
 const NUMW = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"];
 const cap = (s) => String(s || "").charAt(0).toUpperCase() + String(s || "").slice(1);
@@ -731,10 +736,74 @@ Rules:
 }
 
 /* =====================================================================
+   Quest: daily adventures and the narrator's rules
+   ===================================================================== */
+const QUESTS = /*QUESTS_START*/[{"title": "The Humming Attic", "blurb": "Something in the attic is humming, and it wants to be found.", "opening": ["You climb the last creaking stair into a dusty attic. Somewhere in the dark, something is humming.", "Your goal is to find the old music box and wind it. You could follow the humming, or open the big trunk beside you."], "goal": "Find the music box and wind it.", "place": "the attic stairs", "cast": [{"id": "pip", "name": "Pip", "tag": "mouse", "manner": "squeaky, fast and a little bossy"}, {"id": "nora", "name": "Nora", "tag": "ghost", "manner": "slow, kind and sleepy"}], "beats": ["A heavy trunk blocks the way and its lid is stuck. You can pry it open with something, or ask Pip to squeeze inside and push.", "A low, dark crawlspace leads toward the humming. You can feel your way along the wall, or follow Nora's cool breeze.", "The music box is wound too tight to turn. You can warm it in your hands, or hum along until it loosens."], "items": [{"name": "brass key", "use": "winds the music box"}, {"name": "wool blanket", "use": "keeps you warm and muffles noise"}], "secret": "The humming is Nora. She has been trying to remember the tune from the music box.", "win": "The music box plays its tune, Nora hums along at last, and the whole attic glows soft and gold.", "lose": "The humming fades for tonight. You tiptoe back downstairs, sure you'll find it tomorrow."}]/*QUESTS_END*/;
+
+const QUEST_RULES = `You are the narrator of QUEST, a turn-based adventure played entirely by voice. The player has their eyes closed. Every word you write is read aloud the moment you write it, so it must be easy to follow by ear and easy to remember.
+
+HOW TO WRITE
+- Speak to the player as "you", in the present tense. Short sentences and plain words.
+- Each reply is 1 to 3 lines and under 55 words in all. No lists, no markdown, no emoji, no stage directions in brackets.
+- Describe sounds, smells, textures and feelings as much as sights.
+- Say yes to the player's ideas whenever you can. If something can't work, say what happens instead and keep the story moving. Never scold or lecture.
+- End every reply with the moment open, so it's clear the player acts next. When it helps, offer two things they might try, in one natural sentence ("You could try the door, or follow the humming."). Never offer more than two, and accept anything else they come up with.
+- Keep it light on memory. Never ask the player to remember a code, a list, a sequence or directions. Use only the characters and items in the premise, and call them by the same simple names every time.
+- When a character speaks, give them their own line. Unless the player just spoke to them by name, the narrator says who it is first, in a few words ("Pip squeaks.").
+- The player's words come from speech-to-text and may be garbled. Take the most sensible meaning.
+- Never speak for the player or decide what they do. Never repeat their words back to them.
+- Keep it friendly for all ages. If the player asks for something cruel or grown-up, steer the story gently back.
+
+HOW THE STORY RUNS
+- The premise gives one goal and three obstacles, in order. The player has a fixed number of turns, and you are told the turn number each time.
+- Pace the story so the ending arrives on time: be on the second obstacle by about 40 percent of the turns, and the third by about 70 percent. If the player is quick and clever, let them finish early.
+- Each turn comes with a luck roll from 1 to 6. Use it only when the player tries something risky or uncertain: on 1 or 2 it goes wrong in a small way (a setback, never an injury); on 3 or 4 it half works; on 5 or 6 it goes well. Ignore the roll for safe actions.
+- The player can carry at most four things. Keep track of what they hold.
+- The secret in the premise is for the last third of the story.
+- When the goal is reached, end the story with "win", using the premise's ending. Be generous: a clever or kind solution you didn't expect still counts.
+- On the final turn the story ends no matter what: "win" if the goal is reached or one good move away, otherwise "lose" with the premise's gentle ending. An ending reply may be up to 5 lines and 90 words.
+
+REPLY FORMAT
+One JSON object per line and nothing else. Speech lines first, in the order they're spoken:
+{"who":"narrator","text":"..."}
+{"who":"<character id>","text":"..."}
+The last line is always the meta line:
+{"meta":{"place":"where the player is now, in 2 to 4 words","items":["what they carry"],"beat":1,"end":null}}
+"beat" is the obstacle the player is on now: 1, 2 or 3. "end" is null, "win" or "lose".`;
+
+function questSpinePrompt(idea) {
+  return `Write the premise for QUEST, a turn-based adventure played entirely by voice. A narrator reads a short scene aloud, the player says what they do, and the story answers. The player has their eyes closed and must hold everything in their head, so keep it simple.
+
+The player asked for this kind of story (from speech-to-text, may be misheard): ${JSON.stringify(idea)}
+
+Build an original story around their idea. If the idea names an existing book, film, show or game, keep only its mood and invent your own places and characters with new names. Keep it friendly for all ages.
+
+Reply with only one JSON object, in exactly this shape:
+{
+  "title": "2 to 4 words",
+  "opening": ["2 to 4 short narrator lines, at most 60 words in total, second person, present tense. Set the scene, state the goal plainly, and end by offering two concrete things to try first. No dialogue."],
+  "goal": "one clear goal, under 12 words",
+  "place": "the starting place, 2 to 4 words",
+  "cast": [{"id": "name in lowercase letters", "name": "a common first name of one or two syllables", "tag": "one plain word for what they are", "manner": "how they talk"}],
+  "beats": ["obstacle one, naming two different ways past it", "obstacle two, the same", "obstacle three, the same"],
+  "items": [{"name": "one or two words", "use": "what it's for"}],
+  "secret": "one fun twist for the last third of the story",
+  "win": "one or two sentences: how it ends when the goal is reached",
+  "lose": "one or two sentences: a gentle ending if time runs out"
+}
+
+Rules:
+- At most 3 characters and at most 4 items. No two character names may start with the same sound.
+- Exactly 3 obstacles. Each can be passed in at least two ways just by saying what you do. Nothing may need spelling, reading, maps, compass directions, or remembering a code, a list or a sequence.
+- Every place has sounds, smells or textures to describe.
+- Plain, warm language that's easy to follow by ear.`;
+}
+
+/* =====================================================================
    State
    ===================================================================== */
 const caps = { S: null, T: null, D: null, P: null, resolved: new Set(), framed: !!(window.claude && typeof window.claude.use === "function") };
-let prefs = Object.assign({ rate: 1, ambience: true, suspects: 3, questions: 12 }, store.get(PREFS_KEY) || {});
+let prefs = Object.assign({ rate: 1, ambience: true, suspects: 3, questions: 12, length: 15 }, store.get(PREFS_KEY) || {});
 let screen = "home";
 let game = null;
 let run = null;
@@ -1210,9 +1279,9 @@ function handleUtterance(text) {
 }
 const alive = (ep) => ep === epoch && !!run;
 function saveRun() {
-  if (!run) return;
-  if (run.id === "mystery") store.set(MYSTERY_KEY, run.st);
-  else if (run.mode === "daily") store.set(dailyKey(run.id, run.day), run.st);
+  if (!run || !game) return;
+  const key = game.storeKey ? game.storeKey(run) : run.mode === "daily" ? dailyKey(run.id, run.day) : null;
+  if (key) store.set(key, run.st);
 }
 function refreshPlay() { renderBoard(); renderStatus(); }
 function finishWith(result) { run.st.finished = true; run.st.result = result; saveRun(); refreshPlay(); }
@@ -1241,7 +1310,7 @@ const Link = {
   id: "link", title: "The Link", tint: "var(--tint-1)", daily: true, list: LINKS, scene: "none",
   blurb: "Five words share one connection. Say what links them, using as few words as you can.",
   howto: ["Words are read out one at a time. Say what connects them.", "Say \"next\" to hear another word. A wrong guess also brings the next word.", "Say \"the words\" to hear them all again.", "Finding the link on an earlier word gets a better score."],
-  cast: () => ({ clue: { name: "Word", voice: "glassy", rate: 0.94, tint: "var(--tint-1)" } }),
+  cast: () => ({ clue: { name: "Word", voice: "glassy", rate: 1, tint: "var(--tint-1)" } }),
   fresh: (idx) => ({ idx, shown: 1, guesses: [], finished: false }),
   clueLines(st) { return LINKS[st.idx][2].slice(0, st.shown).map((w) => ({ who: "clue", text: w + "." })); },
   start(st, { resumed, quiet }) {
@@ -1442,7 +1511,7 @@ const Liar = {
   id: "liar", title: "Who's Lying?", tint: "var(--tint-3)", daily: true, list: LIES, scene: "none",
   blurb: "Three friends, three facts, one lie. Ask them questions, then catch the liar.",
   howto: ["Sam, Max and Robin each tell you one fact. One of them is lying.", "You can ask each of them one question. Start with their name: \"Max, how do you know?\"", "When you're sure, say \"Robin is lying\" or \"I think it's Sam\".", "Say \"the facts\" to hear all three again."],
-  cast: () => ({ sam: { name: "Sam", voice: "airy", rate: 1.04, tint: "var(--tint-1)" }, max: { name: "Max", voice: "rounded", rate: 0.96, tint: "var(--tint-2)" }, robin: { name: "Robin", voice: "glassy", rate: 1, tint: "var(--tint-3)" } }),
+  cast: () => ({ sam: { name: "Sam", voice: "airy", rate: 1, tint: "var(--tint-1)" }, max: { name: "Max", voice: "rounded", rate: 1, tint: "var(--tint-2)" }, robin: { name: "Robin", voice: "glassy", rate: 1, tint: "var(--tint-3)" } }),
   fresh: (idx) => ({ idx, asked: [], log: [], pending: null, finished: false }),
   facts(st) {
     const [topic, f, lie, truth] = LIES[st.idx];
@@ -1674,8 +1743,48 @@ function extractObjects(buf) {
   }
   return { objs, rest: depth > 0 && start >= 0 ? buf.slice(start) : "" };
 }
+// Streams one narrated turn: speaks each line as it arrives, and returns the meta line.
+async function streamTurn(prompt, b, ep) {
+  const speech = [];
+  let buf = "", raw = "", meta = null, busy = true, failure = null;
+  setBusy(true);
+  const stopBusy = () => { if (busy) { busy = false; setBusy(false); } };
+  const emit = (line) => { stopBusy(); speech.push(addLines(b, [line])); };
+  try {
+    await caps.S(prompt, {
+      modelTier: "quick", cache: false,
+      onText: ({ delta }) => {
+        raw += delta; buf += delta;
+        const { objs, rest } = extractObjects(buf); buf = rest;
+        objs.forEach((o) => {
+          if (!o || typeof o !== "object") return;
+          if (o.meta && typeof o.meta === "object") { meta = o.meta; return; }
+          if (typeof o.text === "string") { const text = cleanText(o.text); if (text && alive(ep)) emit({ who: normWho(o.who), text }); }
+        });
+      }
+    });
+  } catch (e) { failure = e; }
+  stopBusy();
+  if (alive(ep) && !b.lines.length && raw.trim() && !raw.includes("{")) raw.split(/\n+/).map(cleanText).filter(Boolean).forEach((text) => emit(n(text)));
+  return { meta, failure, speech, emit };
+}
 const Mystery = {
   id: "mystery", title: "Lights Out", tint: "var(--tint-5)", daily: false, scene: "inn",
+  storeKey: () => MYSTERY_KEY,
+  modeLabel: () => "",
+  heading: (r) => `Lights Out · ${r.st.case.title}`,
+  again: { label: "Play again", go: () => startGame("mystery", "new") },
+  extra: { label: "Write a new case", go: () => generateCase() },
+  restart: (r) => startGame("mystery", "new", { case: r.st.case.generated ? r.st.case : null, limit: r.st.limit }),
+  homeRow({ main, acts, btn, segOf }) {
+    const set = h("div", "g-settings");
+    set.append(segOf("Suspects", "suspects", [3, 4, 5], String), segOf("Questions", "questions", [8, 12, 20, 0], (v) => (v ? String(v) : "No limit")));
+    main.append(set);
+    const saved = store.get(MYSTERY_KEY);
+    acts.append(btn("btn primary", "Play", () => startGame("mystery", "new")));
+    if (saved && saved.case && !saved.ended && saved.turns && saved.turns.length) acts.append(btn("btn", "Continue", () => startGame("mystery", "continue")));
+    acts.append(btn("link", "Write me a new case", () => generateCase()));
+  },
   blurb: "A whodunit in the pitch dark. Question the suspects, feel for clues, and name the killer before dawn.",
   howto: ["Talk to anyone by name: \"Hank, where were you?\"", "Feel, smell and listen: \"I feel the doctor's slippers.\" \"I search the cellar stairs.\"", "Say \"think back\" to remember what you heard. Asking \"who's here?\" or \"what do I know?\" is free.", "When you're sure, say \"I accuse\" and their name, and say why."],
   cast(st) {
@@ -1745,29 +1854,11 @@ const Mystery = {
     if (G.ended) return speak([n("This case is closed. Say menu to pick another game.")], { you: t });
     if (!caps.S) { toast("Claude isn't available in this view, so the story can't continue."); return; }
     const b = newBlock(t);
-    const speech = [];
-    let buf = "", raw = "", meta = null, busy = true, failure = null;
-    setBusy(true);
-    const stopBusy = () => { if (busy) { busy = false; setBusy(false); } };
-    const emit = (line) => { stopBusy(); speech.push(addLines(b, [line])); };
-    try {
-      await caps.S(this.buildPrompt(G, t), {
-        modelTier: "quick", cache: false,
-        onText: ({ delta }) => {
-          raw += delta; buf += delta;
-          const { objs, rest } = extractObjects(buf); buf = rest;
-          objs.forEach((o) => {
-            if (!o || typeof o !== "object") return;
-            if (o.meta && typeof o.meta === "object") { meta = o.meta; return; }
-            if (typeof o.text === "string") { const text = cleanText(o.text); if (text && alive(ep)) emit({ who: normWho(o.who), text }); }
-          });
-        }
-      });
-    } catch (e) { failure = e; }
-    stopBusy();
+    const turn = await streamTurn(this.buildPrompt(G, t), b, ep);
     if (!alive(ep)) return;
-    if (!b.lines.length && raw.trim() && !raw.includes("{")) raw.split(/\n+/).map(cleanText).filter(Boolean).forEach((text) => emit(n(text)));
-    if (failure && !b.lines.length) { sampleError(failure); b.revealed = true; renderCaption(); return; }
+    if (turn.failure && !b.lines.length) { sampleError(turn.failure); b.revealed = true; renderCaption(); return; }
+    const emit = turn.emit, speech = turn.speech;
+    let meta = turn.meta;
     if (!b.lines.length) { emit(n("The wind fills the silence. Try asking that another way.")); meta = { tick: false }; }
     const m = meta || {};
     const ids = new Set(G.case.clues.map((c) => c.id));
@@ -1811,8 +1902,207 @@ const Mystery = {
   }
 };
 
-const GAMES = { link: Link, warmer: Warmer, liar: Liar, box: Box, mystery: Mystery };
-const ORDER = ["link", "warmer", "liar", "box", "mystery"];
+/* =====================================================================
+   GAME: Quest (a text adventure you play out loud)
+   ===================================================================== */
+const QRE = {
+  where: /^(where am i|where are we|where is this)[?.!]*$/i,
+  bag: /^(what am i (carrying|holding)|what do i have|what have i got|inventory|check (my )?(bag|pockets|inventory)|what'?s in my (bag|pockets))[?.!]*$/i,
+  goal: /^(what'?s my goal|what is my goal|what am i (doing|supposed to do|meant to do)|what do i (need|have) to do|remind me (of )?(my|the) goal|my goal|goal)[?.!]*$/i,
+  turns: /^(how many turns( do i have)?( left)?|how long do i have|how much time( do i have)?( left)?)[?.!]*$/i,
+  surprise: /\b(surprise|anything|whatever|random|you (pick|choose|decide)|don'?t (know|mind|care)|no idea)\b/i,
+};
+function listWords(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+function normalizePremise(r) {
+  if (!r || typeof r !== "object") return null;
+  const str = (v, max) => (typeof v === "string" ? cleanText(v).slice(0, max || 400) : "");
+  const title = str(r.title, 60), goal = str(r.goal, 140);
+  const opening = (Array.isArray(r.opening) ? r.opening : [r.opening]).map((x) => str(x, 400)).filter(Boolean).slice(0, 4);
+  const beats = (Array.isArray(r.beats) ? r.beats : []).map((x) => str(x, 400)).filter(Boolean).slice(0, 3);
+  if (!title || !goal || !opening.length || beats.length < 2) return null;
+  const used = new Set(["narrator"]);
+  const cast = (Array.isArray(r.cast) ? r.cast : []).slice(0, 3).map((c, i) => {
+    let id = slug(str(c && c.id) || str(c && c.name)).replace(/_/g, "") || "friend" + (i + 1);
+    while (used.has(id)) id += "x";
+    used.add(id);
+    return { id, name: str(c && c.name, 30) || cap(id), tag: str(c && c.tag, 20) || "friend", manner: str(c && c.manner, 120) };
+  });
+  const items = (Array.isArray(r.items) ? r.items : []).slice(0, 4).map((x) => ({ name: str(x && x.name, 30), use: str(x && x.use, 140) })).filter((x) => x.name);
+  return { title, blurb: str(r.blurb, 160), opening, goal, place: str(r.place, 40) || "the start", cast, beats, items, secret: str(r.secret, 300), win: str(r.win, 300) || "You did it.", lose: str(r.lose, 300) || "Time runs out, and the story ends here for now." };
+}
+const Quest = {
+  id: "quest", title: "Quest", tint: "var(--tint-6)", daily: false, list: QUESTS, scene: "none",
+  blurb: "A text adventure you play out loud. Say what you do, and the story answers.",
+  howto: ["The narrator sets the scene. Say what you want to do, in your own words.", "You have a set number of turns to reach your goal.", "Ask \"where am I?\", \"what am I carrying?\" or \"what's my goal?\" any time. Those are free.", "Risky moves can go well or badly. There's a little luck in every turn."],
+  storeKey: (r) => (r.mode === "daily" ? dailyKey("quest", r.day) : QUEST_KEY),
+  modeLabel: (r) => (r.mode === "daily" ? `· Daily #${r.day}` : "· Your story"),
+  heading: (r) => (r.mode === "daily" ? `Quest · Daily #${r.day}` : "Quest · Your story"),
+  again: { label: "Make your own", go: () => startGame("quest", "custom") },
+  restart: (r) => startGame("quest", "custom", { premise: r.st.premise }),
+  cast(st) {
+    const c = {};
+    ((st.premise && st.premise.cast) || []).forEach((x, i) => { const [voice, rate, tint] = SLOTS[i % 3]; c[x.id] = { name: x.name, tag: x.tag, voice, rate, tint }; });
+    return c;
+  },
+  fresh(premise, kind) {
+    return { v: 1, kind, premise: premise || null, phase: premise ? "play" : "ask", total: prefs.length, turn: 0, place: premise ? premise.place : "", items: [], beat: 1, turns: [], ended: null, finished: false };
+  },
+  prepare(mode, opts, day) {
+    if (mode === "daily") {
+      const saved = store.get(dailyKey("quest", day));
+      if (saved && saved.premise) return { st: saved, resumed: saved.turn > 0 };
+      return { st: this.fresh(QUESTS[(day - 1) % QUESTS.length], "daily"), resumed: false };
+    }
+    if (mode === "continue") { const saved = store.get(QUEST_KEY); return saved && saved.premise ? { st: saved, resumed: saved.turn > 0 } : null; }
+    return { st: this.fresh(opts.premise || null, "custom"), resumed: false };
+  },
+  goalText: (p) => p.goal.replace(/[.!]+$/, ""),
+  bagLine: (st) => (st.items.length ? `You're carrying: ${listWords(st.items)}.` : "You're not carrying anything yet."),
+  openingLines(st) {
+    const p = st.premise;
+    const head = run.mode === "daily" ? `Quest. Daily adventure number ${run.day}: ${p.title}.` : `${p.title}.`;
+    const how = dictUsable() || !caps.resolved.has("dictation") ? (hoverless ? "Tap the glowing button and say what you do." : "Tap the space bar and say what you do.") : "Type what you do in the box below.";
+    return [n(`${head} You have ${NUMW[st.total] || st.total} turns.`), ...p.opening.map(n), n(how)];
+  },
+  start(st, { resumed, quiet }) {
+    if (st.phase !== "play" || !st.premise) {
+      st.phase = "ask";
+      speak([n("Quest. Let's make your own adventure."), n("What kind of story do you want? Say anything: a place, a hero, a mood. Or say surprise me.")], { quiet });
+      return;
+    }
+    const p = st.premise;
+    if (resumed) {
+      const left = st.total - st.turn;
+      speak([n(`You're back in ${p.title}, with ${NUMW[left] || left} turn${left === 1 ? "" : "s"} left.`), n(`You're at ${st.place || p.place}. ${this.bagLine(st)} Your goal: ${this.goalText(p)}.`), n("What do you do?")], { quiet });
+      return;
+    }
+    speak(this.openingLines(st), { quiet });
+  },
+  status(st) {
+    if (st.finished) return "The end";
+    if (st.phase === "building") return "Writing your story…";
+    if (st.phase !== "play") return "Your own story";
+    return `Turn ${Math.min(st.turn + 1, st.total)} of ${st.total}`;
+  },
+  low(st) { return st.phase === "play" && !st.finished && st.total - st.turn <= 2; },
+  board(st, el) {
+    const p = st.premise;
+    if (!p) { el.append(h("p", "tries", st.phase === "building" ? "Writing your story…" : "Say what kind of adventure you want.")); return; }
+    const goal = h("p", "goal"); goal.append(h("small", "", p.title), document.createTextNode(p.goal)); el.append(goal);
+    const chips = h("div", "chips");
+    const chip = (label, text, tint) => { const c = h("span", "chip"); if (tint) c.style.setProperty("--line-tint", tint); c.append(h("b", "", label), document.createTextNode(text)); chips.append(c); };
+    chip("Where", st.place || p.place);
+    chip("Carrying", st.items.length ? st.items.join(", ") : "nothing yet");
+    p.cast.forEach((c) => chip(c.name, c.tag, tintOf(c.id)));
+    el.append(chips);
+  },
+  story(st) {
+    if (!st.premise) return [];
+    const out = st.premise.opening.map((text) => ({ who: "narrator", text }));
+    st.turns.forEach((t) => { out.push({ me: true, text: t.you }); t.lines.forEach((l) => out.push(l)); });
+    return out;
+  },
+  homeRow({ main, acts, day, btn, segOf }) {
+    const saved = store.get(dailyKey("quest", day));
+    const status = h("p", "g-status");
+    const done = !!(saved && saved.finished && saved.result);
+    const todays = saved && saved.premise ? saved.premise : QUESTS[(day - 1) % QUESTS.length];
+    if (done) status.append(document.createTextNode("Today: "), h("b", "", saved.result.share.split("\n").slice(1).join("  ")));
+    else status.textContent = `Daily #${day}: ${todays.title}` + (saved && saved.turn > 0 ? " · in progress" : "");
+    main.append(status);
+    const set = h("div", "g-settings");
+    set.append(segOf("Length", "length", [8, 15, 25], (v) => ({ 8: "Short", 15: "Medium", 25: "Long" })[v]));
+    main.append(set);
+    acts.append(
+      btn("btn" + (done ? "" : " primary"), done ? "Today's result" : saved && saved.turn > 0 ? "Continue" : "Play today's", () => startGame("quest", "daily")),
+      btn("btn" + (done ? " primary" : ""), "Make your own", () => startGame("quest", "custom"))
+    );
+    const mine = store.get(QUEST_KEY);
+    if (mine && mine.premise && !mine.finished && mine.turn > 0) acts.append(btn("link", `Continue ${mine.premise.title}`, () => startGame("quest", "continue")));
+  },
+  buildPrompt(st, you, turnNo, roll) {
+    const p = st.premise;
+    const label = (who) => (who === "narrator" ? "NARRATOR" : String(who).toUpperCase());
+    const story = st.turns.slice(-30).map((x) => [`PLAYER: ${x.you}`].concat(x.lines.map((l) => `${label(l.who)}: ${l.text}`)).join("\n")).join("\n\n");
+    const frac = turnNo / st.total;
+    let pace = "";
+    if (turnNo >= st.total) pace = "THIS IS THE FINAL TURN. End the story in this reply: \"win\" if the goal is reached or one good move away, otherwise \"lose\".";
+    else if (st.total - turnNo === 1) pace = "Only one turn is left after this one. Bring the player right up to the ending.";
+    else if (frac >= 0.7 && st.beat < 3) pace = "The story is running behind. Move on to the third obstacle in this reply.";
+    else if (frac >= 0.4 && st.beat < 2) pace = "The story is running behind. Move on to the second obstacle in this reply.";
+    return [
+      QUEST_RULES,
+      "PREMISE (your secret notes: reveal them only through play)\n" + JSON.stringify({ title: p.title, goal: p.goal, start: p.place, characters: p.cast, obstacles: p.beats, items: p.items, secret: p.secret, win: p.win, lose: p.lose }, null, 1),
+      `CHARACTER IDS: ${p.cast.length ? p.cast.map((c) => `${c.id} (${c.name}, the ${c.tag})`).join(", ") : "none, only the narrator speaks"}`,
+      `STATE\nTurn ${turnNo} of ${st.total}.${pace ? " " + pace : ""}\nPlace: ${st.place || p.place}\nCarrying: ${st.items.join(", ") || "nothing"}\nObstacle: ${st.beat} of 3\nLuck roll for this turn: ${roll}`,
+      "OPENING (the player has heard this)\n" + p.opening.join("\n"),
+      "STORY SO FAR (oldest first)\n" + (story || "(nothing yet)"),
+      "THE PLAYER JUST SAID (speech-to-text, may contain mistakes):\n" + JSON.stringify(you),
+      "Reply now, in the reply format: one JSON object per line, ending with the meta line."
+    ].join("\n\n");
+  },
+  async choose(t) {
+    const ep = epoch, st = run.st;
+    let premise = null, picked = false;
+    if (QRE.surprise.test(t) || !caps.S) { premise = QUESTS[practiceIdx(this, run.day)]; picked = true; }
+    else {
+      st.phase = "building"; refreshPlay();
+      const r = await askJSON(questSpinePrompt(t));
+      if (!alive(ep)) return;
+      premise = normalizePremise(r);
+      if (!premise) { premise = QUESTS[practiceIdx(this, run.day)]; picked = true; }
+    }
+    Object.assign(st, { premise, phase: "play", place: premise.place, items: [], beat: 1, turn: 0, turns: [] });
+    setCast(this.cast(st));
+    saveRun(); refreshPlay(); renderDrawer();
+    return speak([...(picked ? [n("Here's one I think you'll like.")] : []), ...this.openingLines(st)], { you: t });
+  },
+  async onSay(t) {
+    const ep = epoch, st = run.st;
+    if (st.finished) return speak([n("This story is over. Say menu to pick another game.")], { you: t });
+    if (st.phase !== "play" || !st.premise) return this.choose(t);
+    const p = st.premise, left = st.total - st.turn;
+    const leftWords = `${NUMW[left] || left} turn${left === 1 ? "" : "s"} left`;
+    if (QRE.where.test(t)) return speak([n(`You're at ${st.place || p.place}.`)], { you: t });
+    if (QRE.bag.test(t)) return speak([n(this.bagLine(st))], { you: t });
+    if (QRE.goal.test(t)) return speak([n(`Your goal: ${this.goalText(p)}.`)], { you: t });
+    if (QRE.turns.test(t)) return speak([n(`You have ${leftWords}.`)], { you: t });
+    if (RE.recap.test(t)) return speak([n(`Your goal: ${this.goalText(p)}. You're at ${st.place || p.place}. ${this.bagLine(st)} You have ${leftWords}.`)], { you: t });
+    if (!caps.S) { toast("Claude isn't available in this view, so the story can't continue."); return; }
+    const b = newBlock(t);
+    const turnNo = st.turn + 1;
+    const res = await streamTurn(this.buildPrompt(st, t, turnNo, 1 + Math.floor(Math.random() * 6)), b, ep);
+    if (!alive(ep)) return;
+    if (res.failure && !b.lines.length) { sampleError(res.failure); b.revealed = true; renderCaption(); return; }
+    if (!b.lines.length) { res.emit(n("The story holds its breath. Try saying that another way.")); await Promise.all(res.speech); return; }
+    const m = res.meta || {};
+    st.turn = turnNo;
+    if (typeof m.place === "string" && m.place.trim()) st.place = cleanText(m.place).slice(0, 40);
+    if (Array.isArray(m.items)) st.items = m.items.map((x) => cleanText(x).slice(0, 30)).filter(Boolean).slice(0, 4);
+    const beat = Math.round(Number(m.beat));
+    if (beat >= 1 && beat <= 3) st.beat = Math.max(st.beat, beat);
+    let end = m.end === "win" || m.end === "lose" ? m.end : null;
+    if (!end && turnNo >= st.total) { end = "lose"; res.emit(n(p.lose)); }
+    st.turns.push({ you: t, lines: b.lines.map(({ who, text }) => ({ who, text })) });
+    if (end) {
+      st.ended = end;
+      const win = end === "win";
+      finishWith({
+        win, title: win ? "You did it" : "Out of turns",
+        sum: win ? `${p.title}: finished in ${st.turn} of ${st.total} turns.` : `${p.title} ended before you reached your goal.`,
+        share: `Pitch Dark · Quest${run.mode === "daily" ? ` #${run.day}` : ""}\n${p.title}\n${win ? `✅ Finished in ${st.turn} of ${st.total} turns` : "⌛ Ran out of turns"}`,
+        moreLabel: "The story's secret", more: p.secret
+      });
+    } else { saveRun(); refreshPlay(); }
+    renderDrawer();
+    await Promise.all(res.speech);
+    if (!alive(ep)) return;
+    if (end) { if (end === "win") Sound.win(); resultSoon(); }
+  }
+};
+
+const GAMES = { link: Link, warmer: Warmer, liar: Liar, box: Box, quest: Quest, mystery: Mystery };
+const ORDER = ["link", "warmer", "liar", "box", "quest", "mystery"];
 function modeLine(g) { const name = g.title.replace(/[?!.]+$/, ""); return run.mode === "daily" ? `${name}. Daily puzzle number ${run.day}.` : `${name}. Practice round.`; }
 function shareTag() { return run.mode === "daily" ? ` #${run.day}` : " (practice)"; }
 function practiceIdx(g, day) {
@@ -1867,9 +2157,9 @@ async function startGame(id, mode, opts = {}) {
   const ep = epoch;
   const day = today();
   let st, resumed = false;
-  if (id === "mystery") {
-    const prep = g.prepare(mode, opts);
-    if (!prep) { toast("There's no saved case to continue."); return; }
+  if (g.prepare) {
+    const prep = g.prepare(mode, opts, day);
+    if (!prep) { toast("There's nothing saved to continue."); return; }
     st = prep.st; resumed = prep.resumed;
   } else if (mode === "daily") {
     const saved = store.get(dailyKey(id, day));
@@ -1885,7 +2175,7 @@ async function startGame(id, mode, opts = {}) {
   block = null; lastBlock = null;
   showScreen("play");
   $("gameTitle").textContent = g.title;
-  $("gameMode").textContent = id === "mystery" ? "" : mode === "daily" ? `· Daily #${day}` : "· Practice";
+  $("gameMode").textContent = g.modeLabel ? g.modeLabel(run) : mode === "daily" ? `· Daily #${day}` : "· Practice";
   $("helpLabel").textContent = id === "mystery" ? "Notebook" : "Help";
   $("caption").setAttribute("aria-live", caps.T && !ttsOff ? "off" : "polite");
   if (caps.resolved.has("dictation") && !dictUsable()) openTyping(false);
@@ -1919,14 +2209,21 @@ function renderHome() {
   const day = today();
   $("todayLabel").textContent = `Today's puzzles · #${day}`;
   const ul = $("gameList"); ul.textContent = "";
+  const btn = (cls, text, fn) => { const b = h("button", cls, text); b.type = "button"; b.addEventListener("click", fn); return b; };
+  const segOf = (label, key, values, fmt) => {
+    const wrap = h("span", "opt"); wrap.append(document.createTextNode(label));
+    const seg = h("span", "seg"); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", label);
+    values.forEach((v) => { const b = btn("", fmt(v), () => { prefs[key] = v; savePrefs(); renderHome(); }); b.setAttribute("aria-pressed", String(prefs[key] === v)); seg.append(b); });
+    wrap.append(seg); return wrap;
+  };
   ORDER.forEach((id) => {
     const g = GAMES[id];
     const li = h("li", "game"); li.style.setProperty("--line-tint", g.tint);
     const main = h("div");
     main.append(h("h2", "", g.title), h("p", "blurb", g.blurb));
     const acts = h("div", "g-actions");
-    const btn = (cls, text, fn) => { const b = h("button", cls, text); b.type = "button"; b.addEventListener("click", fn); return b; };
-    if (g.daily) {
+    if (g.homeRow) g.homeRow({ main, acts, day, btn, segOf });
+    else {
       const saved = store.get(dailyKey(id, day));
       const status = h("p", "g-status");
       const done = !!(saved && saved.finished && saved.result);
@@ -1939,20 +2236,6 @@ function renderHome() {
         btn("btn" + (done ? "" : " primary"), done ? "Today's result" : saved && saved.idx != null ? "Continue" : "Play today's", () => startGame(id, "daily")),
         btn("btn" + (done ? " primary" : ""), "Practice", () => startGame(id, "practice"))
       );
-    } else {
-      const set = h("div", "g-settings");
-      const segOf = (label, key, values, fmt) => {
-        const wrap = h("span", "opt"); wrap.append(document.createTextNode(label));
-        const seg = h("span", "seg"); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", label);
-        values.forEach((v) => { const b = btn("", fmt(v), () => { prefs[key] = v; savePrefs(); renderHome(); }); b.setAttribute("aria-pressed", String(prefs[key] === v)); seg.append(b); });
-        wrap.append(seg); return wrap;
-      };
-      set.append(segOf("Suspects", "suspects", [3, 4, 5], String), segOf("Questions", "questions", [8, 12, 20, 0], (v) => (v ? String(v) : "No limit")));
-      main.append(set);
-      const saved = store.get(MYSTERY_KEY);
-      acts.append(btn("btn primary", "Play", () => startGame("mystery", "new")));
-      if (saved && saved.case && !saved.ended && saved.turns && saved.turns.length) acts.append(btn("btn", "Continue", () => startGame("mystery", "continue")));
-      acts.append(btn("link", "Write me a new case", () => generateCase()));
     }
     li.append(main, acts);
     ul.append(li);
@@ -1972,11 +2255,12 @@ function homeVoice(t) {
   const s = t.toLowerCase();
   if (/\b(read|list|what games|options|menu|what can i play)\b/.test(s)) { readMenu(); return; }
   const practice = /\b(practice|practise|another|extra|again)\b/.test(s);
-  const pairs = [["link", /\blinks?\b|lincoln/], ["warmer", /\bwarm(er)?\b|hot and cold/], ["liar", /\bliar\b|\blie\b|lying|who'?s/], ["box", /\bbox\b|\bbocks\b/], ["mystery", /mystery|murder|lights? out|whodunit|detective|\binn\b/]];
+  const pairs = [["link", /\blinks?\b|lincoln/], ["warmer", /\bwarm(er)?\b|hot and cold/], ["liar", /\bliar\b|\blie\b|lying|who'?s/], ["box", /\bbox\b|\bbocks\b/], ["quest", /quest|adventure|story|explore/], ["mystery", /mystery|murder|lights? out|whodunit|detective|\binn\b/]];
   const hit = pairs.find(([, re]) => re.test(s));
-  if (!hit) { speak([n("I didn't catch which game. Say The Link, Warmer, Who's Lying, The Box, or Lights Out.")]); return; }
+  if (!hit) { speak([n("I didn't catch which game. Say The Link, Warmer, Who's Lying, The Box, Quest, or Lights Out.")]); return; }
   const id = hit[0];
   if (id === "mystery") { const saved = store.get(MYSTERY_KEY); startGame("mystery", /continue/.test(s) && saved && !saved.ended ? "continue" : "new"); return; }
+  if (id === "quest") { const mine = store.get(QUEST_KEY); startGame("quest", /continue/.test(s) && mine && mine.premise && !mine.finished ? "continue" : /\b(own|make|custom|mine|new)\b/.test(s) ? "custom" : "daily"); return; }
   startGame(id, practice ? "practice" : "daily");
 }
 function readMenu() {
@@ -1987,6 +2271,7 @@ function readMenu() {
     n("Warmer: find the secret word by how warm your guesses are."),
     n("Who's Lying: three facts, one lie."),
     n("The Box: guess what's inside with ten yes or no questions."),
+    n("Quest: a text adventure you play out loud."),
     n("Lights Out: a murder mystery in the dark."),
     n(hoverless ? "Tap the button and say a game's name to play." : "Tap the space bar and say a game's name to play.")
   ]);
@@ -1996,7 +2281,7 @@ function readMenu() {
 function showResult() {
   if (!run || !run.st || !run.st.result) return;
   const g = GAMES[run.id], r = run.st.result;
-  $("resWhen").textContent = run.id === "mystery" ? `${g.title} · ${run.st.case.title}` : run.mode === "daily" ? `${g.title} · Daily #${run.day}` : `${g.title} · Practice`;
+  $("resWhen").textContent = g.heading ? g.heading(run) : run.mode === "daily" ? `${g.title} · Daily #${run.day}` : `${g.title} · Practice`;
   const t = $("resTitle"); t.textContent = r.title; t.classList.toggle("bad", !r.win);
   $("resSum").textContent = r.sum;
   $("resShare").textContent = r.share;
@@ -2006,8 +2291,9 @@ function showResult() {
   $("resMoreWrap").hidden = !r.more;
   $("resMoreLabel").textContent = r.moreLabel || "The answer";
   $("resMore").textContent = r.more || "";
-  $("resAgain").textContent = run.id === "mystery" ? "Play again" : "Practice round";
-  $("resNew").hidden = run.id !== "mystery";
+  $("resAgain").textContent = g.again ? g.again.label : "Practice round";
+  $("resNew").hidden = !g.extra;
+  if (g.extra) $("resNew").textContent = g.extra.label;
   $("drawer").hidden = true;
   $("result").hidden = false;
   t.focus();
@@ -2033,6 +2319,10 @@ function renderDrawer() {
     : "Type in the box and press Enter.";
   $("ambRow").hidden = !isM;
   $("btnRestart").hidden = !run || run.mode === "daily";
+  const entries = game.story && run ? game.story(run.st) : [];
+  $("dStoryWrap").hidden = !entries.length;
+  const sbox = $("dStory"); sbox.textContent = "";
+  entries.forEach((e) => { const p = h("p", e.me ? "me" : ""); p.append(h("b", "", (e.me ? "You" : nameOf(e.who)) + ": "), document.createTextNode(e.text)); sbox.append(p); });
   $("dMystery").hidden = !isM;
   if (!isM) return;
   const G = run.st, c = G.case;
@@ -2175,11 +2465,12 @@ $("btnDrawerClose").addEventListener("click", closeDrawer);
 $("btnHome2").addEventListener("click", goHome);
 $("btnRestart").addEventListener("click", () => {
   if (!run) return;
-  if (run.id === "mystery") startGame("mystery", "new", { case: run.st.case.generated ? run.st.case : null, limit: run.st.limit });
-  else startGame(run.id, "practice", { state: GAMES[run.id].fresh(run.st.idx), restart: true });
+  const g = GAMES[run.id];
+  if (g.restart) g.restart(run);
+  else startGame(run.id, "practice", { state: g.fresh(run.st.idx), restart: true });
 });
-$("resAgain").addEventListener("click", () => { if (!run) return; if (run.id === "mystery") startGame("mystery", "new"); else startGame(run.id, "practice"); });
-$("resNew").addEventListener("click", generateCase);
+$("resAgain").addEventListener("click", () => { if (!run) return; const g = GAMES[run.id]; if (g.again) g.again.go(); else startGame(run.id, "practice"); });
+$("resNew").addEventListener("click", () => { if (!run) return; const g = GAMES[run.id]; if (g.extra) g.extra.go(); });
 $("resHome").addEventListener("click", goHome);
 $("btnCopy").addEventListener("click", copyShare);
 $("btnGenStop").addEventListener("click", () => { if (genCtl) genCtl.abort(); });
@@ -2213,6 +2504,7 @@ function boot(data) {
   const snap = data && data.run;
   if (snap && snap.id && GAMES[snap.id]) {
     if (snap.id === "mystery") startGame("mystery", "continue", { quiet: true });
+    else if (snap.id === "quest") startGame("quest", snap.mode === "daily" ? "daily" : "continue", { quiet: true });
     else if (snap.mode === "daily") startGame(snap.id, "daily", { quiet: true });
     else if (snap.st) startGame(snap.id, "practice", { state: snap.st, quiet: true });
   }
