@@ -3,9 +3,9 @@
 Short audio games you play by listening and talking out loud. There's nothing to look
 at, so you can close your eyes. An AI host and a cast of voices talk back.
 
-There are four quick daily puzzles and one longer mystery. Each daily puzzle is the
-same for everyone that day, takes a minute or two, and gives a result you can share.
-Every game also has unlimited practice rounds.
+There are four quick daily puzzles, a turn-based adventure and a longer mystery. Each
+daily puzzle is the same for everyone that day and gives a result you can share. The
+four quick games take a minute or two and have unlimited practice rounds.
 
 ## The games
 
@@ -35,6 +35,23 @@ Something is hidden in a box. Say "shake the box" to hear it: it might rattle, s
 jingle, tick or squeak (all synthesized in the page). Then ask up to 10 yes-or-no
 questions and guess.
 Share: `⬛⬛⬛📦  Opened in 4`
+
+### Quest (adventure)
+A text adventure you play out loud, one turn at a time. The narrator sets a short
+scene, you say what you do in your own words, and the story answers.
+- **One clear goal** per story, at most three characters with simple names, and at most
+  four things to carry.
+- **Free questions:** "where am I?", "what am I carrying?" and "what's my goal?" are
+  answered instantly and don't use a turn.
+- **Length:** Short (8 turns), Medium (15) or Long (25). The narrator paces the story to
+  end on time.
+- **A little luck:** every turn has a hidden dice roll, so risky moves can go well or
+  badly. Nothing ever goes worse than a small setback.
+- **Daily adventure:** 27 hand-edited stories, such as "The Borrowed Dinosaur Bone" and
+  "The Shy Tuba", one per day.
+- **Make your own:** say any idea ("a pirate dog looking for treasure") and Claude builds
+  an original story around it.
+Share: `The Borrowed Dinosaur Bone  ✅ Finished in 6 of 8 turns`
 
 ### Lights Out (mystery)
 A whodunit in the pitch dark at a snowbound inn. Question the suspects, feel and smell
@@ -76,8 +93,12 @@ judgment, on the fastest model:
 - **Warmer:** how warm each guess is.
 - **Who's Lying?:** the follow-up answers.
 - **The Box:** the yes-or-no answers.
-- **Lights Out:** the whole story, streamed line by line.
+- **Quest and Lights Out:** the whole story, streamed line by line.
 
-The puzzles themselves are written into the page, not generated, so the daily one
-really is the same for everyone. Daily progress, streaks and the mystery in progress
-are saved in your browser.
+The puzzles and daily adventures are written into the page, not generated, so the daily
+one really is the same for everyone.
+
+Every prompt was tested against the fast model before release, including scripted
+playthroughs with a careful player and with one trying to break the game.
+
+Daily progress, streaks and any story or mystery in progress are saved in your browser.
