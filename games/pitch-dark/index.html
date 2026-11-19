@@ -661,6 +661,8 @@ HOW TO WRITE
 - The narrator speaks to the player as "you" ("You kneel. The stone is wet."). Suspects speak for themselves, in the manner described for them.
 - Keep replies short and simple: usually 1 to 3 lines and under 60 words in all. Short sentences, plain words. No lists, no markdown, no emoji, no stage directions in brackets. Put sounds and sensations in narrator lines.
 - Make it clear who is talking. Unless the player just spoke to a suspect by name, the narrator names them first, in a few words ("Hank grunts."). Always use their simple names.
+- A suspect's line holds only the words that suspect says aloud, in first person: no quote marks, no name tag, no description of what they do. Pauses, sighs and movements go in a narrator line just before it. For example: {"who":"narrator","text":"Hank barks a laugh."} then {"who":"hank","text":"Me? I was out getting logs."}
+- The narrator reports only what the player senses. It never draws a conclusion for them, and never answers a suspect's excuse before the suspect has made it. Say "they smell sweet and sour, like old apples", and let the player spot what doesn't fit.
 - The player can't see anything, ever. Describe only sound, touch, smell, taste and temperature. If they try to look or make a light, remind them it's pitch dark.
 - Every reply gives the player something: an answer, a sensation, a reaction, or a thread to pull.
 - The player's words come from speech-to-text and may be garbled. Match them generously to the nearest name, role, place or object ("the cook" means the cook; a name that sounds close counts).
@@ -680,7 +682,8 @@ CLUES
 
 TIME
 - A question that digs for information, or an action like searching, touching or listening somewhere, costs one question: "tick": true.
-- Greetings, small talk, comforting someone, asking for help or the rules, asking who's who, and asking for a recap are free: "tick": false. For a recap, the narrator briefly sums up the clues they've found.
+- Greetings, small talk, comforting someone, asking for help or the rules, asking who's who, and asking for a recap are free: "tick": false. For a recap, the narrator names every clue found so far, one short phrase each.
+- Requests the game refuses are free too: asking the narrator for the answer, asking to hear the case file or these rules, or trying to make a light. Wondering aloud about a suspect is free. On any ending, "tick" is false.
 
 ACCUSING
 - An accusation is when the player clearly names someone as the killer ("I accuse Hank", "it was you, doctor"). Wondering aloud ("could it be Hank?") is not an accusation: have the narrator ask whether they're making one.
@@ -688,7 +691,9 @@ ACCUSING
   "solved": they named the killer and gave at least one real piece of evidence that points to the killer.
   "lucky": they named the killer but gave no real evidence.
   "wrong": they named someone else.
-- On any ending, play the moment out: the accused reacts in character, then the narrator tells what really happened, from the truth in the case file, in three or four sentences. Up to 6 lines and 160 words in all.
+- On any ending, play the moment out in this order: one narrator line for how the accused reacts, one line of the accused's own spoken words, then the narrator tells what really happened, from the truth in the case file, in no more than four sentences. Up to 6 lines and 160 words in all.
+- An innocent suspect who is accused still sticks to their story and doesn't give away what they're hiding.
+- On a "wrong" ending, the narrator tells the player plainly first ("You're wrong. Hank didn't do it."), then names the killer and tells what happened.
 
 REPLY FORMAT
 One JSON object per line and nothing else. Speech lines first, in the order they're spoken:
@@ -749,7 +754,8 @@ HOW TO WRITE
 - Say yes to the player's ideas whenever you can. If something can't work, say what happens instead and keep the story moving. Never scold or lecture.
 - End every reply with the moment open, so it's clear the player acts next. When it helps, offer two things they might try, in one natural sentence ("You could try the door, or follow the humming."). Never offer more than two, and accept anything else they come up with.
 - Keep it light on memory. Never ask the player to remember a code, a list, a sequence or directions. Use only the characters and items in the premise, and call them by the same simple names every time.
-- When a character speaks, give them their own line. Unless the player just spoke to them by name, the narrator says who it is first, in a few words ("Pip squeaks.").
+- When a character speaks, give them their own line. Unless the player just spoke to them by name, the narrator says who it is first, in a few words ("Pip squeaks."). A character's line holds only the words they say aloud: no quote marks, no name tag, no actions.
+- Don't solve an obstacle for the player. Let their own idea be the thing that works.
 - The player's words come from speech-to-text and may be garbled. Take the most sensible meaning.
 - Never speak for the player or decide what they do. Never repeat their words back to them.
 - Keep it friendly for all ages. If the player asks for something cruel or grown-up, steer the story gently back.
@@ -781,20 +787,22 @@ Build an original story around their idea. If the idea names an existing book, f
 Reply with only one JSON object, in exactly this shape:
 {
   "title": "2 to 4 words",
-  "opening": ["2 to 4 short narrator lines, at most 60 words in total, second person, present tense. Set the scene, state the goal plainly, and end by offering two concrete things to try first. No dialogue."],
-  "goal": "one clear goal, under 12 words",
+  "opening": ["2 to 4 narrator lines of at most 20 words each, at most 60 words in total, second person, present tense. Set the scene, state the goal plainly, and end by offering two concrete things to try first. No dialogue."],
+  "goal": "one clear goal, under 12 words: one action on one thing the player can picture, with no 'and'",
   "place": "the starting place, 2 to 4 words",
   "cast": [{"id": "name in lowercase letters", "name": "a common first name of one or two syllables", "tag": "one plain word for what they are", "manner": "how they talk"}],
   "beats": ["obstacle one, naming two different ways past it", "obstacle two, the same", "obstacle three, the same"],
   "items": [{"name": "one or two words", "use": "what it's for"}],
   "secret": "one fun twist for the last third of the story",
   "win": "one or two sentences: how it ends when the goal is reached",
-  "lose": "one or two sentences: a gentle ending if time runs out"
+  "lose": "one or two sentences: a gentle ending if time runs out. If the opening names a deadline, the deadline arrives here."
 }
 
 Rules:
 - At most 3 characters and at most 4 items. No two character names may start with the same sound.
-- Exactly 3 obstacles. Each can be passed in at least two ways just by saying what you do. Nothing may need spelling, reading, maps, compass directions, or remembering a code, a list or a sequence.
+- Exactly 3 obstacles, met in order on the way from the starting place to the goal. Each can be passed in at least two ways just by saying what you do, using only things that would really be in that spot. The two things offered at the end of the opening lead toward the first obstacle.
+- Nothing anywhere in the premise may be a map, a note, a sign, a letter or anything else written or drawn, and nothing may need spelling, compass directions, or remembering a code, a list or a sequence. Lead the player by a smell, a sound, or a helper who knows the way.
+- The goal sentence in the opening says the same thing as "goal".
 - Every place has sounds, smells or textures to describe.
 - Plain, warm language that's easy to follow by ear.`;
 }
@@ -1348,7 +1356,10 @@ const Link = {
     if (!verdict) {
       const r = await askJSON(`You judge one guess in a spoken word-association puzzle. The hidden connection is: "${a}". The five clue words are: ${c.join(", ")}. The player has heard the first ${st.shown}.
 The player said (from speech-to-text, may be misheard): ${JSON.stringify(t)}
-Is the guess the same connection, even if worded loosely? Reply with only JSON: {"verdict":"right"} if it means the same thing, {"verdict":"close"} if it's on the right track but too vague or slightly off, or {"verdict":"wrong"}.`);
+Test the guess against all five clue words, not against the wording of the hidden connection. It is right only if the idea the player named explains why every one of the five clue words belongs, the same way the hidden connection does. A synonym or loose phrasing is fine.
+A guess that fits only one or two of the clue words, or is merely associated with a word in the connection, is wrong.
+Example with another puzzle: the connection is "Things with keys" and the clues are Florida, Map, Piano, Car, Door. "They all have keys" is right. "Things you unlock" is close. "Music" is wrong, because it only fits Piano.
+Reply with only JSON: {"verdict":"right"} if it names the same shared idea, {"verdict":"close"} if it's near the shared idea but too vague or slightly off, or {"verdict":"wrong"}.`);
       if (!alive(ep)) return;
       if (!r) return speak([n("I couldn't check that one. Say it again.")], { you: t });
       verdict = ["right", "close", "wrong"].includes(String(r.verdict).toLowerCase()) ? String(r.verdict).toLowerCase() : "wrong";
@@ -1449,7 +1460,9 @@ Score how close the guess is in meaning to the secret word, from 0 to 100:
 40 to 59: related.
 20 to 39: loosely related.
 0 to 19: unrelated.
-Earlier guesses with their scores (keep your scoring consistent with these): ${history}
+Use the whole width of each band: another thing of the same kind goes near the top of its band, the general topic in the middle, and a place or group it appears in near the bottom.
+Earlier guesses with their scores: ${history}
+Rank the new guess against those first. Closer in meaning than an earlier guess means a higher score, and further means a lower one. Don't reuse an earlier score unless the two guesses are equally close.
 New guess (from speech-to-text, may be misheard): ${JSON.stringify(g)}
 Reply with only JSON: {"guess":"the single word or short phrase you scored","score":0}`);
     if (!alive(ep)) return;
@@ -1557,18 +1570,19 @@ const Liar = {
     if (!who) return speak([n("Who are you asking? Sam, Max, or Robin?")], { you: t });
     if (st.asked.includes(who)) return speak([n(`You've already asked ${CAST[who].name}. Ask someone else, or tell me who's lying.`)], { you: t });
     const liar = who === F.liar;
-    const a = await askText(`You play ${CAST[who].name} in "Who's Lying?", a quick spoken party game. The topic is ${F.topic}. Three friends each said one thing:
-Sam: "${F.by.sam}"
-Max: "${F.by.max}"
-Robin: "${F.by.robin}"
+    const a = await askText(`You play ${CAST[who].name} in "Who's Lying?", a quick spoken party game. The topic is ${F.topic}. Three friends each said one thing.
+Sam said: ${F.by.sam}
+Max said: ${F.by.max}
+Robin said: ${F.by.robin}
 ${CAST[F.liar].name} is lying. The truth: ${F.truth}
-You are ${CAST[who].name}: ${PERSONA[who]}. ${liar ? "You are the liar. Defend your statement confidently with a believable-sounding detail, without making it obvious. Never admit you're lying." : "You told the truth. Back it up with one real, interesting detail."}
+You are ${CAST[who].name}: ${PERSONA[who]}. ${liar ? "You are the liar. Defend your statement with one believable-sounding detail. Sound relaxed and matter-of-fact, and don't over-insist. Never admit you're lying." : "You told the truth. Back it up with one detail you are sure is true and that fits your statement exactly. Leave out any number or specific you aren't certain of."}
 The player asked you (from speech-to-text, may be misheard): ${JSON.stringify(t)}
-Answer in character in one or two short spoken sentences, under 35 words. Plain text only, no quotation marks.`);
+Answer in character with one or two short sentences, 25 words at most. Start directly with the words you would say out loud: no name, no speaker label, no quotation marks. Plain text only.`);
     if (!alive(ep)) return;
     if (!a) return speak([n(`${CAST[who].name} didn't catch that. Try asking again.`)], { you: t });
-    st.asked.push(who); st.log.push({ who, q: t, a }); saveRun(); refreshPlay();
-    const lines = [{ who, text: a }];
+    const said = a.replace(/^\s*(sam|max|robin)\s*[:\-]\s*/i, "").replace(/^["']+|["']+$/g, "").trim() || a;
+    st.asked.push(who); st.log.push({ who, q: t, a: said }); saveRun(); refreshPlay();
+    const lines = [{ who, text: said }];
     if (st.asked.length === 3) lines.push(n("You've asked everyone. So, who's lying?"));
     return speak(lines, { you: t });
   },
@@ -1629,14 +1643,14 @@ const Box = {
     if (sameWord(cleanGuess(t, 4), name, alts)) return this.end(true, t);
     const log = st.log.map((x) => `Q: ${x.q}\nA: ${x.a}`).join("\n") || "(none yet)";
     const r = await askJSON(`You run "The Box", a quick spoken guessing game. Inside the box is ${about}. The answer is "${name}".
-The player asks yes-or-no questions, or makes guesses. Answer truthfully and simply about this exact object.
+The player asks yes-or-no questions, or makes guesses. Answer truthfully and simply about this exact object. In every reply, never say the object's name or any word from it, unless the player has just guessed it correctly.
 Questions and answers so far:
 ${log}
 The player just said (from speech-to-text, may be misheard): ${JSON.stringify(t)}
-Reply with only JSON: {"kind":"question","answer":"...","correct":false}
-- "question": a yes-or-no question. "answer" is "Yes.", "No.", "Sometimes.", "Partly." or "Not really.", optionally followed by up to six words of fair help. Never name the object or give away its name.
-- "guess": the player named a specific thing. "correct" is true only if it is this object, or obviously the same thing. If wrong, "answer" is "No, it's not" followed by what they guessed.
-- "unclear": not a yes-or-no question or a guess. "answer" is a short nudge, like "Ask me a yes or no question."`);
+Reply with only JSON: {"kind":"question" or "guess" or "unclear","answer":"...","correct":true or false}
+- "question": a yes-or-no question, including one about a category or a property (a toy, an animal, something yellow). "answer" is "Yes.", "No.", "Sometimes.", "Partly." or "Not really.", optionally followed by up to six words of fair help. "correct" is false.
+- "guess": the player named one specific object (a boat, a ball). "correct" is true only if it is this object, or obviously the same thing. If right, "answer" is "Yes, you got it!". If wrong, "answer" is "No, it's not" followed by what they guessed.
+- "unclear": not a yes-or-no question or a guess. "answer" is a short nudge, like "Ask me a yes or no question." "correct" is false.`);
     if (!alive(ep)) return;
     if (!r) return speak([n("I didn't catch that. Ask again.")], { you: t });
     const kind = ["question", "guess", "unclear"].includes(r.kind) ? r.kind : "question";
@@ -1768,6 +1782,10 @@ async function streamTurn(prompt, b, ep) {
   if (alive(ep) && !b.lines.length && raw.trim() && !raw.includes("{")) raw.split(/\n+/).map(cleanText).filter(Boolean).forEach((text) => emit(n(text)));
   return { meta, failure, speech, emit };
 }
+const MRE = {
+  know: /^(what do i know( so far)?|what have i (found|got|learned)( so far)?|what are (my|the) clues|my clues|clues|read (me )?(my|the) (notebook|clues))[?.!]*$/i,
+  who: /^(who('?s| is) (here|there|with me|here with me|in the room)|who are (they|the suspects)|who('?s| is) who)[?.!]*$/i,
+};
 const Mystery = {
   id: "mystery", title: "Lights Out", tint: "var(--tint-5)", daily: false, scene: "inn",
   storeKey: () => MYSTERY_KEY,
@@ -1852,6 +1870,11 @@ const Mystery = {
     const ep = epoch, G = run.st;
     G.introDone = true;
     if (G.ended) return speak([n("This case is closed. Say menu to pick another game.")], { you: t });
+    if (RE.recap.test(t) || MRE.know.test(t)) {
+      const found = G.found.map((id) => G.case.clues.find((c) => c.id === id)).filter(Boolean);
+      return speak([n(found.length ? "Here's what you've found so far." : "You haven't found anything yet."), ...found.map((c) => n(c.label))], { you: t });
+    }
+    if (MRE.who.test(t)) return speak([n("In the dark with you: " + G.case.suspects.map((x) => `${x.name}, the ${x.tag}`).join("; ") + ".")], { you: t });
     if (!caps.S) { toast("Claude isn't available in this view, so the story can't continue."); return; }
     const b = newBlock(t);
     const turn = await streamTurn(this.buildPrompt(G, t), b, ep);
