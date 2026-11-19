@@ -43,15 +43,15 @@ scene, you say what you do in your own words, and the story answers.
   four things to carry.
 - **Free questions:** "where am I?", "what am I carrying?" and "what's my goal?" are
   answered instantly and don't use a turn.
-- **Length:** Short (8 turns), Medium (15) or Long (25). The narrator paces the story to
-  end on time.
+- **Length:** Short (6 turns), Medium (9) or Long (12). The page sets the pace and sends
+  the narrator a short director's note each turn, so the story ends on time.
 - **A little luck:** every turn has a hidden dice roll, so risky moves can go well or
   badly. Nothing ever goes worse than a small setback.
 - **Daily adventure:** 27 hand-edited stories, such as "The Borrowed Dinosaur Bone" and
   "The Shy Tuba", one per day.
 - **Make your own:** say any idea ("a pirate dog looking for treasure") and Claude builds
   an original story around it.
-Share: `The Borrowed Dinosaur Bone  ✅ Finished in 6 of 8 turns`
+Share: `The Borrowed Dinosaur Bone  ✅ Finished in 8 of 9 turns`
 
 ### Lights Out (mystery)
 A whodunit in the pitch dark at a snowbound inn. Question the suspects, feel and smell
