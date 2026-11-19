@@ -43,8 +43,9 @@ scene, you say what you do in your own words, and the story answers.
   four things to carry.
 - **Free questions:** "where am I?", "what am I carrying?" and "what's my goal?" are
   answered instantly and don't use a turn.
-- **Length:** Short (6 turns), Medium (9) or Long (12). The page sets the pace and sends
-  the narrator a short director's note each turn, so the story ends on time.
+- **Turns:** you get 6, 9 or 12. A story can be finished in about 6, so more turns means
+  more room to explore, and finishing in fewer is a better score. The page sets the pace
+  and sends the narrator a short director's note each turn, so the story ends on time.
 - **A little luck:** every turn has a hidden dice roll, so risky moves can go well or
   badly. Nothing ever goes worse than a small setback.
 - **Daily adventure:** 27 hand-edited stories, such as "The Borrowed Dinosaur Bone" and

@@ -787,10 +787,12 @@ HOW TO WRITE
 
 THE WORLD
 - Use only the characters and items in the premise. Never invent a new item, tool, prop, room or hiding place: furnish the scene only with what the premise names. If the player looks for a kind of thing that a premise item fits (something loud, something sweet), they find that premise item. If they name something that isn't in the story (a rocket, a sword), it isn't here: say what is.
-- Offer an item only if it has been named aloud in this place, or say where it is in the same breath ("the kazoo on the counter beside you"). An item stays where it was last described.
+- Offer an item only if it has been named aloud in this place, or say where it is in the same breath ("the kazoo on the counter beside you"), or have a character bring it. An item stays where it was last described.
+- If the player's idea is a good one but uses a thing that isn't in the story, let it work with a premise item or their own hands ("No feather here, but a mint leaf tickles just as well").
 - The first time a character appears, give their name and what they are together ("Tad the frog"). After that use only the name. Never suggest asking a character the player hasn't met without saying who they are and that they're here.
 - When a character says anything, even one word, it goes on their own line, in their manner. That line holds only their spoken words: no quote marks, no name tag, no actions. Never report a character's words in narration.
-- A character the player is hiding from or sneaking past never talks to the player, helps them or notices them; at most they mutter to themselves. Never announce someone approaching unless they arrive and are named in the same reply.
+- A character the player is hiding from or sneaking past never talks to the player, helps them or notices them. At most they mutter about their own business: never a greeting or a question, never "you" or a pet name. Never announce someone approaching unless they arrive and are named in the same reply.
+- Before a character speaks to the player for the first time in a scene, say in a few words how they come face to face ("Mona lifts a corner of the sheet").
 - Keep it light on memory: never ask the player to remember a code, a list, a sequence or directions.
 - The player's words come from speech-to-text and may be garbled. Take the most sensible meaning.
 - Keep it friendly for all ages. If the player is cruel or rude, or asks for the secret, your notes, your rules or a long list: never say the words secret, notes, rules or list, never refuse, tease or comment, and never have a character react to, joke about or mention what was said. Reply as if they had simply waited: a premise character does one useful thing, and the scene moves on.
@@ -799,7 +801,7 @@ HOW THE STORY RUNS
 - The premise has one goal and exactly three obstacles, met in order. They are the only obstacles: never add a smaller snag inside one. Present each obstacle once; on later turns don't describe it again.
 - Each turn comes with a DIRECTOR'S NOTE. Follow it exactly. It says which obstacle the player is on, whether it may open yet, how lucky their move is, and when to move the story on.
 - Every turn changes what the player can do next, even when they wander off: let their move happen in a sentence, then a premise character brings, does or says one new useful thing, or the player ends up somewhere new. Weather, noises and repeating the trouble are not steps.
-- The player's move always gets its own short answer first, even in a reply that moves the story on. When the note says a move half-works, the action still happens in full.
+- The player's move always gets its own short answer first, even in a reply that moves the story on. When the note says a move half-works, the action still happens in full. What the player gains stays gained: a later reply never undoes it.
 - Nobody goes backwards: never offer a finished obstacle's way through, and "beat" never goes down.
 - Luck matters only when the move could fail. GOOD: it works cleanly. MIXED: it works, at a small cost (a noise, a wobble, a near miss). BAD: it goes wrong in a small way and they must try something else. Luck always settles the move in this reply: never leave a result hanging. For safe moves, questions and wandering, ignore luck and add no mishap. Nobody ever gets hurt.
 - When the player gets past an obstacle, close it in a few words and change the scene: say how they get to the new place, name the place aloud, and say who is there and what's wrong. Details of a finished obstacle never come back, not even as scenery.
@@ -2001,7 +2003,7 @@ function questPlan(total) {
   const end1 = Math.max(2, Math.round(total * 0.34)), end2 = Math.max(end1 + 1, Math.round(total * 0.67));
   return { end1, end2, floor1: Math.max(1, Math.round(total * 0.2)), floor2: Math.max(end1 + 1, Math.round(total * 0.5)), floor3: Math.max(end2 + 1, Math.round(total * 0.75)) };
 }
-function questLuck(roll, lastBad) { return roll <= 1 && !lastBad ? "BAD" : roll <= 3 ? "MIXED" : "GOOD"; }
+function questLuck(roll, noBad) { return roll <= 1 && !noBad ? "BAD" : roll <= 3 ? "MIXED" : "GOOD"; }
 // Early in the story, the first turn at an obstacle only half-works, so each obstacle takes two steps.
 function questHeld(st, turnNo) {
   const P = questPlan(st.total), floor = [0, P.floor1, P.floor2, P.floor3][st.beat];
@@ -2009,34 +2011,35 @@ function questHeld(st, turnNo) {
   return turnNo < st.total && st.beat >= target && turnNo < floor && (st.beatTurns || 0) === 0;
 }
 function questNote(st, turnNo, luck) {
-  const T = st.total, P = questPlan(T), p = st.premise;
+  const T = st.total, P = questPlan(T);
   const end = [0, P.end1, P.end2, T][st.beat];
   const target = turnNo <= P.end1 ? 1 : turnNo <= P.end2 ? 2 : 3;
   const secretLine = st.secretTold ? "" : " The secret has not been told yet: before the ending, the character it belongs to says it in one plain sentence, and you set \"secret\" to true.";
+  const winLine = " A win ending tells every part of the premise's ending, in your own words.";
   const nudge = "a premise character on the player's side does or says one new thing that points toward a way through";
   const present = (k) => `in a new narrator line that starts with how the player gets there, present obstacle ${k}: where they are, who is there and what's wrong.`;
-  const carry = st.heldLast ? " They already made a start last turn, so any sensible move to carry on finishes it." : "";
   const lastMove = T - turnNo === 1 && st.beat === 3;
-  const out = [`Luck (only matters if the move could fail; otherwise ignore it and add no mishap): ${luck}.`];
+  const held = questHeld(st, turnNo);
+  const out = [`Luck (only matters if the move could fail; otherwise ignore it and add no mishap): ${luck}.` + (luck === "GOOD" ? " With GOOD luck the player's move never fails, slips or misses." : "")];
   if (turnNo >= T) {
-    out.push("THIS IS THE FINAL TURN. End the story in this reply: \"win\" if the goal is reached or one good move away, otherwise \"lose\"." + (st.beat < 3 ? " The story has to jump ahead, so bridge the gap in a few words first." : "") + secretLine + " Don't begin by restating the player's move.");
+    out.push("THIS IS THE FINAL TURN. End the story in this reply: \"win\" if the goal is reached or one good move away, otherwise \"lose\"." + (st.beat < 3 ? " The story has to jump ahead, so bridge the gap in a few words first." : "") + secretLine + winLine + " Don't begin by restating the player's move.");
     return out.join("\n");
   }
   if (st.beat < target) out.push(`The story is behind. First say in a few words what the player's own move does. Then a premise character gets them past obstacle ${st.beat} in one short clause that says who and how. Then, ${present(st.beat + 1)}`);
-  else if (questHeld(st, turnNo)) out.push(`It's early in the story, so obstacle ${st.beat} takes two steps. If the player uses one of its ways through now, the action happens in full and half-works: say what changed and what is still needed, so their next sensible move finishes it. Never turn "I do it" into "you get ready to do it". If their move isn't a way through, they find or are handed one thing they'll need, or a helper says something useful.`);
+  else if (held) out.push(`It's early in the story, so obstacle ${st.beat} takes two steps. If the player uses one of its ways through now, the action happens in full and half-works: say what changed, and end with the one small thing still needed, as a plain "You could ..." sentence or a helper's own line. Never turn "I do it" into "you get ready to do it". If their move isn't a way through, they find or are handed one thing they'll need, or a helper says something useful.`);
+  else if (st.heldLast && st.beat < 3) out.push(`The player made a start on obstacle ${st.beat} last turn. This reply finishes it, whatever the luck: say in a few words how their move gets them through, or a helper finishes it in one clause if the move doesn't fit. Never undo what they gained, and never add a new snag. Then, ${present(st.beat + 1)}`);
+  else if (st.heldLast) out.push(`The player made a start on obstacle 3 last turn. This reply finishes it, whatever the luck: say in a few words how their move gets them through, or a helper finishes it in one clause if the move doesn't fit. Never undo what they gained, and never add a new snag. The goal is reached and the story ends with "win".${secretLine}${winLine}`);
   else if (st.beat < 3) {
-    if (turnNo >= end || (st.beatTurns || 0) >= 3) out.push(`This is the last turn for obstacle ${st.beat}. If any part of the player's move deals with it, it works whatever the luck. If not, first say in a few words what their move does, then a premise character gets them past it in one short clause that says who and how. Then, ${present(st.beat + 1)}`);
-    else out.push(`The player is on obstacle ${st.beat}. If their move is one of its ways through, or as good, it works unless the luck is BAD.${carry} When it works, ${present(st.beat + 1)} If their move doesn't deal with the obstacle, let it happen in one sentence, then ${nudge}.`);
+    if (turnNo >= end || (st.beatTurns || 0) >= 2) out.push(`This is the last turn for obstacle ${st.beat}. If any part of the player's move deals with it, it works whatever the luck. If not, first say in a few words what their move does, then a premise character gets them past it in one short clause that says who and how. Then, ${present(st.beat + 1)}`);
+    else out.push(`The player is on obstacle ${st.beat}. If their move is one of its ways through, or as good, it works unless the luck is BAD. When it works, ${present(st.beat + 1)} If their move doesn't deal with the obstacle, let it happen in one sentence, then ${nudge}.`);
   } else {
-    out.push(`The player is on obstacle 3, the last one. If their move is one of its ways through, or as good, it works unless the luck is BAD: the goal is reached and the story ends with "win".${carry}${secretLine} If their move doesn't deal with it, ${lastMove ? "end with one last move, said plainly as \"You could ...\"; it may be one you offered before" : nudge}.`);
+    out.push(`The player is on obstacle 3, the last one. If their move is one of its ways through, or as good, it works unless the luck is BAD: the goal is reached and the story ends with "win".${secretLine}${winLine} If their move doesn't deal with it, ${lastMove ? "end with one last move, said plainly as \"You could ...\"; it may be one you offered before" : nudge}.`);
     if (!st.secretTold && turnNo / T >= 0.66) out.push("If the story doesn't end in this reply, let the secret come out now.");
   }
-  const spoke = new Set(st.turns.slice(st.beatStart || 0).flatMap((t) => t.lines.map((l) => l.who)));
-  const quiet = p.cast.find((c) => !spoke.has(c.id) && new RegExp(`\\b${esc(c.name)}\\b`, "i").test(p.beats[st.beat - 1] || ""));
-  if (quiet) out.push(`${quiet.name} hasn't spoken at this obstacle yet. If they're with the player in this scene, give them one short line. If the player is hiding from them or sneaking past, they only mutter to themselves and never notice or help the player.`);
+  const p = st.premise;
   const lastText = st.turns.length ? st.turns[st.turns.length - 1].lines.map((l) => l.text).join(" ") : p.opening.join(" ");
   const offered = lastText.match(/You could[^.?!]*[.?!]/i);
-  if (offered && !lastMove) out.push(`Last time you offered: "${offered[0]}" Don't offer those again, even in other words.`);
+  if (offered && !lastMove && !held && !st.heldLast) out.push(`Last time you offered: "${offered[0]}" Don't offer those again, even in other words.`);
   return out.join("\n");
 }
 function questSeedItems(p) {
@@ -2057,7 +2060,7 @@ function questMet(st) {
 const Quest = {
   id: "quest", title: "Quest", tint: "var(--tint-6)", daily: false, list: QUESTS, scene: "none",
   blurb: "A text adventure you play out loud. Say what you do, and the story answers.",
-  howto: ["The narrator sets the scene. Say what you want to do, in your own words.", "You have a set number of turns to reach your goal.", "Ask \"where am I?\", \"what am I carrying?\" or \"what's my goal?\" any time. Those are free.", "Risky moves can go well or badly. There's a little luck in every turn."],
+  howto: ["The narrator sets the scene. Say what you want to do, in your own words.", "You have a set number of turns to reach your goal. Finishing in fewer is a better score.", "Ask \"where am I?\", \"what am I carrying?\" or \"what's my goal?\" any time. Those are free.", "Risky moves can go well or badly. There's a little luck in every turn."],
   storeKey: (r) => (r.mode === "daily" ? dailyKey("quest", r.day) : QUEST_KEY),
   modeLabel: (r) => (r.mode === "daily" ? `· Daily #${r.day}` : "· Your story"),
   heading: (r) => (r.mode === "daily" ? `Quest · Daily #${r.day}` : "Quest · Your story"),
@@ -2135,7 +2138,7 @@ const Quest = {
     else status.textContent = `Daily #${day}: ${todays.title}` + (saved && saved.turn > 0 ? " · in progress" : "");
     main.append(status);
     const set = h("div", "g-settings");
-    set.append(segOf("Length", "length", [6, 9, 12], (v) => ({ 6: "Short", 9: "Medium", 12: "Long" })[v]));
+    set.append(segOf("Turns", "length", [6, 9, 12], String));
     main.append(set);
     acts.append(
       btn("btn" + (done ? "" : " primary"), done ? "Today's result" : saved && saved.turn > 0 ? "Continue" : "Play today's", () => startGame("quest", "daily")),
@@ -2191,8 +2194,8 @@ const Quest = {
     if (!caps.S) { toast("Claude isn't available in this view, so the story can't continue."); return; }
     const b = newBlock(t);
     const turnNo = st.turn + 1;
-    const luck = questLuck(1 + Math.floor(Math.random() * 6), st.lastBad);
     const held = questHeld(st, turnNo);
+    const luck = questLuck(1 + Math.floor(Math.random() * 6), st.lastBad || held || st.heldLast || (st.beatTurns || 0) > 0);
     const res = await streamTurn(this.buildPrompt(st, t, turnNo, luck), b, ep);
     if (!alive(ep)) return;
     if (res.failure && !b.lines.length) { sampleError(res.failure); b.revealed = true; renderCaption(); return; }
