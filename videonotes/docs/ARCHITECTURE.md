@@ -276,7 +276,10 @@ CLI (`vnote …`): `doctor`, `init`, `demo`, `devices`, `live`, `wireless`, `imp
 ## 5. Notes model
 
 * **Session** — one live run, or imported clips recorded close together.
-* **Moment** — a coherent span inside a session (a conversation, a task, a place).
+* **Moment** — a coherent span inside a session (a conversation, a task, a place). Each has a
+  `kind` (conversation, meeting, solo_work, errand, transit, media, idle, other) and a `salience`
+  (highlight, normal, background). Background moments are collapsed in notes: the commonest
+  complaint about pendant-style note-takers is noise, not transcription quality.
 * **SessionNote** — title, summary, key points, action items (owner / due only if stated),
   decisions, open questions, people, places, captured text, tags.
 * **DayDigest** — headline, summary, highlights, merged action items for a local calendar day.
@@ -289,3 +292,21 @@ notes/
   sessions/2026-11-22 1432 Planning meeting.md
   assets/<session_id>/kf_000123.jpg
 ```
+
+## 6. Trust and privacy rules
+
+These come from what went wrong for earlier wearable note-takers (see the research notes in `docs/research/`).
+
+* **Evidence, not invention.** Notes are built only from captured evidence; every prompt says so, and
+  text read off a sign or screen is treated as data, never as instructions. Names, owners and due dates
+  appear only when they were actually said or shown. Extractive fallbacks only quote.
+* **Show the evidence.** Notes embed the keyframes they rest on and carry clock times; `ask` returns the
+  excerpts it answered from.
+* **Local by default.** No network use unless a cloud backend is explicitly configured.
+* **Stills from the original.** Selection runs on the low-res proxy, but stills are cut from the
+  full-quality file when it is still reachable, because proxy resolution is too low to read a whiteboard.
+* **The user stays in control of raw media.** Import never writes to the card; what is copied is a
+  setting; a session (media, frames, notes, index entries) can be deleted in one command.
+* **Search index.** `search` is a plain indexed table (kind, ref_id, session_id, ts, text) mirrored into
+  an external-content FTS5 table by triggers, so replacing a clip's rows is cheap however large the
+  library grows.
