@@ -6,6 +6,7 @@ import argparse
 import logging
 import os
 import shutil
+import subprocess
 import sys
 import textwrap
 from collections.abc import Callable
@@ -145,6 +146,31 @@ def make_context(args: argparse.Namespace) -> Context:
         format="%(levelname)s %(name)s: %(message)s",
     )
     return Context(settings=settings, out=out, verbose=verbose)
+
+
+# -- keeping the Mac awake -----------------------------------------------------
+
+
+def keep_awake(out: Out | None = None) -> None:
+    """Stop macOS from idle-sleeping while this process runs (long recordings and imports).
+
+    Uses the system ``caffeinate`` tool bound to our process id, so it ends by
+    itself when the command does.  Does nothing on other systems.  Closing the
+    laptop lid still sleeps the Mac.
+    """
+    if sys.platform != "darwin":
+        return
+    tool = shutil.which("caffeinate")
+    if not tool:
+        return
+    try:
+        subprocess.Popen(
+            [tool, "-i", "-w", str(os.getpid())],
+            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )  # fmt: skip
+    except OSError:
+        if out is not None:
+            out.info("(could not keep the Mac awake; avoid letting it sleep during this run)")
 
 
 # -- pipeline progress ---------------------------------------------------------

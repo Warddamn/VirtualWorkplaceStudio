@@ -14,7 +14,7 @@ from typing import Any
 from ..config import DJI_DEVICE_HINTS, is_macos
 from ..models import Clip, Session
 from ..timeutil import fmt_clock, fmt_duration, new_session_id, now_ts
-from .common import CliError, Context, progress_printer
+from .common import CliError, Context, keep_awake, progress_printer
 from .library import print_note, process_sessions, report_session
 
 ENV_WIFI_PASSWORD = "VIDEONOTES_WIFI_PASSWORD"
@@ -115,6 +115,7 @@ def run_live(
 
     out = ctx.out
     settings, store = ctx.settings, ctx.store
+    keep_awake(out)
     pipeline = Pipeline(settings, store)
     clips = 0
     recorded = 0.0

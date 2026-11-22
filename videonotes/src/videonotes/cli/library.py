@@ -11,7 +11,7 @@ from pathlib import Path
 from ..config import default_config_text
 from ..models import CLIP_STAGES, SESSION_STAGES, Session
 from ..timeutil import fmt_clock, fmt_duration, local_date, now_ts, parse_day
-from .common import EXIT_ERROR, CliError, Context, progress_printer
+from .common import EXIT_ERROR, CliError, Context, keep_awake, progress_printer
 
 
 def register(sub: argparse._SubParsersAction) -> None:
@@ -90,6 +90,7 @@ def process_sessions(ctx: Context, sessions: list[Session], *, force: list[str] 
     """Run the pipeline for each session, printing progress. Returns the refreshed sessions."""
     from ..pipeline import Pipeline
 
+    keep_awake(ctx.out)
     done: list[Session] = []
     for session in sessions:
         clips = ctx.store.list_clips(session.id)
