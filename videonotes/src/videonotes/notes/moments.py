@@ -26,8 +26,8 @@ How it works
 3. **Too long.**  A span longer than ``moment_max_seconds`` is cut by a small
    dynamic programme that uses as few cuts as possible, prefers the longest
    internal pauses and strong visual changes (a keyframe whose reason is
-   ``"scene"`` or whose novelty is at least :data:`HIGH_NOVELTY`) and otherwise
-   cuts evenly between utterances.
+   ``"scene"`` or whose novelty is at least :data:`HIGH_NOVELTY`; the ``"first"``
+   frame of a clip never counts) and otherwise cuts evenly between utterances.
 4. **Too short.**  A moment shorter than ``moment_min_seconds`` is merged into
    the neighbour that is closer in time, unless that would cross a coverage
    hole or exceed the maximum.  (When one of the two joins would undo a strong
@@ -256,7 +256,8 @@ def _timeline(utterances: list[Utterance], keyframes: list[Keyframe]) -> list[_I
             dropped += 1
             continue
         ts = float(k.ts)
-        novelty = float(k.novelty) if _finite(k.novelty) else 0.0
+        # the first frame of a clip is "new" only because nothing came before it: not a change of scene
+        novelty = float(k.novelty) if _finite(k.novelty) and k.reason != "first" else 0.0
         item = _Item(ts, ts, False, k.id, scene=k.reason == "scene", novelty=novelty)
         keyed.append((ts, 1, ts, k.id if k.id is not None else -1, order, item))
     if dropped:
@@ -382,15 +383,11 @@ def _cut_gains(atoms: list[_Atom], cover: list[float], gap_s: float) -> list[flo
             speech_end if speech_end is not None else cover[c - 1]
         )
         pause = max(pause, empty)
-        gains[c] = (
-            _GAIN_PAUSE * min(1.0, pause / gap_s) + _GAIN_EMPTY * min(1.0, empty / gap_s) + atoms[c].visual
-        )
+        gains[c] = _GAIN_PAUSE * min(1.0, pause / gap_s) + _GAIN_EMPTY * min(1.0, empty / gap_s) + atoms[c].visual
     return gains
 
 
-def _split_long(
-    atoms: list[_Atom], lo: int, hi: int, gains: list[float], min_s: float, max_s: float
-) -> list[int]:
+def _split_long(atoms: list[_Atom], lo: int, hi: int, gains: list[float], min_s: float, max_s: float) -> list[int]:
     """Where to cut atoms[lo:hi] so that no piece exceeds ``max_s`` (if that is possible at all).
 
     Optimal partition by dynamic programming over the places a piece may start

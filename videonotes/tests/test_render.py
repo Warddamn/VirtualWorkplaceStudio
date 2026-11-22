@@ -55,15 +55,33 @@ class Lib:
         if on_disk:
             path.write_bytes(JPEG + str(t).encode())
         self._frames.append(
-            Keyframe(clip_id=self.clip.id, session_id=self.sid, t=t, ts=self.start + t, path=self.settings.rel(path),
-                     reason=reason, novelty=novelty, sharpness=sharpness, ocr_text=ocr, caption=caption)  # fmt: skip
+            Keyframe(
+                clip_id=self.clip.id,
+                session_id=self.sid,
+                t=t,
+                ts=self.start + t,
+                path=self.settings.rel(path),
+                reason=reason,
+                novelty=novelty,
+                sharpness=sharpness,
+                ocr_text=ocr,
+                caption=caption,
+            )  # fmt: skip
         )
         return self
 
     def say(self, t0: float, t1: float, text: str, speaker: str | None = None) -> Lib:
         self._said.append(
-            Utterance(clip_id=self.clip.id, session_id=self.sid, t0=t0, t1=t1, ts0=self.start + t0,
-                      ts1=self.start + t1, text=text, speaker=speaker)  # fmt: skip
+            Utterance(
+                clip_id=self.clip.id,
+                session_id=self.sid,
+                t0=t0,
+                t1=t1,
+                ts0=self.start + t0,
+                ts1=self.start + t1,
+                text=text,
+                speaker=speaker,
+            )  # fmt: skip
         )
         return self
 
@@ -136,16 +154,30 @@ def demo_lib(settings: Settings, store: Store, **kw: object) -> Lib:
 
 
 def front_matter(text: str) -> dict[str, object]:
-    """The front matter, read without a YAML library (every value is written JSON-compatibly or bare)."""
+    """The front matter, read without a YAML library: ``key: value`` lines (strings JSON-quoted, dates and
+    numbers bare) and block lists (``key:`` followed by ``  - item`` lines)."""
+
+    def scalar(value: str) -> object:
+        try:
+            return json.loads(value)
+        except ValueError:
+            return value
+
     assert text.startswith("---\n")
     block = text[4 : text.index("\n---\n", 4)]
     out: dict[str, object] = {}
+    key = ""
     for line in block.split("\n"):
-        key, _, value = line.partition(": ")
-        try:
-            out[key] = json.loads(value)
-        except ValueError:
-            out[key] = value
+        if line.startswith("  - "):
+            assert isinstance(out[key], list), line
+            out[key].append(scalar(line[4:]))  # type: ignore[union-attr]
+        elif line.endswith(":"):
+            key = line[:-1]
+            out[key] = []
+        else:
+            key, sep, value = line.partition(": ")
+            assert sep and re.fullmatch(r"[a-z_]+", key), line
+            out[key] = scalar(value)
     return out
 
 
@@ -518,6 +550,54 @@ def test_sessions_with_the_same_name_do_not_overwrite_each_other(cfg: Settings, 
         assert dests and all(f"/assets/{lib.sid}/" in dest and resolve(path, dest).is_file() for dest in dests)
 
 
+def test_freed_name_is_taken_over_and_the_numbered_file_goes(cfg: Settings, store: Store):
+    a = demo_lib(cfg, store).summarise(NOTE)
+    b = demo_lib(cfg, store, sid="20261122-143200-cd34").summarise(NOTE)
+    pa, pb = a.render(), b.render()
+    assert pb.name.endswith("(2).md")
+    pa.unlink()  # what `vnote delete` does for session A
+    store.delete_session(a.sid)
+    assert b.render() == pa and not pb.exists()
+    assert front_matter(pa.read_text(encoding="utf-8"))["session_id"] == b.sid
+    assert store.get_session(b.sid).note_path == cfg.rel(pa)
+
+
+def test_previous_path_that_is_the_same_file_under_another_name_is_not_deleted(cfg: Settings, store: Store):
+    # On the Mac's case-insensitive disk "Planning Meeting.md" and "Planning meeting.md" are one file. A hard link
+    # stands in for that here: the remembered path differs from the new one but names the same file.
+    lib = demo_lib(cfg, store).summarise(NOTE)
+    path = lib.render()
+    alias = path.with_name("alias of the same note.md")
+    try:
+        os.link(path, alias)
+    except OSError:
+        pytest.skip("hard links are not available here")
+    store.update_session(SID, note_path=cfg.rel(alias))
+    assert R._same_file(alias, path)
+    assert lib.render() == path
+    assert path.is_file() and alias.is_file()  # deleting "the previous file" would have deleted the note itself
+    assert store.get_session(SID).note_path == cfg.rel(path)
+
+
+def test_write_atomic_skips_unchanged_content_and_cleans_up_when_interrupted(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    target = tmp_path / "note.md"
+    assert R._write_atomic(target, "one\n") is True and target.read_text(encoding="utf-8") == "one\n"
+    assert R._write_atomic(target, "one\n") is False
+    assert R._write_atomic(target, "two \ud83d oops\n") is True  # a lone surrogate cannot stop the write
+    assert target.read_text(encoding="utf-8") == "two ? oops\n"
+
+    def interrupted(src: object, dst: object) -> None:
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(R.os, "replace", interrupted)
+    with pytest.raises(KeyboardInterrupt):
+        R._write_atomic(target, "three\n")
+    assert target.read_text(encoding="utf-8") == "two ? oops\n"
+    assert [p.name for p in tmp_path.iterdir()] == ["note.md"]
+
+
 def test_a_file_of_the_users_with_the_same_name_is_not_overwritten(cfg: Settings, store: Store):
     lib = demo_lib(cfg, store).summarise(NOTE)
     theirs = cfg.vault_dir / "sessions" / f"{DAY} {clock(T0, '%H%M')} Planning meeting.md"
@@ -548,8 +628,8 @@ def test_note_owner_reads_front_matter_however_it_is_quoted(tmp_path: Path):
         ("---\nsession_id: 20261122-143200-ab12\n---\n", SID),  # rewritten by an editor without quotes
         ("---\nsession_id: '20261122-143200-ab12'  \n---\n", SID),
         ('---\nsession_id: "a\\"b"\n---\n', 'a"b'),
-        ("---\ntitle: x\n---\nsession_id: \"body, not front matter\"\n", None),
-        ("# no front matter\nsession_id: \"nope\"\n", None),
+        ('---\ntitle: x\n---\nsession_id: "body, not front matter"\n', None),
+        ('# no front matter\nsession_id: "nope"\n', None),
         ("", None),
     ]:
         f.write_text(raw, encoding="utf-8")
@@ -586,10 +666,15 @@ def test_ticked_action_items_stay_ticked(cfg: Settings, store: Store):
     store.update_session(SID, note=renamed, title="Renamed")
     moved = lib.render()
     assert moved != path and done in moved.read_text(encoding="utf-8")
+    # any mark counts (Obsidian treats every character in the box as done), and is kept as written
+    moved.write_text(moved.read_text(encoding="utf-8").replace("- [ ] Email the", "- [-] Email the"), encoding="utf-8")
+    again = lib.render().read_text(encoding="utf-8")
+    assert "- [-] Email the quarterly budget to Sarah (owner: me; due: Friday;" in again and done in again
     # an item whose text changed is a new item
     reworded = SessionNote(**{**NOTE.to_dict(), "action_items": [ActionItem("Call the vendor"), ActionItem("Other")]})
     store.update_session(SID, note=reworded)
-    assert "[x]" not in lib.render().read_text(encoding="utf-8")
+    final = lib.render().read_text(encoding="utf-8")
+    assert "- [ ] Call the vendor\n- [ ] Other\n" in final and "- [x]" not in final and "- [-]" not in final
 
 
 def test_failed_write_leaves_the_old_note_and_no_debris(cfg: Settings, store: Store, monkeypatch: pytest.MonkeyPatch):
@@ -851,12 +936,65 @@ def test_front_matter_is_valid_yaml_even_for_hostile_values(cfg: Settings, store
     data = yaml.safe_load(text[4 : text.index("\n---\n", 4)])
     assert data["title"] == " ".join(title.split())
     assert data["source"] == "/Volumes/DJI: 'SD' \"card\"\\DCIM" and data["summarizer"] == "x: y # z"
-    assert data["tags"] == ["dash", "yes", "null", "2026", "a-b"] and all(isinstance(t, str) for t in data["tags"])
+    # "yes" / "null" stay strings; a purely numeric tag is not a tag in Obsidian and is left out
+    assert data["tags"] == ["dash", "yes", "null", "a-b"] and all(isinstance(t, str) for t in data["tags"])
+    assert '\ntags:\n  - "dash"\n  - "yes"\n' in text  # the block style Obsidian itself writes
     assert data["session_id"] == SID and str(data["date"]) == DAY
     assert data["start"].strftime("%H:%M:%S") == clock(T0, "%H:%M:%S")
     day = render_day_note(cfg, store, DAY)
     day_data = yaml.safe_load(day.read_text(encoding="utf-8").split("\n---\n")[0][4:])
     assert day_data == {"title": DAY, "date": tu.local_dt(T0).date(), "sessions": 1}
+
+
+def test_a_real_commonmark_parser_sees_only_our_structure(cfg: Settings, store: Store):
+    """The same hostile library, judged by markdown-it-py (CommonMark + tables) instead of this file's scanner."""
+    markdown_it = pytest.importorskip("markdown_it")
+    lib = hostile_lib(cfg, store)
+    for moment, text in zip(lib.moments, HOSTILE, strict=True):
+        store.update_moment(moment.id, title=text, summary=text, tags=[text], kind=text)
+    note = SessionNote(
+        title=HOSTILE[0],
+        summary="\n\n".join(HOSTILE),
+        key_points=list(HOSTILE),
+        decisions=list(HOSTILE),
+        open_questions=list(HOSTILE),
+        action_items=[ActionItem(t, t, t, T0 + 5) for t in HOSTILE],
+        people=list(HOSTILE),
+        places=list(HOSTILE),
+        captured_text=list(HOSTILE),
+        tags=list(HOSTILE),
+    )
+    store.update_session(SID, note=note, title=note.title)
+    path = lib.render()
+    store.save_day(DayDigest(date=DAY, headline=HOSTILE[0], summary="\n".join(HOSTILE), highlights=list(HOSTILE)))
+    day = render_day_note(cfg, store, DAY)
+
+    parser = markdown_it.MarkdownIt("commonmark").enable("table").enable("strikethrough")
+    expected = {
+        path: (["Summary", "Key points", "Action items", "Decisions", "Open questions", "People and places",
+                "Captured text", "Timeline"], len(HOSTILE)),
+        day: (["Summary", "Highlights", "Sessions"], 0),
+    }  # fmt: skip
+    for file, (sections, moments) in expected.items():
+        body = body_of(file.read_text(encoding="utf-8"))
+        tokens = parser.parse(body)
+        found = [(tok.tag, tokens[i + 1].content) for i, tok in enumerate(tokens) if tok.type == "heading_open"]
+        assert [tag for tag, _ in found].count("h1") == 1
+        assert [text for tag, text in found if tag == "h2"] == sections
+        assert [tag for tag, _ in found].count("h3") == moments
+        kinds = {tok.type for tok in tokens}
+        assert not kinds & {"table_open", "blockquote_open", "hr", "code_block", "ordered_list_open"}, kinds
+        for tok in tokens:
+            if tok.type == "html_block":
+                assert tok.content.startswith(("<details>\n<summary>Transcript", "<!-- Written by videonotes."))
+            for child in tok.children or []:
+                assert child.type != "html_inline", child.content
+                if child.type == "image":
+                    assert child.attrs["src"].startswith("../assets/")
+                if child.type == "link_open":
+                    assert child.attrs["href"].startswith("../sessions/")
+        html = parser.render(body)
+        assert "<script" not in html and 'href="javascript' not in html and '<img src="http' not in html
 
 
 def test_escaping_helpers():
@@ -878,7 +1016,7 @@ def test_escaping_helpers():
     assert md("~~~python", emphasis=True) == "\\~\\~\\~python"
 
     html = R._html
-    assert html("a <b> & \"c\"") == "a &lt;b&gt; &amp; &quot;c&quot;"
+    assert html('a <b> & "c"') == "a &lt;b&gt; &amp; &quot;c&quot;"
     assert html("# x `y` [[z]] $1 a_b *c* 50% a=b ~t~ \\ ^q |") == (
         "&#35; x &#96;y&#96; &#91;&#91;z&#93;&#93; &#36;1 a&#95;b &#42;c&#42; 50&#37; a&#61;b &#126;t&#126; "
         "&#92; &#94;q &#124;"
@@ -889,9 +1027,8 @@ def test_escaping_helpers():
     assert R._fenced("a ``` b") == "````text\na ``` b\n````"
     assert R._fenced("`````").startswith("``````text\n")
 
-    assert R._tags(["planning", "Q3 launch", "#falcon", "work/meetings", "///", "___", "Planning", "a | b"]) == [
-        "planning", "Q3-launch", "falcon", "work/meetings", "a-b",
-    ]  # fmt: skip
+    assert R._tags(["planning", "Q3 launch", "#falcon", "work/meetings", "///", "___", "Planning", "a | b", "1984",
+                    "y1984"]) == ["planning", "Q3-launch", "falcon", "work/meetings", "a-b", "y1984"]  # fmt: skip
     assert R._relative_link(Path("/v/sessions/2026-11-22 1432 Café (2).md"), Path("/v/days")) == (
         "../sessions/2026-11-22%201432%20Café%20%282%29.md"
     )
@@ -936,17 +1073,18 @@ def day_note_path_in_db(settings: Settings, date: str) -> str | None:
 
 
 def test_day_note_with_digest_and_sessions(cfg: Settings, store: Store):
-    a = demo_lib(cfg, store).summarise(NOTE)
-    b = demo_lib(cfg, store, sid="20261122-160000-cd34", start=T0 + 5280, source="").summarise(
+    t0 = tu.day_bounds(DAY)[0] + 9 * 3600  # nine in the morning, wherever these tests run
+    a = demo_lib(cfg, store, start=t0).summarise(NOTE)
+    b = demo_lib(cfg, store, sid="20261122-160000-cd34", start=t0 + 5280, source="").summarise(
         SessionNote(title="Walk home", summary="Walked home through the park. Saw a heron! Then rain.")
     )
-    c = demo_lib(cfg, store, sid="20261122-170000-ef56", start=T0 + 8880)  # recorded, not summarised, not rendered
+    c = demo_lib(cfg, store, sid="20261122-170000-ef56", start=t0 + 8880)  # recorded, not summarised, not rendered
     pa, pb = a.render(), b.render()
     digest = DayDigest(
         date=DAY, headline="Planning, then a walk", summary="A planning day.\n\nEnded with a walk.",
         highlights=["Falcon date set", "Saw a heron"],
-        action_items=[ActionItem("Email the budget", "me", "Friday", T0 + 8),
-                      ActionItem("Buy milk", ts=T0 - 86400 * 3)],
+        action_items=[ActionItem("Email the budget", "me", "Friday", t0 + 8),
+                      ActionItem("Buy milk", ts=t0 - 86400 * 3)],
         session_ids=[a.sid, b.sid], llm_backend="ollama:qwen3:4b",
     )  # fmt: skip
     store.save_day(digest)
@@ -963,19 +1101,19 @@ def test_day_note_with_digest_and_sessions(cfg: Settings, store: Store):
     ]  # fmt: skip
     assert "**Planning, then a walk**" in text and "A planning day.\n\nEnded with a walk." in text
     assert "- Falcon date set\n- Saw a heron" in text
-    assert f"- [ ] Email the budget (owner: me; due: Friday; {clock(T0 + 8)})" in text
+    assert f"- [ ] Email the budget (owner: me; due: Friday; {clock(t0 + 8)})" in text
     assert "- [ ] Buy milk\n" in text  # its timestamp is from another day: no clock time shown
     assert "*3 sessions · 30 min recorded*" in text
 
     lines = [line for line in text.split("\n") if line.startswith("- **")]
     assert len(lines) == 3  # in chronological order
     assert lines[0] == (
-        f"- **{clock(T0)}–{clock(T0 + 600)}** · [Planning meeting](../sessions/{pa.name.replace(' ', '%20')})"
+        f"- **{clock(t0)}–{clock(t0 + 600)}** · [Planning meeting](../sessions/{pa.name.replace(' ', '%20')})"
         " — We went through the launch plan for Q3."
     )
-    assert lines[1].startswith(f"- **{clock(T0 + 5280)}–{clock(T0 + 5880)}** · [Walk home](../sessions/")
+    assert lines[1].startswith(f"- **{clock(t0 + 5280)}–{clock(t0 + 5880)}** · [Walk home](../sessions/")
     assert lines[1].endswith(" — Walked home through the park.")
-    assert lines[2] == f"- **{clock(T0 + 8880)}–{clock(T0 + 9480)}** · Untitled session — *not summarised yet*"
+    assert lines[2] == f"- **{clock(t0 + 8880)}–{clock(t0 + 9480)}** · Untitled session — *not summarised yet*"
     found = [(label, resolve(path, dest)) for is_image, label, dest in links(text) if not is_image]
     assert found == [("Planning meeting", pa.resolve()), ("Walk home", pb.resolve())]
     assert all(target.is_file() for _, target in found)
@@ -995,6 +1133,28 @@ def test_day_note_without_digest_lists_sessions_only(cfg: Settings, store: Store
     assert [h for h in headings(text) if h.startswith("## ")] == ["## Sessions"]
     assert "*1 session · 10 min recorded*" in text and "[Planning meeting](" in text
     assert day_note_path_in_db(cfg, DAY) is None and store.get_day(DAY) is None  # no digest: nothing to save
+
+
+def test_day_digest_about_deleted_sessions_is_not_presented_as_current(cfg: Settings, store: Store):
+    a = demo_lib(cfg, store).summarise(NOTE)
+    b = demo_lib(cfg, store, sid="20261122-143300-cd34", start=T0 + 60).summarise(NOTE)
+    a.render(), b.render()
+    digest = DayDigest(date=DAY, headline="Two meetings", summary="Both about the launch.", session_ids=[a.sid, b.sid])
+    store.save_day(digest)
+    assert "deleted since" not in render_day_note(cfg, store, DAY).read_text(encoding="utf-8")
+
+    store.delete_session(a.sid)  # one of the two is gone: the digest is shown, with a warning
+    text = render_day_note(cfg, store, DAY).read_text(encoding="utf-8")
+    assert "**Two meetings**" in text and "Both about the launch." in text
+    assert f"had 1 more session, deleted since. Run `vnote day {DAY}` to write it again.*" in text
+    assert front_matter(text)["sessions"] == 1
+
+    store.delete_session(b.sid)  # nothing it was written from is left: it is not shown at all
+    text = render_day_note(cfg, store, DAY).read_text(encoding="utf-8")
+    assert "Two meetings" not in text and "Both about the launch." not in text
+    assert headings(text)[1:] == ["## Sessions"] and "*No sessions were recorded on this day.*" in text
+    assert front_matter(text) == {"title": DAY, "date": DAY, "sessions": 0}
+    assert day_note_path_in_db(cfg, DAY) == f"notes/days/{DAY}.md" and store.get_day(DAY) == digest
 
 
 def test_day_note_only_lists_sessions_that_started_that_day(cfg: Settings, store: Store):
@@ -1025,7 +1185,7 @@ def test_day_note_keeps_ticks_and_rejects_bad_dates(cfg: Settings, store: Store)
     path = render_day_note(cfg, store, DAY)
     path.write_text(path.read_text(encoding="utf-8").replace("- [ ] Call mum", "- [X] Call mum"), encoding="utf-8")
     text = render_day_note(cfg, store, DAY).read_text(encoding="utf-8")
-    assert "- [x] Call mum" in text and "- [ ] Water the plants" in text
+    assert "- [X] Call mum" in text and "- [ ] Water the plants" in text  # the mark is kept as it was written
     for bad in ("yesterday", "2026-13-40", "", "22/11/2026"):
         with pytest.raises(NoteRenderError, match="YYYY-MM-DD"):
             render_day_note(cfg, store, bad)

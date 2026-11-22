@@ -159,12 +159,12 @@ def check_invariants(
                 first_of_b = min(
                     [by_u[i].ts0 for i in moments[b].utterance_ids] + [by_k[i].ts for i in moments[b].keyframe_ids]
                 )
-                before = max(
-                    max(by_u[i].ts0, by_u[i].ts1) for mm in moments[: a + 1] for i in mm.utterance_ids
-                ) if any(mm.utterance_ids for mm in moments[: a + 1]) else -math.inf
-                before = max(
-                    [before] + [by_k[i].ts for mm in moments[: a + 1] for i in mm.keyframe_ids]
+                before = (
+                    max(max(by_u[i].ts0, by_u[i].ts1) for mm in moments[: a + 1] for i in mm.utterance_ids)
+                    if any(mm.utterance_ids for mm in moments[: a + 1])
+                    else -math.inf
                 )
+                before = max([before] + [by_k[i].ts for mm in moments[: a + 1] for i in mm.keyframe_ids])
                 hole = first_of_b - before >= hole_s
                 merged = max(moments[a].ts1, moments[b].ts1) - moments[a].ts0
                 assert hole or merged > max_s - OVERLAP_TOLERANCE - eps, (
@@ -438,6 +438,23 @@ def test_scene_change_in_a_pause_starts_the_next_moment():
     assert len(moments) == 2
     assert moments[0].keyframe_ids == [still_there.id]
     assert moments[1].keyframe_ids == [moved.id, after.id] and moments[1].ts0 == moved.ts
+
+
+def test_first_frame_of_each_live_segment_is_not_a_scene_change():
+    # live capture: one clip a minute, each starting with a "first" frame that is maximally novel by definition
+    def record(reason_at_60: str) -> list[Moment]:
+        tl = Timeline()
+        tl.talk(0, 55, clip=1)  # ends 53.5
+        tl.frame(60, reason_at_60, 1.0, clip=2)
+        tl.frame(75, "interval", 0.1, clip=2)
+        tl.frame(120, "first", 1.0, clip=3)
+        tl.talk(125, 180, clip=3)
+        return tl.segment(cfg(gap=45, lo=20))
+
+    plain = record("first")
+    assert [len(m.keyframe_ids) for m in plain] == [2, 1]  # the frames just after the talk stay with it
+    moved = record("scene")
+    assert [len(m.keyframe_ids) for m in moved] == [0, 3]  # a real change of scene starts the next moment
 
 
 def test_long_talk_is_split_at_its_longest_pause():

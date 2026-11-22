@@ -54,7 +54,6 @@
 <dialog id="lightbox" class="dialog lightbox" aria-labelledby="lightbox-title">
   <div class="dialog-head">
     <h2 id="lightbox-title">Frame</h2>
-    <span id="lightbox-count" class="dialog-count"></span>
     <button type="button" class="icon-btn" data-close aria-label="Close">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
         <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -64,15 +63,23 @@
   <div class="lightbox-stage">
     <img id="lightbox-img" alt="" width="1280" height="720" decoding="async">
     <p id="lightbox-missing" class="stage-note" hidden>The image file for this frame is no longer in the library.</p>
-    <button type="button" id="lightbox-prev" class="stage-arrow prev" aria-label="Previous frame">
-      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
+  </div>
+  <div class="lightbox-bar">
+    <button type="button" id="lightbox-prev" class="btn small" aria-label="Previous frame">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
         <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
+      Previous
     </button>
-    <button type="button" id="lightbox-next" class="stage-arrow next" aria-label="Next frame">
-      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
+    <span id="lightbox-count" class="dialog-count"></span>
+    <button type="button" id="lightbox-next" class="btn small" aria-label="Next frame">
+      Next
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
         <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
+    </button>
+    <button type="button" id="lightbox-play" class="btn small lightbox-play">
+      <span class="play-icon" aria-hidden="true"></span>Play the video from here
     </button>
   </div>
   <div class="lightbox-info">
@@ -81,9 +88,6 @@
       <h3>Text in view</h3>
       <pre id="lightbox-ocr" class="captured"></pre>
     </div>
-    <p class="dialog-actions">
-      <button type="button" id="lightbox-play" class="btn">Play the video from here</button>
-    </p>
   </div>
 </dialog>
 

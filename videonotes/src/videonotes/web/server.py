@@ -442,6 +442,7 @@ class Library:
         self.settings = settings
         self.store = store
         self._clock_format = settings.notes.time_format or "%H:%M"
+        self._roots: dict[Path, tuple[float, Path]] = {}
 
     # -- formatting -------------------------------------------------------
 
@@ -502,11 +503,9 @@ class Library:
         rel = self._lexical_rel(kf.path, self.settings.frames_dir)
         if rel is None or Path(rel).suffix.lower() not in _IMAGE_TYPES:
             return None
-        try:
-            if not (self.settings.frames_dir / rel).is_file():
-                return None
-        except OSError:
-            return None
+        real = self._inside(self.settings.frames_dir / rel, self.settings.frames_dir)
+        if real is None or not real.is_file():
+            return None  # missing, or a link that leads out of the frames folder
         return f"/frames/{quote(rel)}?k={kf.id}"
 
     def frame_alt(self, kf: Keyframe) -> str:
@@ -523,12 +522,20 @@ class Library:
         url = self.frame_url(kf)
         return {"url": url, "alt": self.frame_alt(kf), "keyframe_id": kf.id} if url else None
 
-    @staticmethod
-    def _inside(path: Path, root: Path) -> Path | None:
-        """``path`` fully resolved (symlinks followed) if it is a file inside ``root``, else None."""
+    def _real_root(self, root: Path) -> Path:
+        """``root`` with symlinks resolved; remembered for a second (many frames are checked per request)."""
+        now = time.monotonic()
+        cached = self._roots.get(root)
+        if cached is None or now - cached[0] > 1.0:
+            cached = (now, root.resolve())
+            self._roots[root] = cached
+        return cached[1]
+
+    def _inside(self, path: Path, root: Path) -> Path | None:
+        """``path`` fully resolved (symlinks followed) if it exists inside ``root``, else None."""
         try:
             real = path.resolve(strict=True)
-            real.relative_to(root.resolve())
+            real.relative_to(self._real_root(root))
         except (OSError, RuntimeError, ValueError):
             return None
         return real
@@ -647,7 +654,7 @@ class Library:
         today = datetime.now().date()
         days = []
         for day in sorted(counts, reverse=True):
-            digest = self.store.get_day(day)
+            digest = self._stored_digest(day)
             days.append(
                 {
                     **self.day_labels(day, today),
@@ -816,13 +823,21 @@ class Library:
 
     # -- days -------------------------------------------------------------
 
-    def _digest(self, digest: DayDigest) -> dict[str, Any]:
+    def _stored_digest(self, day: str) -> DayDigest | None:
+        """The saved digest of a day; a damaged one is treated as missing rather than breaking the page."""
+        try:
+            return self.store.get_day(day)
+        except (ValueError, TypeError, AttributeError, KeyError):
+            log.warning("the stored summary of %s is unreadable; run `vnote day %s` to rebuild it", day, day)
+            return None
+
+    def _digest(self, digest: DayDigest, day: str) -> dict[str, Any]:
         return {
-            "date": digest.date,
+            "date": day,
             "headline": digest.headline,
             "summary": digest.summary,
             "highlights": digest.highlights,
-            "action_items": self._action_items(digest.action_items, day_bounds(digest.date)),
+            "action_items": self._action_items(digest.action_items, day_bounds(day)),
             "session_ids": digest.session_ids,
             "llm_backend": digest.llm_backend,
         }
@@ -830,10 +845,10 @@ class Library:
     def day(self, day: str) -> dict[str, Any]:
         since, until = day_bounds(day)
         sessions = sorted(self.store.list_sessions(since_ts=since, until_ts=until), key=lambda s: s.started_ts)
-        digest = self.store.get_day(day)
+        digest = self._stored_digest(day)
         return {
             "day": self.day_labels(day),
-            "digest": self._digest(digest) if digest else None,
+            "digest": self._digest(digest, day) if digest else None,
             "sessions": [self.session_brief(s) for s in sessions],
         }
 
@@ -938,12 +953,20 @@ class Library:
     def ask(self, question: str) -> dict[str, Any]:
         answer = search_mod.ask(self.settings, self.store, question)
         look = _Lookup(self.store)
-        sources = []
-        for item in list(answer.sources)[:80]:
+        sources: list[dict[str, Any]] = []
+        folded: dict[tuple[Any, ...], dict[str, Any]] = {}
+        for item in list(answer.sources)[:120]:
+            # the same sign or whiteboard read off several frames of one session is one piece of evidence
+            key = (item.kind, item.session_id, " ".join(str(item.text).split()).casefold())
+            if item.kind in ("ocr", "caption") and key in folded:
+                folded[key]["similar"] += 1
+                continue
             target = self._target(look, item.kind, item.ref_id, item.session_id, _number(item.ts))
             if target is None:
                 continue
-            sources.append({"kind": item.kind, "time": self.when(item.ts), "text": excerpt(item.text), **target})
+            source = {"kind": item.kind, "time": self.when(item.ts), "text": excerpt(item.text), "similar": 0, **target}
+            folded.setdefault(key, source)
+            sources.append(source)
         backend = str(answer.llm_backend or "")
         return {
             "question": question,
@@ -1112,10 +1135,15 @@ class _Handler(BaseHTTPRequestHandler):
                 or self.headers.get("Transfer-Encoding")
             ):
                 self.close_connection = True  # we do not read bodies of GET requests; do not reuse the connection
-            self._guard()
+            try:
+                self._guard()
+            except HttpError:
+                self.close_connection = True  # do not keep talking to a client we just refused
+                raise
             raw_path, _, query = self.path.partition("?")
             segments = split_path(raw_path.partition("#")[0])
             if segments is None:
+                self.close_connection = True
                 raise HttpError(400, "bad_path", "That address is not valid.")
             self._route(segments, query.partition("#")[0])
         except HttpError as exc:
@@ -1393,12 +1421,17 @@ class _Handler(BaseHTTPRequestHandler):
             self._send(status, b"", content_type, cache=cache, headers=headers, length=remaining)
             if self.command == "HEAD":
                 return
-            handle.seek(start)
+            if start:
+                handle.seek(start)
             while remaining > 0:
-                chunk = handle.read(min(_CHUNK_BYTES, remaining))
+                try:
+                    chunk = handle.read(min(_CHUNK_BYTES, remaining))
+                except OSError as exc:
+                    chunk = b""
+                    log.debug("read error while sending a file: %s", exc)
                 if not chunk:  # the file shrank or its disk went away: the client must not reuse this stream
                     self.close_connection = True
-                    log.warning("a file ended early while it was being sent (was its disk unplugged?)")
+                    log.warning("A file could not be read to its end while it was being sent. Was its disk unplugged?")
                     return
                 self.wfile.write(chunk)
                 remaining -= len(chunk)

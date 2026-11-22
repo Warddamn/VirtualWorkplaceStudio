@@ -315,7 +315,3 @@ def answer_prompt(question: str, evidence: str, *, today: str = "") -> str:
     context = (f"Today is {today}. " if today else "") + "Evidence found in my recordings for a question:"
     return _wrap(context, evidence, _ANSWER_TASK + f"\nQuestion: {question}")
 
-
-def retry_instruction() -> str:
-    """Appended by backends when a first reply contained no JSON object at all."""
-    return "Your previous reply was not valid JSON. Reply again with exactly ONE JSON object and nothing else."

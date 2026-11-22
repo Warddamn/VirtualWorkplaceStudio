@@ -16,7 +16,8 @@ Rules this module keeps
 -----------------------
 * **Generated files.**  A note is rewritten from the library every time it is
   rendered; edits made to it by hand are lost, with one exception: action items
-  that were ticked (``- [x]``) stay ticked as long as their text is unchanged.
+  that were ticked (``- [x]``, or any other mark in the box) stay marked as long
+  as their text is unchanged.
 * **One file per session.**  Re-rendering replaces the session's previous file
   even when the title, and with it the file name, changed.  A file that belongs
   to another session (or to the user) is never overwritten: the note gets a
@@ -136,7 +137,7 @@ def render_session_note(settings: Settings, store: Store, session_id: str) -> Pa
     try:
         notes_dir.mkdir(parents=True, exist_ok=True)
         target = _free_path(notes_dir, f"{started:%Y-%m-%d %H%M} {slugify(title)}", session_id, previous)
-        ticked = _ticked_tasks(target) | (_ticked_tasks(previous) if previous is not None else set())
+        ticked = {**(_ticked_tasks(previous) if previous is not None else {}), **_ticked_tasks(target)}
 
         embedder = _Embedder(settings, assets_dir, enabled=bool(cfg.embed_images))
         blocks: list[str] = [
@@ -205,8 +206,10 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
     Shows the stored :class:`~videonotes.models.DayDigest` when there is one
     (headline, summary, highlights, merged action items) and always lists the
     sessions that started on that day, each linked to its note.  A day without
-    sessions yields a note that says so.  When a digest exists, the note's path
-    is stored with it (``store.save_day``).
+    sessions yields a note that says so.  A digest written from sessions that
+    have all been deleted since is left out; one that lost only some of them is
+    shown with a line saying so.  When a digest exists, the note's path is
+    stored with it (``store.save_day``).
 
     Raises :class:`NoteRenderError` for a malformed date or an unwritable vault.
     """
@@ -221,20 +224,36 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
     clock = _clock_formatter(cfg.time_format)
     lo, hi = day_bounds(day)
     sessions = sorted(store.list_sessions(since_ts=lo, until_ts=hi), key=lambda s: (s.started_ts, s.id))
-    digest = store.get_day(iso)
+    stored = store.get_day(iso)
 
     vault = settings.vault_dir
     days_dir = vault / "days"
     target = days_dir / f"{iso}.md"
     ticked = _ticked_tasks(target)
 
+    # A digest describes the sessions it was written from. Sessions can be deleted afterwards: a digest whose
+    # sessions are all gone is not shown, one that lost some of them is shown with a note saying so.
+    digest = stored
+    gone = 0
+    if stored is not None and stored.session_ids:
+        present = {s.id for s in sessions}
+        gone = sum(1 for sid in stored.session_ids if sid not in present)
+        if gone == len(stored.session_ids):
+            digest = None
+
     front: list[tuple[str, object]] = [("title", iso), ("date", day), ("sessions", len(sessions))]
     if digest is not None:
         front.append(("summarizer", digest.llm_backend or "unknown"))
-    blocks: list[str] = [_front_matter(front), f"# {day:%A} {day.day} {day:%B %Y}"]
+    # weekday and month names follow the process locale, so they are escaped like any other text
+    blocks: list[str] = [_front_matter(front), "# " + _md(f"{day:%A} {day.day} {day:%B %Y}")]
     if digest is not None:
         if digest.headline.strip():
             blocks.append(f"**{_md(digest.headline)}**")
+        if gone:
+            blocks.append(
+                f"*This digest was written when the day still had {gone} more session{'s' if gone != 1 else ''}, "
+                f"deleted since. Run `vnote day {iso}` to write it again.*"
+            )
         if digest.summary.strip():
             blocks += ["## Summary", _prose(digest.summary)]
         highlights = _bullets(digest.highlights)
@@ -245,7 +264,7 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
             blocks += ["## Action items", tasks]
     blocks.append("## Sessions")
     if sessions:
-        recorded = sum(max(0.0, e - s) for s, e in (_session_span(x, store, [], [], []) for x in sessions))
+        recorded = sum(_recorded_seconds(store, x) for x in sessions)
         count = "1 session" if len(sessions) == 1 else f"{len(sessions)} sessions"
         blocks.append(f"*{count} · {fmt_duration(recorded)} recorded*")
         blocks.append("\n".join(_session_line(settings, store, s, days_dir, clock) for s in sessions))
@@ -258,10 +277,10 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
         _write_atomic(target, "\n\n".join(blocks) + "\n")
     except OSError as exc:
         raise _cannot_write(settings, vault, exc) from exc
-    if digest is not None:
-        if digest.date != iso:
-            digest = dataclasses.replace(digest, date=iso)
-        store.save_day(digest, settings.rel(target))
+    if stored is not None:
+        if stored.date != iso:
+            stored = dataclasses.replace(stored, date=iso)
+        store.save_day(stored, settings.rel(target))
     log.info("wrote %s", target)
     return target
 
@@ -366,24 +385,32 @@ def _yaml_scalar(value: object) -> str:
         return value.strftime("%Y-%m-%dT%H:%M:%S")
     if isinstance(value, _date):
         return value.isoformat()
-    if isinstance(value, (list, tuple)):
-        return "[" + ", ".join(_yaml_scalar(v) for v in value) + "]"
     # a JSON string is a valid YAML double-quoted scalar; _one_line removed everything YAML forbids
     return json.dumps(_one_line(value), ensure_ascii=False)
 
 
 def _front_matter(fields: list[tuple[str, object]]) -> str:
-    return "---\n" + "".join(f"{key}: {_yaml_scalar(value)}\n" for key, value in fields) + "---"
+    """YAML front matter: one ``key: value`` per line, lists in block style, every string double-quoted."""
+    lines = ["---"]
+    for key, value in fields:
+        if isinstance(value, (list, tuple)):
+            lines.append(f"{key}:" if value else f"{key}: []")
+            lines += [f"  - {_yaml_scalar(item)}" for item in value]
+        else:
+            lines.append(f"{key}: {_yaml_scalar(value)}")
+    lines.append("---")
+    return "\n".join(lines)
 
 
 def _tags(raw: Iterable[object]) -> list[str]:
-    """Tags in the form Obsidian accepts (letters, digits, ``_``, ``-``, ``/``; no spaces, no ``#``), deduplicated."""
+    """Tags in the form Obsidian accepts: letters, digits, ``_``, ``-`` and ``/``, with at least one letter;
+    no spaces, no ``#``. Compared without regard to case, like Obsidian does."""
     out: list[str] = []
     seen: set[str] = set()
     for item in raw:
         tag = re.sub(r"[^\w/]+", "-", _one_line(item).lstrip("#"), flags=re.UNICODE)
         tag = re.sub(r"-*/[-/]*", "/", tag)[:_MAX_TAG_CHARS].strip("-/")
-        if any(ch.isalnum() for ch in tag) and tag.casefold() not in seen:
+        if any(ch.isalpha() for ch in tag) and tag.casefold() not in seen:
             seen.add(tag.casefold())
             out.append(tag)
             if len(out) >= _MAX_TAGS:
@@ -453,7 +480,7 @@ def _session_span(
 
 
 def _context_line(started: datetime, time_range: str, seconds: float, source: str) -> str:
-    parts = [f"{started:%A} {started:%Y-%m-%d}", _md(time_range), fmt_duration(seconds)]
+    parts = [_md(f"{started:%A} {started:%Y-%m-%d}"), _md(time_range), fmt_duration(seconds)]
     if _one_line(source):
         parts.append(_md(source))
     return "*" + " · ".join(parts) + "*"
@@ -473,7 +500,7 @@ def _session_title(session: Session) -> str:
 
 
 def _note_sections(
-    note: SessionNote, ticked: set[str], start: float, end: float, clock: Callable[[float], str]
+    note: SessionNote, ticked: dict[str, str], start: float, end: float, clock: Callable[[float], str]
 ) -> list[str]:
     blocks: list[str] = []
     if note.summary.strip():
@@ -544,9 +571,12 @@ def _inline_list(items: Iterable[object]) -> str:
 
 
 def _task_lines(
-    items: Iterable[ActionItem], ticked: set[str], lo: float, hi: float, clock: Callable[[float], str]
+    items: Iterable[ActionItem], ticked: dict[str, str], lo: float, hi: float, clock: Callable[[float], str]
 ) -> str:
-    """Action items as task checkboxes; owner / due / clock time only when known."""
+    """Action items as task checkboxes; owner / due / clock time only when known.
+
+    ``ticked`` maps the text of tasks the user marked in the previous version of the note to their mark.
+    """
     lines: list[str] = []
     for item in items:
         text = _md(item.text, emphasis=True)
@@ -561,20 +591,23 @@ def _task_lines(
         if _local(ts) is not None and lo <= ts <= hi:
             extras.append(_md(clock(ts)))
         body = text + (f" ({'; '.join(extras)})" if extras else "")
-        lines.append(f"- [{'x' if body in ticked else ' '}] {body}")
+        lines.append(f"- [{ticked.get(body, ' ')}] {body}")
     return "\n".join(lines)
 
 
-_TICKED = re.compile(r"^- \[[xX]\] (.*\S)\s*$")
+_TICKED = re.compile(r"^- \[([^\s\[\]\\])\] (.*\S)\s*$")
 
 
-def _ticked_tasks(path: Path) -> set[str]:
-    """Bodies of the task lines ticked in an existing note (so re-rendering keeps them ticked)."""
+def _ticked_tasks(path: Path) -> dict[str, str]:
+    """Task lines marked in an existing note, as ``{text: mark}``, so that re-rendering keeps them marked.
+
+    The mark is usually ``x``; Obsidian treats any character in the box as done, and some people use ``-`` or ``/``.
+    """
     try:
         with path.open(encoding="utf-8", errors="replace") as fh:
-            return {m.group(1) for m in map(_TICKED.match, fh) if m}
+            return {m.group(2): m.group(1) for m in map(_TICKED.match, fh) if m}
     except (OSError, ValueError):
-        return set()
+        return {}
 
 
 def _text_key(line: str) -> str:
@@ -671,17 +704,17 @@ def _moment_blocks(
     """One timeline entry: heading, summary, images, on-screen text, collapsed transcript."""
     background = getattr(moment, "salience", "normal") == "background"
     heading = f"### {_md(_time_range(moment.ts0, moment.ts1, clock))}"
-    title = _shorten(_one_line(moment.title), _MAX_TITLE_CHARS)
+    title = _shorten(_one_line(moment.title or ""), _MAX_TITLE_CHARS)
     if title:
         heading += f"  {_md(title)}"
     blocks = [heading]
 
     kind = str(getattr(moment, "kind", "") or "").replace("_", " ")
-    labels = [_md(kind)] + [_md(tag) for tag in _tags(moment.tags)]
+    labels = [_md(kind)] + [_md(tag) for tag in _tags(moment.tags or [])]
     labels = [label for label in labels if label]
     if labels:
         blocks.append("*" + " · ".join(labels) + "*")
-    summary = moment.summary.strip()
+    summary = str(moment.summary or "").strip()
     if summary:
         # background moments (idle stretches, transit …) are kept to one line
         blocks.append(f"*{_md(_first_sentence(summary), emphasis=True)}*" if background else _prose(summary))
@@ -829,6 +862,15 @@ def _transcript(said: list[Utterance], clock_s: Callable[[float], str]) -> str:
 # =============================================================================
 # Day note pieces
 # =============================================================================
+
+
+def _recorded_seconds(store: Store, session: Session) -> float:
+    """Footage in a session: the clips' own durations (breaks between clips do not count)."""
+    clips = store.list_clips(session.id)
+    if clips:
+        return sum(max(0.0, _number(clip.duration)) for clip in clips)
+    start, end = _session_span(session, store, [], [], [])
+    return end - start
 
 
 def _session_line(
@@ -1051,4 +1093,3 @@ def _copy_if_changed(source: Path, destination: Path) -> None:
         with contextlib.suppress(OSError):
             temp.unlink()
         raise
-

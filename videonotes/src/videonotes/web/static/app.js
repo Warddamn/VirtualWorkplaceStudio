@@ -162,6 +162,7 @@
   const state = {
     overview: null,
     overviewAt: 0,
+    overviewLoading: null,
     sessionsByDay: new Map(), // date -> { sessions, at } (sidebar cache)
     expanded: new Set(), // dates whose sessions are shown in the sidebar
     current: { day: null, session: null },
@@ -302,13 +303,23 @@
 
   // ------------------------------------------------------------------ sidebar
 
-  async function loadOverview(force) {
-    if (!force && state.overview && Date.now() - state.overviewAt < 15000) return state.overview;
-    state.overview = await api("/api/overview");
-    state.overviewAt = Date.now();
-    if (state.expanded.size === 0 && state.overview.days.length) state.expanded.add(state.overview.days[0].date);
-    renderSidebar();
-    return state.overview;
+  function loadOverview(force) {
+    if (!force && state.overview && Date.now() - state.overviewAt < 15000) return Promise.resolve(state.overview);
+    if (!state.overviewLoading) {
+      // one request at a time, shared by everything that asks while it is under way
+      state.overviewLoading = (async () => {
+        try {
+          state.overview = await api("/api/overview");
+          state.overviewAt = Date.now();
+          if (state.expanded.size === 0 && state.overview.days.length) state.expanded.add(state.overview.days[0].date);
+          renderSidebar();
+          return state.overview;
+        } finally {
+          state.overviewLoading = null;
+        }
+      })();
+    }
+    return state.overviewLoading;
   }
 
   function renderSidebar() {
@@ -819,13 +830,13 @@
         }
         toggle.textContent = opening ? "Collapse quiet stretches" : "Open all";
       });
-      heading.append(
+      add(heading, [
         el("span", {
           class: "muted",
           text: plural(moments.length, "moment") + (quiet ? `, ${plural(quiet, "quiet stretch", "quiet stretches")} collapsed` : ""),
         }),
-        quiet ? toggle : null
-      );
+        quiet ? toggle : null,
+      ]);
       if (data.clips.length && !data.playable) {
         timeline.append(
           notice("quiet", "The video of this session is not kept in the library, so playback is off. Keyframes and transcript are all here.")
@@ -938,7 +949,7 @@
     return p;
   }
 
-  function resultLink(item, body) {
+  function resultLink(item, body, withDate) {
     return el(
       "a",
       {
@@ -952,7 +963,7 @@
         el(
           "span",
           { class: "result-meta" },
-          el("span", { class: "result-time", text: item.time ? item.time.clock : "" }),
+          el("span", { class: "result-time", text: item.time ? (withDate ? item.time.text : item.time.clock) : "" }),
           chip(HIT_KIND[item.kind] || item.kind, "kind-" + item.kind),
           el("span", { class: "result-where", text: item.moment_title ? `${item.session_title} › ${item.moment_title}` : item.session_title }),
           item.similar ? el("span", { class: "result-more", text: `+ ${plural(item.similar, "similar frame")}` }) : null
@@ -1094,7 +1105,7 @@
             "ol",
             { class: "results evidence" },
             result.sources.map((source) =>
-              el("li", null, resultLink(source, el("span", { class: "result-text evidence-text", text: source.text })))
+              el("li", null, resultLink(source, el("span", { class: "result-text evidence-text", text: source.text }), true))
             )
           )
         )
@@ -1117,7 +1128,10 @@
         body: JSON.stringify({ question }),
       });
     } catch (err) {
-      ask.error = err.message;
+      ask.error =
+        err.code === "offline"
+          ? "The answer did not arrive. Either “vnote web” was stopped, or the language model took too long. Check the Terminal window, then ask again."
+          : err.message;
     }
     ask.pending = false;
     refreshAsk();
@@ -1236,7 +1250,7 @@
     lightbox.play.hidden = !(lightbox.context && lightbox.context.playable.has(frame.clip_id));
     lightbox.prev.disabled = lightbox.index === 0;
     lightbox.next.disabled = lightbox.index === frames.length - 1;
-    lightbox.prev.hidden = lightbox.next.hidden = frames.length < 2;
+    lightbox.prev.hidden = lightbox.next.hidden = lightbox.count.hidden = frames.length < 2;
   }
 
   function openLightbox(frames, index, context) {
@@ -1388,6 +1402,11 @@
     if (route.name !== "session") state.session = null;
     if (route.name !== "search") searchInput.value = "";
     if (refresh) state.overviewAt = 0;
+    if (route.name !== "home") {
+      loadOverview(false).catch(() => {
+        if (!state.overview) dayList.replaceChildren(el("p", { class: "side-note", text: "The list of days could not be loaded." }));
+      });
+    }
     view.setAttribute("aria-busy", "true");
     const slow = window.setTimeout(() => view.classList.add("is-loading"), 250);
     let result;
