@@ -303,12 +303,13 @@ def test_ollama_fills_missing_keys_and_fixes_types(settings):
         assert len(_chats(srv)) == 1  # fenced JSON needs no second request
 
 
-def test_ollama_json_with_impossible_numbers_is_a_backend_error(settings):
+def test_ollama_json_with_impossible_numbers_does_not_crash(settings):
     schema = {"type": "object", "properties": {"id": {"type": "integer"}}}
     with FakeOllama(reply='{"id": Infinity}') as srv:  # Python's JSON parser accepts this
         llm = _ollama(settings, srv)
-        with pytest.raises(BackendError, match="does not fit"):
-            llm.json(system="s", prompt="p", schema=schema)
+        # Non-finite numbers become 0. Moment ids are 1-based, so summarize discards an id of 0
+        # instead of attaching the answer to the wrong moment.
+        assert llm.json(system="s", prompt="p", schema=schema) == {"id": 0}
 
 
 def test_ollama_retries_once_with_a_firmer_instruction(settings):

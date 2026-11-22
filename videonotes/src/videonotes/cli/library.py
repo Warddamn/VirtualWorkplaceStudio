@@ -379,9 +379,19 @@ def delete_session_files(ctx: Context, session: Session) -> None:
         settings.abs(session.note_path).unlink(missing_ok=True)
     ctx.store.delete_session(session.id)
     try:
-        from ..notes.render import render_day_note
+        from ..timeutil import day_bounds
 
-        render_day_note(settings, ctx.store, local_date(session.started_ts))
+        day = local_date(session.started_ts)
+        start, end = day_bounds(day)
+        if any(s.note is not None for s in ctx.store.list_sessions(since_ts=start, until_ts=end)):
+            # other sessions remain that day: re-render its note without this one
+            from ..notes.render import render_day_note
+
+            render_day_note(settings, ctx.store, day)
+        else:
+            ctx.store.delete_day(day)
+            day_note = settings.vault_dir / "days" / f"{day}.md"
+            day_note.unlink(missing_ok=True)
     except Exception:  # the day note is a convenience; deletion already succeeded
         pass
 

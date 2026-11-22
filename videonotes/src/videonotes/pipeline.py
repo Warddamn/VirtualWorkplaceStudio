@@ -300,7 +300,9 @@ class Pipeline:
         from .backends.ocr import clean_ocr_text
 
         cfg = self.settings.ocr
-        with_text = 0
+        retrying = _is_retry(clip, "ocr")
+        with_text = failed = 0
+        last_error = ""
         for kf in pending:
             try:
                 result = engine.read(self.settings.abs(kf.path))
@@ -309,9 +311,15 @@ class Pipeline:
                 raise
             except Exception as exc:  # one unreadable frame must not sink the clip
                 log.warning("OCR failed on %s: %s", kf.path, exc)
-                text = ""
+                if not retrying:
+                    failed += 1  # leave it pending: the next run tries it once more
+                    last_error = _short(exc)
+                    continue
+                text = ""  # failed twice: give up on this frame
             self.store.set_keyframe_ocr(kf.id, text, engine.name)
             with_text += bool(text)
+        if failed:
+            raise _PartialFailure(f"OCR failed on {failed} of {len(pending)} frame(s) (will retry): {last_error}")
         return {"frames": len(pending), "with_text": with_text, "backend": engine.name}
 
     def _stage_caption(self, clip: Clip) -> dict[str, Any]:
@@ -323,7 +331,9 @@ class Pipeline:
         captioner = self._backend("vision")
         if captioner is None:
             raise _Skip(self._unavailable.get("vision", "no captioning backend"))
-        done = 0
+        retrying = _is_retry(clip, "caption")
+        done = failed = 0
+        last_error = ""
         for kf in pending:
             try:
                 caption = captioner.caption(self.settings.abs(kf.path), context=(kf.ocr_text or "")[:600])
@@ -331,9 +341,17 @@ class Pipeline:
                 raise
             except Exception as exc:
                 log.warning("captioning failed on %s: %s", kf.path, exc)
-                continue  # leave caption None so a later run retries this frame
+                if not retrying:
+                    failed += 1  # leave caption None so the next run tries this frame once more
+                    last_error = _short(exc)
+                    continue
+                caption = ""  # failed twice: give up on this frame
             self.store.set_keyframe_caption(kf.id, caption.strip(), captioner.name)
             done += 1
+        if failed:
+            raise _PartialFailure(
+                f"describing failed on {failed} of {len(pending)} frame(s) (will retry): {last_error}"
+            )
         return {"frames": done, "backend": captioner.name}
 
     _RUNNERS = {
@@ -370,6 +388,10 @@ class Pipeline:
             return "skipped"
         except KeyboardInterrupt:
             raise
+        except _PartialFailure as exc:
+            log.warning("clip %s: %s", clip_id, exc)
+            self.store.set_clip_stage(clip_id, stage, "error", message=str(exc))
+            return "error"
         except Exception as exc:
             log.exception("stage %s failed for clip %s", stage, clip_id)
             self.store.set_clip_stage(clip_id, stage, "error", message=_short(exc))
@@ -513,6 +535,8 @@ class Pipeline:
             digest.date = date
             digest.session_ids = [s.id for s in sessions]
             self.store.save_day(digest)
+        else:
+            self.store.delete_day(date)  # nothing summarised is left that day: drop a stale digest
         return render_day_note(self.settings, self.store, date)
 
     # -- helpers -----------------------------------------------------------------------------
@@ -535,6 +559,15 @@ class Pipeline:
 
 class _Skip(Exception):
     """A stage cannot run for lack of a backend."""
+
+
+class _PartialFailure(Exception):
+    """Some frames of a stage failed; the ones that worked are saved, the rest retried next run."""
+
+
+def _is_retry(clip: Clip, stage: str) -> bool:
+    """True when the previous attempt at this stage ended in an error (so this is the retry)."""
+    return clip.stages.get(stage, {}).get("status") == "error"
 
 
 def _short(exc: BaseException, limit: int = 400) -> str:

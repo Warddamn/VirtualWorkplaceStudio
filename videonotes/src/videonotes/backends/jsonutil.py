@@ -10,6 +10,7 @@ or a string where a list was expected.
 from __future__ import annotations
 
 import json
+import math
 import re
 from typing import Any
 
@@ -113,7 +114,9 @@ def coerce_to_schema(value: Any, schema: dict[str, Any]) -> Any:
     if kind in ("number", "integer"):
         try:
             num = float(value)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, OverflowError):
+            num = 0.0
+        if not math.isfinite(num):  # json.loads accepts Infinity / NaN; schemas never want them
             num = 0.0
         return int(num) if kind == "integer" else num
     if kind == "boolean":

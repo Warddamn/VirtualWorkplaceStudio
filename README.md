@@ -1,5 +1,8 @@
 # Style-Transfer Cover App
 
+> **Also in this repository:** [`videonotes/`](videonotes/README.md) — video note-taking for a worn
+> DJI Osmo Action camera (local speech-to-text, keyframes, OCR and summaries on a Mac).
+
 Concept: pick a song you love, point at a style reference (a YouTube link or just a
 name — "the PS22 kids-choir cover of Lisztomania"), and get a full cover of your song
 in that style: same melody and lyrics, new arrangement and vocals.

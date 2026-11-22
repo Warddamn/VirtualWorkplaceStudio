@@ -246,6 +246,9 @@ def run_command(func: Callable[[Context, argparse.Namespace], int | None], args:
     except BrokenPipeError:
         return EXIT_OK  # e.g. `vnote search … | head`
     except Exception as exc:
+        if type(exc).__name__ == "NoteRenderError":  # its message already says what to do
+            out.error(str(exc))
+            return EXIT_ERROR
         if ctx is not None and ctx.verbose:
             raise
         out.error(f"Unexpected error: {type(exc).__name__}: {exc}")

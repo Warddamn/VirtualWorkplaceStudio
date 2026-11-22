@@ -320,7 +320,7 @@ def test_ollama_respects_image_width_and_never_upscales(settings, frames, local_
 
 
 def test_ollama_auto_model_follows_the_preference_order(settings, local_only):
-    assert OLLAMA_VISION_MODELS[0] == "qwen3-vl:4b"
+    assert OLLAMA_VISION_MODELS[:2] == ("qwen3-vl:4b-instruct", "qwen3-vl:4b")
     assert len(set(OLLAMA_VISION_MODELS)) == len(OLLAMA_VISION_MODELS)
     pulled = ["llava:7b", "gemma3:4b", "qwen3:4b", "qwen3-vl:2b", "minicpm-v4.6"]
     with FakeOllama(models=pulled) as srv:

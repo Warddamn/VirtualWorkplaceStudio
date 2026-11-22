@@ -49,6 +49,9 @@ VISION_BACKENDS = ("auto", "ollama", "mlx-vlm", "anthropic", "none")
 #: that fit a 16 GB Mac next to everything else (about 2-5 GB each).  The first entry is the
 #: one recommended to pull: its size, speed and non-"thinking" behaviour are the best documented.
 OLLAMA_VISION_MODELS: tuple[str, ...] = (
+    # The explicit instruct tag first: the bare "qwen3-vl:4b" may resolve to the thinking
+    # variant, which is slower and wordier for one-sentence captions.
+    "qwen3-vl:4b-instruct",
     "qwen3-vl:4b",
     "qwen3.5:4b",
     "gemma4:e2b-it-q4_K_M",

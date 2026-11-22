@@ -61,11 +61,18 @@ class FakeOllama:
         self._server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
         self.url = f"http://127.0.0.1:{self._server.server_address[1]}"
         self._thread = threading.Thread(target=self._server.serve_forever, daemon=True)
+        self._stopped = False
 
     def __enter__(self) -> FakeOllama:
         self._thread.start()
         return self
 
+    def stop(self) -> None:
+        """Shut the server down now (e.g. to simulate Ollama dying mid-run)."""
+        if not self._stopped:
+            self._stopped = True
+            self._server.shutdown()
+            self._server.server_close()
+
     def __exit__(self, *exc: object) -> None:
-        self._server.shutdown()
-        self._server.server_close()
+        self.stop()

@@ -36,7 +36,10 @@ ble = ["bleak>=3.1,<4"]
 ffmpeg = ["imageio-ffmpeg>=0.8.1"]
 # Optional cloud backend (never used unless selected in config.toml)
 cloud = ["anthropic>=2.0"]
-dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.6", "sherpa-onnx>=2.0", "rapidocr>=3.10", "onnxruntime>=1.20", "bleak>=3.1,<4", "anthropic>=2.0"]
+dev = [
+    "pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.6", "sherpa-onnx>=2.0", "rapidocr>=3.10", "onnxruntime>=1.20",
+    "bleak>=3.1,<4", "anthropic>=2.0", "pyyaml>=6", "markdown-it-py>=3",
+]
 
 [project.scripts]
 vnote = "videonotes.cli:main"

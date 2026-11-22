@@ -732,6 +732,10 @@ class Store:
             (digest.date, json.dumps(digest.to_dict()), note_path, _now()),
         )
 
+    def delete_day(self, date: str) -> None:
+        """Forget the digest of a day (e.g. after its last session was deleted)."""
+        self._exec("DELETE FROM days WHERE date=?", (date,))
+
     def get_day(self, date: str) -> DayDigest | None:
         row = self._one("SELECT digest_json FROM days WHERE date=?", (date,))
         return DayDigest.from_dict(json.loads(row["digest_json"])) if row else None

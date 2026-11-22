@@ -45,7 +45,7 @@ def image_block(path: Path) -> dict[str, Any]:
 class ClaudeClient:
     """Thin wrapper: one user turn in, text (or a schema-conforming object) out."""
 
-    def __init__(self, model: str = DEFAULT_MODEL, *, client: Any = None):
+    def __init__(self, model: str = DEFAULT_MODEL, *, client: Any = None, timeout: float = 300.0, max_retries: int = 2):
         self.model = model or DEFAULT_MODEL
         if client is not None:
             self._anthropic = None
@@ -56,7 +56,8 @@ class ClaudeClient:
         except ImportError as exc:
             raise BackendUnavailable(INSTALL_HINT) from exc
         self._anthropic = anthropic
-        self._client = anthropic.Anthropic()
+        # bounded, so one hung request cannot stall a whole processing run
+        self._client = anthropic.Anthropic(timeout=timeout, max_retries=max_retries)
 
     def complete(
         self,
