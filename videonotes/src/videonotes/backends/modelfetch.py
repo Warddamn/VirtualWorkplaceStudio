@@ -110,6 +110,10 @@ class UnsafeArchiveError(ModelFetchError):
     """The archive contains an entry that would be written outside the destination."""
 
 
+class _UnpackIOError(ModelFetchError):
+    """Unpacking failed because of the local disk (full, read-only, …), not because of the archive."""
+
+
 class _Restart(Exception):
     """The partial file cannot be continued; start again from byte 0."""
 
@@ -291,7 +295,7 @@ def _attempt(
             meta.write_text(
                 json.dumps({"url": url, "validator": _validator(response.headers), "total": total}), encoding="utf-8"
             )
-            out = open(part, "r+b" if offset else "wb")  # noqa: SIM115 - closed by the with-block below
+            out = open(part, "r+b" if offset else "wb")
         except OSError as exc:
             raise _LocalIOError(exc.strerror or str(exc)) from exc
         with out:
@@ -534,7 +538,7 @@ def extract_archive(archive: str | Path, dest_dir: str | Path, *, kind: str | No
     except OSError as exc:
         if exc.errno is None:  # bz2/gzip report corrupt data as a bare OSError("Invalid data stream")
             raise ModelFetchError(f"{damaged} ({exc})") from exc
-        raise ModelFetchError(f"Could not unpack {archive.name} into {root}: {exc.strerror or exc}") from exc
+        raise _UnpackIOError(f"Could not unpack {archive.name} into {root}: {exc.strerror or exc}") from exc
     return sorted(p.name for p in root.iterdir())
 
 
@@ -623,7 +627,8 @@ def fetch_archive(
             )
         else:
             text = f"{exc}\n{manual_instructions(url, dest, expected_member=expected_member)}"
-        return type(exc)(text, url=url, dest_dir=dest)
+        kind = UnsafeArchiveError if isinstance(exc, UnsafeArchiveError) else ModelFetchError
+        return kind(text, url=url, dest_dir=dest)
 
     try:
         downloads.mkdir(parents=True, exist_ok=True)
@@ -654,7 +659,7 @@ def fetch_archive(
                         f"{name} does not contain {expected_member!r} (it contains: {', '.join(members[:8])})"
                     )
             except ModelFetchError as exc:
-                if "Could not unpack" not in str(exc):  # the bytes are bad: never try them again
+                if not isinstance(exc, _UnpackIOError):  # the bytes are bad: never try them again
                     archive.unlink(missing_ok=True)
                 raise
             marker_path(url, dest).unlink(missing_ok=True)
