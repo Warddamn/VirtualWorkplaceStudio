@@ -267,10 +267,7 @@
   }
 
   function sessionTimes(s) {
-    const bits = [];
-    if (s.start) bits.push(s.end && s.end.clock !== s.start.clock ? `${s.start.clock}–${s.end.clock}` : s.start.clock);
-    if (s.duration) bits.push(s.duration);
-    return bits.join(" · ");
+    return [timeRange(s.start, s.end), s.duration].filter(Boolean).join(" · ");
   }
 
   function statusChip(s) {

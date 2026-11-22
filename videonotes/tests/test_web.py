@@ -1114,6 +1114,45 @@ def test_new_sessions_show_up_without_restart(empty_srv):
     assert detail["session"]["title"] == "Fresh" and detail["session"]["end"] is None and detail["clips"] == []
 
 
+def test_damaged_day_summary_does_not_break_the_pages(empty_srv, caplog):
+    import sqlite3
+
+    with Store(empty_srv.settings.db_path) as other:
+        other.create_session(Session(id="20261122-010000-dddd", kind="file", started_ts=day_bounds(DAY)[0] + 3600))
+    with sqlite3.connect(empty_srv.settings.db_path) as db:  # e.g. a half-written row after a crash
+        db.execute("INSERT INTO days(date, digest_json, updated_ts) VALUES(?, ?, 0)", (DAY, "{not json"))
+    with caplog.at_level("WARNING", logger="videonotes.web"):
+        overview = fetch(empty_srv.base, "/api/overview").json()
+        day = fetch(empty_srv.base, f"/api/day/{DAY}").json()
+    assert overview["days"][0]["has_digest"] is False and day["digest"] is None and len(day["sessions"]) == 1
+    assert f"vnote day {DAY}" in caplog.text  # the log says how to rebuild it
+
+
+def test_vnote_web_command(tmp_path, monkeypatch, capsys, srv):
+    """The real CLI path: `vnote web` prints the address, serves, and Ctrl-C ends it with exit code 0."""
+    from videonotes.cli import main
+
+    monkeypatch.setenv("NO_COLOR", "1")
+    served: list[str] = []
+
+    def fake_serve_forever(self, poll_interval=0.5):
+        served.append(self.url)
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(web.VideoNotesServer, "serve_forever", fake_serve_forever)
+    monkeypatch.setattr("webbrowser.open", lambda url: pytest.fail("--no-open must not open a browser"))
+    assert main(["--home", str(tmp_path / "lib"), "web", "--port", "0", "--no-open"]) == 0
+    out = capsys.readouterr()
+    assert served and served[0] in out.out and "Ctrl-C" in out.out and "Web UI stopped." in out.out
+    assert "Interrupted" not in out.err and "Traceback" not in out.err
+
+    with pytest.raises(SystemExit) as exit_info:  # the port of the module's running server is taken
+        main(["--home", str(tmp_path / "lib"), "web", "--port", str(srv.port), "--no-open"])
+    assert exit_info.value.code == 1
+    err = capsys.readouterr().err
+    assert f"Port {srv.port} is already in use" in err and "Unexpected error" not in err
+
+
 def test_make_server_only_listens_on_loopback(tmp_path):
     settings = Settings(home=tmp_path / "home")
     for host in ("0.0.0.0", "::", "192.168.1.10", "example.com", ""):

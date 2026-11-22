@@ -204,7 +204,15 @@ class Store:
             self._db.execute("PRAGMA synchronous=NORMAL")
             self._db.execute("PRAGMA foreign_keys=ON")
             self._db.execute("PRAGMA busy_timeout=10000")
-            self._db.executescript(_SCHEMA)
+            try:
+                self._db.executescript(_SCHEMA)
+            except sqlite3.OperationalError as exc:
+                if "fts5" in str(exc).lower():
+                    raise RuntimeError(
+                        "This Python's SQLite was built without full-text search (FTS5), which videonotes needs. "
+                        "Use a current Python from python.org, Homebrew or uv (`uv python install 3.12`)."
+                    ) from exc
+                raise
             row = self._db.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
             if row is None:
                 self._db.execute(

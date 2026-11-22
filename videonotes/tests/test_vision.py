@@ -178,7 +178,8 @@ def test_clean_caption_strips_decoration(raw, expected):
     [
         "unclear", "Unclear.", " UNCLEAR ", '"unclear"', "**Unclear**", "unclear - the frame is too dark",
         "Unclear. The image is completely black.", "The image is unclear.", "The image is too dark to describe.",
-        "The frame is too dark and blurry to make out any details.", "Too blurry to tell.", "This picture is completely black.",
+        "The frame is too dark and blurry to make out any details.", "Too blurry to tell.",
+        "This picture is completely black.",
         "Blank.", "N/A", "none", "I'm sorry, I can't describe this image.", "I cannot see anything in this frame.",
         "I am unable to view images.", "Sorry, I can't help with that.", "", "   ", "<think>still thinking about it",
         "The image shows", "```\n```",
@@ -277,7 +278,8 @@ def test_downscale_without_ffmpeg_is_backend_unavailable(frames, tmp_path, monke
 def test_ollama_request_shape(settings, frames, local_only):
     settings.vision.backend = "ollama"
     settings.llm.keep_alive = "2m"
-    with FakeOllama(reply="The image shows a whiteboard with a launch plan.", models=["qwen3:4b", "qwen3-vl:4b"]) as srv:
+    reply = "The image shows a whiteboard with a launch plan."
+    with FakeOllama(reply=reply, models=["qwen3:4b", "qwen3-vl:4b"]) as srv:
         settings.llm.ollama_url = srv.url
         captioner = make_captioner(settings)
         assert isinstance(captioner, Captioner) and captioner.name == "ollama:qwen3-vl:4b"
@@ -458,7 +460,8 @@ def test_anthropic_request_shape(settings, frames):
     assert "system" not in call and "temperature" not in call and "thinking" not in call
     (message,) = call["messages"]
     image, text = message["content"]
-    assert image["type"] == "image" and image["source"]["type"] == "base64" and image["source"]["media_type"] == "image/jpeg"
+    assert image["type"] == "image" and image["source"]["type"] == "base64"
+    assert image["source"]["media_type"] == "image/jpeg"
     assert jpeg_size(base64.standard_b64decode(image["source"]["data"])) == (768, 432)
     assert text == {"type": "text", "text": build_caption_prompt("Room 4B")}
     assert leftovers(settings) == []
@@ -564,7 +567,7 @@ def fake_mlx(monkeypatch, tmp_path):
         template_accepts_kwargs=True,
         seen_images=[],
     )
-    state.result = SimpleNamespace(text="The image shows a desk with two monitors.", generation_tps=20.0, peak_memory=2.5)
+    state.result = SimpleNamespace(text="The image shows a desk with two monitors.", generation_tps=20.0)
     model = SimpleNamespace(config=SimpleNamespace(model_type="qwen3_5"))
     processor = SimpleNamespace(kind="processor")
     state.model, state.processor = model, processor
@@ -582,7 +585,8 @@ def fake_mlx(monkeypatch, tmp_path):
         return {"model_type": "qwen3_5"}
 
     def apply_chat_template(
-        processor, config, prompt, add_generation_prompt=True, return_messages=False, num_images=0, num_audios=0, **kwargs
+        processor, config, prompt, add_generation_prompt=True, return_messages=False, num_images=0, num_audios=0,
+        **kwargs,
     ):
         state.events.append(("apply_chat_template", processor, config, prompt, num_images, dict(kwargs)))
         return f"<|im_start|>user\n<image>{prompt}<|im_end|>\n<|im_start|>assistant\n"
@@ -632,12 +636,14 @@ def test_mlx_vlm_call_sequence(fake_mlx, settings, frames):
     full_prompt = build_caption_prompt("Sprint board")
     # apply_chat_template(processor, config, prompt, num_images=1, enable_thinking=False)
     assert template_call == (
-        "apply_chat_template", fake_mlx.processor, {"model_type": "qwen3_5"}, full_prompt, 1, {"enable_thinking": False},
+        "apply_chat_template", fake_mlx.processor, {"model_type": "qwen3_5"}, full_prompt, 1,
+        {"enable_thinking": False},
     )  # fmt: skip
     # generate(model, processor, formatted_prompt, [image], max_tokens=..., temperature=0.0, verbose=False)
     name, model, processor, prompt, image, verbose, kwargs = generate_call
     assert (name, model, processor, verbose) == ("generate", fake_mlx.model, fake_mlx.processor, False)
-    assert prompt == f"<|im_start|>user\n<image>{full_prompt}<|im_end|>\n<|im_start|>assistant\n"  # the TEMPLATED prompt
+    # the TEMPLATED prompt goes to the model, not the raw instruction
+    assert prompt == f"<|im_start|>user\n<image>{full_prompt}<|im_end|>\n<|im_start|>assistant\n"
     assert kwargs == {"max_tokens": 160, "temperature": 0.0}
     assert isinstance(image, list) and len(image) == 1 and isinstance(image[0], str)
     assert fake_mlx.seen_images == [(image[0], (768, 432))]  # a downscaled JPEG that existed during generation
@@ -690,7 +696,8 @@ def test_mlx_vlm_api_drift_is_a_clear_backend_error(fake_mlx, settings, frames):
     captioner = MlxVlmCaptioner(tmp_dir=settings.cache_dir)
 
     fake_mlx.generate_error = TypeError("generate() got an unexpected keyword argument 'temperature'")
-    with pytest.raises(BackendError, match=r"mlx-vlm 0\.8\.0 rejected the generate\(\) call.*pip install 'mlx-vlm==0\.8\.0'"):
+    expected = r"mlx-vlm 0\.8\.0 rejected the generate\(\) call.*pip install 'mlx-vlm==0\.8\.0'"
+    with pytest.raises(BackendError, match=expected):
         captioner.caption(frames.small)
 
     fake_mlx.generate_error = RuntimeError("[metal] Command buffer execution failed: Insufficient Memory")

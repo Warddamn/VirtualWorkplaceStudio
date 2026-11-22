@@ -702,18 +702,20 @@ def _moment_blocks(
     clock_s: Callable[[float], str],
 ) -> list[str]:
     """One timeline entry: heading, summary, images, on-screen text, collapsed transcript."""
-    background = getattr(moment, "salience", "normal") == "background"
     heading = f"### {_md(_time_range(moment.ts0, moment.ts1, clock))}"
     title = _shorten(_one_line(moment.title or ""), _MAX_TITLE_CHARS)
     if title:
         heading += f"  {_md(title)}"
     blocks = [heading]
 
+    salience = getattr(moment, "salience", "normal")
     kind = str(getattr(moment, "kind", "") or "").replace("_", " ")
-    labels = [_md(kind)] + [_md(tag) for tag in _tags(moment.tags or [])]
-    labels = [label for label in labels if label]
+    labels = ["\u2605 highlight"] if salience == "highlight" else []
+    labels += [_md(kind)] if kind and kind != "other" else []
+    labels += [_md(tag) for tag in _tags(moment.tags or [])]
     if labels:
         blocks.append("*" + " · ".join(labels) + "*")
+    background = salience == "background"
     summary = str(moment.summary or "").strip()
     if summary:
         # background moments (idle stretches, transit …) are kept to one line

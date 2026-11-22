@@ -147,7 +147,7 @@ _QUOTE_PAIRS = {'"': '"', "'": "'", "\u201c": "\u201d", "\u2018": "\u2019", "`":
 _FRAME_WORD = r"(?:image|picture|photo(?:graph)?|frame|video\s+frame|still|screenshot|scene|view|shot|footage)"
 _PREAMBLE = re.compile(
     rf"""^(?:
-        (?:sure|certainly|okay|ok|of\s+course|absolutely)\b[,!.:]*\s+
+        (?:sure|certainly|okay|ok|of\s+course|absolutely)[,!.:]+\s+
       | here(?:'s|\s+is)\s+(?:a|an|the|my)\s+[^.:!?]{{0,60}}:\s*
       | (?:the|this)\s+{_FRAME_WORD}\s+
         (?:shows|depicts|displays|captures|features|presents|portrays|illustrates|contains
@@ -166,6 +166,7 @@ _UNCLEAR_WORDS = frozenset(
         "no description", "cannot tell", "can't tell", "can not tell",
     }
 )  # fmt: skip
+_UNCLEAR_LEAD = re.compile(r"unclear\b")  # the prompt's own word for "nothing usable in this frame"
 _BAD_FRAME = r"(?:dark|black|blurry|blurred|unclear|featureless|blank|out\s+of\s+focus|indistinct|obscured|dim|noisy)"
 _INTENSIFIER = r"(?:(?:too|very|completely|entirely|mostly|just|quite|extremely|almost\s+entirely)\s+)*"
 _UNCLEAR_FRAME = re.compile(
@@ -229,7 +230,7 @@ def clean_caption(raw: str | None, *, max_chars: int = MAX_CAPTION_CHARS) -> str
     if not text:
         return ""
     key = text.casefold().strip(" .!?\"'`*-\u2013\u2014:;")
-    if key in _UNCLEAR_WORDS or key.startswith("unclear") or _UNCLEAR_FRAME.match(text) or _REFUSAL.match(text):
+    if key in _UNCLEAR_WORDS or _UNCLEAR_LEAD.match(key) or _UNCLEAR_FRAME.match(text) or _REFUSAL.match(text):
         return ""
     text = text[0].upper() + text[1:]
     return _cap_at_sentence(text, max_chars)
@@ -388,7 +389,8 @@ def hf_cached_snapshot(repo_id: str) -> Path | None:
         ref = repo_dir / "refs" / "main"
         if ref.is_file():
             candidates.append(snapshots / ref.read_text(encoding="utf-8").strip())
-        candidates += sorted((p for p in snapshots.iterdir() if p.is_dir()), key=lambda p: p.stat().st_mtime, reverse=True)
+        newest_first = sorted(snapshots.iterdir(), key=lambda p: p.stat().st_mtime, reverse=True)
+        candidates += [p for p in newest_first if p.is_dir()]
         for candidate in candidates:
             if (candidate / "config.json").is_file() and any(candidate.glob("*.safetensors")):
                 return candidate
@@ -406,7 +408,9 @@ def _mlx_vlm_api() -> SimpleNamespace:
     except ImportError as exc:
         raise BackendUnavailable(f"{MLX_VLM_INSTALL_HINT}  ({exc})") from exc
     except Exception as exc:  # e.g. MLX refusing to start on an unsupported machine
-        raise BackendUnavailable(f"mlx-vlm could not be imported ({type(exc).__name__}: {exc}). {MLX_VLM_PIN_HINT}") from exc
+        raise BackendUnavailable(
+            f"mlx-vlm could not be imported ({type(exc).__name__}: {exc}). {MLX_VLM_PIN_HINT}"
+        ) from exc
     try:
         from mlx_vlm.utils import load_config  # type: ignore[import-not-found]
     except ImportError:
@@ -520,7 +524,9 @@ class MlxVlmCaptioner(_FrameCaptioner):
                 verbose=False,
             )
         except TypeError as exc:
-            raise BackendError(f"mlx-vlm {api.version} rejected the generate() call ({exc}). {MLX_VLM_PIN_HINT}") from exc
+            raise BackendError(
+                f"mlx-vlm {api.version} rejected the generate() call ({exc}). {MLX_VLM_PIN_HINT}"
+            ) from exc
         except Exception as exc:
             raise BackendError(f"mlx-vlm failed on this frame ({type(exc).__name__}: {exc})") from exc
         if isinstance(result, str):  # releases before 0.3

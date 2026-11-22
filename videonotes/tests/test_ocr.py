@@ -146,7 +146,8 @@ def test_reading_order_without_boxes_keeps_engine_order():
 
 
 def test_clean_drops_low_confidence_and_keeps_order():
-    result = OcrResult([OcrLine("Launch plan Q3", 0.95), OcrLine("smudge text", 0.2), OcrLine("Ship Falcon beta", 0.36)])
+    lines = [OcrLine("Launch plan Q3", 0.95), OcrLine("smudge text", 0.2), OcrLine("Ship Falcon beta", 0.36)]
+    result = OcrResult(lines)
     assert clean_ocr_text(result, min_confidence=0.35, min_chars=3) == "Launch plan Q3\nShip Falcon beta"
     assert clean_ocr_text(result, min_confidence=0.5, min_chars=3) == "Launch plan Q3"
     assert clean_ocr_text(result, min_confidence=0.0, min_chars=3).count("\n") == 2
@@ -182,11 +183,18 @@ def test_clean_returns_empty_when_too_little_text():
     # spaces do not count towards the minimum
     assert clean_ocr_text(OcrResult([OcrLine("a  b", 0.9)]), min_confidence=0.3, min_chars=3) == ""
     assert clean_ocr_text(OcrResult(), min_confidence=0.3, min_chars=0) == ""
-    assert clean_ocr_text(OcrResult([OcrLine("ab", 0.9), OcrLine("cd", 0.9)]), min_confidence=0.3, min_chars=4) == "ab\ncd"
+    two = OcrResult([OcrLine("ab", 0.9), OcrLine("cd", 0.9)])
+    assert clean_ocr_text(two, min_confidence=0.3, min_chars=4) == "ab\ncd"
+    assert clean_ocr_text(two, min_confidence=0.3, min_chars=5) == ""
 
 
 def test_clean_survives_odd_confidences():
-    result = OcrResult([OcrLine("not a number", float("nan")), OcrLine("fine text", 1.0), OcrLine("none conf", None)])  # type: ignore[arg-type]
+    odd = [
+        OcrLine("not a number", float("nan")),
+        OcrLine("fine text", 1.0),
+        OcrLine("none conf", None),  # type: ignore[arg-type]
+    ]
+    result = OcrResult(odd)
     assert clean_ocr_text(result, min_confidence=0.35, min_chars=3) == "fine text"
 
 
@@ -541,12 +549,14 @@ def test_rapidocr_result_empty_and_degenerate_shapes():
     assert rapidocr_result(SimpleNamespace(txts=(), scores=(), boxes=None)).lines == []
     assert rapidocr_result(object()).lines == []
     # no image size: order still follows the boxes, but no (wrongly scaled) boxes are handed out
-    raw = SimpleNamespace(txts=("b", "a"), scores=(0.9, 0.8), boxes=[_quad(0, 50, 10, 60), _quad(0, 5, 10, 15)], img=None)
+    quads = [_quad(0, 50, 10, 60), _quad(0, 5, 10, 15)]
+    raw = SimpleNamespace(txts=("b", "a"), scores=(0.9, 0.8), boxes=quads, img=None)
     result = rapidocr_result(raw)
     assert [(ln.text, ln.box) for ln in result.lines] == [("a", None), ("b", None)]
     # no boxes at all: engine order, default confidence handling
     raw = SimpleNamespace(txts=("x y", "z w"), scores=None, boxes=None, img=None)
-    assert [(ln.text, ln.confidence, ln.box) for ln in rapidocr_result(raw).lines] == [("x y", 1.0, None), ("z w", 1.0, None)]
+    converted = [(ln.text, ln.confidence, ln.box) for ln in rapidocr_result(raw).lines]
+    assert converted == [("x y", 1.0, None), ("z w", 1.0, None)]
 
 
 # ---------------------------------------------------------------------------
@@ -723,7 +733,8 @@ def text_images(tmp_path_factory):
     # pixels lower in row 1 and higher in row 2), as on a real door sign or timetable
     sign = render_text_image(
         out / "sign.jpg",
-        [("Name", 80, 100), ("Room", 520, 106), ("Alice", 80, 226), ("4B North", 520, 220), ("Bob", 80, 340), ("7C South", 520, 346)],
+        [("Name", 80, 100), ("Room", 520, 106), ("Alice", 80, 226), ("4B North", 520, 220), ("Bob", 80, 340),
+         ("7C South", 520, 346)],  # fmt: skip
         background="0x1E3A5F",
         color="white",
     )

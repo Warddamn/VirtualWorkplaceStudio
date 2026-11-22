@@ -373,6 +373,19 @@ def test_background_moments_are_kept_to_one_line(cfg: Settings, store: Store):
     assert text.count("### ") == 2
 
 
+def test_highlight_moments_are_marked_and_the_kind_other_is_not_shown(cfg: Settings, store: Store):
+    lib = demo_lib(cfg, store).summarise(NOTE, ["Whiteboard walkthrough", "Door sign"])
+    first, second = lib.moments
+    store.update_moment(first.id, title="Whiteboard walkthrough", summary="We set the date.", tags=["planning"],
+                        kind="meeting", salience="highlight")  # fmt: skip
+    store.update_moment(second.id, title="Door sign", summary="A sign.", tags=[], kind="other", salience="normal")
+    text = lib.render().read_text(encoding="utf-8")
+    assert "  Whiteboard walkthrough\n\n*\u2605 highlight · meeting · planning*\n\nWe set the date.\n" in text
+    assert "  Door sign\n\nA sign.\n" in text  # nothing to label: no line at all
+    store.update_moment(second.id, title="Door sign", summary="A sign.", tags=[], kind="solo_work")
+    assert "  Door sign\n\n*solo work*\n\nA sign.\n" in lib.render().read_text(encoding="utf-8")
+
+
 # ---------------------------------------------------------------------------
 # Images
 # ---------------------------------------------------------------------------
