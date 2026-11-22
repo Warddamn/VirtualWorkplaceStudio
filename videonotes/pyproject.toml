@@ -22,6 +22,8 @@ packages = ["src/videonotes"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 markers = [
     "slow: needs real models or long-running media work",
 ]

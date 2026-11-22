@@ -241,3 +241,23 @@ class SearchHit:
     text: str
     snippet: str
     score: float
+
+
+@dataclass
+class Evidence:
+    """One piece of retrieved context handed to the question-answering step."""
+
+    kind: str  # same vocabulary as SearchHit.kind
+    session_id: str
+    ts: float | None
+    text: str
+    ref_id: str = ""
+
+
+@dataclass
+class Answer:
+    """Result of ``ask``: the answer plus the evidence it was built from."""
+
+    text: str
+    sources: list[Evidence] = field(default_factory=list)
+    llm_backend: str = ""  # "extractive" when no LLM was available
