@@ -19,7 +19,8 @@ How trust is kept
   decision, question or key point must share most of its content words with the evidence;
   a name must have been said or shown; a due time or an owner that does not occur in the
   evidence is blanked; anything that traces back to a *media* moment (a TV or a video
-  playing) is dropped.  Verbatim on-screen text is never taken from the model at all.
+  playing) is dropped.  Verbatim on-screen text is never taken from the model at all, and an
+  explicit reminder ("remember to ...", "Action: ...") is kept even if the model overlooks it.
 * **Prompts stay inside the model's budget.**  ``llm.context_tokens`` is the input budget;
   tokens are estimated as characters / 3.5.  Moments are batched, long sessions are split
   into parts and merged (map-reduce), and evidence is trimmed from the middle, never by
@@ -54,7 +55,7 @@ from ..models import (
     SessionNote,
     Utterance,
 )
-from ..timeutil import fmt_clock, fmt_duration, local_dt
+from ..timeutil import fmt_duration, local_dt
 from . import prompts
 
 log = logging.getLogger("videonotes.summarize")
@@ -82,7 +83,11 @@ QUIET_SESSION_SUMMARY = "No speech, readable text or scene descriptions were rec
 
 #: A prompt with less room for evidence than this is not worth sending.
 MIN_EVIDENCE_CHARS = 500
+#: Moments per call for a local model (its answer must fit a small window) ...
 MAX_MOMENTS_PER_CALL = 8
+#: ... and for a backend with a large context window (fewer round trips).
+MAX_MOMENTS_PER_LARGE_CALL = 24
+_LARGE_CONTEXT_CHARS = 100_000
 MOMENT_CONTEXT_CHARS = 6000
 #: A session is never split into more LLM calls than this (evidence is condensed instead).
 MAX_SESSION_PARTS = 12
@@ -99,12 +104,13 @@ _MAX_CAPTURED_ENTRY_CHARS = 1200
 # Text helpers
 # =============================================================================
 
-_CONTROL = re.compile(r"[\x00-\x1f\x7f-\x9f​-‏‪-‮⁦-⁩﻿]")
+_CONTROL = re.compile("[\x00-\x1f\x7f-\x9f\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]")
 _RULER = re.compile(r"([=\-_#*~`<>])\1{2,}")
 _WORD = re.compile(r"[^\W_]+(?:['’][^\W_]+)*")
+_NOT_ALNUM = re.compile(r"[\W_]+")
 _SENTENCE_SPLIT = re.compile(r"(?<=[.!?…])[\"'”’)\]]*\s+(?=[^\sa-z])")
-_ABBREVIATION = re.compile(r"(?:\b(?:mr|mrs|ms|dr|prof|st|vs|etc|approx|no|fig|e\.g|i\.e)\.|\b[A-Za-z]\.)$", re.I)
-_SPELLED_OUT = re.compile(r"(?:^|\s)[A-Za-z]\s[A-Za-z]\.$")  # "... at three P M." really is the end of a sentence
+#: "Dr." and dotted abbreviations ("p.m.", "U.S.", "e.g.") do not end a sentence; a lone letter does ("row G.").
+_ABBREVIATION = re.compile(r"(?:\b(?:mr|mrs|ms|dr|prof|vs|etc|approx)\.|\b(?:[A-Za-z]\.){2,})$", re.I)
 _TERMINAL = ".!?…"
 
 _STOP = frozenset(
@@ -212,7 +218,8 @@ def _content(text: str) -> list[str]:
 
 
 def _norm_key(text: str) -> str:
-    return "".join(ch for ch in text.casefold() if ch.isalnum())
+    """Letters and digits only, case-folded: equal for two readings that differ in case, spacing or punctuation."""
+    return _NOT_ALNUM.sub("", text.casefold())
 
 
 def _sentences(text: str) -> list[str]:
@@ -222,7 +229,7 @@ def _sentences(text: str) -> list[str]:
         return []
     merged: list[str] = []
     for part in _SENTENCE_SPLIT.split(text):
-        if merged and _ABBREVIATION.search(merged[-1]) and not _SPELLED_OUT.search(merged[-1]):
+        if merged and _ABBREVIATION.search(merged[-1]):
             merged[-1] += " " + part
         else:
             merged.append(part)
@@ -280,16 +287,23 @@ def _dedupe(items: Iterable[str], limit: int) -> list[str]:
     return out[:limit]
 
 
-def _merge_actions(items: Iterable[ActionItem], limit: int) -> list[ActionItem]:
-    """De-duplicate action items; a twin contributes its due / owner / time when the kept one lacks them."""
+def _merge_actions(items: Iterable[ActionItem], limit: int, ranks: Sequence[int] | None = None) -> list[ActionItem]:
+    """De-duplicate action items; a twin contributes its due / owner / time when the kept one lacks them.
+
+    The result keeps the order given.  When more than ``limit`` remain, the first ones are
+    kept - or, with ``ranks`` (one number per item, higher = more worth keeping), the best
+    ranked ones.
+    """
     out: list[ActionItem] = []
     keys: list[frozenset[str]] = []
-    for item in items:
+    worth: list[int] = []
+    for n, item in enumerate(items):
         text = _one_line(item.text)
         if not _norm_key(text):
             continue
         key = _statement_key(text)
         ts = item.ts if _finite(item.ts) else None
+        rank = ranks[n] if ranks is not None and n < len(ranks) else 0
         for i, other in enumerate(keys):
             if key == other or _similar(key, other):
                 kept = out[i]
@@ -299,11 +313,16 @@ def _merge_actions(items: Iterable[ActionItem], limit: int) -> list[ActionItem]:
                 kept.owner = kept.owner or _one_line(item.owner)
                 if kept.ts is None:
                     kept.ts = ts
+                worth[i] = max(worth[i], rank)
                 break
         else:
             out.append(ActionItem(text=text, owner=_one_line(item.owner), due=_one_line(item.due), ts=ts))
             keys.append(key)
-    return out[:limit]
+            worth.append(rank)
+    if len(out) > limit:
+        best = sorted(sorted(range(len(out)), key=lambda i: (-worth[i], i))[: max(0, limit)])
+        out = [out[i] for i in best]
+    return out
 
 
 def _chars_per_token(sample: str) -> float:
@@ -329,12 +348,37 @@ def _budget_chars(llm: Any, sample: str) -> int:
     return int(tokens * _chars_per_token(sample)) if tokens > 0 else 0
 
 
+def _coerced(raw: object, schema: dict[str, Any]) -> dict[str, Any]:
+    """``raw`` forced into the shape of ``schema``; the empty shape when it cannot be (a model
+    may emit ``NaN`` or ``Infinity`` where a number belongs, which no integer can hold)."""
+    try:
+        return coerce_to_schema(raw if isinstance(raw, dict) else {}, schema)
+    except (ValueError, OverflowError, TypeError, RecursionError):
+        return coerce_to_schema({}, schema)
+
+
 def _llm_name(llm: Any) -> str:
     return _one_line(getattr(llm, "name", "")) or "llm"
 
 
-def _span(ts0: float, ts1: float) -> str:
-    a, b = fmt_clock(ts0, "%H:%M"), fmt_clock(ts1, "%H:%M")
+def _local(ts: object) -> datetime | None:
+    """Local time of a timestamp, or None when it is not a usable point in time."""
+    if not _finite(ts):
+        return None
+    try:
+        return local_dt(float(ts))  # type: ignore[arg-type]
+    except (OverflowError, OSError, ValueError):
+        return None
+
+
+def _clock(ts: object, fmt: str = "%H:%M") -> str:
+    when = _local(ts)
+    return when.strftime(fmt) if when is not None else "--:--"
+
+
+def _span(ts0: object, ts1: object) -> str:
+    a = _clock(ts0)
+    b = _clock(ts1) if _local(ts1) is not None else a
     return a if a == b else f"{a}–{b}"
 
 
@@ -364,6 +408,19 @@ class _Cue:
     ts: float | None
     due: str = ""
     source: str = "said"
+    #: an explicit reminder ("remember to ...", "remind me ...", a labelled to-do on a surface)
+    explicit: bool = False
+    #: a suggestion rather than a commitment ("we should maybe ...", "let's ...")
+    tentative: bool = False
+
+    @property
+    def rank(self) -> int:
+        """How much an action item is worth keeping when there are too many."""
+        if self.explicit:
+            return 3
+        if self.due:
+            return 2
+        return 0 if self.tentative else 1
 
 
 class _TextDeduper:
@@ -372,8 +429,7 @@ class _TextDeduper:
 
     def __init__(self) -> None:
         self._keys: set[str] = set()
-        self._recent: list[str] = []
-        self._matcher = SequenceMatcher(None, autojunk=False)
+        self._recent: list[tuple[str, str]] = []  # (letters and digits of a kept line, its digits)
 
     def new_lines(self, lines: Iterable[str]) -> list[str]:
         out: list[str] = []
@@ -382,27 +438,32 @@ class _TextDeduper:
             if len(key) < 2 or key in self._keys:
                 continue
             self._keys.add(key)
-            if self._near(key):
+            digits = "".join(ch for ch in key if ch.isdigit())
+            if self._near(key, digits):
                 continue
-            self._recent.append(key)
+            self._recent.append((key, digits))
             if len(self._recent) > 40:
                 del self._recent[0]
             out.append(line)
         return out
 
-    def _near(self, key: str) -> bool:
+    def _near(self, key: str, digits: str) -> bool:
         if len(key) < 4:
             return False
-        self._matcher.set_seq2(key)
-        for other in reversed(self._recent):
+        matcher: SequenceMatcher[str] | None = None
+        slack = max(2, len(key) // 5)
+        for other, other_digits in reversed(self._recent):
             if key in other:
                 return True  # a partial read of a line already kept
-            if len(key) < 8 or abs(len(other) - len(key)) > max(2, len(key) // 5):
+            # "Slide 3" and "Slide 4", or two prices, are different texts, not a misread
+            if len(key) < 8 or other_digits != digits or abs(len(other) - len(key)) > slack:
                 continue
-            self._matcher.set_seq1(other)
-            if self._matcher.real_quick_ratio() >= 0.88 and self._matcher.quick_ratio() >= 0.88:
-                if self._matcher.ratio() >= 0.88:
-                    return True
+            if matcher is None:
+                matcher = SequenceMatcher(None, autojunk=False)
+                matcher.set_seq2(key)
+            matcher.set_seq1(other)
+            if matcher.real_quick_ratio() >= 0.88 and matcher.quick_ratio() >= 0.88 and matcher.ratio() >= 0.88:
+                return True
         return False
 
 
@@ -579,7 +640,7 @@ class _Line:
     text: str
 
     def render(self) -> str:
-        return f"[{fmt_clock(self.ts, '%H:%M:%S')}] {_LABELS[self.kind]}: {self.text}"
+        return f"[{_clock(self.ts, '%H:%M:%S')}] {_LABELS[self.kind]}: {self.text}"
 
 
 def _context_lines(facts: _Facts) -> list[_Line]:
@@ -648,7 +709,9 @@ def _fit_lines(lines: list[_Line], max_chars: int) -> str:
     notes: dict[int, str] = {}  # index before which a "left out" note goes
     note_room = 48
 
-    text_room = max_chars - note_room if not other_idx else int(max_chars * 0.6)
+    # on-screen text gets at least 60 % of the room, and whatever speech and captions do not need
+    other_total = sum(len(rendered[i]) + 1 for i in other_idx)
+    text_room = max(int(max_chars * 0.6), max_chars - other_total - 2 * note_room) if other_idx else max_chars - note_room
     if text_idx:
         if sum(len(rendered[i]) + 1 for i in text_idx) > text_room:
             per = max(48, text_room // len(text_idx) - 1)
@@ -717,6 +780,12 @@ def moment_context(
 _SELF_NOTE = re.compile(
     r"\b(?:note to (?:my)?self|memo to (?:my)?self|remind me|reminder to (?:my)?self|remember to|don['’]?t forget)\b", re.I
 )
+_EXPLICIT_REMINDER = re.compile(
+    r"\b(?:remind\s+me|remember\s+to|don['’]?t\s+(?:let\s+me\s+)?forget|(?:note|memo|reminder)\s+to\s+(?:my)?self)\b", re.I
+)
+_TENTATIVE = re.compile(
+    r"\b(?:let['’]?s|(?:we|i)\s+should|maybe|perhaps|might|could|some\s?day|some\s?time|at\s+some\s+point|if\s+we)\b", re.I
+)
 _NEGATED = re.compile(r"(?:\bnot|n['’]t|\bnever|\bno need|\bwithout|\bhardly)\s+(?:\w+\s+){0,2}$", re.I)
 
 _ACTION_CUE = re.compile(
@@ -729,19 +798,19 @@ _ACTION_CUE = re.compile(
       | \b(?:i|we)(?:['’]ll|\s+will)\s+(?:need\s+to\s+|have\s+to\s+)?
       | \b(?:i['’]m|i\s+am|we['’]re|we\s+are)\s+(?:going\s+to|gonna)\s+
       | \b(?:remember|need|needs|have|has)\s+to\s+
-      | \bdon['’]?t\s+(?:let\s+me\s+)?forget\s+(?:to\s+|about\s+)?
+      | \bdon['’]?t\s+(?:let\s+me\s+)?forget\s+to\s+
       | \bmake\s+sure\s+(?:to\s+|that\s+)?
       | (?:\blet['’]s|^lets|(?<=[.,;!]\s)lets)\s+(?:not\s+forget\s+to\s+)?
-      | \b(?:to[-\s]?do|action(?:\s+item)?s?|next\s+steps?|task|reminder)\s*[:\-–—]\s*
+      | \b(?:to[-\s]?do|action(?:\s+item)?s?|next\s+steps?|reminder)(?:\s*[:–—]\s*|\s+-\s+)
     )
-    | (?P<keep>\bfollow(?:ing)?[-\s]up\s+(?:with|on|about)\b|\bfollow[-\s]up\s*[:\-–—]\s*)
+    | (?P<keep>\bfollow(?:ing)?[-\s]up\s+(?:with|on|about)\b|\bdon['’]?t\s+forget\s+(?!to\b))
     """
 )
 #: On a surface only explicit labels count ("Action:", "TODO:", a checkbox); "Let's go places" on a
 #: billboard is not a task.
 _SHOWN_ACTION_CUE = re.compile(
     r"""(?ix)^\s*[-*•·]*\s*
-    (?: (?:to[-\s]?do|action(?:\s+item)?s?|next\s+steps?|task|reminder)\s*[:\-–—]\s*
+    (?: (?:to[-\s]?do|action(?:\s+item)?s?|next\s+steps?|reminder)(?:\s*[:–—]\s*|\s+-\s+)
       | (?:remember\s+to|don['’]?t\s+forget(?:\s+to)?)\s+
       | (?:\[\s?\]|☐|□|▢)\s*
     )(?P<task>\S.*)$"""
@@ -806,6 +875,7 @@ _TRIVIAL_QUESTIONS = re.compile(
 
 def _split_due(task: str) -> tuple[str, str]:
     """Take a stated deadline out of a task. Returns ``(task, due)``; due keeps the words as said."""
+    task = task.rstrip(" .,;:!")
     match = _DUE.search(task) or _DUE_TRAILING.search(task)
     if not match:
         return task, ""
@@ -888,7 +958,9 @@ def _find_cues(facts: _Facts) -> None:
     for sent in facts.sentences:
         action = _spoken_action(sent.text)
         if action:
-            facts.actions.append(_Cue(action[0], sent.ts, action[1]))
+            explicit = bool(_EXPLICIT_REMINDER.search(sent.text))
+            tentative = not explicit and bool(_TENTATIVE.search(sent.text))
+            facts.actions.append(_Cue(action[0], sent.ts, action[1], explicit=explicit, tentative=tentative))
         decision = _spoken_decision(sent.text)
         if decision:
             facts.decisions.append(_Cue(decision, sent.ts))
@@ -899,7 +971,7 @@ def _find_cues(facts: _Facts) -> None:
         for line in block.lines:
             action = _shown_action(line)
             if action:
-                facts.actions.append(_Cue(action[0], block.ts, action[1], "shown"))
+                facts.actions.append(_Cue(action[0], block.ts, action[1], "shown", explicit=True))
             shown = _SHOWN_DECISION_CUE.match(line)
             if shown and len(_tokens(shown.group("text"))) >= 2:
                 facts.decisions.append(_Cue(_capitalise(_clip(_one_line(shown.group("text")), 240)), block.ts, "", "shown"))
@@ -1314,13 +1386,14 @@ class _Locator:
 
 
 def _session_context(session: Session, ts0: float | None, ts1: float | None) -> str:
-    start = ts0 if ts0 is not None and _finite(ts0) else session.started_ts
-    if not _finite(start):
+    start = ts0 if _local(ts0) is not None else session.started_ts
+    when = _local(start)
+    if when is None:
         return "One recording from my body-worn camera."
-    day = f"{local_dt(start):%A %d %B %Y}"
-    if ts1 is not None and _finite(ts1) and ts1 > start:
-        return f"One recording from my body-worn camera, {day}, {_span(start, ts1)} ({fmt_duration(ts1 - start)})."
-    return f"One recording from my body-worn camera, {day}, starting {fmt_clock(start, '%H:%M')}."
+    day = f"{when:%A %d %B %Y}"
+    if _local(ts1) is not None and ts1 > start:  # type: ignore[operator]
+        return f"One recording from my body-worn camera, {day}, {_span(start, ts1)} ({fmt_duration(ts1 - start)})."  # type: ignore[operator]
+    return f"One recording from my body-worn camera, {day}, starting {_clock(start)}."
 
 
 def _facts_bounds(facts_list: Sequence[_Facts]) -> tuple[float | None, float | None]:
@@ -1397,10 +1470,11 @@ def _llm_moments(llm: LLM, session: Session, facts_list: list[_Facts], notes: li
     blocks: dict[int, str] = {}
     used = 0
     per_moment = min(MOMENT_CONTEXT_CHARS, room)
+    per_call = MAX_MOMENTS_PER_LARGE_CALL if budget >= _LARGE_CONTEXT_CHARS else MAX_MOMENTS_PER_CALL
     for i in pending:
         number = len(batches[-1]) + 1
         block = _moment_block(number, facts_list[i], per_moment)
-        if batches[-1] and (used + len(block) + 1 > room or len(batches[-1]) >= MAX_MOMENTS_PER_CALL):
+        if batches[-1] and (used + len(block) + 1 > room or len(batches[-1]) >= per_call):
             batches.append([])
             used = 0
             block = _moment_block(1, facts_list[i], per_moment)
@@ -1415,7 +1489,7 @@ def _llm_moments(llm: LLM, session: Session, facts_list: list[_Facts], notes: li
         try:
             raw = llm.json(
                 system=prompts.SYSTEM, prompt=prompt, schema=prompts.MOMENTS_SCHEMA,
-                max_tokens=min(2048, 256 + 192 * len(batch)),
+                max_tokens=256 + 192 * len(batch),
             )  # fmt: skip
         except BackendUnavailable as exc:
             log.warning("%s is no longer available (%s); the remaining moments get extractive summaries", name, exc)
@@ -1427,7 +1501,7 @@ def _llm_moments(llm: LLM, session: Session, facts_list: list[_Facts], notes: li
                 log.warning("%s failed %d times in a row; not asking it again for this session", name, failures)
                 break
             continue
-        data = coerce_to_schema(raw if isinstance(raw, dict) else {}, prompts.MOMENTS_SCHEMA)
+        data = _coerced(raw, prompts.MOMENTS_SCHEMA)
         answered: set[int] = set()
         for item in data["moments"][: 4 * len(batch)]:
             number = item.get("id")
@@ -1576,7 +1650,9 @@ def _extractive_session(facts_list: list[_Facts], notes: list[_MomentNote]) -> _
     note.summary = " ".join(p if p[-1] in _TERMINAL + "”\"" else p + "." for p in summary_parts if p)
 
     note.action_items = _merge_actions(
-        (ActionItem(text=c.text, due=c.due, ts=c.ts) for c in actions), prompts.SESSION_MAX_ACTION_ITEMS
+        (ActionItem(text=c.text, due=c.due, ts=c.ts) for c in actions),
+        prompts.SESSION_MAX_ACTION_ITEMS,
+        [c.rank for c in actions],
     )
     note.decisions = _dedupe((c.text for c in decisions), prompts.SESSION_MAX_DECISIONS)
     note.open_questions = _dedupe((c.text for c in questions), prompts.SESSION_MAX_QUESTIONS)
@@ -1621,10 +1697,10 @@ def _moment_chunk(facts: _Facts, note: _MomentNote, cap: int) -> str:
         if (sent.ts, "said") in cue_texts and (
             _ACTION_CUE.search(sent.text) or _DECISION_CUE.search(sent.text) or sent.text.rstrip().endswith("?")
         ):
-            keyed.append((sent.ts or 0.0, f"[{fmt_clock(sent.ts or 0.0, stamp)}] {prompts.SAID}: {_evidence_text(sent.text, 260)}"))
+            keyed.append((sent.ts or 0.0, f"[{_clock(sent.ts, stamp)}] {prompts.SAID}: {_evidence_text(sent.text, 260)}"))
     for block in facts.blocks:
         text = " | ".join(_evidence_text(line, 160) for line in block.lines)
-        keyed.append((block.ts, f"[{fmt_clock(block.ts, stamp)}] {prompts.TEXT}: {text}"))
+        keyed.append((block.ts, f"[{_clock(block.ts, stamp)}] {prompts.TEXT}: {text}"))
     keyed.sort(key=lambda entry: entry[0])
     body = "\n".join([*lines, *(text for _, text in keyed)])
     if len(body) <= cap:
@@ -1677,7 +1753,7 @@ def _validated_note(
 ) -> SessionNote | None:
     """A model-written session note reduced to what the evidence supports. None if nothing is left."""
     schema = prompts.SESSION_MERGE_SCHEMA if merge_only else prompts.SESSION_SCHEMA
-    data = coerce_to_schema(raw if isinstance(raw, dict) else {}, schema)
+    data = _coerced(raw, schema)
     note = SessionNote(
         title=_clean_title(data["title"]),
         summary=_clean_prose(data["summary"], prompts.SESSION_SUMMARY_MAX_SENTENCES, 900),
@@ -1724,7 +1800,7 @@ def _validated_note(
     note.people = [
         p
         for p in _clean_lines(data["people"], 3 * prompts.SESSION_MAX_PEOPLE, 4)
-        if not _GENERIC_PEOPLE.match(p) and grounding.stated(p)
+        if not _GENERIC_PEOPLE.match(p) and any(len(t) >= 3 and t.isalpha() for t in _tokens(p)) and grounding.stated(p)
     ][: prompts.SESSION_MAX_PEOPLE]
     note.places = [
         p for p in _clean_lines(data["places"], 3 * prompts.SESSION_MAX_PLACES, 6) if grounding.stated(p, captions=True)
@@ -1765,6 +1841,9 @@ def _llm_session(
         (c for f in facts_list for _, c in f.captions),
     )
     locator = _Locator(facts_list, media)
+    # An explicit reminder ("remember to ...", "Action: ...") is quoted evidence: it is kept even if
+    # the model overlooks it. Weaker cues ("we should ...") are left to the model's judgement.
+    reminders = [ActionItem(text=c.text, due=c.due, ts=c.ts) for c in extract.actions if c.explicit]
     parts = _session_parts(facts_list, notes, room)
 
     if len(parts) == 1:
@@ -1774,6 +1853,11 @@ def _llm_session(
         if note is None:
             log.warning("%s returned nothing usable for the session note; writing an extractive note", name)
             return None
+        note.action_items = _merge_actions(
+            [*note.action_items, *reminders],
+            prompts.SESSION_MAX_ACTION_ITEMS,
+            [2] * len(note.action_items) + [3] * len(reminders),
+        )
         note.llm_backend = name
         return _fill_from(note, extract.note)
 
@@ -1813,6 +1897,7 @@ def _llm_session(
     # reduce: lists are merged here; title, summary and key points by one more (small) call
     note = SessionNote()
     extra_actions: list[ActionItem] = []
+    extra_ranks: list[int] = []
     extra_decisions: list[str] = []
     extra_questions: list[str] = []
     if failed:
@@ -1822,15 +1907,21 @@ def _llm_session(
             return cue.ts is not None and any(lo - 1e-6 <= cue.ts <= hi + 1e-6 for lo, hi in spans)
 
         extra_actions = [ActionItem(text=c.text, due=c.due, ts=c.ts) for c in extract.actions if uncovered(c)]
+        extra_ranks = [c.rank for c in extract.actions if uncovered(c)]
         extra_decisions = [c.text for c in extract.decisions if uncovered(c)]
         extra_questions = [c.text for c in extract.questions if uncovered(c)]
     ordered = sorted(partials, key=lambda entry: entry[0][0])
-    note.action_items = _merge_actions(
-        sorted(
-            [a for _, p in ordered for a in p.action_items] + extra_actions,
-            key=lambda a: (a.ts is None, a.ts or 0.0),
+    from_model = [a for _, p in ordered for a in p.action_items]
+    ranked = sorted(
+        zip(
+            from_model + extra_actions + reminders,
+            [2] * len(from_model) + extra_ranks + [3] * len(reminders),
+            strict=True,
         ),
-        prompts.SESSION_MAX_ACTION_ITEMS,
+        key=lambda pair: (pair[0].ts is None, pair[0].ts or 0.0),
+    )  # in time order; what cannot be placed in time goes last
+    note.action_items = _merge_actions(
+        [item for item, _ in ranked], prompts.SESSION_MAX_ACTION_ITEMS, [rank for _, rank in ranked]
     )
     note.decisions = _dedupe([d for _, p in ordered for d in p.decisions] + extra_decisions, prompts.SESSION_MAX_DECISIONS)
     note.open_questions = _dedupe(
@@ -1919,7 +2010,7 @@ def summarize_session(
 
 def _note_block(session: Session, note: SessionNote, number: int, cap: int) -> str:
     start = session.started_ts
-    when = _span(start, session.ended_ts) if _finite(session.ended_ts) else fmt_clock(start, "%H:%M")
+    when = _span(start, session.ended_ts)
     lines = [f"--- RECORDING {number} | {when} | {_evidence_text(note.title or session.title, 100)}"]
     if note.summary:
         lines.append("summary: " + _evidence_text(note.summary, 600))
@@ -1954,7 +2045,7 @@ def _extractive_day(date: str, sessions: list[Session]) -> DayDigest:
     multi = len(noted) > 1
 
     def stamped(session: Session, text: str) -> str:
-        return f"{fmt_clock(session.started_ts, '%H:%M')} — {text}" if multi and _finite(session.started_ts) else text
+        return f"{_clock(session.started_ts)} — {text}" if multi and _local(session.started_ts) is not None else text
 
     candidates: list[str] = []
     for kind in ("decisions", "key_points"):
@@ -1968,6 +2059,55 @@ def _extractive_day(date: str, sessions: list[Session]) -> DayDigest:
     return digest
 
 
+def _llm_day(llm: LLM, date: str, noted: list[tuple[Session, SessionNote]], digest: DayDigest) -> None:
+    """Let the model write headline, summary and highlights into ``digest`` (left as it is if it cannot)."""
+    name = _llm_name(llm)
+    try:
+        day = datetime.strptime(date, "%Y-%m-%d").strftime("%A %d %B %Y")
+    except (TypeError, ValueError):
+        day = _one_line(date)
+    context = f"Notes of the {len(noted)} recording(s) I made on {day}."
+    budget = _budget_chars(llm, " ".join(f"{note.title} {note.summary}" for _, note in noted))
+    room = budget - len(prompts.SYSTEM) - len(prompts.day_prompt(context, "")) - 8
+    if room < MIN_EVIDENCE_CHARS:
+        log.warning("%s: context budget too small for the day digest; writing it without the model", name)
+        return
+    per = max(120, room // len(noted) - 1)
+    blocks = [_note_block(s, note, n, min(per, 2400)) for n, (s, note) in enumerate(noted, 1)]
+    raw = llm.json(
+        system=prompts.SYSTEM,
+        prompt=prompts.day_prompt(context, _squeeze("\n".join(blocks), room)),
+        schema=prompts.DAY_SCHEMA,
+        max_tokens=900,
+    )
+    data = _coerced(raw, prompts.DAY_SCHEMA)
+    grounding = _Grounding(
+        text
+        for _, note in noted
+        for text in (
+            note.title, note.summary, *note.key_points, *note.decisions, *note.open_questions,
+            *(f"{a.text} {a.due} {a.owner}" for a in note.action_items), *note.people, *note.places, *note.captured_text,
+        )
+    )  # fmt: skip
+    headline = _clean_prose(data["headline"], 1, 140).rstrip(".")
+    words = headline.split()
+    if len(words) > prompts.DAY_HEADLINE_MAX_WORDS + 2:
+        headline = " ".join(words[: prompts.DAY_HEADLINE_MAX_WORDS + 2]).rstrip(" ,;:-") + "…"
+    summary = _clean_prose(data["summary"], prompts.DAY_SUMMARY_MAX_SENTENCES + 1, 700)
+    highlights = [
+        h
+        for h in _clean_lines(data["highlights"], 3 * prompts.DAY_MAX_HIGHLIGHTS, prompts.DAY_HIGHLIGHT_MAX_WORDS + 8)
+        if grounding.supports(h, ratio=0.5)
+    ][: prompts.DAY_MAX_HIGHLIGHTS]
+    if not (headline or summary or highlights):
+        log.warning("%s returned nothing usable for the day digest; writing it without the model", name)
+        return
+    digest.headline = headline or digest.headline
+    digest.summary = summary or digest.summary
+    digest.highlights = highlights or digest.highlights
+    digest.llm_backend = name
+
+
 def summarize_day(llm: LLM | None, date: str, sessions: list[Session]) -> DayDigest:
     """Roll the notes of one local calendar day up into a :class:`~videonotes.models.DayDigest`.
 
@@ -1978,61 +2118,18 @@ def summarize_day(llm: LLM | None, date: str, sessions: list[Session]) -> DayDig
     a model the headline is made of the session titles and the highlights are the notes'
     decisions and key points.  Lists are capped so the digest stays quick to read.
     """
-    ordered = sorted(sessions, key=lambda s: s.started_ts if _finite(s.started_ts) else math.inf)
+    ordered = sorted(sessions or [], key=lambda s: s.started_ts if _finite(s.started_ts) else math.inf)
     digest = _extractive_day(date, ordered)
     noted = [(s, s.note) for s in ordered if s.note is not None]
     if llm is None or not noted:
         return digest
-    name = _llm_name(llm)
     try:
-        day = datetime.strptime(date, "%Y-%m-%d").strftime("%A %d %B %Y")
-    except (TypeError, ValueError):
-        day = _one_line(date)
-    context = f"Notes of the {len(noted)} recording(s) I made on {day}."
-    words = " ".join(f"{note.title} {note.summary}" for _, note in noted)
-    budget = _budget_chars(llm, words)
-    room = budget - len(prompts.SYSTEM) - len(prompts.day_prompt(context, "")) - 8
-    if room < MIN_EVIDENCE_CHARS:
-        log.warning("%s: context budget too small for the day digest; writing it without the model", name)
-        return digest
-    per = max(120, room // len(noted) - 1)
-    blocks = [_note_block(s, note, n, min(per, 2400)) for n, (s, note) in enumerate(noted, 1)]
-    try:
-        raw = llm.json(
-            system=prompts.SYSTEM,
-            prompt=prompts.day_prompt(context, _squeeze("\n".join(blocks), room)),
-            schema=prompts.DAY_SCHEMA,
-            max_tokens=900,
+        _llm_day(llm, date, noted, digest)
+    except Exception as exc:  # the digest never fails over its model
+        log.warning(
+            "%s failed on the day digest (%s: %s); writing it without the model", _llm_name(llm), type(exc).__name__, exc
         )
-    except Exception as exc:
-        log.warning("%s failed on the day digest (%s); writing it without the model", name, exc)
-        return digest
-    data = coerce_to_schema(raw if isinstance(raw, dict) else {}, prompts.DAY_SCHEMA)
-    grounding = _Grounding(
-        text
-        for _, note in noted
-        for text in (
-            note.title, note.summary, *note.key_points, *note.decisions, *note.open_questions,
-            *(f"{a.text} {a.due} {a.owner}" for a in note.action_items), *note.people, *note.places, *note.captured_text,
-        )
-    )  # fmt: skip
-    headline = _clean_prose(data["headline"], 1, 140).rstrip(".")
-    words_in_headline = headline.split()
-    if len(words_in_headline) > prompts.DAY_HEADLINE_MAX_WORDS + 2:
-        headline = " ".join(words_in_headline[: prompts.DAY_HEADLINE_MAX_WORDS + 2]).rstrip(" ,;:-") + "…"
-    summary = _clean_prose(data["summary"], prompts.DAY_SUMMARY_MAX_SENTENCES + 1, 700)
-    highlights = [
-        h
-        for h in _clean_lines(data["highlights"], 3 * prompts.DAY_MAX_HIGHLIGHTS, prompts.DAY_HIGHLIGHT_MAX_WORDS + 8)
-        if grounding.supports(h, ratio=0.5)
-    ][: prompts.DAY_MAX_HIGHLIGHTS]
-    if not (headline or summary or highlights):
-        log.warning("%s returned nothing usable for the day digest; writing it without the model", name)
-        return digest
-    digest.headline = headline or digest.headline
-    digest.summary = summary or digest.summary
-    digest.highlights = highlights or digest.highlights
-    digest.llm_backend = name
+        return _extractive_day(date, ordered)
     return digest
 
 
@@ -2053,11 +2150,16 @@ _QUESTION_STOP = _STOP | frozenset(
 
 
 def _when(ts: float | None) -> str:
-    return f"{local_dt(ts):%a %d %b %Y, %H:%M}" if _finite(ts) else "time unknown"
+    when = _local(ts)
+    return f"{when:%a %d %b %Y, %H:%M}" if when is not None else "time unknown"
 
 
 def _question_words(question: str) -> set[str]:
     return {_stem(t) for t in _tokens(question) if t not in _QUESTION_STOP and (len(t) >= 3 or t.isdigit())}
+
+
+#: With equal overlap, what was actually said or shown goes before notes written about it.
+_KIND_ORDER = {"utterance": 0, "ocr": 0, "caption": 1, "moment": 2, "session": 3}
 
 
 def _rank_evidence(question: str, items: Sequence[Evidence]) -> list[tuple[int, int]]:
@@ -2065,36 +2167,101 @@ def _rank_evidence(question: str, items: Sequence[Evidence]) -> list[tuple[int, 
     wanted = _question_words(question)
     scored = []
     for i, item in enumerate(items):
-        have = {_stem(t) for t in _tokens(item.text)}
+        have = {_stem(t) for t in _tokens(_one_line(item.text))}
         scored.append((len(wanted & have), i))
-    return sorted(scored, key=lambda entry: (-entry[0], entry[1]))
+    return sorted(scored, key=lambda entry: (-entry[0], _KIND_ORDER.get(items[entry[1]].kind, 1), entry[1]))
 
 
-def _excerpt(question: str, text: str, limit: int = 260) -> str:
-    """The sentence of ``text`` that matches the question best (with its neighbour if short)."""
-    sentences = _sentences(text)
+def _excerpt(question: str, text: object, limit: int = 260) -> str:
+    """The sentence of ``text`` that matches the question best (with the sentence after it if short).
+
+    Lines are kept apart: a note is stored as title, summary and list entries on separate
+    lines, and running those together would not read as a quote.
+    """
+    sentences: list[tuple[int, str]] = []
+    for number, line in enumerate(str(text if text is not None else "").splitlines()):
+        sentences += [(number, sentence) for sentence in _sentences(line)]
     if not sentences:
         return ""
     wanted = _question_words(question)
-    best = max(range(len(sentences)), key=lambda i: (len(wanted & {_stem(t) for t in _tokens(sentences[i])}), -i))
-    out = sentences[best]
-    if len(out) < limit // 2 and best + 1 < len(sentences):
-        out += " " + sentences[best + 1]
+    best = max(range(len(sentences)), key=lambda i: (len(wanted & {_stem(t) for t in _tokens(sentences[i][1])}), -i))
+    line, out = sentences[best]
+    if len(out) < limit // 2 and best + 1 < len(sentences) and sentences[best + 1][0] == line:
+        out += " " + sentences[best + 1][1]
     return _clip(out, limit)
 
 
 def _extractive_answer(question: str, items: Sequence[Evidence]) -> Answer:
     ranked = _rank_evidence(question, items)
-    chosen = [i for score, i in ranked if score > 0][:5]
-    if not chosen:  # e.g. "what did I do yesterday?": nothing to match on, show what there is
-        chosen = [i for _, i in sorted(ranked, key=lambda entry: entry[1])][:5]
-    chosen.sort(key=lambda i: (not _finite(items[i].ts), items[i].ts or 0.0, i))
+    order = [i for score, i in ranked if score > 0]
+    if not order:  # e.g. "what did I do yesterday?": nothing to match on, show what there is
+        order = sorted(i for _, i in ranked)
+    chosen: dict[int, str] = {}
+    seen: set[str] = set()
+    for i in order:
+        excerpt = _excerpt(question, items[i].text)
+        key = _norm_key(excerpt)
+        if not key or key in seen:
+            continue  # the same words again (a sign read in two frames, a note quoting the speech)
+        seen.add(key)
+        chosen[i] = excerpt
+        if len(chosen) >= 5:
+            break
+    shown = sorted(chosen, key=lambda i: _time_key(items[i], i))
     lines = [prompts.EXCERPTS_HEADER]
-    for i in chosen:
+    for i in shown:
         item = items[i]
         label = _EVIDENCE_LABELS.get(item.kind, _one_line(item.kind) or "evidence")
-        lines.append(f"- {_when(item.ts)} ({label}): “{_excerpt(question, item.text)}”")
-    return Answer(text="\n".join(lines), sources=[items[i] for i in chosen], llm_backend=EXTRACTIVE)
+        lines.append(f"- {_when(item.ts)} ({label}): “{chosen[i]}”")
+    return Answer(text="\n".join(lines), sources=[items[i] for i in shown], llm_backend=EXTRACTIVE)
+
+
+def _time_key(item: Evidence, index: int) -> tuple[bool, float, int]:
+    return (False, float(item.ts), index) if _local(item.ts) is not None else (True, 0.0, index)  # type: ignore[arg-type]
+
+
+def _llm_answer(llm: LLM, question: str, items: Sequence[Evidence]) -> Answer | None:
+    """The model's answer, or None when it has nothing usable (the caller then shows excerpts)."""
+    name = _llm_name(llm)
+    today = f"{datetime.now():%A %d %B %Y}"
+    budget = _budget_chars(llm, " ".join(_one_line(e.text)[:400] for e in items[:10]))
+    room = budget - len(prompts.SYSTEM) - len(prompts.answer_prompt(question, "", today=today)) - 8
+    if room < MIN_EVIDENCE_CHARS:
+        log.warning("%s: context budget too small to answer from evidence; returning excerpts", name)
+        return None
+
+    # pick the best-matching evidence first, then show it to the model in time order
+    per = max(240, min(1500, room // min(len(items), 12)))
+    shown: list[int] = []
+    used = 0
+    for _, i in _rank_evidence(question, items):
+        cost = min(len(_one_line(items[i].text)), per) + 60
+        if shown and used + cost > room:
+            break
+        shown.append(i)
+        used += cost
+    shown.sort(key=lambda i: _time_key(items[i], i))
+    lines = []
+    for number, i in enumerate(shown, 1):
+        item = items[i]
+        label = _EVIDENCE_LABELS.get(item.kind, _one_line(item.kind) or "evidence")
+        lines.append(f"[{number}] {_when(item.ts)} ({label}): {_evidence_text(item.text, per)}")
+    prompt = prompts.answer_prompt(question, _squeeze("\n".join(lines), room), today=today)
+    raw = llm.json(system=prompts.SYSTEM, prompt=prompt, schema=prompts.ANSWER_SCHEMA, max_tokens=700)
+    data = _coerced(raw, prompts.ANSWER_SCHEMA)
+
+    cited: list[int] = []
+    for number in data["evidence_used"][:50]:
+        if isinstance(number, int) and 1 <= number <= len(shown) and shown[number - 1] not in cited:
+            cited.append(shown[number - 1])
+    sources = [items[i] for i in cited] + [items[i] for i in shown if i not in cited]
+    if data["answerable"] == "no":
+        return Answer(text=prompts.NOT_IN_EVIDENCE, sources=sources, llm_backend=name)
+    text = _clip(" ".join(_sentences(_one_line(data["answer"]))[: prompts.ANSWER_MAX_SENTENCES + 2]), 1500)
+    if _is_placeholder(text):
+        log.warning("%s returned an empty answer; returning the closest excerpts instead", name)
+        return None
+    return Answer(text=text, sources=sources, llm_backend=name)
 
 
 def answer_question(llm: LLM | None, question: str, evidence: list[Evidence]) -> Answer:
@@ -2115,47 +2282,11 @@ def answer_question(llm: LLM | None, question: str, evidence: list[Evidence]) ->
         return Answer(text=prompts.NO_EVIDENCE, sources=[], llm_backend=EXTRACTIVE)
     if llm is None or not question:
         return _extractive_answer(question, items)
-
-    name = _llm_name(llm)
-    today = f"{datetime.now():%A %d %B %Y}"
-    budget = _budget_chars(llm, " ".join(e.text[:400] for e in items[:10]))
-    room = budget - len(prompts.SYSTEM) - len(prompts.answer_prompt(question, "", today=today)) - 8
-    if room < MIN_EVIDENCE_CHARS:
-        log.warning("%s: context budget too small to answer from evidence; returning excerpts", name)
-        return _extractive_answer(question, items)
-
-    # the best-matching evidence first; shown to the model in time order
-    per = max(240, min(1500, room // min(len(items), 12)))
-    shown: list[int] = []
-    used = 0
-    for _, i in _rank_evidence(question, items):
-        cost = min(len(_one_line(items[i].text)), per) + 60
-        if shown and used + cost > room:
-            break
-        shown.append(i)
-        used += cost
-    shown.sort(key=lambda i: (not _finite(items[i].ts), items[i].ts or 0.0, i))
-    lines = []
-    for number, i in enumerate(shown, 1):
-        item = items[i]
-        label = _EVIDENCE_LABELS.get(item.kind, _one_line(item.kind) or "evidence")
-        lines.append(f"[{number}] {_when(item.ts)} ({label}): {_evidence_text(item.text, per)}")
-    prompt = prompts.answer_prompt(question, _squeeze("\n".join(lines), room), today=today)
     try:
-        raw = llm.json(system=prompts.SYSTEM, prompt=prompt, schema=prompts.ANSWER_SCHEMA, max_tokens=700)
-    except Exception as exc:
-        log.warning("%s failed to answer (%s); returning the closest excerpts instead", name, exc)
-        return _extractive_answer(question, items)
-    data = coerce_to_schema(raw if isinstance(raw, dict) else {}, prompts.ANSWER_SCHEMA)
-    text = _clip(" ".join(_sentences(_one_line(data["answer"]))[: prompts.ANSWER_MAX_SENTENCES + 2]), 1500)
-    if _is_placeholder(text):
-        log.warning("%s returned an empty answer; returning the closest excerpts instead", name)
-        return _extractive_answer(question, items)
-    cited: list[int] = []
-    for number in data["evidence_used"][:50]:
-        if isinstance(number, int) and 1 <= number <= len(shown) and shown[number - 1] not in cited:
-            cited.append(shown[number - 1])
-    sources = [items[i] for i in cited] + [items[i] for i in shown if i not in cited]
-    if data["answerable"] == "no":
-        return Answer(text=prompts.NOT_IN_EVIDENCE, sources=sources, llm_backend=name)
-    return Answer(text=text, sources=sources, llm_backend=name)
+        answer = _llm_answer(llm, question, items)
+    except Exception as exc:  # asking must always give something back
+        log.warning(
+            "%s failed to answer (%s: %s); returning the closest excerpts instead", _llm_name(llm), type(exc).__name__, exc
+        )
+        answer = None
+    return answer if answer is not None else _extractive_answer(question, items)

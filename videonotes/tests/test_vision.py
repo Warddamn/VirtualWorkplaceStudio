@@ -86,6 +86,7 @@ def local_only(monkeypatch):
     state = SimpleNamespace(apple_silicon=False, modules=set())
     monkeypatch.setattr(vision_mod, "is_apple_silicon", lambda: state.apple_silicon)
     monkeypatch.setattr(vision_mod, "module_available", lambda name: name in state.modules)
+    monkeypatch.setattr(vision_mod.ff, "have_ffmpeg", lambda: True)  # factory rules do not depend on ffmpeg here
     return state
 
 
@@ -342,14 +343,16 @@ def test_ollama_explicit_model(settings, frames, local_only):
         assert srv.calls[-1]["model"] == "llava:7b"
 
         settings.vision.model = "moondream"
+        sent = len(srv.calls)
         with pytest.raises(BackendUnavailable, match=r"ollama pull moondream$"):
             make_captioner(settings)
+        assert len(srv.calls) == sent  # nothing is sent to a model that is not there
         st = status_by_name(settings)
         assert not st["ollama"].available and "ollama pull moondream" in st["ollama"].detail
         assert not any(s.selected for s in st.values())
 
         settings.vision.model = "mlx-community/Qwen3.5-2B-4bit"  # a Hugging Face id is not an Ollama tag
-        with pytest.raises(BackendUnavailable, match="not an Ollama model"):
+        with pytest.raises(BackendUnavailable, match='belongs to vision.backend = "mlx-vlm"'):
             make_captioner(settings)
 
 
@@ -511,9 +514,13 @@ def test_factory_anthropic_only_when_explicit(settings, frames, local_only, monk
 
     settings.vision.model = "claude-sonnet-5-5"
     assert make_captioner(settings).name == "anthropic:claude-sonnet-5-5"
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test-not-a-real-key")
     st = status_by_name(settings)
     assert st["anthropic"].selected and st["anthropic"].detail.startswith("claude-sonnet-5-5")
-    assert "cloud" in st["anthropic"].detail
+    assert "cloud" in st["anthropic"].detail and "ANTHROPIC_API_KEY" not in st["anthropic"].detail
+    monkeypatch.delenv("ANTHROPIC_API_KEY")
+    monkeypatch.delenv("ANTHROPIC_AUTH_TOKEN", raising=False)
+    assert "ANTHROPIC_API_KEY is not set" in status_by_name(settings)["anthropic"].detail  # doctor points at it
 
     local_only.modules = set()  # SDK not installed
     with pytest.raises(BackendUnavailable, match="pip install"):
@@ -835,6 +842,18 @@ def test_factory_mlx_vlm_rules(settings, local_only, fake_mlx):
     settings.vision.model = "qwen3-vl:4b"  # an Ollama tag left over in the config
     with pytest.raises(BackendUnavailable, match="Hugging Face repo id"):
         make_captioner(settings)
+
+
+def test_factory_auto_finds_mlx_vlm_with_the_real_module_probe(settings, fake_mlx, frames, monkeypatch):
+    """No patched availability probe: the installed-package check itself sees the (fake) mlx_vlm module."""
+    monkeypatch.setattr(vision_mod, "is_apple_silicon", lambda: True)
+    settings.llm.ollama_url = DEAD_URL
+    captioner = make_captioner(settings)
+    assert isinstance(captioner, MlxVlmCaptioner) and isinstance(captioner, Captioner)
+    assert captioner.caption(frames.small) == "A desk with two monitors."
+    captioner.close()
+    monkeypatch.setattr(vision_mod, "is_apple_silicon", lambda: False)  # same packages on an Intel Mac / Linux
+    assert make_captioner(settings) is None
 
 
 def test_factory_mlx_status_reports_a_downloaded_model(settings, local_only, fake_mlx, tmp_path):

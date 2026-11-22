@@ -96,10 +96,12 @@ def post_ask(base: str, payload: Any, **headers: str) -> Reply:
     return fetch(base, "/api/ask", method="POST", data=data, headers={"Content-Type": "application/json", **headers})
 
 
-def raw_request(port: int, request: bytes, *, timeout: float = 5.0) -> bytes:
+def raw_request(port: int, request: bytes, *, timeout: float = 5.0, half_close: bool = False) -> bytes:
     """Send bytes exactly as given (for requests urllib would never produce) and return the whole reply."""
     with socket.create_connection(("127.0.0.1", port), timeout=timeout) as sock:
         sock.sendall(request)
+        if half_close:
+            sock.shutdown(socket.SHUT_WR)  # "that was all": the server need not wait for more
         chunks = []
         while True:
             try:
@@ -204,7 +206,8 @@ def build_library(home: Path, media: SimpleNamespace) -> SimpleNamespace:
             Keyframe(clip_id=clip.id, session_id=SID, t=26, ts=t0 + 26, path=rels[1], ocr_text=board, ocr_backend="t"),
             Keyframe(clip_id=clip.id, session_id=SID, t=310, ts=t0 + 310, path=rels[2],
                      ocr_text="LEVEL 2 <script>alert(1)</script>", ocr_backend="t"),
-            Keyframe(clip_id=clip.id, session_id=SID, t=320, ts=t0 + 320, path=f"frames/{SID}/clip{clip.id:06d}/leak.jpg"),
+            Keyframe(clip_id=clip.id, session_id=SID, t=320, ts=t0 + 320,
+                     path=f"frames/{SID}/clip{clip.id:06d}/leak.jpg"),
             Keyframe(clip_id=clip.id, session_id=SID, t=330, ts=t0 + 330, path=str(outside / "secret.jpg")),
         ])  # fmt: skip
         lines = [
@@ -243,7 +246,8 @@ def build_library(home: Path, media: SimpleNamespace) -> SimpleNamespace:
         old0 = day_bounds(OLD_DAY)[0] + 9 * 3600
         store.create_session(Session(id=OLD_SID, kind="live", started_ts=old0, status="processing", title=""))
         old_clip = store.add_clip(
-            Clip(session_id=OLD_SID, path=str(outside / "elsewhere.mp4"), fingerprint="fp-b", start_ts=old0, duration=60.0)
+            Clip(session_id=OLD_SID, path=str(outside / "elsewhere.mp4"), fingerprint="fp-b", start_ts=old0,
+                 duration=60.0)  # fmt: skip
         )
         store.replace_utterances(old_clip.id, [
             Utterance(clip_id=old_clip.id, session_id=OLD_SID, t0=1, t1=3, ts0=old0 + 1, ts1=old0 + 3,
@@ -399,7 +403,8 @@ def test_session_detail(srv, lib):
     note = data["note"]
     assert note["title"] == "Planning and parking" and note["key_points"] == ["Beta ships June 14"]
     assert note["decisions"] == ["Ship on June 14"] and note["open_questions"] == ["Sensors in time?"]
-    assert note["people"] == ["Sarah"] and note["places"] == ["Car park"] and note["captured_text"] == ["Launch plan Q3"]
+    assert note["people"] == ["Sarah"] and note["places"] == ["Car park"]
+    assert note["captured_text"] == ["Launch plan Q3"]
     assert note["tags"] == ["planning"] and note["llm_backend"] == "extractive"
     first, bogus = note["action_items"]
     assert first["text"] == "Call the vendor" and first["owner"] == "me" and first["due"] == "Friday"
@@ -415,7 +420,8 @@ def test_session_detail(srv, lib):
     assert kf["caption"] == "A whiteboard with a launch plan." and kf["ocr_text"].startswith("Launch plan Q3")
     assert kf["time"]["ts"] == lib.t0 + 20 and kf["clip_id"] == lib.clip and kf["t"] == 20
     assert fetch(srv.base, kf["url"]).body == lib.jpegs[0]
-    assert [line["text"] for line in meeting["transcript"]][1] == "We decided to ship the Falcon beta on June fourteenth."
+    said = [line["text"] for line in meeting["transcript"]]
+    assert said[1] == "We decided to ship the Falcon beta on June fourteenth." and len(said) == 3
     assert meeting["transcript"][0]["time"]["precise"] == "10:00:10" and meeting["transcript"][0]["t"] == 10
     assert meeting["play"] == {"clip_id": lib.clip, "t": 10.0}
 
@@ -474,7 +480,9 @@ def test_day(srv):
     assert nothing["digest"] is None and nothing["sessions"] == []
 
 
-@pytest.mark.parametrize("bad", ["2026-13-45", "2026-02-30", "today", "20261122", "2026-11-22x", "0000-01-01", "%20", "x"])
+@pytest.mark.parametrize(
+    "bad", ["2026-13-45", "2026-02-30", "today", "20261122", "2026-11-22x", "0000-01-01", "%20", "x"]
+)
 def test_bad_dates_are_400(srv, bad):
     for path in (f"/api/day/{bad}", f"/api/sessions?day={bad}", f"/api/search?q=car&day={bad}"):
         r = fetch(srv.base, path)
@@ -520,7 +528,8 @@ def test_search_filters(srv):
     speech = fetch(srv.base, "/api/search?q=falcon&kind=utterance").json()
     assert speech["kinds"] == ["utterance"] and {h["kind"] for h in speech["hits"]} == {"utterance"}
     two = fetch(srv.base, "/api/search?q=falcon&kind=ocr,caption&kind=moment").json()
-    assert two["kinds"] == ["ocr", "caption", "moment"] and {h["kind"] for h in two["hits"]} <= {"ocr", "caption", "moment"}
+    assert two["kinds"] == ["ocr", "caption", "moment"]
+    assert {h["kind"] for h in two["hits"]} <= {"ocr", "caption", "moment"}
     assert len(fetch(srv.base, "/api/search?q=falcon&limit=1").json()["hits"]) == 1
     assert fetch(srv.base, "/api/search?q=falcon&limit=1").json()["truncated"] is True
     assert fetch(srv.base, "/api/search?q=zebra").json()["hits"] == []
@@ -610,7 +619,9 @@ def test_ask_extractive_answer_and_utf8(srv, monkeypatch):
 
 def test_ask_backend_failures_are_json_errors_without_paths(srv, monkeypatch):
     def unavailable(*a, **k):
-        raise BackendUnavailable("Ollama is not running. Start it with: ollama serve (models in /Users/me/.ollama/models)")
+        raise BackendUnavailable(
+            "Ollama is not running. Start it with: ollama serve (models in /Users/me/.ollama/models)"
+        )
 
     monkeypatch.setattr("videonotes.search.ask", unavailable)
     r = post_ask(srv.base, {"question": "anything"})
@@ -677,7 +688,8 @@ def test_ask_requires_json_post_from_this_origin(srv, monkeypatch):
     # a request without Content-Length is refused rather than read until the socket closes
     reply = raw_request(
         srv.port,
-        f"POST /api/ask HTTP/1.1\r\nHost: 127.0.0.1:{srv.port}\r\nContent-Type: application/json\r\n\r\n".encode() + body,
+        f"POST /api/ask HTTP/1.1\r\nHost: 127.0.0.1:{srv.port}\r\nContent-Type: application/json\r\n\r\n".encode()
+        + body,
     )
     assert reply.startswith(b"HTTP/1.1 411") and b"Connection: close" in reply
 
@@ -686,7 +698,8 @@ def test_ask_accepts_this_servers_origins(srv, monkeypatch):
     monkeypatch.setattr("videonotes.search.ask", lambda *a, **k: Answer(text="ok", llm_backend="x"))
     for origin in (f"http://127.0.0.1:{srv.port}", f"http://localhost:{srv.port}", f"HTTP://LOCALHOST:{srv.port}"):
         assert post_ask(srv.base, {"question": "q"}, Origin=origin, **{"Sec-Fetch-Site": "same-origin"}).status == 200
-    r = post_ask(srv.base, json.dumps({"question": "q"}).encode(), **{"Content-Type": "application/json; charset=utf-8"})
+    body = json.dumps({"question": "q"}).encode()
+    r = post_ask(srv.base, body, **{"Content-Type": "application/json; charset=utf-8"})
     assert r.status == 200
 
 
@@ -956,7 +969,8 @@ def test_requests_for_other_hosts_are_refused(srv, lib):
     paths = ["/", "/api/overview", f"/api/session/{SID}", f"/frames/{lib.frame_rel[0]}", f"/media/{lib.clip}",
              "/static/app.js"]  # fmt: skip
     bad_hosts = [
-        "evil.example", f"evil.example:{srv.port}", f"127.0.0.1.evil.example:{srv.port}", f"localhost.evil.example:{srv.port}",
+        "evil.example", f"evil.example:{srv.port}", f"127.0.0.1.evil.example:{srv.port}",
+        f"localhost.evil.example:{srv.port}",
         "127.0.0.1", f"127.0.0.1:{srv.port + 1}", "localhost:80", f"192.168.1.20:{srv.port}", f"0.0.0.0:{srv.port}",
         f"127.0.0.1:{srv.port}@evil.example", f"evil.example@127.0.0.1:{srv.port}", f"[::2]:{srv.port}", "",
         f"127.0.0.1:{srv.port}, evil.example",
@@ -980,7 +994,7 @@ def test_requests_without_or_with_two_host_headers_are_refused(srv):
         srv.port, f"GET /api/overview HTTP/1.1\r\nHost: 127.0.0.1:{srv.port}\r\nHost: evil.example\r\n\r\n".encode()
     )
     assert two.startswith(b"HTTP/1.1 403") and b"Connection: close" in two
-    ancient = raw_request(srv.port, b"GET /api/overview\r\n")  # HTTP/0.9: no headers at all
+    ancient = raw_request(srv.port, b"GET /api/overview\r\n", half_close=True)  # HTTP/0.9: no headers at all
     assert b"forbidden_host" in ancient and b"sessions" not in ancient
 
 
@@ -1019,10 +1033,12 @@ def test_library_is_read_only_over_http(srv, lib, method):
 def test_unknown_methods_and_garbage_get_json_errors(srv):
     reply = raw_request(srv.port, f"BREW /api/overview HTTP/1.1\r\nHost: 127.0.0.1:{srv.port}\r\n\r\n".encode())
     assert reply.startswith(b"HTTP/1.1 501") and b'"error"' in reply and b"BREW" not in reply
-    reply = raw_request(srv.port, b"GET /<script>alert(1)</script> HTTP/9.9\r\n\r\n")
-    assert reply.split(b"\r\n")[0].split()[1] in (b"400", b"505") and b"<script>" not in reply
-    reply = raw_request(srv.port, b"\x00\x01\x02 nonsense\r\n\r\n")
-    assert b"<script>" not in reply and b"Traceback" not in reply
+    # how the standard library frames replies to unparseable requests differs between Python versions;
+    # what matters is that the reply is our JSON error and echoes nothing of the request
+    reply = raw_request(srv.port, b"GET /<script>alert(1)</script> HTTP/9.9\r\n\r\n", half_close=True)
+    assert b'"error"' in reply and b"<script>" not in reply and b"sessions" not in reply
+    reply = raw_request(srv.port, b"\x00\x01\x02 <script>nonsense</script>\r\n\r\n", half_close=True)
+    assert b'"error"' in reply and b"<script>" not in reply and b"Traceback" not in reply
     long_line = raw_request(srv.port, b"GET /" + b"a" * 70000 + b" HTTP/1.1\r\n\r\n")
     assert long_line.startswith(b"HTTP/1.1 414")
     assert fetch(srv.base, "/api/overview").status == 200  # still serving
@@ -1171,6 +1187,35 @@ def test_make_server_only_listens_on_loopback(tmp_path):
     assert server.store is None and server.library is None
 
 
+def test_ipv6_loopback(tmp_path):
+    try:
+        with socket.socket(socket.AF_INET6) as probe:
+            probe.bind(("::1", 0))
+    except OSError:
+        pytest.skip("no IPv6 loopback on this machine")
+    server = make_server(Settings(home=tmp_path / "home"), host="::1", port=0)
+    thread = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.05}, daemon=True)
+    thread.start()
+    try:
+        assert server.url == f"http://[::1]:{server.server_port}/"
+        assert fetch(server.url.rstrip("/"), "/api/overview").json()["days"] == []
+    finally:
+        stop(server, thread)
+
+
+def test_times_follow_the_configured_clock_format(tmp_path):
+    settings = Settings(home=tmp_path / "home")
+    settings.notes.time_format = "%I:%M %p"
+    with Store(settings.db_path) as store:
+        library = web.Library(settings, store)
+        when = library.when(day_bounds(DAY)[0] + 14 * 3600 + 5 * 60 + 9)
+        assert when["clock"] == "02:05 PM" and when["precise"] == "14:05:09"
+        assert when["text"] == "Sun 22 Nov 2026, 02:05 PM"
+        assert when["day"] == DAY and when["ts"] == day_bounds(DAY)[0] + 14 * 3600 + 5 * 60 + 9
+        for junk in (None, "14:05", True, float("nan"), float("inf"), 1e30, [1]):
+            assert library.when(junk) is None  # never a crash, never a made-up time
+
+
 def test_port_in_use_says_what_to_do(srv, lib):
     with pytest.raises(WebServerError, match="already in use") as info:
         make_server(lib.settings, port=srv.port)
@@ -1243,7 +1288,8 @@ def test_serve_warns_when_no_browser_can_be_opened(tmp_path, monkeypatch):
 
     monkeypatch.setattr(web.VideoNotesServer, "serve_forever", fake_serve_forever)
     monkeypatch.setattr("webbrowser.open", lambda url: False)
-    out = SimpleNamespace(ok=lambda t: None, info=lambda t: None, warn=warn, error=lambda t: None, line=lambda t="": None)
+    quiet = lambda t="": None  # noqa: E731
+    out = SimpleNamespace(ok=quiet, info=quiet, warn=warn, error=quiet, line=quiet)
     serve(Settings(home=tmp_path / "home"), port=0, open_browser=True, out=out)
     assert "Could not open a browser" in lines[0] and "http://127.0.0.1:" in lines[0]
 
@@ -1400,10 +1446,12 @@ def test_parse_range(header, size, expected):
 def test_split_snippet_only_highlights_real_matches():
     words = web.query_words("Decided budgets café it's")
     assert words == ["decided", "budgets", "cafe", "it's"] or words == ["decided", "budgets", "cafe", "it", "s"]
-    parts = web.split_snippet("we [deciding] on the [budget]\nfor array[0] and [x] at the [Café] … [inaudible]", words)
+    snippet = "we [deciding] on the [budget]\nfor array[0] and [x] at the [Café] … [inaudible]"
+    parts = web.split_snippet(snippet, words)
     assert [p["text"] for p in parts if p["match"]] == ["deciding", "budget", "Café"]
     # brackets that were in the recorded text itself stay exactly as they were
-    assert "".join(p["text"] for p in parts if not p["match"]) == "we  on the  for array[0] and [x] at the  … [inaudible]"
+    rest = "".join(p["text"] for p in parts if not p["match"])
+    assert rest == "we  on the  for array[0] and [x] at the  … [inaudible]"
     assert web.split_snippet("", words) == [] and web.split_snippet("plain", []) == [{"text": "plain", "match": False}]
     assert web.split_snippet("[[note]]", ["notes"]) == [
         {"text": "[", "match": False}, {"text": "note", "match": True}, {"text": "]", "match": False},
@@ -1421,7 +1469,9 @@ def test_text_helpers():
     assert web.one_line("x" * 500, 40) == "x" * 40 + "…"
     assert web.excerpt("a  b\n\n\n\nc", 100) == "a b\n\nc" and web.excerpt("y" * 900).endswith("…")
     scrubbed = web.public_error_text(
-        RuntimeError("cannot read /Users/me/VideoNotes/models/x.gguf or ~/Library/thing;\nsee http://127.0.0.1:11434/api")
+        RuntimeError(
+            "cannot read /Users/me/VideoNotes/models/x.gguf or ~/Library/thing;\nsee http://127.0.0.1:11434/api"
+        )
     )
     assert "/Users" not in scrubbed and "Library" not in scrubbed and "http://127.0.0.1:11434/api" in scrubbed
     assert web.public_error_text(RuntimeError("pip install 'videonotes[mlx]'")) == "pip install 'videonotes[mlx]'"

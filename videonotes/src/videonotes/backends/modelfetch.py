@@ -231,6 +231,15 @@ def _validator(headers: HTTPMessage) -> str:
     return (headers.get("Last-Modified") or "").strip()
 
 
+def _size(count: int) -> str:
+    """A byte count for humans: ``312 MB``, ``1.4 GB``, ``80 kB``."""
+    if count >= 1e9:
+        return f"{count / 1e9:.1f} GB"
+    if count >= 1e6:
+        return f"{count / 1e6:.0f} MB"
+    return f"{max(1, round(count / 1e3))} kB"
+
+
 def _require_free_space(folder: Path, needed: int, url: str) -> None:
     try:
         free = shutil.disk_usage(folder).free
@@ -239,7 +248,7 @@ def _require_free_space(folder: Path, needed: int, url: str) -> None:
     if free < needed:
         raise ModelFetchError(
             f"Not enough free disk space in {folder} to download and unpack {archive_name(url)}: "
-            f"about {needed / 1e9:.1f} GB needed, {free / 1e9:.1f} GB free. Free some space and run the command again.",
+            f"about {_size(needed)} needed, {_size(free)} free. Free some space and run the command again.",
             url=url,
             dest_dir=folder,
         )
@@ -269,7 +278,9 @@ def _attempt(
     try:
         response = urllib.request.urlopen(request, timeout=timeout)  # scheme was checked by the caller
     except urllib.error.HTTPError as exc:
-        if exc.code == 416 and offset:  # "range not satisfiable": the partial file is as long as the real one, or longer
+        if (
+            exc.code == 416 and offset
+        ):  # "range not satisfiable": the partial file is as long as the real one, or longer
             _, total = _parse_content_range(exc.headers.get("Content-Range") if exc.headers else None)
             with contextlib.suppress(Exception):
                 exc.close()
@@ -381,7 +392,9 @@ def download_file(
         after = part.stat().st_size if part.is_file() else 0
         failures = 0 if after > before else failures + 1
         if failures > retries:
-            kept = f"\n  The {after / 1e6:.0f} MB received so far were kept; running the command again resumes." if after else ""
+            kept = (
+                f"\n  The {_size(after)} received so far were kept; running the command again resumes." if after else ""
+            )
             raise ModelFetchError(
                 f"Could not download {url}\n  {problem}. Check the internet connection and try again.{kept}",
                 url=url,
@@ -454,7 +467,7 @@ def _write_member(src: IO[bytes], dst_path: Path, budget: list[int], mode: int) 
             budget[0] -= len(block)
             if budget[0] < 0:
                 raise ModelFetchError(
-                    f"the archive unpacks to more than {MAX_UNPACKED_BYTES / 1e9:.0f} GB; refusing to continue"
+                    f"the archive unpacks to more than {_size(MAX_UNPACKED_BYTES)}; refusing to continue"
                 )
             dst.write(block)
     # owner can always read and write; keep the executable bit; never setuid/setgid/sticky or world-writable
@@ -485,7 +498,8 @@ def _extract_tar(archive: Path, root: Path, budget: list[int]) -> None:
                 source_path = root / _safe_relative(member.linkname)
                 if not source_path.is_file():
                     raise UnsafeArchiveError(
-                        f"archive entry {member.name!r} is a hard link to {member.linkname!r}, which is not in the archive"
+                        f"archive entry {member.name!r} is a hard link to {member.linkname!r}, "
+                        "which is not in the archive"
                     )
                 target = _prepare_target(root, relative)
                 with open(source_path, "rb") as source:
@@ -584,7 +598,11 @@ def _remove(path: Path) -> None:
 
 def _reserved(name: str) -> bool:
     """Top-level names this module uses itself inside ``dest_dir``."""
-    return name == _DOWNLOADS_DIR or name.startswith(_STAGING_PREFIX) or (name.startswith(".") and name.endswith(".complete"))
+    return (
+        name == _DOWNLOADS_DIR
+        or name.startswith(_STAGING_PREFIX)
+        or (name.startswith(".") and name.endswith(".complete"))
+    )
 
 
 def fetch_archive(

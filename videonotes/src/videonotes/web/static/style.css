@@ -632,8 +632,13 @@ h1 {
   background: var(--surface);
 }
 
+.check-text {
+  min-width: 0;
+}
+
 .check-meta {
   display: inline-block;
+  max-width: calc(100% - 10px);
   margin-left: 10px;
   color: var(--muted);
   font-size: 0.88rem;
@@ -682,7 +687,9 @@ h1 {
   font-size: 0.8rem;
   font-weight: 550;
   line-height: 1.7;
-  white-space: nowrap;
+  /* short labels stay on one line (a row wraps between chips first); a very long name or tag wraps inside */
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .chip.highlight {
@@ -710,6 +717,11 @@ h1 {
   margin-top: 14px;
   color: var(--muted);
   font-size: 0.86rem;
+}
+
+.fineprint code {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .notice {
@@ -952,6 +964,21 @@ h1 {
   font-size: 0.95rem;
 }
 
+/* Stacks laid out as one-column grids. The column must be allowed to be narrower than its longest word
+   (a URL read off a screen, say), or that word widens the column and with it the whole page. */
+.captured-list,
+.facts,
+.cards,
+.results,
+.card-body,
+.result-body,
+.moment-body,
+.frames-block,
+.lines,
+.lightbox-info {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* ------------------------------------------------------------------ timeline */
 
 .timeline {
@@ -1036,6 +1063,7 @@ h1 {
 }
 
 .moment-title {
+  min-width: 0;
   font-size: 1.04rem;
   font-weight: 640;
   line-height: 1.35;
@@ -1282,6 +1310,10 @@ button.line-time:hover {
 
 .dialog::backdrop {
   background: rgba(8, 10, 12, 0.74);
+}
+
+html:has(dialog[open]) {
+  overflow: hidden; /* the page behind an open frame or video does not scroll */
 }
 
 .dialog-head {

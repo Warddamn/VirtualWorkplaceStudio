@@ -18,12 +18,13 @@ Everything that is *not* specific to an engine is implemented once, in
    all-day footage, and silence is where Whisper-family models invent text.
 2. **Speech is fed in chunks, timestamps come back in file time.**  The speech
    spans are packed into chunks no longer than the engine can take in one call
-   (:func:`videonotes.media.audio.chunk_spans`): 28 s for Whisper through
-   sherpa-onnx (a fixed 30 s window), two minutes for Parakeet, ten minutes for
-   the engines that slide their own window over long audio (mlx-whisper,
-   faster-whisper).  A cut that falls inside continuous speech is moved to the
-   quietest nearby instant so it does not split a word.  Audio is read from the
-   WAV chunk by chunk, so an hour-long file needs no more memory than a short one.
+   (:func:`videonotes.media.audio.chunk_spans`): about half a minute for the
+   sherpa-onnx models (Whisper's window is 30 s; Parakeet's memory grows with
+   length), two minutes for Parakeet on MLX, ten minutes for the engines that
+   slide their own window over long audio (mlx-whisper, faster-whisper).  A cut
+   that falls inside continuous speech is moved to the quietest nearby instant
+   so it does not split a word.  Audio is read from the WAV chunk by chunk, so
+   an hour-long file needs no more memory than a short one.
 3. **Text outside detected speech is dropped**, and what remains is cleaned by
    :func:`postprocess`: whitespace, non-speech tags (``[BLANK_AUDIO]``),
    repetition loops, exact repeats and a short list of well-known Whisper
@@ -46,6 +47,7 @@ import contextlib
 import dataclasses
 import gc
 import importlib
+import inspect
 import logging
 import math
 import os
@@ -82,9 +84,28 @@ DEFAULT_MODELS = {
     "parakeet-mlx": "mlx-community/parakeet-tdt-0.6b-v3",
     # Multilingual Whisper "small"; int8 keeps it near 1.5 GB of RAM on a CPU.
     "faster-whisper": "small",
-    # The same Parakeet model, int8 ONNX: see the measurements in SHERPA_DEFAULT_NOTE.
+    # The same Parakeet model as int8 ONNX; the measurements behind this choice are below.
     "sherpa-onnx": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8",
 }
+
+# Why Parakeet TDT 0.6b v3 (int8) is the sherpa-onnx default.  Measured on 2026-11-22 with sherpa-onnx
+# 2.0.3 and 4 threads in a Linux x86-64 container whose 4 vCPUs were shared (load average 10-25), so
+# the wall-clock speeds are pessimistic and CPU time is the fairer figure.  Input: 2.8 minutes of real
+# speech in chunks of at most 28 s.
+#
+#   model (int8)                  CPU-s per audio-s   wall speed under that load   peak RSS
+#   nemo-parakeet-tdt-0.6b-v3           0.57          1.3x - 2.1x realtime         1.40 GB
+#   whisper-base.en                     0.61          2.0x realtime                0.82 GB
+#   moonshine-base-en                   0.27          3.4x realtime                0.79 GB  (lost a whole chunk)
+#   whisper-small.en                    2.00          0.4x (slower than realtime)  1.33 GB
+#
+# Parakeet v2 (English only) measured the same as v3 for speed and memory.  On the Open ASR Leaderboard
+# Parakeet v3 averages 6.3 % WER and v2 6.1 %, ahead of Whisper large-v3 (7.4 %) and well ahead of the
+# small / base Whisper and Moonshine models.  So Parakeet is the most accurate candidate at the CPU cost
+# of Whisper base, and v3 adds 25 auto-detected European languages over v2 for nothing.
+# Its memory grows with the length of audio decoded at once (peak RSS, one chunk): 1.17 GB for 20 s,
+# 1.29 GB for 30 s, 1.45 GB for 45 s, 1.65 GB for 60 s, 2.14 GB for 90 s - hence
+# SHERPA_TRANSDUCER_CHUNK_S below.  The CPU cost per second of audio does not depend on the chunk length.
 
 #: sherpa-onnx publishes its speech models as assets of one GitHub release.
 SHERPA_MODEL_URL = "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/{name}.tar.bz2"
@@ -95,7 +116,8 @@ _SHERPA_DOWNLOAD_MB = {"sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8": 487}
 
 #: Longest audio handed to an engine in one call.
 WHISPER_WINDOW_CHUNK_S = 28.0  # Whisper's context is 30 s; leaves room for a moved cut
-PARAKEET_CHUNK_S = 120.0  # full-attention encoder: memory grows with the square of the length
+PARAKEET_CHUNK_S = 120.0  # parakeet-mlx's own default chunk for long audio (Metal memory, not system RAM)
+SHERPA_TRANSDUCER_CHUNK_S = 30.0  # keeps Parakeet int8 on the CPU under about 1.4 GB (see the table above)
 LONGFORM_CHUNK_S = 600.0  # engines that slide their own 30 s window
 #: A cut inside continuous speech may move this far to find a quiet instant.
 CUT_SEARCH_S = 1.5
@@ -104,6 +126,7 @@ SPAN_TOLERANCE_S = 0.5
 #: Files longer than this are scanned for speech block by block (bounded memory).
 _VAD_WHOLE_FILE_S = 900.0
 _VAD_BLOCK_S = 600.0
+_VAD_MERGE_GAP_S = 0.6  # detect_speech's own min_silence_s: closer spans are one span
 _MIN_AUDIO_S = 0.1  # nothing shorter can contain a word
 #: Whisper's own "this decoding failed" thresholds, reused as filters.
 _MAX_COMPRESSION_RATIO = 2.4
@@ -116,6 +139,7 @@ _LONE_PHRASE_MAX_S = 3.0
 #: An identical line this soon after the previous one is a decoding loop, not a second remark.
 _REPEAT_WINDOW_S = 10.0
 _PHANTOM_MAX_WORDS = 12
+_TOKEN_MAX_S = 0.5  # assumed longest word piece when an engine gives start times but no durations
 
 
 # ==========================================================================================
@@ -170,10 +194,12 @@ _NON_SPEECH_RE = re.compile(r"^(?:\s*(?:\[[^\]]*\]|\([^)]*\)|\*[^*]+\*|[♪♫]+
 #: Caption credits that Whisper learned from subtitle files; nobody says these to a body camera.
 _PHANTOM_RE = re.compile(
     r"^(?:(?:thanks|thank you)(?: so much| very much)? for watching\b"
-    r"|(?:subtitles?|captions?|transcription|translation) (?:made |provided |created )?by\b)"
+    r"|(?:subtitles?|captions?) (?:made |provided |created )?by\b)"
 )
 #: Real phrases that are also Whisper's favourite output for silence; dropped only over near-silence.
-_QUIET_PHANTOMS = frozenset({"you", "thank you", "thank you very much", "thank you so much", "thanks", "bye", "bye bye"})
+_QUIET_PHANTOMS = frozenset(
+    {"you", "thank you", "thank you very much", "thank you so much", "thanks", "bye", "bye bye"}
+)
 
 
 def normalise_language(value: str | None) -> str | None:
@@ -225,7 +251,7 @@ def compression_ratio(text: str) -> float:
 
 
 def collapse_repeated_sentences(text: str) -> str:
-    """"I see. I see. I see. Right." -> "I see. Right." (a decoding loop inside one segment)."""
+    """Undo a decoding loop inside one segment: ``I see. I see. I see. Right.`` -> ``I see. Right.``"""
     sentences = _SENTENCE_RE.split(text)
     if len(sentences) < 2:
         return text
@@ -303,20 +329,22 @@ def pieces_from_tokens(
 
     A piece ends after sentence punctuation, before a pause of ``pause_s``, or
     when it has grown to ``max_s``.  Word-initial tokens start with a space
-    (or SentencePiece's ``▁``).
+    (or SentencePiece's U+2581 marker).
     """
     count = min(len(tokens), len(starts))
     if count == 0:
         return []
-    texts = [str(tokens[i]).replace("▁", " ") for i in range(count)]
+    texts = [str(tokens[i]).replace("\u2581", " ") for i in range(count)]
     begin = [float(starts[i]) for i in range(count)]
     has_durations = durations is not None and len(durations) >= count
     end: list[float] = []
     for i in range(count):
         if has_durations:
             stop = begin[i] + max(0.0, float(durations[i]))  # type: ignore[index]
+        elif i + 1 < count:
+            stop = min(begin[i + 1], begin[i] + _TOKEN_MAX_S)  # no durations: a token lasts until the next one, at most
         else:
-            stop = begin[i + 1] if i + 1 < count else begin[i] + 0.3
+            stop = begin[i] + 0.3
         end.append(min(max(stop, begin[i]), total_s) if total_s > 0 else stop)
 
     pieces: list[Piece] = []
@@ -325,8 +353,9 @@ def pieces_from_tokens(
         last = i == count - 1
         next_is_word = last or texts[i + 1].startswith(" ")
         sentence_end = texts[i].rstrip().endswith((".", "!", "?", "。", "！", "？")) and next_is_word
-        pause = not last and next_is_word and begin[i + 1] - end[i] >= pause_s
-        too_long = next_is_word and end[i] - begin[first] >= max_s
+        pause = not last and begin[i + 1] - end[i] >= pause_s
+        length = end[i] - begin[first]
+        too_long = (next_is_word and length >= max_s) or length >= 1.5 * max_s  # prefer to cut between words
         if last or sentence_end or pause or too_long:
             text = "".join(texts[first : i + 1]).strip()
             if text:
@@ -409,7 +438,7 @@ def find_speech(wav: WavReader) -> list[au.SpeechSpan]:
             stop = total
         for span in au.detect_speech(wav.read(t, stop), wav.rate):
             t0, t1 = float(span.t0) + t, float(span.t1) + t
-            if spans and t0 - spans[-1].t1 < 0.6:  # speech that ran across the block boundary
+            if spans and t0 - spans[-1].t1 < _VAD_MERGE_GAP_S:  # speech that ran across the block boundary
                 spans[-1].t1 = max(spans[-1].t1, t1)
             else:
                 spans.append(au.SpeechSpan(t0, t1))
@@ -449,9 +478,7 @@ def plan_chunks(
     long stretch of continuous speech, and ``read`` is given, the cut is moved
     to the quietest instant within ``CUT_SEARCH_S`` so it lands between words.
     """
-    chunks = [
-        au.SpeechSpan(float(c.t0), float(c.t1)) for c in au.chunk_spans(list(spans), max_chunk_s=max_chunk_s)
-    ]
+    chunks = [au.SpeechSpan(float(c.t0), float(c.t1)) for c in au.chunk_spans(list(spans), max_chunk_s=max_chunk_s)]
     if read is None:
         return chunks
     for left, right in zip(chunks, chunks[1:], strict=False):
@@ -501,7 +528,10 @@ def place_pieces(
             if overlap_seconds(t0 - SPAN_TOLERANCE_S, t1 + SPAN_TOLERANCE_S, spans) <= 0.0:
                 log.debug("dropping text outside detected speech at %.1fs: %.60s", t0, piece.text)
                 continue
-            fraction = overlap_seconds(t0, t1, spans) / (t1 - t0) if t1 - t0 > 1e-6 else 1.0
+            if t1 - t0 > 1e-6:
+                fraction = overlap_seconds(t0, t1, spans) / (t1 - t0)
+            else:  # an instant: inside a span or not
+                fraction = 1.0 if any(s.t0 <= t0 <= s.t1 for s in spans) else 0.0
         level = _level_db(samples[int(r0 * SAMPLE_RATE) : int(r1 * SAMPLE_RATE)])
         placed.append(dataclasses.replace(piece, t0=t0, t1=t1, speech_fraction=fraction, level_db=level))
     return placed
@@ -664,8 +694,15 @@ def _clear_mlx_cache() -> None:
             clear()
 
 
-def _missing(backend: str) -> BackendUnavailable:
-    return BackendUnavailable(_SPECS[backend].install_text())
+def _missing(backend: str, cause: BaseException | None = None) -> BackendUnavailable:
+    """The error for a backend whose package is absent, or present but broken (``cause``)."""
+    spec = _SPECS[backend]
+    if cause is None or isinstance(cause, ModuleNotFoundError) and (cause.name or "").split(".")[0] in spec.roots():
+        return BackendUnavailable(spec.install_text())
+    return BackendUnavailable(
+        f'The speech-to-text backend "{backend}" is installed but could not be started '
+        f"({type(cause).__name__}: {cause}). Reinstall it with:  pip install --upgrade {spec.package}"
+    )
 
 
 def _hugging_face_load_error(backend: str, model: str, exc: BaseException) -> BackendUnavailable:
@@ -694,11 +731,14 @@ class MlxWhisperEngine:
             import mlx.core as mx
             import mlx_whisper
         except ImportError as exc:
-            raise _missing("mlx-whisper") from exc
+            raise _missing("mlx-whisper", exc) from exc
         self._transcribe = mlx_whisper.transcribe
         # mlx_whisper.transcribe is a function that shadows the submodule of the same name; the
         # module (with the model cache, ModelHolder) has to be fetched from the import system.
-        self._holder = importlib.import_module("mlx_whisper.transcribe").ModelHolder
+        self._holder: Any = getattr(importlib.import_module("mlx_whisper.transcribe"), "ModelHolder", None)
+        if self._holder is None:  # a release without the cache class: the first transcribe() will load
+            log.debug("mlx_whisper has no ModelHolder; the model loads on the first transcription")
+            return
         try:
             # Load now, with the dtype transcribe() uses by default (fp16), so that a failed
             # download surfaces here as "backend unavailable" rather than as a per-clip error.
@@ -719,7 +759,7 @@ class MlxWhisperEngine:
         pieces = [
             Piece(
                 t0=_finite(seg.get("start"), 0.0),
-                t1=_finite(seg.get("end"), 0.0),
+                t1=_finite(seg.get("end"), math.nan),
                 text=str(seg.get("text") or ""),
                 no_speech_prob=_optional(seg.get("no_speech_prob")),
                 avg_logprob=_optional(seg.get("avg_logprob")),
@@ -731,8 +771,9 @@ class MlxWhisperEngine:
 
     def close(self) -> None:
         # mlx-whisper keeps the model in a class-level cache; empty it, then hand the memory back.
-        self._holder.model = None
-        self._holder.model_path = None
+        if self._holder is not None:
+            self._holder.model = None
+            self._holder.model_path = None
         gc.collect()
         _clear_mlx_cache()
 
@@ -755,7 +796,7 @@ class ParakeetMlxEngine:
             from parakeet_mlx import DecodingConfig, SentenceConfig, from_pretrained
             from parakeet_mlx.audio import get_logmel
         except ImportError as exc:
-            raise _missing("parakeet-mlx") from exc
+            raise _missing("parakeet-mlx", exc) from exc
         self._mx = mx
         self._get_logmel = get_logmel
         # Sentences end at punctuation; also split at long pauses so timestamps stay meaningful.
@@ -793,7 +834,7 @@ class FasterWhisperEngine:
         try:
             from faster_whisper import WhisperModel
         except ImportError as exc:
-            raise _missing("faster-whisper") from exc
+            raise _missing("faster-whisper", exc) from exc
         try:
             self._model: Any = WhisperModel(model, device="cpu", compute_type="int8", cpu_threads=0)
         except Exception as exc:
@@ -824,7 +865,7 @@ class FasterWhisperEngine:
         pieces = [  # ``segments`` is a generator: the decoding happens during this loop
             Piece(
                 t0=_finite(seg.start, 0.0),
-                t1=_finite(seg.end, 0.0),
+                t1=_finite(seg.end, math.nan),
                 text=str(seg.text or ""),
                 no_speech_prob=_optional(seg.no_speech_prob),
                 avg_logprob=_optional(seg.avg_logprob),
@@ -832,11 +873,21 @@ class FasterWhisperEngine:
             )
             for seg in segments
         ]
-        return EngineResult(pieces, language=info.language if language is None else None)
+        # Only a confident detection is worth keeping for the rest of the file.
+        confident = language is None and _finite(getattr(info, "language_probability", 1.0), 1.0) >= 0.5
+        return EngineResult(pieces, language=info.language if confident else None)
 
     def close(self) -> None:
         self._model = None
         gc.collect()
+
+
+def _parameters(function: Any) -> frozenset[str]:
+    """Names of the parameters a callable accepts (empty if it cannot be inspected)."""
+    try:
+        return frozenset(inspect.signature(function).parameters)
+    except (TypeError, ValueError):
+        return frozenset()
 
 
 def _optional(value: Any) -> float | None:
@@ -881,7 +932,8 @@ def sherpa_layout(folder: Path) -> SherpaLayout | None:
         return None
     tokens = folder / "tokens.txt"
     if tokens.is_file():
-        encoder, decoder, joiner = (_pick_onnx(folder, f"{part}*.onnx") for part in ("encoder", "decoder", "joiner"))
+        # exactly NeMo's export names: an icefall transducer (encoder-epoch-99-….onnx) is a different model type
+        encoder, decoder, joiner = (_pick_onnx(folder, f"{part}.*onnx") for part in ("encoder", "decoder", "joiner"))
         if encoder and decoder and joiner:
             return SherpaLayout("transducer", encoder, decoder, tokens, joiner=joiner)
     for whisper_tokens in sorted(folder.glob("*-tokens.txt")):
@@ -971,20 +1023,24 @@ def ensure_sherpa_model(settings: Settings, model: str) -> tuple[Path, SherpaLay
 class SherpaOnnxEngine:
     """ONNX Runtime on the CPU through ``sherpa-onnx``.
 
-    Whisper models have a fixed 30 s window, so they get 28 s chunks; NeMo
-    transducers (Parakeet) take longer audio and return per-token timestamps.
+    Whisper models have a fixed 30 s window, so they get 28 s chunks.  NeMo
+    transducers (Parakeet) could take longer audio but need more memory for it,
+    so they get 30 s chunks; they return per-token timestamps.
     """
 
     def __init__(self, folder: Path, layout: SherpaLayout, *, threads: int | None = None):
         try:
             import sherpa_onnx
         except ImportError as exc:
-            raise _missing("sherpa-onnx") from exc
+            raise _missing("sherpa-onnx", exc) from exc
         self.layout = layout
         threads = threads or _threads()
         try:
             if layout.family == "whisper":
                 self.max_chunk_s = WHISPER_WINDOW_CHUNK_S
+                options: dict[str, Any] = {}
+                if "enable_segment_timestamps" in _parameters(sherpa_onnx.OfflineRecognizer.from_whisper):
+                    options["enable_segment_timestamps"] = True  # sherpa-onnx 2.x; older: one piece per chunk
                 self._recognizer: Any = sherpa_onnx.OfflineRecognizer.from_whisper(
                     encoder=str(layout.encoder),
                     decoder=str(layout.decoder),
@@ -992,10 +1048,10 @@ class SherpaOnnxEngine:
                     language="" if layout.multilingual else "en",  # "" = detect; set per stream when known
                     task="transcribe",
                     num_threads=threads,
-                    enable_segment_timestamps=True,
+                    **options,
                 )
             else:
-                self.max_chunk_s = PARAKEET_CHUNK_S
+                self.max_chunk_s = SHERPA_TRANSDUCER_CHUNK_S
                 self._recognizer = sherpa_onnx.OfflineRecognizer.from_transducer(
                     encoder=str(layout.encoder),
                     decoder=str(layout.decoder),
@@ -1008,14 +1064,15 @@ class SherpaOnnxEngine:
         except Exception as exc:
             raise BackendUnavailable(
                 f"sherpa-onnx could not load the model in {folder} ({type(exc).__name__}: {exc}).\n"
-                "The files may be damaged: delete that folder and run the command again to download it afresh."
+                "The files may be damaged: delete that folder and run the command again to download it afresh.\n"
+                "If that does not help, update the library:  pip install -U sherpa-onnx"
             ) from exc
 
     def transcribe(self, samples: np.ndarray, language: str | None) -> EngineResult:
         whisper = self.layout.family == "whisper"
         stream = self._recognizer.create_stream()
-        if whisper and self.layout.multilingual and language:
-            stream.set_option("language", language)
+        if whisper and self.layout.multilingual and language and hasattr(stream, "set_option"):
+            stream.set_option("language", language)  # per-stream override of the recognizer's "detect"
         stream.accept_waveform(SAMPLE_RATE, np.ascontiguousarray(samples, dtype=np.float32))
         self._recognizer.decode_stream(stream)
         result = stream.result
@@ -1059,7 +1116,13 @@ class _Spec:
     needs_mlx: bool = False
 
     def install_text(self) -> str:
-        return f'The speech-to-text backend "{self.name}" is not installed. Install it with:  pip install {self.package}'
+        return (
+            f'The speech-to-text backend "{self.name}" is not installed. Install it with:  pip install {self.package}'
+        )
+
+    def roots(self) -> set[str]:
+        """Top-level import names that belong to this backend."""
+        return {module.split(".")[0] for module in self.modules}
 
 
 _SPECS = {
@@ -1109,7 +1172,9 @@ def backend_problem(name: str) -> str | None:
 def resolve_model(settings: Settings, backend: str) -> str:
     """``asr.model`` for a backend: its default when the setting is ``"auto"``."""
     model = (settings.asr.model or "").strip()
-    return DEFAULT_MODELS[backend] if model.lower() in ("", "auto") else model
+    if model.lower() in ("", "auto"):
+        return DEFAULT_MODELS[backend]
+    return os.path.expanduser(model) if model.startswith("~") else model  # the libraries do not expand "~"
 
 
 def _engine_loader(settings: Settings, backend: str, model: str) -> Callable[[], Engine]:

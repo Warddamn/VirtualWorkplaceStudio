@@ -17,6 +17,31 @@ It serves a person's private footage, so it is deliberately strict:
   ``Cross-Origin-Resource-Policy: same-origin``;
 * error responses never contain exception text or file-system paths.
 
+Routes (GET/HEAD unless noted; every time is ``{"ts", "clock", "precise", "day", "text"}``:
+epoch seconds plus local strings; errors are ``{"error": {"code", "message"}}``)::
+
+    /                              the page (index.html); /static/app.js, /static/style.css
+    /api/overview                  library stats; days that have sessions, newest first, with counts
+    /api/sessions?day=YYYY-MM-DD   sessions of a day (without day: the latest ones, ?limit=N)
+    /api/session/<id>              note, moments (keyframes, transcript, play target), clips
+    /api/day/<YYYY-MM-DD>          the day's digest (or null) and its sessions
+    /api/search?q=&day=&kind=      hits with highlight parts, where they live, and a thumbnail
+    POST /api/ask {"question"}     {"answer", "llm_backend", "extractive", "sources": [...]}
+    /frames/<path>?k=<keyframe>    a keyframe image from the library's frames folder
+    /media/<clip_id>               a clip's media file, with Range support
+
+Two things a browser needs that the library does not hand over as it is:
+
+* Live capture stores MPEG-TS segments, which no browser plays from a ``<video>`` element.
+  A clip in such a container is rewrapped as MP4 (``ffmpeg -c copy``, no re-encoding) the
+  first time it is played.  The copy lives in ``<home>/cache/<session>/web/`` (removed with
+  the session by ``vnote delete``), is bounded in total size, and is cleared when the server
+  starts and stops.
+* Safari abandons a request whose reply has not started within 60 seconds.  A question that
+  takes longer than :data:`ASK_HEARTBEAT_S` is therefore answered as a ``200`` whose body
+  starts with keep-alive spaces (which JSON allows) and ends with the usual JSON; a failure
+  is then reported in that body as ``{"error": ...}``, because the status has already gone.
+
 Public API: :func:`make_server` and :func:`serve`.
 """
 
@@ -30,6 +55,7 @@ import logging
 import math
 import os
 import re
+import shutil
 import socket
 import socketserver
 import sqlite3
@@ -38,7 +64,8 @@ import sys
 import threading
 import time
 import unicodedata
-from collections.abc import Iterable, Mapping
+from collections import OrderedDict
+from collections.abc import Iterable, Iterator, Mapping
 from datetime import date, datetime
 from email.utils import formatdate
 from http import HTTPStatus
@@ -69,6 +96,14 @@ SESSIONS_LIMIT_MAX = 500
 #: Seconds a connection may sit idle (or a client may stall mid-request) before it is dropped.
 REQUEST_TIMEOUT_S = 30.0
 _CHUNK_BYTES = 256 * 1024
+#: Seconds a question may run before its reply is started and kept alive with whitespace.
+#: Must stay well under 60: Safari drops a request whose reply has been silent that long.
+ASK_HEARTBEAT_S = 10.0
+#: Largest clip that is rewrapped as MP4 for playback, and the most disk those copies may use.
+REMUX_MAX_BYTES = 2 * 1024**3
+REMUX_CACHE_MAX_BYTES = 2 * 1024**3
+#: Free disk space that must remain after a playback copy was written.
+REMUX_HEADROOM_BYTES = 512 * 1024**2
 
 CONTENT_SECURITY_POLICY = (
     "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; "
@@ -118,6 +153,18 @@ _MEDIA_TYPES = {
     ".ogg": "audio/ogg",
     ".opus": "audio/ogg",
 }
+
+#: Containers a browser's media element plays as they are (given a codec it supports).
+#: Anything else ffmpeg can read, MPEG-TS segments of live capture above all, is rewrapped as MP4.
+_DIRECT_PLAY = frozenset(
+    {".mp4", ".m4v", ".lrf", ".mov", ".webm", ".m4a", ".aac", ".mp3", ".wav", ".flac", ".ogg", ".opus"}
+)
+#: Photos are clips too (a still from the card); there is nothing to play.
+_STILL_SUFFIXES = frozenset({".jpg", ".jpeg", ".png", ".heic", ".heif", ".tif", ".tiff", ".bmp", ".webp", ".gif"})
+#: Folder, below ``<home>/cache/<session id>/``, that holds MP4 copies made for playback.
+_PLAY_DIR_NAME = "web"
+_PLAY_FILE_RE = re.compile(r"^clip\d+-[0-9a-f]+-[0-9a-f]+\.mp4(\.\d+\.part)?$")
+_SAFE_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$")
 
 _LOOPBACK_HOSTS = frozenset({"localhost", "127.0.0.1", "[::1]"})
 _DAY_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -354,6 +401,28 @@ def public_error_text(exc: BaseException, limit: int = 400) -> str:
     return text[:limit].rstrip()
 
 
+def remux_args(source: Path, target: Path) -> list[str]:
+    """ffmpeg arguments that rewrap ``source`` as MP4 without re-encoding (first video and audio track only).
+
+    ``-f mp4`` names the container because ``target`` is a temporary name; ``+faststart``
+    puts the index first, so playback can begin before the whole file was fetched.
+    """
+    return [
+        "-i", str(source),
+        "-map", "0:v:0?", "-map", "0:a:0?",
+        "-c", "copy", "-sn", "-dn",
+        "-movflags", "+faststart",
+        "-f", "mp4", str(target),
+    ]  # fmt: skip
+
+
+def _remove_file(path: Path) -> None:
+    try:
+        path.unlink()
+    except OSError:
+        pass
+
+
 def _number(value: Any) -> float | None:
     """A finite float, or None for anything else (the note JSON is written by an LLM)."""
     if isinstance(value, bool) or not isinstance(value, (int, float)):
@@ -443,6 +512,13 @@ class Library:
         self.store = store
         self._clock_format = settings.notes.time_format or "%H:%M"
         self._roots: dict[Path, tuple[float, Path]] = {}
+        #: one conversion for playback at a time: they are short, and a laptop disk gains nothing from two
+        self._remux_lock = threading.Lock()
+        #: playback copies this server made, least recently used first -> the recording each was made from
+        self._play_copies: OrderedDict[Path, Path] = OrderedDict()
+        self._copies_lock = threading.Lock()
+        self._copies_checked = 0.0
+        self._ffmpeg: tuple[float, bool] | None = None
 
     # -- formatting -------------------------------------------------------
 
@@ -579,17 +655,183 @@ class Library:
                 return real
         return None
 
+    def _have_ffmpeg(self) -> bool:
+        """Whether ffmpeg can be run; remembered for half a minute (a miss searches the PATH every time)."""
+        now = time.monotonic()
+        if self._ffmpeg is None or now - self._ffmpeg[0] > 30.0:
+            from ..media import ffmpeg as ff
+
+            self._ffmpeg = (now, ff.have_ffmpeg())
+        return self._ffmpeg[1]
+
+    def _play_mode(self, media: Path) -> str | None:
+        """How a browser can play a clip's file: ``"direct"``, ``"remux"`` (as an MP4 copy) or None."""
+        suffix = media.suffix.lower()
+        if suffix in _DIRECT_PLAY:
+            return "direct"
+        if suffix in _STILL_SUFFIXES:
+            return None
+        try:
+            size = media.stat().st_size
+        except OSError:
+            return None
+        return "remux" if 0 < size <= REMUX_MAX_BYTES and self._have_ffmpeg() else None
+
+    def _clip_playback(self, clip: Clip) -> tuple[Path, str, str] | None:
+        """``(file, mode, content type)`` when the clip can be played in the page, else None."""
+        media = self._clip_media(clip)
+        mode = self._play_mode(media) if media is not None else None
+        if media is None or mode is None or clip.id is None:
+            return None
+        if mode == "remux":
+            if not _SAFE_NAME_RE.match(clip.session_id or ""):
+                return None  # the copy goes into a folder named after the session
+            return media, mode, "video/mp4" if clip.has_video else "audio/mp4"
+        return media, mode, _MEDIA_TYPES.get(media.suffix.lower(), "application/octet-stream")
+
     def media_file(self, clip_ref: str) -> tuple[Path, str]:
-        """Resolve ``/media/<clip_id>`` to ``(real path, content type)`` or raise a 404 :class:`HttpError`."""
+        """Resolve ``/media/<clip_id>`` to ``(real path, content type)`` or raise an :class:`HttpError`.
+
+        A clip in a container browsers cannot play (live capture writes MPEG-TS) is
+        answered with an MP4 copy of it, made on first use (see :meth:`_playable_copy`).
+        """
         if not _ID_RE.match(clip_ref):
             raise HttpError(404, "unknown_clip", "That clip is not in the library.")
         clip = self.store.get_clip(int(clip_ref))
         if clip is None:
             raise HttpError(404, "unknown_clip", "That clip is not in the library.")
-        real = self._clip_media(clip)
-        if real is None:
+        if self._clip_media(clip) is None:
             raise HttpError(404, "media_unavailable", "The video for that clip is no longer kept in the library.")
-        return real, _MEDIA_TYPES.get(real.suffix.lower(), "application/octet-stream")
+        playback = self._clip_playback(clip)
+        if playback is None:
+            raise HttpError(404, "media_unplayable", "That recording is not something a browser can play.")
+        media, mode, content_type = playback
+        return (self._playable_copy(clip, media) if mode == "remux" else media), content_type
+
+    # -- MP4 copies for playback ------------------------------------------
+
+    def _play_dirs(self) -> Iterator[Path]:
+        """Every ``<home>/cache/<session>/web`` folder that exists."""
+        try:
+            with os.scandir(self.settings.cache_dir) as entries:
+                names = [entry.name for entry in entries if entry.is_dir(follow_symlinks=False)]
+        except OSError:
+            return
+        for name in names:
+            folder = self.settings.cache_dir / name / _PLAY_DIR_NAME
+            if folder.is_dir() and not folder.is_symlink():
+                yield folder
+
+    def clear_play_cache(self) -> None:
+        """Delete every playback copy (they are remade on demand). Called when the server starts and stops.
+
+        Does not wait for a conversion that is under way: its unfinished file is
+        removed here and the conversion then reports a failure by itself.
+        """
+        with self._copies_lock:
+            self._play_copies.clear()
+        for folder in self._play_dirs():
+            try:
+                names = os.listdir(folder)
+            except OSError:
+                continue
+            for name in names:
+                if _PLAY_FILE_RE.match(name):
+                    _remove_file(folder / name)
+            try:
+                folder.rmdir()  # only when nothing else is in it
+            except OSError:
+                pass
+
+    def _remember_copy(self, target: Path, source: Path | None = None) -> None:
+        """Mark a playback copy as just used; with ``source``, record a new one and enforce the size limit."""
+        with self._copies_lock:
+            if source is not None:
+                self._play_copies[target] = source
+            if target in self._play_copies:
+                self._play_copies.move_to_end(target)
+            if source is not None:
+                self._trim_copies(keep=target)
+
+    def _trim_copies(self, keep: Path | None = None) -> None:
+        """Drop copies whose recording is gone, then the least recently used beyond the size limit.
+
+        The caller holds ``_copies_lock``.
+        """
+        copies = self._play_copies
+        sizes: dict[Path, int] = {}
+        for path, source in list(copies.items()):
+            try:
+                size = path.stat().st_size
+            except OSError:
+                del copies[path]  # removed with its session by `vnote delete`
+                continue
+            if path != keep and not source.is_file():
+                del copies[path]  # the recording was deleted, so nothing of it stays behind here either
+                _remove_file(path)
+                continue
+            sizes[path] = size
+        total = sum(sizes.values())
+        for path in list(copies):  # least recently used first
+            if total <= REMUX_CACHE_MAX_BYTES:
+                break
+            if path != keep:
+                total -= sizes[path]
+                del copies[path]
+                _remove_file(path)
+
+    def tidy_play_cache(self) -> None:
+        """At most once a minute: delete playback copies of recordings that are no longer in the library."""
+        now = time.monotonic()
+        with self._copies_lock:
+            if not self._play_copies or now - self._copies_checked < 60.0:
+                return
+            self._copies_checked = now
+            self._trim_copies()
+
+    def _playable_copy(self, clip: Clip, source: Path) -> Path:
+        """The MP4 copy of ``source`` for the browser, rewrapped without re-encoding on first use."""
+        try:
+            info = source.stat()
+        except OSError:
+            raise HttpError(
+                404, "media_unavailable", "The video for that clip is no longer kept in the library."
+            ) from None
+        folder = self.settings.cache_dir / clip.session_id / _PLAY_DIR_NAME
+        target = folder / f"clip{clip.id:06d}-{info.st_mtime_ns:x}-{info.st_size:x}.mp4"
+        if target.is_file():
+            self._remember_copy(target)
+            return target
+        with self._remux_lock:
+            if not target.is_file():  # nobody made it while we waited our turn
+                self._remux(source, target, info.st_size)
+            self._remember_copy(target, source)
+        return target
+
+    def _remux(self, source: Path, target: Path, size: int) -> None:
+        """Rewrap ``source`` as MP4 at ``target`` (stream copy). Raises :class:`HttpError` when that fails."""
+        from ..media import ffmpeg as ff
+
+        part = target.with_name(f"{target.name}.{os.getpid()}.part")
+        started = time.monotonic()
+        try:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if shutil.disk_usage(target.parent).free < size + REMUX_HEADROOM_BYTES:
+                log.warning("not enough free disk space to prepare %s for playback", source.name)
+                raise HttpError(
+                    507, "disk_full", "There is not enough free disk space to prepare this recording for playing."
+                )
+            ff.run(remux_args(source, part), timeout=min(600.0, 60.0 + size / (4 * 1024 * 1024)))
+            os.replace(part, target)
+        except (ff.FFmpegError, OSError) as exc:
+            reason = " | ".join(str(exc).split("\n")[-4:]) or type(exc).__name__
+            log.warning("could not prepare %s for playback in the browser: %s", source.name, _printable(reason, 400))
+            raise HttpError(
+                500, "media_unplayable", "This recording could not be prepared for playing in the browser."
+            ) from None
+        finally:
+            _remove_file(part)
+        log.info("prepared %s for playback in %.1f s", source.name, time.monotonic() - started)
 
     # -- sessions ---------------------------------------------------------
 
@@ -644,6 +886,7 @@ class Library:
         }
 
     def overview(self) -> dict[str, Any]:
+        self.tidy_play_cache()  # the page asks for the overview regularly: a cheap moment for housekeeping
         stats = self.store.stats()
         sessions = self.store.list_sessions()  # newest first
         counts: dict[str, int] = {}
@@ -747,8 +990,8 @@ class Library:
         playable: set[int] = set()
         clips_json = []
         for clip in clips:
-            media = self._clip_media(clip)
-            if media is not None and clip.id is not None:
+            playback = self._clip_playback(clip)
+            if playback is not None and clip.id is not None:
                 playable.add(clip.id)
             clips_json.append(
                 {
@@ -756,8 +999,9 @@ class Library:
                     "start": self.when(clip.start_ts),
                     "duration_s": clip.duration,
                     "duration": fmt_duration(clip.duration),
-                    "url": f"/media/{clip.id}" if media is not None else None,
-                    "content_type": _MEDIA_TYPES.get(media.suffix.lower(), "") if media is not None else "",
+                    "url": f"/media/{clip.id}" if playback is not None else None,
+                    "content_type": playback[2] if playback is not None else "",
+                    "in_library": playback is not None or self._clip_media(clip) is not None,
                     "has_video": clip.has_video,
                     "has_audio": clip.has_audio,
                 }
@@ -986,6 +1230,64 @@ def _is_error(info: Any) -> bool:
 # --------------------------------------------------------------------------
 
 
+class _AskJob(threading.Thread):
+    """One question being answered off the request thread, so that thread can keep its connection alive.
+
+    The job holds the server's one-question-at-a-time lock (acquired by the caller) and
+    releases it when it is finished, whether or not anybody still waits for the result.
+    """
+
+    def __init__(self, library: Library, question: str, lock: threading.Lock):
+        super().__init__(name="videonotes-ask", daemon=True)
+        self._library = library
+        self._question = question
+        self._lock = lock
+        self._payload: dict[str, Any] | None = None
+        self._error: BaseException | None = None
+        self.done = threading.Event()
+
+    def run(self) -> None:
+        try:
+            self._payload = self._library.ask(self._question)
+        except BaseException as exc:  # reported to the client by outcome(); nothing may escape a thread
+            self._error = exc
+        finally:
+            self._lock.release()
+            self.done.set()
+
+    def outcome(self) -> tuple[int, dict[str, Any]]:
+        """``(HTTP status, JSON payload)``: the answer, or an error that is safe to show in the page."""
+        exc = self._error
+        if exc is None and self._payload is not None:
+            return 200, self._payload
+
+        def error(code: str, message: str) -> dict[str, Any]:
+            return {"error": {"code": code, "message": message}}
+
+        if isinstance(exc, BackendUnavailable):
+            log.warning("ask: no usable language model: %s", exc)
+            detail = public_error_text(exc) or "No language model is available."
+            return 503, error("backend_unavailable", f"{detail} Run `vnote doctor` to see what to set up.")
+        if isinstance(exc, BackendError):
+            log.warning("ask: the language model failed: %s", exc)
+            detail = public_error_text(exc)
+            return 502, error(
+                "backend_error",
+                "The language model ran into a problem" + (f": {detail}" if detail else ".") + " Try again; "
+                "`vnote doctor` shows whether the model is set up and running.",
+            )
+        if isinstance(exc, sqlite3.Error):
+            log.error("library error while answering a question", exc_info=exc)
+            return 503, error(
+                "library_unavailable", "The library could not be read just now. Try again in a moment."
+            )
+        log.error("unexpected error while answering a question", exc_info=exc)
+        return 500, error(
+            "internal_error",
+            "Something went wrong inside videonotes. The details are in the Terminal window running vnote web.",
+        )
+
+
 class VideoNotesServer(ThreadingHTTPServer):
     """A loopback-only HTTP server bound to one library. Each request runs in its own thread."""
 
@@ -1014,6 +1316,7 @@ class VideoNotesServer(ThreadingHTTPServer):
     def open_library(self) -> None:
         self.store = Store(self.settings.db_path)
         self.library = Library(self.settings, self.store)
+        self.library.clear_play_cache()  # leftovers of a run that did not get to tidy up
 
     @property
     def url(self) -> str:
@@ -1022,7 +1325,12 @@ class VideoNotesServer(ThreadingHTTPServer):
 
     def server_close(self) -> None:
         super().server_close()
-        self.library = None
+        library, self.library = self.library, None
+        if library is not None:
+            try:
+                library.clear_play_cache()
+            except Exception:  # pragma: no cover - tidying up must never keep the server from stopping
+                log.debug("clearing the playback copies failed", exc_info=True)
         store, self.store = self.store, None
         if store is not None:
             try:
@@ -1105,6 +1413,18 @@ class _Handler(BaseHTTPRequestHandler):
 
     def _send_json(self, status: int, payload: Any, *, headers: Mapping[str, str] | None = None) -> None:
         self._send(status, json_bytes(payload), "application/json; charset=utf-8", headers=headers)
+
+    def _begin_stream(self, content_type: str) -> None:
+        """Start a 200 reply whose length is not known yet; its body ends when the connection is closed."""
+        self.close_connection = True
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", content_type)
+        for name, value in _SECURITY_HEADERS:
+            self.send_header(name, value)
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self._responded = True
 
     def _fail(self, exc: HttpError) -> None:
         if self._responded:  # part of a response is already on the wire: all we can do is hang up
@@ -1308,7 +1628,9 @@ class _Handler(BaseHTTPRequestHandler):
     def _read_json(self) -> Any:
         headers = self.headers
         if (headers.get("Content-Type") or "").split(";")[0].strip().lower() != "application/json":
-            raise HttpError(415, "unsupported_media_type", "Send the question as JSON (Content-Type: application/json).")
+            raise HttpError(
+                415, "unsupported_media_type", "Send the question as JSON (Content-Type: application/json)."
+            )
         length_text = (headers.get("Content-Length") or "").strip()
         if headers.get("Transfer-Encoding") or not _ID_RE.match(length_text):
             raise HttpError(411, "length_required", "The request needs a Content-Length.")
@@ -1333,7 +1655,9 @@ class _Handler(BaseHTTPRequestHandler):
             raise HttpError(400, "bad_question", "Type a question first.")
         question = " ".join(question.split())
         if len(question) > MAX_QUESTION_CHARS:
-            raise HttpError(400, "bad_question", f"That question is too long (at most {MAX_QUESTION_CHARS} characters).")
+            raise HttpError(
+                400, "bad_question", f"That question is too long (at most {MAX_QUESTION_CHARS} characters)."
+            )
         if not self.server.ask_lock.acquire(blocking=False):
             raise HttpError(
                 429,
@@ -1343,24 +1667,30 @@ class _Handler(BaseHTTPRequestHandler):
             )
         started = time.monotonic()
         try:
-            payload = library.ask(question)
-        except BackendUnavailable as exc:
-            log.warning("ask: no usable language model: %s", exc)
-            detail = public_error_text(exc) or "No language model is available."
-            raise HttpError(503, "backend_unavailable", f"{detail} Run `vnote doctor` to see what to set up.") from None
-        except BackendError as exc:
-            log.warning("ask: the language model failed: %s", exc)
-            detail = public_error_text(exc)
-            raise HttpError(
-                502,
-                "backend_error",
-                "The language model ran into a problem" + (f": {detail}" if detail else ".") + " Try again; "
-                "`vnote doctor` shows whether the model is set up and running.",
-            ) from None
-        finally:
+            job = _AskJob(library, question, self.server.ask_lock)
+            job.start()
+        except BaseException:
             self.server.ask_lock.release()
-        log.info("answered a question in %.1f s (%s)", time.monotonic() - started, payload.get("llm_backend") or "?")
-        self._send_json(200, payload)
+            raise
+        # From here on the job owns the lock: it gives it back when the answer (or failure) is there,
+        # also when this connection is long gone.
+        streaming = False
+        while not job.done.wait(ASK_HEARTBEAT_S):
+            # A local model can need minutes, and Safari drops a request whose reply stays silent for 60 s.
+            # So the reply starts now and is kept alive with spaces, which JSON permits in front of a value.
+            if not streaming:
+                self._begin_stream("application/json; charset=utf-8")
+                streaming = True
+            self.wfile.write(b" ")
+            self.wfile.flush()
+        status, payload = job.outcome()
+        if status == 200:
+            seconds = time.monotonic() - started
+            log.info("answered a question in %.1f s (%s)", seconds, payload.get("llm_backend") or "?")
+        if streaming:
+            self.wfile.write(json_bytes(payload))  # a failure travels in the body: the status left long ago
+        else:
+            self._send_json(status, payload)
 
     # -- files --------------------------------------------------------------
 

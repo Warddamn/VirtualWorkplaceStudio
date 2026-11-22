@@ -60,11 +60,13 @@ __all__ = [
     "make_llm",
 ]
 
-#: Text models that fit a 16 GB Mac next to nothing else (about 2-6 GB loaded), best first.
+#: Text models that fit a 16 GB Mac with nothing else loaded (about 2-6 GB), best first.
 #: ``auto`` uses the first one that is already pulled.  Order: the small instruct models the
-#: model research ranked for summaries (Qwen3.5-4B, Qwen3-4B, Gemma, Phi-4-mini, Llama 3.2 3B),
-#: then smaller siblings, then the 9B quality tier (fits alone, slower), and last the small
-#: vision models a user may already have pulled for captions - they summarise text as well.
+#: model research ranked for summaries (Qwen3.5-4B, Qwen3-4B, Gemma 3 4B / Gemma 4 E2B at Q4,
+#: Phi-4-mini, Llama 3.2 3B), then smaller siblings, then the 9B quality tier (fits alone, but
+#: slower), and last the small vision models a user may already have pulled for captions -
+#: they summarise text as well, which beats having no model.  Larger default tags (such as
+#: gemma4:e4b at about 10 GB) are deliberately absent: they do not fit next to an 8k context.
 OLLAMA_MODEL_PREFERENCE: tuple[str, ...] = (
     "qwen3.5:4b",
     "qwen3:4b",
@@ -76,8 +78,6 @@ OLLAMA_MODEL_PREFERENCE: tuple[str, ...] = (
     "qwen3.5:2b",
     "gemma3n:e4b",
     "qwen3.5:9b",
-    "qwen3:8b",
-    "gemma4:e2b",
     "qwen3-vl:4b",
     "qwen2.5vl:3b",
 )
@@ -124,6 +124,14 @@ def _strip_thinking(text: str) -> str:
     return _THINK_OPEN.sub("", _THINK_BLOCK.sub("", text or "")).strip()
 
 
+def _shaped(obj: dict[str, Any], schema: dict[str, Any], name: str) -> dict[str, Any]:
+    """``obj`` forced into the shape of ``schema`` (a model can emit ``NaN`` where an integer belongs)."""
+    try:
+        return coerce_to_schema(obj, schema)
+    except (ValueError, OverflowError, TypeError, RecursionError) as exc:
+        raise BackendError(f"{name} returned JSON that does not fit the requested shape ({exc})") from exc
+
+
 def _firmer(prompt: str, schema: dict[str, Any]) -> str:
     return f"{prompt}\n\n{_RETRY_NOTE}{schema_prompt(schema)}"
 
@@ -166,7 +174,7 @@ class OllamaLLM:
             obj = extract_json(raw)
         if obj is None:
             raise BackendError(f"{self.name} did not return JSON (got: {raw[:120]!r})")
-        return coerce_to_schema(obj, schema)
+        return _shaped(obj, schema, self.name)
 
     def text(self, *, system: str, prompt: str, max_tokens: int = 1024) -> str:
         self._used = True
@@ -183,6 +191,20 @@ class OllamaLLM:
             self.client.unload(self.model)
 
 
+def _pick_ollama_model(pulled: list[str]) -> str | None:
+    """The best already-pulled model of the preference list, or None."""
+    names = set(pulled)
+    for cand in OLLAMA_MODEL_PREFERENCE:
+        if cand in names or (":" not in cand and cand + ":latest" in names):
+            return cand
+    for cand in OLLAMA_MODEL_PREFERENCE:  # a variant tag of a preferred size, e.g. "gemma3:4b-it-qat"
+        if ":" in cand:
+            for name in sorted(names):
+                if name.startswith(cand + "-"):
+                    return name
+    return None
+
+
 def _ollama_probe(settings: Settings) -> tuple[OllamaClient, str | None, str]:
     """``(client, model or None, detail)`` - detail says what to do when model is None."""
     cfg = settings.llm
@@ -195,10 +217,9 @@ def _ollama_probe(settings: Settings) -> tuple[OllamaClient, str | None, str]:
         return client, None, f"Ollama at {client.url} did not list its models ({exc}). Restart Ollama and try again."
     wanted = (cfg.model or "auto").strip()
     if wanted.lower() == "auto":
-        names = set(pulled)
-        for cand in OLLAMA_MODEL_PREFERENCE:
-            if cand in names or (":" not in cand and cand + ":latest" in names):
-                return client, cand, cand
+        best = _pick_ollama_model(pulled)
+        if best is not None:
+            return client, best, best
         have = f" Pulled now: {', '.join(sorted(pulled)[:8])}." if pulled else ""
         return (
             client,
@@ -386,7 +407,7 @@ class MlxLM:
             obj = extract_json(raw)
         if obj is None:
             raise BackendError(f"{self.name} did not return JSON (got: {raw[:120]!r})")
-        return coerce_to_schema(obj, schema)
+        return _shaped(obj, schema, self.name)
 
     def text(self, *, system: str, prompt: str, max_tokens: int = 1024) -> str:
         limit = max(64, min(int(max_tokens), _output_reserve(self.window)))
@@ -422,7 +443,7 @@ class ClaudeLLM:
         obj = extract_json(raw)
         if obj is None:
             raise BackendError(f"{self.name} did not return JSON (got: {raw[:120]!r})")
-        return coerce_to_schema(obj, schema)
+        return _shaped(obj, schema, self.name)
 
     def text(self, *, system: str, prompt: str, max_tokens: int = 1024) -> str:
         return self.client.complete(system=system, prompt=prompt, max_tokens=max(1024, int(max_tokens))).strip()
@@ -497,6 +518,8 @@ def llm_status(settings: Settings) -> list[BackendStatus]:
     claude_installed = module_available("anthropic")
     if claude_installed:
         claude_detail = f'{_claude_model(settings)} (cloud; used only when llm.backend = "anthropic")'
+        if backend == "anthropic" and not os.environ.get("ANTHROPIC_API_KEY"):
+            claude_detail += "; ANTHROPIC_API_KEY is not set (set it, or run `ant auth login`)"
     else:
         claude_detail = "Cloud backend, never picked automatically. To use it:  pip install anthropic  and set llm.backend = \"anthropic\""
 

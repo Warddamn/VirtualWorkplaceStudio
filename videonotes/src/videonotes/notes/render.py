@@ -35,6 +35,7 @@ from __future__ import annotations
 import bisect
 import contextlib
 import dataclasses
+import errno
 import hashlib
 import json
 import logging
@@ -49,7 +50,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from ..config import NotesSettings, Settings
+from ..config import NotesSettings, Settings, is_macos
 from ..models import ActionItem, Keyframe, Moment, Session, SessionNote, Utterance
 from ..store import Store
 from ..timeutil import day_bounds, fmt_duration, local_dt, slugify
@@ -71,6 +72,7 @@ _TEMP_NAME = re.compile(r"\.vnote-[0-9a-f]+\.tmp")
 
 # Bounds that keep a note readable (and its size sane) whatever the recording contained.
 _MAX_TITLE_CHARS = 160
+_MAX_SLUG_BYTES = 180  # title part of a file name; with date, time and " (2).md" it stays below the 255-byte limit
 _MAX_TAGS = 24
 _MAX_TAG_CHARS = 48
 _MAX_ALT_CHARS = 200
@@ -82,6 +84,7 @@ _MAX_UTTERANCE_CHARS = 2000
 _TRANSCRIPT_JOIN_GAP_S = 1.5  # utterances closer together than this share one transcript line …
 _TRANSCRIPT_LINE_CHARS = 320  # … up to about this many characters
 
+_TASKS_HEADING = "## Action items"  # also how _ticked_tasks finds the list again when a note is rendered anew
 _FOOTER = (
     "<!-- Written by videonotes. This file is regenerated from the library whenever the {what} is processed "
     "again: edits made here are overwritten (ticked action items are kept). -->"
@@ -125,7 +128,7 @@ def render_session_note(settings: Settings, store: Store, session_id: str) -> Pa
         moments = segment_moments(session, utterances, keyframes, cfg)
     note = session.note
 
-    vault = settings.vault_dir
+    vault = _vault(settings)
     notes_dir = vault / "sessions"
     assets_dir = vault / "assets" / _safe_component(session_id)
     title = _session_title(session)
@@ -136,7 +139,8 @@ def render_session_note(settings: Settings, store: Store, session_id: str) -> Pa
     previous = settings.abs(session.note_path) if session.note_path else None
     try:
         notes_dir.mkdir(parents=True, exist_ok=True)
-        target = _free_path(notes_dir, f"{started:%Y-%m-%d %H%M} {slugify(title)}", session_id, previous)
+        stem = f"{started:%Y-%m-%d %H%M} {_fit_bytes(slugify(title), _MAX_SLUG_BYTES)}"
+        target = _free_path(notes_dir, stem, session_id, previous)
         ticked = {**(_ticked_tasks(previous) if previous is not None else {}), **_ticked_tasks(target)}
 
         embedder = _Embedder(settings, assets_dir, enabled=bool(cfg.embed_images))
@@ -222,11 +226,17 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
     iso = day.isoformat()
     cfg = settings.notes
     clock = _clock_formatter(cfg.time_format)
-    lo, hi = day_bounds(day)
+    try:
+        lo, hi = day_bounds(day)
+    except (ValueError, OverflowError, OSError):
+        raise NoteRenderError(
+            f"{iso} is outside the range of dates this computer can work with. Write the day as YYYY-MM-DD, "
+            "for example 2026-11-22."
+        ) from None
     sessions = sorted(store.list_sessions(since_ts=lo, until_ts=hi), key=lambda s: (s.started_ts, s.id))
     stored = store.get_day(iso)
 
-    vault = settings.vault_dir
+    vault = _vault(settings)
     days_dir = vault / "days"
     target = days_dir / f"{iso}.md"
     ticked = _ticked_tasks(target)
@@ -247,21 +257,23 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
     # weekday and month names follow the process locale, so they are escaped like any other text
     blocks: list[str] = [_front_matter(front), "# " + _md(f"{day:%A} {day.day} {day:%B %Y}")]
     if digest is not None:
-        if digest.headline.strip():
-            blocks.append(f"**{_md(digest.headline)}**")
+        headline = _md(digest.headline)
+        if headline:  # judged after cleaning: a headline of control characters only must not leave "****" behind
+            blocks.append(f"**{headline}**")
         if gone:
             blocks.append(
                 f"*This digest was written when the day still had {gone} more session{'s' if gone != 1 else ''}, "
                 f"deleted since. Run `vnote day {iso}` to write it again.*"
             )
-        if digest.summary.strip():
-            blocks += ["## Summary", _prose(digest.summary)]
+        summary = _prose(digest.summary)
+        if summary:
+            blocks += ["## Summary", summary]
         highlights = _bullets(digest.highlights)
         if highlights:
             blocks += ["## Highlights", highlights]
         tasks = _task_lines(digest.action_items, ticked, lo, hi, clock)
         if tasks:
-            blocks += ["## Action items", tasks]
+            blocks += [_TASKS_HEADING, tasks]
     blocks.append("## Sessions")
     if sessions:
         recorded = sum(_recorded_seconds(store, x) for x in sessions)
@@ -325,22 +337,31 @@ _MD_ALWAYS = re.compile(r"([\\`\[\]|$#^~])")
 _MD_EMPHASIS = re.compile(r"([*_])")
 _MD_RUNS = re.compile(r"={2,}|%{2,}")  # Obsidian ==highlight== and %%comment%%
 _MD_LEADING_NUMBER = re.compile(r"^(\d{1,9})([.)])(?=\s|$)")
-_MD_LEADING_MARK = re.compile(r"^([-+=:])")
+_MD_LEADING_MARK = re.compile(r"^([-+=:>])")
+# "&" only needs attention where it would be read as a character reference: &name; &#123; &#x1F;
+_MD_REFERENCE = re.compile(r"&(?=#?[0-9A-Za-z]{1,32};)")
 _MD_LEADING_RUN = re.compile(r"^([*_]+)(?=\s|$)")
 
 
 def _md(text: object, *, emphasis: bool = False) -> str:
     """One line of untrusted text, inert wherever it is placed in Markdown.
 
-    HTML is entity-escaped; characters that form links, code, tables, tags,
-    maths, comments or block ids (Markdown and Obsidian) are backslash-escaped;
-    and whatever would start a block at the beginning of a line (heading, list,
-    quote, rule, table, code) is defused.  With ``emphasis=True`` the inline
-    emphasis characters ``*`` and ``_`` are left alone (used for prose written by
-    the summariser, where ``**bold**`` is welcome and cannot break structure).
+    Every ``<`` becomes ``&lt;``, so no HTML tag, comment or autolink can form;
+    characters that form links, code, tables, tags, maths, comments or block ids
+    (Markdown and Obsidian) are backslash-escaped; and whatever would start a
+    block at the beginning of a line (heading, list, quote, rule, table, code)
+    is defused.  With ``emphasis=True`` the inline emphasis characters ``*`` and
+    ``_`` are left alone (used for prose written by the summariser, where
+    ``**bold**`` is welcome and cannot break structure).
+
+    No more is escaped than that: ``R&D`` and ``a -> b`` stay as they are (an
+    ``&`` is touched only where it would be read as a character reference, a
+    ``>`` only at the very start).  The notes are also read as plain text,
+    searched by what was literally said, and shown by editors that do not decode
+    entities while editing.
     """
     s = _one_line(text)
-    s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    s = _MD_REFERENCE.sub("&amp;", s).replace("<", "&lt;")
     s = _MD_ALWAYS.sub(r"\\\1", s)
     s = _MD_RUNS.sub(lambda m: "".join("\\" + ch for ch in m.group(0)), s)
     if emphasis:
@@ -503,14 +524,15 @@ def _note_sections(
     note: SessionNote, ticked: dict[str, str], start: float, end: float, clock: Callable[[float], str]
 ) -> list[str]:
     blocks: list[str] = []
-    if note.summary.strip():
-        blocks += ["## Summary", _prose(note.summary)]
+    summary = _prose(note.summary)
+    if summary:
+        blocks += ["## Summary", summary]
     points = _bullets(note.key_points)
     if points:
         blocks += ["## Key points", points]
     tasks = _task_lines(note.action_items, ticked, start - 60.0, end + 60.0, clock)
     if tasks:
-        blocks += ["## Action items", tasks]
+        blocks += [_TASKS_HEADING, tasks]
     for heading, items in (("Decisions", note.decisions), ("Open questions", note.open_questions)):
         listing = _bullets(items)
         if listing:
@@ -596,18 +618,44 @@ def _task_lines(
 
 
 _TICKED = re.compile(r"^- \[([^\s\[\]\\])\] (.*\S)\s*$")
+_FENCE_OPEN = re.compile(r"`{3,}")  # how _fenced opens a code block: at the start of a line, never indented
 
 
 def _ticked_tasks(path: Path) -> dict[str, str]:
     """Task lines marked in an existing note, as ``{text: mark}``, so that re-rendering keeps them marked.
 
     The mark is usually ``x``; Obsidian treats any character in the box as done, and some people use ``-`` or ``/``.
+
+    Only the note's own action-item list is read: the ``## Action items`` section, up to the next heading.
+    Code blocks are skipped, because they hold text quoted from the recording: a to-do list that was on screen
+    is shown verbatim, and a ticked box seen there (or a line that reads like our heading) must never tick the
+    user's own item.
     """
+    ticked: dict[str, str] = {}
     try:
         with path.open(encoding="utf-8", errors="replace") as fh:
-            return {m.group(2): m.group(1) for m in map(_TICKED.match, fh) if m}
+            fence = ""  # the backticks that opened the code block we are in
+            inside = False
+            for line in fh:
+                line = line.rstrip()
+                if fence:
+                    if line.startswith(fence) and not line.strip("`"):
+                        fence = ""
+                    continue
+                opening = _FENCE_OPEN.match(line)
+                if opening:
+                    fence = opening.group(0)
+                elif not inside:
+                    inside = line == _TASKS_HEADING
+                elif line.startswith("#"):
+                    break
+                else:
+                    match = _TICKED.match(line)
+                    if match:
+                        ticked[match.group(2)] = match.group(1)
     except (OSError, ValueError):
         return {}
+    return ticked
 
 
 def _text_key(line: str) -> str:
@@ -711,15 +759,17 @@ def _moment_blocks(
     salience = getattr(moment, "salience", "normal")
     kind = str(getattr(moment, "kind", "") or "").replace("_", " ")
     labels = ["\u2605 highlight"] if salience == "highlight" else []
-    labels += [_md(kind)] if kind and kind != "other" else []
+    labels += [_md(kind)] if kind != "other" else []
     labels += [_md(tag) for tag in _tags(moment.tags or [])]
+    labels = [label for label in labels if label]
     if labels:
         blocks.append("*" + " · ".join(labels) + "*")
     background = salience == "background"
-    summary = str(moment.summary or "").strip()
+    # background moments (idle stretches, transit …) are kept to one line
+    summary = str(moment.summary or "")
+    summary = _md(_first_sentence(summary), emphasis=True) if background else _prose(summary)
     if summary:
-        # background moments (idle stretches, transit …) are kept to one line
-        blocks.append(f"*{_md(_first_sentence(summary), emphasis=True)}*" if background else _prose(summary))
+        blocks.append(f"*{summary}*" if background else summary)
 
     if not background:
         limit = max(0, int(cfg.max_images_per_moment))
@@ -897,11 +947,36 @@ def _session_line(
 # =============================================================================
 
 
+def _vault(settings: Settings) -> Path:
+    """The vault folder as an absolute path.
+
+    ``notes.vault`` may have been written as a relative path; it then means "relative to where vnote was
+    started".  Pinning it down here keeps ``note_path`` in the library pointing at the real file.
+    """
+    return Path(os.path.abspath(settings.vault_dir))
+
+
+def _fit_bytes(text: str, limit: int) -> str:
+    """``text`` cut to at most ``limit`` UTF-8 bytes without splitting a character (file names are limited in
+    bytes, and one character of some scripts takes four)."""
+    data = text.encode("utf-8", errors="replace")
+    if len(data) <= limit:
+        return text
+    return data[:limit].decode("utf-8", errors="ignore").rstrip() or "Untitled"
+
+
 def _cannot_write(settings: Settings, vault: Path, exc: OSError) -> NoteRenderError:
-    return NoteRenderError(
+    message = (
         f"Could not write notes into {vault}: {exc.strerror or exc}. Check that the folder exists, is writable and "
         f"the disk is not full — or point `vault` in the [notes] section of {settings.config_path} at another folder."
     )
+    if exc.errno in (errno.EPERM, errno.EACCES) and is_macos():
+        # macOS answers "Operation not permitted" for Documents, Desktop, iCloud Drive … until the terminal is allowed
+        message += (
+            " On a Mac this is usually a privacy setting: allow the app you run vnote from (Terminal, iTerm …) under "
+            "System Settings › Privacy & Security › Files and Folders, then run the command again."
+        )
+    return NoteRenderError(message)
 
 
 def _safe_component(name: str) -> str:
@@ -936,7 +1011,7 @@ def _note_owner(path: Path) -> str | None:
     """The session id recorded in a note's front matter, or None if the file is not one of our notes."""
     try:
         with path.open(encoding="utf-8", errors="replace") as fh:
-            head = fh.read(65536)
+            head = fh.read(65536).lstrip("\ufeff")  # some editors and sync tools put a byte-order mark in front
     except (OSError, ValueError):
         return None
     if not head.startswith("---"):
@@ -1034,26 +1109,40 @@ class _Embedder:
     def _source(self, frame: Keyframe) -> Path:
         return self._settings.abs(frame.path)
 
+    def _name(self, frame: Keyframe) -> str:
+        """File name of a frame's copy in the vault."""
+        suffix = Path(frame.path).suffix.lower()
+        if frame.id is not None:
+            return f"kf_{frame.id:06d}{suffix}"
+        return f"kf_{hashlib.sha1(frame.path.encode('utf-8', 'replace')).hexdigest()[:12]}{suffix}"
+
     def available(self, frame: Keyframe) -> bool:
-        """Can this frame be embedded (embedding on, an image file, and it exists)?"""
+        """Can this frame be embedded (embedding on, an image, and the file — or an earlier copy of it — exists)?"""
         if not self._enabled:
             return False
-        ok = Path(frame.path).suffix.lower() in _IMAGE_SUFFIXES and self._source(frame).is_file()
+        ok = Path(frame.path).suffix.lower() in _IMAGE_SUFFIXES and (
+            self._source(frame).is_file() or (self._dir / self._name(frame)).is_file()
+        )
         if not ok:
             self.missing += 1
             log.debug("keyframe %s not embedded: %s is not an existing image file", frame.id, frame.path)
         return ok
 
     def embed(self, frame: Keyframe) -> str | None:
-        """Copy the frame next to the notes; return the link to use from ``<vault>/sessions/``."""
-        suffix = Path(frame.path).suffix.lower()
-        if frame.id is not None:
-            name = f"kf_{frame.id:06d}{suffix}"
-        else:
-            name = f"kf_{hashlib.sha1(frame.path.encode('utf-8', 'replace')).hexdigest()[:12]}{suffix}"
+        """Copy the frame next to the notes; return the link to use from ``<vault>/sessions/``.
+
+        When the library's own image has gone (the frames folder was deleted to save space, or lives on a disk
+        that is not attached) but an earlier render left its copy in the vault, that copy stays in the note:
+        it is the only one left, and dropping the link would have it pruned.
+        """
+        name = self._name(frame)
+        source, copy = self._source(frame), self._dir / name
         try:
-            self._dir.mkdir(parents=True, exist_ok=True)
-            _copy_if_changed(self._source(frame), self._dir / name)
+            if source.is_file() or not copy.is_file():
+                self._dir.mkdir(parents=True, exist_ok=True)
+                _copy_if_changed(source, copy)
+            else:
+                log.debug("keyframe %s: %s is gone; keeping the copy already in the vault", frame.id, frame.path)
         except OSError as exc:
             self.missing += 1
             log.warning("keyframe %s not embedded: copying %s failed (%s)", frame.id, frame.path, exc)

@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import re
+import shutil
 import sqlite3
 import time
 from pathlib import Path
@@ -488,6 +489,35 @@ def test_missing_source_image_is_skipped_and_logged(cfg: Settings, store: Store,
     assert not [r for r in caplog.records if r.levelno >= logging.WARNING]
 
 
+def test_vault_copies_survive_when_the_library_frames_are_gone(
+    cfg: Settings, store: Store, caplog: pytest.LogCaptureFixture
+):
+    # The frames folder was deleted to save space (or sits on a disk that is not attached). The copies made by an
+    # earlier render are then the only ones left: re-rendering must keep them, not prune them as "unreferenced".
+    lib = demo_lib(cfg, store).summarise(NOTE)
+    path = lib.render()
+    text = path.read_text(encoding="utf-8")
+    assets = cfg.vault_dir / "assets" / SID
+    before = {p.name: p.read_bytes() for p in assets.iterdir()}
+    assert len(before) == 3 and text.count("![") == 3
+    shutil.rmtree(cfg.frames_dir / SID)
+
+    assert lib.render().read_text(encoding="utf-8") == text
+    assert {p.name: p.read_bytes() for p in assets.iterdir()} == before
+    assert all(resolve(path, dest).is_file() for is_image, _, dest in links(text) if is_image)
+
+    # a frame that never had a copy cannot be conjured up: it is left out and counted in the log, as before
+    cfg.notes.max_images_per_moment = 5
+    with caplog.at_level(logging.INFO, logger="videonotes.render"):
+        again = lib.render().read_text(encoding="utf-8")
+    assert again.count("![") == 3 and {p.name for p in assets.iterdir()} == set(before)
+    assert any("1 keyframe image(s) are missing" in r.getMessage() for r in caplog.records)
+
+    # switching embedding off is still honoured: that is the user's decision, not a missing file
+    cfg.notes.embed_images = False
+    assert "![" not in lib.render().read_text(encoding="utf-8") and not assets.exists()
+
+
 def test_copy_failure_drops_the_image_but_not_the_note(cfg: Settings, store: Store, monkeypatch: pytest.MonkeyPatch,
                                                        caplog: pytest.LogCaptureFixture):  # fmt: skip
     lib = demo_lib(cfg, store)
@@ -523,6 +553,37 @@ def test_retitled_session_replaces_its_previous_file(cfg: Settings, store: Store
     assert third.name.endswith(" Budget Q3 launch.md") and not second.exists()
     assert [p.name for p in (cfg.vault_dir / "sessions").iterdir()] == [third.name]
     assert front_matter(third.read_text(encoding="utf-8"))["title"] == "Budget: Q3 / launch?"
+
+
+def test_relative_vault_setting_is_pinned_down_so_the_library_finds_the_note_again(
+    cfg: Settings, store: Store, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.chdir(tmp_path)
+    cfg.notes.vault = "my vault"  # relative: means "relative to where vnote was started"
+    lib = demo_lib(cfg, store)
+    first = lib.render()
+    assert first.is_absolute() and first.parent == Path.cwd() / "my vault" / "sessions" and first.is_file()
+    stored = store.get_session(SID).note_path
+    assert cfg.abs(stored) == first  # not "<home>/my vault/…", which does not exist
+    lib.summarise(NOTE)
+    second = lib.render()
+    assert second != first and not first.exists()  # the retitled note replaced the old file
+    assert [p.name for p in second.parent.iterdir()] == [second.name]
+    day = render_day_note(cfg, store, DAY)
+    assert day == Path.cwd() / "my vault" / "days" / f"{DAY}.md"
+    (dest,) = [dest for is_image, _, dest in links(day.read_text(encoding="utf-8")) if not is_image]
+    assert resolve(day, dest) == second.resolve()
+
+
+def test_file_name_stays_within_the_byte_limit_of_the_file_system(cfg: Settings, store: Store):
+    letter = "\U0001d400"  # MATHEMATICAL BOLD CAPITAL A: a letter that takes four bytes in UTF-8
+    lib = demo_lib(cfg, store).summarise(SessionNote(title=letter * 100, llm_backend="extractive"))
+    path = lib.render()
+    assert path.is_file() and path.name.startswith(f"{DAY} {clock(T0, '%H%M')} {letter}")
+    assert len(path.name.encode("utf-8")) <= 245  # leaves room for " (2).md" … " (9999).md" below 255 bytes
+    assert front_matter(path.read_text(encoding="utf-8"))["title"] == letter * 100  # only the file name is cut
+    assert R._fit_bytes("abc", 10) == "abc" and R._fit_bytes("h\u00e9llo", 2) == "h"
+    assert R._fit_bytes("\u65e5\u672c\u8a9e", 7) == "\u65e5\u672c" and R._fit_bytes("\u65e5\u672c", 2) == "Untitled"
 
 
 def test_previous_file_outside_the_vault_or_edited_beyond_recognition_is_left_alone(
@@ -640,6 +701,7 @@ def test_note_owner_reads_front_matter_however_it_is_quoted(tmp_path: Path):
         ('---\ntitle: "x"\nsession_id: "20261122-143200-ab12"\n---\n', SID),
         ("---\nsession_id: 20261122-143200-ab12\n---\n", SID),  # rewritten by an editor without quotes
         ("---\nsession_id: '20261122-143200-ab12'  \n---\n", SID),
+        ('\ufeff---\r\ntitle: "x"\r\nsession_id: 20261122-143200-ab12\r\n---\r\n', SID),  # BOM, Windows line ends
         ('---\nsession_id: "a\\"b"\n---\n', 'a"b'),
         ('---\ntitle: x\n---\nsession_id: "body, not front matter"\n', None),
         ('# no front matter\nsession_id: "nope"\n', None),
@@ -690,6 +752,55 @@ def test_ticked_action_items_stay_ticked(cfg: Settings, store: Store):
     assert "- [ ] Call the vendor\n- [ ] Other\n" in final and "- [x]" not in final and "- [-]" not in final
 
 
+def test_a_ticked_list_seen_on_screen_never_ticks_the_users_action_items(cfg: Settings, store: Store):
+    # The wearer looked at a to-do list in an editor. It is shown verbatim in code blocks, including "- [x]" lines
+    # and even a line that reads like our own heading. None of that is the user ticking anything.
+    on_screen = "My list\n- [x] Call the vendor about sensors\n## Action items\n- [x] Email Sarah"
+    quoted = "```text\nMy list\n- [x] Call the vendor about sensors\n## Action items\n- [x] Email Sarah\n```"
+    lib = Lib(cfg, store)
+    lib.frame(1, ocr=on_screen, caption="An editor showing a list.")
+    lib.say(2, 8, "I still need to call the vendor about sensors.").commit()
+
+    def tasks(text: str) -> list[str]:
+        return [line for line in markdown_lines(text) if line.startswith("- [")]
+
+    # rendered before it was summarised: the quoted list is the only "## Action items" in the file
+    unsummarised = lib.render().read_text(encoding="utf-8")
+    assert unsummarised.count(quoted) == 2 and tasks(unsummarised) == []  # captured text + on screen
+
+    note = SessionNote(
+        title="Errands",
+        action_items=[ActionItem("Call the vendor about sensors"), ActionItem("Email Sarah")],
+        captured_text=[on_screen],
+        llm_backend="extractive",
+    )
+    lib.summarise(note)
+    path = lib.render()
+    first = path.read_text(encoding="utf-8")
+    assert first.count(quoted) == 2
+    assert tasks(first) == ["- [ ] Call the vendor about sensors", "- [ ] Email Sarah"]
+    assert lib.render().read_text(encoding="utf-8") == first  # rendering again changes nothing
+    # the user's own tick, in the note's action-item list, is still kept
+    path.write_text(first.replace("- [ ] Email Sarah", "- [x] Email Sarah", 1), encoding="utf-8")
+    assert tasks(lib.render().read_text(encoding="utf-8")) == [
+        "- [ ] Call the vendor about sensors",
+        "- [x] Email Sarah",
+    ]
+
+    # the reader itself: only the note's own list counts, wherever quoted look-alikes stand
+    f = cfg.vault_dir / "probe.md"
+    f.write_text(
+        "# x\n\n````text\n## Action items\n- [x] quoted\n```\n- [x] still quoted\n````\n\n"
+        "## Action items\n\n- [x] mine\n- [ ] open\n- [/] half\n\n"
+        "## Sessions\n\n- [x] later\n\n```text\n## Action items\n- [x] quoted\n```\n",
+        encoding="utf-8",
+    )
+    assert R._ticked_tasks(f) == {"mine": "x", "half": "/"}
+    f.write_text("```text\n## Action items\n- [x] quoted\n```\n\n## Timeline\n", encoding="utf-8")
+    assert R._ticked_tasks(f) == {}
+    assert R._ticked_tasks(cfg.vault_dir / "missing.md") == {} and R._ticked_tasks(cfg.vault_dir) == {}
+
+
 def test_failed_write_leaves_the_old_note_and_no_debris(cfg: Settings, store: Store, monkeypatch: pytest.MonkeyPatch):
     lib = demo_lib(cfg, store)
     path = lib.render()
@@ -722,6 +833,38 @@ def test_unwritable_vault_gives_an_actionable_error(cfg: Settings, store: Store,
         lib.render()
     with pytest.raises(NoteRenderError, match="point `vault`"):
         render_day_note(cfg, store, DAY)
+
+
+def test_permission_error_on_a_mac_points_at_the_privacy_setting(
+    cfg: Settings, store: Store, monkeypatch: pytest.MonkeyPatch
+):
+    # An Obsidian vault usually lives in Documents or iCloud Drive, which macOS keeps from the terminal until the
+    # user allows it; the refusal arrives as a plain "Operation not permitted".
+    lib = demo_lib(cfg, store)
+
+    def refuse(src: object, dst: object) -> None:
+        raise PermissionError(1, "Operation not permitted")
+
+    monkeypatch.setattr(R.os, "replace", refuse)
+    monkeypatch.setattr(R, "is_macos", lambda: True)
+    for render in (lib.render, lambda: render_day_note(cfg, store, DAY)):
+        with pytest.raises(NoteRenderError) as err:
+            render()
+        assert "Operation not permitted" in str(err.value) and "Privacy & Security" in str(err.value)
+    monkeypatch.setattr(R, "is_macos", lambda: False)
+    with pytest.raises(NoteRenderError) as err:
+        lib.render()
+    assert "Privacy & Security" not in str(err.value) and "config.toml" in str(err.value)
+    # a full disk is not a privacy matter, on any system
+    monkeypatch.setattr(R, "is_macos", lambda: True)
+
+    def full(src: object, dst: object) -> None:
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr(R.os, "replace", full)
+    with pytest.raises(NoteRenderError) as err:
+        lib.render()
+    assert "No space left on device" in str(err.value) and "Privacy & Security" not in str(err.value)
 
 
 def test_unknown_session_and_bad_start_time(cfg: Settings, store: Store):
@@ -918,7 +1061,7 @@ def test_hostile_summaries_titles_and_tags_cannot_break_a_note(cfg: Settings, st
     assert all(re.fullmatch(r"[\w/-]+", tag) for tag in fm["tags"])  # type: ignore[union-attr]
     # exactly the headings we wrote, in order
     hs = headings(text)
-    assert hs[0].startswith("# \\# Plan &lt;/details&gt;")
+    assert hs[0].startswith("# \\# Plan &lt;/details> &lt;script>x&lt;/script> ")
     assert [h for h in hs if h.startswith("## ")] == [
         "## Summary", "## Key points", "## Action items", "## Decisions", "## Open questions",
         "## People and places", "## Captured text", "## Timeline",
@@ -937,6 +1080,25 @@ def test_hostile_summaries_titles_and_tags_cannot_break_a_note(cfg: Settings, st
     assert headings(day_text)[1:] == ["## Summary", "## Highlights", "## Action items", "## Sessions"]
     (link,) = [dest for is_image, _, dest in links(day_text) if not is_image]
     assert resolve(day, link) == path.resolve()
+
+
+def test_text_of_control_characters_only_leaves_no_empty_markup(cfg: Settings, store: Store):
+    blank = "\x00\u202e \u2028"  # not empty, but nothing is left of it once control characters are removed
+    lib = demo_lib(cfg, store).summarise(SessionNote(title=blank, summary=blank, key_points=[blank], llm_backend="x"))
+    first, second = lib.moments
+    store.update_moment(first.id, title=blank, summary=blank, tags=[blank], kind=blank, salience="background")
+    store.update_moment(second.id, title=blank, summary=blank, tags=[blank], kind=blank, salience="highlight")
+    text = lib.render().read_text(encoding="utf-8")
+    assert_inert(text)
+    assert headings(text)[:2] == ["# Untitled session", "## Timeline"]  # no empty "## Summary" / "## Key points"
+    assert not [line for line in markdown_lines(text) if line.strip() and not line.strip("*_ ·")]  # no "**", "* · *"
+    assert "\n*\u2605 highlight*\n" in text
+
+    store.save_day(DayDigest(date=DAY, headline=blank, summary=blank, highlights=[blank], session_ids=[SID]))
+    day = render_day_note(cfg, store, DAY).read_text(encoding="utf-8")
+    assert_inert(day)  # "****" would be a horizontal rule
+    assert headings(day)[1:] == ["## Sessions"]
+    assert not [line for line in markdown_lines(day) if line.strip() and not line.strip("*_ ·")]
 
 
 def test_front_matter_is_valid_yaml_even_for_hostile_values(cfg: Settings, store: Store):
@@ -1017,7 +1179,15 @@ def test_escaping_helpers():
     assert md("- item") == "\\- item" and md("+ item") == "\\+ item" and md("12. item") == "12\\. item"
     assert md("3) item") == "3\\) item" and md("2026 was a year") == "2026 was a year"
     assert md("a | b") == "a \\| b" and md("`code`") == "\\`code\\`"
-    assert md("<b>x</b> & y > z") == "&lt;b&gt;x&lt;/b&gt; &amp; y &gt; z"
+    # "<" can never open a tag; "&" and ">" are only touched where they would mean something, so ordinary
+    # text stays readable (and findable) in the Markdown source
+    assert md("<b>x</b> & y > z") == "&lt;b>x&lt;/b> & y > z"
+    assert md("R&D and Q&A: a -> b, 5 > 3; AT&T") == "R&D and Q&A: a -> b, 5 > 3; AT&T"
+    assert md("&lt;already&gt; &amp; &#35; &#x41; &copy; &T;") == (
+        "&amp;lt;already&amp;gt; &amp;amp; &amp;\\#35; &amp;\\#x41; &amp;copy; &amp;T;"
+    )
+    assert md("> quote") == "\\> quote" and md(">> nested", emphasis=True) == "\\>> nested"
+    assert md("<!-- c --> <http://a.b>") == "&lt;!-- c --> &lt;http://a.b>"
     assert md("[text](url) ![[embed]]") == "\\[text\\](url) !\\[\\[embed\\]\\]"
     assert md("snake_case *star*") == "snake\\_case \\*star\\*"
     assert md("line one\nline two\r\n\r\nthree") == "line one line two three"
@@ -1199,7 +1369,8 @@ def test_day_note_keeps_ticks_and_rejects_bad_dates(cfg: Settings, store: Store)
     path.write_text(path.read_text(encoding="utf-8").replace("- [ ] Call mum", "- [X] Call mum"), encoding="utf-8")
     text = render_day_note(cfg, store, DAY).read_text(encoding="utf-8")
     assert "- [X] Call mum" in text and "- [ ] Water the plants" in text  # the mark is kept as it was written
-    for bad in ("yesterday", "2026-13-40", "", "22/11/2026"):
+    # "9999-12-31" is a valid date whose following midnight does not exist: still a plain message, not a traceback
+    for bad in ("yesterday", "2026-13-40", "", "22/11/2026", "9999-12-31"):
         with pytest.raises(NoteRenderError, match="YYYY-MM-DD"):
             render_day_note(cfg, store, bad)
 

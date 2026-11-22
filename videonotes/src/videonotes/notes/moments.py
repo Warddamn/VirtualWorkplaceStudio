@@ -52,6 +52,7 @@ from __future__ import annotations
 import logging
 import math
 from dataclasses import dataclass, field
+from itertools import pairwise
 
 from ..config import NotesSettings
 from ..models import Keyframe, Moment, Session, Utterance
@@ -131,12 +132,16 @@ def coverage_hole_seconds(cfg: NotesSettings, keyframes: list[Keyframe]) -> floa
     """
     gap_s, _, _ = _limits(cfg)
     base = max(gap_s, MIN_HOLE_SECONDS)
+    # Spacings are measured inside each clip on its own, so the answer does not depend on the order the
+    # keyframes were passed in, nor on how clips that overlap in time happen to interleave.
+    by_clip: dict[object, list[float]] = {}
+    for kf in keyframes:
+        if _finite(kf.ts):
+            by_clip.setdefault(kf.clip_id, []).append(float(kf.ts))
     wide: list[float] = []
-    previous: Keyframe | None = None
-    for kf in sorted((k for k in keyframes if _finite(k.ts)), key=lambda k: k.ts):
-        if previous is not None and kf.clip_id == previous.clip_id and 1.5 * (kf.ts - previous.ts) >= base:
-            wide.append(kf.ts - previous.ts)
-        previous = kf
+    for times in by_clip.values():
+        times.sort()
+        wide += [later - earlier for earlier, later in pairwise(times) if 1.5 * (later - earlier) >= base]
     if len(wide) >= SPARSE_EVIDENCE:
         wide.sort()
         base = max(base, 1.5 * wide[len(wide) // 2])

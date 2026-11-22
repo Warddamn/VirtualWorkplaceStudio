@@ -67,7 +67,7 @@ class FrameSettings:
 
     analysis_fps: float = 2.0  # frames per second looked at (tiny grayscale)
     analysis_width: int = 320
-    novelty_threshold: float = 0.20  # 0..1, higher = fewer keyframes
+    novelty_threshold: float = 0.25  # 0..1, higher = fewer keyframes (0.25 ~ 4 % of the picture changed)
     sharpness_window_s: float = 1.5  # pick the sharpest frame within this window
     min_gap_s: float = 2.0  # never two keyframes closer than this
     max_gap_s: float = 60.0  # always at least one keyframe this often

@@ -627,14 +627,10 @@ def _plan_ollama(settings: Settings) -> _Plan:
             return _Plan(model=wanted)
     except (BackendUnavailable, BackendError) as exc:
         return _Plan(problem=str(exc))
-    if "/" in wanted and ":" not in wanted:
-        return _Plan(
-            problem=(
-                f'vision.model = "{wanted}" is not an Ollama model. Set vision.model = "auto", '
-                f"or pull a vision model and name it, e.g.:  ollama pull {recommended}"
-            )
-        )
-    return _Plan(problem=f'Ollama does not have the vision model "{wanted}" yet. Pull it with:  ollama pull {wanted}')
+    problem = f'Ollama does not have the vision model "{wanted}" yet. Pull it with:  ollama pull {wanted}'
+    if "/" in wanted and ":" not in wanted:  # looks like a Hugging Face repo id left over from mlx-vlm
+        problem += f'  (if "{wanted}" is a Hugging Face repo, it belongs to vision.backend = "mlx-vlm")'
+    return _Plan(problem=problem)
 
 
 def _plan_mlx_vlm(settings: Settings) -> _Plan:
@@ -705,7 +701,12 @@ def make_captioner(settings: Settings) -> Captioner | None:
     backend = _backend_name(settings)
     if backend == "none":
         return None
-    if not ff.have_ffmpeg():
+    if backend != "auto" and backend not in _PLANNERS:
+        raise BackendUnavailable(
+            f'Unknown vision backend "{settings.vision.backend}" in config.toml. '
+            f"Set vision.backend to one of: {', '.join(VISION_BACKENDS)}."
+        )
+    if not ff.have_ffmpeg():  # every backend gets its frames through ffmpeg
         if backend == "auto":
             log.warning("captioning needs ffmpeg to prepare frames, and ffmpeg was not found")
             return None
@@ -721,11 +722,6 @@ def make_captioner(settings: Settings) -> Captioner | None:
             except BackendUnavailable as exc:
                 log.warning("vision auto: %s could not start, trying the next option: %s", name, exc)
         return None
-    if backend not in _PLANNERS:
-        raise BackendUnavailable(
-            f'Unknown vision backend "{settings.vision.backend}" in config.toml. '
-            f"Set vision.backend to one of: {', '.join(VISION_BACKENDS)}."
-        )
     plan = _plan(backend, settings)
     if plan.problem:
         raise BackendUnavailable(plan.problem)
@@ -752,7 +748,10 @@ def vision_status(settings: Settings) -> list[BackendStatus]:
             note = "already downloaded" if local else "a few GB are downloaded from Hugging Face on first use"
             return f"{plan.model} (in-process with MLX; {note})"
         if backend == "anthropic":
-            return f"{plan.model} (cloud: the frames that get captioned are sent to the Claude API)"
+            note = ""
+            if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
+                note = "; ANTHROPIC_API_KEY is not set, which is fine only if you logged in with `ant auth login`"
+            return f"{plan.model} (cloud: the frames that get captioned are sent to the Claude API{note})"
         return f'{plan.model} (cloud: only used if you set vision.backend = "anthropic")'
 
     return [

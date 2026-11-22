@@ -112,7 +112,7 @@ class ArchiveServer:
         self._server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
         self._server.daemon_threads = True
         self.url = f"http://127.0.0.1:{self._server.server_address[1]}"
-        self._thread = threading.Thread(target=self._server.serve_forever, daemon=True)
+        self._thread = threading.Thread(target=self._server.serve_forever, kwargs={"poll_interval": 0.01}, daemon=True)
         self._thread.start()
 
     def add(self, name: str, data: bytes) -> str:
@@ -548,7 +548,9 @@ def test_hard_link_to_outside_is_refused(server, tmp_path):
     secret = tmp_path / "secret.txt"
     secret.write_text("private")
     extra = [link_info(f"{MODEL}/copy", "../../secret.txt", tarfile.LNKTYPE)]
-    fetch_expecting_refusal(server, tmp_path, "hard.tar.bz2", make_tar(MODEL_FILES, extra=extra), "leave the destination")
+    fetch_expecting_refusal(
+        server, tmp_path, "hard.tar.bz2", make_tar(MODEL_FILES, extra=extra), "leave the destination"
+    )
 
 
 def test_device_file_is_refused(server, tmp_path):
@@ -617,7 +619,9 @@ def test_missing_expected_member(server, tmp_path):
     with pytest.raises(ModelFetchError, match="does not contain") as err:
         fetch_archive(url, tmp_path, expected_member=MODEL)
     assert "other-model" in str(err.value)
-    assert not (tmp_path / "other-model").exists()  # nothing is installed from an archive that is not what was asked for
+    assert not (
+        tmp_path / "other-model"
+    ).exists()  # nothing is installed from an archive that is not what was asked for
     with pytest.raises(UnsafeArchiveError):
         fetch_archive(url, tmp_path, expected_member="../elsewhere")
 

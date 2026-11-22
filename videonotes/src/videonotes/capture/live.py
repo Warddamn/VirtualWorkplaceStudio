@@ -10,14 +10,15 @@ Design decisions (why the flags are what they are)
 
 **Container: MPEG-TS, written through** ``-f stream_segment`` **with**
 ``-segment_format_options flush_packets=1``.  A recording must survive an abrupt end:
-cable pulled, lid closed, crash, power loss.  Measured with ``kill -9`` mid-segment:
-plain MP4 loses the whole file (no ``moov``), fragmented MP4 keeps whole fragments but
-ffprobe then reports only the first fragment's duration, MPEG-TS with every packet
-flushed keeps everything up to the last packet *and* its duration is still read
-correctly from the timestamps.  ``flush_packets`` only reaches the inner muxer through
+cable pulled, lid closed, crash, power loss.  Measured here with ``kill -9`` 6.5 s into
+a segment: plain MP4 is lost entirely (no ``moov`` atom), fragmented MP4 with one-second
+fragments keeps 6.0 s (whole fragments only), MPEG-TS with every packet flushed keeps
+6.9 s, i.e. everything that reached the muxer, and its real duration is still read from
+the timestamps.  ``flush_packets`` only reaches the inner muxer through
 ``-segment_format_options``.  ``stream_segment`` (rather than ``segment``) does not ask
 encoders for a global header, so VideoToolbox repeats SPS/PPS at every key frame and
-each ``.ts`` file decodes on its own.
+each ``.ts`` file decodes on its own.  The price: ``.ts`` files may not open in
+QuickTime Player (VLC and IINA play them); the pipeline reads them through ffmpeg.
 
 **File names carry the wall clock:** ``seg_YYYYMMDD-HHMMSS_<epoch>.ts``, expanded by
 ffmpeg (``-strftime 1``) when it opens the file.  The local-time part is for people; the
@@ -29,7 +30,8 @@ shift later ones.  While a recording is live the start time is refined to sub-se
 precision as *time of last write - probed duration* (see :func:`estimate_start_ts`),
 falling back to the name whenever the two disagree (system sleep, clock step, a stalled
 stream).  ``strftime`` has one-second resolution, hence two rules: segments are never
-shorter than two seconds, and the RTMP listener waits a second before listening again.
+shorter than two seconds, and a restarted RTMP listener never starts within the second
+in which the previous file was opened.
 
 **Webcam (avfoundation):** ``-framerate`` and ``-video_size`` are always given (the
 default 29.97 fps is rejected by devices that only offer 30.000, and without a size
@@ -159,10 +161,7 @@ def _kbit(bps: float) -> str:
 
 def _scale_filter(width: int, height: int) -> str:
     """Fit inside ``width x height`` keeping the aspect ratio; never scale up; even sizes."""
-    return (
-        f"scale=w='min(iw,{width})':h='min(ih,{height})'"
-        ":force_original_aspect_ratio=decrease:force_divisible_by=2"
-    )
+    return f"scale=w='min(iw,{width})':h='min(ih,{height})':force_original_aspect_ratio=decrease:force_divisible_by=2"
 
 
 def _video_encoder_args(bitrate: str) -> list[str]:
@@ -203,9 +202,7 @@ def _base(loglevel: str = "error") -> list[str]:
     return ff.base_cmd(loglevel=loglevel) + ["-stdin"]
 
 
-def webcam_command(
-    settings: Settings, video: CaptureDevice, audio: CaptureDevice | None, out_dir: Path
-) -> list[str]:
+def webcam_command(settings: Settings, video: CaptureDevice, audio: CaptureDevice | None, out_dir: Path) -> list[str]:
     """ffmpeg argv that records the camera (USB webcam mode) into fixed-length segments.
 
     ``video`` and ``audio`` come from :func:`videonotes.capture.devices.pick_device`
@@ -414,9 +411,7 @@ def recover_segments(out_dir: str | Path, *, min_seconds: float = 0.5) -> list[S
     folder = Path(out_dir)
     found: list[Segment] = []
     try:
-        names = sorted(
-            n for n in os.listdir(folder) if n.startswith(SEGMENT_PREFIX) and n.endswith(_MEDIA_SUFFIXES)
-        )
+        names = sorted(n for n in os.listdir(folder) if n.startswith(SEGMENT_PREFIX) and n.endswith(_MEDIA_SUFFIXES))
     except OSError:
         return found
     for name in names:
@@ -464,7 +459,8 @@ _EXPLANATIONS: tuple[tuple[re.Pattern[str], str], ...] = (
     (
         re.compile(
             r"Unrecognized option|Option not found|Unknown encoder|Protocol not found|"
-            r"Requested output format .* is not (?:a suitable|known)|Unable to (?:find a suitable|choose an) output format"
+            r"Requested output format .* is not (?:a suitable|known)|"
+            r"Unable to (?:find a suitable|choose an) output format"
         ),
         "This ffmpeg is too old or was built without something videonotes needs. Update it:  brew upgrade ffmpeg",
     ),
@@ -574,8 +570,11 @@ class SegmentRecorder:
     LISTENER_STALL_TIMEOUT_S = 90.0
     #: How often the background thread looks at the folder and the process.
     MONITOR_INTERVAL_S = 0.2
-    #: Pause before listening again (also keeps one-second file names unique).
-    RELISTEN_DELAY_S = 1.0
+    #: Pause before listening again after a connection that delivered video.  Kept short: the
+    #: port is closed in between, and a camera that retries at once should not be turned away.
+    RELISTEN_DELAY_S = 0.1
+    #: First pause after a connection that delivered nothing (doubles each time, up to 8x).
+    RELISTEN_BACKOFF_S = 1.0
     #: A listener that fails this quickly before any camera ever connected could not start at all.
     LISTENER_STARTUP_FAIL_S = 2.0
     #: Give up listening after this many connections in a row that delivered nothing.
@@ -627,6 +626,7 @@ class SegmentRecorder:
         self._known: set[str] = set()
         self._order: list[str] = []  # segment file names in the order ffmpeg created them
         self._reported: set[str] = set()
+        self._pending: list[Segment] = []  # inspected, not handed out yet (see _harvest)
         self._run_first = 0  # index into _order of the current run's first file
         self._launched_at = 0.0
         self._last_progress = 0.0
@@ -934,15 +934,21 @@ class SegmentRecorder:
             reason, self._abort_reason = self._abort_reason, ""
             if self._listener and reason == "stall":
                 log.warning("the camera's stream went silent; listening for it again")
-                self._schedule_relaunch(self.RELISTEN_DELAY_S)
+                self._schedule_relaunch(self._relisten_delay())
                 return
             self._finish(self._watchdog_message(reason))
             return
 
-        # Ctrl-C in the terminal reaches ffmpeg too; that is a stop, not a failure to recover from.
-        interrupted = returncode == 255 or returncode < 0 or "Immediate exit requested" in run_text
-        if interrupted:
-            self._finish(f"ffmpeg was killed (signal {-returncode})." if returncode < 0 else "")
+        # Ctrl-C in the terminal reaches ffmpeg too: it then finishes its file and exits with 255
+        # (or reports "Immediate exit requested" if it was still opening its input).  That is a
+        # stop, not a failure to explain or recover from.  (255 with error output is a real
+        # failure: ffmpeg also uses that status for "Operation not permitted".)
+        if returncode < 0:
+            self._finish(f"ffmpeg was killed (signal {-returncode}).")
+            return
+        if "Immediate exit requested" in run_text or (returncode == 255 and not _meaningful(run_text.splitlines())):
+            self._quiet_exit = True
+            self._finish("")
             return
 
         if returncode != 0 and not wrote_media and not self._fallback_used:
@@ -965,17 +971,24 @@ class SegmentRecorder:
                 self._unproductive_runs = 0
             else:
                 self._unproductive_runs += 1
-            could_not_start = (
-                not self._ever_produced and returncode != 0 and run_seconds < self.LISTENER_STARTUP_FAIL_S
-            )
+            could_not_start = not self._ever_produced and returncode != 0 and run_seconds < self.LISTENER_STARTUP_FAIL_S
             if not could_not_start and self._unproductive_runs <= self.MAX_UNPRODUCTIVE_RUNS:
                 if wrote_media:
                     log.info("the camera's stream ended; listening for it again")
-                delay = self.RELISTEN_DELAY_S * (1 if wrote_media else min(8, 2 ** (self._unproductive_runs - 1)))
-                self._schedule_relaunch(delay)
+                backoff = self.RELISTEN_BACKOFF_S * min(8, 2 ** (self._unproductive_runs - 1))
+                self._schedule_relaunch(self._relisten_delay() if wrote_media else backoff)
                 return
 
         self._finish("" if returncode == 0 else f"ffmpeg stopped with exit status {returncode}.")
+
+    def _relisten_delay(self) -> float:
+        """How long to wait before listening again: as short as the one-second file names allow."""
+        delay = self.RELISTEN_DELAY_S
+        if self._order:
+            opened = segment_start_from_name(self._order[-1])
+            if opened is not None:  # the next file must be opened in a later second, or it would replace this one
+                delay = max(delay, min(2.0, opened + 1.0 - time.time()))
+        return delay
 
     def _schedule_relaunch(self, delay: float) -> None:
         self._relaunch_at = time.monotonic() + max(0.0, delay)
@@ -994,12 +1007,16 @@ class SegmentRecorder:
             if camera:
                 text += (
                     " If macOS showed a dialog asking for access to the camera or microphone, allow it (System "
-                    "Settings → Privacy & Security → Camera / Microphone → your terminal app) and run the command "
+                    "Settings → Privacy & Security → Camera / Microphone → your terminal app) and run the "
+                    "command "
                     "again. Also check that the camera still shows “Webcam” on its screen; if the microphone is "
                     "the problem, try --audio none."
                 )
             return text
-        text = f"The video stopped arriving ({self._stall_timeout:.0f} seconds without data), so the recording was stopped."
+        text = (
+            f"The video stopped arriving ({self._stall_timeout:.0f} seconds without data), "
+            "so the recording was stopped."
+        )
         if camera:
             text += (
                 " Was the camera unplugged or switched off, or did it overheat? Everything recorded up to that "
@@ -1021,27 +1038,27 @@ class SegmentRecorder:
     def _scan(self) -> None:
         """Notice new files (in creation order) and whether the newest one is growing."""
         fresh: list[tuple[int, str]] = []
-        sizes: dict[str, int] = {}
         try:
             with os.scandir(self.out_dir) as entries:
                 for entry in entries:
-                    if not self._is_segment_name(entry.name) or entry.name in self._preexisting:
+                    name = entry.name
+                    if name in self._known or name in self._preexisting or not self._is_segment_name(name):
                         continue
                     try:
-                        if not entry.is_file():
-                            continue
-                        stat = entry.stat()
+                        if entry.is_file():
+                            fresh.append((entry.stat().st_mtime_ns, name))
                     except OSError:
                         continue
-                    sizes[entry.name] = stat.st_size
-                    if entry.name not in self._known:
-                        fresh.append((stat.st_mtime_ns, entry.name))
         except OSError:
             return
-        for _mtime, name in sorted(fresh):
+        for _mtime, name in sorted(fresh):  # several new files at once: the one still growing is the newest
             self._known.add(name)
             self._order.append(name)
-        mark = (len(self._order), sizes.get(self._order[-1], -1) if self._order else -1)
+        size = -1
+        if self._order:
+            with contextlib.suppress(OSError):
+                size = os.stat(self.out_dir / self._order[-1]).st_size
+        mark = (len(self._order), size)
         if mark != self._progress_mark:
             self._progress_mark = mark
             self._last_progress = time.monotonic()
@@ -1054,12 +1071,16 @@ class SegmentRecorder:
                 if self._proc is not None and len(names) > self._run_first:
                     names = names[:-1]  # the file ffmpeg is writing right now
                 ready = [name for name in names if name not in self._reported]
-                self._reported.update(ready)
-            segments: list[Segment] = []
             for name in ready:
+                # Probing takes a moment.  If Ctrl-C lands in it, the file stays unreported and
+                # what was already inspected stays in _pending: the next call hands it all out.
                 segment = self._finalize(self.out_dir / name)
-                if segment is not None:
-                    segments.append(segment)
+                with self._lock:
+                    self._reported.add(name)
+                    if segment is not None:
+                        self._pending.append(segment)
+            with self._lock:
+                segments, self._pending = self._pending, []
             return segments
 
     def _finalize(self, path: Path) -> Segment | None:
@@ -1081,7 +1102,9 @@ class SegmentRecorder:
         if segment is None:
             with contextlib.suppress(OSError):
                 if path.stat().st_size >= self.KEEP_UNREADABLE_BYTES:
-                    log.warning("the recorded segment %s holds no readable media (kept on disk, not analysed)", path.name)
+                    log.warning(
+                        "the recorded segment %s holds no readable media (kept on disk, not analysed)", path.name
+                    )
                     return None
                 log.debug("discarding empty or tiny segment %s", path.name)
                 path.unlink()

@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.machinery
 import importlib.util
 import struct
+import subprocess
 import sys
 import types
 from pathlib import Path
@@ -521,6 +522,91 @@ def test_apple_vision_on_a_macos_without_text_recognition(fake_pyobjc):
         AppleVisionOcr(["en-US"])
 
 
+def test_apple_vision_gives_vision_an_absolute_file_url(fake_pyobjc, tmp_path, monkeypatch):
+    (tmp_path / "frame.jpg").write_bytes(b"x")
+    monkeypatch.chdir(tmp_path)
+    engine = AppleVisionOcr(["en-US"])
+    engine.read(Path("frame.jpg"))
+    assert ("url", str(tmp_path / "frame.jpg")) in fake_pyobjc.events
+
+
+def test_optional_dependencies_are_not_imported_with_the_modules():
+    code = (
+        "import sys, videonotes.backends.ocr, videonotes.backends.vision\n"
+        "heavy = {'rapidocr', 'cv2', 'onnxruntime', 'PIL', 'anthropic', 'mlx_vlm', 'mlx', 'objc', 'Vision'}\n"
+        "print(sorted(heavy & set(sys.modules)))"
+    )
+    proc = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, timeout=120)
+    assert proc.returncode == 0, proc.stderr
+    assert proc.stdout.strip() == "[]"
+
+
+# ---------------------------------------------------------------------------
+# RapidOCR engine start-up logic against a fake ``rapidocr`` module (runs anywhere)
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture()
+def fake_rapidocr(monkeypatch):
+    state = SimpleNamespace(calls=[], init_error=None, reject_params=False, call_error=None)
+
+    class FakeRapidOCR:  # a release without the private _load_*_model hooks
+        def __init__(self, config_path=None, params=None):
+            state.calls.append(("init", params))
+            if state.reject_params and params:
+                raise ValueError("Global.log_level is not a valid key.")
+            if state.init_error:
+                raise state.init_error
+
+        def __call__(self, img):
+            state.calls.append(("call", type(img).__name__, getattr(img, "shape", None)))
+            if state.call_error:
+                raise state.call_error
+            return SimpleNamespace(txts=("hello world",), scores=(0.9,), boxes=None, img=None)
+
+    module = _module("rapidocr")
+    module.RapidOCR = FakeRapidOCR
+    monkeypatch.setitem(sys.modules, "rapidocr", module)
+    monkeypatch.setattr(ocr_mod, "module_available", lambda name: True)
+    return state
+
+
+def test_rapidocr_engine_warms_up_through_the_public_call_when_hooks_are_gone(fake_rapidocr, tmp_path):
+    engine = ocr_mod.RapidOcrEngine()
+    assert fake_rapidocr.calls == [("init", {"Global.log_level": "error"}), ("call", "ndarray", (64, 64, 3))]
+    image = tmp_path / "x.jpg"
+    image.write_bytes(b"x")
+    assert engine.read(image).text == "hello world"
+    assert fake_rapidocr.calls[-1] == ("call", type(image).__name__, None)  # the file path is handed over as is
+
+    fake_rapidocr.call_error = RuntimeError("inference blew up")
+    with pytest.raises(BackendError, match=r"OCR failed on x\.jpg \(RuntimeError: inference blew up\)$"):
+        engine.read(image)
+    fake_rapidocr.call_error = OSError("image file is truncated")
+    with pytest.raises(BackendError, match="damaged or not an image"):
+        engine.read(image)
+
+
+def test_rapidocr_engine_start_up_failures_are_backend_unavailable(fake_rapidocr, monkeypatch):
+    fake_rapidocr.reject_params = True  # an older release without the log_level key: retried without it
+    ocr_mod.RapidOcrEngine()
+    assert [c[:2] for c in fake_rapidocr.calls[:2]] == [("init", {"Global.log_level": "error"}), ("init", None)]
+
+    fake_rapidocr.reject_params = False
+    fake_rapidocr.call_error = RuntimeError("onnxruntime: no such provider")
+    with pytest.raises(BackendUnavailable, match="could not start.*no such provider.*pip install --force-reinstall"):
+        ocr_mod.RapidOcrEngine()
+
+    fake_rapidocr.call_error = None
+    fake_rapidocr.init_error = FileNotFoundError("config.yaml")
+    with pytest.raises(BackendUnavailable, match="could not start"):
+        ocr_mod.RapidOcrEngine()
+
+    monkeypatch.setitem(sys.modules, "rapidocr", None)  # import fails although the package was found
+    with pytest.raises(BackendUnavailable, match="could not be imported"):
+        ocr_mod.RapidOcrEngine()
+
+
 # ---------------------------------------------------------------------------
 # RapidOCR result conversion (no model needed)
 # ---------------------------------------------------------------------------
@@ -646,6 +732,24 @@ def test_factory_explicit_backend_is_used_or_raises(tmp_path, stub_engines):
         make_ocr(_settings(tmp_path, "rapidocr"))
     stub_engines.modules = {"rapidocr", "onnxruntime"}
     assert make_ocr(_settings(tmp_path, "rapidocr")).name == "rapidocr"
+
+
+def test_factory_auto_on_macos_builds_the_real_apple_vision_engine(fake_pyobjc, monkeypatch, tmp_path):
+    """No stubs: the real availability probe and the real engine class, on top of the fake pyobjc modules."""
+    monkeypatch.setattr(ocr_mod, "is_macos", lambda: True)
+    settings = _settings(tmp_path, "auto")
+    settings.ocr.languages = ["fr-FR", "en-US"]
+    engine = make_ocr(settings)
+    assert isinstance(engine, AppleVisionOcr) and isinstance(engine, OcrEngine)
+    statuses = {s.name: s for s in ocr_status(settings)}
+    assert statuses["apple-vision"].selected and "fr-FR, en-US" in statuses["apple-vision"].detail
+    image = tmp_path / "frame.jpg"
+    image.write_bytes(b"x")
+    fake_pyobjc.observations = [_Obs(fake_pyobjc.events, "Sortie", 1.0, 0.4, 0.45, 0.2, 0.1)]
+    result = engine.read(image)
+    assert ("languages", ["fr-FR", "en-US"]) in fake_pyobjc.events  # priority order from the settings
+    assert clean_ocr_text(result, min_confidence=0.35, min_chars=3) == "Sortie"
+    engine.close()
 
 
 def test_rapidocr_install_hints(monkeypatch):

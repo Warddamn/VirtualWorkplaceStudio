@@ -145,12 +145,15 @@
     } catch (err) {
       data = null;
     }
-    if (!response.ok) {
-      const info = (data && data.error) || {};
+    // A slow answer is sent as a reply that starts before its outcome is known (see the server's
+    // /api/ask), so a failure can also arrive inside a reply whose status says OK.
+    const failure = data && typeof data === "object" && data.error && typeof data.error === "object" ? data.error : null;
+    if (!response.ok || failure) {
+      const info = failure || {};
       throw new ApiError(
         info.code || "http_" + response.status,
         info.message || `videonotes answered with an error (${response.status}).`,
-        response.status
+        response.ok ? 0 : response.status
       );
     }
     if (data === null) throw new ApiError("bad_reply", "videonotes sent a reply this page could not read.");
@@ -744,6 +747,17 @@
         )
       );
     }
+    if (s.status === "ready" && s.failed_stages && s.failed_stages.length) {
+      out.push(
+        notice(
+          "quiet",
+          `Part of this recording could not be fully processed (${s.failed_stages.join(", ")}), so something may be missing below. `,
+          "Run ",
+          code("vnote process " + s.id),
+          " in Terminal to try again."
+        )
+      );
+    }
     if (!note && s.status !== "open" && s.status !== "processing") {
       out.push(notice("quiet", "Not summarised yet. Run ", code("vnote process " + s.id), " in Terminal."));
     }
@@ -810,6 +824,9 @@
       if (facts.length) page.append(el("section", { class: "facts" }, facts));
       add(page, [provenance(note.llm_backend, "Summary")]);
     }
+    if (s.note_path) {
+      page.append(el("p", { class: "fineprint" }, "Markdown copy of this note, in your library folder: ", code(s.note_path)));
+    }
 
     // timeline
     const moments = data.moments;
@@ -834,9 +851,16 @@
         }),
         quiet ? toggle : null,
       ]);
-      if (data.clips.length && !data.playable) {
+      // photos are clips without a duration: there is nothing to play, and nothing to explain
+      const footage = data.clips.filter((c) => c.duration_s > 0);
+      if (footage.length && !data.playable) {
         timeline.append(
-          notice("quiet", "The video of this session is not kept in the library, so playback is off. Keyframes and transcript are all here.")
+          notice(
+            "quiet",
+            footage.some((c) => c.in_library)
+              ? "The recording of this session is in a form this page cannot play, so playback is off. Keyframes and transcript are all here."
+              : "The video of this session is not kept in the library, so playback is off. Keyframes and transcript are all here."
+          )
         );
       }
       timeline.append(list);
@@ -983,7 +1007,8 @@
     const params = new URLSearchParams({ q: route.q });
     if (route.kind) params.set("kind", route.kind);
     if (route.day) params.set("day", route.day);
-    const data = await api("/api/search?" + params.toString());
+    // the list of days supplies the readable date headings; without it the results still show
+    const [data] = await Promise.all([api("/api/search?" + params.toString()), loadOverview(false).catch(() => null)]);
 
     head.append(
       el(

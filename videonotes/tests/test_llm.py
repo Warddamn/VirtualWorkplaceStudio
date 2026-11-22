@@ -103,6 +103,16 @@ def test_ollama_auto_model_accepts_an_untagged_preference_as_latest(settings):
         assert make_llm(settings).name == "ollama:phi4-mini"
 
 
+def test_ollama_auto_model_accepts_a_variant_tag_of_a_preferred_size(settings):
+    with FakeOllama(models=["llama3.2-vision:11b", "gemma3:4b-it-qat", "qwen3:32b"]) as srv:
+        settings.llm.backend, settings.llm.ollama_url = "ollama", srv.url
+        assert make_llm(settings).name == "ollama:gemma3:4b-it-qat"
+    with FakeOllama(models=["llama3.2-vision:11b", "qwen3:32b", "gemma4:e4b"]) as srv:  # all too big for 16 GB
+        settings.llm.ollama_url = srv.url
+        with pytest.raises(BackendUnavailable, match="ollama pull"):
+            make_llm(settings)
+
+
 def test_explicit_ollama_without_a_suitable_model_says_what_to_pull(settings):
     with FakeOllama(models=["nomic-embed-text:latest"]) as srv:
         settings.llm.backend, settings.llm.ollama_url = "ollama", srv.url
@@ -205,6 +215,13 @@ def test_explicit_anthropic_builds_the_cloud_backend(settings, monkeypatch):
     settings.llm.model = "claude-haiku-5-5"
     assert make_llm(settings).name == "anthropic:claude-haiku-5-5"
     assert built[-1] == "claude-haiku-5-5"
+    monkeypatch.setattr(llm_mod, "module_available", lambda name: True)
+    settings.llm.ollama_url = DEAD_URL
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    status = _status(settings)["anthropic"]
+    assert status.selected and status.available and "ANTHROPIC_API_KEY is not set" in status.detail
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-not-a-real-key")
+    assert "ANTHROPIC_API_KEY" not in _status(settings)["anthropic"].detail
 
 
 def test_explicit_anthropic_without_the_sdk_says_what_to_install(settings, monkeypatch):
@@ -284,6 +301,14 @@ def test_ollama_fills_missing_keys_and_fixes_types(settings):
         llm = _ollama(settings, srv)
         assert llm.json(system="s", prompt="p", schema=SCHEMA) == {"title": "", "tags": ["solo"]}
         assert len(_chats(srv)) == 1  # fenced JSON needs no second request
+
+
+def test_ollama_json_with_impossible_numbers_is_a_backend_error(settings):
+    schema = {"type": "object", "properties": {"id": {"type": "integer"}}}
+    with FakeOllama(reply='{"id": Infinity}') as srv:  # Python's JSON parser accepts this
+        llm = _ollama(settings, srv)
+        with pytest.raises(BackendError, match="does not fit"):
+            llm.json(system="s", prompt="p", schema=schema)
 
 
 def test_ollama_retries_once_with_a_firmer_instruction(settings):

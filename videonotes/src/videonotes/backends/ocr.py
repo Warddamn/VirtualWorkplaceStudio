@@ -331,7 +331,7 @@ class AppleVisionOcr:
         request = self._new_request()
         if self._languages:
             request.setRecognitionLanguages_(self._languages)
-        url = self._nsurl.fileURLWithPath_(str(path))
+        url = self._nsurl.fileURLWithPath_(str(path.absolute()))
         if orientation == 1:
             # Vision reads the file through ImageIO. ffmpeg-written keyframes are upright.
             handler = vision.VNImageRequestHandler.alloc().initWithURL_options_(url, {})
@@ -475,13 +475,7 @@ class RapidOcrEngine:
         with _no_model_downloads() as blocked:
             try:
                 engine = self._construct(RapidOCR)
-                # RapidOCR loads each model lazily on first use; do it now so that problems are
-                # reported once, here. (Private hooks: if a release drops them, loading simply
-                # stays lazy.)
-                for hook in ("_load_det_model", "_load_cls_model", "_load_rec_model"):
-                    loader = getattr(engine, hook, None)
-                    if callable(loader):
-                        loader()
+                self._preload(engine)
             except Exception as exc:
                 if blocked or isinstance(exc, _DownloadBlocked):
                     raise BackendUnavailable(_download_message(blocked)) from exc
@@ -500,6 +494,24 @@ class RapidOcrEngine:
         except (TypeError, ValueError):  # a release without that config key
             return factory()
 
+    @staticmethod
+    def _preload(engine: Any) -> None:
+        """Load the models now, so a broken install is reported once instead of on every frame.
+
+        RapidOCR loads each model lazily on first use.  Its loaders are private, so if a release
+        drops them, a blank image is pushed through the public call instead: that still creates
+        the ONNX session of the detector, which is where a broken install fails.
+        """
+        loaders = [getattr(engine, hook, None) for hook in ("_load_det_model", "_load_cls_model", "_load_rec_model")]
+        if any(callable(loader) for loader in loaders):
+            for loader in loaders:
+                if callable(loader):
+                    loader()
+            return
+        import numpy as np
+
+        engine(np.full((64, 64, 3), 255, dtype=np.uint8))
+
     def read(self, image_path: Path) -> OcrResult:
         """Recognise the text in one image file."""
         if self._engine is None:
@@ -513,10 +525,9 @@ class RapidOcrEngine:
             except Exception as exc:
                 if blocked or isinstance(exc, _DownloadBlocked):
                     raise BackendUnavailable(_download_message(blocked)) from exc
-                raise BackendError(
-                    f"OCR could not read {path.name} ({type(exc).__name__}: {exc}); "
-                    "the file may be damaged or not an image"
-                ) from exc
+                unreadable = isinstance(exc, OSError) or type(exc).__name__ == "LoadImageError"
+                hint = "; the file may be damaged or not an image" if unreadable else ""
+                raise BackendError(f"OCR failed on {path.name} ({type(exc).__name__}: {exc}){hint}") from exc
         if blocked:
             raise BackendUnavailable(_download_message(blocked))
         return rapidocr_result(raw)

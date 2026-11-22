@@ -300,7 +300,8 @@ def choose_mode(modes: list[CaptureMode], width: int, height: int, fps: float) -
             size_rank = 2
         else:
             size_rank = 3
-        return (fps_rank, size_rank, abs(pixels - want_pixels), fps_dist)
+        # Rates within half a frame of the request are equally good; otherwise nearer is better.
+        return (fps_rank, 0.0 if fps_rank == 0 else round(fps_dist, 1), size_rank, abs(pixels - want_pixels), fps_dist)
 
     return min(modes, key=score)
 

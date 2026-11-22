@@ -568,6 +568,29 @@ def test_sparse_keyframes_inside_one_clip_are_not_mistaken_for_recording_breaks(
     assert coverage_hole_seconds(cfg(gap=45), []) == 120
 
 
+def test_frames_of_two_clips_at_the_same_instant_do_not_make_the_result_depend_on_input_order():
+    # Two clips whose frames carry identical timestamps (clips overlapping in time, e.g. after a camera clock
+    # reset). The hole threshold is measured inside each clip, so it cannot flip with the order of the input.
+    tl = Timeline()
+    for i in range(5):
+        tl.frame(i * 300.0, clip=1)
+        tl.frame(i * 300.0, clip=2)
+    tl.say(310, 314, clip=1)
+    settings = cfg(gap=45, lo=20, hi=900)
+    assert coverage_hole_seconds(settings, tl.keyframes) == 450  # five minutes between frames inside either clip
+    expected = tl.segment(settings)
+    check_invariants(expected, tl.utterances, tl.keyframes, settings)
+    # the remark with the frames around it, then the silent rest: no boundary for "the recording was off"
+    assert rel(expected) == [(0, 314), (600, 1200)]
+    rng = random.Random(0)
+    for _ in range(25):
+        shuffled = tl.keyframes[:]
+        rng.shuffle(shuffled)
+        assert coverage_hole_seconds(settings, shuffled) == 450
+        assert segment_moments(SESSION, tl.utterances, shuffled, settings) == expected
+    assert coverage_hole_seconds(settings, list(reversed(tl.keyframes))) == 450
+
+
 def test_input_order_missing_ids_and_bad_timestamps_are_tolerated():
     tl = Timeline()
     a = tl.say(0, 5)
