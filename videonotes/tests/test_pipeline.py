@@ -114,3 +114,28 @@ def test_render_errors_are_plain_messages(settings, monkeypatch, capsys):
     assert run_command(boom, args) == 1
     err = capsys.readouterr().err
     assert "not writable" in err and "Unexpected error" not in err
+
+
+def test_deleting_one_of_two_sessions_rebuilds_the_day_digest(settings, store, demo_video, monkeypatch, tmp_path):
+    import shutil
+
+    other = tmp_path / "second-recording.mp4"  # a different file, so it is not taken for a re-import
+    shutil.copyfile(demo_video.path, other)
+    first = import_file(settings, store, demo_video.path, start_ts=1_795_357_920.0)
+    second = import_file(settings, store, other, start_ts=1_795_357_920.0 + 600)
+    assert first.id != second.id
+    ocr = FlakyOcr(0)
+    with _pipeline(settings, store, ocr) as p:
+        p.process_session(first.id)
+        p.process_session(second.id)
+    day = local_date(first.started_ts)
+    assert set(store.get_day(day).session_ids) == {first.id, second.id}
+    store.close()
+    monkeypatch.setenv("NO_COLOR", "1")
+    assert main(["--home", str(settings.home), "--set", "llm.backend=extractive", "delete", second.id, "--yes"]) == 0
+    from videonotes.store import Store
+
+    with Store(settings.db_path) as again:
+        digest = again.get_day(day)
+    assert digest is not None and digest.session_ids == [first.id]
+    assert second.id not in (settings.vault_dir / "days" / f"{day}.md").read_text()

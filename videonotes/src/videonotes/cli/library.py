@@ -384,10 +384,11 @@ def delete_session_files(ctx: Context, session: Session) -> None:
         day = local_date(session.started_ts)
         start, end = day_bounds(day)
         if any(s.note is not None for s in ctx.store.list_sessions(since_ts=start, until_ts=end)):
-            # other sessions remain that day: re-render its note without this one
-            from ..notes.render import render_day_note
+            # other sessions remain that day: rebuild its digest and note without this one
+            from ..pipeline import Pipeline
 
-            render_day_note(settings, ctx.store, day)
+            with Pipeline(settings, ctx.store) as pipeline:
+                pipeline.build_day(day)
         else:
             ctx.store.delete_day(day)
             day_note = settings.vault_dir / "days" / f"{day}.md"
