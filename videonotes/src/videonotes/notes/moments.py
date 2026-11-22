@@ -30,7 +30,10 @@ How it works
    cuts evenly between utterances.
 4. **Too short.**  A moment shorter than ``moment_min_seconds`` is merged into
    the neighbour that is closer in time, unless that would cross a coverage
-   hole or exceed the maximum.  A short moment with no such neighbour stays.
+   hole or exceed the maximum.  (When one of the two joins would undo a strong
+   visual change and the other would not, the other one wins: frames taken
+   after walking somewhere else go with what happened there.)  A short moment
+   with no neighbour it may join stays as it is.
 
 Guarantees (tested property-style in ``tests/test_moments.py``)
 ----------------------------------------------------------------
@@ -418,7 +421,11 @@ def _split_long(
 def _merge_short(
     pieces: list[_Piece], atoms: list[_Atom], cover: list[float], holes: set[int], min_s: float, max_s: float
 ) -> list[_Piece]:
-    """Merge moments shorter than ``min_s`` into the neighbour that is closer in time."""
+    """Merge moments shorter than ``min_s`` into the neighbour that is closer in time.
+
+    Never across a coverage hole, never beyond ``max_s``; a join that does not
+    cross a strong visual change is preferred over one that does.
+    """
     if min_s <= 0 or len(pieces) < 2:
         return pieces
     n = len(atoms)
@@ -442,19 +449,20 @@ def _merge_short(
             if length(piece, piece) >= min_s:
                 i += 1
                 continue
-            options: list[tuple[float, float, int]] = []  # (distance, neighbour length, index of the left part)
+            # (joins across a strong visual change, distance, neighbour length, index of the left part)
+            options: list[tuple[bool, float, float, int]] = []
             if i > 0 and piece.lo not in holes:
                 left = pieces[i - 1]
                 if length(left, piece) <= max_s:
-                    options.append((distance(piece), length(left, left), i - 1))
+                    options.append((atoms[piece.lo].visual > 0.0, distance(piece), length(left, left), i - 1))
             if i + 1 < len(pieces):
                 right = pieces[i + 1]
                 if right.lo not in holes and length(piece, right) <= max_s:
-                    options.append((distance(right), length(right, right), i))
+                    options.append((atoms[right.lo].visual > 0.0, distance(right), length(right, right), i))
             if not options:
                 i += 1
                 continue
-            _, _, k = min(options)
+            k = min(options)[3]
             a, b = pieces[k], pieces[k + 1]
             pieces[k : k + 2] = [_Piece(a.lo, b.hi, max(a.end, b.end))]
             changed = True
