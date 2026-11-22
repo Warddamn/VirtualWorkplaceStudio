@@ -1,0 +1,37 @@
+[project]
+name = "videonotes"
+version = "0.1.0"
+description = "Video note-taking for a wearable action camera (DJI Osmo Action 4 / 5 Pro): local speech-to-text, keyframes, OCR and summaries on a Mac."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.26",
+]
+
+[project.scripts]
+vnote = "videonotes.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/videonotes"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "slow: needs real models or long-running media work",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["videonotes", "fake_ollama"]
