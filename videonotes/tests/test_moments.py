@@ -193,8 +193,12 @@ def random_timeline(rng: random.Random) -> Timeline:
             k = clip_start
             while k < clip_end:
                 roll = rng.random()
-                reason, novelty = ("scene", 0.8) if roll < 0.1 else ("novel", rng.uniform(0.2, 0.9)) if roll < 0.3 else (
-                    "interval", rng.uniform(0.0, 0.2))  # fmt: skip
+                if roll < 0.1:
+                    reason, novelty = "scene", 0.8
+                elif roll < 0.3:
+                    reason, novelty = "novel", rng.uniform(0.2, 0.9)
+                else:
+                    reason, novelty = "interval", rng.uniform(0.0, 0.2)
                 tl.frame(k, reason, novelty, clip=clip)
                 if rng.random() < 0.05:
                     tl.frame(k, "novel", 0.3, clip=clip)  # two frames at the very same instant
@@ -222,6 +226,38 @@ def test_random_timelines_keep_every_invariant(seed: int):
     rng.shuffle(shuffled_u)
     rng.shuffle(shuffled_k)
     assert segment_moments(SESSION, shuffled_u, shuffled_k, settings) == moments
+
+
+@pytest.mark.parametrize("seed", range(150))
+def test_invariants_hold_when_the_splitter_thins_its_candidates(seed: int, monkeypatch: pytest.MonkeyPatch):
+    # very dense spans are split using only the best cut candidate per time slice; force that path everywhere
+    from videonotes.notes import moments as module
+
+    monkeypatch.setattr(module, "_DENSE_ATOMS", 0)
+    monkeypatch.setattr(module, "_SLICES", 6)
+    rng = random.Random(10_000 + seed)
+    tl = random_timeline(rng)
+    settings = cfg(gap=rng.choice([20.0, 45.0, 120.0]), lo=rng.choice([0.0, 20.0]), hi=rng.choice([30.0, 120.0, 600.0]))
+    check_invariants(tl.segment(settings), tl.utterances, tl.keyframes, settings)
+
+
+def test_dense_span_with_a_large_maximum_is_thinned_and_still_split_well():
+    tl = Timeline()
+    t = 0.0
+    while t < 3.5 * 3600:  # three and a half hours, an utterance every second
+        tl.say(t, t + 0.8)
+        t += 1.0
+    breather = 6000.0  # one 20 s pause, not where an even cut would fall (that would be 6300)
+    tl.utterances = [u for u in tl.utterances if not breather <= u.t0 < breather + 20]
+    settings = cfg(gap=120, lo=30, hi=3600)
+    began = time.perf_counter()
+    moments = tl.segment(settings)
+    elapsed = time.perf_counter() - began
+    check_invariants(moments, tl.utterances, tl.keyframes, settings)
+    assert len(moments) == 4 and max(m.ts1 - m.ts0 for m in moments) <= 3600  # as few moments as possible ...
+    assert moments[2].ts0 == T0 + breather + 20  # ... and the pause is where the middle cut went
+    assert min(m.ts1 - m.ts0 for m in moments) > 2400
+    assert elapsed < 10, f"segmenting took {elapsed:.1f}s"
 
 
 def test_the_checker_itself_catches_a_bad_segmentation():

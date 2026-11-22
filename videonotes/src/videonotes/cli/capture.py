@@ -334,7 +334,8 @@ def _start_camera_stream(
     except BaseException:
         camera.close()
         raise
-    out.ok("The camera reports it is streaming.")
+    # The camera gives no "stream connected" signal over Bluetooth: video arriving here is the proof.
+    out.ok("The camera accepted the request. Waiting for its video to arrive…")
 
     def stop() -> None:
         try:

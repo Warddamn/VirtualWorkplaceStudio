@@ -9,7 +9,8 @@ Layout (``<vault>`` is ``Settings.vault_dir``, by default ``<home>/notes``)::
 The notes are plain Markdown with YAML front matter, standard relative links
 and image embeds, so they read the same in Obsidian, in VS Code, on GitHub or
 in any other Markdown viewer.  The only HTML used is a collapsed
-``<details>`` block per moment holding the transcript.
+``<details>`` block per moment holding the transcript, and a closing comment
+saying the file is generated.
 
 Rules this module keeps
 -----------------------
@@ -174,7 +175,9 @@ def render_session_note(settings: Settings, store: Store, session_id: str) -> Pa
             for moment, (said, seen) in zip(moments, members, strict=True):
                 blocks += _moment_blocks(moment, said, seen, cfg, embedder, clock, clock_s)
         elif note is None:
-            blocks.append("*Nothing has been recognised in this recording so far: no speech, no text in view, no frames.*")
+            blocks.append(
+                "*Nothing has been recognised in this recording so far: no speech, no text in view, no frames.*"
+            )
         blocks.append(_FOOTER.format(what="session"))
 
         _write_atomic(target, "\n\n".join(blocks) + "\n")
@@ -210,7 +213,9 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
     try:
         day = _date.fromisoformat(str(date).strip())
     except ValueError:
-        raise NoteRenderError(f"{date!r} is not a calendar day. Write it as YYYY-MM-DD, for example 2026-11-22.") from None
+        raise NoteRenderError(
+            f"{date!r} is not a calendar day. Write it as YYYY-MM-DD, for example 2026-11-22."
+        ) from None
     iso = day.isoformat()
     cfg = settings.notes
     clock = _clock_formatter(cfg.time_format)
@@ -265,9 +270,17 @@ def render_day_note(settings: Settings, store: Store, date: str) -> Path:
 # Text hygiene and escaping
 # =============================================================================
 
-# C0/C1 controls (except tab and newline), bidi overrides/isolates, BOM, non-characters, lone surrogates
-_UNPRINTABLE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f‪-‮⁦-⁩﻿￾￿\ud800-\udfff]")
-_NEWLINES = re.compile("\r\n|[\r  \x85\x0b\x0c]")
+# Characters that must never reach a note, as code-point ranges: C0/C1 controls (tab and newline excepted),
+# bidirectional embeddings / overrides / isolates, the byte-order mark, non-characters and lone surrogates.
+_UNPRINTABLE_RANGES = (
+    (0x00, 0x08), (0x0B, 0x0C), (0x0E, 0x1F), (0x7F, 0x9F), (0x202A, 0x202E), (0x2066, 0x2069),
+    (0xFEFF, 0xFEFF), (0xFFFE, 0xFFFF), (0xD800, 0xDFFF),
+)  # fmt: skip
+_UNPRINTABLE = re.compile(
+    "[" + "".join(f"{re.escape(chr(a))}-{re.escape(chr(b))}" for a, b in _UNPRINTABLE_RANGES) + "]"
+)
+# Everything Unicode treats as a line break: CR LF, CR, VT, FF, NEL, LINE SEPARATOR, PARAGRAPH SEPARATOR.
+_NEWLINES = re.compile("\r\n|[" + "".join(chr(c) for c in (0x0D, 0x0B, 0x0C, 0x85, 0x2028, 0x2029)) + "]")
 
 
 def _clean(text: object) -> str:
@@ -385,11 +398,11 @@ def _tags(raw: Iterable[object]) -> list[str]:
 
 def _local(ts: object) -> datetime | None:
     """Local datetime of an epoch timestamp, or None when it is not a usable timestamp."""
-    if isinstance(ts, bool) or not isinstance(ts, (int, float)) or not math.isfinite(ts):
+    if isinstance(ts, (bool, str, bytes)) or ts is None:
         return None
     try:
-        return local_dt(float(ts))
-    except (OverflowError, OSError, ValueError):
+        return local_dt(float(ts)) if math.isfinite(ts) else None  # type: ignore[arg-type]
+    except (TypeError, OverflowError, OSError, ValueError):
         return None
 
 
@@ -478,12 +491,13 @@ def _note_sections(
     who = _inline_list(note.people)
     where = _inline_list(note.places)
     if who or where:
-        lines = ([f"**People:** {who}"] if who else []) + ([f"**Places:** {where}"] if where else [])
-        blocks += ["## People and places", "  \n".join(lines)]
+        lines = ([f"- **People:** {who}"] if who else []) + ([f"- **Places:** {where}"] if where else [])
+        blocks += ["## People and places", "\n".join(lines)]
     return blocks
 
 
-_BULLET = re.compile(r"^\s*(?:[-*+•‣◦]|\d{1,3}[.)])\s+(?=\S)")
+# "- item", "* item", "+ item", bullet characters (U+2022, U+2023, U+25E6) and "1." / "1)" at the start of a line
+_BULLET = re.compile(r"^\s*(?:[-*+" + "".join(chr(c) for c in (0x2022, 0x2023, 0x25E6)) + r"]|\d{1,3}[.)])\s+(?=\S)")
 
 
 def _prose(text: str) -> str:
@@ -693,9 +707,13 @@ def _moment_blocks(
     return blocks
 
 
+# whitespace after ". ! ?" or their CJK counterparts (U+3002, U+FF01, U+FF1F)
+_SENTENCE_END = re.compile("(?<=[.!?" + "".join(chr(c) for c in (0x3002, 0xFF01, 0xFF1F)) + r"])\s")
+
+
 def _first_sentence(text: str, limit: int = 220) -> str:
     line = _one_line(text)
-    match = re.search(r"(?<=[.!?。！？])\s", line)
+    match = _SENTENCE_END.search(line)
     if match and match.start() >= 12:
         line = line[: match.start()]
     return _shorten(line, limit)
@@ -726,7 +744,10 @@ def _screen_text(frames: list[Keyframe]) -> str:
 
 
 def _number(value: object) -> float:
-    return float(value) if isinstance(value, (int, float)) and math.isfinite(value) else 0.0
+    try:
+        return float(value) if math.isfinite(value) else 0.0  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return 0.0
 
 
 def _pick_images(frames: list[Keyframe], limit: int) -> list[Keyframe]:
@@ -810,7 +831,10 @@ def _transcript(said: list[Utterance], clock_s: Callable[[float], str]) -> str:
 # =============================================================================
 
 
-def _session_line(settings: Settings, store: Store, session: Session, days_dir: Path, clock: Callable[[float], str]) -> str:
+def _session_line(
+    settings: Settings, store: Store, session: Session, days_dir: Path, clock: Callable[[float], str]
+) -> str:
+    """One entry of the day's session list: time range, title (linked when its note exists), one-line summary."""
     start, end = _session_span(session, store, [], [], [])
     title = _md(_session_title(session))
     path = settings.abs(session.note_path) if session.note_path else None
@@ -911,7 +935,8 @@ def _free_path(directory: Path, stem: str, session_id: str, previous: Path | Non
         if owner is None and previous is not None and os.path.lexists(previous) and _same_file(candidate, previous):
             return candidate
     raise NoteRenderError(
-        f"There are already thousands of notes named {stem!r} in {directory}. Move or delete some of them and try again."
+        f"There are already thousands of notes named {stem!r} in {directory}. "
+        "Move or delete some of them and try again."
     )
 
 

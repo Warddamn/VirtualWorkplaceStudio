@@ -309,6 +309,7 @@ textarea::placeholder {
 
 .ask-link {
   margin-left: auto;
+  gap: 0;
 }
 
 /* ------------------------------------------------------------------ layout */
@@ -873,6 +874,11 @@ h1 {
 
 .result-where {
   min-width: 0;
+}
+
+.result-more {
+  font-size: 0.82rem;
+  font-style: italic;
 }
 
 .result-text {

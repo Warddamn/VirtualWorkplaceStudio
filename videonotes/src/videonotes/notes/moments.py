@@ -83,6 +83,10 @@ _GAIN_PAUSE = 2.0  # x (speech pause / gap), capped at 1
 _GAIN_EMPTY = 1.0  # x (stretch with nothing at all / gap), capped at 1
 _GAIN_SCENE = 2.0  # the piece would start on a scene-change keyframe
 _GAIN_NOVEL = 1.0  # x novelty, for keyframes at or above HIGH_NOVELTY
+# The splitter looks at every place between two atoms unless a maximum-length piece would hold more than
+# _DENSE_ATOMS of them; then only the best place per (maximum / _SLICES) seconds stays a candidate.
+_DENSE_ATOMS = 600
+_SLICES = 400
 
 
 @dataclass(slots=True)
@@ -91,7 +95,6 @@ class _Item:
     end: float
     speech: bool
     ref: int | None
-    clip_id: int | None = None
     scene: bool = False
     novelty: float = 0.0
 
@@ -211,7 +214,13 @@ def segment_moments(
 
 
 def _finite(value: object) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    """True for a real, finite number (numpy scalars included; not bool, None or text)."""
+    if isinstance(value, (bool, str, bytes)) or value is None:
+        return False
+    try:
+        return math.isfinite(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return False
 
 
 def _limits(cfg: NotesSettings) -> tuple[float, float, float]:
@@ -240,7 +249,7 @@ def _timeline(utterances: list[Utterance], keyframes: list[Keyframe]) -> list[_I
             continue
         start = float(u.ts0)
         end = float(u.ts1) if _finite(u.ts1) and u.ts1 >= start else start
-        item = _Item(start, end, True, u.id, u.clip_id)
+        item = _Item(start, end, True, u.id)
         keyed.append((start, 0, end, u.id if u.id is not None else -1, order, item))
     for order, k in enumerate(keyframes):
         if not _finite(k.ts):
@@ -248,7 +257,7 @@ def _timeline(utterances: list[Utterance], keyframes: list[Keyframe]) -> list[_I
             continue
         ts = float(k.ts)
         novelty = float(k.novelty) if _finite(k.novelty) else 0.0
-        item = _Item(ts, ts, False, k.id, k.clip_id, scene=k.reason == "scene", novelty=novelty)
+        item = _Item(ts, ts, False, k.id, scene=k.reason == "scene", novelty=novelty)
         keyed.append((ts, 1, ts, k.id if k.id is not None else -1, order, item))
     if dropped:
         log.warning("ignored %d utterances/keyframes without a usable timestamp", dropped)
@@ -384,31 +393,51 @@ def _split_long(
 ) -> list[int]:
     """Where to cut atoms[lo:hi] so that no piece exceeds ``max_s`` (if that is possible at all).
 
-    Optimal partition by dynamic programming over the atoms; the inner loop only
-    looks back as far as one maximum-length piece reaches, so the cost is
-    O(atoms x atoms-per-piece) even for a day-long span.
+    Optimal partition by dynamic programming over the places a piece may start
+    at.  The inner loop only looks back as far as one maximum-length piece
+    reaches, and very dense spans are thinned to the best candidate per small
+    time slice first, so the cost stays bounded for day-long sessions and any
+    setting of the maximum.
     """
     n = len(atoms)
-    m = hi - lo
+    # starts[k]: atom index at which piece candidate k begins; starts[-1] == hi closes the span
+    starts = list(range(lo, hi))
+    span = atoms[hi - 1].end - atoms[lo].start
+    if span > 0 and (hi - lo) * max_s / span > _DENSE_ATOMS:
+        width = max_s / _SLICES
+        keep: set[int] = set()
+        best_in_slice: dict[int, int] = {}
+        for c in range(lo + 1, hi):
+            # an atom longer than a slice keeps the places right before and after it, so it can always stand alone
+            if atoms[c].end - atoms[c].start > width or atoms[c - 1].end - atoms[c - 1].start > width:
+                keep.add(c)
+            slot = int((atoms[c].start - atoms[lo].start) / width)
+            if slot not in best_in_slice or gains[c] > gains[best_in_slice[slot]]:
+                best_in_slice[slot] = c
+        starts = [lo, *sorted(keep | set(best_in_slice.values()))]
+    m = len(starts)
+    starts.append(hi)
+    # latest end of anything between one candidate and the next
+    ends = [max(atom.end for atom in atoms[starts[k] : starts[k + 1]]) for k in range(m)]
+
     best = [math.inf] * (m + 1)
     back = [0] * (m + 1)
     best[0] = 0.0
     for i in range(1, m + 1):
-        stop = atoms[lo + i].start if lo + i < n else math.inf  # a piece ends where the next one starts
+        stop = atoms[starts[i]].start if starts[i] < n else math.inf  # a piece ends where the next one starts
         end = -math.inf
         for j in range(i - 1, -1, -1):
-            first = atoms[lo + j]
-            end = max(end, first.end)
-            duration = max(0.0, min(end, stop) - first.start)
+            end = max(end, ends[j])
+            duration = max(0.0, min(end, stop) - atoms[starts[j]].start)
             if duration > max_s and j < i - 1:
-                break  # longer pieces only get worse; a single over-long atom is still allowed
+                break  # longer pieces only get worse; a single over-long stretch is still allowed
             cost = best[j] + _COST_PIECE + _COST_EVEN * (duration / max_s) ** 2
             if duration > max_s:
                 cost += _COST_OVER * (1.0 + (duration - max_s) / max_s)
             if duration < min_s:
                 cost += _COST_SHORT * (1.0 - duration / min_s)
             if j > 0:
-                cost -= gains[lo + j]
+                cost -= gains[starts[j]]
             if cost < best[i] - 1e-9:
                 best[i] = cost
                 back[i] = j
@@ -417,7 +446,7 @@ def _split_long(
     while i > 0:
         j = back[i]
         if j > 0:
-            cuts.append(lo + j)
+            cuts.append(starts[j])
         i = j
     cuts.reverse()
     return cuts

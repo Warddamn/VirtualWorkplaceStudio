@@ -885,30 +885,53 @@ class Library:
         }
 
     def search(self, query: str, *, day: str | None, kinds: list[str], limit: int) -> dict[str, Any]:
-        hits = search_mod.search(self.store, query, limit=limit, kinds=kinds or None, day=day) if query else []
+        """Search hits in rank order, with repeats of the same on-screen text folded together.
+
+        A sign or whiteboard is usually caught by several keyframes in a row; those
+        would otherwise fill the page with identical results.  Frames of one moment
+        that carry the same text become one hit with a ``similar`` count.
+        """
+        fetch = min(limit * 4, 400)
+        hits = search_mod.search(self.store, query, limit=fetch, kinds=kinds or None, day=day) if query else []
         look = _Lookup(self.store)
         words = query_words(query)
-        out = []
+        out: list[dict[str, Any]] = []
+        folded: dict[tuple[Any, ...], dict[str, Any]] = {}
+        truncated = len(hits) >= fetch
         for hit in hits:
+            key: tuple[Any, ...] | None = None
+            if hit.kind in ("ocr", "caption"):
+                ref = int(hit.ref_id) if _ID_RE.match(hit.ref_id or "") else None
+                moment = look.moment_at(hit.session_id, hit.ts, keyframe_id=ref)
+                key = (hit.kind, hit.session_id, moment.id if moment else None, " ".join(hit.text.split()).casefold())
+                if key in folded:
+                    folded[key]["similar"] += 1
+                    continue
+            if len(out) >= limit:
+                truncated = True
+                break
             target = self._target(look, hit.kind, hit.ref_id, hit.session_id, hit.ts)
             if target is None:
                 continue  # an index row whose session is gone
-            out.append(
-                {
-                    "kind": hit.kind,
-                    "ref_id": hit.ref_id,
-                    "time": self.when(hit.ts),
-                    "snippet": hit.snippet,
-                    "parts": split_snippet(hit.snippet, words),
-                    "score": round(hit.score, 4),
-                    **target,
-                }
-            )
+            item = {
+                "kind": hit.kind,
+                "ref_id": hit.ref_id,
+                "time": self.when(hit.ts),
+                "snippet": hit.snippet,
+                "parts": split_snippet(hit.snippet, words),
+                "score": round(hit.score, 4),
+                "similar": 0,
+                **target,
+            }
+            if key is not None:
+                folded[key] = item
+            out.append(item)
         return {
             "query": query,
             "day": self.day_labels(day) if day else None,
             "kinds": kinds,
             "count": len(out),
+            "truncated": truncated,
             "hits": out,
         }
 

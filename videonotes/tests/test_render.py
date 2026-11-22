@@ -24,6 +24,7 @@ DAY = tu.local_date(T0)
 SID = "20261122-143200-ab12"
 
 JPEG = b"\xff\xd8\xff\xe0fake-jpeg-"
+FRONT_MATTER_KEYS = ["title", "date", "start", "end", "duration", "session_id", "kind", "source", "tags", "summarizer"]
 
 
 # ---------------------------------------------------------------------------
@@ -46,8 +47,10 @@ class Lib:
         self._frames: list[Keyframe] = []
         self._said: list[Utterance] = []
 
-    def frame(self, t: float, *, ocr: str | None = None, caption: str | None = None, reason: str = "interval",
-              novelty: float = 0.1, sharpness: float = 1.0, on_disk: bool = True, suffix: str = ".jpg") -> Lib:  # fmt: skip
+    def frame(
+        self, t: float, *, ocr: str | None = None, caption: str | None = None, reason: str = "interval",
+        novelty: float = 0.1, sharpness: float = 1.0, on_disk: bool = True, suffix: str = ".jpg",
+    ) -> Lib:  # fmt: skip
         path = self.frames_dir / f"frame_{len(self._frames):04d}{suffix}"
         if on_disk:
             path.write_bytes(JPEG + str(t).encode())
@@ -232,7 +235,7 @@ def test_session_note_has_every_section_in_order(cfg: Settings, store: Store):
     text = path.read_text(encoding="utf-8")
 
     fm = front_matter(text)
-    assert list(fm) == ["title", "date", "start", "end", "duration", "session_id", "kind", "source", "tags", "summarizer"]
+    assert list(fm) == FRONT_MATTER_KEYS
     assert fm["title"] == "Planning meeting" and fm["session_id"] == SID and fm["kind"] == "import"
     assert fm["date"] == DAY and fm["start"] == f"{tu.local_dt(T0):%Y-%m-%dT%H:%M:%S}"
     assert fm["end"] == f"{tu.local_dt(T0 + 600):%Y-%m-%dT%H:%M:%S}" and fm["duration"] == "10 min"
@@ -264,7 +267,7 @@ def test_session_note_has_every_section_in_order(cfg: Settings, store: Store):
     assert "- Falcon beta ships on June 14\n- Sensors are the open risk" in text
     assert f"- [ ] Email the quarterly budget to Sarah (owner: me; due: Friday; {clock(T0 + 8)})" in lines
     assert "- [ ] Call the vendor about sensors" in lines  # nothing appended when owner / due / time are unknown
-    assert "**People:** Sarah, Bob  \n**Places:** Room 4B" in text
+    assert "## People and places\n\n- **People:** Sarah, Bob\n- **Places:** Room 4B\n" in text
     assert "Not summarised" not in text
 
 
@@ -277,7 +280,8 @@ def test_captured_text_is_verbatim_and_deduplicated(cfg: Settings, store: Store)
 
 
 def test_empty_sections_are_omitted(cfg: Settings, store: Store):
-    lib = demo_lib(cfg, store).summarise(SessionNote(title="Short one", summary="Just a summary.", llm_backend="extractive"))
+    bare = SessionNote(title="Short one", summary="Just a summary.", llm_backend="extractive")
+    lib = demo_lib(cfg, store).summarise(bare)
     text = lib.render().read_text(encoding="utf-8")
     level2 = [h for h in headings(text) if h.startswith("## ")]
     assert level2 == ["## Summary", "## Timeline"]
@@ -369,7 +373,7 @@ def test_links_resolve_and_keyframes_are_copied_not_moved(cfg: Settings, store: 
 
 def test_image_choice_prefers_informative_frames_spread_in_time(cfg: Settings):
     def kf(i: int, ts: float, **kw: object) -> Keyframe:
-        return Keyframe(clip_id=1, session_id=SID, t=ts, ts=T0 + ts, path=f"f{i}.jpg", id=i, **kw)  # type: ignore[arg-type]
+        return Keyframe(clip_id=1, session_id=SID, t=ts, ts=T0 + ts, path=f"f{i}.jpg", id=i, **kw)  # type: ignore
 
     frames = [
         kf(1, 0), kf(2, 10, ocr_text="slide one"), kf(3, 20, caption="a slide", ocr_text="slide one"),
@@ -679,9 +683,9 @@ def test_unsegmented_session_is_segmented_for_display_only(cfg: Settings, store:
 def test_stale_moment_ids_fall_back_to_time(cfg: Settings, store: Store):
     lib = demo_lib(cfg, store)
     # the clip is transcribed again: utterance ids change, the stored moments still list the old ones
-    store.replace_utterances(lib.clip.id, lib._said + [
-        Utterance(clip_id=lib.clip.id, session_id=SID, t0=310, t1=312, ts0=T0 + 310, ts1=T0 + 312, text="A late addition.")
-    ])  # fmt: skip
+    late = Utterance(clip_id=lib.clip.id, session_id=SID, t0=310, t1=312, ts0=T0 + 310, ts1=T0 + 312,
+                     text="A late addition.")  # fmt: skip
+    store.replace_utterances(lib.clip.id, [*lib._said, late])
     text = lib.render().read_text(encoding="utf-8")
     second = text[text.rindex("### ") :]
     assert "A late addition." in second and "The design review is in room 4B" in second
@@ -811,7 +815,7 @@ def test_hostile_summaries_titles_and_tags_cannot_break_a_note(cfg: Settings, st
     assert path.name == f"{DAY} {clock(T0, '%H%M')} Plan details script x script etc passwd --- evil yes.md"
     # front matter: one key per line, values survive intact, nothing was injected
     fm = front_matter(text)
-    assert list(fm) == ["title", "date", "start", "end", "duration", "session_id", "kind", "source", "tags", "summarizer"]
+    assert list(fm) == FRONT_MATTER_KEYS
     assert fm["title"] == " ".join(title.split()) and fm["summarizer"] == "<b>model</b> ---"
     assert all(re.fullmatch(r"[\w/-]+", tag) for tag in fm["tags"])  # type: ignore[union-attr]
     # exactly the headings we wrote, in order
@@ -876,7 +880,8 @@ def test_escaping_helpers():
     html = R._html
     assert html("a <b> & \"c\"") == "a &lt;b&gt; &amp; &quot;c&quot;"
     assert html("# x `y` [[z]] $1 a_b *c* 50% a=b ~t~ \\ ^q |") == (
-        "&#35; x &#96;y&#96; &#91;&#91;z&#93;&#93; &#36;1 a&#95;b &#42;c&#42; 50&#37; a&#61;b &#126;t&#126; &#92; &#94;q &#124;"
+        "&#35; x &#96;y&#96; &#91;&#91;z&#93;&#93; &#36;1 a&#95;b &#42;c&#42; 50&#37; a&#61;b &#126;t&#126; "
+        "&#92; &#94;q &#124;"
     )
     assert html("one\n\ntwo") == "one two"
 
@@ -890,7 +895,8 @@ def test_escaping_helpers():
     assert R._relative_link(Path("/v/sessions/2026-11-22 1432 Café (2).md"), Path("/v/days")) == (
         "../sessions/2026-11-22%201432%20Café%20%282%29.md"
     )
-    assert R._safe_component(SID) == SID and R._safe_component("../x y") == ".._x_y" and R._safe_component("..") == "session"
+    assert R._safe_component(SID) == SID and R._safe_component("../x y") == ".._x_y"
+    assert R._safe_component("..") == "session"
 
 
 def test_prose_keeps_paragraphs_and_simple_lists():
@@ -939,7 +945,8 @@ def test_day_note_with_digest_and_sessions(cfg: Settings, store: Store):
     digest = DayDigest(
         date=DAY, headline="Planning, then a walk", summary="A planning day.\n\nEnded with a walk.",
         highlights=["Falcon date set", "Saw a heron"],
-        action_items=[ActionItem("Email the budget", "me", "Friday", T0 + 8), ActionItem("Buy milk", ts=T0 - 86400 * 3)],
+        action_items=[ActionItem("Email the budget", "me", "Friday", T0 + 8),
+                      ActionItem("Buy milk", ts=T0 - 86400 * 3)],
         session_ids=[a.sid, b.sid], llm_backend="ollama:qwen3:4b",
     )  # fmt: skip
     store.save_day(digest)

@@ -258,6 +258,13 @@
     return el("p", { class: "chip-row" }, el("span", { class: "chip-label", text: label }), values.map((v) => chip(v)));
   }
 
+  /** "14:32–15:10", or with seconds when both ends fall in the same minute. */
+  function timeRange(start, end) {
+    if (!start) return "";
+    if (!end || end.ts <= start.ts) return start.clock;
+    return end.clock !== start.clock ? `${start.clock}–${end.clock}` : `${start.precise}–${end.precise}`;
+  }
+
   function sessionTimes(s) {
     const bits = [];
     if (s.start) bits.push(s.end && s.end.clock !== s.start.clock ? `${s.start.clock}–${s.end.clock}` : s.start.clock);
@@ -607,7 +614,7 @@
         el(
           "span",
           { class: "frame-meta" },
-          el("span", { text: frame.time ? frame.time.clock : "" }),
+          el("span", { text: frame.time ? frame.time.precise : "" }),
           frame.ocr_text ? el("span", { class: "frame-flag", text: "text" }) : null
         ),
         el("span", { class: "visually-hidden", text: " (enlarge)" })
@@ -665,11 +672,7 @@
 
   function momentItem(moment, context) {
     const salience = moment.salience === "highlight" || moment.salience === "background" ? moment.salience : "normal";
-    const times = moment.start
-      ? moment.end && moment.end.clock !== moment.start.clock
-        ? `${moment.start.clock}–${moment.end.clock}`
-        : moment.start.clock
-      : "";
+    const times = timeRange(moment.start, moment.end);
     const summary = el(
       "summary",
       null,
@@ -951,7 +954,8 @@
           { class: "result-meta" },
           el("span", { class: "result-time", text: item.time ? item.time.clock : "" }),
           chip(HIT_KIND[item.kind] || item.kind, "kind-" + item.kind),
-          el("span", { class: "result-where", text: item.moment_title ? `${item.session_title} › ${item.moment_title}` : item.session_title })
+          el("span", { class: "result-where", text: item.moment_title ? `${item.session_title} › ${item.moment_title}` : item.session_title }),
+          item.similar ? el("span", { class: "result-more", text: `+ ${plural(item.similar, "similar frame")}` }) : null
         ),
         body
       )
@@ -974,7 +978,13 @@
     const data = await api("/api/search?" + params.toString());
 
     head.append(
-      el("p", { class: "meta" }, data.count ? `${plural(data.count, "match", "matches")} for ` : "No matches for ", el("q", { text: data.query }), data.day ? ` on ${data.day.label}` : "")
+      el(
+        "p",
+        { class: "meta" },
+        data.count ? `${data.truncated ? "The best " : ""}${plural(data.count, "match", "matches")} for ` : "No matches for ",
+        el("q", { text: data.query }),
+        data.day ? ` on ${data.day.label}` : ""
+      )
     );
 
     const kinds = [["", "Everything"]].concat(Object.entries(HIT_KIND));
