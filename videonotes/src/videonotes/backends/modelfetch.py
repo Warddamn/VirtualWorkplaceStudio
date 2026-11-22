@@ -110,6 +110,14 @@ class UnsafeArchiveError(ModelFetchError):
     """The archive contains an entry that would be written outside the destination."""
 
 
+class _Restart(Exception):
+    """The partial file cannot be continued; start again from byte 0."""
+
+
+class _LocalIOError(Exception):
+    """Writing the download to disk failed (as opposed to reading it from the network)."""
+
+
 # -- names, markers ---------------------------------------------------------------------
 
 
@@ -137,30 +145,31 @@ def marker_path(url: str, dest_dir: str | Path) -> Path:
     return Path(dest_dir) / f".{archive_name(url)}.complete"
 
 
-def _read_marker(url: str, dest_dir: Path) -> dict[str, Any] | None:
+def _fetched_members(url: str, dest: Path, expected_member: str | None) -> list[str] | None:
+    """Top-level names a completed fetch of ``url`` put into ``dest``; None if it is not (or no longer) complete."""
     try:
-        data = json.loads(marker_path(url, dest_dir).read_text(encoding="utf-8"))
+        data = json.loads(marker_path(url, dest).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
-    return data if isinstance(data, dict) and data.get("url") == url else None
+    if not isinstance(data, dict) or data.get("url") != url or not isinstance(data.get("members"), list):
+        return None
+    members = [m for m in data["members"] if isinstance(m, str)]
+    if not members or not all((dest / m).exists() for m in members):
+        return None
+    if expected_member is not None and not (dest / expected_member).exists():
+        return None
+    return members
 
 
-def _result_path(dest_dir: Path, members: list[str], expected_member: str | None) -> Path:
+def _result_path(dest: Path, members: list[str], expected_member: str | None) -> Path:
     if expected_member:
-        return dest_dir / expected_member
-    return dest_dir / members[0] if len(members) == 1 else dest_dir
+        return dest / expected_member
+    return dest / members[0] if len(members) == 1 else dest
 
 
 def is_fetched(url: str, dest_dir: str | Path, *, expected_member: str | None = None) -> bool:
     """True if :func:`fetch_archive` already completed for this URL and its files are still there."""
-    dest = Path(dest_dir)
-    marker = _read_marker(url, dest)
-    if marker is None:
-        return False
-    members = [m for m in marker.get("members", []) if isinstance(m, str)]
-    if not members or not all((dest / m).exists() for m in members):
-        return False
-    return expected_member is None or (dest / expected_member).exists()
+    return _fetched_members(url, Path(dest_dir).expanduser(), expected_member) is not None
 
 
 def manual_instructions(url: str, dest_dir: str | Path, *, expected_member: str | None = None) -> str:
@@ -172,7 +181,7 @@ def manual_instructions(url: str, dest_dir: str | Path, *, expected_member: str 
     else:
         command = f'tar -xf ~/Downloads/{name} -C "{dest}"'
     lines = [
-        "To install it by hand instead: download",
+        "To install it by hand instead, download",
         f"    {url}",
         "in a web browser, then unpack it into the models folder:",
         f'    mkdir -p "{dest}"',
@@ -187,27 +196,25 @@ def manual_instructions(url: str, dest_dir: str | Path, *, expected_member: str 
 
 
 def _describe_network_error(exc: BaseException, timeout: float) -> str:
-    reason = exc.reason if isinstance(exc, urllib.error.URLError) and not isinstance(exc, urllib.error.HTTPError) else exc
-    if isinstance(reason, TimeoutError) or "timed out" in str(reason).lower():
-        return f"the connection stalled (no data for {timeout:.0f} s)"
     if isinstance(exc, urllib.error.HTTPError):
         return f"the server answered HTTP {exc.code} {exc.reason}"
-    text = str(reason) or type(reason).__name__
-    return f"network problem: {text}"
+    reason = exc.reason if isinstance(exc, urllib.error.URLError) else exc
+    if isinstance(reason, TimeoutError) or "timed out" in str(reason).lower():
+        return f"the connection stalled (no data for {timeout:.0f} s)"
+    return f"network problem: {str(reason) or type(reason).__name__}"
 
 
 def _parse_content_range(value: str | None) -> tuple[int | None, int | None]:
     """``bytes 100-199/1000`` -> (100, 1000); ``bytes */1000`` -> (None, 1000)."""
     if not value or not value.strip().lower().startswith("bytes"):
         return None, None
-    spec = value.strip()[5:].strip()
-    span, _, total = spec.partition("/")
+    span, _, total_text = value.strip()[5:].strip().partition("/")
     start: int | None = None
     if "-" in span:
         with contextlib.suppress(ValueError):
             start = int(span.split("-", 1)[0])
     try:
-        return start, int(total)
+        return start, int(total_text)
     except ValueError:
         return start, None
 
@@ -218,74 +225,6 @@ def _validator(headers: HTTPMessage) -> str:
     if etag and not etag.startswith("W/"):
         return etag
     return (headers.get("Last-Modified") or "").strip()
-
-
-class _Restart(Exception):
-    """The partial file cannot be continued; start again from byte 0."""
-
-
-def _attempt(
-    url: str, part: Path, meta: Path, progress: ProgressFn | None, timeout: float
-) -> tuple[bool, int, int | None]:
-    """One HTTP request. Returns (finished, bytes now on disk, total or None)."""
-    offset = part.stat().st_size if part.is_file() else 0
-    saved: dict[str, Any] = {}
-    if offset:
-        try:
-            saved = json.loads(meta.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            saved = {}
-        if saved.get("url") != url:  # a leftover from something else: do not glue two files together
-            part.unlink(missing_ok=True)
-            offset, saved = 0, {}
-    headers = {"User-Agent": _USER_AGENT, "Accept-Encoding": "identity"}
-    if offset:
-        headers["Range"] = f"bytes={offset}-"
-        if saved.get("validator"):
-            headers["If-Range"] = str(saved["validator"])
-    request = urllib.request.Request(url, headers=headers)
-    try:
-        response = urllib.request.urlopen(request, timeout=timeout)  # noqa: S310 - scheme checked by caller
-    except urllib.error.HTTPError as exc:
-        with exc:
-            if exc.code == 416 and offset:
-                _, total = _parse_content_range(exc.headers.get("Content-Range"))
-                if total is not None and total == offset:
-                    return True, offset, total  # everything was already there
-                raise _Restart from None
-        raise
-    with response:
-        status = getattr(response, "status", 200)
-        total: int | None
-        if status == 206:
-            start, total = _parse_content_range(response.headers.get("Content-Range"))
-            if start != offset:
-                raise _Restart
-        else:  # 200: the server ignored the range, or the file changed (If-Range) -> from the top
-            offset = 0
-            length = response.headers.get("Content-Length")
-            total = int(length) if length and length.isdigit() else None
-        meta.write_text(
-            json.dumps({"url": url, "validator": _validator(response.headers), "total": total}), encoding="utf-8"
-        )
-        if total is not None:
-            _require_free_space(part.parent, (total - offset) + 2 * total, url)
-        done = offset
-        if progress:
-            progress(done, total)
-        with open(part, "r+b" if offset else "wb") as out:
-            if offset:
-                out.seek(offset)
-                out.truncate()
-            while True:
-                block = response.read(_CHUNK)
-                if not block:
-                    break
-                out.write(block)
-                done += len(block)
-                if progress:
-                    progress(done, total)
-    return (total is None or done >= total), done, total
 
 
 def _require_free_space(folder: Path, needed: int, url: str) -> None:
@@ -302,6 +241,79 @@ def _require_free_space(folder: Path, needed: int, url: str) -> None:
         )
 
 
+def _attempt(
+    url: str, part: Path, meta: Path, progress: ProgressFn | None, timeout: float
+) -> tuple[bool, int, int | None]:
+    """One HTTP request appending to ``part``. Returns (finished, bytes on disk, total or None)."""
+    offset = part.stat().st_size if part.is_file() else 0
+    saved: dict[str, Any] = {}
+    if offset:
+        try:
+            saved = json.loads(meta.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            saved = {}
+        if not isinstance(saved, dict) or saved.get("url") != url:
+            # a partial file we know nothing about: never glue two different downloads together
+            part.unlink(missing_ok=True)
+            offset, saved = 0, {}
+    headers = {"User-Agent": _USER_AGENT, "Accept-Encoding": "identity"}
+    if offset:
+        headers["Range"] = f"bytes={offset}-"
+        if saved.get("validator"):
+            headers["If-Range"] = str(saved["validator"])
+    request = urllib.request.Request(url, headers=headers)
+    try:
+        response = urllib.request.urlopen(request, timeout=timeout)  # scheme was checked by the caller
+    except urllib.error.HTTPError as exc:
+        if exc.code == 416 and offset:  # "range not satisfiable": the partial file is as long as the real one, or longer
+            _, total = _parse_content_range(exc.headers.get("Content-Range") if exc.headers else None)
+            with contextlib.suppress(Exception):
+                exc.close()
+            if total is not None and total == offset:
+                return True, offset, total
+            raise _Restart from None
+        raise
+    with response:
+        total: int | None
+        if getattr(response, "status", 200) == 206:
+            start, total = _parse_content_range(response.headers.get("Content-Range"))
+            if start != offset:
+                raise _Restart
+        else:  # 200: the server ignored the range, or the file changed (If-Range) -> from the top
+            offset = 0
+            length = response.headers.get("Content-Length")
+            total = int(length) if length and length.strip().isdigit() else None
+        if total is not None:
+            # the rest of the download, plus room to unpack it (archive and unpacked copy coexist briefly)
+            _require_free_space(part.parent, (total - offset) + int(1.5 * total), url)
+        done = offset
+        try:
+            meta.write_text(
+                json.dumps({"url": url, "validator": _validator(response.headers), "total": total}), encoding="utf-8"
+            )
+            out = open(part, "r+b" if offset else "wb")  # noqa: SIM115 - closed by the with-block below
+        except OSError as exc:
+            raise _LocalIOError(exc.strerror or str(exc)) from exc
+        with out:
+            if offset:
+                out.seek(offset)
+                out.truncate()
+            if progress:
+                progress(done, total)
+            while True:
+                block = response.read(_CHUNK)
+                if not block:
+                    break
+                try:
+                    out.write(block)
+                except OSError as exc:
+                    raise _LocalIOError(exc.strerror or str(exc)) from exc
+                done += len(block)
+                if progress:
+                    progress(done, total)
+    return (total is None or done >= total), done, total
+
+
 def download_file(
     url: str,
     dest: str | Path,
@@ -310,13 +322,13 @@ def download_file(
     timeout: float = DEFAULT_TIMEOUT,
     retries: int = DEFAULT_RETRIES,
 ) -> Path:
-    """Download ``url`` to the file ``dest``, resuming ``dest + ".part"`` if one is there.
+    """Download ``url`` to the file ``dest``, resuming ``<dest>.part`` if one is there.
 
     The file appears under its final name only once it is complete (atomic
-    rename).  Raises :class:`ModelFetchError` after ``retries`` consecutive
-    attempts that made no progress, or at once for errors that retrying will
-    not fix (HTTP 404, disk full).  The partial file is kept so that the next
-    call resumes.
+    rename).  Raises :class:`ModelFetchError` after more than ``retries``
+    consecutive attempts that made no progress, or at once for errors that
+    retrying will not fix (HTTP 404, disk full).  The partial file is kept so
+    that the next call resumes.
     """
     if urllib.parse.urlsplit(url).scheme not in ("http", "https"):
         raise ValueError(f"only http(s) URLs can be downloaded, got {url!r}")
@@ -327,50 +339,51 @@ def download_file(
     failures = 0
     while True:
         before = part.stat().st_size if part.is_file() else 0
-        problem: str
         try:
             finished, done, total = _attempt(url, part, meta, progress, timeout)
         except _Restart:
-            log.info("cannot resume %s; starting the download again", dest.name)
             part.unlink(missing_ok=True)
             meta.unlink(missing_ok=True)
             failures += 1
             if failures > retries:
                 raise ModelFetchError(
-                    f"Could not download {url}\n  the server kept rejecting the request.", url=url, dest_dir=dest.parent
+                    f"Could not download {url}\n  the server kept refusing to continue the download.",
+                    url=url,
+                    dest_dir=dest.parent,
                 ) from None
+            log.info("cannot resume %s; starting the download again", dest.name)
             continue
+        except _LocalIOError as exc:
+            raise ModelFetchError(
+                f"Could not save the download to {part.parent}: {exc}", url=url, dest_dir=dest.parent
+            ) from exc
         except urllib.error.HTTPError as exc:
             if exc.code not in _RETRY_STATUSES:
-                hint = "  The file does not exist at that address." if exc.code in (404, 410) else ""
+                hint = "  There is no such file at that address." if exc.code in (404, 410) else ""
                 raise ModelFetchError(
                     f"Could not download {url}\n  the server answered HTTP {exc.code} {exc.reason}.{hint}",
                     url=url,
                     dest_dir=dest.parent,
                 ) from exc
             problem = _describe_network_error(exc, timeout)
-        except (urllib.error.URLError, HTTPException, TimeoutError, ConnectionError) as exc:
+        except (OSError, HTTPException) as exc:  # URLError, timeouts, resets, TLS errors, …
             problem = _describe_network_error(exc, timeout)
-        except OSError as exc:  # disk full, permission denied, … — not a network problem
-            raise ModelFetchError(
-                f"Could not save the download to {part}: {exc.strerror or exc}", url=url, dest_dir=dest.parent
-            ) from exc
         else:
             if finished:
                 os.replace(part, dest)
                 meta.unlink(missing_ok=True)
                 return dest
-            problem = f"the connection closed early ({done} of {total} bytes)"
+            problem = f"the connection closed early (after {done} of {total} bytes)"
         after = part.stat().st_size if part.is_file() else 0
         failures = 0 if after > before else failures + 1
         if failures > retries:
             kept = f"\n  The {after / 1e6:.0f} MB received so far were kept; running the command again resumes." if after else ""
             raise ModelFetchError(
-                f"Could not download {url}\n  {problem}. Check the internet connection.{kept}",
+                f"Could not download {url}\n  {problem}. Check the internet connection and try again.{kept}",
                 url=url,
                 dest_dir=dest.parent,
             )
-        delay = min(30.0, 1.5 ** max(failures, 1))
+        delay = min(20.0, 1.5 ** max(failures, 1))
         log.warning("download of %s interrupted (%s); retrying in %.0f s", dest.name, problem, delay)
         time.sleep(delay)
 
@@ -386,27 +399,31 @@ def _safe_relative(name: str) -> str:
     if raw.startswith("/") or (len(raw) > 1 and raw[1] == ":"):
         raise UnsafeArchiveError(f"archive entry has an absolute path: {name!r}")
     parts = [p for p in raw.split("/") if p not in ("", ".")]
-    if any(p == ".." for p in parts):
+    if ".." in parts:
         raise UnsafeArchiveError(f"archive entry tries to leave the destination folder: {name!r}")
     return "/".join(parts)
 
 
-def _check_link(member: str, target: str, *, relative_to_member: bool) -> None:
-    """Refuse a symlink / hard link whose target is outside the extraction root."""
+def _check_symlink(member: str, target: str) -> None:
+    """Allow only symlinks that point at or below their own folder.
+
+    Checking where a link *resolves* is fragile (a later entry can change what
+    an earlier path means).  A link target that is relative and has no ``..``
+    cannot go up, so no combination of such links leaves the destination.
+    """
     raw = target.replace("\\", "/")
-    if not raw or raw.startswith("/") or (len(raw) > 1 and raw[1] == ":"):
-        raise UnsafeArchiveError(f"archive entry {member!r} links to an absolute path: {target!r}")
-    base = posixpath.dirname(member) if relative_to_member else ""
-    resolved = posixpath.normpath(posixpath.join(base, raw))
-    if resolved == ".." or resolved.startswith("../") or resolved.startswith("/"):
-        raise UnsafeArchiveError(f"archive entry {member!r} links outside the destination folder: {target!r}")
+    if not raw or raw.startswith("/") or (len(raw) > 1 and raw[1] == ":") or "\x00" in raw:
+        raise UnsafeArchiveError(f"archive entry {member!r} is a link to an absolute path: {target!r}")
+    if ".." in raw.split("/"):
+        raise UnsafeArchiveError(f"archive entry {member!r} is a link that leaves its folder: {target!r}")
 
 
-def _prepare_parent(root: Path, relative: str) -> Path:
-    """Create the parent folders of ``root/relative`` and return the target path.
+def _prepare_target(root: Path, relative: str) -> Path:
+    """Create the parent folders of ``root/relative`` and return the (now free) target path.
 
-    Refuses to go through a symlink (an archive can plant ``a -> elsewhere``
-    and then ask for ``a/file``), and replaces whatever was at the target.
+    Refuses to go through a symlink — an archive can plant ``a -> somewhere``
+    and then ask for ``a/file`` — and removes a link or file already at the target
+    so nothing is ever written *through* one.
     """
     target = root
     parts = relative.split("/")
@@ -424,7 +441,7 @@ def _prepare_parent(root: Path, relative: str) -> Path:
     return target
 
 
-def _copy_limited(src: IO[bytes], dst_path: Path, budget: list[int], mode: int) -> None:
+def _write_member(src: IO[bytes], dst_path: Path, budget: list[int], mode: int) -> None:
     with open(dst_path, "wb") as dst:
         while True:
             block = src.read(_CHUNK)
@@ -436,8 +453,8 @@ def _copy_limited(src: IO[bytes], dst_path: Path, budget: list[int], mode: int) 
                     f"the archive unpacks to more than {MAX_UNPACKED_BYTES / 1e9:.0f} GB; refusing to continue"
                 )
             dst.write(block)
-    # owner can always read/write; keep the executable bit; drop setuid/setgid/sticky and group/other write
-    os.chmod(dst_path, 0o644 | (0o111 if mode & 0o100 else 0))
+    # owner can always read and write; keep the executable bit; never setuid/setgid/sticky or world-writable
+    os.chmod(dst_path, 0o755 if mode & 0o100 else 0o644)
 
 
 def _extract_tar(archive: Path, root: Path, budget: list[int]) -> None:
@@ -447,29 +464,28 @@ def _extract_tar(archive: Path, root: Path, budget: list[int]) -> None:
             if not relative:
                 continue  # the "./" entry
             if member.isdir():
-                target = _prepare_parent(root, relative)
+                target = _prepare_target(root, relative)
                 target.mkdir(exist_ok=True)
             elif member.isreg():
-                target = _prepare_parent(root, relative)
+                target = _prepare_target(root, relative)
                 source = tar.extractfile(member)
                 if source is None:
                     raise ModelFetchError(f"cannot read {member.name!r} from the archive")
                 with source:
-                    _copy_limited(source, target, budget, member.mode)
+                    _write_member(source, target, budget, member.mode)
             elif member.issym():
-                _check_link(relative, member.linkname, relative_to_member=True)
-                target = _prepare_parent(root, relative)
-                os.symlink(member.linkname, target)
+                _check_symlink(relative, member.linkname)
+                os.symlink(member.linkname, _prepare_target(root, relative))
             elif member.islnk():
-                _check_link(relative, member.linkname, relative_to_member=False)
+                # a hard link: copy the file it refers to (which must already have come out of this archive)
                 source_path = root / _safe_relative(member.linkname)
-                if source_path.is_symlink() or not source_path.is_file():
-                    raise UnsafeArchiveError(f"archive entry {member.name!r} is a hard link to something not in the archive")
-                target = _prepare_parent(root, relative)
+                if not source_path.is_file():
+                    raise UnsafeArchiveError(
+                        f"archive entry {member.name!r} is a hard link to {member.linkname!r}, which is not in the archive"
+                    )
+                target = _prepare_target(root, relative)
                 with open(source_path, "rb") as source:
-                    _copy_limited(source, target, budget, member.mode)
-            elif member.type in (tarfile.XHDTYPE, tarfile.XGLTYPE, tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_LONGLINK):
-                continue  # metadata records, already applied by tarfile
+                    _write_member(source, target, budget, member.mode)
             else:
                 raise UnsafeArchiveError(f"archive entry {member.name!r} is a device or other special file")
 
@@ -482,43 +498,43 @@ def _extract_zip(archive: Path, root: Path, budget: list[int]) -> None:
                 continue
             mode = info.external_attr >> 16
             if info.is_dir():
-                _prepare_parent(root, relative).mkdir(exist_ok=True)
+                _prepare_target(root, relative).mkdir(exist_ok=True)
             elif stat.S_ISLNK(mode):
                 link = zf.read(info).decode("utf-8", "replace")
-                _check_link(relative, link, relative_to_member=True)
-                os.symlink(link, _prepare_parent(root, relative))
+                _check_symlink(relative, link)
+                os.symlink(link, _prepare_target(root, relative))
             else:
-                target = _prepare_parent(root, relative)
+                target = _prepare_target(root, relative)
                 with zf.open(info) as source:
-                    _copy_limited(source, target, budget, mode)
+                    _write_member(source, target, budget, mode)
 
 
 def extract_archive(archive: str | Path, dest_dir: str | Path, *, kind: str | None = None) -> list[str]:
-    """Unpack ``archive`` into the existing folder ``dest_dir``. Returns the top-level names created.
+    """Unpack ``archive`` into the folder ``dest_dir``. Returns the top-level names now in it.
 
     Every entry is validated before it is written (see the module docstring);
     an :class:`UnsafeArchiveError` aborts the extraction.  ``kind`` ("tar" or
     "zip") is only needed when the file name does not have a known suffix.
+    Unpack into a fresh folder: files already at an entry's path are replaced.
     """
     archive, root = Path(archive), Path(dest_dir)
     kind = kind or archive_kind(archive.name)
     if kind not in ("tar", "zip"):
-        raise ModelFetchError(f"{archive.name}: not a .tar.bz2 / .tar.gz / .zip archive")
-    root.mkdir(parents=True, exist_ok=True)
-    budget = [MAX_UNPACKED_BYTES]
+        raise ModelFetchError(f"{archive.name} is not a .tar.bz2 / .tar.gz / .tar.xz / .zip archive")
+    damaged = f"{archive.name} is damaged or not a valid archive"
     try:
+        root.mkdir(parents=True, exist_ok=True)
+        budget = [MAX_UNPACKED_BYTES]
         if kind == "tar":
             _extract_tar(archive, root, budget)
         else:
             _extract_zip(archive, root, budget)
-    except (tarfile.TarError, zipfile.BadZipFile, EOFError, ValueError, RuntimeError, NotImplementedError) as exc:
-        if isinstance(exc, ModelFetchError):
-            raise
-        raise ModelFetchError(f"{archive.name} is damaged or not a valid archive ({exc})") from exc
+    except _ARCHIVE_ERRORS as exc:
+        raise ModelFetchError(f"{damaged} ({exc})") from exc
     except OSError as exc:
-        if isinstance(exc, (tarfile.TarError, zipfile.BadZipFile)):
-            raise ModelFetchError(f"{archive.name} is damaged or not a valid archive ({exc})") from exc
-        raise ModelFetchError(f"could not unpack {archive.name} into {root}: {exc.strerror or exc}") from exc
+        if exc.errno is None:  # bz2/gzip report corrupt data as a bare OSError("Invalid data stream")
+            raise ModelFetchError(f"{damaged} ({exc})") from exc
+        raise ModelFetchError(f"Could not unpack {archive.name} into {root}: {exc.strerror or exc}") from exc
     return sorted(p.name for p in root.iterdir())
 
 
@@ -527,13 +543,16 @@ def extract_archive(archive: str | Path, dest_dir: str | Path, *, kind: str | No
 
 @contextlib.contextmanager
 def _locked(lock_file: Path, what: str) -> Iterator[None]:
-    """Hold an advisory lock so two videonotes processes do not fetch the same archive at once."""
+    """Hold an advisory lock so two videonotes processes do not fetch the same archive at once.
+
+    The lock belongs to the open file, so it vanishes with the process that
+    holds it: a crash can never leave a stale lock behind.
+    """
     try:
         import fcntl
     except ImportError:  # not POSIX: go without
         yield
         return
-    lock_file.parent.mkdir(parents=True, exist_ok=True)
     with open(lock_file, "a+b") as handle:
         announced = False
         while True:
@@ -542,7 +561,7 @@ def _locked(lock_file: Path, what: str) -> Iterator[None]:
                 break
             except OSError:
                 if not announced:
-                    log.info("another videonotes process is already downloading %s; waiting for it", what)
+                    log.info("another videonotes process is already fetching %s; waiting for it to finish", what)
                     announced = True
                 time.sleep(1.0)
         try:
@@ -554,10 +573,14 @@ def _locked(lock_file: Path, what: str) -> Iterator[None]:
 
 def _remove(path: Path) -> None:
     if path.is_dir() and not path.is_symlink():
-        shutil.rmtree(path, ignore_errors=True)
+        shutil.rmtree(path)
     else:
-        with contextlib.suppress(OSError):
-            path.unlink()
+        path.unlink()
+
+
+def _reserved(name: str) -> bool:
+    """Top-level names this module uses itself inside ``dest_dir``."""
+    return name == _DOWNLOADS_DIR or name.startswith(_STAGING_PREFIX) or (name.startswith(".") and name.endswith(".complete"))
 
 
 def fetch_archive(
@@ -574,12 +597,12 @@ def fetch_archive(
     Returns ``dest_dir/expected_member`` when ``expected_member`` (a file or
     folder the archive must contain, relative to its root) is given; otherwise
     the archive's single top-level entry, or ``dest_dir`` itself when it has
-    several.  Calling it again once it succeeded costs nothing: the completion
-    marker short-circuits the network.  Existing entries with the same names
-    as the archive's top-level entries are replaced.
+    several.  Calling it again after it succeeded costs nothing: the completion
+    marker short-circuits the network.  Entries already in ``dest_dir`` under
+    the same names as the archive's top-level entries are replaced.
 
-    ``progress(bytes_done, bytes_total)`` is called while downloading (often:
-    throttle in the callback if it does something slow).
+    ``progress(bytes_done, bytes_total)`` is called while downloading, once per
+    block (throttle inside the callback if it does anything slow).
 
     Raises :class:`ModelFetchError` (a ``RuntimeError``) with instructions when
     anything fails; a partial download is kept and resumed by the next call.
@@ -590,26 +613,27 @@ def fetch_archive(
     name = archive_name(url)
     if expected_member is not None:
         expected_member = _safe_relative(expected_member)
-    manual = manual_instructions(url, dest, expected_member=expected_member)
+    downloads = dest / _DOWNLOADS_DIR
 
-    def fail(exc: ModelFetchError) -> ModelFetchError:
-        error = type(exc)(f"{exc}\n{manual}", url=url, dest_dir=dest)
-        error.__cause__ = exc.__cause__ or exc
-        return error
+    def explain(exc: ModelFetchError) -> ModelFetchError:
+        if isinstance(exc, UnsafeArchiveError):
+            text = (
+                f"{name} was NOT unpacked because it looks unsafe: {exc}\n"
+                f"It came from {url}\nDo not unpack it by hand either."
+            )
+        else:
+            text = f"{exc}\n{manual_instructions(url, dest, expected_member=expected_member)}"
+        return type(exc)(text, url=url, dest_dir=dest)
 
     try:
-        dest.mkdir(parents=True, exist_ok=True)
-        downloads = dest / _DOWNLOADS_DIR
-        downloads.mkdir(exist_ok=True)
+        downloads.mkdir(parents=True, exist_ok=True)
     except OSError as exc:
-        raise ModelFetchError(
-            f"Cannot create the models folder {dest}: {exc.strerror or exc}", url=url, dest_dir=dest
-        ) from exc
+        raise explain(ModelFetchError(f"Cannot create the models folder {dest}: {exc.strerror or exc}")) from exc
 
     with _locked(downloads / f"{name}.lock", name):
-        marker = _read_marker(url, dest)
-        if marker is not None and is_fetched(url, dest, expected_member=expected_member):
-            return _result_path(dest, list(marker["members"]), expected_member)
+        members = _fetched_members(url, dest, expected_member)
+        if members is not None:
+            return _result_path(dest, members, expected_member)
 
         archive = downloads / name
         staging: Path | None = None
@@ -617,21 +641,22 @@ def fetch_archive(
             if not archive.is_file():
                 log.info("downloading %s", url)
                 download_file(url, archive, progress=progress, timeout=timeout, retries=retries)
-            staging = Path(tempfile.mkdtemp(prefix=".unpack-", dir=dest))
             log.info("unpacking %s", name)
+            staging = Path(tempfile.mkdtemp(prefix=_STAGING_PREFIX, dir=dest))
             try:
                 members = extract_archive(archive, staging)
-            except ModelFetchError:
-                archive.unlink(missing_ok=True)  # damaged or hostile: never retry with the same bytes
+                if not members:
+                    raise ModelFetchError(f"{name} is empty")
+                if any(_reserved(member) for member in members):
+                    raise UnsafeArchiveError(f"{name} contains an entry with a reserved name")
+                if expected_member and not (staging / expected_member).exists():
+                    raise ModelFetchError(
+                        f"{name} does not contain {expected_member!r} (it contains: {', '.join(members[:8])})"
+                    )
+            except ModelFetchError as exc:
+                if "Could not unpack" not in str(exc):  # the bytes are bad: never try them again
+                    archive.unlink(missing_ok=True)
                 raise
-            if not members:
-                archive.unlink(missing_ok=True)
-                raise ModelFetchError(f"{name} is empty")
-            if expected_member and not (staging / expected_member).exists():
-                archive.unlink(missing_ok=True)
-                raise ModelFetchError(
-                    f"{name} does not contain {expected_member!r} (it contains: {', '.join(members[:8])})"
-                )
             marker_path(url, dest).unlink(missing_ok=True)
             for member in members:
                 target = dest / member
@@ -644,10 +669,11 @@ def fetch_archive(
             os.replace(tmp_marker, marker_path(url, dest))
             archive.unlink(missing_ok=True)
         except ModelFetchError as exc:
-            raise fail(exc) from exc.__cause__
+            raise explain(exc) from exc
         except OSError as exc:
-            raise fail(ModelFetchError(f"Could not install {name} into {dest}: {exc.strerror or exc}")) from exc
+            raise explain(ModelFetchError(f"Could not install {name} into {dest}: {exc.strerror or exc}")) from exc
         finally:
             if staging is not None:
                 shutil.rmtree(staging, ignore_errors=True)
+        log.info("installed %s into %s", name, dest)
         return _result_path(dest, members, expected_member)
