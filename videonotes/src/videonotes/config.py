@@ -72,7 +72,7 @@ class FrameSettings:
     min_gap_s: float = 2.0  # never two keyframes closer than this
     max_gap_s: float = 60.0  # always at least one keyframe this often
     max_per_minute: float = 8.0
-    jpeg_width: int = 1280  # stored keyframe width (never upscaled)
+    jpeg_width: int = 1920  # stored keyframe width (never upscaled); wide enough to read text
     jpeg_quality: int = 3  # ffmpeg -q:v (2 best … 31 worst)
 
 

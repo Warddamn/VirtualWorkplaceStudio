@@ -160,7 +160,16 @@ class Pipeline:
         from .media import ffmpeg as ff
 
         info = ff.probe(self._media_path(clip))
-        if not (info.has_video or info.has_audio):
+        has_audio = info.has_audio
+        if not has_audio:
+            # A low-res proxy may be video-only while the full-quality original has the sound.
+            original = self._original_path(clip)
+            if original is not None:
+                try:
+                    has_audio = ff.probe(original).has_audio
+                except ff.FFmpegError:
+                    has_audio = False
+        if not (info.has_video or has_audio):
             raise ff.FFmpegError(f"{self._media_path(clip).name} has neither video nor audio")
         self.store.update_clip(
             clip.id,
@@ -168,23 +177,19 @@ class Pipeline:
             width=info.width,
             height=info.height,
             fps=info.fps,
-            has_audio=info.has_audio,
+            has_audio=has_audio,
             has_video=info.has_video,
         )
         return {"duration": round(info.duration, 2)}
 
     def _stage_extract(self, clip: Clip) -> dict[str, Any]:
-        from .media import audio as au
         from .media import keyframes as kfm
 
         src = self._media_path(clip)
         detail: dict[str, Any] = {"audio": False, "keyframes": 0}
         if clip.has_audio:
-            wav = self._wav_path(clip)
-            try:
-                au.extract_audio(src, wav)
-                detail["audio"] = True
-            except au.NoAudioError:
+            detail["audio"] = self._extract_wav(clip)
+            if not detail["audio"]:
                 self.store.update_clip(clip.id, has_audio=False)
         keyframes: list[Keyframe] = []
         if clip.has_video:
@@ -217,22 +222,41 @@ class Pipeline:
         detail["keyframes"] = len(keyframes)
         return detail
 
-    def _frame_source(self, clip: Clip) -> Path:
-        """File to cut stills from: the full-quality original when it is still reachable
-        (text on a whiteboard is far more legible at 4K than in the proxy), else the
-        analysed file."""
-        if clip.original_path:
-            original = self.settings.abs(clip.original_path)
-            try:
-                if original.is_file() and original != self._media_path(clip):
-                    return original
-            except OSError:
-                pass
-        return self._media_path(clip)
+    def _original_path(self, clip: Clip) -> Path | None:
+        """The full-quality original of a clip, when there is one and it is still reachable
+        (it usually lives on the camera's card, which may have been unplugged since)."""
+        if not clip.original_path:
+            return None
+        original = self.settings.abs(clip.original_path)
+        try:
+            if original.is_file() and original != self._media_path(clip):
+                return original
+        except OSError:
+            pass
+        return None
 
-    def _stage_transcribe(self, clip: Clip) -> dict[str, Any]:
+    def _frame_source(self, clip: Clip) -> Path:
+        """File to cut stills from: the original when reachable (text on a whiteboard is far
+        more legible in the full-resolution file than in the proxy), else the analysed file."""
+        return self._original_path(clip) or self._media_path(clip)
+
+    def _extract_wav(self, clip: Clip) -> bool:
+        """Write the clip's 16 kHz WAV, from the analysed file or else from the original."""
         from .media import audio as au
 
+        sources = [self._media_path(clip)]
+        original = self._original_path(clip)
+        if original is not None:
+            sources.append(original)
+        for source in sources:
+            try:
+                au.extract_audio(source, self._wav_path(clip))
+                return True
+            except au.NoAudioError:
+                continue
+        return False
+
+    def _stage_transcribe(self, clip: Clip) -> dict[str, Any]:
         if not clip.has_audio:
             self.store.replace_utterances(clip.id, [])
             return {"utterances": 0, "note": "no audio track"}
@@ -240,8 +264,9 @@ class Pipeline:
         if transcriber is None:
             raise _Skip(self._unavailable.get("asr", "no speech-to-text backend"))
         wav = self._wav_path(clip)
-        if not wav.is_file():
-            au.extract_audio(self._media_path(clip), wav)
+        if not wav.is_file() and not self._extract_wav(clip):
+            self.store.replace_utterances(clip.id, [])
+            return {"utterances": 0, "note": "no audio track"}
         language = self.settings.asr.language
         segments = transcriber.transcribe(wav, language=None if language in ("", "auto") else language)
         utterances = [
