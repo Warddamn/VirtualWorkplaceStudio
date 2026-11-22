@@ -38,7 +38,7 @@ DEMO_SCENES: list[DemoScene] = [
     DemoScene(
         name="desk",
         duration=18,
-        background="testsrc2",
+        background="smptehdbars",  # no text in it: OCR should find nothing here
         speech="Okay, quick note to self. Remember to email the quarterly budget to Sarah before Friday.",
     ),
     DemoScene(

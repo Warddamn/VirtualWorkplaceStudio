@@ -1508,3 +1508,24 @@ def test_answer_prompt_fits_the_budget_and_prefers_matching_evidence():
     assert "The safe combination is 4 8 15 16 23 42." in evidence_of(call["prompt"])
     assert evidence[150] in answer.sources and len(answer.sources) < 200
     assert len(call["prompt"].split("Question: ")[1]) <= 600
+
+
+@pytest.mark.parametrize(
+    ("sentence", "expected"),
+    [
+        # speech-to-text joined three sentences with commas: keep the decision's clause only
+        (
+            "This is the whiteboard from the planning meeting, we decided to ship the Falcon beta on June 14th, "
+            "I need to call the vendor about the sensors.",
+            "We decided to ship the Falcon beta on June 14th",
+        ),
+        # the cue's own clause is too short to stand alone: keep the sentence
+        ("We decided, after a long debate, to ship on Friday.", "We decided, after a long debate, to ship on Friday."),
+        ("We decided to go with the blue design.", "We decided to go with the blue design."),
+        ("We have not decided anything yet, let's wait.", None),
+    ],
+)
+def test_spoken_decision_keeps_the_deciding_clause(sentence, expected):
+    from videonotes.notes.summarize import _spoken_decision
+
+    assert _spoken_decision(sentence) == expected

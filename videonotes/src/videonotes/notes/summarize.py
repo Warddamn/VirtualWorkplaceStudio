@@ -940,7 +940,32 @@ def _spoken_decision(sentence: str) -> str | None:
     match = _DECISION_CUE.search(sentence)
     if not match or _NEGATED.search(sentence[max(0, match.start() - 28) : match.start()]):
         return None
-    return _capitalise(_clip(_LEADING_FILLER.sub("", sentence) or sentence, 240))
+    # Speech-to-text often runs several sentences together with commas ("This is the
+    # whiteboard, we decided to ship on June 14th, I need to call the vendor").  Keep only
+    # the clause that carries the decision, unless that clause is too short to stand alone
+    # ("We decided, after a long debate, to ship on Friday").
+    clause = _decision_clause(sentence, match.start())
+    text = clause if clause is not None else sentence
+    return _capitalise(_clip(_LEADING_FILLER.sub("", text) or text, 240))
+
+
+_CLAUSE_SPLIT = re.compile(r"[,;]\s+")
+
+
+def _decision_clause(sentence: str, cue_at: int) -> str | None:
+    """The comma/semicolon-delimited clause of ``sentence`` containing ``cue_at``, or None."""
+    start = 0
+    for m in _CLAUSE_SPLIT.finditer(sentence):
+        if m.start() >= cue_at:
+            end = m.start()
+            break
+        start = m.end()
+    else:
+        end = len(sentence)
+    if start == 0 and end == len(sentence):
+        return None  # a single clause: nothing to trim
+    clause = sentence[start:end].strip().rstrip(".!")
+    return clause if len(_tokens(clause)) >= 5 else None
 
 
 def _spoken_question(sentence: str) -> str | None:
