@@ -149,6 +149,14 @@ class Moment:
     keyframe_ids: list[int] = field(default_factory=list)
     utterance_ids: list[int] = field(default_factory=list)
     id: int | None = None
+    #: what was going on, one of MOMENT_KINDS ("" = not classified)
+    kind: str = ""
+    #: "highlight" | "normal" | "background" — background moments are collapsed in notes
+    salience: str = "normal"
+
+
+MOMENT_KINDS = ("conversation", "meeting", "solo_work", "errand", "transit", "media", "idle", "other")
+MOMENT_SALIENCE = ("highlight", "normal", "background")
 
 
 @dataclass

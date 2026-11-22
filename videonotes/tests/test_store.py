@@ -119,3 +119,27 @@ def test_fts_query_is_safe():
     assert fts_query('he said "hello" AND (NOT) x*') .count('"') % 2 == 0
     assert fts_query("") == ""
     assert "keys" in fts_query("where did I leave my keys")
+
+
+def test_moment_kind_salience_and_search_scale(store: Store):
+    s = _session(store)
+    ms = store.replace_moments(s.id, [Moment(session_id=s.id, idx=0, ts0=1, ts1=2, kind="transit", salience="background")])
+    assert store.list_moments(s.id)[0].salience == "background"
+    store.update_moment(ms[0].id, title="Walk", summary="Walking", tags=[])
+    assert store.list_moments(s.id)[0].kind == "transit"  # None leaves kind/salience alone
+    store.update_moment(ms[0].id, title="Walk", summary="Walking", tags=[], kind="errand", salience="highlight")
+    m = store.list_moments(s.id)[0]
+    assert (m.kind, m.salience) == ("errand", "highlight")
+
+    # replacing rows must stay cheap and leave no stale index entries behind
+    c = _clip(store, s.id)
+    for round_no in range(3):
+        us = [Utterance(clip_id=c.id, session_id=s.id, t0=i, t1=i + 1, ts0=c.start_ts + i, ts1=c.start_ts + i + 1,
+                        text=f"round{round_no} marker word{i}") for i in range(300)]
+        store.replace_utterances(c.id, us)
+    assert store.search("round0") == [] and store.search("round1") == []
+    assert len(store.search("round2", limit=500)) == 300
+    assert store.search("word7", since_ts=c.start_ts + 7, until_ts=c.start_ts + 8)[0].text.endswith("word7")
+    assert store.search("word7", since_ts=c.start_ts + 100) == []
+    n_docs = store._one("SELECT COUNT(*) AS n FROM search")["n"]
+    assert n_docs == 300 + 1  # utterances + the moment

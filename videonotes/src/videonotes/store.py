@@ -112,6 +112,8 @@ CREATE TABLE IF NOT EXISTS moments (
     title         TEXT NOT NULL DEFAULT '',
     summary       TEXT NOT NULL DEFAULT '',
     tags          TEXT NOT NULL DEFAULT '[]',
+    kind          TEXT NOT NULL DEFAULT '',
+    salience      TEXT NOT NULL DEFAULT 'normal',
     keyframe_ids  TEXT NOT NULL DEFAULT '[]',
     utterance_ids TEXT NOT NULL DEFAULT '[]'
 );
@@ -124,14 +126,35 @@ CREATE TABLE IF NOT EXISTS days (
     updated_ts  REAL NOT NULL
 );
 
-CREATE VIRTUAL TABLE IF NOT EXISTS search USING fts5(
+-- Search documents live in a plain (indexed) table so they can be replaced cheaply;
+-- the FTS5 index is an external-content table kept in step by triggers.
+CREATE TABLE IF NOT EXISTS search (
+    id         INTEGER PRIMARY KEY,
+    text       TEXT NOT NULL,
+    kind       TEXT NOT NULL,
+    ref_id     TEXT NOT NULL,
+    session_id TEXT NOT NULL,
+    ts         REAL
+);
+CREATE INDEX IF NOT EXISTS search_ref ON search(kind, ref_id);
+CREATE INDEX IF NOT EXISTS search_session ON search(session_id, kind);
+
+CREATE VIRTUAL TABLE IF NOT EXISTS search_fts USING fts5(
     text,
-    kind UNINDEXED,
-    ref_id UNINDEXED,
-    session_id UNINDEXED,
-    ts UNINDEXED,
+    content = 'search',
+    content_rowid = 'id',
     tokenize = 'porter unicode61 remove_diacritics 2'
 );
+CREATE TRIGGER IF NOT EXISTS search_ai AFTER INSERT ON search BEGIN
+    INSERT INTO search_fts(rowid, text) VALUES (new.id, new.text);
+END;
+CREATE TRIGGER IF NOT EXISTS search_ad AFTER DELETE ON search BEGIN
+    INSERT INTO search_fts(search_fts, rowid, text) VALUES ('delete', old.id, old.text);
+END;
+CREATE TRIGGER IF NOT EXISTS search_au AFTER UPDATE ON search BEGIN
+    INSERT INTO search_fts(search_fts, rowid, text) VALUES ('delete', old.id, old.text);
+    INSERT INTO search_fts(rowid, text) VALUES (new.id, new.text);
+END;
 """
 
 SEARCH_KINDS = ("utterance", "ocr", "caption", "moment", "session")
@@ -548,6 +571,16 @@ class Store:
             if caption.strip():
                 self._index(db, "caption", str(keyframe_id), row["session_id"], row["ts"], caption)
 
+    def reset_keyframe(self, keyframe_id: int, *, ocr: bool = False, caption: bool = False) -> None:
+        """Forget OCR text and/or caption of a keyframe so that stage runs again for it."""
+        with self.tx() as db:
+            if ocr:
+                db.execute("UPDATE keyframes SET ocr_text=NULL, ocr_backend=NULL WHERE id=?", (keyframe_id,))
+                db.execute("DELETE FROM search WHERE kind='ocr' AND ref_id=?", (str(keyframe_id),))
+            if caption:
+                db.execute("UPDATE keyframes SET caption=NULL, caption_backend=NULL WHERE id=?", (keyframe_id,))
+                db.execute("DELETE FROM search WHERE kind='caption' AND ref_id=?", (str(keyframe_id),))
+
     # -- utterances -------------------------------------------------------
 
     @staticmethod
@@ -620,6 +653,8 @@ class Store:
             title=row["title"],
             summary=row["summary"],
             tags=json.loads(row["tags"] or "[]"),
+            kind=row["kind"],
+            salience=row["salience"],
             keyframe_ids=json.loads(row["keyframe_ids"] or "[]"),
             utterance_ids=json.loads(row["utterance_ids"] or "[]"),
         )
@@ -630,11 +665,11 @@ class Store:
             db.execute("DELETE FROM moments WHERE session_id=?", (session_id,))
             for m in moments:
                 cur = db.execute(
-                    "INSERT INTO moments(session_id, idx, ts0, ts1, title, summary, tags, keyframe_ids, "
-                    "utterance_ids) VALUES(?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO moments(session_id, idx, ts0, ts1, title, summary, tags, kind, salience, "
+                    "keyframe_ids, utterance_ids) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
                     (
                         session_id, m.idx, m.ts0, m.ts1, m.title, m.summary, json.dumps(m.tags),
-                        json.dumps(m.keyframe_ids), json.dumps(m.utterance_ids),
+                        m.kind, m.salience or "normal", json.dumps(m.keyframe_ids), json.dumps(m.utterance_ids),
                     ),  # fmt: skip
                 )
                 m.id = int(cur.lastrowid)
@@ -644,14 +679,25 @@ class Store:
                     self._index(db, "moment", str(m.id), session_id, m.ts0, text)
         return moments
 
-    def update_moment(self, moment_id: int, *, title: str, summary: str, tags: list[str]) -> None:
+    def update_moment(
+        self,
+        moment_id: int,
+        *,
+        title: str,
+        summary: str,
+        tags: list[str],
+        kind: str | None = None,
+        salience: str | None = None,
+    ) -> None:
+        """Store a moment's summary. ``kind`` / ``salience`` are left unchanged when None."""
         with self.tx() as db:
             row = db.execute("SELECT session_id, ts0 FROM moments WHERE id=?", (moment_id,)).fetchone()
             if row is None:
                 raise KeyError(f"no moment {moment_id}")
             db.execute(
-                "UPDATE moments SET title=?, summary=?, tags=? WHERE id=?",
-                (title, summary, json.dumps(tags), moment_id),
+                "UPDATE moments SET title=?, summary=?, tags=?, kind=COALESCE(?, kind), "
+                "salience=COALESCE(?, salience) WHERE id=?",
+                (title, summary, json.dumps(tags), kind, salience, moment_id),
             )
             db.execute("DELETE FROM search WHERE kind='moment' AND ref_id=?", (str(moment_id),))
             text = " — ".join(x for x in (title, summary, " ".join(tags)) if x)
@@ -721,23 +767,23 @@ class Store:
         if not match:
             return []
         sql = (
-            "SELECT text, kind, ref_id, session_id, ts, "
-            "snippet(search, 0, '[', ']', ' … ', 18) AS snip, bm25(search) AS rank "
-            "FROM search WHERE search MATCH ?"
+            "SELECT s.text, s.kind, s.ref_id, s.session_id, s.ts, "
+            "snippet(search_fts, 0, '[', ']', ' … ', 18) AS snip, bm25(search_fts) AS rank "
+            "FROM search_fts JOIN search s ON s.id = search_fts.rowid WHERE search_fts MATCH ?"
         )
         args: list[Any] = [match]
         kinds = list(kinds) if kinds else None
         if kinds:
-            sql += f" AND kind IN ({','.join('?' * len(kinds))})"
+            sql += f" AND s.kind IN ({','.join('?' * len(kinds))})"
             args += kinds
         if session_id:
-            sql += " AND session_id=?"
+            sql += " AND s.session_id=?"
             args.append(session_id)
         if since_ts is not None:
-            sql += " AND CAST(ts AS REAL) >= ?"
+            sql += " AND s.ts >= ?"
             args.append(since_ts)
         if until_ts is not None:
-            sql += " AND CAST(ts AS REAL) < ?"
+            sql += " AND s.ts < ?"
             args.append(until_ts)
         sql += " ORDER BY rank LIMIT ?"
         args.append(limit)

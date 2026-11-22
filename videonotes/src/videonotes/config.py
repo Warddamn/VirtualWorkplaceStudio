@@ -118,9 +118,9 @@ class NotesSettings:
     vault: str = ""  # "" = <home>/notes ; point this at an Obsidian vault folder if you like
     embed_images: bool = True
     max_images_per_moment: int = 2
-    moment_gap_seconds: float = 45.0  # a pause in speech this long starts a new moment
-    moment_min_seconds: float = 20.0
-    moment_max_seconds: float = 600.0
+    moment_gap_seconds: float = 120.0  # a pause in speech this long starts a new moment
+    moment_min_seconds: float = 30.0
+    moment_max_seconds: float = 900.0
     include_transcript: bool = True
     time_format: str = "%H:%M"
 
