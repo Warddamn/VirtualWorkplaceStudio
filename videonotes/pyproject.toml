@@ -9,6 +9,35 @@ dependencies = [
     "numpy>=1.26",
 ]
 
+[project.optional-dependencies]
+# One extra that picks the right pieces for the Mac it is installed on:
+#   pip install 'videonotes[mac]'
+mac = [
+    # speech-to-text: MLX on Apple Silicon, CTranslate2 on Intel
+    "parakeet-mlx>=0.7; sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "faster-whisper>=1.2; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    # Apple's on-device text recognition (Vision framework)
+    "pyobjc-framework-Vision>=11; sys_platform == 'darwin'",
+    "pyobjc-framework-Quartz>=11; sys_platform == 'darwin'",
+    # Bluetooth control of the camera
+    "bleak>=3.1,<4",
+]
+# Whisper on Apple Silicon (wider language coverage than Parakeet; a large install)
+whisper = ["mlx-whisper>=0.4.3; sys_platform == 'darwin' and platform_machine == 'arm64'"]
+# In-process MLX models instead of an Ollama server (Apple Silicon)
+mlx = [
+    "mlx-vlm>=0.8; sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "mlx-lm>=0.32; sys_platform == 'darwin' and platform_machine == 'arm64'",
+]
+# CPU speech-to-text and OCR that run anywhere (also what the test-suite uses)
+cpu = ["faster-whisper>=1.2", "sherpa-onnx>=2.0", "rapidocr>=3.10", "onnxruntime>=1.20"]
+ble = ["bleak>=3.1,<4"]
+# A bundled ffmpeg binary, for Macs where `brew install ffmpeg` is not practical
+ffmpeg = ["imageio-ffmpeg>=0.8.1"]
+# Optional cloud backend (never used unless selected in config.toml)
+cloud = ["anthropic>=2.0"]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.6", "sherpa-onnx>=2.0", "rapidocr>=3.10", "onnxruntime>=1.20", "bleak>=3.1,<4", "anthropic>=2.0"]
+
 [project.scripts]
 vnote = "videonotes.cli:main"
 

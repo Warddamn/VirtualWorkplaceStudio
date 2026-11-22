@@ -66,6 +66,8 @@ OVERLAP_TOLERANCE = 1.0
 HIGH_NOVELTY = 0.5
 #: A stretch without any material is never called a coverage hole below this length (s).
 MIN_HOLE_SECONDS = 120.0
+#: How many wide keyframe spacings inside single clips it takes to conclude frames are sampled sparsely.
+SPARSE_EVIDENCE = 3
 
 _DEFAULT_GAP_SECONDS = 120.0
 
@@ -116,20 +118,26 @@ class _Piece:
 def coverage_hole_seconds(cfg: NotesSettings, keyframes: list[Keyframe]) -> float:
     """How long a stretch without speech *and* without keyframes must be to count as a hole.
 
-    At least ``moment_gap_seconds`` and at least two minutes.  When keyframes
-    were evidently sampled more sparsely than that inside one continuous clip
-    (``frames.max_gap_s`` raised by the user), the threshold grows to 1.5 times
-    the widest such spacing, so a quiet stretch of a continuous recording is
-    not mistaken for a break in the recording.
+    Normally ``moment_gap_seconds``, and never less than two minutes.  The
+    exception is footage whose keyframes were evidently sampled more sparsely
+    than that (``frames.max_gap_s`` raised by the user): when at least
+    :data:`SPARSE_EVIDENCE` pairs of neighbouring keyframes *of the same clip* —
+    one continuous file, so the camera was certainly running — are that far
+    apart, the threshold grows to 1.5 times their typical (median) spacing.
+    Otherwise every lone keyframe of a quiet stretch would become a moment.
     """
     gap_s, _, _ = _limits(cfg)
-    widest = 0.0
+    base = max(gap_s, MIN_HOLE_SECONDS)
+    wide: list[float] = []
     previous: Keyframe | None = None
     for kf in sorted((k for k in keyframes if _finite(k.ts)), key=lambda k: k.ts):
-        if previous is not None and kf.clip_id == previous.clip_id:
-            widest = max(widest, kf.ts - previous.ts)
+        if previous is not None and kf.clip_id == previous.clip_id and 1.5 * (kf.ts - previous.ts) >= base:
+            wide.append(kf.ts - previous.ts)
         previous = kf
-    return max(gap_s, MIN_HOLE_SECONDS, 1.5 * widest)
+    if len(wide) >= SPARSE_EVIDENCE:
+        wide.sort()
+        base = max(base, 1.5 * wide[len(wide) // 2])
+    return base
 
 
 def segment_moments(

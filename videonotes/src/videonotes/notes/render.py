@@ -69,6 +69,8 @@ _TEMP_NAME = re.compile(r"\.vnote-[0-9a-f]+\.tmp")
 
 # Bounds that keep a note readable (and its size sane) whatever the recording contained.
 _MAX_TITLE_CHARS = 160
+_MAX_TAGS = 24
+_MAX_TAG_CHARS = 48
 _MAX_ALT_CHARS = 200
 _MAX_SCREEN_LINES_PER_MOMENT = 40
 _MAX_SCREEN_CHARS_PER_MOMENT = 2000
@@ -289,6 +291,7 @@ def _shorten(text: str, limit: int) -> str:
 
 _MD_ALWAYS = re.compile(r"([\\`\[\]|$#^~])")
 _MD_EMPHASIS = re.compile(r"([*_])")
+_MD_RUNS = re.compile(r"={2,}|%{2,}")  # Obsidian ==highlight== and %%comment%%
 _MD_LEADING_NUMBER = re.compile(r"^(\d{1,9})([.)])(?=\s|$)")
 _MD_LEADING_MARK = re.compile(r"^([-+=:])")
 _MD_LEADING_RUN = re.compile(r"^([*_]+)(?=\s|$)")
@@ -307,7 +310,7 @@ def _md(text: object, *, emphasis: bool = False) -> str:
     s = _one_line(text)
     s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     s = _MD_ALWAYS.sub(r"\\\1", s)
-    s = s.replace("%%", "\\%\\%").replace("==", "\\=\\=")
+    s = _MD_RUNS.sub(lambda m: "".join("\\" + ch for ch in m.group(0)), s)
     if emphasis:
         s = _MD_LEADING_RUN.sub(lambda m: "".join("\\" + ch for ch in m.group(1)), s)
     else:
@@ -361,14 +364,17 @@ def _front_matter(fields: list[tuple[str, object]]) -> str:
 
 
 def _tags(raw: Iterable[object]) -> list[str]:
-    """Tags in the form Obsidian accepts (no spaces, no ``#``), without duplicates."""
+    """Tags in the form Obsidian accepts (letters, digits, ``_``, ``-``, ``/``; no spaces, no ``#``), deduplicated."""
     out: list[str] = []
     seen: set[str] = set()
     for item in raw:
-        tag = re.sub(r"[^\w/-]+", "-", _one_line(item).lstrip("#"), flags=re.UNICODE).strip("-/")
-        if tag and tag.casefold() not in seen:
+        tag = re.sub(r"[^\w/]+", "-", _one_line(item).lstrip("#"), flags=re.UNICODE)
+        tag = re.sub(r"-*/[-/]*", "/", tag)[:_MAX_TAG_CHARS].strip("-/")
+        if any(ch.isalnum() for ch in tag) and tag.casefold() not in seen:
             seen.add(tag.casefold())
             out.append(tag)
+            if len(out) >= _MAX_TAGS:
+                break
     return out
 
 
@@ -719,37 +725,50 @@ def _screen_text(frames: list[Keyframe]) -> str:
     return "\n".join(kept)
 
 
-def _frame_score(frame: Keyframe) -> tuple[int, int, float, float]:
-    has_text = bool((frame.ocr_text or "").strip())
-    has_caption = bool((frame.caption or "").strip())
-    novelty = frame.novelty if isinstance(frame.novelty, (int, float)) and math.isfinite(frame.novelty) else 0.0
-    sharp = frame.sharpness if isinstance(frame.sharpness, (int, float)) and math.isfinite(frame.sharpness) else 0.0
-    return (int(has_text) + int(has_caption), int(frame.reason in ("scene", "first")), novelty, sharp)
+def _number(value: object) -> float:
+    return float(value) if isinstance(value, (int, float)) and math.isfinite(value) else 0.0
 
 
 def _pick_images(frames: list[Keyframe], limit: int) -> list[Keyframe]:
-    """Up to ``limit`` frames: the most informative ones (text read on them, a caption), spread in time.
+    """Up to ``limit`` frames worth embedding, in time order.
 
-    The moment is divided into ``limit`` equal stretches and the best frame of
-    each is taken; stretches without frames give their place to the best of the rest.
+    Chosen one at a time.  What counts, in this order: the frame tells something
+    the frames chosen so far do not (text read on it that has not been shown
+    yet, a caption); it is far in time from the ones already chosen, so the
+    picks spread over the moment; it marks a new scene; novelty; sharpness.
     """
     if limit <= 0 or not frames:
         return []
     frames = sorted(frames, key=lambda k: (k.ts, k.id if k.id is not None else 0))
     if len(frames) <= limit:
         return frames
-    first, span = frames[0].ts, frames[-1].ts - frames[0].ts
-    best: dict[int, Keyframe] = {}
-    for frame in frames:
-        slot = min(limit - 1, int((frame.ts - first) / span * limit)) if span > 0 else 0
-        if slot not in best or _frame_score(frame) > _frame_score(best[slot]):
-            best[slot] = frame
-    chosen = list(best.values())
-    if len(chosen) < limit:
-        taken = {id(frame) for frame in chosen}
-        rest = sorted((f for f in frames if id(f) not in taken), key=_frame_score, reverse=True)
-        chosen += rest[: limit - len(chosen)]
-    return sorted(chosen, key=lambda k: (k.ts, k.id if k.id is not None else 0))
+    span = max(frames[-1].ts - frames[0].ts, 1e-9)
+    texts = [{_text_key(line) for line in _clean(k.ocr_text or "").split("\n") if line.strip()} for k in frames]
+    captions = [_text_key(_one_line(k.caption or "")) for k in frames]
+    chosen: list[int] = []
+    shown: set[str] = set()
+    while len(chosen) < limit:
+        best: tuple[tuple[int, int, int, float, float], int] | None = None
+        for i, frame in enumerate(frames):
+            if i in chosen:
+                continue
+            informative = int(bool(texts[i] - shown)) + int(bool(captions[i]) and captions[i] not in shown)
+            apart = min((abs(frame.ts - frames[j].ts) for j in chosen), default=0.0)
+            rank = (
+                informative,
+                int(10 * apart / span),  # in tenths of the moment, so near-ties fall through to quality
+                int(frame.reason in ("scene", "first")),
+                _number(frame.novelty),
+                _number(frame.sharpness),
+            )
+            if best is None or rank > best[0]:  # ties keep the earlier frame
+                best = (rank, i)
+        assert best is not None  # len(frames) > limit, so something is always left
+        chosen.append(best[1])
+        shown |= texts[best[1]]
+        if captions[best[1]]:
+            shown.add(captions[best[1]])
+    return [frames[i] for i in sorted(chosen)]
 
 
 def _transcript(said: list[Utterance], clock_s: Callable[[float], str]) -> str:

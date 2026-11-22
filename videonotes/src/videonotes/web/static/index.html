@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="referrer" content="no-referrer">
+<title>videonotes</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" id="skip-link" href="#/">Skip to the notes</a>
+
+<header class="topbar">
+  <button type="button" id="nav-toggle" class="icon-btn nav-toggle" aria-controls="sidebar" aria-expanded="false"
+          aria-label="Days and sessions">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+      <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <a class="brand" href="#/">videonotes</a>
+  <form id="search-form" class="search" role="search" action="/" method="get">
+    <label class="visually-hidden" for="search-input">Search your notes</label>
+    <input id="search-input" name="q" type="search" maxlength="500" autocomplete="off" spellcheck="false"
+           placeholder="Search what was said, seen or written">
+    <button type="submit" class="icon-btn search-go" aria-label="Search">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </form>
+  <a class="btn ask-link" id="ask-link" href="#/ask">Ask<span class="wide-only"> a question</span></a>
+</header>
+
+<div class="layout">
+  <nav id="sidebar" class="sidebar" aria-label="Days and sessions">
+    <div id="day-list" class="day-list"><p class="side-note">Loading…</p></div>
+    <p id="library-stats" class="side-note library-stats"></p>
+  </nav>
+  <div id="scrim" class="scrim" hidden></div>
+  <main id="main" tabindex="-1">
+    <noscript>
+      <p class="notice">videonotes needs JavaScript to show your notes. It only ever talks to this computer.</p>
+    </noscript>
+    <div id="view"><p class="loading">Loading your notes…</p></div>
+  </main>
+</div>
+
+<div id="announcer" class="visually-hidden" role="status" aria-live="polite"></div>
+
+<dialog id="lightbox" class="dialog lightbox" aria-labelledby="lightbox-title">
+  <div class="dialog-head">
+    <h2 id="lightbox-title">Frame</h2>
+    <span id="lightbox-count" class="dialog-count"></span>
+    <button type="button" class="icon-btn" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="lightbox-stage">
+    <img id="lightbox-img" alt="" width="1280" height="720" decoding="async">
+    <p id="lightbox-missing" class="stage-note" hidden>The image file for this frame is no longer in the library.</p>
+    <button type="button" id="lightbox-prev" class="stage-arrow prev" aria-label="Previous frame">
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
+        <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button type="button" id="lightbox-next" class="stage-arrow next" aria-label="Next frame">
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
+        <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="lightbox-info">
+    <p id="lightbox-caption" class="lightbox-caption"></p>
+    <div id="lightbox-ocr-wrap" hidden>
+      <h3>Text in view</h3>
+      <pre id="lightbox-ocr" class="captured"></pre>
+    </div>
+    <p class="dialog-actions">
+      <button type="button" id="lightbox-play" class="btn">Play the video from here</button>
+    </p>
+  </div>
+</dialog>
+
+<dialog id="player" class="dialog player" aria-labelledby="player-title">
+  <div class="dialog-head">
+    <h2 id="player-title">Video</h2>
+    <button type="button" class="icon-btn" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div id="player-stage" class="player-stage"></div>
+  <p id="player-note" class="player-note"></p>
+</dialog>
+</body>
+</html>
