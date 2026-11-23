@@ -102,7 +102,11 @@ vnote live                     # speech and on-screen text appear as you go; Ctr
 ```
 
 Video is cut into 60-second segments that are processed while you record. When you stop, the
-frames get described and the summary is written. The Osmo Action 4 sends its microphone over USB;
+frames get described and the summary is written.
+
+**No DJI camera at hand?** `vnote live --device mac` does the same with the laptop's own camera and
+microphone. It is the quickest way to see the whole thing work on your Mac: talk for a couple of
+minutes, hold up a page with some writing on it, press Ctrl-C, and read the note. The Osmo Action 4 sends its microphone over USB;
 the Action 5 Pro does so from firmware 01.01.05.20. Without a camera microphone, the Mac's
 microphone is used (`--audio default` forces it, `--audio none` records video only).
 
@@ -161,6 +165,33 @@ vnote delete <session>         # removes its media copies, frames, note and sear
 vnote config --init            # writes ~/VideoNotes/config.toml with every setting explained
 vnote --set vision.backend=none import   # any setting can be overridden for one run
 ```
+
+---
+
+## Battery
+
+Where a laptop's battery goes while videonotes runs (estimates until measured on your Mac):
+
+| Step | Cost |
+|---|---|
+| Capturing and encoding video (hardware encoder), picking keyframes | light |
+| Speech-to-text, reading text off frames | short bursts, tens of times faster than real time: light on average |
+| Describing frames (vision model), writing summaries (language model) | seconds of full GPU load per frame or call: **this is what drains it** |
+
+So by default (`power.on_battery = "light"`), **on battery videonotes keeps capturing, transcribing and
+reading text, and leaves frame descriptions and the written summary for when the Mac is plugged in**.
+You still get a note straight away, built from quotes of what was said and shown. Plug in and run
+`vnote process` and it is finished properly. Set `power.on_battery = "full"` in `config.toml` to do
+everything on battery anyway. `vnote doctor` shows the current power state.
+
+`vnote live` measures the real drain: it prints something like *"Battery: 87% → 80% over 42 min,
+about 10% per hour"* at the end of a session. A few sessions of that tell you what to expect on your
+machine. Two more things to know:
+
+- In webcam mode the camera runs off the Mac's USB port, so the Mac's battery powers the camera too.
+  Importing afterwards (record on the camera's own battery, process later on the charger) is the
+  battery-friendly way to use it.
+- The camera's own battery lasts about 2.5 h (Action 4) / 4 h (Action 5 Pro) at 1080p.
 
 ---
 
@@ -225,7 +256,8 @@ step exercises one untested assumption.
 3. `vnote import` on one short clip. Check the note, and whether the speech came through (the
    research could not establish whether the proxy files carry audio; the pipeline falls back to the
    original for sound).
-4. Choose **Webcam**, then `vnote devices` and `vnote live --minutes 2`. If capture fails, try
+4. Choose **Webcam**, then `vnote devices` and `vnote live --minutes 2`. (`vnote live --device mac
+   --minutes 2` first, with the laptop's own camera, separates Mac setup problems from camera ones.) If capture fails, try
    `--set capture.video_size=1280x720` or `--set capture.framerate=25`.
 5. `vnote camera pair` and `vnote camera status`, then `vnote camera record start` / `stop`.
 6. `vnote wireless --ssid "…" --minutes 2`. If the camera does not start streaming, run it again with

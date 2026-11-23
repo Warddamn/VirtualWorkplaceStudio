@@ -82,6 +82,17 @@ def check_system(ctx: Context) -> list[Check]:
         checks.append(
             Check("Memory", ram >= 7.5, f"{ram:.0f} GB", fix="Under 8 GB: use small models and set vision.backend = \"none\".", optional=True)
         )
+    from ..power import power_state, should_defer_heavy_work
+
+    power = power_state()
+    if power is not None and power.percent is not None:
+        deferring = should_defer_heavy_work(ctx.settings.power.on_battery, power)
+        checks.append(
+            Check(
+                "Power", True,
+                power.describe() + ("; frame descriptions and summaries wait for the charger" if deferring else ""),
+            )  # fmt: skip
+        )
     try:
         ctx.settings.ensure_dirs()
         free = shutil.disk_usage(ctx.settings.home).free / 1024**3

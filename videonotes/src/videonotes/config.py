@@ -139,6 +139,16 @@ class DjiSettings:
 
 
 @dataclass
+class PowerSettings:
+    """Battery use on a laptop."""
+
+    # "light": on battery, describing frames and writing the summary wait for the charger
+    # (run `vnote process` once plugged in); capture, speech and text reading carry on.
+    # "full": do everything even on battery.
+    on_battery: str = "light"
+
+
+@dataclass
 class Settings:
     home: Path = field(default_factory=lambda: default_home())
     capture: CaptureSettings = field(default_factory=CaptureSettings)
@@ -150,6 +160,7 @@ class Settings:
     llm: LlmSettings = field(default_factory=LlmSettings)
     notes: NotesSettings = field(default_factory=NotesSettings)
     dji: DjiSettings = field(default_factory=DjiSettings)
+    power: PowerSettings = field(default_factory=PowerSettings)
 
     # -- layout -----------------------------------------------------------
 
@@ -220,6 +231,7 @@ _SECTIONS = {
     "llm": "llm",
     "notes": "notes",
     "dji": "dji",
+    "power": "power",
 }
 
 

@@ -21,7 +21,9 @@ from typing import Any
 # --------------------------------------------------------------------------
 
 SESSION_KINDS = ("import", "live", "wireless", "file")
-SESSION_STATUSES = ("open", "processing", "ready", "error")
+#: "deferred": notes were written, but frame descriptions and the written summary wait for
+#: the charger (the Mac was on battery); `vnote process` finishes them.
+SESSION_STATUSES = ("open", "processing", "ready", "deferred", "error")
 
 #: Per-clip pipeline stages, in execution order.
 CLIP_STAGES = ("probe", "extract", "transcribe", "ocr", "caption")

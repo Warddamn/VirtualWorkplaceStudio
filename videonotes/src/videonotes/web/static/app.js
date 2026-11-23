@@ -732,6 +732,15 @@
       out.push(notice("info", "This session is still being recorded. New material appears here as it is processed."));
     } else if (s.status === "processing") {
       out.push(notice("info", "This session is still being processed. The note fills in as each step finishes."));
+    } else if (s.status === "deferred") {
+      out.push(
+        notice(
+          "info",
+          "Recorded on battery, so describing frames and writing the summary were left for later. Plug in and run ",
+          code("vnote process"),
+          " in Terminal to finish this note."
+        )
+      );
     } else if (s.status === "error") {
       out.push(
         notice(

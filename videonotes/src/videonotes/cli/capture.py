@@ -15,7 +15,7 @@ from ..config import DJI_DEVICE_HINTS, is_macos
 from ..models import Clip, Session
 from ..timeutil import fmt_clock, fmt_duration, new_session_id, now_ts
 from .common import CliError, Context, keep_awake, progress_printer
-from .library import print_note, process_sessions, report_session
+from .library import print_note, process_sessions, report_session, report_unavailable
 
 ENV_WIFI_PASSWORD = "VIDEONOTES_WIFI_PASSWORD"
 
@@ -30,7 +30,9 @@ def register(sub: argparse._SubParsersAction) -> None:
     p.set_defaults(func=cmd_devices)
 
     p = sub.add_parser("live", help="take notes live from the camera in USB webcam mode (Ctrl-C to finish)")
-    p.add_argument("--device", help="video device name or index (default: the DJI camera)")
+    p.add_argument(
+        "--device", help="video device name or index (default: the DJI camera; 'mac' = this Mac's own camera)"
+    )
     p.add_argument("--audio", help="audio device name or index, 'default' (Mac microphone) or 'none'")
     p.add_argument("--minutes", type=float, default=0, help="stop by itself after this many minutes")
     p.add_argument("--quiet", action="store_true", help="do not print speech and on-screen text as it is recognised")
@@ -116,6 +118,13 @@ def run_live(
     out = ctx.out
     settings, store = ctx.settings, ctx.store
     keep_awake(out)
+    from ..power import drain_report, power_state, should_defer_heavy_work
+
+    power_start = power_state()
+    if power_start is not None and power_start.percent is not None:
+        out.info(f"Power: {power_start.describe()}.")
+        if should_defer_heavy_work(settings.power.on_battery, power_start):
+            out.info("  On battery, describing frames and the written summary wait until you plug in.")
     pipeline = Pipeline(settings, store)
     clips = 0
     recorded = 0.0
@@ -197,8 +206,10 @@ def run_live(
         result = pipeline.finalize_session(session.id)
     finally:
         pipeline.close()
-    for kind, reason in pipeline.unavailable().items():
-        out.warn(f"{kind} skipped: {reason}")
+    report_unavailable(ctx, pipeline)
+    drain = drain_report(power_start, power_state(), time.monotonic() - started)
+    if drain:
+        out.info(drain)
     if not settings.capture.keep_segments:
         shutil.rmtree(settings.media_dir / session.id, ignore_errors=True)
     report_session(ctx, result)
@@ -221,15 +232,22 @@ def cmd_live(ctx: Context, args: argparse.Namespace) -> int:
     video = pick_device(devices, "video", args.device or settings.capture.video_device)
     if video is None:
         names = ", ".join(d.name for d in devices if d.kind == "video") or "none"
-        raise CliError(f"The camera was not found among the video devices ({names}).", hint=WEBCAM_HELP)
-    audio = pick_device(devices, "audio", args.audio or settings.capture.audio_device)
+        raise CliError(
+            f"The camera was not found among the video devices ({names}).",
+            hint=WEBCAM_HELP + "\n  To try it with this Mac's own camera instead:  vnote live --device mac",
+        )
+    wanted_audio = args.audio or settings.capture.audio_device
+    is_dji = any(h in video.name.lower() for h in DJI_DEVICE_HINTS)
+    if not is_dji and wanted_audio.strip().lower() in ("", "auto"):
+        wanted_audio = "default"  # not the DJI camera: its USB microphone is not there to look for
+    audio = pick_device(devices, "audio", wanted_audio)
     out = ctx.out
     out.ok(f"Camera: {video.name}")
     if audio is not None:
         out.ok(f"Microphone: {audio.name}")
     else:
         out.warn("No microphone: recording video only, so the notes will have no speech.")
-    session, out_dir = _new_live_session(ctx, "live", f"{video.name} (USB webcam)")
+    session, out_dir = _new_live_session(ctx, "live", f"{video.name} (USB webcam)" if is_dji else video.name)
     recorder = SegmentRecorder(
         webcam_command(settings, video, audio, out_dir), out_dir, segment_seconds=settings.capture.segment_seconds
     )

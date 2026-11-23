@@ -40,6 +40,11 @@ DEFAULT_AUDIO_NAME = "this Mac's default input (System Settings → Sound → In
 #: identify itself; tried by ``auto`` after :data:`~videonotes.config.DJI_DEVICE_HINTS`.
 GENERIC_CAMERA_HINTS = ("uvc camera",)
 
+#: ``--device mac`` (or "builtin"): the Mac's own camera, whatever this model calls it
+#: ("FaceTime HD Camera", "MacBook Air Camera", "MacBook Pro Camera", …).
+BUILTIN_ALIASES = ("mac", "builtin", "built-in", "laptop", "facetime")
+BUILTIN_CAMERA_HINTS = ("facetime", "macbook", "built-in", "imac")
+
 LIST_TIMEOUT_S = 20.0
 
 
@@ -192,6 +197,12 @@ def pick_device(devices: list[CaptureDevice], kind: str, wanted: str) -> Capture
                 return None
             log.info("audio: using the Mac's default input device")
             return default_audio_device()
+
+    if kind == "video" and key in BUILTIN_ALIASES:
+        found = _first([d for d in pool if "iphone" not in d.name.casefold()], BUILTIN_CAMERA_HINTS)
+        if found is None:
+            log.warning("video: no built-in camera found among %s", [d.name for d in pool])
+        return found
 
     if key == "auto":
         found = _first(pool, DJI_DEVICE_HINTS)

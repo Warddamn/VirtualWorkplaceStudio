@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 from ..config import default_config_text
 from ..models import CLIP_STAGES, SESSION_STAGES, Session
@@ -102,14 +103,26 @@ def process_sessions(ctx: Context, sessions: list[Session], *, force: list[str] 
                 result = pipeline.process_session(session.id, force=force or ())
             except ValueError as exc:
                 raise CliError(str(exc)) from exc
-            for kind, reason in pipeline.unavailable().items():
-                ctx.out.warn(f"{_KIND_LABELS.get(kind, kind)} skipped: {reason}")
+            report_unavailable(ctx, pipeline)
         done.append(result)
         report_session(ctx, result)
     return done
 
 
 _KIND_LABELS = {"asr": "Speech-to-text", "ocr": "Text recognition", "vision": "Frame descriptions", "llm": "LLM summary"}
+
+
+def report_unavailable(ctx: Context, pipeline: Any) -> None:
+    """Say which steps could not run, collapsing on-battery deferrals into one line."""
+    deferred = pipeline.deferred
+    for kind, reason in pipeline.unavailable().items():
+        if kind not in deferred:
+            ctx.out.warn(f"{_KIND_LABELS.get(kind, kind)} skipped: {reason}")
+    if deferred:
+        ctx.out.info(
+            "On battery: describing frames and writing the summary are left for later to save power. "
+            "Plug in and run `vnote process` to finish them (or set power.on_battery = \"full\")."
+        )
 
 
 def report_session(ctx: Context, session: Session) -> None:
@@ -124,6 +137,8 @@ def report_session(ctx: Context, session: Session) -> None:
         out.warn(f"clip {clip_id}: {stage} failed: {message}")
     if session.note_path:
         out.ok(f"{session.title or 'Note'}  →  {ctx.settings.abs(session.note_path)}")
+    if session.status == "deferred":
+        return  # report_unavailable has said what is still to come
     if session.note and session.note.llm_backend == "extractive":
         out.info("  (summary built without an LLM: excerpts only. `vnote doctor` shows how to enable one.)")
 

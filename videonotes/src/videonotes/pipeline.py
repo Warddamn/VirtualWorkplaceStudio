@@ -34,6 +34,7 @@ from typing import Any, Protocol
 from .backends.base import BackendUnavailable
 from .config import Settings
 from .models import CLIP_STAGES, SESSION_STAGES, Clip, Keyframe, Session, Utterance
+from .power import DEFER_REASON, PowerState, power_state, should_defer_heavy_work
 from .store import Store
 
 log = logging.getLogger("videonotes.pipeline")
@@ -73,6 +74,7 @@ class Pipeline:
         *,
         progress: Progress | None = None,
         factories: dict[str, Callable[[], Any]] | None = None,
+        power: Callable[[], PowerState | None] | None = None,
     ):
         self.settings = settings
         self.store = store
@@ -80,6 +82,9 @@ class Pipeline:
         self._factories = dict(factories or {})
         self._backends: dict[str, Any] = {}
         self._unavailable: dict[str, str] = {}
+        self._power = power or power_state
+        #: heavy backends left for later because the Mac is on battery (see videonotes.power)
+        self._deferred: set[str] = set()
         settings.ensure_dirs()
 
     # -- backend lifecycle -----------------------------------------------------
@@ -108,6 +113,11 @@ class Pipeline:
         if kind in self._backends:
             return self._backends[kind]
         if kind in self._unavailable:
+            return None
+        if kind in _HEAVY and should_defer_heavy_work(self.settings.power.on_battery, self._power()):
+            self._unavailable[kind] = DEFER_REASON
+            self._deferred.add(kind)
+            log.info("%s left for later: running on battery", kind)
             return None
         factory = self._factories.get(kind) or self._default_factory(kind)
         try:
@@ -502,11 +512,18 @@ class Pipeline:
             finally:
                 self._release("llm")
             self.store.update_session(sid, note=note, title=note.title or session.title)
-            self.store.set_meta(f"summary:{sid}", fingerprint)
+            if "llm" not in self._deferred:  # a deferred summary must be written again later
+                self.store.set_meta(f"summary:{sid}", fingerprint)
 
         self.progress("session_stage", stage="render", session_id=sid)
         render_session_note(self.settings, self.store, sid)
-        self.store.update_session(sid, status="error" if self._has_errors(sid) else "ready")
+        if self._has_errors(sid):
+            status = "error"
+        elif self._deferred:
+            status = "deferred"  # `vnote process` finishes it once the Mac is plugged in
+        else:
+            status = "ready"
+        self.store.update_session(sid, status=status)
         session = self._require(sid)
         try:
             from .timeutil import local_date
@@ -552,9 +569,18 @@ class Pipeline:
             info.get("status") == "error" for clip in self.store.list_clips(session_id) for info in clip.stages.values()
         )
 
+    @property
+    def deferred(self) -> set[str]:
+        """Heavy backends that were left for later in this run because the Mac was on battery."""
+        return set(self._deferred)
+
     def unavailable(self) -> dict[str, str]:
         """Backends that could not be used in this run, with the reason."""
         return dict(self._unavailable)
+
+
+#: Backends that keep the GPU busy for seconds per call: on battery they wait for the charger.
+_HEAVY = ("vision", "llm")
 
 
 class _Skip(Exception):
