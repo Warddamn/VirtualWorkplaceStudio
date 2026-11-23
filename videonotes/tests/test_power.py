@@ -107,3 +107,14 @@ def test_builtin_camera_alias():
     older = [CaptureDevice(0, "FaceTime HD Camera (Built-in)", "video")]
     assert pick_device(older, "video", "mac").name.startswith("FaceTime")
     assert pick_device([CaptureDevice(0, "Jan's iPhone Camera", "video")], "video", "mac") is None
+
+
+def test_cloud_backends_are_not_deferred_on_battery(settings, store):
+    """Claude runs in Anthropic's data centre: waiting for the charger would save nothing."""
+    settings.vision.backend = "anthropic"
+    settings.llm.backend = "ollama"
+    calls = []
+    factories = {"vision": lambda: calls.append("vision") or None, "llm": lambda: calls.append("llm") or None}
+    with Pipeline(settings, store, power=lambda: PowerState(True, 50), factories=factories) as p:
+        assert p._backend("vision") is None and p._backend("llm") is None
+        assert p.deferred == {"llm"} and calls == ["vision"]

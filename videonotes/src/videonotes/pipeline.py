@@ -114,7 +114,11 @@ class Pipeline:
             return self._backends[kind]
         if kind in self._unavailable:
             return None
-        if kind in _HEAVY and should_defer_heavy_work(self.settings.power.on_battery, self._power()):
+        if (
+            kind in _HEAVY
+            and getattr(self.settings, kind).backend not in _CLOUD_BACKENDS  # cloud work costs no battery
+            and should_defer_heavy_work(self.settings.power.on_battery, self._power())
+        ):
             self._unavailable[kind] = DEFER_REASON
             self._deferred.add(kind)
             log.info("%s left for later: running on battery", kind)
@@ -581,6 +585,7 @@ class Pipeline:
 
 #: Backends that keep the GPU busy for seconds per call: on battery they wait for the charger.
 _HEAVY = ("vision", "llm")
+_CLOUD_BACKENDS = ("anthropic", "claude")
 
 
 class _Skip(Exception):
